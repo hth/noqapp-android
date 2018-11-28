@@ -33,7 +33,6 @@ public class MedicalCaseHistoryTabbed extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
         loadTabs.execute();
-
     }
 
 
@@ -94,6 +93,4 @@ public class MedicalCaseHistoryTabbed extends AppCompatActivity {
             finish();
         }
     }
-
-
 }

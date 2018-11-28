@@ -4,6 +4,31 @@
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+        <TextView
+                android:text="Patient History"
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"/>
+
+        <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/white"
+                android:dividerHeight="1dp"/>
+    </LinearLayout>
+
     <ScrollView
             android:layout_width="0dp"
             android:layout_weight=".5"
@@ -39,6 +64,8 @@
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textSize="14sp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/btn_add_round"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/colorPrimary"
                         android:layout_height="wrap_content"/>
@@ -52,45 +79,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight=".5"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <TextView
-                    android:text="Diagnosis"
-                    android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/tv_add_dia"
-                    android:textColor="@android:color/black"
-                    android:layout_height="wrap_content"/>
-
-            <TextView
-                    android:id="@+id/tv_add_dia"
-                    android:text="Add New"
-                    android:layout_width="wrap_content"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_height="wrap_content"/>
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView_one"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-    </LinearLayout>
 </LinearLayout>

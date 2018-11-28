@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.google.gson.Gson;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalCasePojo;
@@ -7,12 +8,17 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.DiagnosisFragment;
+import com.noqapp.android.merchant.views.fragments.ExaminationFragment;
+import com.noqapp.android.merchant.views.fragments.InstructionFragment;
 import com.noqapp.android.merchant.views.fragments.PrimaryCheckupFragment;
 import com.noqapp.android.merchant.views.fragments.PrintFragment;
-import com.noqapp.android.merchant.views.fragments.RecomondTestFragment;
+import com.noqapp.android.merchant.views.fragments.LabTestsFragment;
 import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
 import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.pojos.FormDataObj;
+import com.noqapp.android.merchant.views.utils.TestCaseObjects;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -35,10 +41,14 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private MenuHeaderAdapter menuAdapter;
     private ArrayList<String> data = new ArrayList<>();
     private PrimaryCheckupFragment primaryCheckupFragment;
-    private SymptomsFragment symptomsFragment;
-    private RecomondTestFragment recomondTestFragment;
+    public SymptomsFragment symptomsFragment;
+    private LabTestsFragment labTestsFragment;
     private TreatmentFragment treatmentFragment;
+    private ExaminationFragment examinationFragment;
+    private DiagnosisFragment diagnosisFragment;
+    private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
+    private TestCaseObjects testCaseObjects;
 
     public MedicalCasePojo getMedicalCasePojo() {
         return medicalCasePojo;
@@ -51,61 +61,9 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     }
 
     private static MedicalCaseActivity medicalCaseActivity;
+    public FormDataObj formDataObj;
 
-    public ArrayList<DataObj> getRadiologyList() {
-        return radiologyList;
-    }
 
-    public ArrayList<DataObj> getPathologyList() {
-        return pathologyList;
-    }
-
-    public ArrayList<DataObj> getSymptomsList() {
-        return symptomsList;
-    }
-
-    public ArrayList<DataObj> getDiagnosisList() {
-        return diagnosisList;
-    }
-
-    public ArrayList<DataObj> getMedicineList() {
-        return medicineList;
-    }
-
-    public ArrayList<String> getInstructionList() {
-        return instructionList;
-    }
-
-    public void setRadiologyList(ArrayList<DataObj> radiologyList) {
-        this.radiologyList = radiologyList;
-    }
-
-    public void setPathologyList(ArrayList<DataObj> pathologyList) {
-        this.pathologyList = pathologyList;
-    }
-
-    public void setSymptomsList(ArrayList<DataObj> symptomsList) {
-        this.symptomsList = symptomsList;
-    }
-
-    public void setDiagnosisList(ArrayList<DataObj> diagnosisList) {
-        this.diagnosisList = diagnosisList;
-    }
-
-    public void setMedicineList(ArrayList<DataObj> medicineList) {
-        this.medicineList = medicineList;
-    }
-
-    public void setInstructionList(ArrayList<String> instructionList) {
-        this.instructionList = instructionList;
-    }
-
-    public ArrayList<DataObj> radiologyList = new ArrayList<>();
-    public ArrayList<DataObj> pathologyList = new ArrayList<>();
-    private ArrayList<DataObj> symptomsList = new ArrayList<>();
-    private ArrayList<DataObj> diagnosisList = new ArrayList<>();
-    private ArrayList<DataObj> medicineList = new ArrayList<>(); 
-    private ArrayList<String> instructionList = new ArrayList<>();
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
 
@@ -119,16 +77,28 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temp);
         medicalCaseActivity = this;
+        formDataObj = new FormDataObj();
+        try {
+            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            testCaseObjects = new TestCaseObjects();
+        }
+        if( null == testCaseObjects)
+            testCaseObjects = new TestCaseObjects();
         initLists();
         medicalCasePojo = new MedicalCasePojo();
         viewPager =  findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(5);
+
         rcv_header =  findViewById(R.id.rcv_header);
         data.add("Primary checkup");
         data.add("Symptoms");
+        data.add("Examination");
+        data.add("Investigation");
         data.add("Tests");
         data.add("Treatment");
-        data.add("Print");
+        data.add("Instructions");
+        data.add("Submit");
         primaryCheckupFragment = new PrimaryCheckupFragment();
         Bundle bppf = new Bundle();
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
@@ -137,15 +107,21 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         bppf.putString("qCodeQR", codeQR);
         primaryCheckupFragment.setArguments(bppf);
         symptomsFragment = new SymptomsFragment();
-        recomondTestFragment = new RecomondTestFragment();
+        examinationFragment = new ExaminationFragment();
+        diagnosisFragment = new DiagnosisFragment();
+        labTestsFragment = new LabTestsFragment();
         treatmentFragment = new TreatmentFragment();
+        instructionFragment = new InstructionFragment();
         printFragment= new PrintFragment();
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
         adapter.addFragment(symptomsFragment, "FRAG" + 1);
-        adapter.addFragment(recomondTestFragment, "FRAG" + 2);
-        adapter.addFragment(treatmentFragment, "FRAG" + 3);
-        adapter.addFragment(printFragment, "FRAG" + 4);
+        adapter.addFragment(examinationFragment, "FRAG" + 2);
+        adapter.addFragment(diagnosisFragment, "FRAG" + 3);
+        adapter.addFragment(labTestsFragment, "FRAG" + 4);
+        adapter.addFragment(treatmentFragment, "FRAG" + 5);
+        adapter.addFragment(instructionFragment, "FRAG" + 6);
+        adapter.addFragment(printFragment, "FRAG" + 7);
 
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -157,6 +133,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         menuAdapter = new MenuHeaderAdapter(data, this, this);
         rcv_header.setAdapter(menuAdapter);
         menuAdapter.notifyDataSetChanged();
+        viewPager.setOffscreenPageLimit(data.size());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         adapter.notifyDataSetChanged();
@@ -213,88 +190,114 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
 
     private void initLists(){
-        radiologyList.clear();
-        radiologyList.add(new DataObj("VSC Pelvis (TVS)", false));
-        radiologyList.add(new DataObj("4D Anamoly", false));
-        radiologyList.add(new DataObj("VSC (obst) NT", false));
-        radiologyList.add(new DataObj("VSC (obst) c", false));
-        radiologyList.add(new DataObj("Color Doppler", false));
+        
+        formDataObj.getRadiologyList().clear();
+        formDataObj.getRadiologyList().add(new DataObj("VSC Pelvis (TVS)", false));
+        formDataObj.getRadiologyList().add(new DataObj("4D Anamoly", false));
+        formDataObj.getRadiologyList().add(new DataObj("VSC (obst) NT", false));
+        formDataObj.getRadiologyList().add(new DataObj("VSC (obst) c", false));
+        formDataObj.getRadiologyList().add(new DataObj("Color Doppler", false));
+        // Add selected list
+        formDataObj.getRadiologyList().addAll(testCaseObjects.getMriList());
+        formDataObj.getRadiologyList().addAll(testCaseObjects.getScanList());
+        formDataObj.getRadiologyList().addAll(testCaseObjects.getSonoList());
+        formDataObj.getRadiologyList().addAll(testCaseObjects.getXrayList());
+        //
 
+        formDataObj.getPathologyList().clear();
+        formDataObj.getPathologyList().add(new DataObj("ANC profile", false));
+        formDataObj.getPathologyList().add(new DataObj("HCV", false));
+        formDataObj.getPathologyList().add(new DataObj("T3T4T5H", false));
+        formDataObj.getPathologyList().add(new DataObj("HbA1C", false));
+        formDataObj.getPathologyList().add(new DataObj("Hb Electrophoresis", false));
+        formDataObj.getPathologyList().add(new DataObj("BS 2hrs after 75gm of glucos", false));
+        // Add selected list
+        formDataObj.getPathologyList().addAll(testCaseObjects.getPathologyList());
+        //
+      
+        formDataObj.getSymptomsList().clear();
+        formDataObj.getSymptomsList().add(new DataObj("Fever", false));
+        formDataObj.getSymptomsList().add(new DataObj("Cold", false));
+        formDataObj.getSymptomsList().add(new DataObj("Vomiting", false));
+        formDataObj.getSymptomsList().add(new DataObj("No Fever", false));
+        formDataObj.getSymptomsList().add(new DataObj("Cough", false));
+        formDataObj.getSymptomsList().add(new DataObj("Throat pain", false));
+        formDataObj.getSymptomsList().add(new DataObj("4D Anamoly", false));
+        formDataObj.getSymptomsList().add(new DataObj("Skin rash", false));
+        formDataObj.getSymptomsList().add(new DataObj("Constipation", false));
+        formDataObj.getSymptomsList().add(new DataObj("Color Doppler", false));
+        formDataObj.getSymptomsList().add(new DataObj("Nausea", false));
+        formDataObj.getSymptomsList().add(new DataObj("4D Anamoly", false));
+        formDataObj.getSymptomsList().add(new DataObj("Throat Congested", false));
+        formDataObj.getSymptomsList().add(new DataObj("Chest crepts", false));
+        formDataObj.getSymptomsList().add(new DataObj("Eye discharge", false));
+        formDataObj.getSymptomsList().add(new DataObj("Loose stools", false));
+        formDataObj.getSymptomsList().add(new DataObj("Abdomainal pain", false));
 
-        pathologyList.clear();
-        pathologyList.add(new DataObj("ANC profile", false));
-        pathologyList.add(new DataObj("HCV", false));
-        pathologyList.add(new DataObj("T3T4T5H", false));
-        pathologyList.add(new DataObj("HbA1C", false));
-        pathologyList.add(new DataObj("Hb Electrophoresis", false));
-        pathologyList.add(new DataObj("BS 2hrs after 75gm of glucos", false));
+        
+        formDataObj.getDiagnosisList().clear();
+        formDataObj.getDiagnosisList().add(new DataObj("Hand foot and mouth", false));
+        formDataObj.getDiagnosisList().add(new DataObj("Acute Gastritis", false));
+        formDataObj.getDiagnosisList().add(new DataObj("For Vaccination", false));
+        formDataObj.getDiagnosisList().add(new DataObj("Prugo", false));
+        formDataObj.getDiagnosisList().add(new DataObj("Follow up", false));
+        formDataObj.getDiagnosisList().add(new DataObj("Viral Fever", false));
+        formDataObj.getDiagnosisList().add(new DataObj("Bullous impetigo", false));
+        formDataObj.getDiagnosisList().add(new DataObj("Lower respiratory tract infection", false));
 
-        symptomsList.clear();
-        symptomsList.add(new DataObj("Fever", false));
-        symptomsList.add(new DataObj("Cold", false));
-        symptomsList.add(new DataObj("Vomiting", false));
-        symptomsList.add(new DataObj("No Fever", false));
-        symptomsList.add(new DataObj("Cough", false));
-        symptomsList.add(new DataObj("Throat pain", false));
-        symptomsList.add(new DataObj("4D Anamoly", false));
-        symptomsList.add(new DataObj("Skin rash", false));
-        symptomsList.add(new DataObj("Constipation", false));
-        symptomsList.add(new DataObj("Color Doppler", false));
-        symptomsList.add(new DataObj("Nausea", false));
-        symptomsList.add(new DataObj("4D Anamoly", false));
-        symptomsList.add(new DataObj("Throat Congested", false));
-        symptomsList.add(new DataObj("Chest crepts", false));
-        symptomsList.add(new DataObj("Eye discharge", false));
-        symptomsList.add(new DataObj("Loose stools", false));
-        symptomsList.add(new DataObj("Abdomainal pain", false));
+        formDataObj.getProvisionalDiagnosisList().clear();
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Hand foot and mouth", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Acute Gastritis", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("For Vaccination", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Prugo", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Follow up", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Viral Fever", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Bullous impetigo", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Lower respiratory tract infection", false));
+        
+        formDataObj.getMedicineList().clear();
+        formDataObj.getMedicineList().add(new DataObj("Tab  Crocin (500 mg)", PharmacyCategoryEnum.TA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Syr  Ondem", PharmacyCategoryEnum.SY.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Syr  Adrenaline", PharmacyCategoryEnum.SY.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Tab  Albendazole", PharmacyCategoryEnum.TA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Cap  B-complex", PharmacyCategoryEnum.CA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Tab  Balofloxacin", PharmacyCategoryEnum.TA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Tab  Calcium", PharmacyCategoryEnum.TA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Cap  Carbimazole", PharmacyCategoryEnum.CA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Oil  Castor Oil", PharmacyCategoryEnum.LO.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Tab  Erdosteine", PharmacyCategoryEnum.TA.getDescription(),false));
 
+        formDataObj.getMedicineList().add(new DataObj("Cap  Folic Acid", PharmacyCategoryEnum.CA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Tab  Heparin", PharmacyCategoryEnum.TA.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("High Protein Supplement", PharmacyCategoryEnum.PW.getDescription(),false));
+        formDataObj.getMedicineList().add(new DataObj("Cap  Fluoride", PharmacyCategoryEnum.CA.getDescription(),false));
 
-        diagnosisList.clear();
-        diagnosisList.add(new DataObj("Hand foot and mouth", false));
-        diagnosisList.add(new DataObj("Acute Gastritis", false));
-        diagnosisList.add(new DataObj("For Vaccination", false));
-        diagnosisList.add(new DataObj("Prugo", false));
-        diagnosisList.add(new DataObj("Follow up", false));
-        diagnosisList.add(new DataObj("Viral Fever", false));
-        diagnosisList.add(new DataObj("Bullous impetigo", false));
-        diagnosisList.add(new DataObj("Lower respiratory tract infection", false));
-
-        medicineList.clear();
-        medicineList.add(new DataObj("Tab  Crocin (500 mg)", PharmacyCategoryEnum.TA.getDescription(),false));
-        medicineList.add(new DataObj("Syr  Ondem", PharmacyCategoryEnum.SY.getDescription(),false));
-        medicineList.add(new DataObj("Syr  Adrenaline", PharmacyCategoryEnum.SY.getDescription(),false));
-        medicineList.add(new DataObj("Tab  Albendazole", PharmacyCategoryEnum.TA.getDescription(),false));
-        medicineList.add(new DataObj("Cap  B-complex", PharmacyCategoryEnum.CA.getDescription(),false));
-        medicineList.add(new DataObj("Tab  Balofloxacin", PharmacyCategoryEnum.TA.getDescription(),false));
-        medicineList.add(new DataObj("Tab  Calcium", PharmacyCategoryEnum.TA.getDescription(),false));
-        medicineList.add(new DataObj("Cap  Carbimazole", PharmacyCategoryEnum.CA.getDescription(),false));
-        medicineList.add(new DataObj("Oil  Castor Oil", PharmacyCategoryEnum.LO.getDescription(),false));
-        medicineList.add(new DataObj("Tab  Erdosteine", PharmacyCategoryEnum.TA.getDescription(),false));
-
-        medicineList.add(new DataObj("Cap  Folic Acid", PharmacyCategoryEnum.CA.getDescription(),false));
-        medicineList.add(new DataObj("Tab  Heparin", PharmacyCategoryEnum.TA.getDescription(),false));
-        medicineList.add(new DataObj("High Protein Supplement", PharmacyCategoryEnum.PW.getDescription(),false));
-        medicineList.add(new DataObj("Cap  Fluoride", PharmacyCategoryEnum.CA.getDescription(),false));
-
-        instructionList.clear();
-        instructionList.add("Steam Inhalation");
-        instructionList.add("Plenty of fluids");
-        instructionList.add("Nebulization");
-        instructionList.add("Plenty of Green vegetables & fruits");
-        instructionList.add("To avoid strong smells of perfumes, deodrent, agarbatti dhoop");
-        instructionList.add("No oil & no spicy food ");
-        instructionList.add("Drink more water");
-        instructionList.add("Increase content of salad in your diet");
-        instructionList.add("Consume less sugar");
-        instructionList.add("30 min Brisk walking a day");
-        instructionList.add("Drink milk every day");
+        // Add selected list
+        formDataObj.getMedicineList().addAll(testCaseObjects.getMedicineList());
+        //
+        
+        formDataObj.getInstructionList().clear();
+        formDataObj.getInstructionList().add("Steam Inhalation");
+        formDataObj.getInstructionList().add("Plenty of fluids");
+        formDataObj.getInstructionList().add("Nebulization");
+        formDataObj.getInstructionList().add("Plenty of Green vegetables & fruits");
+        formDataObj.getInstructionList().add("To avoid strong smells of perfumes, deodrent, agarbatti dhoop");
+        formDataObj.getInstructionList().add("No oil & no spicy food ");
+        formDataObj.getInstructionList().add("Drink more water");
+        formDataObj.getInstructionList().add("Increase content of salad in your diet");
+        formDataObj.getInstructionList().add("Consume less sugar");
+        formDataObj.getInstructionList().add("30 min Brisk walking a day");
+        formDataObj.getInstructionList().add("Drink milk every day");
     }
 
     private void saveAllData(){
         primaryCheckupFragment.saveData();
         symptomsFragment.saveData();
-        recomondTestFragment.saveData();
+        labTestsFragment.saveData();
         treatmentFragment.saveData();
+        instructionFragment.saveData();
+        examinationFragment.saveData();
+        diagnosisFragment.saveData();
         printFragment.updateUI();
     }
 }

@@ -20,6 +20,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapterNew;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,17 +39,19 @@ import java.util.ArrayList;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
-    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_radiology,tv_pathology,actv_followup;
+    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_radiology,tv_pathology,actv_followup,tv_clinical_findings,tv_examination,tv_provisional_diagnosis;
     private MedicalHistoryModel medicalHistoryModel;
     private Button btn_submit;
     private ListView lv_medicine;
     private MedicalRecordAdapterNew adapter;
     private SegmentedGroup rg_duration;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
+    private ProgressDialog progressDialog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_print, container, false);
+        initProgress();
         medicalHistoryModel = new MedicalHistoryModel(this);
         tv_patient_name = v.findViewById(R.id.tv_patient_name);
         tv_address = v.findViewById(R.id.tv_address);
@@ -57,6 +61,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_instruction = v.findViewById(R.id.tv_instruction);
         tv_radiology = v.findViewById(R.id.tv_radiology);
         tv_pathology = v.findViewById(R.id.tv_pathology);
+        tv_clinical_findings = v.findViewById(R.id.tv_clinical_findings);
+        tv_examination = v.findViewById(R.id.tv_examination);
+        tv_provisional_diagnosis = v.findViewById(R.id.tv_provisional_diagnosis);
         lv_medicine = v.findViewById(R.id.lv_medicine);
         actv_followup = v.findViewById(R.id.actv_followup);
         rg_duration = v.findViewById(R.id.rg_duration);
@@ -64,6 +71,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getRecordReferenceId());
                 jsonMedicalRecord.setFormVersion(FormVersionEnum.valueOf(BuildConfig.MEDICAL_FORM_VERSION));
@@ -73,8 +81,10 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.setPastHistory(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPastHistory());
                 jsonMedicalRecord.setFamilyHistory(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getFamilyHistory());
                 jsonMedicalRecord.setKnownAllergies(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getKnownAllergies());
-                jsonMedicalRecord.setClinicalFinding(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getDiagnosis());
-                jsonMedicalRecord.setProvisionalDifferentialDiagnosis("TODO");
+                jsonMedicalRecord.setClinicalFinding(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getClinicalFindings());
+                jsonMedicalRecord.setProvisionalDifferentialDiagnosis(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getProvisionalDiagnosis());
+                jsonMedicalRecord.setExamination(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getExaminationResults());
+                jsonMedicalRecord.setDiagnosis(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getDiagnosis());
                 JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
                         .setBloodPressure(new String[]{MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getBloodPressure()})
                         .setPluse(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPulse())
@@ -129,6 +139,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_symptoms.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getSymptoms());
         tv_diagnosis.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getDiagnosis());
         tv_instruction.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getInstructions());
+        tv_provisional_diagnosis.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getProvisionalDiagnosis());
+        tv_clinical_findings.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getClinicalFindings());
+        tv_examination.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getExaminationResults());
         tv_radiology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getRadiologyList()));
         tv_pathology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPathologyList()));
         adapter = new MedicalRecordAdapterNew(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getJsonMedicineList());
@@ -146,6 +159,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     @Override
     public void medicalRecordResponse(JsonResponse jsonResponse) {
+        dismissProgress();
         if (1 == jsonResponse.getResponse()) {
             Toast.makeText(getActivity(), "Medical History updated Successfully", Toast.LENGTH_LONG).show();
             getActivity().finish();
@@ -156,21 +170,36 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
         new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
     public void medicalRecordError() {
+        dismissProgress();
         Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void authenticationFailure() {
+        dismissProgress();
         AppUtils.authenticationProcessing();
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Uploading data...");
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

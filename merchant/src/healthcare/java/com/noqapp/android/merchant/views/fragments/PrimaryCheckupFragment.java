@@ -153,6 +153,7 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         Collections.reverse(jsonMedicalRecords);
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(getActivity(), jsonMedicalRecords);
         listview.setAdapter(adapter);
+        MedicalCaseActivity.getMedicalCaseActivity().symptomsFragment.updateList(jsonMedicalRecords);
         if (jsonMedicalRecords.size() <= 0) {
             listview.setVisibility(View.GONE);
         } else {

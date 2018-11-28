@@ -31,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -95,6 +96,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION = "suggestions";
+    protected final String KEY_SUGGESTION_PREF = "suggestionsPrefs";
     protected final String KEY_MEDICINES = "medicines";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
@@ -160,7 +162,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 locale = Locale.ENGLISH;
                 language = "en_US";
             }
-
         } else {
             locale = Locale.ENGLISH;
             language = "en_US";
@@ -175,8 +176,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 }
             }
         };
-
-
     }
 
     protected void initDrawer() {
@@ -186,7 +185,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (isLoggedIn()) {
             updateMenuList(getUserLevel() == UserLevelEnum.S_MANAGER);
         }
-
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -245,8 +243,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 onBackPressed();
             }
         });
-
-
         if (isLoggedIn()) {
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -286,7 +282,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 list_fragment.setLayoutParams(lp1);
                 list_detail_fragment.setLayoutParams(lp0);
             }
-
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
@@ -337,6 +332,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void setSuggestions(Map<String, List<String>> map) {
         String strInput = new Gson().toJson(map);
         sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
+    }
+    public String getSuggestionsPrefs() {
+        return sharedpreferences.getString(KEY_SUGGESTION_PREF, null);
+    }
+
+    public void setSuggestionsPrefs(Map<String, List<DataObj>> map) {
+        String strInput = new Gson().toJson(map);
+        sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
     }
 
     public void setFavouriteMedicines(List<JsonMedicalMedicine> jsonMedicalMedicines) {

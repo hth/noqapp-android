@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
@@ -19,35 +20,37 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import java.util.ArrayList;
+import java.util.List;
 
-public class RecomondTestFragment extends Fragment {
+public class InstructionFragment extends Fragment {
+    private RecyclerView recyclerView;
+    private ListView list_view;
+    private TextView tv_add_instruction,tv_add_new;
+    private MultiSelectListAdapter instructionAdapter;
 
-    private RecyclerView recyclerView, recyclerView_one;
-    private TextView tv_add_dia,tv_add_new;
-    private CustomAdapter radiologyAdapter, pathalogyAdapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_recomand, container, false);
+        View v = inflater.inflate(R.layout.frag_instruction, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
-        recyclerView_one = v.findViewById(R.id.recyclerView_one);
+        list_view = v.findViewById(R.id.list_view);
+        tv_add_instruction = v.findViewById(R.id.tv_add_instruction);
         tv_add_new = v.findViewById(R.id.tv_add_new);
-        tv_add_dia = v.findViewById(R.id.tv_add_dia);
         tv_add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(),"Add Radiology",true);
+                AddItemDialog(getActivity(),"Add Medicine",true);
             }
         });
-        tv_add_dia.setOnClickListener(new View.OnClickListener() {
+        tv_add_instruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(),"Add Pathology",false);
+                AddItemDialog(getActivity(),"Add Instruction",false);
             }
         });
         return v;
@@ -56,21 +59,20 @@ public class RecomondTestFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // set a StaggeredGridLayoutManager with 3 number of columns and horizontal orientation
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().getRadiologyList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-        //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        radiologyAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getRadiologyList());
-        recyclerView.setAdapter(radiologyAdapter); // set the Adapter to RecyclerView
+        list_view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        List<DataObj> DataObjList = new ArrayList<>();
+        for (int i = 0; i <MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList().size() ; i++) {
+            DataObj DataObj = new DataObj();
+            DataObj.setName(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList().get(i));
+            DataObj.setSelect(false);
+            DataObjList.add(DataObj);
+        }
+        instructionAdapter = new MultiSelectListAdapter(getActivity(),DataObjList);
+        list_view.setAdapter(instructionAdapter);
 
 
-        // set a StaggeredGridLayoutManager with 3 number of columns and horizontal orientation
-        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().getPathologyList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView_one.setLayoutManager(staggeredGridLayoutManager1); // set LayoutManager to RecyclerView
-        //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        pathalogyAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getPathologyList());
-        recyclerView_one.setAdapter(pathalogyAdapter); // set the Adapter to RecyclerView
     }
+
 
     private void AddItemDialog(final Context mContext, String title, final boolean isMedicine) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -101,23 +103,23 @@ public class RecomondTestFragment extends Fragment {
                     edt_item.setError("Empty field not allowed");
                 } else {
                     if(isMedicine){
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().getRadiologyList();
+                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
                         temp.add(new DataObj(edt_item.getText().toString(),false));
-                        MedicalCaseActivity.getMedicalCaseActivity().setRadiologyList(temp);
+                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                         recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getRadiologyList());
-                        recyclerView.setAdapter(customAdapter);
+                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
+                        recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
                     }else {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().getPathologyList();
-                        temp.add(new DataObj(edt_item.getText().toString(),false));
-                        MedicalCaseActivity.getMedicalCaseActivity().setPathologyList(temp);
-                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-                        recyclerView_one.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-
-                        CustomAdapter customAdapter1 = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getPathologyList());
-                        recyclerView_one.setAdapter(customAdapter1);
+                        ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList();
+                        temp.add(edt_item.getText().toString());
+                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setInstructionList(temp);
+                        DataObj dataObj = new DataObj();
+                        dataObj.setName(edt_item.getText().toString());
+                        dataObj.setSelect(false);
+                        instructionAdapter.addData(dataObj);
+                        list_view.setAdapter(instructionAdapter);
                     }
                     Toast.makeText(getActivity(),"'"+edt_item.getText().toString()+"' added successfully to list",Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
@@ -128,7 +130,7 @@ public class RecomondTestFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setRadiologyList(radiologyAdapter.getSelectedDataList());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPathologyList(pathalogyAdapter.getSelectedDataList());
+        if(null != instructionAdapter)
+         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setInstructions(instructionAdapter.getAllSelectedString());
     }
 }

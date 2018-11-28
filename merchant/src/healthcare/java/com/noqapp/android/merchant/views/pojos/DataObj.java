@@ -55,4 +55,9 @@ public class DataObj {
                 ", isSelect=" + isSelect +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (this.name.equals(((DataObj) obj).name));
+    }
 }

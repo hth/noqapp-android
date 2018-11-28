@@ -353,9 +353,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private boolean isOrderNow() {
         switch (jsonQueue.getBusinessType()) {
             case PH:
-            case PY:
-            case PT:
-            case RA:
+            case HS:
                 return false;
             default:
                 return true;
