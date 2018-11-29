@@ -220,12 +220,63 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Radiology:"
+                    android:text="Radiology >> MRI:"
                     android:textSize="16sp"
                     android:padding="10dp"/>
 
             <TextView
-                    android:id="@+id/tv_radiology"
+                    android:id="@+id/tv_radio_mri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radiology >> SCAN:"
+                    android:textSize="16sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_radio_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radiology >> SONO:"
+                    android:textSize="16sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_radio_sono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:paddingLeft="10dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radiology >> X-RAY:"
+                    android:textSize="16sp"
+                    android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_radio_xray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

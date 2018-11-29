@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -118,11 +119,17 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                MasterLabModel masterLabModel = new MasterLabModel();
-                masterLabModel.setMasterLabPresenter(PreferenceHCServiceFragment.this);
-                masterLabModel.add(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new JsonMasterLab().
-                        setProductName(edt_add.getText().toString()).setProductShortName(edt_add.getText().toString()).setHealthCareService(getHealthCareEnum(getArguments().getInt("type"))));
+                new AppUtils().hideKeyBoard(getActivity());
+                edt_add.setError(null);
+                if (TextUtils.isEmpty(edt_add.getText().toString())) {
+                    edt_add.setError(getString(R.string.error_field_required));
+                } else {
+                    progressDialog.show();
+                    MasterLabModel masterLabModel = new MasterLabModel();
+                    masterLabModel.setMasterLabPresenter(PreferenceHCServiceFragment.this);
+                    masterLabModel.add(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new JsonMasterLab().
+                            setProductName(edt_add.getText().toString()).setProductShortName(edt_add.getText().toString()).setHealthCareService(getHealthCareEnum(getArguments().getInt("type"))));
+                }
             }
         });
         return v;

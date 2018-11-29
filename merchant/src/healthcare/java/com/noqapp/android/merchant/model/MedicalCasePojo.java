@@ -27,7 +27,10 @@ public class MedicalCasePojo {
     private String instructions;
     private String followup;
 
-    private ArrayList<String> radiologyList = new ArrayList<>();
+    private ArrayList<String> mriList = new ArrayList<>();
+    private ArrayList<String> sonoList = new ArrayList<>();
+    private ArrayList<String> scanList = new ArrayList<>();
+    private ArrayList<String> xrayList = new ArrayList<>();
     private ArrayList<String> pathologyList = new ArrayList<>();
 
     private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
@@ -194,12 +197,39 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public ArrayList<String> getRadiologyList() {
-        return radiologyList;
+    public ArrayList<String> getMriList() {
+        return mriList;
     }
 
-    public MedicalCasePojo setRadiologyList(ArrayList<String> radiologyList) {
-        this.radiologyList = radiologyList;
+    public MedicalCasePojo setMriList(ArrayList<String> mriList) {
+        this.mriList = mriList;
+        return this;
+    }
+
+    public ArrayList<String> getSonoList() {
+        return sonoList;
+    }
+
+    public MedicalCasePojo setSonoList(ArrayList<String> sonoList) {
+        this.sonoList = sonoList;
+        return this;
+    }
+
+    public ArrayList<String> getScanList() {
+        return scanList;
+    }
+
+    public MedicalCasePojo setScanList(ArrayList<String> scanList) {
+        this.scanList = scanList;
+        return this;
+    }
+
+    public ArrayList<String> getXrayList() {
+        return xrayList;
+    }
+
+    public MedicalCasePojo setXrayList(ArrayList<String> xrayList) {
+        this.xrayList = xrayList;
         return this;
     }
 
@@ -242,7 +272,10 @@ public class MedicalCasePojo {
                 ", provisionalDiagnosis='" + provisionalDiagnosis + '\'' +
                 ", instructions='" + instructions + '\'' +
                 ", followup='" + followup + '\'' +
-                ", radiologyList=" + radiologyList +
+                ", mriList=" + mriList +
+                ", sonoList=" + sonoList +
+                ", scanList=" + scanList +
+                ", xrayList=" + xrayList +
                 ", pathologyList=" + pathologyList +
                 ", jsonMedicineList=" + jsonMedicineList +
                 '}';

@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MultiSelectListAdapter extends ArrayAdapter<DataObj> {
@@ -75,15 +74,6 @@ public class MultiSelectListAdapter extends ArrayAdapter<DataObj> {
         return data;
     }
 
-    public ArrayList<DataObj> getAllSelectedList() {
-        ArrayList<DataObj> temp = new ArrayList<>();
-        for (DataObj bean : list) {
-           // if (bean.isSelect()) {
-                temp.add(bean);
-          //  }
-        }
-        return temp;
-    }
 
     public void addData(DataObj dataObj){
         list.add(dataObj);

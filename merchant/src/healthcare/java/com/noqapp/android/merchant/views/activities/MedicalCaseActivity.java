@@ -96,7 +96,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         data.add("Tests");
         data.add("Treatment");
         data.add("Instructions");
-        data.add("Submit");
+        data.add("Preview");
         primaryCheckupFragment = new PrimaryCheckupFragment();
         Bundle bppf = new Bundle();
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
@@ -189,17 +189,21 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
     private void initLists(){
         
-        formDataObj.getRadiologyList().clear();
-        formDataObj.getRadiologyList().add(new DataObj("VSC Pelvis (TVS)", false));
-        formDataObj.getRadiologyList().add(new DataObj("4D Anamoly", false));
-        formDataObj.getRadiologyList().add(new DataObj("VSC (obst) NT", false));
-        formDataObj.getRadiologyList().add(new DataObj("VSC (obst) c", false));
-        formDataObj.getRadiologyList().add(new DataObj("Color Doppler", false));
+        formDataObj.getMriList().clear();
+        formDataObj.getScanList().clear();
+        formDataObj.getSonoList().clear();
+        formDataObj.getXrayList().clear();
+
+        formDataObj.getMriList().add(new DataObj("VSC Pelvis (TVS)", false));
+        formDataObj.getMriList().add(new DataObj("4D Anamoly", false));
+        formDataObj.getMriList().add(new DataObj("VSC (obst) NT", false));
+        formDataObj.getMriList().add(new DataObj("VSC (obst) c", false));
+        formDataObj.getMriList().add(new DataObj("Color Doppler", false));
         // Add selected list
-        formDataObj.getRadiologyList().addAll(testCaseObjects.getMriList());
-        formDataObj.getRadiologyList().addAll(testCaseObjects.getScanList());
-        formDataObj.getRadiologyList().addAll(testCaseObjects.getSonoList());
-        formDataObj.getRadiologyList().addAll(testCaseObjects.getXrayList());
+        formDataObj.getMriList().addAll(testCaseObjects.getMriList());
+        formDataObj.getScanList().addAll(testCaseObjects.getScanList());
+        formDataObj.getSonoList().addAll(testCaseObjects.getSonoList());
+        formDataObj.getXrayList().addAll(testCaseObjects.getXrayList());
         //
 
         formDataObj.getPathologyList().clear();

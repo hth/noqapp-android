@@ -27,27 +27,32 @@ import java.util.ArrayList;
 
 public class LabTestsFragment extends Fragment {
 
-    private RecyclerView recyclerView, recyclerView_one;
-    private TextView tv_add_dia,tv_add_new;
-    private CustomAdapter radiologyAdapter, pathalogyAdapter;
+    private RecyclerView rcv_mri, rcv_scan, rcv_sono, rcv_xray, rcv_pathology;
+    private TextView tv_add_dia, tv_add_new;
+    private CustomAdapter mriAdapter, scanAdapter, sonoAdapter, xrayAdapter, pathalogyAdapter;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_recomand, container, false);
-        recyclerView = v.findViewById(R.id.recyclerView);
-        recyclerView_one = v.findViewById(R.id.recyclerView_one);
+        View v = inflater.inflate(R.layout.frag_recomand_lab_test, container, false);
+        rcv_mri = v.findViewById(R.id.rcv_mri);
+        rcv_scan = v.findViewById(R.id.rcv_scan);
+        rcv_sono = v.findViewById(R.id.rcv_sono);
+        rcv_xray = v.findViewById(R.id.rcv_xray);
+
+        rcv_pathology = v.findViewById(R.id.rcv_pathology);
         tv_add_new = v.findViewById(R.id.tv_add_new);
         tv_add_dia = v.findViewById(R.id.tv_add_dia);
         tv_add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(),"Add Radiology",true);
+                AddItemDialog(getActivity(), "Add Radiology", true);
             }
         });
         tv_add_dia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(),"Add Pathology",false);
+                AddItemDialog(getActivity(), "Add Pathology", false);
             }
         });
         return v;
@@ -56,20 +61,32 @@ public class LabTestsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // set a StaggeredGridLayoutManager with 3 number of columns and horizontal orientation
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getRadiologyList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-        //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        radiologyAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getRadiologyList());
-        recyclerView.setAdapter(radiologyAdapter); // set the Adapter to RecyclerView
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_mri.setLayoutManager(staggeredGridLayoutManager);
+        mriAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList(),R.drawable.bg_unselect_mri);
+        rcv_mri.setAdapter(mriAdapter);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_scan.setLayoutManager(staggeredGridLayoutManager1);
+        scanAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList(),R.drawable.bg_unselect_scan);
+        rcv_scan.setAdapter(scanAdapter);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager2 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_sono.setLayoutManager(staggeredGridLayoutManager2);
+        sonoAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList(),R.drawable.bg_unselect_sono);
+        rcv_sono.setAdapter(sonoAdapter);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager3 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_xray.setLayoutManager(staggeredGridLayoutManager3);
+        xrayAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList(),R.drawable.bg_unselect_xray);
+        rcv_xray.setAdapter(xrayAdapter);
 
 
-        // set a StaggeredGridLayoutManager with 3 number of columns and horizontal orientation
-        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView_one.setLayoutManager(staggeredGridLayoutManager1); // set LayoutManager to RecyclerView
-        //  call the constructor of CustomAdapter to send the reference and data to Adapter
+        StaggeredGridLayoutManager staggeredGridLayoutManager4 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_pathology.setLayoutManager(staggeredGridLayoutManager4);
         pathalogyAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
-        recyclerView_one.setAdapter(pathalogyAdapter); // set the Adapter to RecyclerView
+        rcv_pathology.setAdapter(pathalogyAdapter);
     }
 
     private void AddItemDialog(final Context mContext, String title, final boolean isMedicine) {
@@ -100,26 +117,26 @@ public class LabTestsFragment extends Fragment {
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
                 } else {
-                    if(isMedicine){
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getRadiologyList();
-                        temp.add(new DataObj(edt_item.getText().toString(),false));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setRadiologyList(temp);
+                    if (isMedicine) {
+                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList();
+                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMriList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-                        recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+                        rcv_mri.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getRadiologyList());
-                        recyclerView.setAdapter(customAdapter);
-                    }else {
+                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
+                        rcv_mri.setAdapter(customAdapter);
+                    } else {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList();
-                        temp.add(new DataObj(edt_item.getText().toString(),false));
+                        temp.add(new DataObj(edt_item.getText().toString(), false));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setPathologyList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-                        recyclerView_one.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+                        rcv_pathology.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
                         CustomAdapter customAdapter1 = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
-                        recyclerView_one.setAdapter(customAdapter1);
+                        rcv_pathology.setAdapter(customAdapter1);
                     }
-                    Toast.makeText(getActivity(),"'"+edt_item.getText().toString()+"' added successfully to list",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
                 }
             }
@@ -128,7 +145,10 @@ public class LabTestsFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setRadiologyList(radiologyAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setMriList(mriAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setScanList(scanAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSonoList(sonoAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setXrayList(xrayAdapter.getSelectedDataList());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPathologyList(pathalogyAdapter.getSelectedDataList());
     }
 }
