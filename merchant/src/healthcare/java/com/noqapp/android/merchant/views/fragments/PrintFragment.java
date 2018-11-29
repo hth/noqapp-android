@@ -29,8 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import info.hoang8f.android.segmented.SegmentedGroup;
@@ -39,7 +37,8 @@ import java.util.ArrayList;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
-    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_radiology,tv_pathology,actv_followup,tv_clinical_findings,tv_examination,tv_provisional_diagnosis;
+    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_pathology,actv_followup,tv_clinical_findings,tv_examination,tv_provisional_diagnosis;
+    private TextView tv_radio_xray,tv_radio_sono,tv_radio_scan,tv_radio_mri;
     private MedicalHistoryModel medicalHistoryModel;
     private Button btn_submit;
     private ListView lv_medicine;
@@ -59,7 +58,10 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_symptoms = v.findViewById(R.id.tv_symptoms);
         tv_diagnosis = v.findViewById(R.id.tv_diagnosis);
         tv_instruction = v.findViewById(R.id.tv_instruction);
-        tv_radiology = v.findViewById(R.id.tv_radiology);
+        tv_radio_mri = v.findViewById(R.id.tv_radio_mri);
+        tv_radio_scan = v.findViewById(R.id.tv_radio_scan);
+        tv_radio_sono = v.findViewById(R.id.tv_radio_sono);
+        tv_radio_xray = v.findViewById(R.id.tv_radio_xray);
         tv_pathology = v.findViewById(R.id.tv_pathology);
         tv_clinical_findings = v.findViewById(R.id.tv_clinical_findings);
         tv_examination = v.findViewById(R.id.tv_examination);
@@ -99,10 +101,31 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     }
                     jsonMedicalRecord.setMedicalPathologies(pathologies);
                 }
-                if (MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getRadiologyList().size() > 0) {
+                if (MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getMriList().size() > 0) {
                     ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
-                    for (int i = 0; i < MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getRadiologyList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getRadiologyList().get(i)));
+                    for (int i = 0; i < MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getMriList().size(); i++) {
+                        medicalRadiologies.add(new JsonMedicalRadiology().setName(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getMriList().get(i)));
+                    }
+                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
+                }
+                if (MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getSonoList().size() > 0) {
+                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+                    for (int i = 0; i < MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getSonoList().size(); i++) {
+                        medicalRadiologies.add(new JsonMedicalRadiology().setName(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getSonoList().get(i)));
+                    }
+                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
+                }
+                if (MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getScanList().size() > 0) {
+                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+                    for (int i = 0; i < MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getScanList().size(); i++) {
+                        medicalRadiologies.add(new JsonMedicalRadiology().setName(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getScanList().get(i)));
+                    }
+                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
+                }
+                if (MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getXrayList().size() > 0) {
+                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+                    for (int i = 0; i < MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getXrayList().size(); i++) {
+                        medicalRadiologies.add(new JsonMedicalRadiology().setName(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getXrayList().get(i)));
                     }
                     jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                 }
@@ -142,7 +165,10 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_provisional_diagnosis.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getProvisionalDiagnosis());
         tv_clinical_findings.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getClinicalFindings());
         tv_examination.setText(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getExaminationResults());
-        tv_radiology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getRadiologyList()));
+        tv_radio_mri.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getMriList()));
+        tv_radio_scan.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getScanList()));
+        tv_radio_sono.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getSonoList()));
+        tv_radio_xray.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getXrayList()));
         tv_pathology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPathologyList()));
         adapter = new MedicalRecordAdapterNew(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getJsonMedicineList());
         lv_medicine.setAdapter(adapter);

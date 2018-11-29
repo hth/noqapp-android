@@ -5,6 +5,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,12 +23,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private ArrayList<DataObj> personNames;
     private Context context;
+    private int drawableSelect = -1;
+    private int drawableUnSelect = -1;
 
     public CustomAdapter(Context context, ArrayList<DataObj> personNames) {
         this.context = context;
         this.personNames = personNames;
-
+        drawableSelect = R.drawable.bg_select;
+        drawableUnSelect = R.drawable.bg_unselect;
     }
+
+    public CustomAdapter(Context context, ArrayList<DataObj> personNames,   int drawableUnSelect) {
+        this.personNames = personNames;
+        this.context = context;
+        drawableSelect = R.drawable.bg_select;
+        this.drawableUnSelect = drawableUnSelect;
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,18 +52,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.name.setText(personNames.get(position).getName());
         if (personNames.get(position).isSelect()) {
-            holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_select));
+            holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
         } else {
-            holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+            holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 personNames.get(position).setSelect(isChecked);
                 if (isChecked) {
-                    holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_select));
+                    holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
                 } else {
-                    holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
                 }
 
             }

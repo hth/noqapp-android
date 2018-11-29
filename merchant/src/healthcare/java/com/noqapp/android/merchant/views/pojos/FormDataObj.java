@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 public class FormDataObj {
 
-    private ArrayList<DataObj> radiologyList = new ArrayList<>();
+    private ArrayList<DataObj> mriList = new ArrayList<>();
+    private ArrayList<DataObj> sonoList = new ArrayList<>();
+    private ArrayList<DataObj> scanList = new ArrayList<>();
+    private ArrayList<DataObj> xrayList = new ArrayList<>();
     private ArrayList<DataObj> pathologyList = new ArrayList<>();
     private ArrayList<DataObj> symptomsList = new ArrayList<>();
     private ArrayList<DataObj> diagnosisList = new ArrayList<>();
@@ -22,12 +25,39 @@ public class FormDataObj {
         return this;
     }
 
-    public ArrayList<DataObj> getRadiologyList() {
-        return radiologyList;
+    public ArrayList<DataObj> getMriList() {
+        return mriList;
     }
 
-    public FormDataObj setRadiologyList(ArrayList<DataObj> radiologyList) {
-        this.radiologyList = radiologyList;
+    public FormDataObj setMriList(ArrayList<DataObj> mriList) {
+        this.mriList = mriList;
+        return this;
+    }
+
+    public ArrayList<DataObj> getSonoList() {
+        return sonoList;
+    }
+
+    public FormDataObj setSonoList(ArrayList<DataObj> sonoList) {
+        this.sonoList = sonoList;
+        return this;
+    }
+
+    public ArrayList<DataObj> getScanList() {
+        return scanList;
+    }
+
+    public FormDataObj setScanList(ArrayList<DataObj> scanList) {
+        this.scanList = scanList;
+        return this;
+    }
+
+    public ArrayList<DataObj> getXrayList() {
+        return xrayList;
+    }
+
+    public FormDataObj setXrayList(ArrayList<DataObj> xrayList) {
+        this.xrayList = xrayList;
         return this;
     }
 

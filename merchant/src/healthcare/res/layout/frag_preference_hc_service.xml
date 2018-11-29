@@ -34,7 +34,7 @@
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/btn_add"
             android:hint="Add item"
-            android:inputType="text"
+            android:inputType="textCapSentences|text"
             android:maxLines="1"
             android:minLines="1"
             android:padding="10dp" />

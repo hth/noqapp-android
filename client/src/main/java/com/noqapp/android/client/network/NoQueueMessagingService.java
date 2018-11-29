@@ -15,9 +15,11 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.recivers.AlarmReceiver;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -36,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -54,10 +57,16 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
@@ -148,6 +157,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         ObjectMapper mapper = new ObjectMapper();
                         object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonAlertData.class);
                         Log.e("FCM Review store", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case MF:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonMedicalFollowUp.class);
+                        NotificationDB.insertNotification(
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonMedicalFollowUp) object).getCodeQR(), body, title, BusinessTypeEnum.PA.getName());
+                        Log.e("FCM Medical Followup", object.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -253,9 +274,13 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ReviewDB.insert(cv);
                                     }
                                     sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
-                                }else{
-                                    sendNotification(title, body, false);
                                 }
+                            } else if (object instanceof JsonMedicalFollowUp) {
+                                Log.e("Alert set:", "data is :" + title + " ---- " + body);
+                                sendNotification(title, body, true);
+                                setAlarm((JsonMedicalFollowUp) object);
+                            } else {
+                                sendNotification(title, body, false);
                             }
                         } else {
                             sendNotification(title, body, false);
@@ -354,6 +379,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
                 .setSound(defaultSoundUri);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
@@ -388,6 +414,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
                 .setSound(defaultSoundUri);
         if (isVibrate)
@@ -438,4 +465,32 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
     }
+
+    private void setAlarm(JsonMedicalFollowUp jsonMedicalFollowUp) {
+        try {
+            Date startDate = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonMedicalFollowUp.getPopFollowUpAlert());
+            Date endDate = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonMedicalFollowUp.getFollowUpDay());
+            long duration = endDate.getTime() - startDate.getTime();
+            long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
+            Log.e("difference in day : ", String.valueOf(diffInDays));
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(startDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
+            calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+            calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE) + 1);
+            calendar.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND));
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            intent.putExtra("title",jsonMedicalFollowUp.getTitle());
+            intent.putExtra("body",jsonMedicalFollowUp.getBody());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am = (AlarmManager) getSystemService(this.ALARM_SERVICE);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            Log.e("Alarm set", "Done Alarm");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
