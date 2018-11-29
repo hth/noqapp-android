@@ -62,8 +62,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
     private static MedicalCaseActivity medicalCaseActivity;
     public FormDataObj formDataObj;
-
-
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
 

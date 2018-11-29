@@ -5,10 +5,12 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.model.response.api.health.MedicalRecordService;
 import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -22,9 +24,13 @@ public class MedicalHistoryModel {
     private static final MedicalRecordService medicalRecordService;
     private MedicalRecordPresenter medicalRecordPresenter;
     private MedicalRecordListPresenter medicalRecordListPresenter;
+    private QueuePersonListPresenter queuePersonListPresenter;
 
     public MedicalHistoryModel(MedicalRecordListPresenter medicalRecordListPresenter) {
         this.medicalRecordListPresenter = medicalRecordListPresenter;
+    }
+    public MedicalHistoryModel(QueuePersonListPresenter queuePersonListPresenter) {
+        this.queuePersonListPresenter = queuePersonListPresenter;
     }
 
     public MedicalHistoryModel(MedicalRecordPresenter medicalRecordPresenter) {
@@ -95,6 +101,35 @@ public class MedicalHistoryModel {
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
                 Log.e("fetch", t.getLocalizedMessage(), t);
                 medicalRecordListPresenter.medicalRecordListError();
+            }
+        });
+    }
+
+    public void getFollowUpList(String mail, String auth, String codeQR) {
+        medicalRecordService.followUp(mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("FollowUpList response", String.valueOf(response.body()));
+                        queuePersonListPresenter.queuePersonListResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while FollowUpList");
+                        queuePersonListPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePersonListPresenter.authenticationFailure();
+                    } else {
+                        queuePersonListPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
+                Log.e("FollowUpList error", t.getLocalizedMessage(), t);
+                queuePersonListPresenter.queuePersonListError();
             }
         });
     }

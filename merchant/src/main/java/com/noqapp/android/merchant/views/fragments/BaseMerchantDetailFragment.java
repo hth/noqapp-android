@@ -22,6 +22,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
@@ -95,7 +96,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private int lastSelectedPos = -1;
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
-    protected ImageView iv_generate_token, iv_queue_history;
+    protected ImageView iv_generate_token, iv_queue_history,iv_view_followup;
     // variable to track event time
     private long mLastClickTime = 0;
 
@@ -182,6 +183,19 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
+                    in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    ((Activity) context).startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(context);
+                }
+            }
+        });
+        iv_view_followup = itemView.findViewById(R.id.iv_view_followup);
+        iv_view_followup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(getActivity(), FollowUpListActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
                     ((Activity) context).startActivity(in);
                 } else {

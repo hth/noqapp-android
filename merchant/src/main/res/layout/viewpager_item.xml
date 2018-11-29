@@ -426,7 +426,7 @@
                             <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_weight=".5"
+                                    android:layout_weight=".33"
                                     android:id="@+id/iv_generate_token"
                                     android:layout_margin="5dp"
                                     android:background="@color/colorMobile"
@@ -437,7 +437,18 @@
                             <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_weight=".5"
+                                    android:layout_weight=".33"
+                                    android:id="@+id/iv_view_followup"
+                                    android:layout_margin="5dp"
+                                    android:background="@color/colorMobile"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/follow_up"
+                                    android:tint="@android:color/white"/>
+
+                            <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight=".33"
                                     android:id="@+id/iv_queue_history"
                                     android:layout_margin="5dp"
                                     android:background="@color/colorMobile"
