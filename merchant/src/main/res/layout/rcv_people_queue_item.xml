@@ -80,6 +80,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center_vertical"
                 android:drawableRight="@drawable/edit"
+                android:drawableTint="@color/colorMobile"
                 android:layout_marginTop="3dp"
                 android:textSize="@dimen/text_size_twelve"/>
 
@@ -119,6 +120,7 @@
                     android:id="@+id/iv_info"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:tint="@color/colorMobile"
                     android:layout_alignParentRight="true"/>
         </RelativeLayout>
 

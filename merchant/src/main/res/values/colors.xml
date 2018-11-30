@@ -2,7 +2,7 @@
 <resources>
 
     <color name="colorActionbar">#FFFFFF</color>
-    <color name="colorMobile">#e92270</color>
+    <color name="colorMobile">#d2475f</color>
     <color name="color_grey_bg">#f5f5f5</color>
     <color name="color_separator">#EAEAEA</color>
     <color name="color_total_val">#227be9</color>
@@ -11,7 +11,7 @@
     <color name="color_login_hint">#928c9e</color>
     <color name="color_list_subtitle">#403648</color>
 
-    <color name="pressed_color">#ef649a</color>
+    <color name="pressed_color">#99d2475f</color>
     <color name="default_color">#ffffff</color>
     <color name="white">#ffffff</color>
 
