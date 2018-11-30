@@ -62,6 +62,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
     private Button tv_menu;
     private ImageView iv_category_banner;
+    private View view_loader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         sc_payment_mode = findViewById(R.id.sc_payment_mode);
         sc_delivery_types = findViewById(R.id.sc_delivery_types);
         sc_amenities = findViewById(R.id.sc_amenities);
+        view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
 
         Intent intent = getIntent();
@@ -151,7 +153,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
         getMenuInflater().inflate(R.menu.menu_doc_profile, menu);
         //@TODO Chandra enable when the feature add on server
-        menu.findItem(R.id.menu_favourite).setVisible(false);
+       // menu.findItem(R.id.menu_favourite).setVisible(false);
         return true;
     }
 
@@ -170,6 +172,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     }
 
     private void populateStore() {
+        view_loader.setVisibility(View.GONE);
         jsonQueue = jsonStore.getJsonQueue();
         tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_contact_no.setText(jsonQueue.getStorePhone());

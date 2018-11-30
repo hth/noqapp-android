@@ -249,6 +249,8 @@
 
 
             </LinearLayout>
+
+            <include layout="@layout/loader_view"/>
         </FrameLayout>
     </ScrollView>
 </LinearLayout>

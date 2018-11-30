@@ -85,6 +85,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private int reviewCount = 0;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
+    private View view_loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         btn_join_queues = findViewById(R.id.btn_join_queues);
         sc_amenities = findViewById(R.id.sc_amenities);
         sc_facility = findViewById(R.id.sc_facility);
+        view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         listener = this;
         tv_mobile.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +189,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {
         if (!bizStoreElasticList.getBizStoreElastics().isEmpty()) {
+            view_loader.setVisibility(View.GONE);
             populateAndSortedCache(bizStoreElasticList);
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
             LaunchActivity.getLaunchActivity().dismissProgress();
