@@ -89,6 +89,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("fp")
     private String followUpInDays;
 
+    @JsonProperty("np")
+    private String noteForPatient;
+
+    @JsonProperty("nd")
+    private String noteToDiagnoser;
+
     @JsonProperty("dbi")
     private String diagnosedById;
 
@@ -293,6 +299,24 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setFollowUpInDays(String followUpInDays) {
         this.followUpInDays = followUpInDays;
+        return this;
+    }
+
+    public String getNoteForPatient() {
+        return noteForPatient;
+    }
+
+    public JsonMedicalRecord setNoteForPatient(String noteForPatient) {
+        this.noteForPatient = noteForPatient;
+        return this;
+    }
+
+    public String getNoteToDiagnoser() {
+        return noteToDiagnoser;
+    }
+
+    public JsonMedicalRecord setNoteToDiagnoser(String noteToDiagnoser) {
+        this.noteToDiagnoser = noteToDiagnoser;
         return this;
     }
 
