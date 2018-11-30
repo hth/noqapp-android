@@ -16,15 +16,11 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -205,29 +201,16 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_male.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
-            SpannableString ss = new SpannableString("Male  ");
-            Drawable d = getResources().getDrawable(R.drawable.check_white);
-            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-            ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            tv_male.setText(ss);
+            tv_male.setText("Male");
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
-            tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         } else if (v == tv_female) {
             gender = "F";
             tv_female.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_female.setCompoundDrawablePadding(0);
-            tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
-            SpannableString ss = new SpannableString("Female  ");
-            Drawable d = getResources().getDrawable(R.drawable.check_white);
-            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-            ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            tv_female.setText(ss);
+            tv_female.setText("Female");
         }
     }
 

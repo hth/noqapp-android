@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_margin="10dp"
-        android:background="@mipmap/back"
+        android:background="@drawable/back"
+        android:backgroundTint="@android:color/white"
         android:padding="12dp" />
 </RelativeLayout>

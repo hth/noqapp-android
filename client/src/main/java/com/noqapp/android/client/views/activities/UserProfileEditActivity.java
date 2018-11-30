@@ -28,16 +28,12 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -214,30 +210,17 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
-                SpannableString ss = new SpannableString("Male  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_male.setText(ss);
+                tv_male.setText("Male");
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
-                tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 break;
             case R.id.tv_female:
                 gender = "F";
                 tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_female.setCompoundDrawablePadding(0);
-                tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
-                SpannableString ss1 = new SpannableString("Female  ");
-                Drawable d1 = getResources().getDrawable(R.drawable.check_white);
-                d1.setBounds(0, 0, d1.getIntrinsicWidth(), d1.getIntrinsicHeight());
-                ImageSpan span1 = new ImageSpan(d1, ImageSpan.ALIGN_BASELINE);
-                ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_female.setText(ss1);
+                tv_female.setText("Female");
                 break;
         }
     }
@@ -281,7 +264,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     public void updateProfile() {
 
         if (validate()) {
-            btn_update.setBackgroundResource(R.drawable.blue_gradient_or);
+            btn_update.setBackgroundResource(R.drawable.btn_bg_enable);
             btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
@@ -434,7 +417,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     private boolean validate() {
-        btn_update.setBackgroundResource(R.drawable.grey_gradient);
+        btn_update.setBackgroundResource(R.drawable.btn_bg_inactive);
         btn_update.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
         boolean isValid = true;
         edt_Name.setError(null);
