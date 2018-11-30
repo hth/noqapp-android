@@ -318,7 +318,6 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/button_color"
-                    android:drawableLeft="@mipmap/plus"
                     android:gravity="center"
                     android:paddingLeft="100dp"
                     android:paddingRight="100dp"

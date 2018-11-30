@@ -181,7 +181,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
                         progressDialog.setIndeterminate(true);
-                        progressDialog.setMessage("Updating...");
+                        progressDialog.setMessage("Submitting review...");
                         progressDialog.show();
                         if (UserUtils.isLogin()) {
                             if (jtk.getBusinessType() == BusinessTypeEnum.RS) {

@@ -83,7 +83,7 @@ public class MenuAdapter extends BaseAdapter {
         }
         switch (jsonStoreProduct.getProductType()) {
             case NV:
-                childViewHolder.tv_cat.setBackgroundResource(R.drawable.button_drawable_red);
+                childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_nonveg);
                 break;
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
