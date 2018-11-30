@@ -29,8 +29,9 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
         initActionsViews(true);
         CategoryListAdapter.OnItemClickListener listener = this;
         String categoryName = getIntent().getStringExtra("categoryName");
+        String title = getIntent().getStringExtra("title");
         RecyclerView rv_category_list = findViewById(R.id.rv_category_list);
-        tv_toolbar_title.setText(categoryName);
+        tv_toolbar_title.setText(title);
         ArrayList<BizStoreElastic> jsonQueues;
         try {
             jsonQueues = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");

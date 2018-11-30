@@ -295,6 +295,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     tv_toolbar_title.setText("Bank");
                     title = "Select a Service";
                     break;
+                case HS:
+                    btn_join_queues.setText("View Services");
+                    tv_toolbar_title.setText("Health Service");
+                    title = "Select a Service";
+                    break;
                 default:
                     btn_join_queues.setText("Join Queue");
                     tv_toolbar_title.setText("Departments");
@@ -384,6 +389,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 Intent intent = new Intent(this, CategoryListActivity.class);
                 intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
                 intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
+                intent.putExtra("title", title);
                 startActivity(intent);
         }
 

@@ -15,93 +15,43 @@
                 android:id="@+id/actionbarBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/back"
                 android:backgroundTint="@color/theme_color_red"
-                android:padding="12dp" />
+                android:padding="12dp"/>
 
         <TextView
                 android:id="@+id/tv_toolbar_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/rl_right"
-                android:layout_toRightOf="@+id/actionbarBack"
+                android:layout_toStartOf="@+id/iv_home"
+                android:layout_toEndOf="@+id/actionbarBack"
                 android:padding="5dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:gravity="left"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textAllCaps="true"
                 android:textStyle="bold"/>
 
-        <RelativeLayout
-                android:id="@+id/rl_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
 
-            <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/fl_notification"
-                    android:background="@drawable/ic_search"
-                    android:padding="12dp"
-                    android:backgroundTint="@color/theme_color_red"
-                    android:visibility="gone" />
+        <ImageView
+                android:id="@+id/iv_home"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_home"
+                android:clipToPadding="false"
+                android:focusable="true"
+                android:backgroundTint="@color/theme_color_red"
+                android:visibility="invisible"/>
 
-            <FrameLayout
-                    android:id="@+id/fl_notification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true"
-                    android:clipToPadding="false"
-                    android:focusable="true"
-                    android:visibility="gone">
-
-                <ImageView
-                        android:id="@+id/iv_notification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/ic_notification"
-                        android:backgroundTint="@color/theme_color_red"
-                        android:padding="12dp" />
-
-                <TextView
-                        android:id="@+id/tv_badge"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="bottom|right"
-                        android:background="@drawable/badge_bg"
-                        android:gravity="center"
-                        android:padding="3dp"
-                        android:text="0"
-                        android:textColor="@android:color/white"
-                        android:textSize="10sp" />
-
-            </FrameLayout>
-
-            <ImageView
-                    android:id="@+id/iv_home"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/ic_home"
-                    android:clipToPadding="false"
-                    android:focusable="true"
-                    android:backgroundTint="@color/theme_color_red"
-                    android:visibility="gone" />
-        </RelativeLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>
