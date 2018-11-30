@@ -257,17 +257,10 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             @Override
             public void onClick(View v) {
                 tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_online.setBackgroundResource(R.drawable.gender_redbg);
-                SpannableString ss = new SpannableString("Online  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_online.setText(ss);
+                tv_online.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_online.setText("Online");
                 tv_online.setTextColor(Color.WHITE);
                 tv_offline.setTextColor(Color.BLACK);
-                tv_offline.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-
                 jsonStoreProduct.setActive(true);
                 menuItemUpdate(jsonStoreProduct, ActionTypeEnum.ACTIVE);
                 // mAlertDialog.dismiss();
@@ -278,16 +271,11 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         tv_offline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tv_offline.setBackgroundResource(R.drawable.gender_redbg);
+                tv_offline.setBackgroundResource(R.drawable.button_drawable_red_square);
                 tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_online.setTextColor(Color.BLACK);
                 tv_offline.setTextColor(Color.WHITE);
-                SpannableString ss = new SpannableString("Offline  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 8, 9, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_offline.setText(ss);
+                tv_offline.setText("Offline");
                 jsonStoreProduct.setActive(false);
                 menuItemUpdate(jsonStoreProduct, ActionTypeEnum.INACTIVE);
                 // mAlertDialog.dismiss();
@@ -330,27 +318,16 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             sp_product_type.setSelection(getItemPosition(prodTypes, jsonStoreProduct.getProductType().getDescription()));
             if (jsonStoreProduct.isActive()) {
                 tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_online.setBackgroundResource(R.drawable.gender_redbg);
-                SpannableString ss = new SpannableString("Online  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_online.setText(ss);
+                tv_online.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_online.setText("Online");
                 tv_online.setTextColor(Color.WHITE);
                 tv_offline.setTextColor(Color.BLACK);
-                tv_offline.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             } else {
-                tv_offline.setBackgroundResource(R.drawable.gender_redbg);
+                tv_offline.setBackgroundResource(R.drawable.button_drawable_red_square);
                 tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_online.setTextColor(Color.BLACK);
                 tv_offline.setTextColor(Color.WHITE);
-                SpannableString ss = new SpannableString("Offline  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 8, 9, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_offline.setText(ss);
+                tv_offline.setText("Offline");
             }
         }
 
