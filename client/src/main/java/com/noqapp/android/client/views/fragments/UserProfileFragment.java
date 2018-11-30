@@ -50,10 +50,10 @@ public class UserProfileFragment extends Fragment {
                     tv_name.setText(stores.get(i).getJsonQueue().getBusinessName());
                     tv_address.setText(stores.get(i).getJsonQueue().getStoreAddress());
                     try {
-                        double dd = AppUtilities.round(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount()*1.0f/
-                                        jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size());
+                        double dd = AppUtilities.round(jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getAggregateRatingCount() * 1.0f /
+                                jsonProfessionalProfile.getReviews().get(stores.get(i).getJsonQueue().getCodeQR()).getJsonReviews().size());
                         tv_store_rating.setText(String.valueOf(dd));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     String timing = new AppUtilities().formatWeeklyTimings(getActivity(), stores.get(i).getJsonHours());

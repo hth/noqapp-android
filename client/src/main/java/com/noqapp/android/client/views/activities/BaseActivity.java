@@ -40,7 +40,7 @@ public class BaseActivity extends AppCompatActivity {
         iv_home = findViewById(R.id.iv_home);
         actionbarBack = findViewById(R.id.actionbarBack);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.GONE);
+        iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

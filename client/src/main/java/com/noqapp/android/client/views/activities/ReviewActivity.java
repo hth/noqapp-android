@@ -51,7 +51,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     private TextView tv_rating_value;
     private RatingBar ratingBar;
     private TextView tv_hr_saved;
-    private TextView tv_badge;
     private EditText edt_review;
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
@@ -76,7 +75,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         ratingBar = findViewById(R.id.ratingBar);
         tv_hr_saved = findViewById(R.id.tv_hr_saved);
         TextView tv_details = findViewById(R.id.tv_details);
-        tv_badge = findViewById(R.id.tv_badge);
         edt_review = findViewById(R.id.edt_review);
 
         rb_1 = findViewById(R.id.rb_1);
@@ -287,12 +285,5 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @Override
     protected void onResume() {
         super.onResume();
-        int notify_count = NotificationDB.getNotificationCount();
-        tv_badge.setText(String.valueOf(notify_count));
-        if (notify_count > 0) {
-            tv_badge.setVisibility(View.VISIBLE);
-        } else {
-            tv_badge.setVisibility(View.INVISIBLE);
-        }
     }
 }

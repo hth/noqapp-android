@@ -317,14 +317,15 @@
                                 android:layout_marginBottom="10dp"
                                 android:drawablePadding="5dp"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_fourteen"
-                                android:textStyle="bold"/>
+                                android:textSize="@dimen/text_size_fourteen"/>
                     </LinearLayout>
 
                 </RelativeLayout>
 
 
             </LinearLayout>
+
+            <include layout="@layout/loader_view"/>
         </FrameLayout>
     </ScrollView>
 </LinearLayout>

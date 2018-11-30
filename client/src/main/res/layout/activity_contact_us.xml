@@ -56,7 +56,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:textAllCaps="true"
-                android:textColor="#d75b71"
+                android:textColor="@color/btn_color"
                 android:textSize="@dimen/text_size_sixteen"
                 android:background="@drawable/grey_gradient"/>
 

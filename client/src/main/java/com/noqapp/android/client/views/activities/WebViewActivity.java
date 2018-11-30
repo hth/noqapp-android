@@ -22,8 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class WebViewActivity extends AppCompatActivity {
-    private TextView tv_badge;
+public class WebViewActivity extends BaseActivity {
     private WebView webView;
     private String url = "";
     private ProgressDialog progressDialog;
@@ -43,9 +42,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        tv_badge = findViewById(R.id.tv_badge);
+        initActionsViews(true);
         webView = findViewById(R.id.webView);
         if (null != getIntent().getStringExtra("url")) {
             url = getIntent().getStringExtra("url");
@@ -89,24 +86,11 @@ public class WebViewActivity extends AppCompatActivity {
                 }
                 break;
         }
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        int notify_count = NotificationDB.getNotificationCount();
-        tv_badge.setText(String.valueOf(notify_count));
-        if (notify_count > 0) {
-            tv_badge.setVisibility(View.VISIBLE);
-        } else {
-            tv_badge.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void webViewGoBack() {
