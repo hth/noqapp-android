@@ -119,31 +119,18 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundResource(R.drawable.gender_redbg);
-                SpannableString ss = new SpannableString("Male  ");
-                Drawable d = getResources().getDrawable(R.drawable.check_white);
-                d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-                ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_male.setText(ss);
+                tv_male.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_male.setText("Male");
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
-                tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 break;
             case R.id.tv_female:
                 gender = "F";
-                tv_female.setBackgroundResource(R.drawable.gender_redbg);
+                tv_female.setBackgroundResource(R.drawable.button_drawable_red_square);
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_female.setCompoundDrawablePadding(0);
-                tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
-                SpannableString ss1 = new SpannableString("Female  ");
-                Drawable d1 = getResources().getDrawable(R.drawable.check_white);
-                d1.setBounds(0, 0, d1.getIntrinsicWidth(), d1.getIntrinsicHeight());
-                ImageSpan span1 = new ImageSpan(d1, ImageSpan.ALIGN_BASELINE);
-                ss1.setSpan(span1, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                tv_female.setText(ss1);
+                tv_female.setText("Female");
                 break;
 
 
@@ -155,8 +142,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         if (validate()) {
             btn_update.setBackgroundResource(R.drawable.button_drawable_red);
             btn_update.setTextColor(Color.WHITE);
-            btn_update.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 //   String phoneNo = edt_phoneNo.getText().toString();
@@ -253,7 +238,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private boolean validate() {
         btn_update.setBackgroundResource(R.drawable.button_drawable);
         btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
-        btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_name.setError(null);
         edt_email.setError(null);

@@ -169,7 +169,7 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:layout_margin="5dp"
-                                    android:background="@mipmap/edit"
+                                    android:background="@drawable/edit_new"
                                     android:gravity="center_vertical"
                                     android:padding="10dp"/>
                         </RelativeLayout>

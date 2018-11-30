@@ -573,7 +573,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
         } else {
             btn_update.setBackgroundResource(R.drawable.button_drawable);
             btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
-            btn_update.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
+
         }
         return isValid;
     }

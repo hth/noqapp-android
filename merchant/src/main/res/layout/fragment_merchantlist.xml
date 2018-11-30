@@ -33,6 +33,7 @@
                     android:background="@android:color/transparent"
                     android:drawableLeft="@drawable/ic_search"
                     android:drawableRight="@drawable/ic_cancel"
+                    android:drawableTint="@color/colorMobile"
                     android:drawablePadding="10dp"
                     android:hint="Search"
                     android:maxLines="1"

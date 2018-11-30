@@ -59,9 +59,8 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     private TextView tv_birthday;
     private EditText edt_pwd;
     private EditText edt_confirm_pwd;
-    private EditText tv_male;
-    private EditText tv_female;
-    private LinearLayout ll_gender;
+    private TextView tv_male;
+    private TextView tv_female;
     private LinearLayout ll_pwd;
     private Button btnRegistration;
 
@@ -94,8 +93,6 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
-
-        ll_gender = findViewById(R.id.ll_gender);
         ll_pwd = findViewById(R.id.ll_pwd);
         btnRegistration = findViewById(R.id.btnRegistration);
         btnRegistration.setOnClickListener(new View.OnClickListener() {
@@ -166,8 +163,6 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
             btnRegistration.setTextColor(Color.WHITE);
-            btnRegistration.setCompoundDrawablesWithIntrinsicBounds(
-                    0, 0, R.drawable.arrow_white, 0);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 callRegistrationAPI();
@@ -225,37 +220,23 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundResource(R.drawable.gender_redbg);
-            SpannableString ss = new SpannableString("Male  ");
-            Drawable d = getResources().getDrawable(R.drawable.check_white);
-            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-            ss.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            tv_male.setText(ss);
+            tv_male.setBackgroundResource(R.drawable.button_drawable_red_square);
+            tv_male.setText("Male");
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
-            tv_female.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundResource(R.drawable.gender_redbg);
+            tv_female.setBackgroundResource(R.drawable.button_drawable_red_square);
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_female.setCompoundDrawablePadding(0);
-            tv_male.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
-            SpannableString ss = new SpannableString("Female  ");
-            Drawable d = getResources().getDrawable(R.drawable.check_white);
-            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-            ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
-            ss.setSpan(span, 7, 8, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            tv_female.setText(ss);
+            tv_female.setText("Female");
         }
     }
 
     private boolean validate() {
         btnRegistration.setBackgroundResource(R.drawable.button_drawable);
         btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
-        btnRegistration.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_small, 0);
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
