@@ -1,5 +1,7 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -59,6 +61,9 @@ public class JsonProfessionalProfilePersonal implements Serializable {
 
     @JsonProperty("re")
     private Map<String, JsonReviewList> reviews = new HashMap<>();
+
+    @JsonProperty("fv")
+    private FormVersionEnum formVersion;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -141,6 +146,15 @@ public class JsonProfessionalProfilePersonal implements Serializable {
 
     public JsonProfessionalProfilePersonal setReviews(Map<String, JsonReviewList> reviews) {
         this.reviews = reviews;
+        return this;
+    }
+
+    public FormVersionEnum getFormVersion() {
+        return formVersion;
+    }
+
+    public JsonProfessionalProfilePersonal setFormVersion(FormVersionEnum formVersion) {
+        this.formVersion = formVersion;
         return this;
     }
 
