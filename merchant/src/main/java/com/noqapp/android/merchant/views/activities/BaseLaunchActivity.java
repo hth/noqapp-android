@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
@@ -100,6 +101,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_MEDICINES = "medicines";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
+    protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
     private static final String FCM_TOKEN = "fcmToken";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -437,6 +439,19 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public JsonProfile getUserProfile() {
         String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
         return new Gson().fromJson(json, JsonProfile.class);
+
+    }
+
+    public void setUserProfessionalProfile(JsonProfessionalProfilePersonal jsonProfessionalProfile) {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        String json = new Gson().toJson(jsonProfessionalProfile);
+        editor.putString(KEY_USER_PROFESSIONAL_PROFILE, json);
+        editor.apply();
+    }
+
+    public JsonProfessionalProfilePersonal getUserProfessionalProfile() {
+        String json = sharedpreferences.getString(KEY_USER_PROFESSIONAL_PROFILE, "");
+        return new Gson().fromJson(json, JsonProfessionalProfilePersonal.class);
 
     }
 

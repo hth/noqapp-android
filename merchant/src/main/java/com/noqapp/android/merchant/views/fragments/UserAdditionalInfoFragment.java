@@ -9,6 +9,7 @@ import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
 
 import android.app.DatePickerDialog;
@@ -336,9 +337,12 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
 
     @Override
     public void merchantProfessionalResponse(JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
-        Log.v("JsonProfessionalProfile", jsonProfessionalProfilePersonal.toString());
         Toast.makeText(getActivity(), "Professional profile updated", Toast.LENGTH_LONG).show();
-        updateUI(jsonProfessionalProfilePersonal);
+        if(null != jsonProfessionalProfilePersonal) {
+            Log.v("JsonProfessionalProfile", jsonProfessionalProfilePersonal.toString());
+            LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonProfessionalProfilePersonal);
+            updateUI(jsonProfessionalProfilePersonal);
+        }
         dismissProgress();
     }
 

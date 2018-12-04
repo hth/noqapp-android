@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+            <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="About Patient"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+
+            <TableLayout
+                    android:id="@+id/tabla_cuerpo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:stretchColumns="0,1">
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Patient Name"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/tv_patient_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Address"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Additional Info"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                            android:id="@+id/tv_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="78.5 Kg"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                </TableRow>
+            </TableLayout>
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/prescription"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+
+            <EditText
+                    android:id="@+id/edt_prescription"
+                    style="@style/style_mdh_details"
+                    android:layout_width="match_parent"
+                    android:imeActionLabel="Done"
+                    android:gravity="left|start"
+                    android:hint="@string/hint_prescription"
+                    android:minLines="10"
+                    android:padding="10dp"
+                    android:textSize="@dimen/text_size_sixteen"/>
+
+
+            <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_drawable"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="90dp"
+                    android:paddingRight="90dp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_fourteen"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

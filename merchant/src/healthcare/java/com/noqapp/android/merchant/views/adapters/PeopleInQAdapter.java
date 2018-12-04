@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
@@ -14,6 +15,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.activities.ScribbleActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -184,10 +186,18 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
             if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                    Intent intent = new Intent(context, MedicalCaseActivity.class);
-                    intent.putExtra("qCodeQR", qCodeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    context.startActivity(intent);
+                    if(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
+                        Intent intent = new Intent(context, MedicalCaseActivity.class);
+                        intent.putExtra("qCodeQR", qCodeQR);
+                        intent.putExtra("data", jsonQueuedPerson);
+                        context.startActivity(intent);
+                    }else{
+                        Toast.makeText(context, "Other form Selected", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(context, ScribbleActivity.class);
+                        intent.putExtra("qCodeQR", qCodeQR);
+                        intent.putExtra("data", jsonQueuedPerson);
+                        context.startActivity(intent);
+                    }
                 } else {
                     Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
                 }

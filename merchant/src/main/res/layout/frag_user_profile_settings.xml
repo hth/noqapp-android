@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"
+            android:orientation="vertical">
+
+    <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_fourteen"
+                android:textColor="@android:color/black"
+                android:text="@string/select_form"/>
+        <RadioGroup
+                android:id="@+id/rg_form"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/acrb_simple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawableEnd="@drawable/simple_form"
+                    app:buttonTint="@color/colorAccent"/>
+
+            <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/acrb_complex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:drawableEnd="@drawable/complex_form"
+                    app:buttonTint="@color/colorAccent"/>
+        </RadioGroup>
+
+
+        <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="100dp"
+                android:paddingLeft="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:gravity="center"
+                android:text="@string/update"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_fourteen"/>
+
+    </LinearLayout>
+
+</ScrollView>

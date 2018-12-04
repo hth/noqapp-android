@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
+import com.noqapp.android.merchant.views.fragments.UserProfileSettingFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 
 import com.squareup.picasso.Picasso;
@@ -72,6 +73,7 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
+    private UserProfileSettingFragment userProfileSettingFragment;
     private ImageView actionbarBack;
     private MerchantProfileModel merchantProfileModel;
     private ProgressDialog progressDialog;
@@ -126,7 +128,9 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
                 // Additional profile will be only visible to store manager
                 switch (jsonMerchant.getJsonProfile().getBusinessType()) {
                     case DO:
+                        LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                         userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+                        userProfileSettingFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
                         break;
                     default:
                         //Do nothing
@@ -286,7 +290,10 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
                 case DO:
                     userAdditionalInfoFragment = new UserAdditionalInfoFragment();
+                    userProfileSettingFragment = new UserProfileSettingFragment();
                     adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
+                    adapter.addFragment(userProfileSettingFragment, "Professional Settings");
+                    viewPager.setOffscreenPageLimit(3);
                     break;
                 default:
                     //Do nothing
