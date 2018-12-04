@@ -1,23 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
-import com.noqapp.android.merchant.model.PatientProfileModel;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
-import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-
 
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -39,11 +23,9 @@ import android.print.PrintManager;
 import android.provider.UserDictionary;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +34,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,12 +44,10 @@ import java.io.OutputStream;
 import java.util.Date;
 
 
-public class ScribbleActivity extends AppCompatActivity implements MedicalRecordPresenter, PatientProfilePresenter {
+public class ScribbleActivity extends AppCompatActivity  {
 
-    private TextView tv_patient_name, tv_address, tv_info;
     private ProgressDialog progressDialog;
     private EditText edt_prescription;
-    private String codeQR;
     private final String packageName = "com.google.android.apps.handwriting.ime";
 
     @Override
@@ -80,13 +59,7 @@ public class ScribbleActivity extends AppCompatActivity implements MedicalRecord
 //        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scribble);
-        final MedicalHistoryModel medicalHistoryModel = new MedicalHistoryModel(this);
         edt_prescription = findViewById(R.id.edt_prescription);
-        final JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        codeQR = getIntent().getStringExtra("qCodeQR");
-        tv_patient_name = findViewById(R.id.tv_patient_name);
-        tv_address = findViewById(R.id.tv_address);
-        tv_info = findViewById(R.id.tv_info);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -102,91 +75,17 @@ public class ScribbleActivity extends AppCompatActivity implements MedicalRecord
             @Override
             public void onClick(View v) {
                 new AppUtils().hideKeyBoard(ScribbleActivity.this);
-                progressDialog.show();
-                JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
-                jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
-                jsonMedicalRecord.setFormVersion(FormVersionEnum.MFS1);
-                jsonMedicalRecord.setCodeQR(codeQR);
-                jsonMedicalRecord.setNoteForPatient(edt_prescription.getText().toString());
-                //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
-                //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
-                medicalHistoryModel.add(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        jsonMedicalRecord);
-
-            //    takeScreenshot();
+                takeScreenshot();
             }
         });
-        if(TextUtils.isEmpty(tv_patient_name.getText().toString())) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                PatientProfileModel profileModel = new PatientProfileModel(this);
-                profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
+        Button btn_clear = findViewById(R.id.btn_clear);
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AppUtils().hideKeyBoard(ScribbleActivity.this);
+                edt_prescription.setText("");
             }
-        }
-
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    @Override
-    public void medicalRecordResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-        if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Medical History updated Successfully", Toast.LENGTH_LONG).show();
-            this.finish();
-        } else {
-            Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void medicalRecordError() {
-        dismissProgress();
-        Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void patientProfileResponse(JsonProfile jsonProfile) {
-        if (null != jsonProfile) {
-            tv_patient_name.setText(jsonProfile.getName() + " (" + new AppUtils().calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
-            tv_address.setText(jsonProfile.getAddress());
-            tv_info.setText(Html.fromHtml("<b> Blood Group: </b> B+ ,<b> Weight: </b> 75 Kg"));
-        }
-        dismissProgress();
-
+        });
         if (!isAppInstalled(packageName)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             LayoutInflater inflater_inner = LayoutInflater.from(this);
@@ -228,12 +127,18 @@ public class ScribbleActivity extends AppCompatActivity implements MedicalRecord
             tv_msg.setText("Download the Scribble writer app to make your life easy.");
             tv_title.setText("Scribble app missing");
         }
+
     }
 
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("fetching data...");
+    }
 
-    @Override
-    public void patientProfileError() {
-        dismissProgress();
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
     private boolean isAppInstalled(String uri) {

@@ -9,9 +9,11 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.ScribbleActivity;
 import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -20,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -41,6 +44,15 @@ public class UserProfileSettingFragment extends Fragment implements MerchantProf
             @Override
             public void onClick(View view) {
                 updateProfileSettingInfo();
+            }
+        });
+
+        TextView tv_print =  view.findViewById(R.id.tv_print);
+        tv_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getActivity(),ScribbleActivity.class);
+                getActivity().startActivity(in);
             }
         });
         if (null != jsonProfessionalProfilePersonal)

@@ -19,9 +19,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
-import com.noqapp.android.merchant.views.fragments.UserProfileSettingFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 
 import com.squareup.picasso.Picasso;
@@ -58,7 +56,7 @@ import okhttp3.RequestBody;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class ManagerProfileActivity extends AppCompatActivity implements View.OnClickListener, MerchantPresenter, ImageUploadPresenter {
+public class BaseManagerProfileActivity extends AppCompatActivity implements View.OnClickListener, MerchantPresenter, ImageUploadPresenter {
 
     private TextView tv_profile_name;
     private Button tv_remove_image;
@@ -72,11 +70,11 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
     private ViewPager viewPager;
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
-    private UserAdditionalInfoFragment userAdditionalInfoFragment;
-    private UserProfileSettingFragment userProfileSettingFragment;
+
     private ImageView actionbarBack;
     private MerchantProfileModel merchantProfileModel;
     private ProgressDialog progressDialog;
+    protected  TabViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,18 +122,6 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
             LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
-            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                // Additional profile will be only visible to store manager
-                switch (jsonMerchant.getJsonProfile().getBusinessType()) {
-                    case DO:
-                        LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
-                        userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
-                        userProfileSettingFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
-                        break;
-                    default:
-                        //Do nothing
-                }
-            }
             Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
         }
@@ -281,24 +267,10 @@ public class ManagerProfileActivity extends AppCompatActivity implements View.On
         return mimeType;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    protected void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
-        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
+        adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userProfileFragment, "Profile");
-        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-            // Additional profile will be only visible to store manager
-            switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
-                case DO:
-                    userAdditionalInfoFragment = new UserAdditionalInfoFragment();
-                    userProfileSettingFragment = new UserProfileSettingFragment();
-                    adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
-                    adapter.addFragment(userProfileSettingFragment, "Professional Settings");
-                    viewPager.setOffscreenPageLimit(3);
-                    break;
-                default:
-                    //Do nothing
-            }
-        }
         viewPager.setAdapter(adapter);
     }
 

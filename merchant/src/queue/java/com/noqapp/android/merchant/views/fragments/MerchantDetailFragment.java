@@ -298,6 +298,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
                 tv_title.setText(jsonTopic.getDisplayName());
                 iv_generate_token.setVisibility(View.GONE);
+                iv_view_followup.setVisibility(View.GONE);
                 btn_start.setText(context.getString(R.string.start));
                 btn_start.setBackgroundResource(R.mipmap.start);
                 btn_skip.setVisibility(View.GONE);
