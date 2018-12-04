@@ -8,6 +8,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -102,6 +104,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.button_color));
             holder.tv_join.setText("Walk-in");
+            if(jsonQueue.getBusinessType() == BusinessTypeEnum.HS){
+                holder.tv_join.setText("Visit Store");
+            }
         }
 
 
@@ -192,7 +197,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCategoryItemClick(jsonQueue, v, listPosition);
+                if(jsonQueue.getBusinessType() != BusinessTypeEnum.HS) {
+                    listener.onCategoryItemClick(jsonQueue, v, listPosition);
+                }else {
+                    //Do nothing
+                    Toast.makeText(context, "Please visit store to avail the service.", Toast.LENGTH_LONG).show();
+                }
             }
         });
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
