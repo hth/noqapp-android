@@ -250,16 +250,21 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
-                    //recordHolder.tv_create_case.setVisibility(View.VISIBLE);
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
                 } else {
-                    //recordHolder.tv_create_case.setVisibility(View.GONE);
                     recordHolder.tv_create_case.setClickable(false);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
                 }
-            } else {
-                //recordHolder.tv_create_case.setVisibility(View.GONE);
+            } else  if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+                if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+                    recordHolder.tv_create_case.setClickable(true);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
+                } else {
+                    recordHolder.tv_create_case.setClickable(false);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
+                }
+            }else {
                 recordHolder.tv_create_case.setClickable(false);
                 recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
             }
