@@ -1,10 +1,12 @@
 package com.noqapp.android.common.model.types.medical;
 
+import java.io.Serializable;
+
 /**
  * hitender
  * 7/24/18 10:51 AM
  */
-public enum FormVersionEnum {
+public enum FormVersionEnum implements Serializable {
     /* Format of four letters, A1 to A9 and then B1 to B9 and so on. */
     MFD1("MFD1", "Dynamic Option", "Since 2019", "Exp 2020"),
     MFS1("MFS1", "Scribble", "Since 2019", "Exp 2020");

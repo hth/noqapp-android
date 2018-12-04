@@ -1,7 +1,9 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 
 import android.content.Context;
@@ -15,7 +17,6 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MedicalHistoryAdapter extends BaseAdapter {
-    private static final String TAG = MedicalHistoryAdapter.class.getSimpleName();
     private Context context;
     private List<JsonMedicalRecord> jsonMedicalRecordList;
 
@@ -48,18 +49,22 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder.tv_business_category_name = view.findViewById(R.id.tv_business_category_name);
             recordHolder.tv_complaints = view.findViewById(R.id.tv_complaints);
             recordHolder.tv_create = view.findViewById(R.id.tv_create);
-            recordHolder.tv_no_of_time_access = view.findViewById(R.id.tv_no_of_time_access);
+            recordHolder.tv_examination = view.findViewById(R.id.tv_examination);
+            recordHolder.tv_medicine = view.findViewById(R.id.tv_medicine);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecordList.get(position).getDiagnosedById());
-        recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
-        recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
-        recordHolder.tv_complaints.setText(jsonMedicalRecordList.get(position).getChiefComplain());
-        recordHolder.tv_create.setText("Visited: " + jsonMedicalRecordList.get(position).getCreateDate());
-        recordHolder.tv_no_of_time_access.setText("No of times record view: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
+        JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecordList.get(position);
+        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById());
+        recordHolder.tv_business_name.setText(jsonMedicalRecord.getBusinessName());
+        recordHolder.tv_business_category_name.setText("("+jsonMedicalRecord.getBizCategoryName()+")");
+        recordHolder.tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
+        recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
+        recordHolder.tv_examination.setText( jsonMedicalRecord.getExamination());
+        recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
+        showHideViews(recordHolder.tv_examination,recordHolder.tv_medicine,recordHolder.tv_complaints);
         return view;
     }
 
@@ -69,10 +74,33 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         TextView tv_create;
         TextView tv_business_name;
         TextView tv_business_category_name;
-        TextView tv_no_of_time_access;
+        TextView tv_examination;
+        TextView tv_medicine;
         CardView cardview;
 
         RecordHolder() {
+        }
+    }
+
+    private String getMedicineFormList(List<JsonMedicalMedicine> list) {
+        String output = "";
+        if (null != list && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                output += PharmacyCategoryEnum.valueOf(list.get(i).getPharmacyCategory()).getDescription() + " " + list.get(i).getName() ;
+                if(i!= list.size()-1)
+                    output += "\n";
+            }
+        }
+        return output;
+    }
+
+    private void showHideViews(TextView... views){
+        for (TextView v : views) {
+            if (v.getText().toString().equals("")) {
+                v.setVisibility(View.GONE);
+            }else{
+                v.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

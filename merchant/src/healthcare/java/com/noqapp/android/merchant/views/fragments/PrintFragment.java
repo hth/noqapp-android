@@ -14,6 +14,7 @@ import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -186,7 +187,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     @Override
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
-        if (1 == jsonResponse.getResponse()) {
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Toast.makeText(getActivity(), "Medical History updated Successfully", Toast.LENGTH_LONG).show();
             getActivity().finish();
         } else {
