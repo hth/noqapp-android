@@ -1,8 +1,10 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -183,29 +185,37 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     @Override
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
-        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
-            if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
-                if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                    if(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
-                        Intent intent = new Intent(context, MedicalCaseActivity.class);
-                        intent.putExtra("qCodeQR", qCodeQR);
-                        intent.putExtra("data", jsonQueuedPerson);
-                        context.startActivity(intent);
-                    }else{
-                        Intent intent = new Intent(context, SimpleFormActivity.class);
-                        intent.putExtra("qCodeQR", qCodeQR);
-                        intent.putExtra("data", jsonQueuedPerson);
-                        context.startActivity(intent);
-                    }
-                } else {
-                    Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
-                }
-
-            } else {
-                Toast.makeText(context, "This person in not the register user. You cannot create the case history", Toast.LENGTH_LONG).show();
-            }
+        if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+            Toast.makeText(context, "you can update any info", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
+            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
+                if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
+                    if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                        if(null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()){
+                            // temporary crash fix
+                            LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
+                        }
+                        if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
+                            Intent intent = new Intent(context, MedicalCaseActivity.class);
+                            intent.putExtra("qCodeQR", qCodeQR);
+                            intent.putExtra("data", jsonQueuedPerson);
+                            context.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(context, SimpleFormActivity.class);
+                            intent.putExtra("qCodeQR", qCodeQR);
+                            intent.putExtra("data", jsonQueuedPerson);
+                            context.startActivity(intent);
+                        }
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Toast.makeText(context, "This person in not the register user. You cannot create the case history", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
