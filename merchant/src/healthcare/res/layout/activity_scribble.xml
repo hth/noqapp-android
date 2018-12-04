@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/prescription"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+
+            <EditText
+                    android:id="@+id/edt_prescription"
+                    style="@style/style_mdh_details"
+                    android:layout_width="match_parent"
+                    android:imeActionLabel="Done"
+                    android:gravity="left|start"
+                    android:hint="@string/hint_prescription"
+                    android:layout_margin="10dp"
+                    android:minLines="10"
+                    android:padding="10dp"
+                    android:textSize="@dimen/text_size_sixteen"/>
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
+
+                <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_drawable"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="50dp"
+                        android:paddingRight="50dp"
+                        android:text="@string/print"
+                        android:layout_marginRight="25dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorMobile"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+                <Button
+                        android:id="@+id/btn_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:background="@drawable/button_drawable"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="50dp"
+                        android:paddingRight="50dp"
+                        android:text="@string/clear"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorMobile"
+                        android:textSize="@dimen/text_size_fourteen"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

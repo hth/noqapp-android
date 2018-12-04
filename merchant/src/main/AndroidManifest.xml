@@ -156,6 +156,14 @@
             </intent-filter>
         </activity>
         <activity
+                android:name="com.noqapp.android.merchant.views.activities.SimpleFormActivity"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
                 android:name="com.noqapp.android.merchant.views.activities.PrivacyActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
@@ -167,9 +175,6 @@
                 android:name="com.noqapp.android.merchant.views.activities.WebViewActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity"

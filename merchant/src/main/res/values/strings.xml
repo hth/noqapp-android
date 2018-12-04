@@ -197,4 +197,6 @@
     <string name="prescription">Prescription</string>
     <string name="screen_prescription">Prescription Form</string>
     <string name="hint_prescription">Enter prescription here</string>
+    <string name="clear">Clear</string>
+    <string name="print">Print</string>
 </resources>

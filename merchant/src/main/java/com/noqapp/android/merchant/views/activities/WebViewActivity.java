@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WebViewActivity extends AppCompatActivity {
-    private TextView tv_badge;
     private WebView webView;
     private String url = "";
     private ProgressDialog progressDialog;
@@ -52,7 +51,6 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        tv_badge = findViewById(R.id.tv_badge);
         webView = findViewById(R.id.webView);
         if (null != getIntent().getStringExtra("url")) {
             url = getIntent().getStringExtra("url");

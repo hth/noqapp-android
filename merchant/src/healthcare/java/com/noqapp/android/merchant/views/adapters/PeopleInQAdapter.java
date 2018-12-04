@@ -15,7 +15,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.activities.ScribbleActivity;
+import com.noqapp.android.merchant.views.activities.SimpleFormActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -192,8 +192,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         intent.putExtra("data", jsonQueuedPerson);
                         context.startActivity(intent);
                     }else{
-                        Toast.makeText(context, "Other form Selected", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(context, ScribbleActivity.class);
+                        Intent intent = new Intent(context, SimpleFormActivity.class);
                         intent.putExtra("qCodeQR", qCodeQR);
                         intent.putExtra("data", jsonQueuedPerson);
                         context.startActivity(intent);
