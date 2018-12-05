@@ -7,6 +7,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.model.PatientProfileModel;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PrimaryCheckupFragment extends Fragment implements PatientProfilePresenter, MedicalRecordListPresenter {
+public class PrimaryCheckupFragment extends Fragment implements PatientProfilePresenter, MedicalRecordListPresenter,JsonMedicalRecordPresenter {
 
     private ProgressDialog progressDialog;
     private TextView tv_patient_name, tv_address, tv_details;
@@ -74,7 +75,6 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         mv_oxygen = v.findViewById(R.id.mv_oxygen);
         mv_pulse.setNumbersOf(3,0);
         mv_oxygen.setNumbersOf(2,0);
-        mv_weight.setValue(14556);
         Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(iv_profile);
         listview = v.findViewById(R.id.listview);
         iv_profile.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +102,17 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
             medicalHistoryModel.fetch(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(getArguments().getString("qCodeQR")).setQueueUserId(getArguments().getString("qUserId")));
+
+            JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+            jsonMedicalRecord.setRecordReferenceId(getArguments().getString("refrenceID"));
+            jsonMedicalRecord.setCodeQR(getArguments().getString("qCodeQR"));
+            medicalHistoryModel.setJsonMedicalRecordPresenter(this);
+            medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);
+
+
+
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -174,9 +185,27 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
 
     @Override
     public void medicalRecordListError() {
-
+        dismissProgress();
     }
+    @Override
+    public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
+        if(null != jsonMedicalRecord){
+            Log.e("data",jsonMedicalRecord.toString());
+            try{
+                mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
+                mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight())*100;
+                double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature())*100;
+                mv_weight.setValue((int)d1);
+                mv_temperature.setValue((int)d2);
 
+                //mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        dismissProgress();
+    }
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
