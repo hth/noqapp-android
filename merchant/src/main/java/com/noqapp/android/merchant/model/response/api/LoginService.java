@@ -22,10 +22,10 @@ public interface LoginService {
     @FormUrlEncoded
     @POST("login")
     Call<Void> login(
-            @Field("mail")
-            String mail,
+        @Field("mail")
+        String mail,
 
-            @Field("password")
-            String password
+        @Field("password")
+        String password
     );
 }
