@@ -122,6 +122,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("rr")
     private String recordReferenceId;
 
+    @JsonProperty("dbn")
+    private String diagnosedByDisplayName;
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -389,6 +392,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public String getDiagnosedByDisplayName() {
+        return diagnosedByDisplayName;
+    }
+
+    public JsonMedicalRecord setDiagnosedByDisplayName(String diagnosedByDisplayName) {
+        this.diagnosedByDisplayName = diagnosedByDisplayName;
         return this;
     }
 
