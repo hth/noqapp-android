@@ -6,6 +6,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
@@ -19,6 +20,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +31,7 @@ import android.widget.Toast;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 
-public class PhysicalDialogActivity extends AppCompatActivity implements MedicalRecordPresenter {
+public class PhysicalDialogActivity extends AppCompatActivity implements MedicalRecordPresenter,JsonMedicalRecordPresenter {
     private ProgressDialog progressDialog;
     private MeterView mv_weight, mv_pulse, mv_temperature, mv_oxygen;
     private EditText edt_bp;
@@ -120,7 +122,14 @@ public class PhysicalDialogActivity extends AppCompatActivity implements Medical
             }
         });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            //progressDialog.show();
+            progressDialog.show();
+            JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+            jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
+            jsonMedicalRecord.setCodeQR(codeQR);
+            medicalHistoryModel.setJsonMedicalRecordPresenter(this);
+            medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);
 
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalDialogActivity.this);
@@ -160,7 +169,8 @@ public class PhysicalDialogActivity extends AppCompatActivity implements Medical
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
@@ -179,5 +189,25 @@ public class PhysicalDialogActivity extends AppCompatActivity implements Medical
     public void authenticationFailure() {
         dismissProgress();
         AppUtils.authenticationProcessing();
+    }
+
+    @Override
+    public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
+        if(null != jsonMedicalRecord){
+            Log.e("data",jsonMedicalRecord.toString());
+            try{
+                mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
+                mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight())*100;
+                double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature())*100;
+                mv_weight.setValue((int)d1);
+                mv_temperature.setValue((int)d2);
+
+                //mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        dismissProgress();
     }
 }
