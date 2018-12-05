@@ -52,7 +52,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecordList.get(position).getDiagnosedById());
+        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecordList.get(position).getDiagnosedByDisplayName());
         recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
         recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
         recordHolder.tv_complaints.setText(jsonMedicalRecordList.get(position).getChiefComplain());

@@ -57,7 +57,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder = (RecordHolder) view.getTag();
         }
         JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecordList.get(position);
-        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById());
+        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
         recordHolder.tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         recordHolder.tv_business_category_name.setText("("+jsonMedicalRecord.getBizCategoryName()+")");
         recordHolder.tv_complaints.setText(jsonMedicalRecord.getChiefComplain());

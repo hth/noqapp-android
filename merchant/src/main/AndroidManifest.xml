@@ -67,6 +67,12 @@
                 android:theme="@style/myDialog"
                 android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
         <activity
+                android:name="com.noqapp.android.merchant.views.activities.PhysicalDialogActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:excludeFromRecents="true"
+                android:theme="@style/myDialog"
+                android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+        <activity
                 android:name="com.noqapp.android.merchant.views.activities.NotificationActivity"
                 android:theme="@style/BaseTheme">
             <intent-filter>

@@ -200,7 +200,6 @@ android {
             buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
-            buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
         }
 
         sandbox {

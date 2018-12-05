@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.model;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.response.api.health.MedicalRecordService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -25,6 +26,11 @@ public class MedicalHistoryModel {
     private MedicalRecordPresenter medicalRecordPresenter;
     private MedicalRecordListPresenter medicalRecordListPresenter;
     private QueuePersonListPresenter queuePersonListPresenter;
+    private JsonMedicalRecordPresenter jsonMedicalRecordPresenter;
+
+    public void setJsonMedicalRecordPresenter(JsonMedicalRecordPresenter jsonMedicalRecordPresenter) {
+        this.jsonMedicalRecordPresenter = jsonMedicalRecordPresenter;
+    }
 
     public MedicalHistoryModel(MedicalRecordListPresenter medicalRecordListPresenter) {
         this.medicalRecordListPresenter = medicalRecordListPresenter;
@@ -130,6 +136,35 @@ public class MedicalHistoryModel {
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
                 Log.e("FollowUpList error", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
+            }
+        });
+    }
+
+    public void retrieveMedicalRecord(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
+        medicalRecordService.retrieve(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonMedicalRecord>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonMedicalRecord> call, @NonNull Response<JsonMedicalRecord> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("retrieve response", String.valueOf(response.body()));
+                        jsonMedicalRecordPresenter.jsonMedicalRecordResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while retrieve");
+                        jsonMedicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        jsonMedicalRecordPresenter.authenticationFailure();
+                    } else {
+                        jsonMedicalRecordPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonMedicalRecord> call, @NonNull Throwable t) {
+                Log.e("retrieve error", t.getLocalizedMessage(), t);
+                jsonMedicalRecordPresenter.responseErrorPresenter(null);
             }
         });
     }

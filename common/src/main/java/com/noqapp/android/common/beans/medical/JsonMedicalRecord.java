@@ -1,6 +1,7 @@
 package com.noqapp.android.common.beans.medical;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonRecordAccess;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
@@ -121,6 +122,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @JsonProperty("rr")
     private String recordReferenceId;
+
+    @JsonProperty("dbn")
+    private String diagnosedByDisplayName;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
@@ -389,6 +396,24 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public String getDiagnosedByDisplayName() {
+        return diagnosedByDisplayName;
+    }
+
+    public JsonMedicalRecord setDiagnosedByDisplayName(String diagnosedByDisplayName) {
+        this.diagnosedByDisplayName = diagnosedByDisplayName;
+        return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonMedicalRecord setError(ErrorEncounteredJson error) {
+        this.error = error;
         return this;
     }
 

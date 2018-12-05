@@ -103,6 +103,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         codeQR = getIntent().getStringExtra("qCodeQR");
         bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
         bppf.putString("qCodeQR", codeQR);
+        bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
         primaryCheckupFragment.setArguments(bppf);
         symptomsFragment = new SymptomsFragment();
         examinationFragment = new ExaminationFragment();

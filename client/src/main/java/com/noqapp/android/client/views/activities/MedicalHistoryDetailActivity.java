@@ -69,7 +69,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_instruction.setText(jsonMedicalRecord.getPlanToPatient());
         tv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
 
-        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedById());
+        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
         tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
