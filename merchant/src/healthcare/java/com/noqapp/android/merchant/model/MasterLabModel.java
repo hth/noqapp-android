@@ -3,7 +3,7 @@ package com.noqapp.android.merchant.model;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.interfaces.FilePresenter;
 import com.noqapp.android.merchant.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.model.response.api.health.MasterLabController;
+import com.noqapp.android.merchant.model.response.api.health.MasterLabService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.Constants;
@@ -25,7 +25,7 @@ public class MasterLabModel {
 
     private static final String TAG = PatientProfileModel.class.getSimpleName();
 
-    private static final MasterLabController masterLabController;
+    private static final MasterLabService masterLabService;
     private MasterLabPresenter masterLabPresenter;
     private FilePresenter filePresenter;
 
@@ -38,11 +38,11 @@ public class MasterLabModel {
     }
 
     static {
-        masterLabController = RetrofitClient.getClient().create(MasterLabController.class);
+        masterLabService = RetrofitClient.getClient().create(MasterLabService.class);
     }
 
     public void add(String did, String mail, String auth, JsonMasterLab jsonMasterLab) {
-        masterLabController.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
+        masterLabService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -72,7 +72,7 @@ public class MasterLabModel {
 
 
     public void fetchFile(String did, String mail, String auth) {
-        masterLabController.file(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<ResponseBody>() {
+        masterLabService.file(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
