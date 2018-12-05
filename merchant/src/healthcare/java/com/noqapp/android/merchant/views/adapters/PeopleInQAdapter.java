@@ -17,6 +17,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.SimpleFormActivity;
 
 import android.app.Activity;
@@ -186,33 +187,32 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     @Override
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
-            Toast.makeText(context, "you can update any info", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context, PhysicalDialogActivity.class);
+            intent.putExtra("qCodeQR", qCodeQR);
+            intent.putExtra("data", jsonQueuedPerson);
+            context.startActivity(intent);
         } else {
             if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
-                if (!TextUtils.isEmpty(jsonQueuedPerson.getQueueUserId())) {
-                    if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                        if(null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()){
-                            // temporary crash fix
-                            LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
-                        }
-                        if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
-                            Intent intent = new Intent(context, MedicalCaseActivity.class);
-                            intent.putExtra("qCodeQR", qCodeQR);
-                            intent.putExtra("data", jsonQueuedPerson);
-                            context.startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(context, SimpleFormActivity.class);
-                            intent.putExtra("qCodeQR", qCodeQR);
-                            intent.putExtra("data", jsonQueuedPerson);
-                            context.startActivity(intent);
-                        }
-                    } else {
-                        Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
+                if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                    if (null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()) {
+                        // temporary crash fix
+                        LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
                     }
-
+                    if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
+                        Intent intent = new Intent(context, MedicalCaseActivity.class);
+                        intent.putExtra("qCodeQR", qCodeQR);
+                        intent.putExtra("data", jsonQueuedPerson);
+                        context.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(context, SimpleFormActivity.class);
+                        intent.putExtra("qCodeQR", qCodeQR);
+                        intent.putExtra("data", jsonQueuedPerson);
+                        context.startActivity(intent);
+                    }
                 } else {
-                    Toast.makeText(context, "This person in not the register user. You cannot create the case history", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
                 }
+
             } else {
                 Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
             }

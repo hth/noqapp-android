@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
+
+    <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/default_bg_color"
+            android:padding="5dp"
+            android:scrollbarSize="5dip"
+            android:scrollbarThumbVertical="@android:color/darker_gray"
+            android:fadeScrollbars="false"
+            android:overScrollMode="never">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:textColor="@color/color_action_bar"
+                    android:textSize="20sp"/>
+
+            <TextView
+                    style="@style/style_mdh_header"
+                    android:text="@string/mds_physical_exam"
+                    android:textColor="@android:color/black"/>
+
+
+            <GridLayout
+                        android:id="@+id/GridLayout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:rowCount="2"
+                        android:orientation="horizontal">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_pulse"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_pulse"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_oxygen"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_oxygen"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_weight"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_weight"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_temperature"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_temperature"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
+            </GridLayout>
+
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:padding="5dp"
+                        android:text="@string/pe_bp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+                <EditText
+                        android:id="@+id/edt_bp"
+                        android:layout_width="170dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:singleLine="true"
+                        android:inputType="text"
+                        android:padding="10dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:text=""/>
+
+            </LinearLayout>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/mds_follow_up"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:padding="5dp"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                <EditText
+                        android:id="@+id/actv_followup"
+                        style="@style/style_mdh_details"
+                        android:layout_width="150dp"
+                        android:layout_marginRight="50dp"
+                        android:digits="0123456789"
+                        android:inputType="numberSigned"
+                        android:imeActionLabel="Done"
+                        android:singleLine="true"
+                        android:maxLength="2"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textColor="@android:color/black"
+                        android:text=""/>
+
+
+                <info.hoang8f.android.segmented.SegmentedGroup
+
+                        android:id="@+id/rg_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/segment_margin"
+                        android:layout_marginRight="@dimen/segment_margin"
+                        android:orientation="horizontal"
+                        segmentedgroup:sc_border_width="@dimen/segment_border_width"
+                        segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
+
+                    <RadioButton
+                            android:id="@+id/rb_days"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/rb_height"
+                            android:text="@string/days"
+                            android:checked="true"
+                            style="@style/RadioButton"/>
+
+                    <RadioButton
+                            android:id="@+id/rb_months"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/rb_height"
+                            android:text="@string/month"
+                            style="@style/RadioButton"/>
+                </info.hoang8f.android.segmented.SegmentedGroup>
+            </LinearLayout>
+
+            <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_drawable"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="90dp"
+                    android:paddingRight="90dp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_fourteen"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
+

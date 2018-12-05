@@ -11,7 +11,6 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.FilePresenter;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
@@ -752,7 +751,7 @@ public class MedicalCaseFragment extends Fragment implements MedicalRecordPresen
                     if (TextUtils.isEmpty(actv_medicine_name.getText().toString())) {
                         JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                         jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
-                        jsonMedicalRecord.setFormVersion(FormVersionEnum.valueOf(BuildConfig.MEDICAL_FORM_VERSION));
+                        jsonMedicalRecord.setFormVersion(FormVersionEnum.MFD1);
                         jsonMedicalRecord.setCodeQR(qCodeQR);
                         jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
                         jsonMedicalRecord.setChiefComplain(actv_complaints.getText().toString());
