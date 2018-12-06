@@ -5,43 +5,46 @@ import java.util.ArrayList;
 public class FeedUtils {
 
     private ArrayList<FeedObj> feedObjs = new ArrayList<>();
+
     public ArrayList<FeedObj> getFeedObjs() {
         feedObjs.clear();
 
-        feedObjs.add(new FeedObj().setTitle("7 ways to stay fit and healthy")
-                .setImageUrl("https://noqapp.com/imgs/yoga.jpg")
+        feedObjs.add(new FeedObj()
+                .setTitle("7 ways to stay fit and healthy")
+                .setImageUrl("https://noqapp.com/imgs/appmages/yoga/yoga.jpg")
                 .setContent("<p>Staying fit and healthy plays an important role in our life. People neglect their health because of the hectic daily schedules but there are little things that you can do each day that will add to being healthy and fit.</p>\n" +
                         "<p>Here are some ways to stay fit and healthy:</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>1. Regular Check-ups</h3>\n" +
                         "<p>One should get annual physical check up to make sure everything is as it should be. There is no harm getting regular check ups as it's good for your own body. Do breast or testicular self-exams and get suspicious moles checked out. Getting exams regularly benefits you because if and when something is abnormal, you will get to know about it timely and can consult with your doctor.</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>2. Get enough sleep</h3>\n" +
                         "<p>Getting enough sleep is necessary to stay fit and healthy, many of us do not get enough.</p>\n" +
                         "<p>Lack of sleep affects our physical and mental health tremendously. It also affects metabolism, mood, concentration, memory, motor skills, stress hormones and even the immune system and cardiovascular health.</p>\n" +
                         "<p>Sleep allows the body to heal, repair and rejuvenate.</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>3. Exercise</h3>\n" +
                         "<p>Exercise is important for being fit and healthy. One should walk for few minutes everyday to stay fit.</p>\n" +
                         "<p>It also improves circulation and body awareness and can help combat depression.</p>\n" +
                         "<p>Cardiovascular exercise helps to strengthen the heart and lungs, strength training helps to strengthen the muscles and stretching helps to reduce the risk of injury by increasing flexibility.</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>4. Eat healthy food</h3>\n" +
                         "<p>Eat lots of fresh fruits, vegetables,and whole grains to stay healthy and fit. Also include lean sources of protein such as poultry, fish, tofu and beans into your diet.</p>\n" +
                         "<p>One should eat a balanced meal and not overeat. Junk foods like burgers, pizza and those that are highly processed and contain artificial sweeteners should be strictly avoided.</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>5. Do not skip breakfast</h3>\n" +
                         "<p>One should have healthy breakfast as it keeps you energetic and fuelled for optimal mental and physical performance. Eating breakfast helps to maintain stable blood sugar levels and a healthy weight because you are less likely to overindulge later in the day.</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>6. Drink plenty of water</h3>\n" +
                         "<p>Drink plenty of water as it helps in keeping our bodies hydrated and to maintain a healthy body. It is the natural cleanser for our organs and digestive system. Water also helps in flushing toxins out through the skin and urine.</p>\n" +
-                        "<br />" +
+                        "<br>" +
                         "<h3>7. Do not take stress</h3>\n" +
                         "<p>Stress is not good as it harms the body and can cause a myriad of problems, from heart trouble to digestive problems. Exercise, meditation, doing what you love, appropriate boundaries, spirituality, being in nature and enjoyable hobbies helps to alleviate the harmful effects of stress on the body.</p>\n" +
                         "<p>Don't overwork and take breaks and surround yourself with people who support you.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-1")
-                .setImageUrl("https://noqapp.com/imgs/benefits-of-yoga.jpg")
+        feedObjs.add(new FeedObj()
+                .setTitle("Benefits of Yoga: Part-1")
+                .setImageUrl("https://noqapp.com/imgs/appmages/yoga/benefits-of-yoga.jpg")
                 .setContent("<h3>1.&nbsp;Improves your flexibility</h3>\n" +
                         "<p>Improved&nbsp;flexibility&nbsp;is one of the first and most obvious benefits of yoga. During your first class, you probably won't be able to touch your toes, never mind do a backbend. But if you stick with it, you'll notice a gradual loosening, and eventually, seemingly impossible poses will become possible. You'll also probably notice that aches and pains start to disappear. That's no coincidence. Tight hips can strain the knee joint due to improper alignment of the thigh and shinbones. Tight&nbsp;hamstrings can lead to a flattening of the lumbar spine, which can cause back pain. And inflexibility in muscles and connective tissue, such as fascia and ligaments, can cause poor posture.</p><br />\n" +
                         "<h3>2.&nbsp;Builds muscle strength</h3>\n" +
@@ -63,8 +66,9 @@ public class FeedUtils {
                         "<h3>10. Drops your blood pressure</h3>\n" +
                         "<p>If you've got&nbsp;high blood pressure, you might benefit from yoga. Two studies of people with hypertension, published in the British medical journal&nbsp;<em>The Lancet</em>, compared the effects of&nbsp;Savasana (Corpse Pose)&nbsp;with simply lying on a couch. After three months, Savasana was associated with a 26-point drop in systolic blood pressure (the top number) and a 15-point drop in diastolic blood pressure (the bottom number&mdash;and the higher the initial blood pressure, the bigger the drop.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-2")
-                .setImageUrl("https://noqapp.com/imgs/benefits-of-yoga.jpg")
+        feedObjs.add(new FeedObj()
+                .setTitle("Benefits of Yoga: Part-2")
+                .setImageUrl("https://noqapp.com/imgs/appmages/yoga/benefits-of-yoga.jpg")
                 .setContent("<h3>11.&nbsp;Regulates your adrenal glands</h3>\n" +
                         "<p>Yoga lowers cortisol levels. If that doesn't sound like much, consider this. Normally, the adrenal glands secrete cortisol in response to an acute crisis, which temporarily boosts immune function. If your cortisol levels stay high even after the crisis, they can compromise the immune system. Temporary boosts of cortisol help with long-term memory, but chronically high levels undermine memory and may lead to permanent changes in the brain. Additionally, excessive cortisol has been linked with major depression, osteoporosis (it extracts calcium and other minerals from bones and interferes with the laying down of new bone), high blood pressure, and insulin resistance. In rats, high cortisol levels lead to what researchers call \"food-seeking behavior\" (the kind that drives you to eat when you're upset, angry, or stressed). The body takes those extra calories and distributes them as fat in the abdomen, contributing to weight gain and the risk of diabetes and heart attack.</p><br />\n" +
                         "<h3>12.&nbsp;Makes you happier</h3>\n" +
@@ -86,8 +90,9 @@ public class FeedUtils {
                         "<h3>20.&nbsp;Helps you sleep deeper</h3>\n" +
                         "<p>Stimulation is good, but too much of it taxes the nervous system. Yoga can provide relief from the hustle and bustle of modern life. Restorative asana,&nbsp;yoga nidra&nbsp;(a form of guided relaxation), Savasana, pranayama, and meditation encourage&nbsp;pratyahara, a turning inward of the senses, which provides downtime for the nervous system. Another by-product of a regular yoga practice, studies suggest, is better sleep&mdash;which means you'll be less tired and stressed and less likely to have accidents.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-3")
-                .setImageUrl("https://noqapp.com/imgs/benefits-of-yoga.jpg")
+        feedObjs.add(new FeedObj()
+                .setTitle("Benefits of Yoga: Part-3")
+                .setImageUrl("https://noqapp.com/imgs/appmages/yoga/benefits-of-yoga.jpg")
                 .setContent("<h3>21.&nbsp;Boosts your immune system functionality</h3>\n" +
                         "<p>Asana and pranayama probably improve immune function, but, so far, meditation has the strongest scientific support in this area. It appears to have a beneficial effect on the functioning of the immune system, boosting it when needed (for example, raising antibody levels in response to a vaccine) and lowering it when needed (for instance, mitigating an inappropriately aggressive immune function in an autoimmune disease like psoriasis).</p><br />\n" +
                         "<h3>22.&nbsp;Gives your lungs room to breathe</h3>\n" +
@@ -110,8 +115,9 @@ public class FeedUtils {
                         "<h3>30.&nbsp;Builds awareness for transformation</h3>\n" +
                         "<p>Yoga and meditation build awareness. And the more aware you are, the easier it is to break free of destructive emotions like anger. Studies suggest that chronic anger and hostility are as strongly linked to heart attacks as are smoking, diabetes, and elevated cholesterol. Yoga appears to reduce anger by increasing feelings of compassion and interconnection and by calming the nervous system and the mind. It also increases your ability to step back from the drama of your own life, to remain steady in the face of bad news or unsettling events. You can still react quickly when you need to&mdash;and there's evidence that yoga speeds reaction time&mdash;but you can take that split second to choose a more thoughtful approach, reducing suffering for yourself and others.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Special Skin Care for Summer").
-                setImageUrl("https://noqapp.com/imgs/skin.jpg")
+        feedObjs.add(new FeedObj()
+                .setTitle("Special Skin Care for Summer")
+                .setImageUrl("https://noqapp.com/imgs/appmages/skin/skin.jpg")
                 .setContent("<p>Summers can be severe. The skin feels the heat too. Proper care needs to be taken for it to radiate even when the temperatures rise. Dr. Thadani guides us by giving us some useful pointers. Read on..</p><br />\n" +
                         "<p><strong>Effects of the summer heat and humidity on the skin</strong></p>\n" +
                         "<p>Excess heat increases sweat production and the humidity hinders its ability to evaporate away from the skin. This means more oil is available to clog pores which can exacerbate acne. Also, extreme heat and humidity can facilitate bacterial infections such as impetigo and fungal infections like athlete&rsquo;s footor intertrigo, which are rashes seen in body folds. This is that time of the year when a lot of patients who battle those conditions become very uncomfortable.</p><br />\n" +
@@ -130,71 +136,103 @@ public class FeedUtils {
                         "<p><strong>Sun allergy:</strong>&nbsp;You can develop hives (an allergic skin reaction) when you&rsquo;re in the sun if you:</p>\n" +
                         "<p>&bull; Take certain medications<br />&bull; Have a sun sensitivity (usually runs in the family) If you have an allergic reaction to the sun, you&rsquo;ll see red, scaly, and extremely itchy bumps on some (or all) bare skin. Some people also get blisters. To prevent an allergic skin reaction:<br />&bull; Check your medication container to find out if it can cause an allergic reaction when you go out in the sun. Medications that can cause an allergic sun reaction include ketoprofen (found in some pain meds) and these antibiotics &mdash; tetracycline, doxycycline, and minocycline. If the medicine can cause a reaction, stay out of the sun.<br />&bull; Protect your skin from the sun. You can do this by seeking shade, wearing sun-protective clothes, and applying sunscreen that offers broad spectrum protection, water resistance, and an SPF of 30 or more.</p>\n"));
 
-        feedObjs.add(new FeedObj().setTitle("Healing Techniques for Acne Scars").setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/09/Healing-techniques-for-acne-2.png")
-                .setContent("<p>If acne scars bother you, there are safe and effective treatments available. Treatment can diminish acne scars that cause depressions in the skin. Treatment can also safely reduce raised acne scars. There are several treatments possible in today&rsquo;s time and technology. Treatments include laser treatments,minor skin surgeries, chemical peels, and fillers. As we age, acne scars often become more noticeable because our skin loses collagen. The key to effective treatment is to select the best one for each scar type.</p><br />\n" +
-                        "\t<p>Before getting treatment for acne scars, it is important to clear your acne. New acne breakouts can lead to new acne scars. Having acne also means that your skin is inflamed. Inflammation reduces the effectiveness of treatment for acne scars.</p>\n" +
-                        "\t<p>Treatment for acne scars At SSD Hospital, we use procedures to minimize acne scars which are determined by your health care provider based on:</p>\n" +
-                        "\t<p>&bull; Your age, overall health, and medical history<br />&bull; Severity of the scar<br />&bull; Type of scar<br />&bull; Your tolerance for specific medications, procedures, or therapies<br />&bull; Your opinion or preference</p>\n" +
-                        "\t<p><strong>Dermabrasion</strong></p>\n" +
-                        "\t<p>Dermabrasion may be used to minimize small scars, minor skin surface irregularities, surgical scars, and acne scars. As the name implies, dermabrasion involves removing the top layers of skin with an electrical machine that abrades the skin. As the skin heals from the procedure, the surface appears smoother and fresher. You will typically need 5 to 7 days at home to recover. Microdermabrasion is a less invasive option typically performed in a series of treatments that do not require the same downtime.</p><br />\n" +
-                        "\t<p>&nbsp;</p>\n" +
-                        "\t<p>&bull;<strong>&nbsp;Chemical peels</strong>&nbsp;&ndash; Chemical peels are often used to minimize sun-damaged skin, irregular pigment, and superficial scars. The top layer of skin is removed with a chemical application to the skin. By removing the top layer, the skin regenerates, often improving its appearance.</p>\n" +
-                        "\t<p>&nbsp;</p>\n" +
-                        "\t<p>&bull;&nbsp;<strong>Dermal filler injections</strong>&nbsp;-These are injected beneath the skin to replace the body&rsquo;s natural collagen that has been lost. Injectable dermal fillers are generally used to treat wrinkles, scars, and facial lines. Most fillers are temporary, lasting about 1 year.</p>\n" +
-                        "\t<p>&nbsp;</p>\n" +
-                        "\t<p>&bull;&nbsp;<strong>Laser resurfacing and light therapies</strong>&nbsp;&ndash; Laser resurfacing uses high-energy light to burn away damaged skin. Laser resurfacing may be used to minimize wrinkles and fine scars. A pulsed dye laser may be used to specifically treat raised acne scars. Additionally, for lighter-skinned people, intense pulsed light may be another treatment option.</p>\n" +
-                        "\t<p>&nbsp;</p>\n" +
-                        "\t<p>&bull;&nbsp;<strong>Injections</strong>&nbsp;&ndash; Commonly referred to as intralesional injections. These involve injecting a medication, usually a steroid, directly into a<br />raised scar, causing it to flatten and soften.</p>\n" +
-                        "\t<p>&nbsp;</p>\n" +
-                        "\t<p>&bull;&nbsp;<strong>Cryotherapy</strong>&nbsp;&ndash; The purpose of this treatment is to freeze scar tissue, causing it to die and eventually fall off. Sometimes, this is used in combination with intralesional injections. One potential risk of cryotherapy, however, is lightening the skin, causing the treated area to be lighter than the surrounding skin.</p>\n" +
-                        "\t<p>&nbsp;</p>\n" +
-                        "\t<p>&bull;&nbsp;<strong>Topical creams</strong>&nbsp;&ndash; Creams with retinoids or silicone can also help reduce the appearance of scars. Microneedling-RF with radio frequency waves is an other technology that can work for very deep and pitted acne scars. These treatments then trigger the body&rsquo;s natural process, stimulating<br />growth of new, healthy tissue, which results in smooth, refreshed and scar free skin.</p>\n"));
+        feedObjs.add(new FeedObj()
+                .setTitle("Healing Techniques for Acne Scars")
+                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/09/Healing-techniques-for-acne-2.png")
+                .setContent("<p>If acne scars bother you, there are safe and effective treatments available. Treatment can diminish acne scars that cause depressions in the skin. Treatment can also safely reduce raised acne scars. There are several treatments possible in today&rsquo;s time and technology. Treatments include laser treatments,minor skin surgeries, chemical peels, and fillers. As we age, acne scars often become more noticeable because our skin loses collagen. The key to effective treatment is to select the best one for each scar type.</p>\n" +
+                        "<br>" +
+                        "<p>Before getting treatment for acne scars, it is important to clear your acne. New acne breakouts can lead to new acne scars. Having acne also means that your skin is inflamed. Inflammation reduces the effectiveness of treatment for acne scars.</p>" +
+                        "<br>" +
+                        "<p>Treatment for acne scars At SSD Hospital, we use procedures to minimize acne scars which are determined by your health care provider based on:</p>" +
+                        "<br>" +
+                        "<p>&bull; Your age, overall health, and medical history<br />&bull; Severity of the scar<br />&bull; Type of scar<br />&bull; Your tolerance for specific medications, procedures, or therapies<br />&bull; Your opinion or preference</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>&nbsp;Dermabrasion </strong>&nbsp;&ndash; may be used to minimize small scars, minor skin surface irregularities, surgical scars, and acne scars. As the name implies, dermabrasion involves removing the top layers of skin with an electrical machine that abrades the skin. As the skin heals from the procedure, the surface appears smoother and fresher. You will typically need 5 to 7 days at home to recover. Microdermabrasion is a less invasive option typically performed in a series of treatments that do not require the same downtime.</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>&nbsp;Chemical peels</strong>&nbsp;&ndash; Chemical peels are often used to minimize sun-damaged skin, irregular pigment, and superficial scars. The top layer of skin is removed with a chemical application to the skin. By removing the top layer, the skin regenerates, often improving its appearance.</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>Dermal filler injections</strong>&nbsp;-These are injected beneath the skin to replace the body&rsquo;s natural collagen that has been lost. Injectable dermal fillers are generally used to treat wrinkles, scars, and facial lines. Most fillers are temporary, lasting about 1 year.</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>Laser resurfacing and light therapies</strong>&nbsp;&ndash; Laser resurfacing uses high-energy light to burn away damaged skin. Laser resurfacing may be used to minimize wrinkles and fine scars. A pulsed dye laser may be used to specifically treat raised acne scars. Additionally, for lighter-skinned people, intense pulsed light may be another treatment option.</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>Injections</strong>&nbsp;&ndash; Commonly referred to as intralesional injections. These involve injecting a medication, usually a steroid, directly into a<br />raised scar, causing it to flatten and soften.</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>Cryotherapy</strong>&nbsp;&ndash; The purpose of this treatment is to freeze scar tissue, causing it to die and eventually fall off. Sometimes, this is used in combination with intralesional injections. One potential risk of cryotherapy, however, is lightening the skin, causing the treated area to be lighter than the surrounding skin.</p>" +
+                        "<br>" +
+                        "<p>&bull;&nbsp;<strong>Topical creams</strong>&nbsp;&ndash; Creams with retinoids or silicone can also help reduce the appearance of scars. Microneedling-RF with radio frequency waves is an other technology that can work for very deep and pitted acne scars. These treatments then trigger the body&rsquo;s natural process, stimulating<br />growth of new, healthy tissue, which results in smooth, refreshed and scar free skin.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Diet During Pregnancy").
-                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/mamici-nutritie-sanatoasa.jpg")
-                .setContent("<h3><strong>What to eat and what not to eat?</strong></h3><br />\n" +
-                        "<p>Pregnancy brings in a lot of emotions. Every one you meet has a piece of advice to give you regarding what you should do and what you should eat. This brings in even more confusion. This Indian diet plan for pregnancy will help you clear the air a bit.</p><br />\n" +
-                        "<p>What you eat will play a crucial role in your unborn baby&rsquo;s growth and development. The key to good nutrition during pregnancy is balance. It is important to eat right types of food in right quantity.<br />Here are a few food groups to include in your everyday diet.</p><br />\n" +
-                        "<p><strong>Milk and Milk Products:</strong>&nbsp;This group is a major source of protein, calcium, phosphorus and vitamins. Dairy products are one of the best sources of calcium and your body needs a lot of it during pregnancy. Cheese, milk, yogurt and paneer are excellent foods for pregnancy.</p><br />\n" +
-                        "<p><strong>Meat, Poultry, Fish,&nbsp;</strong>Eggs<strong>&nbsp;and Nuts:</strong>&nbsp;These foods provide protein, iron and zinc. There is an increased demand for protein particularly in the second half of pregnancy.</p><br />\n" +
-                        "<p><strong>Pulses, Dals, Cereals,&nbsp;</strong>Nuts<strong>&nbsp;and Wholegrains:</strong>&nbsp;If you are not a meat eater, include Pulses, Dals, Cereals, Nuts and Wholegrains to make up for body&rsquo;s extra requirement of protein.</p><br />\n" +
-                        "<p>If you are a vegetarian, you will need about 45 gms of Nuts and 2/3 rd cups of pulses each day. This group provide complex carbohydrates (starches), an important source of energy, in addition to vitamins, minerals and fibre.</p><br />\n" +
-                        "<p><strong>Fruits:</strong>&nbsp;This group provides Important nutrition during pregnancy like vitamins A and C, potassium and fibre. Fruits such as oranges, grapefruit, melons and berries are the best sources of Vitamin C. It is advisable to eat three or more servings of fruit a day.</p><br />\n" +
-                        "<p><strong>Vegetables:</strong>&nbsp;One should have raw, leafy vegetables like spinach (palak) and other vegetables like carrots (gajar), sweet potatoes (shakarkand), corn (makka), peas (matar) and potatoes. These foods contain vitamins A and C, folate, and minerals such as iron and magnesium. They are also low in fat and contain fibre, which helps to alleviate constipation.</p><br />\n" +
-                        "<p><strong>Fats, Oils and Sweets:</strong>&nbsp;Use sparingly, since these products contain calories, but few vitamins or minerals. Fats should not make up more than 30 percent of your daily calories. Try to select low-fat foods.</p><br />\n" +
-                        "<p><strong>Iron-Rich Foods:</strong>&nbsp;Pregnant women need 27 milligrams of iron a day, which is double the amount needed by women who are not expecting. Getting too little iron during pregnancy can lead to anaemia, a condition resulting in weakness and an increased risk of infections.</p><br />\n" +
-                        "<p>For better absorption of the mineral, include a good source of vitamin C at the same meal when eating iron-rich foods. Food sources for iron are meat, raisins, prunes, beans, poultry, soy and spinach. Foods rich in vitamin C &ndash; citrus fruits, potatoes and broccoli.</p><br />\n" +
-                        "<p><strong>Folic Acid:</strong>&nbsp;Folic acid, also known as folate when found in foods, is a B vitamin that is crucial in helping to prevent birth defects in the baby&rsquo;s brain and spine, known as neural tube defects. It may be hard to get the recommended amount of folic acid from diet alone. It is recommended that women who are trying to have a baby should take 400 micrograms of folic acid per day for at least&nbsp;one month before becoming pregnant. Food sources for folic acid are leafy green vegetables, fortified or enriched cereals, breads and pastas.</p><br />\n" +
-                        "<p><strong>Calcium:</strong>&nbsp;is a mineral used to build a baby&rsquo;s bones and teeth. If a pregnant woman does not consume enough calcium, the mineral will be drawn from the mother&rsquo;s stores in her bones and given to the baby to meet the extra demands of pregnancy. Many dairy products are also fortified with vitamin D, another nutrient that works with calcium to develop a baby&rsquo;s bones and teeth. Pregnant women needs 1,000 milligrams of calcium a day. Food sources for milk, curd, cheese, fruits and vegetables, and fish.</p><br />\n" +
-                        "<p><strong>Protein:</strong>&nbsp;More protein is needed during pregnancy, but most women don&rsquo;t have problems getting enough of these foods in their diets. Protein is described as &ldquo;a builder nutrient,&rdquo; because it helps to build important organs in the baby. Food sources for Protein are pulses, milk &amp; milk products, soya, meat, fish, beans and peas, eggs, nuts.</p><br />\n" +
-                        "<p><strong>Foods to limit:</strong>&nbsp;Consumption of Caffeine, sugary drinks, fast food and certain categories of fish containing high levels of mercury should be limited.</p><br />\n" +
-                        "<p><strong>Foods to avoid:</strong>&nbsp;Consumption of alcohol, smoking tobacco and unpasteurised food, for ex. raw meat, raw milk, should be avoided.</p>\n"));
+        feedObjs.add(new FeedObj()
+                .setTitle("Diet During Pregnancy")
+                .setImageUrl("https://noqapp.com/imgs/appmages/Pregnant_Woman_Holding_Apple.jpg")
+                .setContent("<h3><strong>What to eat and what not to eat?</strong></h3>" +
+                        "<br>" +
+                        "<p>Pregnancy brings in a lot of emotions. Every one you meet has a piece of advice to give you regarding what you should do and what you should eat. This brings in even more confusion. This Indian diet plan for pregnancy will help you clear the air a bit.</p>" +
+                        "<br>" +
+                        "<p>What you eat will play a crucial role in your unborn baby&rsquo;s growth and development. The key to good nutrition during pregnancy is balance. It is important to eat right types of food in right quantity.<br />Here are a few food groups to include in your everyday diet.</p>" +
+                        "<br>" +
+                        "<p><strong>Milk and Milk Products:</strong>&nbsp;This group is a major source of protein, calcium, phosphorus and vitamins. Dairy products are one of the best sources of calcium and your body needs a lot of it during pregnancy. Cheese, milk, yogurt and paneer are excellent foods for pregnancy.</p>" +
+                        "<br>" +
+                        "<p><strong>Meat, Poultry, Fish,&nbsp;</strong>Eggs<strong>&nbsp;and Nuts:</strong>&nbsp;These foods provide protein, iron and zinc. There is an increased demand for protein particularly in the second half of pregnancy.</p>" +
+                        "<br>" +
+                        "<p><strong>Pulses, Dals, Cereals,&nbsp;</strong>Nuts<strong>&nbsp;and Wholegrains:</strong>&nbsp;If you are not a meat eater, include Pulses, Dals, Cereals, Nuts and Wholegrains to make up for body&rsquo;s extra requirement of protein.</p>" +
+                        "<br>" +
+                        "<p>If you are a vegetarian, you will need about 45 gms of Nuts and 2/3 rd cups of pulses each day. This group provide complex carbohydrates (starches), an important source of energy, in addition to vitamins, minerals and fibre.</p>" +
+                        "<br>" +
+                        "<p><strong>Fruits:</strong>&nbsp;This group provides Important nutrition during pregnancy like vitamins A and C, potassium and fibre. Fruits such as oranges, grapefruit, melons and berries are the best sources of Vitamin C. It is advisable to eat three or more servings of fruit a day.</p>" +
+                        "<br>" +
+                        "<p><strong>Vegetables:</strong>&nbsp;One should have raw, leafy vegetables like spinach (palak) and other vegetables like carrots (gajar), sweet potatoes (shakarkand), corn (makka), peas (matar) and potatoes. These foods contain vitamins A and C, folate, and minerals such as iron and magnesium. They are also low in fat and contain fibre, which helps to alleviate constipation.</p>" +
+                        "<br>" +
+                        "<p><strong>Fats, Oils and Sweets:</strong>&nbsp;Use sparingly, since these products contain calories, but few vitamins or minerals. Fats should not make up more than 30 percent of your daily calories. Try to select low-fat foods.</p>" +
+                        "<br>" +
+                        "<p><strong>Iron-Rich Foods:</strong>&nbsp;Pregnant women need 27 milligrams of iron a day, which is double the amount needed by women who are not expecting. Getting too little iron during pregnancy can lead to anaemia, a condition resulting in weakness and an increased risk of infections.</p>" +
+                        "<br>" +
+                        "<p>For better absorption of the mineral, include a good source of vitamin C at the same meal when eating iron-rich foods. Food sources for iron are meat, raisins, prunes, beans, poultry, soy and spinach. Foods rich in vitamin C &ndash; citrus fruits, potatoes and broccoli.</p>" +
+                        "<br>" +
+                        "<p><strong>Folic Acid:</strong>&nbsp;Folic acid, also known as folate when found in foods, is a B vitamin that is crucial in helping to prevent birth defects in the baby&rsquo;s brain and spine, known as neural tube defects. It may be hard to get the recommended amount of folic acid from diet alone. It is recommended that women who are trying to have a baby should take 400 micrograms of folic acid per day for at least&nbsp;one month before becoming pregnant. Food sources for folic acid are leafy green vegetables, fortified or enriched cereals, breads and pastas.</p>" +
+                        "<br>" +
+                        "<p><strong>Calcium:</strong>&nbsp;is a mineral used to build a baby&rsquo;s bones and teeth. If a pregnant woman does not consume enough calcium, the mineral will be drawn from the mother&rsquo;s stores in her bones and given to the baby to meet the extra demands of pregnancy. Many dairy products are also fortified with vitamin D, another nutrient that works with calcium to develop a baby&rsquo;s bones and teeth. Pregnant women needs 1,000 milligrams of calcium a day. Food sources for milk, curd, cheese, fruits and vegetables, and fish.</p>" +
+                        "<br>" +
+                        "<p><strong>Protein:</strong>&nbsp;More protein is needed during pregnancy, but most women don&rsquo;t have problems getting enough of these foods in their diets. Protein is described as &ldquo;a builder nutrient,&rdquo; because it helps to build important organs in the baby. Food sources for Protein are pulses, milk &amp; milk products, soya, meat, fish, beans and peas, eggs, nuts.</p>" +
+                        "<br>" +
+                        "<p><strong>Foods to limit:</strong>&nbsp;Consumption of Caffeine, sugary drinks, fast food and certain categories of fish containing high levels of mercury should be limited.</p>" +
+                        "<br>" +
+                        "<p><strong>Foods to avoid:</strong>&nbsp;Consumption of alcohol, smoking tobacco and unpasteurised food, for ex. raw meat, raw milk, should be avoided.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Pregnancy Diet Misconceptions")
-                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/mamici-nutritie-sanatoasa.jpg")
-                .setContent("<p><strong>Morning sickness:</strong>&nbsp;When a mother-to-be is experiencing morning sickness, the biggest mistake she can make is thinking that if she doesn&rsquo;t eat, she&rsquo;ll feel better. And the phrase Morning sickness is definitely not happening only in the morning, It&rsquo;s any time of day. It is advisable to eat small amounts of foods that don&rsquo;t have an odour, since smells can also upset the stomach.</p><br />\n" +
-                        "<p><strong>Food cravings:</strong>&nbsp;It is common for women to develop a sudden urge or a strong dislike for a food during pregnancy. Some common cravings are for sweets, salty or spicy foods. This food craving is a body&rsquo;s way of saying it needs a specific nutrient, such as more protein or additional liquids to quench a thirst, rather than a particular food.</p><br />\n" +
-                        "<p><strong>Eating for two:</strong>&nbsp;When people say that a pregnant woman should &ldquo;eat for two&rdquo;, it doesn&rsquo;t mean she needs to consume twice as much food or double her calories. It is advisable to add just 300 calories to her usual dietary intake.</p>\n"));
+        feedObjs.add(new FeedObj()
+                .setTitle("Pregnancy Diet Misconceptions")
+                .setImageUrl("https://noqapp.com/imgs/appmages/Pregnant_Woman_Holding_Apple.jpg")
+                .setContent("<p><strong>Morning sickness:</strong>&nbsp;When a mother-to-be is experiencing morning sickness, the biggest mistake she can make is thinking that if she doesn&rsquo;t eat, she&rsquo;ll feel better. And the phrase Morning sickness is definitely not happening only in the morning, It&rsquo;s any time of day. It is advisable to eat small amounts of foods that don&rsquo;t have an odour, since smells can also upset the stomach.</p>" +
+                        "<br>" +
+                        "<p><strong>Food cravings:</strong>&nbsp;It is common for women to develop a sudden urge or a strong dislike for a food during pregnancy. Some common cravings are for sweets, salty or spicy foods. This food craving is a body&rsquo;s way of saying it needs a specific nutrient, such as more protein or additional liquids to quench a thirst, rather than a particular food.</p>" +
+                        "<br>" +
+                        "<p><strong>Eating for two:</strong>&nbsp;When people say that a pregnant woman should &ldquo;eat for two&rdquo;, it doesn&rsquo;t mean she needs to consume twice as much food or double her calories. It is advisable to add just 300 calories to her usual dietary intake.</p>"));
 
-        feedObjs.add(new FeedObj().setTitle("Weight Gain During Pregnancy")
-                .setImageUrl("https://noqapp.com/imgs/preg.jpg")
-                .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p><br />\n" +
-                        "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p><br />\n" +
-                        "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>\n" +
-                        "<ul>\n" +
-                        "<li>Underweight women, who have a Body Mass Index (BMI) below 18.5, should gain 12 to 18 Kgs</li>\n" +
-                        "<li>Normal weight women, who have a BMI of 18.5 to 24.9, should gain 11. to 16 Kgs</li>\n" +
-                        "<li>Overweight women, who have a BMI of 25.0 to 29.9, should gain 7 to 11 Kgs).</li>\n" +
-                        "<li>Obese women, who have a BMI of 30.0 and above, should gain 5 to 9 Kgs</li>\n" +
+        feedObjs.add(new FeedObj()
+                .setTitle("Weight Gain During Pregnancy")
+                .setImageUrl("https://noqapp.com/imgs/appmages/preg.jpg")
+                .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p>" +
+                        "<br>" +
+                        "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p>" +
+                        "<br>" +
+                        "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>" +
+                        "<ul>" +
+                        "<li>&nbsp;Underweight women, who have a Body Mass Index (BMI) below 18.5, should gain 12 to 18 Kgs</li>" +
+                        "<li>&nbsp;Normal weight women, who have a BMI of 18.5 to 24.9, should gain 11. to 16 Kgs</li>" +
+                        "<li>&nbsp;Overweight women, who have a BMI of 25.0 to 29.9, should gain 7 to 11 Kgs).</li>" +
+                        "<li>&nbsp;Obese women, who have a BMI of 30.0 and above, should gain 5 to 9 Kgs</li>" +
                         "</ul>"));
 
-        feedObjs.add(new FeedObj().setTitle("Exercise During Pregnancy").
-                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
-                .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p><br />\n" +
-                        "<p>Doctors generally recommend 30 minutes or more of moderate exercise per day, unless you have a medical or pregnancy complication.</p><br />\n" +
-                        "<p>Most exercises are safe to perform during pregnancy, as long as you exercise with caution and do not overdo it. The safest and most productive activities are swimming, brisk walking, indoor stationary cycling, step or elliptical machines and Yoga.</p><br />\n" +
-                        "<p>However, if you have a medical problem, such as asthma or heart disease, or diabetes, exercise may not be advisable. Exercise may also be harmful if you have some pregnancy-related conditions such as bleeding, spotting, threatened or recurrent miscarriage, previous premature births or history of early labour, etc. It is always advisable to discuss with your doctor before beginning any specific exercise program.</p>\n"));
-        
+        feedObjs.add(new FeedObj()
+                .setTitle("Exercise During Pregnancy")
+                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
+                .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p>" +
+                        "<br>" +
+                        "<p>Doctors generally recommend 30 minutes or more of moderate exercise per day, unless you have a medical or pregnancy complication.</p>" +
+                        "<br>" +
+                        "<p>Most exercises are safe to perform during pregnancy, as long as you exercise with caution and do not overdo it. The safest and most productive activities are swimming, brisk walking, indoor stationary cycling, step or elliptical machines and Yoga.</p>" +
+                        "<br>" +
+                        "<p>However, if you have a medical problem, such as asthma or heart disease, or diabetes, exercise may not be advisable. Exercise may also be harmful if you have some pregnancy-related conditions such as bleeding, spotting, threatened or recurrent miscarriage, previous premature births or history of early labour, etc. It is always advisable to discuss with your doctor before beginning any specific exercise program.</p>"));
+
 //        feedObjs.add(new FeedObj().setTitle("Stages of Pregnancy").
 //                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/15977659_1273843289338522_6523698174661880087_n-e1489668918984.jpg")
 //                .setContent("<p>In India, getting pregnant and giving birth are most celebrated milestones in a woman&rsquo;s life.<br />Pregnancy, specifically in India, is very important event due to its connection with our history, culture,religious beliefs and mythology.</p>\n" +
