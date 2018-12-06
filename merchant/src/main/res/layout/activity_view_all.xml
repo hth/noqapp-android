@@ -5,32 +5,32 @@
               android:background="#99ffffff"
               android:orientation="vertical">
 
-<include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"/>
 
 
-<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    <TextView
-            android:id="@+id/tv_empty"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/history_alert"
-            android:textSize="@dimen/text_size_fourteen" />
+            android:layout_height="match_parent">
 
-    <ExpandableListView
-            android:id="@+id/exp_list_view"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:groupIndicator="@null"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp" />
 
-</FrameLayout>
+        <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/followup_alert"
+                android:textSize="@dimen/text_size_fourteen"/>
+
+        <ExpandableListView
+                android:id="@+id/exp_list_view"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:groupIndicator="@null"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp"/>
+
+    </FrameLayout>
 
 
 </LinearLayout>

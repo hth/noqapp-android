@@ -22,7 +22,6 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
@@ -191,18 +190,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             }
         });
         iv_view_followup = itemView.findViewById(R.id.iv_view_followup);
-        iv_view_followup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    Intent in = new Intent(getActivity(), FollowUpListActivity.class);
-                    in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    ((Activity) context).startActivity(in);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(context);
-                }
-            }
-        });
+
         iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

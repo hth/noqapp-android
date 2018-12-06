@@ -5,11 +5,15 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -26,7 +30,21 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        iv_view_followup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(getActivity(), FollowUpListActivity.class);
+                    in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    ((Activity) context).startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(context);
+                }
+            }
+        });
+        return v;
+
     }
 
     @Override
