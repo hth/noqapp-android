@@ -7,17 +7,19 @@ import com.squareup.picasso.Picasso;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class FeedActivity extends AppCompatActivity {
+public class FeedActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        initActionsViews(true);
+
+        tv_toolbar_title.setText("");
         ImageView iv_bg = findViewById(R.id.iv_bg);
         TextView tv_details = findViewById(R.id.tv_details);
         TextView tv_title = findViewById(R.id.tv_title);

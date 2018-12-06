@@ -1,44 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="vertical"
-            android:gravity="center">
+    <include layout="@layout/toolbar_layout" />
 
-        <TextView
-                android:id="@+id/tv_title"
+    <ScrollView
                 android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:padding="5dp"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:text="Bridal skin care"
-                android:textColor="@android:color/black"/>
+                android:layout_height="match_parent">
 
-
-        <ImageView
-                android:id="@+id/iv_bg"
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="250dp"
-                android:layout_margin="10dp"/>
-
-
-        <TextView
-                android:id="@+id/tv_details"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:textSize="16sp"/>
+                android:orientation="vertical"
+                android:gravity="center">
+
+            <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"/>
 
 
-    </LinearLayout>
+            <ImageView
+                    android:id="@+id/iv_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="250dp"
+                    android:layout_margin="10dp"/>
 
-</ScrollView>
+
+            <TextView
+                    android:id="@+id/tv_details"
+                    android:layout_width="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textSize="16sp"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>
