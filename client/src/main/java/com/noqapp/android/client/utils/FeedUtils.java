@@ -12,24 +12,31 @@ public class FeedUtils {
                 .setImageUrl("http://www.enjoyindiatour.com/images/yoga_asanas.jpg")
                 .setContent("<p>Staying fit and healthy plays an important role in our life. People neglect their health because of the hectic daily schedules but there are little things that you can do each day that will add to being healthy and fit.</p>\n" +
                         "<p>Here are some ways to stay fit and healthy:</p>\n" +
-                        "<p><strong>1 Regular Check-ups:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>1. Regular Check-ups</h3>\n" +
                         "<p>One should get annual physical check up to make sure everything is as it should be. There is no harm getting regular check ups as it's good for your own body. Do breast or testicular self-exams and get suspicious moles checked out. Getting exams regularly benefits you because if and when something is abnormal, you will get to know about it timely and can consult with your doctor.</p>\n" +
-                        "<p><strong>2 Get enough sleep:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>2. Get enough sleep</h3>\n" +
                         "<p>Getting enough sleep is necessary to stay fit and healthy, many of us do not get enough.</p>\n" +
                         "<p>Lack of sleep affects our physical and mental health tremendously. It also affects metabolism, mood, concentration, memory, motor skills, stress hormones and even the immune system and cardiovascular health.</p>\n" +
                         "<p>Sleep allows the body to heal, repair and rejuvenate.</p>\n" +
-                        "<p><strong>3 Exercise:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>3. Exercise</h3>\n" +
                         "<p>Exercise is important for being fit and healthy. One should walk for few minutes everyday to stay fit.</p>\n" +
                         "<p>It also improves circulation and body awareness and can help combat depression.</p>\n" +
                         "<p>Cardiovascular exercise helps to strengthen the heart and lungs, strength training helps to strengthen the muscles and stretching helps to reduce the risk of injury by increasing flexibility.</p>\n" +
-                        "<p><strong>4 Eat healthy food:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>4. Eat healthy food</h3>\n" +
                         "<p>Eat lots of fresh fruits, vegetables,and whole grains to stay healthy and fit. Also include lean sources of protein such as poultry, fish, tofu and beans into your diet.</p>\n" +
                         "<p>One should eat a balanced meal and not overeat. Junk foods like burgers, pizza and those that are highly processed and contain artificial sweeteners should be strictly avoided.</p>\n" +
-                        "<p><strong>5 Do not skip breakfast:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>5. Do not skip breakfast</h3>\n" +
                         "<p>One should have healthy breakfast as it keeps you energetic and fuelled for optimal mental and physical performance. Eating breakfast helps to maintain stable blood sugar levels and a healthy weight because you are less likely to overindulge later in the day.</p>\n" +
-                        "<p><strong>6 Drink plenty of water:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>6. Drink plenty of water</h3>\n" +
                         "<p>Drink plenty of water as it helps in keeping our bodies hydrated and to maintain a healthy body. It is the natural cleanser for our organs and digestive system. Water also helps in flushing toxins out through the skin and urine.</p>\n" +
-                        "<p><strong>7 Do not take stress:</strong></p>\n" +
+                        "<br />" +
+                        "<h3>7. Do not take stress</h3>\n" +
                         "<p>Stress is not good as it harms the body and can cause a myriad of problems, from heart trouble to digestive problems. Exercise, meditation, doing what you love, appropriate boundaries, spirituality, being in nature and enjoyable hobbies helps to alleviate the harmful effects of stress on the body.</p>\n" +
                         "<p>Don't overwork and take breaks and surround yourself with people who support you.</p>"));
 
