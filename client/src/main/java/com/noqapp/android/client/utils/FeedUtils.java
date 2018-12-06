@@ -143,25 +143,6 @@ public class FeedUtils {
                         "\t<p>&nbsp;</p>\n" +
                         "\t<p>&bull;&nbsp;<strong>Topical creams</strong>&nbsp;&ndash; Creams with retinoids or silicone can also help reduce the appearance of scars. Microneedling-RF with radio frequency waves is an other technology that can work for very deep and pitted acne scars. These treatments then trigger the body&rsquo;s natural process, stimulating<br />growth of new, healthy tissue, which results in smooth, refreshed and scar free skin.</p>\n"));
 
-        feedObjs.add(new FeedObj().setTitle("Weight Gain During Pregnancy")
-                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/preg002.jpg")
-                .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p><br />\n" +
-                        "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p><br />\n" +
-                        "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>\n" +
-                        "<ul>\n" +
-                        "<li>Underweight women, who have a Body Mass Index (BMI) below 18.5, should gain 12 to 18 Kgs</li>\n" +
-                        "<li>Normal weight women, who have a BMI of 18.5 to 24.9, should gain 11. to 16 Kgs</li>\n" +
-                        "<li>Overweight women, who have a BMI of 25.0 to 29.9, should gain 7 to 11 Kgs).</li>\n" +
-                        "<li>Obese women, who have a BMI of 30.0 and above, should gain 5 to 9 Kgs</li>\n" +
-                        "</ul>"));
-
-        feedObjs.add(new FeedObj().setTitle("Exercise During Pregnancy").
-                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
-                .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p><br />\n" +
-                        "<p>Doctors generally recommend 30 minutes or more of moderate exercise per day, unless you have a medical or pregnancy complication.</p><br />\n" +
-                        "<p>Most exercises are safe to perform during pregnancy, as long as you exercise with caution and do not overdo it. The safest and most productive activities are swimming, brisk walking, indoor stationary cycling, step or elliptical machines and Yoga.</p><br />\n" +
-                        "<p>However, if you have a medical problem, such as asthma or heart disease, or diabetes, exercise may not be advisable. Exercise may also be harmful if you have some pregnancy-related conditions such as bleeding, spotting, threatened or recurrent miscarriage, previous premature births or history of early labour, etc. It is always advisable to discuss with your doctor before beginning any specific exercise program.</p>\n"));
-
         feedObjs.add(new FeedObj().setTitle("Diet During Pregnancy").
                 setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/mamici-nutritie-sanatoasa.jpg")
                 .setContent("<h3><strong>What to eat and what not to eat?</strong></h3><br />\n" +
@@ -187,6 +168,25 @@ public class FeedUtils {
                 .setContent("<p><strong>Morning sickness:</strong>&nbsp;When a mother-to-be is experiencing morning sickness, the biggest mistake she can make is thinking that if she doesn&rsquo;t eat, she&rsquo;ll feel better. And the phrase Morning sickness is definitely not happening only in the morning, It&rsquo;s any time of day. It is advisable to eat small amounts of foods that don&rsquo;t have an odour, since smells can also upset the stomach.</p><br />\n" +
                         "<p><strong>Food cravings:</strong>&nbsp;It is common for women to develop a sudden urge or a strong dislike for a food during pregnancy. Some common cravings are for sweets, salty or spicy foods. This food craving is a body&rsquo;s way of saying it needs a specific nutrient, such as more protein or additional liquids to quench a thirst, rather than a particular food.</p><br />\n" +
                         "<p><strong>Eating for two:</strong>&nbsp;When people say that a pregnant woman should &ldquo;eat for two&rdquo;, it doesn&rsquo;t mean she needs to consume twice as much food or double her calories. It is advisable to add just 300 calories to her usual dietary intake.</p>\n"));
+
+        feedObjs.add(new FeedObj().setTitle("Weight Gain During Pregnancy")
+                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/preg002.jpg")
+                .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p><br />\n" +
+                        "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p><br />\n" +
+                        "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>\n" +
+                        "<ul>\n" +
+                        "<li>Underweight women, who have a Body Mass Index (BMI) below 18.5, should gain 12 to 18 Kgs</li>\n" +
+                        "<li>Normal weight women, who have a BMI of 18.5 to 24.9, should gain 11. to 16 Kgs</li>\n" +
+                        "<li>Overweight women, who have a BMI of 25.0 to 29.9, should gain 7 to 11 Kgs).</li>\n" +
+                        "<li>Obese women, who have a BMI of 30.0 and above, should gain 5 to 9 Kgs</li>\n" +
+                        "</ul>"));
+
+        feedObjs.add(new FeedObj().setTitle("Exercise During Pregnancy").
+                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
+                .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p><br />\n" +
+                        "<p>Doctors generally recommend 30 minutes or more of moderate exercise per day, unless you have a medical or pregnancy complication.</p><br />\n" +
+                        "<p>Most exercises are safe to perform during pregnancy, as long as you exercise with caution and do not overdo it. The safest and most productive activities are swimming, brisk walking, indoor stationary cycling, step or elliptical machines and Yoga.</p><br />\n" +
+                        "<p>However, if you have a medical problem, such as asthma or heart disease, or diabetes, exercise may not be advisable. Exercise may also be harmful if you have some pregnancy-related conditions such as bleeding, spotting, threatened or recurrent miscarriage, previous premature births or history of early labour, etc. It is always advisable to discuss with your doctor before beginning any specific exercise program.</p>\n"));
         
 //        feedObjs.add(new FeedObj().setTitle("Stages of Pregnancy").
 //                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/15977659_1273843289338522_6523698174661880087_n-e1489668918984.jpg")
