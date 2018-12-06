@@ -81,7 +81,7 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Fetching data...");
     }
 
     protected void dismissProgress() {

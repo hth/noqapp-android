@@ -80,7 +80,7 @@ public class FollowUpListActivity extends AppCompatActivity implements QueuePers
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching followup data...");
+        progressDialog.setMessage("Fetching followup data...");
     }
 
     protected void dismissProgress() {
