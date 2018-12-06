@@ -20,12 +20,15 @@ import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FeedObj;
+import com.noqapp.android.client.utils.FeedUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
+import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -34,6 +37,7 @@ import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
+import com.noqapp.android.client.views.adapters.FeedAdapter;
 import com.noqapp.android.client.views.adapters.RecentActivityAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
@@ -75,7 +79,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener, CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener,FeedAdapter.OnItemClickListener, CurrentActivityAdapter.OnItemClickListener, RecentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     protected RelativeLayout rl_scan;
@@ -180,6 +184,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
         tv_recent_view_all.setOnClickListener(this);
+
+        RecyclerView rv_feed = view.findViewById(R.id.rv_feed);
+        rv_feed.setHasFixedSize(true);
+        rv_feed.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rv_feed.setItemAnimator(new DefaultItemAnimator());
+        FeedAdapter feedAdapter = new FeedAdapter(new FeedUtils().getFeedObjs(), getActivity(), this);
+        rv_feed.setAdapter(feedAdapter);
         return view;
     }
 
@@ -452,6 +463,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void onFeedItemClick(FeedObj item, View view, int pos) {
+        Intent in = new Intent(getActivity(), FeedActivity.class);
+        in.putExtra("object", item);
+        startActivity(in);
     }
 
     private void nearClick() {
