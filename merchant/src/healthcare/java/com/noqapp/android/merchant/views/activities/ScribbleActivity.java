@@ -133,7 +133,7 @@ public class ScribbleActivity extends AppCompatActivity  {
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("fetching data...");
+        progressDialog.setMessage("Fetching data...");
     }
 
     protected void dismissProgress() {

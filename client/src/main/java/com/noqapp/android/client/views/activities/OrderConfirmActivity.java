@@ -69,7 +69,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                progressDialog.setMessage("Order details fetching in progress..");
+                progressDialog.setMessage("Fetching order details in progress..");
                 int token = getIntent().getExtras().getInt("token");
                 purchaseApiModel.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
             } else {
