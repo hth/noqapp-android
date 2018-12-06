@@ -9,7 +9,7 @@ public class FeedUtils {
         feedObjs.clear();
 
         feedObjs.add(new FeedObj().setTitle("7 ways to stay fit and healthy")
-                .setImageUrl("http://www.enjoyindiatour.com/images/yoga_asanas.jpg")
+                .setImageUrl("https://noqapp.com/imgs/yoga.jpg")
                 .setContent("<p>Staying fit and healthy plays an important role in our life. People neglect their health because of the hectic daily schedules but there are little things that you can do each day that will add to being healthy and fit.</p>\n" +
                         "<p>Here are some ways to stay fit and healthy:</p>\n" +
                         "<br />" +
@@ -41,7 +41,7 @@ public class FeedUtils {
                         "<p>Don't overwork and take breaks and surround yourself with people who support you.</p>"));
 
         feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-1")
-                .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
+                .setImageUrl("https://noqapp.com/imgs/benefits-of-yoga.jpg")
                 .setContent("<h3>1.&nbsp;Improves your flexibility</h3>\n" +
                         "<p>Improved&nbsp;flexibility&nbsp;is one of the first and most obvious benefits of yoga. During your first class, you probably won't be able to touch your toes, never mind do a backbend. But if you stick with it, you'll notice a gradual loosening, and eventually, seemingly impossible poses will become possible. You'll also probably notice that aches and pains start to disappear. That's no coincidence. Tight hips can strain the knee joint due to improper alignment of the thigh and shinbones. Tight&nbsp;hamstrings can lead to a flattening of the lumbar spine, which can cause back pain. And inflexibility in muscles and connective tissue, such as fascia and ligaments, can cause poor posture.</p><br />\n" +
                         "<h3>2.&nbsp;Builds muscle strength</h3>\n" +
@@ -64,7 +64,7 @@ public class FeedUtils {
                         "<p>If you've got&nbsp;high blood pressure, you might benefit from yoga. Two studies of people with hypertension, published in the British medical journal&nbsp;<em>The Lancet</em>, compared the effects of&nbsp;Savasana (Corpse Pose)&nbsp;with simply lying on a couch. After three months, Savasana was associated with a 26-point drop in systolic blood pressure (the top number) and a 15-point drop in diastolic blood pressure (the bottom number&mdash;and the higher the initial blood pressure, the bigger the drop.</p>"));
 
         feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-2")
-                .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
+                .setImageUrl("https://noqapp.com/imgs/benefits-of-yoga.jpg")
                 .setContent("<h3>11.&nbsp;Regulates your adrenal glands</h3>\n" +
                         "<p>Yoga lowers cortisol levels. If that doesn't sound like much, consider this. Normally, the adrenal glands secrete cortisol in response to an acute crisis, which temporarily boosts immune function. If your cortisol levels stay high even after the crisis, they can compromise the immune system. Temporary boosts of cortisol help with long-term memory, but chronically high levels undermine memory and may lead to permanent changes in the brain. Additionally, excessive cortisol has been linked with major depression, osteoporosis (it extracts calcium and other minerals from bones and interferes with the laying down of new bone), high blood pressure, and insulin resistance. In rats, high cortisol levels lead to what researchers call \"food-seeking behavior\" (the kind that drives you to eat when you're upset, angry, or stressed). The body takes those extra calories and distributes them as fat in the abdomen, contributing to weight gain and the risk of diabetes and heart attack.</p><br />\n" +
                         "<h3>12.&nbsp;Makes you happier</h3>\n" +
@@ -87,7 +87,7 @@ public class FeedUtils {
                         "<p>Stimulation is good, but too much of it taxes the nervous system. Yoga can provide relief from the hustle and bustle of modern life. Restorative asana,&nbsp;yoga nidra&nbsp;(a form of guided relaxation), Savasana, pranayama, and meditation encourage&nbsp;pratyahara, a turning inward of the senses, which provides downtime for the nervous system. Another by-product of a regular yoga practice, studies suggest, is better sleep&mdash;which means you'll be less tired and stressed and less likely to have accidents.</p>"));
 
         feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-3")
-                .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
+                .setImageUrl("https://noqapp.com/imgs/benefits-of-yoga.jpg")
                 .setContent("<h3>21.&nbsp;Boosts your immune system functionality</h3>\n" +
                         "<p>Asana and pranayama probably improve immune function, but, so far, meditation has the strongest scientific support in this area. It appears to have a beneficial effect on the functioning of the immune system, boosting it when needed (for example, raising antibody levels in response to a vaccine) and lowering it when needed (for instance, mitigating an inappropriately aggressive immune function in an autoimmune disease like psoriasis).</p><br />\n" +
                         "<h3>22.&nbsp;Gives your lungs room to breathe</h3>\n" +
@@ -111,7 +111,7 @@ public class FeedUtils {
                         "<p>Yoga and meditation build awareness. And the more aware you are, the easier it is to break free of destructive emotions like anger. Studies suggest that chronic anger and hostility are as strongly linked to heart attacks as are smoking, diabetes, and elevated cholesterol. Yoga appears to reduce anger by increasing feelings of compassion and interconnection and by calming the nervous system and the mind. It also increases your ability to step back from the drama of your own life, to remain steady in the face of bad news or unsettling events. You can still react quickly when you need to&mdash;and there's evidence that yoga speeds reaction time&mdash;but you can take that split second to choose a more thoughtful approach, reducing suffering for yourself and others.</p>"));
 
         feedObjs.add(new FeedObj().setTitle("Special Skin Care for Summer").
-                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/05/summer-skin-care.jpg")
+                setImageUrl("https://noqapp.com/imgs/skin.jpg")
                 .setContent("<p>Summers can be severe. The skin feels the heat too. Proper care needs to be taken for it to radiate even when the temperatures rise. Dr. Thadani guides us by giving us some useful pointers. Read on..</p><br />\n" +
                         "<p><strong>Effects of the summer heat and humidity on the skin</strong></p>\n" +
                         "<p>Excess heat increases sweat production and the humidity hinders its ability to evaporate away from the skin. This means more oil is available to clog pores which can exacerbate acne. Also, extreme heat and humidity can facilitate bacterial infections such as impetigo and fungal infections like athlete&rsquo;s footor intertrigo, which are rashes seen in body folds. This is that time of the year when a lot of patients who battle those conditions become very uncomfortable.</p><br />\n" +
@@ -177,7 +177,7 @@ public class FeedUtils {
                         "<p><strong>Eating for two:</strong>&nbsp;When people say that a pregnant woman should &ldquo;eat for two&rdquo;, it doesn&rsquo;t mean she needs to consume twice as much food or double her calories. It is advisable to add just 300 calories to her usual dietary intake.</p>\n"));
 
         feedObjs.add(new FeedObj().setTitle("Weight Gain During Pregnancy")
-                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/preg002.jpg")
+                .setImageUrl("https://noqapp.com/imgs/preg.jpg")
                 .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p><br />\n" +
                         "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p><br />\n" +
                         "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>\n" +
