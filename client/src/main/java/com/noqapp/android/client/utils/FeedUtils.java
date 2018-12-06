@@ -9,32 +9,32 @@ public class FeedUtils {
         feedObjs.clear();
 
         feedObjs.add(new FeedObj().setTitle("7 ways to stay fit and healthy")
-        .setImageUrl("http://www.enjoyindiatour.com/images/yoga_asanas.jpg")
-        .setContent("<p>Staying fit and healthy plays an important role in our life. People neglect their health because of the hectic daily schedules but there are little things that you can do each day that will add to being healthy and fit.</p>\n" +
-                "<p>Here are some ways to stay fit and healthy:</p>\n" +
-                "<p><strong>1 Regular Check-ups:</strong></p>\n" +
-                "<p>One should get annual physical check up to make sure everything is as it should be. There is no harm getting regular check ups as it's good for your own body. Do breast or testicular self-exams and get suspicious moles checked out. Getting exams regularly benefits you because if and when something is abnormal, you will get to know about it timely and can consult with your doctor.</p>\n" +
-                "<p><strong>2 Get enough sleep:</strong></p>\n" +
-                "<p>Getting enough sleep is necessary to stay fit and healthy, many of us do not get enough.</p>\n" +
-                "<p>Lack of sleep affects our physical and mental health tremendously. It also affects metabolism, mood, concentration, memory, motor skills, stress hormones and even the immune system and cardiovascular health.</p>\n" +
-                "<p>Sleep allows the body to heal, repair and rejuvenate.</p>\n" +
-                "<p><strong>3 Exercise:</strong></p>\n" +
-                "<p>Exercise is important for being fit and healthy. One should walk for few minutes everyday to stay fit.</p>\n" +
-                "<p>It also improves circulation and body awareness and can help combat depression.</p>\n" +
-                "<p>Cardiovascular exercise helps to strengthen the heart and lungs, strength training helps to strengthen the muscles and stretching helps to reduce the risk of injury by increasing flexibility.</p>\n" +
-                "<p><strong>4 Eat healthy food:</strong></p>\n" +
-                "<p>Eat lots of fresh fruits, vegetables,and whole grains to stay healthy and fit. Also include lean sources of protein such as poultry, fish, tofu and beans into your diet.</p>\n" +
-                "<p>One should eat a balanced meal and not overeat. Junk foods like burgers, pizza and those that are highly processed and contain artificial sweeteners should be strictly avoided.</p>\n" +
-                "<p><strong>5 Do not skip breakfast:</strong></p>\n" +
-                "<p>One should have healthy breakfast as it keeps you energetic and fuelled for optimal mental and physical performance. Eating breakfast helps to maintain stable blood sugar levels and a healthy weight because you are less likely to overindulge later in the day.</p>\n" +
-                "<p><strong>6 Drink plenty of water:</strong></p>\n" +
-                "<p>Drink plenty of water as it helps in keeping our bodies hydrated and to maintain a healthy body. It is the natural cleanser for our organs and digestive system. Water also helps in flushing toxins out through the skin and urine.</p>\n" +
-                "<p><strong>7 Do not take stress:</strong></p>\n" +
-                "<p>Stress is not good as it harms the body and can cause a myriad of problems, from heart trouble to digestive problems. Exercise, meditation, doing what you love, appropriate boundaries, spirituality, being in nature and enjoyable hobbies helps to alleviate the harmful effects of stress on the body.</p>\n" +
-                "<p>Don't overwork and take breaks and surround yourself with people who support you.</p>"));
+                .setImageUrl("http://www.enjoyindiatour.com/images/yoga_asanas.jpg")
+                .setContent("<p>Staying fit and healthy plays an important role in our life. People neglect their health because of the hectic daily schedules but there are little things that you can do each day that will add to being healthy and fit.</p>\n" +
+                        "<p>Here are some ways to stay fit and healthy:</p>\n" +
+                        "<p><strong>1 Regular Check-ups:</strong></p>\n" +
+                        "<p>One should get annual physical check up to make sure everything is as it should be. There is no harm getting regular check ups as it's good for your own body. Do breast or testicular self-exams and get suspicious moles checked out. Getting exams regularly benefits you because if and when something is abnormal, you will get to know about it timely and can consult with your doctor.</p>\n" +
+                        "<p><strong>2 Get enough sleep:</strong></p>\n" +
+                        "<p>Getting enough sleep is necessary to stay fit and healthy, many of us do not get enough.</p>\n" +
+                        "<p>Lack of sleep affects our physical and mental health tremendously. It also affects metabolism, mood, concentration, memory, motor skills, stress hormones and even the immune system and cardiovascular health.</p>\n" +
+                        "<p>Sleep allows the body to heal, repair and rejuvenate.</p>\n" +
+                        "<p><strong>3 Exercise:</strong></p>\n" +
+                        "<p>Exercise is important for being fit and healthy. One should walk for few minutes everyday to stay fit.</p>\n" +
+                        "<p>It also improves circulation and body awareness and can help combat depression.</p>\n" +
+                        "<p>Cardiovascular exercise helps to strengthen the heart and lungs, strength training helps to strengthen the muscles and stretching helps to reduce the risk of injury by increasing flexibility.</p>\n" +
+                        "<p><strong>4 Eat healthy food:</strong></p>\n" +
+                        "<p>Eat lots of fresh fruits, vegetables,and whole grains to stay healthy and fit. Also include lean sources of protein such as poultry, fish, tofu and beans into your diet.</p>\n" +
+                        "<p>One should eat a balanced meal and not overeat. Junk foods like burgers, pizza and those that are highly processed and contain artificial sweeteners should be strictly avoided.</p>\n" +
+                        "<p><strong>5 Do not skip breakfast:</strong></p>\n" +
+                        "<p>One should have healthy breakfast as it keeps you energetic and fuelled for optimal mental and physical performance. Eating breakfast helps to maintain stable blood sugar levels and a healthy weight because you are less likely to overindulge later in the day.</p>\n" +
+                        "<p><strong>6 Drink plenty of water:</strong></p>\n" +
+                        "<p>Drink plenty of water as it helps in keeping our bodies hydrated and to maintain a healthy body. It is the natural cleanser for our organs and digestive system. Water also helps in flushing toxins out through the skin and urine.</p>\n" +
+                        "<p><strong>7 Do not take stress:</strong></p>\n" +
+                        "<p>Stress is not good as it harms the body and can cause a myriad of problems, from heart trouble to digestive problems. Exercise, meditation, doing what you love, appropriate boundaries, spirituality, being in nature and enjoyable hobbies helps to alleviate the harmful effects of stress on the body.</p>\n" +
+                        "<p>Don't overwork and take breaks and surround yourself with people who support you.</p>"));
 
         feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-1")
-        .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
+                .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
                 .setContent("<h3>1.&nbsp;Improves your flexibility</h3>\n" +
                         "<p>Improved&nbsp;flexibility&nbsp;is one of the first and most obvious benefits of yoga. During your first class, you probably won't be able to touch your toes, never mind do a backbend. But if you stick with it, you'll notice a gradual loosening, and eventually, seemingly impossible poses will become possible. You'll also probably notice that aches and pains start to disappear. That's no coincidence. Tight hips can strain the knee joint due to improper alignment of the thigh and shinbones. Tight&nbsp;hamstrings can lead to a flattening of the lumbar spine, which can cause back pain. And inflexibility in muscles and connective tissue, such as fascia and ligaments, can cause poor posture.</p><br />\n" +
                         "<h3>2.&nbsp;Builds muscle strength</h3>\n" +
@@ -57,8 +57,8 @@ public class FeedUtils {
                         "<p>If you've got&nbsp;high blood pressure, you might benefit from yoga. Two studies of people with hypertension, published in the British medical journal&nbsp;<em>The Lancet</em>, compared the effects of&nbsp;Savasana (Corpse Pose)&nbsp;with simply lying on a couch. After three months, Savasana was associated with a 26-point drop in systolic blood pressure (the top number) and a 15-point drop in diastolic blood pressure (the bottom number&mdash;and the higher the initial blood pressure, the bigger the drop.</p>"));
 
         feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-2")
-                        .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
-                        .setContent("<h3>11.&nbsp;Regulates your adrenal glands</h3>\n" +
+                .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
+                .setContent("<h3>11.&nbsp;Regulates your adrenal glands</h3>\n" +
                         "<p>Yoga lowers cortisol levels. If that doesn't sound like much, consider this. Normally, the adrenal glands secrete cortisol in response to an acute crisis, which temporarily boosts immune function. If your cortisol levels stay high even after the crisis, they can compromise the immune system. Temporary boosts of cortisol help with long-term memory, but chronically high levels undermine memory and may lead to permanent changes in the brain. Additionally, excessive cortisol has been linked with major depression, osteoporosis (it extracts calcium and other minerals from bones and interferes with the laying down of new bone), high blood pressure, and insulin resistance. In rats, high cortisol levels lead to what researchers call \"food-seeking behavior\" (the kind that drives you to eat when you're upset, angry, or stressed). The body takes those extra calories and distributes them as fat in the abdomen, contributing to weight gain and the risk of diabetes and heart attack.</p><br />\n" +
                         "<h3>12.&nbsp;Makes you happier</h3>\n" +
                         "<p>Feeling sad? Sit in Lotus. Better yet, rise up into a backbend or soar royally into King Dancer Pose. While it's not as simple as that, one study found that a consistent yoga practice improved depression and led to a significant increase in serotonin levels and a decrease in the levels of monoamine oxidase (an enzyme that breaks down neurotransmitters) and cortisol. At the University of Wisconsin, Richard Davidson, Ph.D., found that the left prefrontal cortex showed heightened activity in meditators, a finding that has been correlated with greater levels of happiness and better immune function. More dramatic left-sided activation was found in dedicated, long-term practitioners.</p><br />\n" +
@@ -79,9 +79,8 @@ public class FeedUtils {
                         "<h3>20.&nbsp;Helps you sleep deeper</h3>\n" +
                         "<p>Stimulation is good, but too much of it taxes the nervous system. Yoga can provide relief from the hustle and bustle of modern life. Restorative asana,&nbsp;yoga nidra&nbsp;(a form of guided relaxation), Savasana, pranayama, and meditation encourage&nbsp;pratyahara, a turning inward of the senses, which provides downtime for the nervous system. Another by-product of a regular yoga practice, studies suggest, is better sleep&mdash;which means you'll be less tired and stressed and less likely to have accidents.</p>"));
 
-
         feedObjs.add(new FeedObj().setTitle("Benefits of Yoga: Part-3")
-                        .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
+                .setImageUrl("http://yogado.in/blogs/wp-content/uploads/2018/07/benefits-of-yoga-1024x745-1024x585.jpg")
                 .setContent("<h3>21.&nbsp;Boosts your immune system functionality</h3>\n" +
                         "<p>Asana and pranayama probably improve immune function, but, so far, meditation has the strongest scientific support in this area. It appears to have a beneficial effect on the functioning of the immune system, boosting it when needed (for example, raising antibody levels in response to a vaccine) and lowering it when needed (for instance, mitigating an inappropriately aggressive immune function in an autoimmune disease like psoriasis).</p><br />\n" +
                         "<h3>22.&nbsp;Gives your lungs room to breathe</h3>\n" +
@@ -104,34 +103,6 @@ public class FeedUtils {
                         "<h3>30.&nbsp;Builds awareness for transformation</h3>\n" +
                         "<p>Yoga and meditation build awareness. And the more aware you are, the easier it is to break free of destructive emotions like anger. Studies suggest that chronic anger and hostility are as strongly linked to heart attacks as are smoking, diabetes, and elevated cholesterol. Yoga appears to reduce anger by increasing feelings of compassion and interconnection and by calming the nervous system and the mind. It also increases your ability to step back from the drama of your own life, to remain steady in the face of bad news or unsettling events. You can still react quickly when you need to&mdash;and there's evidence that yoga speeds reaction time&mdash;but you can take that split second to choose a more thoughtful approach, reducing suffering for yourself and others.</p>"));
 
-
-        feedObjs.add(new FeedObj().setTitle("Weight Gain During Pregnancy")
-        .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/preg002.jpg")
-        .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p><br />\n" +
-                "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p><br />\n" +
-                "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>\n" +
-                "<ul>\n" +
-                "<li>Underweight women, who have a Body Mass Index (BMI) below 18.5, should gain 12 to 18 Kgs</li>\n" +
-                "<li>Normal weight women, who have a BMI of 18.5 to 24.9, should gain 11. to 16 Kgs</li>\n" +
-                "<li>Overweight women, who have a BMI of 25.0 to 29.9, should gain 7 to 11 Kgs).</li>\n" +
-                "<li>Obese women, who have a BMI of 30.0 and above, should gain 5 to 9 Kgs</li>\n" +
-                "</ul>"));
-
-
-        feedObjs.add(new FeedObj().setTitle("Pregnancy Diet Misconceptions").
-                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/mamici-nutritie-sanatoasa.jpg")
-                .setContent("<p><strong>Morning sickness:</strong>&nbsp;When a mother-to-be is experiencing morning sickness, the biggest mistake she can make is thinking that if she doesn&rsquo;t eat, she&rsquo;ll feel better. And the phrase Morning sickness is definitely not happening only in the morning, It&rsquo;s any time of day. It is advisable to eat small amounts of foods that don&rsquo;t have an odour, since smells can also upset the stomach.</p><br />\n" +
-                        "<p><strong>Food cravings:</strong>&nbsp;It is common for women to develop a sudden urge or a strong dislike for a food during pregnancy. Some common cravings are for sweets, salty or spicy foods. This food craving is a body&rsquo;s way of saying it needs a specific nutrient, such as more protein or additional liquids to quench a thirst, rather than a particular food.</p><br />\n" +
-                        "<p><strong>Eating for two:</strong>&nbsp;When people say that a pregnant woman should &ldquo;eat for two&rdquo;, it doesn&rsquo;t mean she needs to consume twice as much food or double her calories. It is advisable to add just 300 calories to her usual dietary intake.</p>\n"));
-
-        feedObjs.add(new FeedObj().setTitle("Exercise During Pregnancy").
-                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
-                .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p><br />\n" +
-                        "<p>Doctors generally recommend 30 minutes or more of moderate exercise per day, unless you have a medical or pregnancy complication.</p><br />\n" +
-                        "<p>Most exercises are safe to perform during pregnancy, as long as you exercise with caution and do not overdo it. The safest and most productive activities are swimming, brisk walking, indoor stationary cycling, step or elliptical machines and Yoga.</p><br />\n" +
-                        "<p>However, if you have a medical problem, such as asthma or heart disease, or diabetes, exercise may not be advisable. Exercise may also be harmful if you have some pregnancy-related conditions such as bleeding, spotting, threatened or recurrent miscarriage, previous premature births or history of early labour, etc. It is always advisable to discuss with your doctor before beginning any specific exercise program.</p>\n"));
-
-
         feedObjs.add(new FeedObj().setTitle("Special Skin Care for Summer").
                 setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/05/summer-skin-care.jpg")
                 .setContent("<p>Summers can be severe. The skin feels the heat too. Proper care needs to be taken for it to radiate even when the temperatures rise. Dr. Thadani guides us by giving us some useful pointers. Read on..</p><br />\n" +
@@ -151,7 +122,6 @@ public class FeedUtils {
                         "<p>&bull; Wear light-weight, loose-fitting clothes made of cotton.<br />&bull; Exercise outdoors during the coolest parts of the day or move your workout indoors where you can be in air-conditioning.<br />&bull; Try to keep your skin cool by using fans, cool showers, and air-conditioning when possible.</p><br />\n" +
                         "<p><strong>Sun allergy:</strong>&nbsp;You can develop hives (an allergic skin reaction) when you&rsquo;re in the sun if you:</p>\n" +
                         "<p>&bull; Take certain medications<br />&bull; Have a sun sensitivity (usually runs in the family) If you have an allergic reaction to the sun, you&rsquo;ll see red, scaly, and extremely itchy bumps on some (or all) bare skin. Some people also get blisters. To prevent an allergic skin reaction:<br />&bull; Check your medication container to find out if it can cause an allergic reaction when you go out in the sun. Medications that can cause an allergic sun reaction include ketoprofen (found in some pain meds) and these antibiotics &mdash; tetracycline, doxycycline, and minocycline. If the medicine can cause a reaction, stay out of the sun.<br />&bull; Protect your skin from the sun. You can do this by seeking shade, wearing sun-protective clothes, and applying sunscreen that offers broad spectrum protection, water resistance, and an SPF of 30 or more.</p>\n"));
-
 
         feedObjs.add(new FeedObj().setTitle("Healing Techniques for Acne Scars").setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/09/Healing-techniques-for-acne-2.png")
                 .setContent("<p>If acne scars bother you, there are safe and effective treatments available. Treatment can diminish acne scars that cause depressions in the skin. Treatment can also safely reduce raised acne scars. There are several treatments possible in today&rsquo;s time and technology. Treatments include laser treatments,minor skin surgeries, chemical peels, and fillers. As we age, acne scars often become more noticeable because our skin loses collagen. The key to effective treatment is to select the best one for each scar type.</p><br />\n" +
@@ -173,6 +143,25 @@ public class FeedUtils {
                         "\t<p>&nbsp;</p>\n" +
                         "\t<p>&bull;&nbsp;<strong>Topical creams</strong>&nbsp;&ndash; Creams with retinoids or silicone can also help reduce the appearance of scars. Microneedling-RF with radio frequency waves is an other technology that can work for very deep and pitted acne scars. These treatments then trigger the body&rsquo;s natural process, stimulating<br />growth of new, healthy tissue, which results in smooth, refreshed and scar free skin.</p>\n"));
 
+        feedObjs.add(new FeedObj().setTitle("Weight Gain During Pregnancy")
+                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/preg002.jpg")
+                .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p><br />\n" +
+                        "<p>The total number of calories needed per day during pregnancy depends on a woman&rsquo;s height, her weight before becoming pregnant, and how active she is on a daily basis. In general, underweight women need more calories during pregnancy; overweight and obese women need fewer of them.</p><br />\n" +
+                        "<p>Various global guidelines for total weight gain during a full-term pregnancy recommend that:</p>\n" +
+                        "<ul>\n" +
+                        "<li>Underweight women, who have a Body Mass Index (BMI) below 18.5, should gain 12 to 18 Kgs</li>\n" +
+                        "<li>Normal weight women, who have a BMI of 18.5 to 24.9, should gain 11. to 16 Kgs</li>\n" +
+                        "<li>Overweight women, who have a BMI of 25.0 to 29.9, should gain 7 to 11 Kgs).</li>\n" +
+                        "<li>Obese women, who have a BMI of 30.0 and above, should gain 5 to 9 Kgs</li>\n" +
+                        "</ul>"));
+
+        feedObjs.add(new FeedObj().setTitle("Exercise During Pregnancy").
+                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
+                .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p><br />\n" +
+                        "<p>Doctors generally recommend 30 minutes or more of moderate exercise per day, unless you have a medical or pregnancy complication.</p><br />\n" +
+                        "<p>Most exercises are safe to perform during pregnancy, as long as you exercise with caution and do not overdo it. The safest and most productive activities are swimming, brisk walking, indoor stationary cycling, step or elliptical machines and Yoga.</p><br />\n" +
+                        "<p>However, if you have a medical problem, such as asthma or heart disease, or diabetes, exercise may not be advisable. Exercise may also be harmful if you have some pregnancy-related conditions such as bleeding, spotting, threatened or recurrent miscarriage, previous premature births or history of early labour, etc. It is always advisable to discuss with your doctor before beginning any specific exercise program.</p>\n"));
+
         feedObjs.add(new FeedObj().setTitle("Diet During Pregnancy").
                 setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/mamici-nutritie-sanatoasa.jpg")
                 .setContent("<h3><strong>What to eat and what not to eat?</strong></h3><br />\n" +
@@ -193,7 +182,12 @@ public class FeedUtils {
                         "<p><strong>Foods to limit:</strong>&nbsp;Consumption of Caffeine, sugary drinks, fast food and certain categories of fish containing high levels of mercury should be limited.</p><br />\n" +
                         "<p><strong>Foods to avoid:</strong>&nbsp;Consumption of alcohol, smoking tobacco and unpasteurised food, for ex. raw meat, raw milk, should be avoided.</p>\n"));
 
-
+        feedObjs.add(new FeedObj().setTitle("Pregnancy Diet Misconceptions")
+                .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/mamici-nutritie-sanatoasa.jpg")
+                .setContent("<p><strong>Morning sickness:</strong>&nbsp;When a mother-to-be is experiencing morning sickness, the biggest mistake she can make is thinking that if she doesn&rsquo;t eat, she&rsquo;ll feel better. And the phrase Morning sickness is definitely not happening only in the morning, It&rsquo;s any time of day. It is advisable to eat small amounts of foods that don&rsquo;t have an odour, since smells can also upset the stomach.</p><br />\n" +
+                        "<p><strong>Food cravings:</strong>&nbsp;It is common for women to develop a sudden urge or a strong dislike for a food during pregnancy. Some common cravings are for sweets, salty or spicy foods. This food craving is a body&rsquo;s way of saying it needs a specific nutrient, such as more protein or additional liquids to quench a thirst, rather than a particular food.</p><br />\n" +
+                        "<p><strong>Eating for two:</strong>&nbsp;When people say that a pregnant woman should &ldquo;eat for two&rdquo;, it doesn&rsquo;t mean she needs to consume twice as much food or double her calories. It is advisable to add just 300 calories to her usual dietary intake.</p>\n"));
+        
 //        feedObjs.add(new FeedObj().setTitle("Stages of Pregnancy").
 //                setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/15977659_1273843289338522_6523698174661880087_n-e1489668918984.jpg")
 //                .setContent("<p>In India, getting pregnant and giving birth are most celebrated milestones in a woman&rsquo;s life.<br />Pregnancy, specifically in India, is very important event due to its connection with our history, culture,religious beliefs and mythology.</p>\n" +
