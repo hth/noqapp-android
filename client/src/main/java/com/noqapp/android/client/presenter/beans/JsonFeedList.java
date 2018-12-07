@@ -1,6 +1,8 @@
 package com.noqapp.android.client.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonReviewList;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,6 +36,9 @@ public class JsonFeedList extends AbstractDomain implements Serializable {
     @JsonProperty("fds")
     private List<JsonFeed> jsonFeeds = new LinkedList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonFeed> getJsonFeeds() {
         return jsonFeeds;
     }
@@ -48,4 +53,21 @@ public class JsonFeedList extends AbstractDomain implements Serializable {
         return this;
     }
 
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonFeedList setError(ErrorEncounteredJson error) {
+        this.error = error;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonFeedList{" +
+                "jsonFeeds=" + jsonFeeds +
+                ", error=" + error +
+                '}';
+    }
 }
