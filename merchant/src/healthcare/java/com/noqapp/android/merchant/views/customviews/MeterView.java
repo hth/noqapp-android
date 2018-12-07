@@ -9,11 +9,21 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
+import android.view.View;
 import android.widget.LinearLayout;
 
-public class MeterView extends LinearLayout {
+public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNumberValueChanged {
 
+
+    public interface MeterViewValueChanged {
+        void meterViewValueChanged(View v);
+    }
+
+    public void setMeterViewValueChanged(MeterViewValueChanged meterViewValueChanged) {
+        this.meterViewValueChanged = meterViewValueChanged;
+    }
+
+    MeterViewValueChanged meterViewValueChanged;
     private static final int DEFAULT_NUMBER_OF_BLACK = 5;
     private static final int DEFAULT_NUMBER_OF_RED = 0;
     private static final int DEFAULT_BLACK_COLOR = 0xFF000000;
@@ -69,6 +79,7 @@ public class MeterView extends LinearLayout {
             MeterNumberPicker meterNumberPicker = createPicker(context);
             meterNumberPicker.setBackgroundColor(i < numberOfFirst ? firstColor : secondColor);
             meterNumberPicker.setEnabled(isEnabled());
+            meterNumberPicker.setMeterValueChanged(this);
             LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
             addView(meterNumberPicker, lp);
@@ -89,10 +100,10 @@ public class MeterView extends LinearLayout {
         this.enabled = enabled;
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return !enabled || super.onInterceptTouchEvent(ev);
-    }
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        return !enabled || super.onInterceptTouchEvent(ev);
+//    }
 
     /**
      * Returns current value of the widget. Works only if "mnp_max" is not bigger then 9.
@@ -153,5 +164,11 @@ public class MeterView extends LinearLayout {
         this.numberOfSecond = numberOfSecond;
         removeAllViews();
         init(getContext(), null);
+    }
+
+    @Override
+    public void meterNumberValueChanged() {
+        if(null != meterViewValueChanged)
+            meterViewValueChanged.meterViewValueChanged(this);
     }
 }
