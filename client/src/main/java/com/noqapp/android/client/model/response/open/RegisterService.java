@@ -42,6 +42,7 @@ public interface RegisterService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_INPUT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
      */
     @POST("open/client/login.json")
     Call<JsonProfile> login(
