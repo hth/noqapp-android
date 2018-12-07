@@ -117,6 +117,11 @@ public class FeedUtils {
 
         feedObjs.add(new FeedObj()
                 .setTitle("Special Skin Care for Summer")
+                .setAuthor("Dr. Sneh Thadani")
+                .setAuthorPic("http://www.ssdhospital.in/wp-content/uploads/2017/03/Dr-Sneh-Thadani-200x300-1-e1490009312556.jpeg")
+                .setAuthorProfession("MBBS DNB DERMATOLOGY\n" +
+                        "Head of Dermatology Department, SSD Hospital")
+                .setAuthorWebProfileId("5b3b1a9d783cea39cab42597")
                 .setImageUrl("https://noqapp.com/imgs/appmages/skin/skin.jpg")
                 .setContent("<p>Summers can be severe. The skin feels the heat too. Proper care needs to be taken for it to radiate even when the temperatures rise. Dr. Thadani guides us by giving us some useful pointers. Read on..</p><br />\n" +
                         "<p><strong>Effects of the summer heat and humidity on the skin</strong></p>\n" +
@@ -138,6 +143,11 @@ public class FeedUtils {
 
         feedObjs.add(new FeedObj()
                 .setTitle("Healing Techniques for Acne Scars")
+                .setAuthor("Dr. Sneh Thadani")
+                .setAuthorPic("http://www.ssdhospital.in/wp-content/uploads/2017/03/Dr-Sneh-Thadani-200x300-1-e1490009312556.jpeg")
+                .setAuthorProfession("MBBS DNB DERMATOLOGY\n" +
+                        "Head of Dermatology Department, SSD Hospital")
+                .setAuthorWebProfileId("5b3b1a9d783cea39cab42597")
                 .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/09/Healing-techniques-for-acne-2.png")
                 .setContent("<p>If acne scars bother you, there are safe and effective treatments available. Treatment can diminish acne scars that cause depressions in the skin. Treatment can also safely reduce raised acne scars. There are several treatments possible in today&rsquo;s time and technology. Treatments include laser treatments,minor skin surgeries, chemical peels, and fillers. As we age, acne scars often become more noticeable because our skin loses collagen. The key to effective treatment is to select the best one for each scar type.</p>\n" +
                         "<br>" +
@@ -163,6 +173,10 @@ public class FeedUtils {
 
         feedObjs.add(new FeedObj()
                 .setTitle("Diet During Pregnancy")
+                .setAuthor("Dr. Shweta Upadhyay")
+                .setAuthorPic("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-shweta-upadhyay-294x300.jpg")
+                .setAuthorProfession("Consultant Gynaecologist, SSD Hospital")
+                .setAuthorWebProfileId("5b3b1a9d783cea39cab42597")
                 .setImageUrl("https://noqapp.com/imgs/appmages/Pregnant_Woman_Holding_Apple.jpg")
                 .setContent("<h3><strong>What to eat and what not to eat?</strong></h3>" +
                         "<br>" +
@@ -200,6 +214,10 @@ public class FeedUtils {
 
         feedObjs.add(new FeedObj()
                 .setTitle("Pregnancy Diet Misconceptions")
+                .setAuthor("Dr. Shweta Upadhyay")
+                .setAuthorPic("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-shweta-upadhyay-294x300.jpg")
+                .setAuthorProfession("Consultant Gynaecologist, SSD Hospital")
+                .setAuthorWebProfileId("5b3b1a9d783cea39cab42597")
                 .setImageUrl("https://noqapp.com/imgs/appmages/Pregnant_Woman_Holding_Apple.jpg")
                 .setContent("<p><strong>Morning sickness:</strong>&nbsp;When a mother-to-be is experiencing morning sickness, the biggest mistake she can make is thinking that if she doesn&rsquo;t eat, she&rsquo;ll feel better. And the phrase Morning sickness is definitely not happening only in the morning, It&rsquo;s any time of day. It is advisable to eat small amounts of foods that don&rsquo;t have an odour, since smells can also upset the stomach.</p>" +
                         "<br>" +
@@ -209,6 +227,10 @@ public class FeedUtils {
 
         feedObjs.add(new FeedObj()
                 .setTitle("Weight Gain During Pregnancy")
+                .setAuthor("Dr. Shweta Upadhyay")
+                .setAuthorPic("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-shweta-upadhyay-294x300.jpg")
+                .setAuthorProfession("Consultant Gynaecologist, SSD Hospital")
+                .setAuthorWebProfileId("5b3b1a9d783cea39cab42597")
                 .setImageUrl("https://noqapp.com/imgs/appmages/preg.jpg")
                 .setContent("<p>Weight gain during pregnancy is a continuous process over the nine months. It&rsquo;s hard to measure where pregnancy weight is going whether the KGs are going to a woman&rsquo;s body fat, baby weight or fluid gains.<br />When it comes to pregnancy weight gain, women should look at the big picture: During regular prenatal check-ups, focus on that the baby is growing normally rather than worrying about the number on a scale.</p>" +
                         "<br>" +
@@ -224,6 +246,10 @@ public class FeedUtils {
 
         feedObjs.add(new FeedObj()
                 .setTitle("Exercise During Pregnancy")
+                .setAuthor("Dr. Shweta Upadhyay")
+                .setAuthorPic("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-shweta-upadhyay-294x300.jpg")
+                .setAuthorProfession("Consultant Gynaecologist, SSD Hospital")
+                .setAuthorWebProfileId("5b3b1a9d783cea39cab42597")
                 .setImageUrl("http://www.ssdhospital.in/wp-content/uploads/2017/01/183937263_wide.jpg")
                 .setContent("<p>Maintaining a regular exercise routine throughout your pregnancy can help you stay healthy and feel your best. Regular exercise during pregnancy can improve your posture and decrease some common discomforts such as backaches and fatigue. There is evidence that physical activity may prevent gestational diabetes (diabetes that develops during pregnancy), relieve stress, and build more stamina needed for labour and delivery.</p>" +
                         "<br>" +
