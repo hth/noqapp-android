@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.FeedObj;
+import com.noqapp.android.client.presenter.beans.JsonFeed;
 
 import com.squareup.picasso.Picasso;
 
@@ -14,13 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> {
     private final Context context;
     private final OnItemClickListener listener;
-    private ArrayList<FeedObj> dataSet;
-    public FeedAdapter(ArrayList<FeedObj> data, Context context, OnItemClickListener listener) {
+    private List<JsonFeed> dataSet;
+    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -38,7 +38,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        FeedObj item = dataSet.get(listPosition);
+        JsonFeed item = dataSet.get(listPosition);
         Picasso.with(context).load(item.getImageUrl()).into(holder.iv_bg);
         holder.tv_title.setText(item.getTitle());
         holder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onFeedItemClick(FeedObj item, View view, int pos);
+        void onFeedItemClick(JsonFeed item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

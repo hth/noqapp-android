@@ -104,7 +104,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.button_color));
             holder.tv_join.setText("Walk-in");
-            if(jsonQueue.getBusinessType() == BusinessTypeEnum.HS){
+            if (jsonQueue.getBusinessType() == BusinessTypeEnum.HS) {
                 holder.tv_join.setText("Visit Store");
             }
         }
@@ -197,9 +197,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(jsonQueue.getBusinessType() != BusinessTypeEnum.HS) {
+                if (jsonQueue.getBusinessType() != BusinessTypeEnum.HS) {
                     listener.onCategoryItemClick(jsonQueue, v, listPosition);
-                }else {
+                } else {
                     //Do nothing
                     Toast.makeText(context, "Please visit store to avail the service.", Toast.LENGTH_LONG).show();
                 }
@@ -208,12 +208,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ManagerProfileActivity.class);
-                intent.putExtra("webProfileId", jsonQueue.getWebProfileId());
-                intent.putExtra("managerName", jsonQueue.getDisplayName());
-                intent.putExtra("managerImage", jsonQueue.getDisplayImage());
-                intent.putExtra("bizCategoryId", jsonQueue.getBizCategoryId());
-                context.startActivity(intent);
+                if (jsonQueue.getBusinessType() == BusinessTypeEnum.DO) {
+                    Intent intent = new Intent(context, ManagerProfileActivity.class);
+                    intent.putExtra("webProfileId", jsonQueue.getWebProfileId());
+                    intent.putExtra("managerName", jsonQueue.getDisplayName());
+                    intent.putExtra("managerImage", jsonQueue.getDisplayImage());
+                    intent.putExtra("bizCategoryId", jsonQueue.getBizCategoryId());
+                    context.startActivity(intent);
+                }
             }
         });
     }
