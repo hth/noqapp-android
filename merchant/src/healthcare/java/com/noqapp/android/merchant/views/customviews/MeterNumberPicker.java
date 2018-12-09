@@ -30,6 +30,17 @@ import java.util.Locale;
 
 public class MeterNumberPicker extends View {
 
+    public interface MeterNumberValueChanged {
+
+        void meterNumberValueChanged();
+    }
+
+    public void setMeterValueChanged(MeterNumberValueChanged meterValueChanged) {
+        this.meterValueChanged = meterValueChanged;
+    }
+
+    private MeterNumberValueChanged meterValueChanged;
+
     private static final int DEFAULT_MIN_HEIGHT_DP = 20;
     private static final int DEFAULT_MIN_WIDTH_DP = 14;
     private static final int DEFAULT_MAX_VALUE = 9;
@@ -316,6 +327,8 @@ public class MeterNumberPicker extends View {
                     int adjustedValueOffset = calculateAdjustedValueOffset(rawScrollOffset, measuredHeight);
                     calculateCurrentOffsets(rawScrollOffset, measuredHeight);
                     value = getValue(adjustedValueOffset);
+                    if(null != meterValueChanged)
+                        meterValueChanged.meterNumberValueChanged();
                     adjust(measuredHeight, adjustedValueOffset);
                 }
                 invalidate();
@@ -351,6 +364,8 @@ public class MeterNumberPicker extends View {
                     int measuredHeight = getMeasuredHeight();
                     int adjustedValueOffset = calculateAdjustedValueOffset(measuredHeight);
                     value = getValue(adjustedValueOffset);
+                    if(null != meterValueChanged)
+                        meterValueChanged.meterNumberValueChanged();
                     adjust(measuredHeight, adjustedValueOffset);
                 }
             } else {

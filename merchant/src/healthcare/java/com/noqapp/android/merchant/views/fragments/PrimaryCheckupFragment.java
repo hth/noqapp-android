@@ -33,6 +33,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,16 +48,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PrimaryCheckupFragment extends Fragment implements PatientProfilePresenter, MedicalRecordListPresenter,JsonMedicalRecordPresenter {
+public class PrimaryCheckupFragment extends Fragment implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged {
 
     private ProgressDialog progressDialog;
     private TextView tv_patient_name, tv_address, tv_details;
     private ListView listview;
     private ImageView iv_profile;
-    private AutoCompleteTextView actv_past_history,actv_known_allergy,actv_family_history;
+    private AutoCompleteTextView actv_past_history, actv_known_allergy, actv_family_history;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
-    private EditText edt_bp;
-    private MeterView mv_weight,  mv_pulse, mv_temperature, mv_oxygen;
+    private MeterView mv_weight, mv_pulse, mv_temperature, mv_oxygen, mv_bp_high, mv_bp_low;
+    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,18 +71,32 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         actv_family_history = v.findViewById(R.id.actv_family_history);
         actv_known_allergy = v.findViewById(R.id.actv_known_allergy);
         mv_weight = v.findViewById(R.id.mv_weight);
-        edt_bp = v.findViewById(R.id.edt_bp);
         mv_pulse = v.findViewById(R.id.mv_pulse);
         mv_temperature = v.findViewById(R.id.mv_temperature);
         mv_oxygen = v.findViewById(R.id.mv_oxygen);
-        mv_pulse.setNumbersOf(3,0);
-        mv_oxygen.setNumbersOf(2,0);
+        mv_bp_high = v.findViewById(R.id.mv_bp_high);
+        mv_bp_low = v.findViewById(R.id.mv_bp_low);
+
+        tv_weight = v.findViewById(R.id.tv_weight);
+        tv_pulse = v.findViewById(R.id.tv_pulse);
+        tv_temperature = v.findViewById(R.id.tv_temperature);
+        tv_oxygen = v.findViewById(R.id.tv_oxygen);
+
+        mv_pulse.setNumbersOf(3, 0);
+        mv_oxygen.setNumbersOf(2, 0);
+        mv_bp_high.setNumbersOf(3, 0);
+        mv_bp_low.setNumbersOf(2, 0);
+        mv_pulse.setMeterViewValueChanged(this);
+        mv_temperature.setMeterViewValueChanged(this);
+        mv_weight.setMeterViewValueChanged(this);
+        mv_oxygen.setMeterViewValueChanged(this);
+
         Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(iv_profile);
         listview = v.findViewById(R.id.listview);
         iv_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Meter selected value: "+String.valueOf(mv_weight.getDoubleValue()),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Meter selected value: " + String.valueOf(mv_weight.getDoubleValue()), Toast.LENGTH_LONG).show();
                 Log.e("pulse value", String.valueOf(mv_pulse.getValue()));
                 Log.e("oxygen value", String.valueOf(mv_oxygen.getValue()));
                 Log.e("temperature value", String.valueOf(mv_temperature.getDoubleValue()));
@@ -109,8 +125,7 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
             medicalHistoryModel.setJsonMedicalRecordPresenter(this);
             medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);
-
+                    LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
 
         } else {
@@ -187,25 +202,30 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
     public void medicalRecordListError() {
         dismissProgress();
     }
+
     @Override
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
-        if(null != jsonMedicalRecord){
-            Log.e("data",jsonMedicalRecord.toString());
-            try{
+        if (null != jsonMedicalRecord) {
+            Log.e("data", jsonMedicalRecord.toString());
+            try {
                 mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                 mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
-                double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight())*100;
-                double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature())*100;
-                mv_weight.setValue((int)d1);
-                mv_temperature.setValue((int)d2);
+                double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight()) * 100;
+                double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature()) * 100;
+                mv_weight.setValue((int) d1);
+                mv_temperature.setValue((int) d2);
+                if (jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
+                    mv_bp_high.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
+                    mv_bp_low.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
+                }
 
-                //mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         dismissProgress();
     }
+
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
@@ -239,9 +259,30 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPastHistory(actv_past_history.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFamilyHistory(actv_family_history.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPulse(mv_pulse.getValueAsString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(edt_bp.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(mv_bp_high.getValueAsString() + "/" + mv_bp_low.getValueAsString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setWeight(mv_weight.getDoubleValueAsString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setTemperature(mv_temperature.getDoubleValueAsString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setOxygenLevel(mv_oxygen.getValueAsString());
+    }
+
+    @Override
+    public void meterViewValueChanged(View v) {
+        switch (v.getId()) {
+            case R.id.mv_pulse:
+                tv_pulse.setText(String.valueOf(mv_pulse.getValue()));
+                break;
+            case R.id.mv_weight:
+                tv_weight.setText(String.valueOf(mv_weight.getDoubleValue()));
+                break;
+            case R.id.mv_temperature:
+                tv_temperature.setText(String.valueOf(mv_temperature.getDoubleValue()));
+                break;
+            case R.id.mv_oxygen:
+                tv_oxygen.setText(String.valueOf(mv_oxygen.getValue()));
+                break;
+
+            default:
+                break;
+        }
     }
 }

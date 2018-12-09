@@ -6,310 +6,355 @@
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-<ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <LinearLayout
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
-
-        <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="About Patient"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <android.support.v7.widget.CardView
-                android:id="@+id/cardview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="4dp">
-
-
-            <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_profile"
-                        android:layout_width="@dimen/profile_image_size"
-                        android:layout_height="@dimen/profile_image_size"
-                        android:clickable="false"
-                        android:elevation="5dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="15dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/profile_blue"
-                        app:civ_border_color="@color/colorPrimary"
-                        app:civ_border_width="3dp"
-                        android:layout_alignParentStart="true"
-                        />
-
-                <LinearLayout
-                        android:id="@+id/tabla_cuerpo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_toRightOf="@+id/iv_profile"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-
-                    <TextView
-                            android:id="@+id/tv_patient_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@android:color/black"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <TextView
-                            android:id="@+id/tv_address"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                    <TextView
-                            android:id="@+id/tv_details"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text=""
-                            android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-                </LinearLayout>
-            </RelativeLayout>
-
-
-        </android.support.v7.widget.CardView>
+            android:layout_height="match_parent">
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:padding="10dp"
+                android:orientation="vertical">
 
+            <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="About Patient"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <android.support.v7.widget.CardView
+                    android:id="@+id/cardview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    card_view:cardBackgroundColor="@android:color/white"
+                    card_view:cardCornerRadius="4dp">
+
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_profile"
+                            android:layout_width="@dimen/profile_image_size"
+                            android:layout_height="@dimen/profile_image_size"
+                            android:clickable="false"
+                            android:elevation="5dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="15dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/profile_blue"
+                            app:civ_border_color="@color/colorPrimary"
+                            app:civ_border_width="3dp"
+                            android:layout_alignParentStart="true"
+                            />
+
+                    <LinearLayout
+                            android:id="@+id/tabla_cuerpo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_toRightOf="@+id/iv_profile"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+
+                        <TextView
+                                android:id="@+id/tv_patient_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@android:color/black"
+                                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                        <TextView
+                                android:id="@+id/tv_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                        <TextView
+                                android:id="@+id/tv_details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text=""
+                                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
 
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="2.5dp"
-                    android:layout_weight=".33"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                <TextView
-                        style="@style/style_mdh_header"
-                        android:text="@string/mds_known_allergies"/>
-
-                <AutoCompleteTextView
-                        android:id="@+id/actv_known_allergy"
-                        style="@style/style_mdh_details"
-                        android:gravity="top"
-                        android:minLines="5"
-                        android:text=""/>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2.5dp"
-                    android:layout_marginRight="2.5dp"
-                    android:layout_weight=".33"
-                    android:orientation="vertical">
 
                 <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="2.5dp"
+                        android:layout_weight=".33"
                         android:orientation="vertical">
 
                     <TextView
                             style="@style/style_mdh_header"
-                            android:text="@string/mds_past_history"/>
+                            android:text="@string/mds_known_allergies"/>
 
                     <AutoCompleteTextView
-                            android:id="@+id/actv_past_history"
+                            android:id="@+id/actv_known_allergy"
                             style="@style/style_mdh_details"
                             android:gravity="top"
                             android:minLines="5"
                             android:text=""/>
+                </LinearLayout>
 
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2.5dp"
+                        android:layout_marginRight="2.5dp"
+                        android:layout_weight=".33"
+                        android:orientation="vertical">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical">
+
+                        <TextView
+                                style="@style/style_mdh_header"
+                                android:text="@string/mds_past_history"/>
+
+                        <AutoCompleteTextView
+                                android:id="@+id/actv_past_history"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text=""/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2.5dp"
+                        android:layout_weight=".33"
+                        android:orientation="vertical">
+
+                    <TextView
+                            style="@style/style_mdh_header"
+                            android:text="@string/mds_family_history"/>
+
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_family_history"
+                            style="@style/style_mdh_details"
+                            android:gravity="top"
+                            android:minLines="5"
+                            android:text=""/>
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                    style="@style/style_mdh_header"
+                    android:text="@string/mds_physical_exam"/>
+
+
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2.5dp"
-                    android:layout_weight=".33"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                <TextView
-                        style="@style/style_mdh_header"
-                        android:text="@string/mds_family_history"/>
 
-                <AutoCompleteTextView
-                        android:id="@+id/actv_family_history"
-                        style="@style/style_mdh_details"
-                        android:gravity="top"
-                        android:minLines="5"
-                        android:text=""/>
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_pulse"
+                            android:textSize="@dimen/text_size_ten"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_pulse"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_pulse"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:textSize="@dimen/text_size_fourteen"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight=".3"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_bp"
+                            android:textSize="@dimen/text_size_ten"/>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                        <com.noqapp.android.merchant.views.customviews.MeterView
+                                android:id="@+id/mv_bp_high"
+                                style="@style/MeterViewStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        <View
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/tilt_line"/>
+
+                        <com.noqapp.android.merchant.views.customviews.MeterView
+                                android:id="@+id/mv_bp_low"
+                                style="@style/MeterViewStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".2"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_weight"
+                            android:textSize="@dimen/text_size_ten"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_weight"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".2"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_temperature"
+                            android:textSize="@dimen/text_size_ten"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_temperature"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_temperature"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".15"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:text="@string/pe_oxygen"
+                            android:textSize="@dimen/text_size_ten"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_oxygen"
+                            style="@style/MeterViewStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_oxygen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:padding="5dp"
+                            android:textSize="@dimen/text_size_fourteen"/>
+                </LinearLayout>
             </LinearLayout>
+
+            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@android:color/white"
+                    android:dividerHeight="1dp"/>
+
+
         </LinearLayout>
-        <TextView
-                style="@style/style_mdh_header"
-                android:text="@string/mds_physical_exam"/>
-
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".2"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:padding="5dp"
-                        android:text="@string/pe_pulse"
-                        android:textSize="@dimen/text_size_ten"/>
-
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_pulse"
-                        style="@style/MeterViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight=".2"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:padding="5dp"
-                        android:text="@string/pe_bp"
-                        android:textSize="@dimen/text_size_ten"/>
-
-                <EditText
-                        android:id="@+id/edt_bp"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:maxLength="15"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="5dp"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:text=""/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".2"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:padding="5dp"
-                        android:text="@string/pe_weight"
-                        android:textSize="@dimen/text_size_ten"/>
-
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_weight"
-                        style="@style/MeterViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".2"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:padding="5dp"
-                        android:text="@string/pe_temperature"
-                        android:textSize="@dimen/text_size_ten"/>
-
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_temperature"
-                        style="@style/MeterViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".2"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:padding="5dp"
-                        android:text="@string/pe_oxygen"
-                        android:textSize="@dimen/text_size_ten"/>
-
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_oxygen"
-                        style="@style/MeterViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@android:color/white"
-                android:dividerHeight="1dp"/>
-
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
 </LinearLayout>
