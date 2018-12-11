@@ -9,6 +9,7 @@ import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
+import com.noqapp.android.merchant.presenter.beans.JsonDataProtection;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -40,12 +41,12 @@ import java.util.Random;
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR) {
-        super(data, context, peopleInQAdapterClick, qCodeQR);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, JsonDataProtection jsonDataProtection) {
+        super(data, context, peopleInQAdapterClick, qCodeQR,jsonDataProtection);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion, queueStatusEnum);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum, JsonDataProtection jsonDataProtection) {
+        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion, queueStatusEnum,jsonDataProtection);
     }
 
     @Override
