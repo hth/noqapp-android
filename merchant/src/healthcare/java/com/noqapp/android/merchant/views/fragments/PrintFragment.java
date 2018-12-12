@@ -88,7 +88,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.setExamination(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getExaminationResults());
                 jsonMedicalRecord.setDiagnosis(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getDiagnosis());
                 JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
-                        .setBloodPressure(new String[]{MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getBloodPressure()})
+                        .setBloodPressure(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getBloodPressure())
                         .setPluse(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPulse())
                         .setWeight(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getWeight())
                         .setOxygen(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getOxygenLevel())

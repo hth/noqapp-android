@@ -8,6 +8,14 @@
         <item name="mnp_paddingHorizontal">10dp</item>
         <item name="mnp_paddingVertical">10dp</item>
     </style>
+<style name="MeterNumberPickerStyle1">
+        <item name="mnp_min">0</item>
+        <item name="mnp_max">3</item>
+        <item name="mnp_textColor">@android:color/white</item>
+        <item name="mnp_textSize">25sp</item>
+        <item name="mnp_paddingHorizontal">10dp</item>
+        <item name="mnp_paddingVertical">10dp</item>
+    </style>
 
     <style name="MeterViewStyle">
         <item name="mv_firstColor">@android:color/black</item>
@@ -16,4 +24,13 @@
         <item name="mv_pickerStyle">@style/MeterNumberPickerStyle</item>
         <item name="mv_secondColor">@android:color/holo_red_dark</item>
     </style>
+
+    <style name="MeterViewStyle1">
+        <item name="mv_firstColor">@android:color/black</item>
+        <item name="mv_numberOfFirst">3</item>
+        <item name="mv_numberOfSecond">2</item>
+        <item name="mv_pickerStyle">@style/MeterNumberPickerStyle1</item>
+        <item name="mv_secondColor">@android:color/holo_red_dark</item>
+    </style>
+
 </resources>

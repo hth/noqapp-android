@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * hitender
  * 5/30/18 5:35 AM
@@ -26,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonUserMedicalProfile {
+public class JsonUserMedicalProfile implements Serializable {
 
     @JsonProperty("bt")
     private BloodTypeEnum bloodType;
