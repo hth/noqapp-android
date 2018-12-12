@@ -33,12 +33,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -81,15 +79,20 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         tv_pulse = v.findViewById(R.id.tv_pulse);
         tv_temperature = v.findViewById(R.id.tv_temperature);
         tv_oxygen = v.findViewById(R.id.tv_oxygen);
+        tv_bp_high = v.findViewById(R.id.tv_bp_systolic);
+        tv_bp_low = v.findViewById(R.id.tv_bp_diastolic);
 
         mv_pulse.setNumbersOf(3, 0);
         mv_oxygen.setNumbersOf(2, 0);
+        mv_bp_high.setNumbersOf(3, 0);
         mv_bp_high.setNumbersOf(3, 0);
         mv_bp_low.setNumbersOf(2, 0);
         mv_pulse.setMeterViewValueChanged(this);
         mv_temperature.setMeterViewValueChanged(this);
         mv_weight.setMeterViewValueChanged(this);
         mv_oxygen.setMeterViewValueChanged(this);
+        mv_bp_high.setMeterViewValueChanged(this);
+        mv_bp_low.setMeterViewValueChanged(this);
 
         Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(iv_profile);
         listview = v.findViewById(R.id.listview);
@@ -208,15 +211,21 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
-                mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
-                mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
-                double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight()) * 100;
-                double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature()) * 100;
-                mv_weight.setValue((int) d1);
-                mv_temperature.setValue((int) d2);
-                if (jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
+                if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen())
+                    mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
+                if (null != jsonMedicalRecord.getMedicalPhysical().getPluse())
+                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     mv_bp_high.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     mv_bp_low.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
+                    double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight()) * 100;
+                    mv_weight.setValue((int) d1);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
+                    double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature()) * 100;
+                    mv_temperature.setValue((int) d2);
                 }
 
             } catch (Exception e) {
@@ -259,7 +268,7 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPastHistory(actv_past_history.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFamilyHistory(actv_family_history.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPulse(mv_pulse.getValueAsString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(mv_bp_high.getValueAsString() + "/" + mv_bp_low.getValueAsString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(new String[]{mv_bp_high.getValueAsString(), mv_bp_low.getValueAsString()});
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setWeight(mv_weight.getDoubleValueAsString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setTemperature(mv_temperature.getDoubleValueAsString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setOxygenLevel(mv_oxygen.getValueAsString());
@@ -279,6 +288,12 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
                 break;
             case R.id.mv_oxygen:
                 tv_oxygen.setText(String.valueOf(mv_oxygen.getValue()));
+                break;
+            case R.id.mv_bp_high:
+                tv_bp_high.setText(String.valueOf(mv_bp_high.getValue()));
+                break;
+            case R.id.mv_bp_low:
+                tv_bp_low.setText(String.valueOf(mv_bp_low.getValue()));
                 break;
 
             default:

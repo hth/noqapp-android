@@ -7,6 +7,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.ImagePathReader;
@@ -137,6 +138,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     public void authenticationFailure() {
         dismissProgress();
         AppUtils.authenticationProcessing();
+        finish();
     }
 
     @Override
@@ -147,7 +149,16 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
+        if (null != eej) {
+            if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
+                Toast.makeText(this, "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                LaunchActivity.getLaunchActivity().clearLoginData(false);
+                dismissProgress();
+                finish();//close the current activity
+            } else {
+                new ErrorResponseHandler().processError(this, eej);
+            }
+        }
     }
 
 

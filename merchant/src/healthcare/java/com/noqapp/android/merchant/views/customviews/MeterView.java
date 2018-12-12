@@ -73,6 +73,20 @@ public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNu
         }
         populate(context);
     }
+    private void init(Context context, @Nullable AttributeSet attrs,int[] min, int[] max) {
+        setOrientation(HORIZONTAL);
+        if (attrs != null) {
+            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MeterView, 0, 0);
+            numberOfFirst = typedArray.getInt(R.styleable.MeterView_mv_numberOfFirst, numberOfFirst);
+            numberOfSecond = typedArray.getInt(R.styleable.MeterView_mv_numberOfSecond, numberOfSecond);
+            firstColor = typedArray.getColor(R.styleable.MeterView_mv_firstColor, firstColor);
+            secondColor = typedArray.getColor(R.styleable.MeterView_mv_secondColor, secondColor);
+            pickerStyleId = typedArray.getResourceId(R.styleable.MeterView_mv_pickerStyle, pickerStyleId);
+            enabled = typedArray.getBoolean(R.styleable.MeterView_mv_enabled, enabled);
+            typedArray.recycle();
+        }
+        populate(context,min,max);
+    }
 
     private void populate(Context context) {
         for (int i = 0; i < numberOfFirst + numberOfSecond; i++) {
@@ -80,6 +94,25 @@ public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNu
             meterNumberPicker.setBackgroundColor(i < numberOfFirst ? firstColor : secondColor);
             meterNumberPicker.setEnabled(isEnabled());
             meterNumberPicker.setMeterValueChanged(this);
+            LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            lp.weight = 1;
+            addView(meterNumberPicker, lp);
+        }
+    }
+    private void populate(Context context,int[] min, int[] max) {
+        for (int i = 0; i < numberOfFirst + numberOfSecond; i++) {
+            MeterNumberPicker meterNumberPicker = createPicker(context);
+            meterNumberPicker.setBackgroundColor(i < numberOfFirst ? firstColor : secondColor);
+            meterNumberPicker.setEnabled(isEnabled());
+            meterNumberPicker.setMeterValueChanged(this);
+            if(null != min && i<min.length){
+                try {
+                    meterNumberPicker.setMinValue(min[i]);
+                    meterNumberPicker.setMaxValue(max[i]);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
             LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
             addView(meterNumberPicker, lp);
@@ -152,7 +185,10 @@ public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNu
             else
                 resultSecond += picker.getValue() * Math.pow(10, --koeffSecond);
         }
-        return Double.parseDouble(resultFirst + "." + resultSecond);
+        if (resultSecond < 10)
+            return Double.parseDouble(resultFirst + ".0" + resultSecond);
+        else
+            return Double.parseDouble(resultFirst + "." + resultSecond);
     }
 
     public String getDoubleValueAsString() {
@@ -165,10 +201,16 @@ public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNu
         removeAllViews();
         init(getContext(), null);
     }
+    public void setNumbersOf(int numberOfFirst, int numberOfSecond, int[] min, int[] max) {
+        this.numberOfFirst = numberOfFirst;
+        this.numberOfSecond = numberOfSecond;
+        removeAllViews();
+        init(getContext(), null,min,max);
+    }
 
     @Override
     public void meterNumberValueChanged() {
-        if(null != meterViewValueChanged)
+        if (null != meterViewValueChanged)
             meterViewValueChanged.meterViewValueChanged(this);
     }
 }

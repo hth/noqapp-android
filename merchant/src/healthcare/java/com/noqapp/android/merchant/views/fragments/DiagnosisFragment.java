@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,11 +29,13 @@ public class DiagnosisFragment extends Fragment {
 
     private RecyclerView rcv_provisional_diagnosis;
     private CustomAdapter provisionalDiagnosisAdapter;
-
+    private AutoCompleteTextView actv_clinical_findings,actv_examination_results;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_diagnosis, container, false);
+        actv_clinical_findings = v.findViewById(R.id.actv_clinical_findings);
+        actv_examination_results = v.findViewById(R.id.actv_examination_results);
         TextView tv_add_provisional_diagnosis = v.findViewById(R.id.tv_add_provisional_diagnosis);
         rcv_provisional_diagnosis = v.findViewById(R.id.rcv_provisional_diagnosis);
         tv_add_provisional_diagnosis.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +107,7 @@ public class DiagnosisFragment extends Fragment {
 
     public void saveData() {
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setProvisionalDiagnosis(provisionalDiagnosisAdapter.getSelectedData());
-
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setClinicalFindings(actv_clinical_findings.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setExaminationResults(actv_examination_results.getText().toString());
     }
 }

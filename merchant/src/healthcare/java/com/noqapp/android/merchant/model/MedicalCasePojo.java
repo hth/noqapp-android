@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MedicalCasePojo {
@@ -15,7 +16,7 @@ public class MedicalCasePojo {
     private String pastHistory;
     private String familyHistory;
     private String pulse;
-    private String bloodPressure;
+    private String [] bloodPressure;
     private String weight;
     private String temperature;
     private String oxygenLevel;
@@ -98,11 +99,11 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public String getBloodPressure() {
+    public String[] getBloodPressure() {
         return bloodPressure;
     }
 
-    public MedicalCasePojo setBloodPressure(String bloodPressure) {
+    public MedicalCasePojo setBloodPressure(String[] bloodPressure) {
         this.bloodPressure = bloodPressure;
         return this;
     }
@@ -261,7 +262,7 @@ public class MedicalCasePojo {
                 ", pastHistory='" + pastHistory + '\'' +
                 ", familyHistory='" + familyHistory + '\'' +
                 ", pulse='" + pulse + '\'' +
-                ", bloodPressure='" + bloodPressure + '\'' +
+                ", bloodPressure=" + Arrays.toString(bloodPressure) +
                 ", weight='" + weight + '\'' +
                 ", temperature='" + temperature + '\'' +
                 ", oxygenLevel='" + oxygenLevel + '\'' +

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
@@ -144,7 +145,14 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
+        if (null != eej) {
+            if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
+                Toast.makeText(getActivity(), "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                LaunchActivity.getLaunchActivity().clearLoginData(false);
+            } else {
+                new ErrorResponseHandler().processError(getActivity(), eej);
+            }
+        }
     }
 
     @Override

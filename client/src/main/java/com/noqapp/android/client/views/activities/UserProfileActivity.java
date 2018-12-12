@@ -13,6 +13,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -236,7 +237,16 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
+        if (null != eej) {
+            if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
+                Toast.makeText(this, "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                NoQueueBaseActivity.clearPreferences();
+                dismissProgress();
+                finish();//close the current activity
+            } else {
+                new ErrorResponseHandler().processError(this, eej);
+            }
+        }
     }
 
     @Override
