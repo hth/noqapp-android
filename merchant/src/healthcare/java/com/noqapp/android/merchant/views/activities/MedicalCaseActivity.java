@@ -9,7 +9,6 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.DiagnosisFragment;
-import com.noqapp.android.merchant.views.fragments.ExaminationFragment;
 import com.noqapp.android.merchant.views.fragments.InstructionFragment;
 import com.noqapp.android.merchant.views.fragments.PrimaryCheckupFragment;
 import com.noqapp.android.merchant.views.fragments.PrintFragment;
@@ -44,7 +43,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     public SymptomsFragment symptomsFragment;
     private LabTestsFragment labTestsFragment;
     private TreatmentFragment treatmentFragment;
-    private ExaminationFragment examinationFragment;
     private DiagnosisFragment diagnosisFragment;
     private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
@@ -91,8 +89,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         rcv_header =  findViewById(R.id.rcv_header);
         data.add("Primary checkup");
         data.add("Symptoms");
-        data.add("Examination");
-        data.add("Investigation");
+        data.add("Examination & Investigation");
         data.add("Tests");
         data.add("Treatment");
         data.add("Instructions");
@@ -106,7 +103,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
         primaryCheckupFragment.setArguments(bppf);
         symptomsFragment = new SymptomsFragment();
-        examinationFragment = new ExaminationFragment();
         diagnosisFragment = new DiagnosisFragment();
         labTestsFragment = new LabTestsFragment();
         treatmentFragment = new TreatmentFragment();
@@ -115,12 +111,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
         adapter.addFragment(symptomsFragment, "FRAG" + 1);
-        adapter.addFragment(examinationFragment, "FRAG" + 2);
-        adapter.addFragment(diagnosisFragment, "FRAG" + 3);
-        adapter.addFragment(labTestsFragment, "FRAG" + 4);
-        adapter.addFragment(treatmentFragment, "FRAG" + 5);
-        adapter.addFragment(instructionFragment, "FRAG" + 6);
-        adapter.addFragment(printFragment, "FRAG" + 7);
+        adapter.addFragment(diagnosisFragment, "FRAG" + 2);
+        adapter.addFragment(labTestsFragment, "FRAG" + 3);
+        adapter.addFragment(treatmentFragment, "FRAG" + 4);
+        adapter.addFragment(instructionFragment, "FRAG" + 5);
+        adapter.addFragment(printFragment, "FRAG" + 6);
 
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -148,7 +143,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
                 rcv_header.smoothScrollToPosition(position);
                 menuAdapter.setSelected_pos(position);
                 menuAdapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -187,6 +181,15 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
        // saveAllData();
     }
 
+    private void saveAllData(){
+        primaryCheckupFragment.saveData();
+        symptomsFragment.saveData();
+        labTestsFragment.saveData();
+        treatmentFragment.saveData();
+        instructionFragment.saveData();
+        diagnosisFragment.saveData();
+        printFragment.updateUI();
+    }
 
     private void initLists(){
         
@@ -293,14 +296,5 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getInstructionList().add("Drink milk every day");
     }
 
-    private void saveAllData(){
-        primaryCheckupFragment.saveData();
-        symptomsFragment.saveData();
-        labTestsFragment.saveData();
-        treatmentFragment.saveData();
-        instructionFragment.saveData();
-        examinationFragment.saveData();
-        diagnosisFragment.saveData();
-        printFragment.updateUI();
-    }
+
 }
