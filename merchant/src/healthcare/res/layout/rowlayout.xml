@@ -9,19 +9,13 @@
           android:paddingBottom="5dp"
           android:layout_margin="5dp"
           android:gravity="center"
+          android:ellipsize="end"
+          android:maxLines="1"
+          android:minLines="1"
+          android:singleLine="true"
           android:button="@drawable/check_box_bg"
           android:text="CheckBox"
           android:minWidth="100dp"
+          android:maxWidth="180dp"
           android:textAppearance="?android:attr/textAppearanceSmall"
           android:textColor="#fff"/>
-
-
-        <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/name"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:padding="10dp"-->
-        <!--android:layout_margin="5dp"-->
-        <!--android:text="ABCD"-->
-        <!--android:textSize="16sp"-->
-        <!--android:textColor="#000"/>-->

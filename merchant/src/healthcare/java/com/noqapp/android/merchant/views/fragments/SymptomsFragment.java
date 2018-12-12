@@ -16,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,21 +33,23 @@ import java.util.List;
 
 public class SymptomsFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, rcv_obstretics;
     private TextView tv_add_new;
-    private CustomAdapter symptomsAdapter;
+    private CustomAdapter symptomsAdapter, obstreticsAdapter;
     private ListView listview;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_symptoms, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
+        rcv_obstretics = v.findViewById(R.id.rcv_obstretics);
         tv_add_new = v.findViewById(R.id.tv_add_new);
         listview = v.findViewById(R.id.listview);
         tv_add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(),"Add Symptoms");
+                AddItemDialog(getActivity(), "Add Symptoms");
             }
         });
         return v;
@@ -60,6 +63,12 @@ public class SymptomsFragment extends Fragment {
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         symptomsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
         recyclerView.setAdapter(symptomsAdapter);
+
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        rcv_obstretics.setLayoutManager(staggeredGridLayoutManager1);
+        obstreticsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
+        rcv_obstretics.setAdapter(obstreticsAdapter);
     }
 
     private void AddItemDialog(final Context mContext, String title) {
@@ -107,10 +116,14 @@ public class SymptomsFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomsAdapter.getSelectedData());
+        String temp = obstreticsAdapter.getSelectedData();
+        if (TextUtils.isEmpty(temp))
+            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomsAdapter.getSelectedData());
+        else
+            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomsAdapter.getSelectedData() + "," + obstreticsAdapter.getSelectedData());
     }
 
-    public void updateList(List<JsonMedicalRecord> jsonMedicalRecords){
+    public void updateList(List<JsonMedicalRecord> jsonMedicalRecords) {
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(getActivity(), jsonMedicalRecords);
         listview.setAdapter(adapter);
     }

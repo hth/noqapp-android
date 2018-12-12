@@ -63,7 +63,7 @@ public class InstructionFragment extends Fragment {
         List<DataObj> DataObjList = new ArrayList<>();
         for (int i = 0; i <MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList().size() ; i++) {
             DataObj DataObj = new DataObj();
-            DataObj.setName(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList().get(i));
+            DataObj.setShortName(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList().get(i));
             DataObj.setSelect(false);
             DataObjList.add(DataObj);
         }
@@ -116,7 +116,7 @@ public class InstructionFragment extends Fragment {
                         temp.add(edt_item.getText().toString());
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setInstructionList(temp);
                         DataObj dataObj = new DataObj();
-                        dataObj.setName(edt_item.getText().toString());
+                        dataObj.setShortName(edt_item.getText().toString());
                         dataObj.setSelect(false);
                         instructionAdapter.addData(dataObj);
                         list_view.setAdapter(instructionAdapter);

@@ -278,22 +278,22 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
     public void meterViewValueChanged(View v) {
         switch (v.getId()) {
             case R.id.mv_pulse:
-                tv_pulse.setText(String.valueOf(mv_pulse.getValue()));
+                tv_pulse.setText("Pulse: " + String.valueOf(mv_pulse.getValue()));
                 break;
             case R.id.mv_weight:
-                tv_weight.setText(String.valueOf(mv_weight.getDoubleValue()));
+                tv_weight.setText("Weight: " + String.valueOf(mv_weight.getDoubleValue()));
                 break;
             case R.id.mv_temperature:
-                tv_temperature.setText(String.valueOf(mv_temperature.getDoubleValue()));
+                tv_temperature.setText("Temp: " + String.valueOf(mv_temperature.getDoubleValue()));
                 break;
             case R.id.mv_oxygen:
-                tv_oxygen.setText(String.valueOf(mv_oxygen.getValue()));
+                tv_oxygen.setText("Oxygen: " + String.valueOf(mv_oxygen.getValue()));
                 break;
             case R.id.mv_bp_high:
-                tv_bp_high.setText(String.valueOf(mv_bp_high.getValue()));
+                tv_bp_high.setText("Systolic: " + String.valueOf(mv_bp_high.getValue()));
                 break;
             case R.id.mv_bp_low:
-                tv_bp_low.setText(String.valueOf(mv_bp_low.getValue()));
+                tv_bp_low.setText("Diastolic: " + String.valueOf(mv_bp_low.getValue()));
                 break;
 
             default:

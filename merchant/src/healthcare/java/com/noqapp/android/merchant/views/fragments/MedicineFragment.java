@@ -82,7 +82,7 @@ public class MedicineFragment extends Fragment {
                         .show();
 
                 DataObj dataObj = new DataObj();
-                dataObj.setName(listDataChild.get(
+                dataObj.setShortName(listDataChild.get(
                         listDataHeader.get(groupPosition)).get(
                         childPosition));
                 dataObj.setSelect(false);

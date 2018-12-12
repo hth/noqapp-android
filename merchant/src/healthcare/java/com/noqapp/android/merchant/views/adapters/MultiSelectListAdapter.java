@@ -49,7 +49,7 @@ public class MultiSelectListAdapter extends ArrayAdapter<DataObj> {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.chk.setTag(position);
-        holder.title.setText(list.get(position).getName());
+        holder.title.setText(list.get(position).getShortName());
         holder.chk.setChecked(list.get(position).isSelect());
         return convertView;
     }
@@ -64,7 +64,7 @@ public class MultiSelectListAdapter extends ArrayAdapter<DataObj> {
         StringBuffer sb = new StringBuffer();
         for (DataObj bean : list) {
             if (bean.isSelect()) {
-                sb.append(bean.getName());
+                sb.append(bean.getShortName());
                 sb.append(", ");
             }
         }
