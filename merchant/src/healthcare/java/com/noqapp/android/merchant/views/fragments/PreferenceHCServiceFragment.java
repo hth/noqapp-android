@@ -69,7 +69,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String value = (String) parent.getItemAtPosition(position);
                 DataObj dataObj = new DataObj();
-                dataObj.setName(value);
+                dataObj.setShortName(value);
                 dataObj.setSelect(false);
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
@@ -106,7 +106,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DataObj dataObj = new DataObj();
-                dataObj.setName(masterDataString.get(position));
+                dataObj.setShortName(masterDataString.get(position));
                 dataObj.setSelect(false);
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
@@ -143,7 +143,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             listAdapter.notifyDataSetChanged();
             actvAdapter.notifyDataSetChanged();
             DataObj dataObj = new DataObj();
-            dataObj.setName(edt_add.getText().toString());
+            dataObj.setShortName(edt_add.getText().toString());
             dataObj.setSelect(false);
             selectedList.add(dataObj);
             multiSelectListAdapter.notifyDataSetChanged();

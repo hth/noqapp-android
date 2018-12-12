@@ -5,7 +5,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,27 +16,30 @@ import android.widget.ImageView;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-    private ArrayList<DataObj> personNames;
+    private ArrayList<DataObj> dataObjArrayList;
     private Context context;
     private int drawableSelect = -1;
     private int drawableUnSelect = -1;
 
-    public CustomAdapter(Context context, ArrayList<DataObj> personNames) {
+    public CustomAdapter(Context context, ArrayList<DataObj> dataObjArrayList) {
         this.context = context;
-        this.personNames = personNames;
+        this.dataObjArrayList = dataObjArrayList;
         drawableSelect = R.drawable.bg_select;
         drawableUnSelect = R.drawable.bg_unselect;
+        Collections.sort(dataObjArrayList);
     }
 
-    public CustomAdapter(Context context, ArrayList<DataObj> personNames,   int drawableUnSelect) {
-        this.personNames = personNames;
+    public CustomAdapter(Context context, ArrayList<DataObj> dataObjArrayList, int drawableUnSelect) {
+        this.dataObjArrayList = dataObjArrayList;
         this.context = context;
         drawableSelect = R.drawable.bg_select;
         this.drawableUnSelect = drawableUnSelect;
+        Collections.sort(dataObjArrayList);
     }
 
 
@@ -50,8 +52,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.name.setText(personNames.get(position).getName());
-        if (personNames.get(position).isSelect()) {
+        holder.name.setText(dataObjArrayList.get(position).getShortName());
+        if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
@@ -59,7 +61,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                personNames.get(position).setSelect(isChecked);
+                dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
                 } else {
@@ -73,7 +75,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return personNames.size();
+        return dataObjArrayList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -90,9 +92,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public String getSelectedData() {
         String data = "";
-        for (int i = 0; i < personNames.size(); i++) {
-            if (personNames.get(i).isSelect()) {
-                data += personNames.get(i).getName() + ", ";
+        for (int i = 0; i < dataObjArrayList.size(); i++) {
+            if (dataObjArrayList.get(i).isSelect()) {
+                data += dataObjArrayList.get(i).getShortName() + ", ";
             }
         }
         if (data.endsWith(", "))
@@ -102,9 +104,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public ArrayList<String> getSelectedDataList() {
         ArrayList<String> temp = new ArrayList<>();
-        for (int i = 0; i < personNames.size(); i++) {
-            if (personNames.get(i).isSelect()) {
-                temp.add(personNames.get(i).getName());
+        for (int i = 0; i < dataObjArrayList.size(); i++) {
+            if (dataObjArrayList.get(i).isSelect()) {
+                temp.add(dataObjArrayList.get(i).getShortName());
             }
         }
         return temp;
@@ -112,11 +114,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public ArrayList<JsonMedicalMedicine> getSelectedDataListObject() {
         ArrayList<JsonMedicalMedicine> temp = new ArrayList<>();
-        for (int i = 0; i < personNames.size(); i++) {
-            if (personNames.get(i).isSelect()) {
+        for (int i = 0; i < dataObjArrayList.size(); i++) {
+            if (dataObjArrayList.get(i).isSelect()) {
                 JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
-                jsonMedicalMedicine.setName(personNames.get(i).getName());
-                jsonMedicalMedicine.setPharmacyCategory(personNames.get(i).getCategory());
+                jsonMedicalMedicine.setName(dataObjArrayList.get(i).getShortName());
+                jsonMedicalMedicine.setPharmacyCategory(dataObjArrayList.get(i).getCategory());
                 temp.add(jsonMedicalMedicine);
             }
         }
