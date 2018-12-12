@@ -239,7 +239,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Account is blocked. Contact support.", Toast.LENGTH_LONG).show();
                 NoQueueBaseActivity.clearPreferences();
                 dismissProgress();
                 finish();//close the current activity

@@ -143,7 +143,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(getActivity(), "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Account is blocked. Contact support.", Toast.LENGTH_LONG).show();
                 LaunchActivity.getLaunchActivity().clearLoginData(false);
             } else {
                 new ErrorResponseHandler().processError(getActivity(), eej);
