@@ -138,6 +138,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     public void authenticationFailure() {
         dismissProgress();
         AppUtils.authenticationProcessing();
+        finish();
     }
 
     @Override
