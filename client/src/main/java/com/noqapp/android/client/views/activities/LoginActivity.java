@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 public class LoginActivity extends OTPActivity {
 
@@ -81,16 +82,22 @@ public class LoginActivity extends OTPActivity {
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
-            Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
-            in.putExtra("mobile_no", verifiedMobileNo);
-            in.putExtra("country_code", countryCode);
-            in.putExtra("countryShortName", countryShortName);
-            startActivity(in);
-            dismissProgress();
-            finish();//close the current activity
-        } else {
-            new ErrorResponseHandler().processError(this, eej);
+        if(null != eej) {
+            if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+                Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
+                in.putExtra("mobile_no", verifiedMobileNo);
+                in.putExtra("country_code", countryCode);
+                in.putExtra("countryShortName", countryShortName);
+                startActivity(in);
+                dismissProgress();
+                finish();//close the current activity
+            } else if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
+                Toast.makeText(this, "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                dismissProgress();
+                finish();//close the current activity
+            } else {
+                new ErrorResponseHandler().processError(this, eej);
+            }
         }
     }
 
