@@ -63,7 +63,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
-
         View view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = view.findViewById(R.id.btn_login);
         actv_email = view.findViewById(R.id.actv_email);
@@ -71,8 +70,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         userList = LaunchActivity.getLaunchActivity().getUserList();
         loginModel = new LoginModel(this);
         merchantProfileModel = new MerchantProfileModel();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity(), R.layout.spinner_item, userList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
         btn_login.setOnClickListener(new OnClickListener() {
@@ -112,7 +110,6 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         super.onActivityCreated(savedInstanceState);
     }
 
-
     @Override
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
@@ -123,8 +120,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             if (!userList.contains(email)) {
                 userList.add(email);
                 LaunchActivity.getLaunchActivity().setUserList(userList);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                        (getActivity(), android.R.layout.select_dialog_item, userList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, userList);
                 //Getting the instance of AutoCompleteTextView
                 actv_email.setThreshold(1);//will start working from first character
                 actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
@@ -147,7 +143,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(getActivity(), "Your account has been blocked. Please contact to admin", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Account is blocked. Contact support.", Toast.LENGTH_LONG).show();
                 LaunchActivity.getLaunchActivity().clearLoginData(false);
             } else {
                 new ErrorResponseHandler().processError(getActivity(), eej);
