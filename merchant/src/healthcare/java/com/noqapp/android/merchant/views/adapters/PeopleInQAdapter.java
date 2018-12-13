@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.SimpleFormActivity;
 
@@ -188,10 +189,21 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     @Override
     void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
-            Intent intent = new Intent(context, PhysicalDialogActivity.class);
-            intent.putExtra("qCodeQR", qCodeQR);
-            intent.putExtra("data", jsonQueuedPerson);
-            context.startActivity(intent);
+
+            if (new AppUtils().isTablet(context)) {
+                Intent intent = new Intent(context, PhysicalDialogActivity.class);
+                intent.putExtra("qCodeQR", qCodeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                context.startActivity(intent);
+            } else {
+                Intent intent = new Intent(context, PhysicalActivity.class);
+                intent.putExtra("qCodeQR", qCodeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                context.startActivity(intent);
+                ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+
+            }
+
         } else {
             if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {

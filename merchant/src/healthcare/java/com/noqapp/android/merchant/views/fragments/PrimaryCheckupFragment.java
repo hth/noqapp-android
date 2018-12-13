@@ -25,6 +25,8 @@ import com.noqapp.android.merchant.views.customviews.MeterView;
 
 import com.squareup.picasso.Picasso;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,12 +52,12 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
 
     private ProgressDialog progressDialog;
     private TextView tv_patient_name, tv_address, tv_details;
-    private ListView listview;
     private ImageView iv_profile;
     private AutoCompleteTextView actv_past_history, actv_known_allergy, actv_family_history;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
-    private MeterView mv_weight, mv_pulse, mv_temperature, mv_oxygen, mv_bp_high, mv_bp_low;
+    private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low;
+    private DiscreteSeekBar dsb_bp_low, dsb_bp_high;
 
     @Nullable
     @Override
@@ -68,44 +70,56 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         actv_past_history = v.findViewById(R.id.actv_past_history);
         actv_family_history = v.findViewById(R.id.actv_family_history);
         actv_known_allergy = v.findViewById(R.id.actv_known_allergy);
-        mv_weight = v.findViewById(R.id.mv_weight);
+        mv_weight1 = v.findViewById(R.id.mv_weight1);
+        mv_weight2 = v.findViewById(R.id.mv_weight2);
         mv_pulse = v.findViewById(R.id.mv_pulse);
-        mv_temperature = v.findViewById(R.id.mv_temperature);
+        mv_temperature2 = v.findViewById(R.id.mv_temperature2);
+        mv_temperature1 = v.findViewById(R.id.mv_temperature1);
         mv_oxygen = v.findViewById(R.id.mv_oxygen);
-        mv_bp_high = v.findViewById(R.id.mv_bp_high);
-        mv_bp_low = v.findViewById(R.id.mv_bp_low);
+
 
         tv_weight = v.findViewById(R.id.tv_weight);
         tv_pulse = v.findViewById(R.id.tv_pulse);
         tv_temperature = v.findViewById(R.id.tv_temperature);
         tv_oxygen = v.findViewById(R.id.tv_oxygen);
-        tv_bp_high = v.findViewById(R.id.tv_bp_systolic);
-        tv_bp_low = v.findViewById(R.id.tv_bp_diastolic);
+        tv_bp_high = v.findViewById(R.id.tv_bp_high);
+        tv_bp_low = v.findViewById(R.id.tv_bp_low);
 
-        mv_pulse.setNumbersOf(3, 0);
-        mv_oxygen.setNumbersOf(2, 0);
-        mv_bp_high.setNumbersOf(3, 0);
-        mv_bp_high.setNumbersOf(3, 0);
-        mv_bp_low.setNumbersOf(2, 0);
+
         mv_pulse.setMeterViewValueChanged(this);
-        mv_temperature.setMeterViewValueChanged(this);
-        mv_weight.setMeterViewValueChanged(this);
+        mv_temperature2.setMeterViewValueChanged(this);
+        mv_temperature1.setMeterViewValueChanged(this);
+        mv_weight1.setMeterViewValueChanged(this);
+        mv_weight2.setMeterViewValueChanged(this);
         mv_oxygen.setMeterViewValueChanged(this);
-        mv_bp_high.setMeterViewValueChanged(this);
-        mv_bp_low.setMeterViewValueChanged(this);
+      //  mv_oxygen.setValue(98);
+//        mv_weight1.setValue(80);
+//        mv_weight2.setValue(0);
+//        mv_pulse.setValue(85);
+
+        meterViewValueChanged(mv_pulse);
+        meterViewValueChanged(mv_weight1);
+        meterViewValueChanged(mv_temperature1);
+        meterViewValueChanged(mv_oxygen);
 
         Picasso.with(getActivity()).load(R.drawable.profile_avatar).into(iv_profile);
-        listview = v.findViewById(R.id.listview);
-        iv_profile.setOnClickListener(new View.OnClickListener() {
+        dsb_bp_low = v.findViewById(R.id.dsb_bp_low);
+        dsb_bp_high = v.findViewById(R.id.dsb_bp_high);
+        dsb_bp_low.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Meter selected value: " + String.valueOf(mv_weight.getDoubleValue()), Toast.LENGTH_LONG).show();
-                Log.e("pulse value", String.valueOf(mv_pulse.getValue()));
-                Log.e("oxygen value", String.valueOf(mv_oxygen.getValue()));
-                Log.e("temperature value", String.valueOf(mv_temperature.getDoubleValue()));
-                Log.e("weight value", String.valueOf(mv_weight.getDoubleValue()));
+            public int transform(int value) {
+                tv_bp_low.setText("Diastolic: " + String.valueOf(value));
+                return value;
             }
         });
+        dsb_bp_high.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                tv_bp_high.setText("Systolic: " + String.valueOf(value));
+                return value;
+            }
+        });
+        // dsb_bp_low.setProgress(89); set value to discrete
         return v;
     }
 
@@ -180,24 +194,7 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
             jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
         }
         Collections.reverse(jsonMedicalRecords);
-        MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(getActivity(), jsonMedicalRecords);
-        listview.setAdapter(adapter);
         MedicalCaseActivity.getMedicalCaseActivity().symptomsFragment.updateList(jsonMedicalRecords);
-        if (jsonMedicalRecords.size() <= 0) {
-            listview.setVisibility(View.GONE);
-        } else {
-            listview.setVisibility(View.GONE);
-        }
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent in = new Intent(MedicalHistoryActivity.this, MedicalHistoryDetailActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("data", jsonMedicalRecords.get(i));
-//                in.putExtras(bundle);
-//                startActivity(in);
-            }
-        });
         dismissProgress();
     }
 
@@ -216,18 +213,23 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
                 if (null != jsonMedicalRecord.getMedicalPhysical().getPluse())
                     mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
-                    mv_bp_high.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
-                    mv_bp_low.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
+                    dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
+                    dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
-                    double d1 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getWeight()) * 100;
-                    mv_weight.setValue((int) d1);
+                    if(jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")){
+                        String [] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
+                        mv_weight1.setValue(Integer.parseInt(temp[0]));
+                        mv_weight2.setValue(Integer.parseInt(temp[1]));
+                    }
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
-                    double d2 = Double.parseDouble(jsonMedicalRecord.getMedicalPhysical().getTemperature()) * 100;
-                    mv_temperature.setValue((int) d2);
+                    if(jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")){
+                        String [] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
+                        mv_temperature1.setValue(Integer.parseInt(temp[0]));
+                        mv_temperature2.setValue(Integer.parseInt(temp[1]));
+                    }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -268,9 +270,9 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPastHistory(actv_past_history.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFamilyHistory(actv_family_history.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPulse(mv_pulse.getValueAsString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(new String[]{mv_bp_high.getValueAsString(), mv_bp_low.getValueAsString()});
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setWeight(mv_weight.getDoubleValueAsString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setTemperature(mv_temperature.getDoubleValueAsString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
         MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setOxygenLevel(mv_oxygen.getValueAsString());
     }
 
@@ -278,22 +280,18 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
     public void meterViewValueChanged(View v) {
         switch (v.getId()) {
             case R.id.mv_pulse:
-                tv_pulse.setText("Pulse: " + String.valueOf(mv_pulse.getValue()));
+                tv_pulse.setText("Pulse: " + mv_pulse.getValueAsString());
                 break;
-            case R.id.mv_weight:
-                tv_weight.setText("Weight: " + String.valueOf(mv_weight.getDoubleValue()));
+            case R.id.mv_weight1:
+            case R.id.mv_weight2:
+                tv_weight.setText("Weight: " + mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
                 break;
-            case R.id.mv_temperature:
-                tv_temperature.setText("Temp: " + String.valueOf(mv_temperature.getDoubleValue()));
+            case R.id.mv_temperature1:
+            case R.id.mv_temperature2:
+                tv_temperature.setText("Temp: " + mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
                 break;
             case R.id.mv_oxygen:
-                tv_oxygen.setText("Oxygen: " + String.valueOf(mv_oxygen.getValue()));
-                break;
-            case R.id.mv_bp_high:
-                tv_bp_high.setText("Systolic: " + String.valueOf(mv_bp_high.getValue()));
-                break;
-            case R.id.mv_bp_low:
-                tv_bp_low.setText("Diastolic: " + String.valueOf(mv_bp_low.getValue()));
+                tv_oxygen.setText("Oxygen: " + mv_oxygen.getValueAsString());
                 break;
 
             default:

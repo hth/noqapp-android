@@ -162,14 +162,19 @@ public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNu
      */
     public void setValue(int value) {
         int koeff = getChildCount();
-        for (int i = 0; i < getChildCount(); i++) {
-            MeterNumberPicker picker = (MeterNumberPicker) getChildAt(i);
-            int number = (int) (value / Math.pow(10, --koeff));
-            if (i == 0 && number > 9) {
-                throw new IllegalArgumentException("Number of digits cannot be greater then pickers number");
+        if (koeff == 1) {
+            MeterNumberPicker picker = (MeterNumberPicker) getChildAt(0);
+            picker.setValue(value);
+        } else {
+            for (int i = 0; i < getChildCount(); i++) {
+                MeterNumberPicker picker = (MeterNumberPicker) getChildAt(i);
+                int number = (int) (value / Math.pow(10, --koeff));
+                if (i == 0 && number > 9) {
+                    throw new IllegalArgumentException("Number of digits cannot be greater then pickers number");
+                }
+                value -= number * Math.pow(10, koeff);
+                picker.setValue(number);
             }
-            value -= number * Math.pow(10, koeff);
-            picker.setValue(number);
         }
     }
 
