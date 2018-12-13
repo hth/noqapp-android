@@ -184,7 +184,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        if(DataVisibilityEnum.L.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()))){
+        if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
             recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,12 +192,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                         new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber("IN", phoneNo));
                 }
             });
+        } else {
+            if (null != phoneNo && phoneNo.length() >= 10) {
+                String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length() - 1);
+                recordHolder.tv_customer_mobile.setText(number);
+            }
         }
-        if(null != phoneNo && phoneNo.length()>=10){
-            String number = phoneNo.substring(0,4)+"XXXXXX"+phoneNo.substring(phoneNo.length()-3,phoneNo.length()-1);
-            recordHolder.tv_customer_mobile.setText(number);
-        }
-
         recordHolder.rl_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,7 +268,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     recordHolder.tv_create_case.setClickable(false);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
                 }
-            } else  if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+            } else if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
                 if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
@@ -276,7 +276,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     recordHolder.tv_create_case.setClickable(false);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
                 }
-            }else {
+            } else {
                 recordHolder.tv_create_case.setClickable(false);
                 recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
             }
