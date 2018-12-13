@@ -239,7 +239,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, "Account is blocked. Contact support.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
                 NoQueueBaseActivity.clearPreferences();
                 dismissProgress();
                 finish();//close the current activity
@@ -297,7 +297,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.theme_aqua));
-                tv_male.setText("Male");
+                tv_male.setText(getString(R.string.male));
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
                 break;
@@ -307,7 +307,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
-                tv_female.setText("Female");
+                tv_female.setText(getString(R.string.female));
                 break;
         }
         try {

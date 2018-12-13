@@ -31,8 +31,8 @@ public class JsonTopic extends JsonToken implements Serializable {
     @JsonProperty("hour")
     private JsonHour hour;
 
-    @JsonProperty("dp")
-    private JsonDataProtection jsonDataProtection;
+    @JsonProperty("dv")
+    private JsonDataVisibility jsonDataVisibility;
 
     public String getTopic() {
         return topic;
@@ -51,12 +51,12 @@ public class JsonTopic extends JsonToken implements Serializable {
         return this;
     }
 
-    public JsonDataProtection getJsonDataProtection() {
-        return jsonDataProtection;
+    public JsonDataVisibility getJsonDataVisibility() {
+        return jsonDataVisibility;
     }
 
-    public JsonTopic setJsonDataProtection(JsonDataProtection jsonDataProtection) {
-        this.jsonDataProtection = jsonDataProtection;
+    public JsonTopic setJsonDataVisibility(JsonDataVisibility jsonDataVisibility) {
+        this.jsonDataVisibility = jsonDataVisibility;
         return this;
     }
 }

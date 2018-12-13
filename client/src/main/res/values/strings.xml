@@ -302,6 +302,7 @@
     <string name="order">ORDER</string>
     <string name="activate">Activate</string>
     <string name="change_address">Change Address</string>
+    <string name="error_account_block">Account is blocked. Contact support.</string>
     <!-- Category Info Screen -->
 
 </resources>

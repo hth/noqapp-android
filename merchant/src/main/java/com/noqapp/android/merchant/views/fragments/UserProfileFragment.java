@@ -120,7 +120,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setBackgroundResource(R.drawable.button_drawable_red_square);
-                tv_male.setText("Male");
+                tv_male.setText(getString(R.string.male));
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
                 break;
@@ -130,7 +130,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
-                tv_female.setText("Female");
+                tv_female.setText(getString(R.string.female));
                 break;
 
 

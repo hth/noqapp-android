@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.DataProtectionEnum;
+import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -10,7 +10,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerModel;
 import com.noqapp.android.merchant.model.ManageQueueModel;
-import com.noqapp.android.merchant.presenter.beans.JsonDataProtection;
+import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -35,7 +35,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     protected ManageQueueModel manageQueueModel;
     protected BusinessCustomerModel businessCustomerModel;
     private QueueStatusEnum queueStatusEnum;
-    private JsonDataProtection jsonDataProtection;
+    private JsonDataVisibility jsonDataVisibility;
 
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
@@ -141,7 +140,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR,JsonDataProtection jsonDataProtection) {
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, JsonDataVisibility jsonDataVisibility) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -149,10 +148,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setQueuePersonListPresenter(this);
         businessCustomerModel = new BusinessCustomerModel(this);
-        this.jsonDataProtection = jsonDataProtection;
+        this.jsonDataVisibility = jsonDataVisibility;
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum,JsonDataProtection jsonDataProtection) {
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -162,7 +161,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         manageQueueModel.setQueuePersonListPresenter(this);
         businessCustomerModel = new BusinessCustomerModel(this);
         this.queueStatusEnum = queueStatusEnum;
-        this.jsonDataProtection = jsonDataProtection;
+        this.jsonDataVisibility = jsonDataVisibility;
     }
 
     @Override
@@ -185,7 +184,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
                 PhoneFormatterUtil.formatNumber("IN", phoneNo));
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        if(DataProtectionEnum.L.getName().equals(jsonDataProtection.getDataProtections().get(LaunchActivity.getLaunchActivity().getUserLevel().name()))){
+        if(DataVisibilityEnum.L.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()))){
             recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

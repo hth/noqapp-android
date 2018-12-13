@@ -283,7 +283,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getJsonDataProtection());
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getJsonDataVisibility());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         } else {
@@ -416,7 +416,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         }
                     }
             );
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataProtection());
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if (jsonTopic.getServingNumber() > 0)
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -678,7 +678,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     protected void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
-        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataProtection());
+        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataVisibility());
         rv_queue_people.setAdapter(peopleInQAdapter);
     }
 
