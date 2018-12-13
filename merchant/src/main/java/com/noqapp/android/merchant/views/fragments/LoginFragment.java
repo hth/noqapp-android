@@ -140,6 +140,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        LaunchActivity.getLaunchActivity().clearLoginData(false);
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
@@ -153,6 +154,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public void responseErrorPresenter(int errorCode) {
+        LaunchActivity.getLaunchActivity().clearLoginData(false);
         LaunchActivity.getLaunchActivity().dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
@@ -221,6 +223,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void merchantError() {
         LaunchActivity.getLaunchActivity().dismissProgress();
+        LaunchActivity.getLaunchActivity().clearLoginData(false);
     }
 
     @Override
