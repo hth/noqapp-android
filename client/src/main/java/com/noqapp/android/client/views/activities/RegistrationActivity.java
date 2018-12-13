@@ -201,7 +201,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_male.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
-            tv_male.setText("Male");
+            tv_male.setText(getString(R.string.male));
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
         } else if (v == tv_female) {
@@ -210,7 +210,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
-            tv_female.setText("Female");
+            tv_female.setText(getString(R.string.female));
         }
     }
 

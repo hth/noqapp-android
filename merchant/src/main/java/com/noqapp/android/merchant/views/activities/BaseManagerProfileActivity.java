@@ -151,7 +151,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, "Account is blocked. Contact support.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
                 LaunchActivity.getLaunchActivity().clearLoginData(false);
                 dismissProgress();
                 finish();//close the current activity

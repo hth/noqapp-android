@@ -92,7 +92,7 @@ public class LoginActivity extends OTPActivity {
                 dismissProgress();
                 finish();//close the current activity
             } else if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, "Account is blocked. Contact support.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
                 dismissProgress();
                 finish();//close the current activity
             } else {
