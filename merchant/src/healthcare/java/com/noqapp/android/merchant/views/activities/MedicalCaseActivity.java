@@ -311,7 +311,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getDiagnosisList().add(new DataObj("INFERTILITY : PRIMARY", "INFERTILITY : PRIMARY", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("INFERTILITY – SECONDARY", "INFERTILITY – SECONDARY", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("5 - 40 WEEKS PREGNANCY", "5 - 40 WEEKS PREGNANCY", "", false));
-        formDataObj.getDiagnosisList().add(new DataObj("EARLY PREGANCY WITH PV BLEEDING", "EARLY PREGANCY WITH PV BLEEDING", "", false));
+        formDataObj.getDiagnosisList().add(new DataObj("EARLY PREGANCY WITH PV BLEEDING", "EARLY PREGNANCY WITH PV BLEEDING", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("VESICULAR MOLE", "VESICULAR MOLE", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("BARTHOLIN CYST", "BARTHOLIN CYST", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("BARTHOLIN ABSCESS", "BARTHOLIN ABSCESS", "", false));
@@ -370,7 +370,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("INFERTILITY : PRIMARY", "INFERTILITY : PRIMARY", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("INFERTILITY – SECONDARY", "INFERTILITY – SECONDARY", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("5 - 40 WEEKS PREGNANCY", "5 - 40 WEEKS PREGNANCY", "", false));
-        formDataObj.getProvisionalDiagnosisList().add(new DataObj("EARLY PREGANCY WITH PV BLEEDING", "EARLY PREGANCY WITH PV BLEEDING", "", false));
+        formDataObj.getProvisionalDiagnosisList().add(new DataObj("EARLY PREGANCY WITH PV BLEEDING", "EARLY PREGNANCY WITH PV BLEEDING", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("VESICULAR MOLE", "VESICULAR MOLE", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("BARTHOLIN CYST", "BARTHOLIN CYST", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("BARTHOLIN ABSCESS", "BARTHOLIN ABSCESS", "", false));
