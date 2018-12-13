@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.presenter.beans;
 
-import com.noqapp.android.common.model.types.DataProtectionEnum;
+import com.noqapp.android.common.model.types.DataVisibilityEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,22 +29,22 @@ import java.util.Map;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonDataProtection implements Serializable {
+public class JsonDataVisibility implements Serializable {
 
-    @JsonProperty("dps")
-    private Map<String, DataProtectionEnum> dataProtections = new HashMap<>();
+    @JsonProperty("dvs")
+    private Map<String, DataVisibilityEnum> dataVisibilities = new HashMap<>();
 
-    public Map<String, DataProtectionEnum> getDataProtections() {
-        return dataProtections;
+    public Map<String, DataVisibilityEnum> getDataVisibilities() {
+        return dataVisibilities;
     }
 
-    public JsonDataProtection setDataProtections(Map<String, DataProtectionEnum> dataProtections) {
-        this.dataProtections = dataProtections;
+    public JsonDataVisibility setDataVisibilities(Map<String, DataVisibilityEnum> dataVisibilities) {
+        this.dataVisibilities = dataVisibilities;
         return this;
     }
 
-    public JsonDataProtection addDataProtection(String userLevel, DataProtectionEnum dataProtection) {
-        this.dataProtections.put(userLevel, dataProtection);
+    public JsonDataVisibility addDataVisibility(String userLevel, DataVisibilityEnum dataVisibility) {
+        this.dataVisibilities.put(userLevel, dataVisibility);
         return this;
     }
 }
