@@ -55,7 +55,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_additional_info, container, false);
+        View view = inflater.inflate(R.layout.frag_additional_info, container, false);
         initProgress();
 
         edt_about_me = view.findViewById(R.id.edt_about_me);

@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.MyViewHolder> {
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
     private int drawableSelect = -1;
     private int drawableUnSelect = -1;
 
-    public CustomAdapter(Context context, ArrayList<DataObj> dataObjArrayList) {
+    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList) {
         this.context = context;
         this.dataObjArrayList = dataObjArrayList;
         drawableSelect = R.drawable.bg_select;
@@ -34,7 +34,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         Collections.sort(dataObjArrayList);
     }
 
-    public CustomAdapter(Context context, ArrayList<DataObj> dataObjArrayList, int drawableUnSelect) {
+    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList, int drawableUnSelect) {
         this.dataObjArrayList = dataObjArrayList;
         this.context = context;
         drawableSelect = R.drawable.bg_select;

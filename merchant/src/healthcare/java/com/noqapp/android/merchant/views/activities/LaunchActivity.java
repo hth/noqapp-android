@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.NavigationBean;
+import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -9,13 +10,11 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import com.crashlytics.android.answers.Answers;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import io.fabric.sdk.android.Fabric;
 
-import java.util.ArrayList;
 
 public class LaunchActivity extends BaseLaunchActivity {
 
@@ -96,7 +94,12 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     public void updateMenuList(boolean showChart) {
         super.updateMenuList(showChart);
-        drawerItem.add(1,new NavigationBean(R.mipmap.me_select, "Prefrence"));
+        try {
+            if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER)
+                drawerItem.add(2, new NavigationBean(R.mipmap.me_select, getString(R.string.menu_preference)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

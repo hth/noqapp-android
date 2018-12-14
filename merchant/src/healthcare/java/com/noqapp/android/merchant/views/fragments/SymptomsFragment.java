@@ -4,7 +4,7 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -35,7 +35,7 @@ public class SymptomsFragment extends Fragment {
 
     private RecyclerView recyclerView, rcv_obstretics;
     private TextView tv_add_new;
-    private CustomAdapter symptomsAdapter, obstreticsAdapter;
+    private StaggeredGridAdapter symptomsAdapter, obstreticsAdapter;
     private ListView listview;
 
     @Nullable
@@ -61,13 +61,13 @@ public class SymptomsFragment extends Fragment {
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        symptomsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
+        symptomsAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
         recyclerView.setAdapter(symptomsAdapter);
 
 
         StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
         rcv_obstretics.setLayoutManager(staggeredGridLayoutManager1);
-        obstreticsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
+        obstreticsAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
         rcv_obstretics.setAdapter(obstreticsAdapter);
     }
 
@@ -105,7 +105,7 @@ public class SymptomsFragment extends Fragment {
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                     recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-                    symptomsAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
+                    symptomsAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
                     recyclerView.setAdapter(symptomsAdapter);
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();

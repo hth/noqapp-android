@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.noqapp.android.merchant.R;
 
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class TreatmentFragment extends Fragment {
 
     private RecyclerView recyclerView, recyclerView_one;
     private TextView tv_add_medicine,tv_add_diagnosis;
-    private CustomAdapter medicineAdapter, diagnosisAdapter;
+    private StaggeredGridAdapter medicineAdapter, diagnosisAdapter;
 
     @Nullable
     @Override
@@ -62,11 +62,11 @@ public class TreatmentFragment extends Fragment {
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        medicineAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
+        medicineAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
         recyclerView.setAdapter(medicineAdapter);
         StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
         recyclerView_one.setLayoutManager(staggeredGridLayoutManager1);
-        diagnosisAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
+        diagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
         recyclerView_one.setAdapter(diagnosisAdapter);
     }
 
@@ -105,7 +105,7 @@ public class TreatmentFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
-                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
                         recyclerView.setAdapter(customAdapter);
                     }else {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
@@ -113,7 +113,7 @@ public class TreatmentFragment extends Fragment {
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                         recyclerView_one.setLayoutManager(staggeredGridLayoutManager);
-                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
                         recyclerView_one.setAdapter(customAdapter);
                     }
                     Toast.makeText(getActivity(),"'"+edt_item.getText().toString()+"' added successfully to list",Toast.LENGTH_LONG).show();

@@ -1,7 +1,6 @@
-package com.noqapp.android.merchant.views.utils;
+package com.noqapp.android.merchant.views.pojos;
 
 import com.google.gson.annotations.SerializedName;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 

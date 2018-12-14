@@ -15,6 +15,9 @@
     <!--medical details screen-->
 
 
+    <string name="menu_preference">Preference</string>
+
+
     <string name="mds_chief_complaints">Chief Complaint:</string>
     <string name="mds_past_history">Past History:</string>
     <string name="mds_family_history">Family History:</string>
@@ -39,6 +42,9 @@
     <string name="dependent_list">Dependent List</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
 
+
+
+
     <string-array name="days_array">
         <item>1 day</item>
         <item>2 days</item>
@@ -56,34 +62,4 @@
     </string-array>
 
 
-    <string-array name="category_array">
-        <item>Select Test Type</item>
-        <item>Pathology</item>
-        <item>Radiology</item>
-    </string-array>
-
-    <string-array name="search_array">
-        <item>VSC Pelvis (TVS)</item>
-        <item>4D Anamoly</item>
-        <item>VSC (obst) NT</item>
-        <item>VSC (obst) c</item>
-        <item>BS 2hrs after 75gm of glucos</item>
-        <item>Hb Electrophoresis</item>
-        <item>HCV</item>
-        <item>Color Doppler</item>
-        <item>ANC profile</item>
-        <item>HbA1C</item>
-        <item>T3T4T5H</item>
-    </string-array>
-
-    <string-array name="sub_category_array">
-        <item>Select Sub Test Type</item>
-        <item>MRI</item>
-        <item>SCAN</item>
-        <item>SONO</item>
-        <item>XRAY</item>
-        <item>PHYS</item>
-        <item>PATH</item>
-
-    </string-array>
 </resources>

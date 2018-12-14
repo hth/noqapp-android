@@ -2,7 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -109,7 +109,7 @@ public class InstructionFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                         recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        CustomAdapter customAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
                         recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
                     }else {
                         ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList();
