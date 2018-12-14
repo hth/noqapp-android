@@ -31,7 +31,7 @@ import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
-import com.noqapp.android.merchant.views.utils.TestCaseObjects;
+import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
 
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;

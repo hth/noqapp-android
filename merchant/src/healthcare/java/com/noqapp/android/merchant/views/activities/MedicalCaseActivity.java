@@ -18,7 +18,7 @@ import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
 import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.pojos.FormDataObj;
-import com.noqapp.android.merchant.views.utils.TestCaseObjects;
+import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
