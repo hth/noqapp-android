@@ -10,13 +10,11 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import com.crashlytics.android.answers.Answers;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -27,7 +25,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import io.fabric.sdk.android.Fabric;
 
-import java.util.ArrayList;
 
 public class LaunchActivity extends BaseLaunchActivity {
 
@@ -99,8 +96,8 @@ public class LaunchActivity extends BaseLaunchActivity {
         super.updateMenuList(showChart);
         try {
             if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER)
-                drawerItem.add(2, new NavigationBean(R.mipmap.me_select, "Preference"));
-        }catch (Exception e){
+                drawerItem.add(2, new NavigationBean(R.mipmap.me_select, getString(R.string.menu_preference)));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
