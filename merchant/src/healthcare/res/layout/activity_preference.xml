@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.noqapp.android.merchant.views.customviews.MyViewPager
+        <com.noqapp.android.merchant.views.customviews.CustomViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,7 +1,6 @@
-package com.noqapp.android.merchant.model;
+package com.noqapp.android.merchant.views.pojos;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.Arrays;

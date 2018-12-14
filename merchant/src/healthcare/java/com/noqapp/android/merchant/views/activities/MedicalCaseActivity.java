@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MedicalCasePojo;
+import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;

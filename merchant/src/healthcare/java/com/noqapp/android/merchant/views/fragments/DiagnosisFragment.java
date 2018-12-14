@@ -2,7 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.CustomAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class DiagnosisFragment extends Fragment {
 
     private RecyclerView rcv_provisional_diagnosis;
-    private CustomAdapter provisionalDiagnosisAdapter;
+    private StaggeredGridAdapter provisionalDiagnosisAdapter;
     private AutoCompleteTextView actv_clinical_findings,actv_examination_results;
     @Nullable
     @Override
@@ -52,7 +52,7 @@ public class DiagnosisFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
         rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager);
-        provisionalDiagnosisAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
+        provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
 
     }
@@ -92,7 +92,7 @@ public class DiagnosisFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                         rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        provisionalDiagnosisAdapter = new CustomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
+                        provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
                         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
                     } else {
 

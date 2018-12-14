@@ -8,9 +8,9 @@ import android.widget.Scroller;
 
 import java.lang.reflect.Field;
 
-public class MyViewPager extends ViewPager {
+public class CustomViewPager extends ViewPager {
 
-    public MyViewPager(Context context, AttributeSet attrs) {
+    public CustomViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         setMyScroller();
     }
@@ -20,14 +20,14 @@ public class MyViewPager extends ViewPager {
             Class<?> viewpager = ViewPager.class;
             Field scroller = viewpager.getDeclaredField("mScroller");
             scroller.setAccessible(true);
-            scroller.set(this, new MyScroller(getContext()));
+            scroller.set(this, new CustomScroller(getContext()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public class MyScroller extends Scroller {
-        public MyScroller(Context context) {
+    public class CustomScroller extends Scroller {
+        public CustomScroller(Context context) {
             super(context, new DecelerateInterpolator());
         }
 
