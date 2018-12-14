@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -154,16 +155,19 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             }
         });
         if (isStoragePermissionAllowed()) {
-            progressDialog.show();
-            MasterLabModel masterLabModel = new MasterLabModel();
-            masterLabModel.setFilePresenter(PreferenceActivity.this);
-            masterLabModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            callFileApi();
         } else {
             requestStoragePermission();
         }
 
     }
 
+    private void callFileApi(){
+        progressDialog.show();
+        MasterLabModel masterLabModel = new MasterLabModel();
+        masterLabModel.setFilePresenter(PreferenceActivity.this);
+        masterLabModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+    }
 
     @Override
     public void onBackPressed() {
@@ -327,5 +331,25 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         Bundle b = new Bundle();
         b.putInt("type", pos);
         return b;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            try {
+                //both remaining permission allowed
+                if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                    callFileApi();
+                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//one remaining permission allowed
+                    callFileApi();
+                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    //No permission allowed
+                    //Do nothing
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

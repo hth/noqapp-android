@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.NavigationBean;
+import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -96,7 +97,12 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     public void updateMenuList(boolean showChart) {
         super.updateMenuList(showChart);
-        drawerItem.add(1,new NavigationBean(R.mipmap.me_select, "Prefrence"));
+        try {
+            if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER)
+                drawerItem.add(2, new NavigationBean(R.mipmap.me_select, "Preference"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
