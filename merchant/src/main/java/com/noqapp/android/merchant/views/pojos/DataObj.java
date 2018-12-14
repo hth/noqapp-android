@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.views.pojos;
 
-public class DataObj implements Comparable<DataObj>{
+public class DataObj implements Comparable<DataObj> {
     private String shortName;
     private String fullName;
     private String category;
@@ -22,7 +22,8 @@ public class DataObj implements Comparable<DataObj>{
         this.category = category;
         this.isSelect = isSelect;
     }
-    public DataObj(String fullName, String shortName,  String category, boolean isSelect) {
+
+    public DataObj(String fullName, String shortName, String category, boolean isSelect) {
         this.shortName = shortName;
         this.fullName = fullName;
         this.category = category;
@@ -78,6 +79,7 @@ public class DataObj implements Comparable<DataObj>{
     public int compareTo(DataObj other) {
         return shortName.compareTo(other.shortName);
     }
+
     @Override
     public boolean equals(Object obj) {
         return (this.shortName.equals(((DataObj) obj).shortName));

@@ -230,6 +230,10 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
                         mv_temperature2.setValue(Integer.parseInt(temp[1]));
                     }
                 }
+                meterViewValueChanged(mv_pulse);
+                meterViewValueChanged(mv_weight1);
+                meterViewValueChanged(mv_temperature1);
+                meterViewValueChanged(mv_oxygen);
             } catch (Exception e) {
                 e.printStackTrace();
             }
