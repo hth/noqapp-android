@@ -140,7 +140,7 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <Button
                 android:id="@+id/ll_bp_disable"
                 android:layout_width="match_parent"
                 android:background="@color/disable_physical"
@@ -191,10 +191,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                <RelativeLayout
+                <Button
                         android:id="@+id/ll_pulse_disable"
                         android:layout_width="match_parent"
-                     android:background="@color/disable_physical"
+                        android:background="@color/disable_physical"
                         android:layout_height="match_parent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"/>
@@ -261,10 +261,10 @@
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <RelativeLayout
+                <Button
                         android:id="@+id/ll_temp_disable"
                         android:layout_width="match_parent"
-                     android:background="@color/disable_physical"
+                        android:background="@color/disable_physical"
                         android:layout_height="match_parent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"/>
@@ -323,10 +323,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                <RelativeLayout
+                <Button
                         android:id="@+id/ll_oxygen_disable"
                         android:layout_width="match_parent"
-                     android:background="@color/disable_physical"
+                        android:background="@color/disable_physical"
                         android:layout_height="match_parent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"/>
@@ -393,10 +393,10 @@
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <RelativeLayout
+                <Button
                         android:id="@+id/ll_weight_disable"
                         android:layout_width="match_parent"
-                     android:background="@color/disable_physical"
+                        android:background="@color/disable_physical"
                         android:layout_height="match_parent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"/>

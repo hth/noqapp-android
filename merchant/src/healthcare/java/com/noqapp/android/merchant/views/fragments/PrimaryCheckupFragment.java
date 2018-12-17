@@ -20,7 +20,6 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.merchant.views.customviews.MeterView;
 
 import com.squareup.picasso.Picasso;
@@ -38,15 +37,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,11 +97,11 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         sc_enable_oxygen.setChecked(false);
         sc_enable_bp.setChecked(false);
 
-        final RelativeLayout ll_pulse_disable = v.findViewById(R.id.ll_pulse_disable);
-        final RelativeLayout ll_temp_disable = v.findViewById(R.id.ll_temp_disable);
-        final RelativeLayout ll_weight_disable = v.findViewById(R.id.ll_weight_disable);
-        final RelativeLayout ll_oxygen_disable = v.findViewById(R.id.ll_oxygen_disable);
-        final RelativeLayout ll_bp_disable = v.findViewById(R.id.ll_bp_disable);
+        final Button ll_pulse_disable = v.findViewById(R.id.ll_pulse_disable);
+        final Button ll_temp_disable = v.findViewById(R.id.ll_temp_disable);
+        final Button ll_weight_disable = v.findViewById(R.id.ll_weight_disable);
+        final Button ll_oxygen_disable = v.findViewById(R.id.ll_oxygen_disable);
+        final Button ll_bp_disable = v.findViewById(R.id.ll_bp_disable);
         sc_enable_pulse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
@@ -164,10 +159,6 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
         mv_weight1.setMeterViewValueChanged(this);
         mv_weight2.setMeterViewValueChanged(this);
         mv_oxygen.setMeterViewValueChanged(this);
-        //  mv_oxygen.setValue(98);
-//        mv_weight1.setValue(80);
-//        mv_weight2.setValue(0);
-//        mv_pulse.setValue(85);
 
         meterViewValueChanged(mv_pulse);
         meterViewValueChanged(mv_weight1);

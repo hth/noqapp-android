@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,11 +115,11 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         sc_enable_oxygen.setChecked(false);
         sc_enable_bp.setChecked(false);
 
-        final RelativeLayout ll_pulse_disable = findViewById(R.id.ll_pulse_disable);
-        final RelativeLayout ll_temp_disable = findViewById(R.id.ll_temp_disable);
-        final RelativeLayout ll_weight_disable = findViewById(R.id.ll_weight_disable);
-        final RelativeLayout ll_oxygen_disable = findViewById(R.id.ll_oxygen_disable);
-        final RelativeLayout ll_bp_disable = findViewById(R.id.ll_bp_disable);
+        final Button ll_pulse_disable = findViewById(R.id.ll_pulse_disable);
+        final Button ll_temp_disable = findViewById(R.id.ll_temp_disable);
+        final Button ll_weight_disable = findViewById(R.id.ll_weight_disable);
+        final Button ll_oxygen_disable = findViewById(R.id.ll_oxygen_disable);
+        final Button ll_bp_disable = findViewById(R.id.ll_bp_disable);
         sc_enable_pulse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
