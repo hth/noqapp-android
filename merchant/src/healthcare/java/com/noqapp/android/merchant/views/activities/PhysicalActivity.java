@@ -22,10 +22,12 @@ import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -45,6 +47,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     private JsonQueuedPerson jsonQueuedPerson;
     protected boolean isDialog = false;
     protected ImageView actionbarBack;
+    private SwitchCompat sc_enable_pulse,sc_enable_temp,sc_enable_weight,sc_enable_oxygen,sc_enable_bp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isDialog) {
@@ -100,6 +103,74 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         tv_bp_high = findViewById(R.id.tv_bp_high);
         tv_bp_low = findViewById(R.id.tv_bp_low);
 
+        sc_enable_pulse = findViewById(R.id.sc_enable_pulse);
+        sc_enable_temp = findViewById(R.id.sc_enable_temp);
+        sc_enable_weight = findViewById(R.id.sc_enable_weight);
+        sc_enable_oxygen = findViewById(R.id.sc_enable_oxygen);
+        sc_enable_bp = findViewById(R.id.sc_enable_bp);
+
+        sc_enable_pulse.setChecked(false);
+        sc_enable_temp.setChecked(false);
+        sc_enable_weight.setChecked(false);
+        sc_enable_oxygen.setChecked(false);
+        sc_enable_bp.setChecked(false);
+
+        final Button ll_pulse_disable = findViewById(R.id.ll_pulse_disable);
+        final Button ll_temp_disable = findViewById(R.id.ll_temp_disable);
+        final Button ll_weight_disable = findViewById(R.id.ll_weight_disable);
+        final Button ll_oxygen_disable = findViewById(R.id.ll_oxygen_disable);
+        final Button ll_bp_disable = findViewById(R.id.ll_bp_disable);
+        sc_enable_pulse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_pulse_disable.setVisibility(View.GONE);
+                } else {
+                    ll_pulse_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        sc_enable_temp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_temp_disable.setVisibility(View.GONE);
+                } else {
+                    ll_temp_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        sc_enable_oxygen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_oxygen_disable.setVisibility(View.GONE);
+                } else {
+                    ll_oxygen_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        sc_enable_weight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_weight_disable.setVisibility(View.GONE);
+                } else {
+                    ll_weight_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        sc_enable_bp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_bp_disable.setVisibility(View.GONE);
+                } else {
+                    ll_bp_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
 
         mv_pulse.setMeterViewValueChanged(this);
         mv_temperature2.setMeterViewValueChanged(this);
@@ -142,12 +213,33 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 jsonMedicalRecord.setFormVersion(FormVersionEnum.MFD1);
                 jsonMedicalRecord.setCodeQR(codeQR);
                 jsonMedicalRecord.setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
-                        .setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())})
-                        .setPluse(String.valueOf(mv_pulse.getValue()))
-                        .setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString())
-                        .setOxygen(String.valueOf(mv_oxygen.getValue()))
-                        .setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
+                JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical();
+
+                if (sc_enable_pulse.isChecked()) {
+                   jsonMedicalPhysical.setPluse(mv_pulse.getValueAsString());
+                } else {
+                   jsonMedicalPhysical.setPluse(null);
+                }
+                if(sc_enable_bp.isChecked()) {
+                   jsonMedicalPhysical.setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
+                }else{
+                   jsonMedicalPhysical.setBloodPressure(null);
+                }
+                if (sc_enable_weight.isChecked()) {
+                   jsonMedicalPhysical.setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
+                } else {
+                   jsonMedicalPhysical.setWeight(null);
+                }
+                if (sc_enable_temp.isChecked()) {
+                   jsonMedicalPhysical.setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
+                } else {
+                   jsonMedicalPhysical.setTemperature(null);
+                }
+                if (sc_enable_oxygen.isChecked()) {
+                   jsonMedicalPhysical.setOxygen(mv_oxygen.getValueAsString());
+                } else {
+                   jsonMedicalPhysical.setOxygen(null);
+                }
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
 
                 if (!actv_followup.getText().toString().equals("")) {
@@ -242,27 +334,48 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             Log.e("data", jsonMedicalRecord.toString());
             try {
                 actv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
-                if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen())
+                if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
-                if (null != jsonMedicalRecord.getMedicalPhysical().getPluse())
+                    sc_enable_oxygen.setChecked(true);
+                }else{
+                    sc_enable_oxygen.setChecked(false);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getPluse()) {
                     mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                    sc_enable_pulse.setChecked(true);
+                }else{
+                    sc_enable_pulse.setChecked(false);
+                }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
+                    sc_enable_bp.setChecked(true);
+                }else{
+                    sc_enable_bp.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     if(jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")){
                         String [] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
                         mv_weight1.setValue(Integer.parseInt(temp[0]));
                         mv_weight2.setValue(Integer.parseInt(temp[1]));
+                        sc_enable_weight.setChecked(true);
+                    }else{
+                        sc_enable_weight.setChecked(false);
                     }
+                }else{
+                    sc_enable_weight.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
                     if(jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")){
                         String [] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
                         mv_temperature1.setValue(Integer.parseInt(temp[0]));
                         mv_temperature2.setValue(Integer.parseInt(temp[1]));
+                        sc_enable_temp.setChecked(true);
+                    }else{
+                        sc_enable_temp.setChecked(false);
                     }
+                }else{
+                    sc_enable_temp.setChecked(false);
                 }
                 meterViewValueChanged(mv_pulse);
                 meterViewValueChanged(mv_weight1);
