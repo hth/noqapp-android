@@ -8,4 +8,5 @@
     <color name="segment_bg_color">#d8d8d8</color>
     <color name="segment_text_color">@android:color/black</color>
     <color name="white_light">#efefef</color>
+    <color name="disable_physical">#E6808080</color>
 </resources>

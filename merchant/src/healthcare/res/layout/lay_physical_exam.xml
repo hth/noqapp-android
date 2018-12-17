@@ -11,6 +11,13 @@
             android:text="@string/mds_physical_exam"
             android:textColor="@android:color/black"/>
 
+    <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sc_enable_bp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:theme="@style/SCBSwitch"
+            android:layout_gravity="end"/>
 
     <TextView
             android:layout_width="match_parent"
@@ -23,111 +30,124 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_twelve"/>
 
-    <LinearLayout
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:background="@drawable/table_border">
+            android:layout_height="wrap_content">
 
-        <TextView
-                android:id="@+id/tv_bp_high"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:gravity="center"/>
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="@drawable/table_border">
 
             <TextView
-                    android:id="@+id/tv_start"
-                    android:layout_alignParentStart="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="70"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"/>
-
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                    android:id="@+id/dsb_bp_high"
+                    android:id="@+id/tv_bp_high"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tv_start"
-                    android:layout_toStartOf="@id/tv_end"
-                    app:dsb_trackHeight="5sp"
-                    app:dsb_scrubberHeight="5sp"
-                    app:dsb_indicatorTextAppearance="@style/TextAppearance.AppCompat.Large"
-                    app:dsb_min="70"
-                    app:dsb_max="190"/>
+                    android:textColor="@android:color/black"
+                    android:gravity="center"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/tv_start"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="70"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"/>
+
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                        android:id="@+id/dsb_bp_high"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/tv_start"
+                        android:layout_toStartOf="@id/tv_end"
+                        app:dsb_trackHeight="5sp"
+                        app:dsb_scrubberHeight="5sp"
+                        app:dsb_indicatorTextAppearance="@style/TextAppearance.AppCompat.Large"
+                        app:dsb_min="70"
+                        app:dsb_max="190"/>
+
+                <TextView
+                        android:id="@+id/tv_end"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="190"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+            </RelativeLayout>
+
 
             <TextView
-                    android:id="@+id/tv_end"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="190"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-        </RelativeLayout>
-
-
-        <TextView
-                android:id="@+id/tv_bp_low"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:gravity="center"/>
-
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_height="wrap_content">
-
-            <TextView
-                    android:id="@+id/tv_start1"
-                    android:layout_alignParentStart="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="40"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-
-            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                    android:id="@+id/dsb_bp_low"
+                    android:id="@+id/tv_bp_low"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tv_start1"
-                    android:layout_toStartOf="@id/tv_end1"
-                    app:dsb_trackHeight="5sp"
-                    app:dsb_scrubberHeight="5sp"
-                    app:dsb_indicatorTextAppearance="@style/TextAppearance.AppCompat.Large"
-                    app:dsb_min="40"
-                    app:dsb_max="100"/>
-
-            <TextView
-                    android:id="@+id/tv_end1"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
                     android:textColor="@android:color/black"
-                    android:text="100"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-        </RelativeLayout>
+                    android:gravity="center"/>
 
-    </LinearLayout>
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/tv_start1"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="40"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                        android:id="@+id/dsb_bp_low"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/tv_start1"
+                        android:layout_toStartOf="@id/tv_end1"
+                        app:dsb_trackHeight="5sp"
+                        app:dsb_scrubberHeight="5sp"
+                        app:dsb_indicatorTextAppearance="@style/TextAppearance.AppCompat.Large"
+                        app:dsb_min="40"
+                        app:dsb_max="100"/>
+
+                <TextView
+                        android:id="@+id/tv_end1"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textColor="@android:color/black"
+                        android:text="100"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+                android:id="@+id/ll_bp_disable"
+                android:layout_width="match_parent"
+                android:background="@color/disable_physical"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
+    </FrameLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -142,6 +162,14 @@
                 android:layout_weight=".4"
                 android:orientation="vertical">
 
+            <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sc_enable_pulse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:theme="@style/SCBSwitch"
+                    android:layout_gravity="end"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,11 +181,24 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve"/>
 
-            <com.noqapp.android.merchant.views.customviews.MeterView
-                    android:id="@+id/mv_pulse"
-                    style="@style/MVS_Pulse"
+            <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
+
+                <com.noqapp.android.merchant.views.customviews.MeterView
+                        android:id="@+id/mv_pulse"
+                        style="@style/MVS_Pulse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                        android:id="@+id/ll_pulse_disable"
+                        android:layout_width="match_parent"
+                     android:background="@color/disable_physical"
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+            </FrameLayout>
 
             <TextView
                     android:id="@+id/tv_pulse"
@@ -176,6 +217,14 @@
                 android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
+            <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sc_enable_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:theme="@style/SCBSwitch"
+                    android:layout_gravity="end"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,26 +236,39 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve"/>
 
-            <LinearLayout
+            <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:layout_height="wrap_content">
 
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_temperature1"
-                        style="@style/MVS_Temperature1"
-                        android:layout_width="0dp"
-                        android:layout_weight=".6"
-                        android:layout_height="wrap_content"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_temperature2"
-                        style="@style/MVS_Temperature2"
-                        android:layout_width="0dp"
-                        android:layout_weight=".4"
-                        android:layout_height="wrap_content"/>
-            </LinearLayout>
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_temperature1"
+                            style="@style/MVS_Temperature1"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:layout_height="wrap_content"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_temperature2"
+                            style="@style/MVS_Temperature2"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                        android:id="@+id/ll_temp_disable"
+                        android:layout_width="match_parent"
+                     android:background="@color/disable_physical"
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+            </FrameLayout>
 
             <TextView
                     android:id="@+id/tv_temperature"
@@ -232,6 +294,14 @@
                 android:layout_weight=".4"
                 android:orientation="vertical">
 
+            <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sc_enable_oxygen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:theme="@style/SCBSwitch"
+                    android:layout_gravity="end"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -243,11 +313,24 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve"/>
 
-            <com.noqapp.android.merchant.views.customviews.MeterView
-                    android:id="@+id/mv_oxygen"
-                    style="@style/MVS_Oxygen"
+            <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
+
+                <com.noqapp.android.merchant.views.customviews.MeterView
+                        android:id="@+id/mv_oxygen"
+                        style="@style/MVS_Oxygen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <RelativeLayout
+                        android:id="@+id/ll_oxygen_disable"
+                        android:layout_width="match_parent"
+                     android:background="@color/disable_physical"
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+            </FrameLayout>
 
             <TextView
                     android:id="@+id/tv_oxygen"
@@ -266,6 +349,14 @@
                 android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
+            <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/sc_enable_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:theme="@style/SCBSwitch"
+                    android:layout_gravity="end"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -277,26 +368,39 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_twelve"/>
 
-            <LinearLayout
+            <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:layout_height="wrap_content">
 
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_weight1"
-                        style="@style/MVS_Weight"
-                        android:layout_width="0dp"
-                        android:layout_weight=".6"
-                        android:layout_height="wrap_content"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
-                <com.noqapp.android.merchant.views.customviews.MeterView
-                        android:id="@+id/mv_weight2"
-                        style="@style/MVS_Temperature2"
-                        android:layout_width="0dp"
-                        android:layout_weight=".4"
-                        android:layout_height="wrap_content"/>
-            </LinearLayout>
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_weight1"
+                            style="@style/MVS_Weight"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:layout_height="wrap_content"/>
+
+                    <com.noqapp.android.merchant.views.customviews.MeterView
+                            android:id="@+id/mv_weight2"
+                            style="@style/MVS_Temperature2"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                        android:id="@+id/ll_weight_disable"
+                        android:layout_width="match_parent"
+                     android:background="@color/disable_physical"
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+            </FrameLayout>
 
             <TextView
                     android:id="@+id/tv_weight"
