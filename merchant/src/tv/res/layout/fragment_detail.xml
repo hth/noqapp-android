@@ -23,7 +23,7 @@
 
         <TextView
                 android:id="@+id/ad_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_toRightOf="@+id/ad_image"
@@ -33,6 +33,25 @@
                 android:textColor="@color/colorAddress"
                 android:textStyle="bold"
                 android:textSize="34sp"/>
+
+
+        <TextView
+                android:id="@+id/tv_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/ad_title"
+                android:maxLines="1"
+                android:minLines="1"
+                android:ellipsize="end"
+                android:layout_alignBaseline="@+id/ad_title"
+                android:text="sfsdf"
+                android:textColor="@color/colorAddress"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+
+
 
         <TextView
                 android:id="@+id/tv_timing"

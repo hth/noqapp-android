@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -57,7 +58,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
   public class DetailPresentation extends CastPresentation {
     public ImageView image,iv_banner,iv_banner1;
-    private TextView title,tv_timing;
+    private TextView title,tv_timing,tv_degree;
     public LinearLayout ll_list;
     public Context context;
     public DetailPresentation(Context context, Display display) {
@@ -74,6 +75,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
       iv_banner1 = findViewById(R.id.iv_banner1);
       title = findViewById( R.id.ad_title);
       tv_timing = findViewById( R.id.tv_timing);
+      tv_degree = findViewById(R.id.tv_degree);
       ll_list = findViewById( R.id.ll_list);
       updateDetail(tvObject);
     }
@@ -87,6 +89,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
       // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
       // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
       title.setText(tvObject.getJsonTopic().getDisplayName());
+      tv_degree.setText(" ( "+new AppUtils().getCompleteEducation(tvObject.getJsonQueueTV().getEducation())+" ) ");
       tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getStartHour())
               + " - " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getEndHour()));
       ll_list.removeAllViews();

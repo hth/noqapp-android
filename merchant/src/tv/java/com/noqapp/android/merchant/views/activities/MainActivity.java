@@ -209,7 +209,11 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     @Override
     public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
         if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
-            Log.v("TV Data",jsonQueueTVList.getQueues().toString());
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+            Log.v("TV Data", jsonQueueTVList.getQueues().toString());
             List<TvObject> tvObjects = new ArrayList<>();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
