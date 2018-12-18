@@ -4,7 +4,7 @@ import com.noqapp.android.merchant.model.api.ClientInQueueService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.ClientInQPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
-import com.noqapp.android.merchant.presenter.beans.QueueDetail;
+import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.Constants;
 
 import android.support.annotation.NonNull;

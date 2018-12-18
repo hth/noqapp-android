@@ -47,11 +47,6 @@ public class JsonQueueTVList extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public JsonQueueTVList addQueue(JsonQueueTV queue) {
-        this.queues.add(queue);
-        return this;
-    }
-
     public ErrorEncounteredJson getError() {
         return error;
     }

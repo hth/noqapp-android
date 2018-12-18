@@ -4,8 +4,10 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ClientInQModel;
 import com.noqapp.android.merchant.presenter.ClientInQPresenter;
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
-import com.noqapp.android.merchant.presenter.beans.QueueDetail;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -17,6 +19,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.common.api.Status;
 
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +35,7 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,43 +50,17 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 3000;
+    private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
+    private ViewPager viewPager;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv);
-
-        List<TvObject> list = getAdViewModels();
-
-        final ViewPager viewPager = findViewById(R.id.pager);
-        fragmentStatePagerAdapter =
-                new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        fragmentStatePagerAdapter.addAds(list);
-        CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener =
-                new CustomSimpleOnPageChangeListener(this);
-        if (viewPager != null) {
-            viewPager.setAdapter(fragmentStatePagerAdapter);
-            viewPager.addOnPageChangeListener(customSimpleOnPageChangeListener);
-            /*After setting the adapter use the timer */
-            final Handler handler = new Handler();
-            final Runnable Update = new Runnable() {
-                public void run() {
-                    if (currentPage == fragmentStatePagerAdapter.getCount()) {
-                        currentPage = 0;
-                    }
-                    viewPager.setCurrentItem(currentPage++, true);
-                }
-            };
-
-            timer = new Timer(); // This will create a new Thread
-            timer .schedule(new TimerTask() { // task to be scheduled
-
-                @Override
-                public void run() {
-                    handler.post(Update);
-                }
-            }, DELAY_MS, PERIOD_MS);
-        }
+        viewPager = findViewById(R.id.pager);
+        initProgress();
+        setupMediaRouter();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             //progressDialog.show();
             QueueDetail queueDetail = getQueueDetails();
@@ -90,9 +68,8 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
             clientInQModel.toBeServedClients(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),queueDetail);
+                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
         }
-        setupMediaRouter();
     }
 
     @Override
@@ -216,20 +193,13 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     }
 
     @NonNull
-    private List<TvObject> getAdViewModels() {
-        List<TvObject> tvObjects = new ArrayList<>();
-        for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
-            tvObjects.add(new TvObject().setJsonTopic(LaunchActivity.merchantListFragment.getTopics().get(i)).setJsonQueuedPersonList(LaunchActivity.merchantListFragment.merchantDetailFragment.getJsonQueuedPersonArrayList()));
-        }
-        return tvObjects;
-    }
-
-    @NonNull
     private QueueDetail getQueueDetails() {
         QueueDetail queueDetail = new QueueDetail();
         List<String> tvObjects = new ArrayList<>();
+        topicHashMap.clear();
         for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
             tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
+            topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), LaunchActivity.merchantListFragment.getTopics().get(i));
         }
         queueDetail.setCodeQRs(tvObjects);
         return queueDetail;
@@ -237,32 +207,65 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
 
     @Override
     public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
-        if(null != jsonQueueTVList){
+        if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
+            List<TvObject> tvObjects = new ArrayList<>();
+            for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
+                JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
+                tvObjects.add(new TvObject().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
+            }
+            fragmentStatePagerAdapter =
+                    new ScreenSlidePagerAdapter(getSupportFragmentManager());
+            fragmentStatePagerAdapter.addAds(tvObjects);
+            CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener =
+                    new CustomSimpleOnPageChangeListener(this);
+            if (viewPager != null) {
+                viewPager.setAdapter(fragmentStatePagerAdapter);
+                viewPager.addOnPageChangeListener(customSimpleOnPageChangeListener);
+                /*After setting the adapter use the timer */
+                final Handler handler = new Handler();
+                final Runnable Update = new Runnable() {
+                    public void run() {
+                        if (currentPage == fragmentStatePagerAdapter.getCount()) {
+                            currentPage = 0;
+                        }
+                        viewPager.setCurrentItem(currentPage++, true);
+                    }
+                };
 
+                timer = new Timer(); // This will create a new Thread
+                timer.schedule(new TimerTask() { // task to be scheduled
+
+                    @Override
+                    public void run() {
+                        handler.post(Update);
+                    }
+                }, DELAY_MS, PERIOD_MS);
+            }
         }
 
     }
 
     @Override
     public void authenticationFailure() {
-        //dismissProgress();
+        dismissProgress();
         AppUtils.authenticationProcessing();
         //finish();
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-       // dismissProgress();
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        //dismissProgress();
+        dismissProgress();
         if (null != eej) {
             new ErrorResponseHandler().processError(this, eej);
         }
     }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         private final List<TvObject> ads = new ArrayList<>();
 
@@ -290,4 +293,15 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         }
     }
 
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching data...");
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
 }

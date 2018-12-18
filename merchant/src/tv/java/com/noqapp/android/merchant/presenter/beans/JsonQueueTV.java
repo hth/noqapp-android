@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.JsonNameDatePair;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,8 +35,11 @@ public class JsonQueueTV extends AbstractDomain implements Serializable {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("wp")
-    private String webProfileId;
+    @JsonProperty ("pi")
+    private String profileImage;
+
+    @JsonProperty("ed")
+    private List<JsonNameDatePair> education;
 
     @JsonProperty("qps")
     private List<JsonQueuedPersonTV> jsonQueuedPersonTVList = new ArrayList<>();
@@ -49,12 +53,21 @@ public class JsonQueueTV extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getWebProfileId() {
-        return webProfileId;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public JsonQueueTV setWebProfileId(String webProfileId) {
-        this.webProfileId = webProfileId;
+    public JsonQueueTV setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+        return this;
+    }
+
+    public List<JsonNameDatePair> getEducation() {
+        return education;
+    }
+
+    public JsonQueueTV setEducation(List<JsonNameDatePair> education) {
+        this.education = education;
         return this;
     }
 
@@ -64,11 +77,6 @@ public class JsonQueueTV extends AbstractDomain implements Serializable {
 
     public JsonQueueTV setJsonQueuedPersonTVList(List<JsonQueuedPersonTV> jsonQueuedPersonTVList) {
         this.jsonQueuedPersonTVList = jsonQueuedPersonTVList;
-        return this;
-    }
-
-    public JsonQueueTV addJsonQueuedPersonTVList(JsonQueuedPersonTV jsonQueuedPersonTV) {
-        this.jsonQueuedPersonTVList.add(jsonQueuedPersonTV);
         return this;
     }
 }
