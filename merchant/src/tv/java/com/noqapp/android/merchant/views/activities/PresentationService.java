@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 
 import com.google.android.gms.cast.CastPresentation;
@@ -26,7 +27,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
   public void onCreatePresentation(Display display) {
     dismissPresentation();
     castPresentation = new DetailPresentation(this, display);
-
     try {
       castPresentation.show();
     } catch (WindowManager.InvalidDisplayException ex) {
@@ -78,7 +78,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     }
 
     public void updateDetail(TvObject tvObject) {
-      Picasso.with(getContext()).load("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-deepak-vaswani.jpg").into(image);
+      Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + tvObject.getJsonQueueTV().getWebProfileId()).into(image);
      // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
      // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
       title.setText(tvObject.getJsonTopic().getDisplayName());
@@ -86,13 +86,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
               + " - " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getEndHour()));
       ll_list.removeAllViews();
       LayoutInflater inflater = LayoutInflater.from(context);
-      if(null != tvObject.getJsonQueuedPersonList())
-      for (int i = 0; i < tvObject.getJsonQueuedPersonList().size(); i++) {
+      if(null != tvObject.getJsonQueueTV().getJsonQueuedPersonTVList())
+      for (int i = 0; i < tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().size(); i++) {
         View customView = inflater.inflate(R.layout.lay_text, null, false);
         TextView textView = customView.findViewById(R.id.tv_name);
         TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-        textView.setText("( "+(i+1)+") "+tvObject.getJsonQueuedPersonList().get(i).getCustomerName());
-        String phoneNo = tvObject.getJsonQueuedPersonList().get(i).getCustomerPhone();
+        textView.setText("( "+(i+1)+") "+tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
+        String phoneNo = tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
         if (null != phoneNo && phoneNo.length() >= 10) {
           String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length() - 1);
           tv_mobile.setText(number);
