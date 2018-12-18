@@ -1,13 +1,11 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class TvObject implements Serializable {
+public class TopicAndQueueTV implements Serializable {
     private JsonTopic jsonTopic;
     private JsonQueueTV jsonQueueTV;
 
@@ -15,7 +13,7 @@ public class TvObject implements Serializable {
         return jsonTopic;
     }
 
-    public TvObject setJsonTopic(JsonTopic jsonTopic) {
+    public TopicAndQueueTV setJsonTopic(JsonTopic jsonTopic) {
         this.jsonTopic = jsonTopic;
         return this;
     }
@@ -24,7 +22,7 @@ public class TvObject implements Serializable {
         return jsonQueueTV;
     }
 
-    public TvObject setJsonQueueTV(JsonQueueTV jsonQueueTV) {
+    public TopicAndQueueTV setJsonQueueTV(JsonQueueTV jsonQueueTV) {
         this.jsonQueueTV = jsonQueueTV;
         return this;
     }
