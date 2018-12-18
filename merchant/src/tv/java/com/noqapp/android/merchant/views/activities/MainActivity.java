@@ -7,7 +7,7 @@ import com.noqapp.android.merchant.presenter.ClientInQPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.QueueDetail;
+import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -50,9 +50,10 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 3000;
-    private HashMap<String,JsonTopic> topicHashMap = new HashMap<>();
+    private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ViewPager viewPager;
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
             clientInQModel.toBeServedClients(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),queueDetail);
+                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
         }
     }
 
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         topicHashMap.clear();
         for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
             tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
-            topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(),LaunchActivity.merchantListFragment.getTopics().get(i));
+            topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), LaunchActivity.merchantListFragment.getTopics().get(i));
         }
         queueDetail.setCodeQRs(tvObjects);
         return queueDetail;
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
 
     @Override
     public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
-        if(null != jsonQueueTVList && null != jsonQueueTVList.getQueues() ){
+        if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
             List<TvObject> tvObjects = new ArrayList<>();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 };
 
                 timer = new Timer(); // This will create a new Thread
-                timer .schedule(new TimerTask() { // task to be scheduled
+                timer.schedule(new TimerTask() { // task to be scheduled
 
                     @Override
                     public void run() {
@@ -264,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
             new ErrorResponseHandler().processError(this, eej);
         }
     }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         private final List<TvObject> ads = new ArrayList<>();
 
