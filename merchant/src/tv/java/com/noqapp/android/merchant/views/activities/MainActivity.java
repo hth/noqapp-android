@@ -101,8 +101,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
 
     private void setupMediaRouter() {
         mediaRouter = MediaRouter.getInstance(getApplicationContext());
-        MediaRouteSelector mediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(
-                CastMediaControlIntent.categoryForCast(getString(R.string.app_cast_id))).build();
+        MediaRouteSelector mediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(CastMediaControlIntent.categoryForCast(getString(R.string.app_cast_id))).build();
         if (isRemoteDisplaying()) {
             this.castDevice = CastDevice.getFromBundle(mediaRouter.getSelectedRoute().getExtras());
         } else {
@@ -111,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 castDevice = extras.getParcelable(INTENT_EXTRA_CAST_DEVICE);
             }
         }
-
-        mediaRouter.addCallback(mediaRouteSelector, mMediaRouterCallback,
-                MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+        mediaRouter.addCallback(mediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
     }
 
     private boolean isRemoteDisplaying() {
@@ -124,8 +121,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         @Override
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
             castDevice = CastDevice.getFromBundle(info.getExtras());
-            Toast.makeText(getApplicationContext(),
-                    getString(R.string.cast_connected_to) + info.getName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.cast_connected_to) + info.getName(), Toast.LENGTH_LONG).show();
             startCastService(castDevice);
         }
 
@@ -141,12 +137,11 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     private void startCastService(CastDevice castDevice) {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent notificationPendingIntent =
-                PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
 
         CastRemoteDisplayLocalService.NotificationSettings settings =
-                new CastRemoteDisplayLocalService.NotificationSettings.Builder().setNotificationPendingIntent(
-                        notificationPendingIntent).build();
+                new CastRemoteDisplayLocalService.NotificationSettings.Builder()
+                        .setNotificationPendingIntent(notificationPendingIntent).build();
 
         CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class,
                 getString(R.string.app_cast_id), castDevice, settings,
@@ -176,8 +171,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     }
 
     private void initError() {
-        Toast toast = Toast.makeText(getApplicationContext(), R.string.toast_connection_error,
-                Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getApplicationContext(), R.string.toast_connection_error, Toast.LENGTH_SHORT);
         if (mediaRouter != null) {
             mediaRouter.selectRoute(mediaRouter.getDefaultRoute());
         }
@@ -188,8 +182,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public void onCurrentPageChange(int position) {
         currentPosition = position;
         if (CastRemoteDisplayLocalService.getInstance() != null) {
-            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(
-                    fragmentStatePagerAdapter.getAdAt(position));
+            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(fragmentStatePagerAdapter.getAdAt(position));
         }
     }
 
@@ -219,11 +212,9 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
                 topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
             }
-            fragmentStatePagerAdapter =
-                    new ScreenSlidePagerAdapter(getSupportFragmentManager());
+            fragmentStatePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
             fragmentStatePagerAdapter.addAds(topicAndQueueTVList);
-            CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener =
-                    new CustomSimpleOnPageChangeListener(this);
+            CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener = new CustomSimpleOnPageChangeListener(this);
             if (viewPager != null) {
                 viewPager.setAdapter(fragmentStatePagerAdapter);
                 viewPager.addOnPageChangeListener(customSimpleOnPageChangeListener);
