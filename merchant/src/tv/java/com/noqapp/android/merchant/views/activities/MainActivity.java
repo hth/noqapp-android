@@ -31,6 +31,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         initProgress();
         setupMediaRouter();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            //progressDialog.show();
+            progressDialog.show();
             QueueDetail queueDetail = getQueueDetails();
             ClientInQModel clientInQModel = new ClientInQModel(this);
             clientInQModel.toBeServedClients(
@@ -208,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     @Override
     public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
         if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
+            Log.v("TV Data",jsonQueueTVList.getQueues().toString());
             List<TvObject> tvObjects = new ArrayList<>();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
@@ -242,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 }, DELAY_MS, PERIOD_MS);
             }
         }
-
+        dismissProgress();
     }
 
     @Override

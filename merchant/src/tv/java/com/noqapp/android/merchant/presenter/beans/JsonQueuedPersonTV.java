@@ -89,4 +89,15 @@ public class JsonQueuedPersonTV extends AbstractDomain implements Serializable {
         this.queueUserState = queueUserState;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonQueuedPersonTV{" +
+                "token=" + token +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", queueUserState=" + queueUserState +
+                '}';
+    }
 }

@@ -55,5 +55,11 @@ public class JsonQueueTVList extends AbstractDomain implements Serializable {
         this.error = error;
     }
 
-
+    @Override
+    public String toString() {
+        return "JsonQueueTVList{" +
+                "queues=" + queues +
+                ", error=" + error +
+                '}';
+    }
 }

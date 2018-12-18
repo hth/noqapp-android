@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,11 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + tvObject.getJsonQueueTV().getWebProfileId()).into(image);
+        if (TextUtils.isEmpty(tvObject.getJsonQueueTV().getProfileImage())) {
+            Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
+        } else {
+            Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + tvObject.getJsonQueueTV().getProfileImage()).into(image);
+        }
        // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
        // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
         title.setText(tvObject.getJsonTopic().getDisplayName());
@@ -75,7 +80,7 @@ public class DetailFragment extends Fragment {
             textView.setText("( "+(i+1)+" ) "+tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
             String phoneNo = tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
             if (null != phoneNo && phoneNo.length() >= 10) {
-                String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length() - 1);
+                String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
                 tv_mobile.setText(number);
             }else{
                 tv_mobile.setText("");
