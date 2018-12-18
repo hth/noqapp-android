@@ -32,8 +32,8 @@ public class ClientInQModel {
      * @param mail
      * @param auth
      */
-    public void toBeServedClients(String did, String mail, String auth,QueueDetail queueDetail) {
-        clientInQueueService.toBeServedClients(did, Constants.DEVICE_TYPE,  mail, auth, queueDetail).enqueue(new Callback<JsonQueueTVList>() {
+    public void toBeServedClients(String did, String mail, String auth, QueueDetail queueDetail) {
+        clientInQueueService.toBeServedClients(did, Constants.DEVICE_TYPE, mail, auth, queueDetail).enqueue(new Callback<JsonQueueTVList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueueTVList> call, @NonNull Response<JsonQueueTVList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
