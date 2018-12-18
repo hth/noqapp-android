@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+
+    <LinearLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight=".2"
+                    android:background="@color/pager_top_bg"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".5"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+
+                    <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:text="sfsdf"
+                            android:textColor="@color/color_action_bar"
+                            android:textSize="@dimen/title_size"/>
+
+
+                    <TextView
+                            android:id="@+id/tv_deviceId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:layout_below="@+id/tv_title"
+                            android:textSize="@dimen/text_size_ten"
+                            android:layout_centerHorizontal="true"/>
+
+                    <TextView
+                            android:id="@+id/tv_timing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_deviceId"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_twelve"/>
+
+                </RelativeLayout>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_separator"/>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".5"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/tv_current"
+                            style="@style/style_join_queue_tv"
+                            android:text="@string/serving"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_twelve"/>
+
+                    <TextView
+                            android:id="@+id/tv_current_value"
+                            style="@style/style_join_queue_tv"
+                            android:textColor="@color/colorMobile"
+                            android:text=""
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/value_text_size"/>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".8"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_separator"/>
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+
+                    <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_queue_people"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical"/>
+
+
+                    <ProgressBar
+                            android:id="@+id/progress_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone"/>
+                </FrameLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

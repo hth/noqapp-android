@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:padding="10dp"
+              android:layout_height="match_parent"
+              android:weightSum="1">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2">
+
+        <ImageView
+                android:id="@+id/ad_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_dialog_close_dark"
+                android:layout_alignParentStart="true"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/presentation_detail_description_title"
+                />
+
+        <TextView
+                android:id="@+id/ad_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/ad_image"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="sfsdf"
+                android:textColor="@color/colorAddress"
+                android:textStyle="bold"
+                android:textSize="34sp"/>
+
+        <TextView
+                android:id="@+id/tv_timing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:layout_toRightOf="@+id/ad_image"
+                android:layout_below="@+id/ad_title"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorAddress"
+                android:textSize="16sp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+            android:id="@+id/ll_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".6"
+            android:layout_gravity="bottom|start"
+            android:layout_marginTop="10dp"
+            android:background="#A6000000"
+            android:orientation="vertical">
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@android:color/black"
+            android:layout_weight=".2">
+
+
+        <ImageView
+                android:id="@+id/iv_banner"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ssd"
+                android:layout_alignParentStart="true"/>
+
+        <ImageView
+                android:id="@+id/iv_banner1"
+                android:layout_width="500dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:scaleType="center"
+                android:background="@drawable/powered_by"
+                android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+</LinearLayout>
