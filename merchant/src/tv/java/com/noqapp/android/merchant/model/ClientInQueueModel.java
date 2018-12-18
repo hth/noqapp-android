@@ -14,8 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ClientInQueueModel {
-
-    private static final String TAG = MerchantProfileModel.class.getSimpleName();
+    private static final String TAG = ClientInQueueModel.class.getSimpleName();
 
     protected static final ClientInQueueService clientInQueueService;
     private ClientInQueuePresenter clientInQueuePresenter;
