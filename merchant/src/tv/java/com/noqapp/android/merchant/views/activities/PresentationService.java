@@ -1,132 +1,112 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.ShowPersonInQAdapter;
 
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-import java.util.List;
-
 public class PresentationService extends CastRemoteDisplayLocalService {
-    private DetailPresentation castPresentation;
-    private JsonTopic jsonTopic;
-    private List<JsonQueuedPerson> jsonQueuedPersonArrayList;
+  private DetailPresentation castPresentation;
+  private TvObject tvObject;
 
-    @Override
-    public void onCreatePresentation(Display display) {
-        dismissPresentation();
-        castPresentation = new DetailPresentation(this, display);
+  @Override
+  public void onCreatePresentation(Display display) {
+    dismissPresentation();
+    castPresentation = new DetailPresentation(this, display);
 
-        try {
-            castPresentation.show();
-        } catch (WindowManager.InvalidDisplayException ex) {
-            dismissPresentation();
-        }
+    try {
+      castPresentation.show();
+    } catch (WindowManager.InvalidDisplayException ex) {
+      dismissPresentation();
+    }
+  }
+
+  @Override
+  public void onDismissPresentation() {
+    dismissPresentation();
+    tvObject = null;
+  }
+
+  private void dismissPresentation() {
+    if (castPresentation != null) {
+      castPresentation.dismiss();
+      castPresentation = null;
+    }
+  }
+
+  public void setTvObject(TvObject ad) {
+    tvObject = ad;
+    if (castPresentation != null) {
+      castPresentation.updateDetail(ad);
+    }
+  }
+
+  public class DetailPresentation extends CastPresentation {
+    public ImageView image,iv_banner,iv_banner1;
+    private TextView title,tv_timing;
+    public LinearLayout ll_list;
+    public Context context;
+    public DetailPresentation(Context context, Display display) {
+      super(context, display);
+      this.context =context;
     }
 
     @Override
-    public void onDismissPresentation() {
-        dismissPresentation();
-        jsonTopic = null;
-        jsonQueuedPersonArrayList = null;
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.presentation_detail);
+      image = findViewById(R.id.ad_image);
+      iv_banner = findViewById(R.id.iv_banner);
+      iv_banner1 = findViewById(R.id.iv_banner1);
+      title = findViewById( R.id.ad_title);
+      tv_timing = findViewById( R.id.tv_timing);
+      ll_list = findViewById( R.id.ll_list);
+      updateDetail(tvObject);
     }
 
-    private void dismissPresentation() {
-        if (castPresentation != null) {
-            castPresentation.dismiss();
-            castPresentation = null;
+    public void updateDetail(TvObject tvObject) {
+      Picasso.with(getContext()).load("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-deepak-vaswani.jpg").into(image);
+      Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
+      Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
+      title.setText(tvObject.getJsonTopic().getDisplayName());
+      tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getStartHour())
+              + " - " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getEndHour()));
+      ll_list.removeAllViews();
+      LayoutInflater inflater = LayoutInflater.from(context);
+      if(null != tvObject.getJsonQueuedPersonList())
+      for (int i = 0; i < tvObject.getJsonQueuedPersonList().size(); i++) {
+        View customView = inflater.inflate(R.layout.lay_text, null, false);
+        TextView textView = customView.findViewById(R.id.tv_name);
+        TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
+        textView.setText("( "+(i+1)+") "+tvObject.getJsonQueuedPersonList().get(i).getCustomerName());
+        String phoneNo = tvObject.getJsonQueuedPersonList().get(i).getCustomerPhone();
+        if (null != phoneNo && phoneNo.length() >= 10) {
+          String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length() - 1);
+          tv_mobile.setText(number);
+        }else{
+          tv_mobile.setText("");
         }
+        ll_list.addView(customView);
+      }
+
     }
 
-    public void setAdViewModel(JsonTopic jsonTopic, List<JsonQueuedPerson> jsonQueuedPersonArrayList) {
-        this.jsonTopic = jsonTopic;
-        this.jsonQueuedPersonArrayList = jsonQueuedPersonArrayList;
-        if (castPresentation != null) {
-            castPresentation.updateAdDetail(jsonTopic, jsonQueuedPersonArrayList);
-        }
+    @Override
+    public void onDetachedFromWindow() {
+      super.onDetachedFromWindow();
     }
-
-    public class DetailPresentation extends CastPresentation {
-
-        private ShowPersonInQAdapter peopleInQAdapter;
-
-        private RecyclerView rv_queue_people;
-        private TextView tv_counter_name;
-        private TextView tv_title, tv_current_value, tv_timing;
-        private ListView list_view;
-
-        private Context context;
-
-        public DetailPresentation(Context context, Display display) {
-            super(context, display);
-            this.context = context;
-        }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.merchant_detail_page_tv);
-            tv_current_value = findViewById(R.id.tv_current_value);
-            tv_title = findViewById(R.id.tv_title);
-            tv_timing = findViewById(R.id.tv_timing);
-            rv_queue_people = findViewById(R.id.rv_queue_people);
-            list_view = findViewById(R.id.list_view);
-            tv_counter_name = findViewById(R.id.tv_counter_name);
-            rv_queue_people.setHasFixedSize(true);
-            LinearLayoutManager horizontalLayoutManagaer
-                    = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-            rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
-            rv_queue_people.setItemAnimator(new DefaultItemAnimator());
-
-            TextView tv_deviceId = findViewById(R.id.tv_deviceId);
-            tv_deviceId.setText(UserUtils.getDeviceId());
-            tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
-
-
-            updateAdDetail(jsonTopic, jsonQueuedPersonArrayList);
-        }
-
-        public void updateAdDetail(JsonTopic jsonTopic, List<JsonQueuedPerson> jsonQueuedPersonArrayList) {
-            if (null != jsonTopic) {
-                String cName = "";
-                if (TextUtils.isEmpty(cName))
-                    tv_counter_name.setText("");
-                else
-                    tv_counter_name.setText(cName);
-
-                tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
-                        + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
-                tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
-                tv_title.setText(jsonTopic.getDisplayName());
-                list_view.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, new String[]{"qqq", "bbbb", "cccc", "ddddd"}));
-                // peopleInQAdapter = new ShowPersonInQAdapter(jsonQueuedPersonArrayList, context);
-                // rv_queue_people.setAdapter(peopleInQAdapter);
-            }
-        }
-
-        @Override
-        public void onDetachedFromWindow() {
-            super.onDetachedFromWindow();
-        }
-    }
+  }
 }

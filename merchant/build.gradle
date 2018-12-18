@@ -359,14 +359,14 @@ android {
             buildConfigField "String", "APP_FLAVOR", "\"NQMS\""
         }
 
-//        tv {
-//            dimension "version"
-//
-//            applicationId "com.noqapp.android.merchant.tv"
-//            resValue "string", "flavored_app_name", "NoQApp TV"
-//
-//            buildConfigField "String", "APP_FLAVOR", "\"NQMT\""
-//        }
+        tv {
+            dimension "version"
+
+            applicationId "com.noqapp.android.merchant.tv"
+            resValue "string", "flavored_app_name", "NoQApp TV"
+
+            buildConfigField "String", "APP_FLAVOR", "\"NQMT\""
+        }
     }
 }
 
