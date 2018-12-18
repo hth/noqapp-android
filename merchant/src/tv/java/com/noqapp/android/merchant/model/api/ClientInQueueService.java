@@ -1,4 +1,7 @@
-package com.noqapp.android.merchant.views;
+package com.noqapp.android.merchant.model.api;
+
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
+import com.noqapp.android.merchant.presenter.beans.QueueDetail;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

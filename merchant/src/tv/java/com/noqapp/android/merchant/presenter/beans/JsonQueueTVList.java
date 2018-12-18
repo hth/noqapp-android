@@ -1,6 +1,7 @@
-package com.noqapp.android.merchant.views;
+package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,6 +35,9 @@ public class JsonQueueTVList extends AbstractDomain implements Serializable {
     @JsonProperty("qs")
     private List<JsonQueueTV> queues = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonQueueTV> getQueues() {
         return queues;
     }
@@ -47,4 +51,14 @@ public class JsonQueueTVList extends AbstractDomain implements Serializable {
         this.queues.add(queue);
         return this;
     }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+
 }

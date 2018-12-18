@@ -1,12 +1,9 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.NetworkUtil;
-
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;

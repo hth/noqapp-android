@@ -25,7 +25,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +55,6 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
     protected RecyclerView rv_queue_people;
     protected ProgressBar progressDialog;
     protected JsonTopic jsonTopic = null;
-    protected TextView tv_counter_name;
-
     protected TextView tv_title, tv_current_value, tv_timing;
     protected int currrentpos = 0;
     protected static AdapterCallback mAdapterCallback;
@@ -87,7 +84,6 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
         tv_title = itemView.findViewById(R.id.tv_title);
         tv_timing = itemView.findViewById(R.id.tv_timing);
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
-        tv_counter_name = itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -189,12 +185,6 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
 
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
         queueStatusOuter = queueStatus == QueueStatusEnum.N;
-        String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
-        if (TextUtils.isEmpty(cName))
-            tv_counter_name.setText("");
-        else
-            tv_counter_name.setText(cName);
-
         tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
                 + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));

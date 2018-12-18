@@ -79,8 +79,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
     public void updateDetail(TvObject tvObject) {
       Picasso.with(getContext()).load("http://www.ssdhospital.in/wp-content/uploads/2016/12/dr-deepak-vaswani.jpg").into(image);
-      Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
-      Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
+     // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
+     // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
       title.setText(tvObject.getJsonTopic().getDisplayName());
       tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getStartHour())
               + " - " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getEndHour()));

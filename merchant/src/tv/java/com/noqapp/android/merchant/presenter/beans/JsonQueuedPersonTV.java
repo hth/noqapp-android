@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.views;
+package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;

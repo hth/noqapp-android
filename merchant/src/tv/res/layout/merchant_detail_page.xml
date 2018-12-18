@@ -88,77 +88,23 @@
                         android:layout_height="match_parent"
                         android:layout_weight=".5"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                    <RelativeLayout
-                            android:id="@+id/top"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center">
+                    <TextView
+                            android:id="@+id/tv_current"
+                            style="@style/style_join_queue_tv"
+                            android:text="@string/serving"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_twelve"/>
 
+                    <TextView
+                            android:id="@+id/tv_current_value"
+                            style="@style/style_join_queue_tv"
+                            android:textColor="@color/colorMobile"
+                            android:text=""
+                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/value_text_size"/>
 
-                        <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="horizontal">
-
-                            <TextView
-                                    android:id="@+id/tv_current"
-                                    style="@style/style_join_queue_tv"
-                                    android:text="@string/serving"
-                                    android:textColor="@color/colorAddress"
-                                    android:textSize="@dimen/text_size_twelve"/>
-
-                            <TextView
-                                    android:id="@+id/tv_current_value"
-                                    style="@style/style_join_queue_tv"
-                                    android:textColor="@color/colorMobile"
-                                    android:layout_marginLeft="10dp"
-                                    android:textSize="@dimen/value_text_size"/>
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:weightSum="1">
-
-                        <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center">
-
-                            <TextView
-                                    android:id="@+id/tv_counter_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="5dp"
-                                    android:layout_toLeftOf="@+id/iv_edit"
-                                    android:background="@drawable/square_white_bg_drawable"
-                                    android:gravity="center"
-                                    android:hint="@string/counter_name"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:textColor="@color/colorAddress"
-                                    android:textSize="@dimen/text_size_fourteen"/>
-
-                            <ImageView
-                                    android:id="@+id/iv_edit"
-                                    android:layout_width="@dimen/edit_icon_size"
-                                    android:layout_height="@dimen/edit_icon_size"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_margin="5dp"
-                                    android:background="@drawable/edit_new"
-                                    android:gravity="center_vertical"
-                                    android:padding="10dp"/>
-                        </RelativeLayout>
-                    </RelativeLayout>
 
                 </LinearLayout>
             </LinearLayout>

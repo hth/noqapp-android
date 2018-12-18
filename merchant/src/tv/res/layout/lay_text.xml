@@ -12,7 +12,7 @@
             android:layout_toLeftOf="@+id/tv_mobile"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="22sp"
+            android:textSize="@dimen/text_size_sixteen"
             android:layout_height="wrap_content"/>
 
     <TextView
@@ -22,7 +22,7 @@
             android:paddingEnd="10dp"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_sixteen"
+            android:textSize="@dimen/text_size_fourteen"
             android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

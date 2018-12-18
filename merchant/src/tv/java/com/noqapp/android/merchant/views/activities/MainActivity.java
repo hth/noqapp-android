@@ -1,6 +1,14 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ClientInQModel;
+import com.noqapp.android.merchant.presenter.ClientInQPresenter;
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
+import com.noqapp.android.merchant.presenter.beans.QueueDetail;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.UserUtils;
 
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
@@ -28,7 +36,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition {
+public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQPresenter {
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private int currentPosition;
     private ScreenSlidePagerAdapter fragmentStatePagerAdapter;
@@ -75,7 +83,15 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 }
             }, DELAY_MS, PERIOD_MS);
         }
-
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            //progressDialog.show();
+            QueueDetail queueDetail = getQueueDetails();
+            ClientInQModel clientInQModel = new ClientInQModel(this);
+            clientInQModel.toBeServedClients(
+                    UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),queueDetail);
+        }
         setupMediaRouter();
     }
 
@@ -208,6 +224,45 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         return tvObjects;
     }
 
+    @NonNull
+    private QueueDetail getQueueDetails() {
+        QueueDetail queueDetail = new QueueDetail();
+        List<String> tvObjects = new ArrayList<>();
+        for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
+            tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
+        }
+        queueDetail.setCodeQRs(tvObjects);
+        return queueDetail;
+    }
+
+    @Override
+    public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
+        if(null != jsonQueueTVList){
+
+        }
+
+    }
+
+    @Override
+    public void authenticationFailure() {
+        //dismissProgress();
+        AppUtils.authenticationProcessing();
+        //finish();
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+       // dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        //dismissProgress();
+        if (null != eej) {
+            new ErrorResponseHandler().processError(this, eej);
+        }
+    }
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         private final List<TvObject> ads = new ArrayList<>();
 
