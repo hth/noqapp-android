@@ -66,9 +66,4 @@ public class JsonQueueTV extends AbstractDomain implements Serializable {
         this.jsonQueuedPersonTVList = jsonQueuedPersonTVList;
         return this;
     }
-
-    public JsonQueueTV addJsonQueuedPersonTVList(JsonQueuedPersonTV jsonQueuedPersonTV) {
-        this.jsonQueuedPersonTVList.add(jsonQueuedPersonTV);
-        return this;
-    }
 }

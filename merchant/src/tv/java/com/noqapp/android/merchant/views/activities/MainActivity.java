@@ -55,11 +55,9 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         List<TvObject> list = getAdViewModels();
 
         final ViewPager viewPager = findViewById(R.id.pager);
-        fragmentStatePagerAdapter =
-                new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        fragmentStatePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         fragmentStatePagerAdapter.addAds(list);
-        CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener =
-                new CustomSimpleOnPageChangeListener(this);
+        CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener = new CustomSimpleOnPageChangeListener(this);
         if (viewPager != null) {
             viewPager.setAdapter(fragmentStatePagerAdapter);
             viewPager.addOnPageChangeListener(customSimpleOnPageChangeListener);
