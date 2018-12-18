@@ -2,8 +2,8 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ClientInQModel;
-import com.noqapp.android.merchant.presenter.ClientInQPresenter;
+import com.noqapp.android.merchant.model.ClientInQueueModel;
+import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQPresenter {
+public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQueuePresenter {
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private int currentPosition;
     private ScreenSlidePagerAdapter fragmentStatePagerAdapter;
@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             QueueDetail queueDetail = getQueueDetails();
-            ClientInQModel clientInQModel = new ClientInQModel(this);
-            clientInQModel.toBeServedClients(
+            ClientInQueueModel clientInQueueModel = new ClientInQueueModel(this);
+            clientInQueueModel.toBeServedClients(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 new CastRemoteDisplayLocalService.Callbacks() {
                     @Override
                     public void onServiceCreated(CastRemoteDisplayLocalService service) {
-                        ((PresentationService) service).setTvObject(
+                        ((PresentationService) service).setTopicAndQueueTV(
                                 fragmentStatePagerAdapter.getAdAt(currentPosition));
                     }
 
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public void onCurrentPageChange(int position) {
         currentPosition = position;
         if (CastRemoteDisplayLocalService.getInstance() != null) {
-            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTvObject(
+            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(
                     fragmentStatePagerAdapter.getAdAt(position));
         }
     }
@@ -214,14 +214,14 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 timer = null;
             }
             Log.v("TV Data", jsonQueueTVList.getQueues().toString());
-            List<TvObject> tvObjects = new ArrayList<>();
+            List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
-                tvObjects.add(new TvObject().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
+                topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
             }
             fragmentStatePagerAdapter =
                     new ScreenSlidePagerAdapter(getSupportFragmentManager());
-            fragmentStatePagerAdapter.addAds(tvObjects);
+            fragmentStatePagerAdapter.addAds(topicAndQueueTVList);
             CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener =
                     new CustomSimpleOnPageChangeListener(this);
             if (viewPager != null) {
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private final List<TvObject> ads = new ArrayList<>();
+        private final List<TopicAndQueueTV> ads = new ArrayList<>();
 
         ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -289,12 +289,12 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
             return ads.size();
         }
 
-        void addAds(List<TvObject> ads) {
+        void addAds(List<TopicAndQueueTV> ads) {
             this.ads.addAll(ads);
             notifyDataSetChanged();
         }
 
-        public TvObject getAdAt(int position) {
+        public TopicAndQueueTV getAdAt(int position) {
             return ads.get(position);
         }
     }

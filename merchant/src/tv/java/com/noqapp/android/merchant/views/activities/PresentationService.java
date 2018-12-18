@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 public class PresentationService extends CastRemoteDisplayLocalService {
   private DetailPresentation castPresentation;
-  private TvObject tvObject;
+  private TopicAndQueueTV topicAndQueueTV;
 
   @Override
   public void onCreatePresentation(Display display) {
@@ -39,7 +39,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
   @Override
   public void onDismissPresentation() {
     dismissPresentation();
-    tvObject = null;
+    topicAndQueueTV = null;
   }
 
   private void dismissPresentation() {
@@ -49,8 +49,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     }
   }
 
-  public void setTvObject(TvObject ad) {
-    tvObject = ad;
+  public void setTopicAndQueueTV(TopicAndQueueTV ad) {
+    topicAndQueueTV = ad;
     if (castPresentation != null) {
       castPresentation.updateDetail(ad);
     }
@@ -77,30 +77,30 @@ public class PresentationService extends CastRemoteDisplayLocalService {
       tv_timing = findViewById( R.id.tv_timing);
       tv_degree = findViewById(R.id.tv_degree);
       ll_list = findViewById( R.id.ll_list);
-      updateDetail(tvObject);
+      updateDetail(topicAndQueueTV);
     }
 
-    public void updateDetail(TvObject tvObject) {
-      if (TextUtils.isEmpty(tvObject.getJsonQueueTV().getProfileImage())) {
+    public void updateDetail(TopicAndQueueTV topicAndQueueTV) {
+      if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
         Picasso.with(context).load(R.drawable.profile_tv).into(image);
       } else {
-        Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + tvObject.getJsonQueueTV().getProfileImage()).into(image);
+        Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image);
       }
       // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
       // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
-      title.setText(tvObject.getJsonTopic().getDisplayName());
-      tv_degree.setText(" ( "+new AppUtils().getCompleteEducation(tvObject.getJsonQueueTV().getEducation())+" ) ");
-      tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getStartHour())
-              + " - " + Formatter.convertMilitaryTo12HourFormat(tvObject.getJsonTopic().getHour().getEndHour()));
+      title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
+      tv_degree.setText(" ( "+new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation())+" ) ");
+      tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
+              + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
       ll_list.removeAllViews();
       LayoutInflater inflater = LayoutInflater.from(context);
-      if (null != tvObject.getJsonQueueTV().getJsonQueuedPersonTVList())
-        for (int i = 0; i < tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().size(); i++) {
+      if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList())
+        for (int i = 0; i < topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().size(); i++) {
           View customView = inflater.inflate(R.layout.lay_text, null, false);
           TextView textView = customView.findViewById(R.id.tv_name);
           TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-          textView.setText("( " + (i + 1) + ") " + tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
-          String phoneNo = tvObject.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
+          textView.setText("( " + (i + 1) + ") " + topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
+          String phoneNo = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
           if (null != phoneNo && phoneNo.length() >= 10) {
             String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
             tv_mobile.setText(number);
