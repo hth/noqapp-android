@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.utils;
 
+import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
@@ -17,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -95,5 +97,21 @@ public class AppUtils extends CommonHelper {
 
     public static void authenticationProcessing(){
         LaunchActivity.getLaunchActivity().clearLoginData(true);
+    }
+
+
+    public String getCompleteEducation(List<JsonNameDatePair> education){
+        if(null == education || education.size() == 0)
+            return "";
+        else{
+            String edu = "";
+            for (int i = 0; i < education.size(); i++) {
+                edu += education.get(i).getName()+", ";
+            }
+            if (edu.endsWith(", ")) {
+                edu = edu.substring(0, edu.length() - 2);
+            }
+            return edu;
+        }
     }
 }
