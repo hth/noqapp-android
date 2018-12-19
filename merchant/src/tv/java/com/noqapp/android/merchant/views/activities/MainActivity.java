@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ClientInQueueModel;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
@@ -35,9 +36,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     private CastDevice castDevice;
     int currentPage = 0;
     Timer timer;
-    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
+    final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 3000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ViewPager viewPager;
@@ -199,8 +205,13 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         List<String> tvObjects = new ArrayList<>();
         topicHashMap.clear();
         for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
-            tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
-            topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), LaunchActivity.merchantListFragment.getTopics().get(i));
+            JsonTopic jsonTopic = LaunchActivity.merchantListFragment.getTopics().get(i);
+            String start = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getStartHour());
+            String end = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getEndHour());
+            if (isCurrentTimeInRange(start, end)) {
+                tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
+                topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), LaunchActivity.merchantListFragment.getTopics().get(i));
+            }
         }
         queueDetail.setCodeQRs(tvObjects);
         return queueDetail;
@@ -307,5 +318,33 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     protected void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    private boolean isCurrentTimeInRange(String start, String end) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm",Locale.getDefault());
+            Date date = new Date();
+            String current = formatter.format(date);
+
+            Date time1 = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(start);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(time1);
+
+            Date time2 = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(end);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(time2);
+            calendar2.add(Calendar.DATE, 1);
+
+            Date d = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(current);
+            Calendar calendar3 = Calendar.getInstance();
+            calendar3.setTime(d);
+            calendar3.add(Calendar.DATE, 1);
+
+            Date x = calendar3.getTime();
+            return x.after(calendar1.getTime()) && x.before(calendar2.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
