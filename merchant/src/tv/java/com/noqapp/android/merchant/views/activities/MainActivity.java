@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.activity_main_actions, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.action_cast);
         return true;
     }
@@ -134,40 +134,47 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         }
     };
 
-    private void startCastService(CastDevice castDevice) {
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+    private void startCastService(final CastDevice castDevice) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
 
-        CastRemoteDisplayLocalService.NotificationSettings settings =
-                new CastRemoteDisplayLocalService.NotificationSettings.Builder()
-                        .setNotificationPendingIntent(notificationPendingIntent).build();
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent notificationPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
 
-        CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class,
-                getString(R.string.app_cast_id), castDevice, settings,
-                new CastRemoteDisplayLocalService.Callbacks() {
-                    @Override
-                    public void onServiceCreated(CastRemoteDisplayLocalService service) {
-                        ((PresentationService) service).setTopicAndQueueTV(
-                                fragmentStatePagerAdapter.getAdAt(currentPosition));
-                    }
+                CastRemoteDisplayLocalService.NotificationSettings settings =
+                        new CastRemoteDisplayLocalService.NotificationSettings.Builder()
+                                .setNotificationPendingIntent(notificationPendingIntent).build();
 
-                    @Override
-                    public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
-                    }
+                CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class,
+                        getString(R.string.app_cast_id), castDevice, settings,
+                        new CastRemoteDisplayLocalService.Callbacks() {
+                            @Override
+                            public void onServiceCreated(CastRemoteDisplayLocalService service) {
+                                ((PresentationService) service).setTopicAndQueueTV(
+                                        fragmentStatePagerAdapter.getAdAt(currentPosition));
+                            }
 
-                    @Override
-                    public void onRemoteDisplaySessionError(Status errorReason) {
-                        initError();
+                            @Override
+                            public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
+                            }
 
-                        MainActivity.this.castDevice = null;
-                        MainActivity.this.finish();
-                    }
+                            @Override
+                            public void onRemoteDisplaySessionError(Status errorReason) {
+                                initError();
 
-                    @Override
-                    public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                    }
-                });
+                                MainActivity.this.castDevice = null;
+                                MainActivity.this.finish();
+                            }
+
+                            @Override
+                            public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            }
+                        });
+
+            }
+        });
     }
 
     private void initError() {
