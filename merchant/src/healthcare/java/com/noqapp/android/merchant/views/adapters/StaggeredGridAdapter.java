@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -68,6 +69,14 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
                 }
 
+            }
+        });
+
+        holder.name.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context,"You press the button enough long",Toast.LENGTH_LONG).show();
+                return true;
             }
         });
     }

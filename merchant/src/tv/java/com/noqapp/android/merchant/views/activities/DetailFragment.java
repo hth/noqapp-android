@@ -79,8 +79,10 @@ public class DetailFragment extends Fragment {
         for (int i = 0; i < topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().size(); i++) {
             View customView = inflater.inflate(R.layout.lay_text, null, false);
             TextView textView = customView.findViewById(R.id.tv_name);
+            TextView tv_seq = customView.findViewById(R.id.tv_seq);
             TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-            textView.setText("( "+(i+1)+" ) "+ topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
+            tv_seq.setText(String.valueOf((i + 1)));
+            textView.setText(topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
             String phoneNo = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
             if (null != phoneNo && phoneNo.length() >= 10) {
                 String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());

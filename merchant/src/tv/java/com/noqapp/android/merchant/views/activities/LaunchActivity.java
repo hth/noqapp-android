@@ -22,12 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import io.fabric.sdk.android.Fabric;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 public class LaunchActivity extends BaseLaunchActivity {
 
     private TextView tv_badge;
@@ -65,19 +59,12 @@ public class LaunchActivity extends BaseLaunchActivity {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-
+        tv_name.setCompoundDrawablesWithIntrinsicBounds( 0,0,R.drawable.tv,  0);
         tv_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(LaunchActivity.this,MainActivity.class);
                 startActivity(in);
-
-//                for (int i = 0; i < merchantListFragment.getTopics().size(); i++) {
-//                    JsonTopic jsonTopic = merchantListFragment.getTopics().get(i);
-//                    String start = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getStartHour());
-//                    String end = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getEndHour());
-//                    Log.e("Queue Validity--"," start_time "+start+" end_time "+end+" current time validity is: "+isCurrentTimeInRange(start,end));
-//                }
             }
         });
 
@@ -98,35 +85,6 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-
-
-    private boolean isCurrentTimeInRange(String start, String end) {
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm",Locale.getDefault());
-            Date date = new Date();
-            String current = formatter.format(date);
-
-            Date time1 = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(start);
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.setTime(time1);
-
-            Date time2 = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(end);
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTime(time2);
-            calendar2.add(Calendar.DATE, 1);
-
-            Date d = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(current);
-            Calendar calendar3 = Calendar.getInstance();
-            calendar3.setTime(d);
-            calendar3.add(Calendar.DATE, 1);
-
-            Date x = calendar3.getTime();
-            return x.after(calendar1.getTime()) && x.before(calendar2.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
 }
