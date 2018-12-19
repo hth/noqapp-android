@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.action_cast);
+        CastButtonFactory.setUpMediaRouteButton(this, menu, R.id.action_cast);
         return true;
     }
 
