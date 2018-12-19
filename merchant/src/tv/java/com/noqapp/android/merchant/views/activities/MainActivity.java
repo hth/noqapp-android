@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                             @Override
                             public void onServiceCreated(CastRemoteDisplayLocalService service) {
                                 ((PresentationService) service).setTopicAndQueueTV(
-                                        fragmentStatePagerAdapter.getAdAt(currentPosition));
+                                        fragmentStatePagerAdapter.getAdAt(currentPosition),currentPosition);
                             }
 
                             @Override
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public void onCurrentPageChange(int position) {
         currentPosition = position;
         if (CastRemoteDisplayLocalService.getInstance() != null) {
-            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(fragmentStatePagerAdapter.getAdAt(position));
+            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(fragmentStatePagerAdapter.getAdAt(position),position);
         }
     }
 

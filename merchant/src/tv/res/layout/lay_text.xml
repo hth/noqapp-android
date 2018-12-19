@@ -4,14 +4,28 @@
                 android:padding="5dp"
                 android:layout_height="50dp">
 
+
+
+    <TextView
+            android:id="@+id/tv_seq"
+            android:layout_width="25dp"
+            android:layout_alignParentStart="true"
+            android:textColor="@android:color/white"
+            android:background="@drawable/round"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="23"
+            android:textSize="@dimen/text_size_sixteen"
+            android:layout_height="25dp"/>
     <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
-            android:paddingStart="5dp"
-            android:layout_alignParentStart="true"
+            android:padding="5dp"
+            android:layout_toRightOf="@+id/tv_seq"
             android:layout_toLeftOf="@+id/tv_mobile"
             android:textColor="@android:color/white"
             android:textStyle="bold"
+            android:text=""
             android:textSize="@dimen/text_size_sixteen"
             android:layout_height="wrap_content"/>
 
