@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
 import com.noqapp.android.merchant.utils.AppUtils;
 
 import com.google.android.gms.cast.CastPresentation;
@@ -24,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PresentationService extends CastRemoteDisplayLocalService {
@@ -77,10 +80,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
     }
 
-    public void setImageList(List<String> imageUrls,int no_of_q){
+    public void setImageList(List<String> imageUrls, int no_of_q) {
         this.no_of_q = no_of_q;
-        if(null != imageUrls && imageUrls.size()>0){
-            urlList = imageUrls ;
+        if (null != imageUrls && imageUrls.size() > 0) {
+            urlList = imageUrls;
         }
     }
 
@@ -114,7 +117,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                 Picasso.with(context).load(R.drawable.profile_tv).into(image);
             } else {
-                Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image,new Callback() {
+                Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -129,7 +132,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
             // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
 
-            if( sequence >= no_of_q && no_of_q <= no_of_q+urlList.size()) {
+            if (sequence >= no_of_q && no_of_q <= no_of_q + urlList.size()) {
                 if (url_pos < urlList.size()) {
                     Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
                     iv_advertisement.setVisibility(View.VISIBLE);
@@ -140,7 +143,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 }
             }
             sequence++;
-            if( sequence >no_of_q+urlList.size()) {
+            if (sequence > no_of_q + urlList.size()) {
                 sequence = 0;
             }
             title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
@@ -153,18 +156,29 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 ll_list.setBackgroundColor(Color.LTGRAY);
             ll_list.removeAllViews();
             LayoutInflater inflater = LayoutInflater.from(context);
-            if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList())
-                for (int i = 0; i < topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().size(); i++) {
+            if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
+
+                List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
+                Collections.sort(
+                        data,
+                        new Comparator<JsonQueuedPersonTV>() {
+                            public int compare(JsonQueuedPersonTV lhs, JsonQueuedPersonTV rhs) {
+                                return Integer.compare(lhs.getToken(), rhs.getToken());
+                            }
+                        }
+                );
+                for (int i = 0; i < data.size(); i++) {
                     View customView = inflater.inflate(R.layout.lay_text, null, false);
                     TextView textView = customView.findViewById(R.id.tv_name);
                     TextView tv_seq = customView.findViewById(R.id.tv_seq);
                     TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-                    tv_seq.setText(String.valueOf((i + 1)));
-                    textView.setText(topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
-                    String phoneNo = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
+                    tv_seq.setText(String.valueOf((data.get(i).getToken())));
+                    textView.setText(data.get(i).getCustomerName());
+                    String phoneNo = data.get(i).getCustomerPhone();
                     tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
                     ll_list.addView(customView);
                 }
+            }
 
         }
 

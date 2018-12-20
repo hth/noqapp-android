@@ -48,6 +48,6 @@ public interface VigyaapanService {
             String auth,
 
             @Path("vt")
-            String vt
+            String vigyaapanType
     );
 }

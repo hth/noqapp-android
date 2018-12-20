@@ -98,14 +98,11 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
 
-
             VigyaapanModel vigyaapanModel = new VigyaapanModel();
             vigyaapanModel.setVigyaapanPresenter(this);
             vigyaapanModel.getVigyaapan(  UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),VigyaapanTypeEnum.MV.getName());
-
-
+                    LaunchActivity.getLaunchActivity().getAuth(),VigyaapanTypeEnum.MV);
         }
     }
 
