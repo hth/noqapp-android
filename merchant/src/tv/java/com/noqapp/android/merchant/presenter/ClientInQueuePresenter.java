@@ -5,5 +5,5 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 
 public interface ClientInQueuePresenter extends ResponseErrorPresenter {
 
-    void ClientInResponse(JsonQueueTVList jsonQueueTVList);
+    void clientInResponse(JsonQueueTVList jsonQueueTVList);
 }

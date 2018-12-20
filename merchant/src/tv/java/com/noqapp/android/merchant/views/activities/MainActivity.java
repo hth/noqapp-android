@@ -1,13 +1,17 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ClientInQueueModel;
+import com.noqapp.android.merchant.model.VigyaapanModel;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -52,7 +56,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQueuePresenter {
+public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQueuePresenter, VigyaapanPresenter {
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private int currentPosition;
     private ScreenSlidePagerAdapter fragmentStatePagerAdapter;
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     private ViewPager viewPager;
     private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
+    private JsonVigyaapanTV jsonVigyaapanTV;
 
     private boolean isNotification =false;
     @Override
@@ -92,6 +97,15 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+
+
+            VigyaapanModel vigyaapanModel = new VigyaapanModel();
+            vigyaapanModel.setVigyaapanPresenter(this);
+            vigyaapanModel.getVigyaapan(  UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),VigyaapanTypeEnum.MV.getName());
+
+
         }
     }
 
@@ -219,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public void onCurrentPageChange(int position) {
         currentPosition = position;
         if (CastRemoteDisplayLocalService.getInstance() != null) {
+            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setImageList(jsonVigyaapanTV.getImageUrls(),fragmentStatePagerAdapter.getCount());
             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(fragmentStatePagerAdapter.getAdAt(position),position);
         }
     }
@@ -242,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     }
 
     @Override
-    public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
+    public void clientInResponse(JsonQueueTVList jsonQueueTVList) {
         if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
 
             Log.v("TV Data", jsonQueueTVList.getQueues().toString());
@@ -325,6 +340,12 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
         }
+    }
+
+    @Override
+    public void vigyaapanResponse(JsonVigyaapanTV jsonVigyaapanTV) {
+        Log.v("data",jsonVigyaapanTV.toString());
+        this.jsonVigyaapanTV = jsonVigyaapanTV;
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

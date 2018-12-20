@@ -30,23 +30,25 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     private DetailPresentation castPresentation;
     private TopicAndQueueTV topicAndQueueTV;
     private int pos = 0;
-    private int url_pos = 10;
+    private int url_pos = 0;
+    private int no_of_q = 0;
+    private int sequence = 0;
     private List<String> urlList = new ArrayList<>();
 
     @Override
     public void onCreatePresentation(Display display) {
         dismissPresentation();
         castPresentation = new DetailPresentation(this, display);
-        urlList.add("http://worldartsme.com/images/exercise-motivation-clipart-1.jpg");
-        urlList.add("https://pbs.twimg.com/media/C6QQND6WUAAjhA6.jpg");
-        urlList.add("https://i.pinimg.com/originals/2c/2c/da/2c2cda9b80b0a71c2ea2f7d360122164.jpg");
-        urlList.add("https://i.pinimg.com/originals/81/56/11/815611f15aea20932f3cbf8040daa6c0.jpg");
-        urlList.add("https://i.pinimg.com/originals/31/93/ba/3193bab4ab76549e0df8d60e2f402b08.jpg");
-        urlList.add("http://binsbox.com/images/8-dental-tips-to-keep-smiling/8-dental-tips-to-keep-smiling0.jpg");
-        urlList.add("https://i.pinimg.com/736x/6e/75/34/6e7534e0882e3e543419027bb00effb5--exercise--fitness-health-fitness.jpg");
-        urlList.add("https://i.pinimg.com/originals/81/8e/f3/818ef38057ca7aef2040421238f5a90c.jpg");
-        urlList.add("https://cdn.shopify.com/s/files/1/0366/1469/files/exercise_motivation_large.jpg?4441298293954673424");
-        urlList.add("https://image.shutterstock.com/image-vector/motivational-quote-about-workout-fitness-260nw-755027176.jpg");
+//        urlList.add("http://worldartsme.com/images/exercise-motivation-clipart-1.jpg");
+//        urlList.add("https://pbs.twimg.com/media/C6QQND6WUAAjhA6.jpg");
+//        urlList.add("https://i.pinimg.com/originals/2c/2c/da/2c2cda9b80b0a71c2ea2f7d360122164.jpg");
+//        urlList.add("https://i.pinimg.com/originals/81/56/11/815611f15aea20932f3cbf8040daa6c0.jpg");
+//        urlList.add("https://i.pinimg.com/originals/31/93/ba/3193bab4ab76549e0df8d60e2f402b08.jpg");
+//        urlList.add("http://binsbox.com/images/8-dental-tips-to-keep-smiling/8-dental-tips-to-keep-smiling0.jpg");
+//        urlList.add("https://i.pinimg.com/736x/6e/75/34/6e7534e0882e3e543419027bb00effb5--exercise--fitness-health-fitness.jpg");
+//        urlList.add("https://i.pinimg.com/originals/81/8e/f3/818ef38057ca7aef2040421238f5a90c.jpg");
+//        urlList.add("https://cdn.shopify.com/s/files/1/0366/1469/files/exercise_motivation_large.jpg?4441298293954673424");
+//        urlList.add("https://image.shutterstock.com/image-vector/motivational-quote-about-workout-fitness-260nw-755027176.jpg");
         try {
             castPresentation.show();
         } catch (WindowManager.InvalidDisplayException ex) {
@@ -72,6 +74,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         topicAndQueueTV = ad;
         if (castPresentation != null) {
             castPresentation.updateDetail(ad);
+        }
+    }
+
+    public void setImageList(List<String> imageUrls,int no_of_q){
+        this.no_of_q = no_of_q;
+        if(null != imageUrls && imageUrls.size()>0){
+            urlList = imageUrls ;
         }
     }
 
@@ -119,15 +128,21 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
             // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
             // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
-            if (url_pos < urlList.size()) {
-                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
-                iv_advertisement.setVisibility(View.VISIBLE);
-            } else {
-                iv_advertisement.setVisibility(View.GONE);
+
+            if( sequence >= no_of_q && no_of_q <= no_of_q+urlList.size()) {
+                if (url_pos < urlList.size()) {
+                    Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+                    iv_advertisement.setVisibility(View.VISIBLE);
+                    ++url_pos;
+                } else {
+                    iv_advertisement.setVisibility(View.GONE);
+                    url_pos = 0;
+                }
             }
-            ++url_pos;
-            if (url_pos == 20)
-                url_pos = 0;
+            sequence++;
+            if( sequence >no_of_q+urlList.size()) {
+                sequence = 0;
+            }
             title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
             tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
             tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())

@@ -37,7 +37,7 @@ public class ClientInQueueModel {
             public void onResponse(@NonNull Call<JsonQueueTVList> call, @NonNull Response<JsonQueueTVList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        clientInQueuePresenter.ClientInResponse(response.body());
+                        clientInQueuePresenter.clientInResponse(response.body());
                         Log.d("toBeServedClients", String.valueOf(response.body()));
                     } else {
                         Log.e(TAG, "Empty toBeServedClients");

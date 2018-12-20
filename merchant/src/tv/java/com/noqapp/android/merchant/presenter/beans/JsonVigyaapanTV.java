@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 
@@ -44,6 +45,18 @@ public class JsonVigyaapanTV extends AbstractDomain {
     @JsonProperty("vt")
     private VigyaapanTypeEnum vigyaapanType;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+
     public String getVigyaapanId() {
         return vigyaapanId;
     }
@@ -78,5 +91,16 @@ public class JsonVigyaapanTV extends AbstractDomain {
     public JsonVigyaapanTV setVigyaapanType(VigyaapanTypeEnum vigyaapanType) {
         this.vigyaapanType = vigyaapanType;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonVigyaapanTV{" +
+                "vigyaapanId='" + vigyaapanId + '\'' +
+                ", jsonProfessionalProfilePersonal=" + jsonProfessionalProfilePersonal +
+                ", imageUrls=" + imageUrls +
+                ", vigyaapanType=" + vigyaapanType +
+                ", error=" + error +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.model.api;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
+import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 
 import retrofit2.Call;
@@ -33,7 +34,7 @@ public interface VigyaapanService {
 
 
     @GET("api/tv/vigyaapan/{vt}.json")
-    Call<JsonQueueTVList> getVigyaapan(
+    Call<JsonVigyaapanTV> getVigyaapan(
             @Header("X-R-DID")
             String did,
 
