@@ -95,12 +95,8 @@ public class DetailFragment extends Fragment {
             tv_seq.setText(String.valueOf((i + 1)));
             textView.setText(topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
             String phoneNo = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
-            if (null != phoneNo && phoneNo.length() >= 10) {
-                String number = phoneNo.substring(0, 4) + "XXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
-                tv_mobile.setText(number);
-            }else{
-                tv_mobile.setText("");
-            }
+            tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+
             ll_list.addView(customView);
         }
 

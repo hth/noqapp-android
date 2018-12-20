@@ -193,10 +193,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 }
             });
         } else {
-            if (null != phoneNo && phoneNo.length() >= 10) {
-                String number = phoneNo.substring(0, 4) + "XXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
-                recordHolder.tv_customer_mobile.setText(number);
-            }
+            recordHolder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
         recordHolder.rl_status.setOnClickListener(new View.OnClickListener() {
             @Override

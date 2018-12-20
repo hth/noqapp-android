@@ -114,4 +114,12 @@ public class AppUtils extends CommonHelper {
             return edu;
         }
     }
+
+    public String hidePhoneNumberWithX(String phoneNo){
+        if (null != phoneNo && phoneNo.length() >= 10) {
+            return phoneNo.substring(0, 4) + "XXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
+        } else {
+            return "";
+        }
+    }
 }
