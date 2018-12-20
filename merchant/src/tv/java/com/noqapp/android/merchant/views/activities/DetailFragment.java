@@ -4,6 +4,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
 import com.noqapp.android.merchant.utils.AppUtils;
 
 import com.squareup.picasso.Callback;
@@ -20,6 +21,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class DetailFragment extends Fragment {
@@ -86,21 +91,37 @@ public class DetailFragment extends Fragment {
                 + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
         ll_list.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        if(null != topicAndQueueTV.getJsonQueueTV())
-        for (int i = 0; i < topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().size(); i++) {
-            View customView = inflater.inflate(R.layout.lay_text, null, false);
-            TextView textView = customView.findViewById(R.id.tv_name);
-            TextView tv_seq = customView.findViewById(R.id.tv_seq);
-            TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-            tv_seq.setText(String.valueOf((i + 1)));
-            textView.setText(topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
-            String phoneNo = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
-            tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+        if(null != topicAndQueueTV.getJsonQueueTV()) {
 
-            ll_list.addView(customView);
+            List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
+            Collections.sort(
+                    data,
+                    new Comparator<JsonQueuedPersonTV>() {
+                        public int compare(JsonQueuedPersonTV lhs, JsonQueuedPersonTV rhs) {
+                            return Integer.compare(lhs.getToken(), rhs.getToken());
+                        }
+                    }
+            );
+            for (int i = 0; i < data.size(); i++) {
+                View customView = inflater.inflate(R.layout.lay_text, null, false);
+                TextView textView = customView.findViewById(R.id.tv_name);
+                TextView tv_seq = customView.findViewById(R.id.tv_seq);
+                TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
+                tv_seq.setText(String.valueOf((data.get(i).getToken())));
+                textView.setText(data.get(i).getCustomerName());
+                String phoneNo = data.get(i).getCustomerPhone();
+                tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+
+                ll_list.addView(customView);
+            }
         }
-
     }
+
+
+
+
+
+
 
     @Override
     public void onDestroyView() {
