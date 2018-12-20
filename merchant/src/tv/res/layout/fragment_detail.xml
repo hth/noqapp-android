@@ -74,7 +74,7 @@
             android:layout_weight=".6"
             android:layout_gravity="bottom|start"
             android:layout_marginTop="3dp"
-            android:background="#A6000000"
+            android:background="@android:color/white"
             android:orientation="vertical">
 
 

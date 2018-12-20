@@ -21,12 +21,14 @@ public class SmoothScrollViewPager extends ViewPager {
         setMyScroller();
     }
 
+
+    // To disable swipe for the viewpager
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         // Never allow swiping to switch between pages
         return false;
     }
-
+    // To disable swipe for the viewpager
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // Never allow swiping to switch between pages

@@ -6,6 +6,7 @@ import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.os.Bundle;
@@ -65,7 +66,17 @@ public class DetailFragment extends Fragment {
         if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
             Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
         } else {
-            Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image);
+            Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image,new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+                    Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
+                }
+            });
         }
        // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
        // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
@@ -84,12 +95,8 @@ public class DetailFragment extends Fragment {
             tv_seq.setText(String.valueOf((i + 1)));
             textView.setText(topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerName());
             String phoneNo = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList().get(i).getCustomerPhone();
-            if (null != phoneNo && phoneNo.length() >= 10) {
-                String number = phoneNo.substring(0, 4) + "XXXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
-                tv_mobile.setText(number);
-            }else{
-                tv_mobile.setText("");
-            }
+            tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+
             ll_list.addView(customView);
         }
 

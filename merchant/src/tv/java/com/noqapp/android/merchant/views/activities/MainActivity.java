@@ -1,15 +1,20 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ClientInQueueModel;
+import com.noqapp.android.merchant.model.VigyaapanModel;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 
@@ -21,13 +26,17 @@ import com.google.android.gms.common.api.Status;
 
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.media.MediaRouteSelector;
@@ -47,7 +56,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQueuePresenter {
+public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQueuePresenter, VigyaapanPresenter {
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private int currentPosition;
     private ScreenSlidePagerAdapter fragmentStatePagerAdapter;
@@ -56,11 +65,14 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000;
+    final long PERIOD_MS = 10*1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ViewPager viewPager;
     private ProgressDialog progressDialog;
+    protected BroadcastReceiver broadcastReceiver;
+    private JsonVigyaapanTV jsonVigyaapanTV;
 
+    private boolean isNotification =false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         viewPager = findViewById(R.id.pager);
         initProgress();
         setupMediaRouter();
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    updateTv();
+                }
+            }
+        };
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             QueueDetail queueDetail = getQueueDetails();
@@ -76,6 +97,15 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+
+
+            VigyaapanModel vigyaapanModel = new VigyaapanModel();
+            vigyaapanModel.setVigyaapanPresenter(this);
+            vigyaapanModel.getVigyaapan(  UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),VigyaapanTypeEnum.MV.getName());
+
+
         }
     }
 
@@ -87,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                 startCastService(castDevice);
             }
         }
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
     @Override
@@ -95,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
             mediaRouter.removeCallback(mMediaRouterCallback);
         }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 
     @Override
@@ -195,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public void onCurrentPageChange(int position) {
         currentPosition = position;
         if (CastRemoteDisplayLocalService.getInstance() != null) {
+            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setImageList(jsonVigyaapanTV.getImageUrls(),fragmentStatePagerAdapter.getCount());
             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(fragmentStatePagerAdapter.getAdAt(position),position);
         }
     }
@@ -218,12 +257,9 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     }
 
     @Override
-    public void ClientInResponse(JsonQueueTVList jsonQueueTVList) {
+    public void clientInResponse(JsonQueueTVList jsonQueueTVList) {
         if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
-            if (timer != null) {
-                timer.cancel();
-                timer = null;
-            }
+
             Log.v("TV Data", jsonQueueTVList.getQueues().toString());
             List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
@@ -232,38 +268,48 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
             }
             fragmentStatePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
             fragmentStatePagerAdapter.addAds(topicAndQueueTVList);
-            CustomSimpleOnPageChangeListener customSimpleOnPageChangeListener = new CustomSimpleOnPageChangeListener(this);
             if (viewPager != null) {
                 viewPager.setAdapter(fragmentStatePagerAdapter);
-                viewPager.addOnPageChangeListener(customSimpleOnPageChangeListener);
-                /*After setting the adapter use the timer */
-                final Handler handler = new Handler();
-                final Runnable Update = new Runnable() {
-                    public void run() {
-                        if (currentPage == fragmentStatePagerAdapter.getCount()) {
-                            currentPage = 0;
+                fragmentStatePagerAdapter.notifyDataSetChanged();
+                viewPager.addOnPageChangeListener(new CustomSimpleOnPageChangeListener(this));
+
+                if(!isNotification) {
+                    /*After setting the adapter use the timer */
+                    final Handler handler = new Handler();
+                    final Runnable Update = new Runnable() {
+                        public void run() {
+                            if (currentPage == fragmentStatePagerAdapter.getCount()) {
+                                currentPage = 0;
+                            }
+                            viewPager.setCurrentItem(currentPage++, true);
                         }
-                        viewPager.setCurrentItem(currentPage++, true);
-                    }
-                };
+                    };
 
-                timer = new Timer(); // This will create a new Thread
-                timer.schedule(new TimerTask() { // task to be scheduled
 
-                    @Override
-                    public void run() {
-                        handler.post(Update);
+                    if (timer != null) {
+                        timer.cancel();
+                        timer = null;
                     }
-                }, DELAY_MS, PERIOD_MS);
+                    timer = new Timer(); // This will create a new Thread
+                    timer.schedule(new TimerTask() { // task to be scheduled
+
+                        @Override
+                        public void run() {
+                            handler.post(Update);
+                        }
+                    }, DELAY_MS, PERIOD_MS);
+                }
             }
         }
         dismissProgress();
+        isNotification = false;
     }
 
     @Override
     public void authenticationFailure() {
         dismissProgress();
         AppUtils.authenticationProcessing();
+        isNotification = false;
         //finish();
     }
 
@@ -271,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        isNotification = false;
     }
 
     @Override
@@ -279,6 +326,26 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         if (null != eej) {
             new ErrorResponseHandler().processError(this, eej);
         }
+        isNotification = false;
+    }
+
+    public void updateTv() {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            isNotification = true;
+            progressDialog.show();
+            QueueDetail queueDetail = getQueueDetails();
+            ClientInQueueModel clientInQueueModel = new ClientInQueueModel(this);
+            clientInQueueModel.toBeServedClients(
+                    UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+        }
+    }
+
+    @Override
+    public void vigyaapanResponse(JsonVigyaapanTV jsonVigyaapanTV) {
+        Log.v("data",jsonVigyaapanTV.toString());
+        this.jsonVigyaapanTV = jsonVigyaapanTV;
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
