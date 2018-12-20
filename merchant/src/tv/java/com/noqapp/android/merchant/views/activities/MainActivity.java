@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000;
+    final long PERIOD_MS = 10*1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ViewPager viewPager;
     private ProgressDialog progressDialog;
