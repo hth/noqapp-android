@@ -80,10 +80,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
     }
 
-    public void setImageList(List<String> imageUrls,int no_of_q){
+    public void setImageList(List<String> imageUrls, int no_of_q) {
         this.no_of_q = no_of_q;
-        if(null != imageUrls && imageUrls.size()>0){
-            urlList = imageUrls ;
+        if (null != imageUrls && imageUrls.size() > 0) {
+            urlList = imageUrls;
         }
     }
 
@@ -117,7 +117,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                 Picasso.with(context).load(R.drawable.profile_tv).into(image);
             } else {
-                Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image,new Callback() {
+                Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -132,7 +132,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             // Picasso.with(getContext()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
             // Picasso.with(getContext()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
 
-            if( sequence >= no_of_q && no_of_q <= no_of_q+urlList.size()) {
+            if (sequence >= no_of_q && no_of_q <= no_of_q + urlList.size()) {
                 if (url_pos < urlList.size()) {
                     Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
                     iv_advertisement.setVisibility(View.VISIBLE);
@@ -143,7 +143,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 }
             }
             sequence++;
-            if( sequence >no_of_q+urlList.size()) {
+            if (sequence > no_of_q + urlList.size()) {
                 sequence = 0;
             }
             title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());

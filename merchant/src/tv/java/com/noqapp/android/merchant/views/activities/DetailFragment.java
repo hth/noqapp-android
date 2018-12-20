@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -26,11 +25,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 public class DetailFragment extends Fragment {
     private static final String ARG_LIST_DATA = "data";
     private TopicAndQueueTV topicAndQueueTV;
-    private TextView title, tv_timing,tv_degree;
+    private TextView title, tv_timing, tv_degree;
     private ImageView image, iv_banner, iv_banner1;
     private LinearLayout ll_list;
 
@@ -71,7 +69,7 @@ public class DetailFragment extends Fragment {
         if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
             Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
         } else {
-            Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image,new Callback() {
+            Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                 @Override
                 public void onSuccess() {
 
@@ -83,15 +81,15 @@ public class DetailFragment extends Fragment {
                 }
             });
         }
-       // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
-       // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
+        // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
+        // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
         title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
-        tv_degree.setText(" ( "+new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation())+" ) ");
+        tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
         tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                 + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
         ll_list.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        if(null != topicAndQueueTV.getJsonQueueTV()) {
+        if (null != topicAndQueueTV.getJsonQueueTV()) {
 
             List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
             Collections.sort(
@@ -117,15 +115,8 @@ public class DetailFragment extends Fragment {
         }
     }
 
-
-
-
-
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
-
 }

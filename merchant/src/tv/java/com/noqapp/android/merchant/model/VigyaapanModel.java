@@ -1,9 +1,9 @@
 package com.noqapp.android.merchant.model;
 
+import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 import com.noqapp.android.merchant.model.api.VigyaapanService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
-import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
 import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
 import com.noqapp.android.merchant.utils.Constants;
 
@@ -31,8 +31,8 @@ public class VigyaapanModel {
      * @param mail
      * @param auth
      */
-    public void getVigyaapan(String did, String mail, String auth, String type) {
-        vigyaapanService.getVigyaapan(did, Constants.DEVICE_TYPE, mail, auth, type).enqueue(new Callback<JsonVigyaapanTV>() {
+    public void getVigyaapan(String did, String mail, String auth, VigyaapanTypeEnum vigyaapanType) {
+        vigyaapanService.getVigyaapan(did, Constants.DEVICE_TYPE, mail, auth, vigyaapanType.getName()).enqueue(new Callback<JsonVigyaapanTV>() {
             @Override
             public void onResponse(@NonNull Call<JsonVigyaapanTV> call, @NonNull Response<JsonVigyaapanTV> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
