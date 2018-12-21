@@ -37,7 +37,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
     private String vigyaapanId;
 
     @JsonProperty("pp")
-    private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
+    private JsonProfessionalProfileTV jsonProfessionalProfileTV;
 
     @JsonProperty("iu")
     private List<String> imageUrls = new ArrayList<>();
