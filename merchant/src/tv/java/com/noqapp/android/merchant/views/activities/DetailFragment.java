@@ -66,7 +66,7 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
+        if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
             if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                 Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
             } else {

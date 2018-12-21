@@ -37,7 +37,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
     private String vigyaapanId;
 
     @JsonProperty("pp")
-    private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
+    private JsonProfessionalProfileTV jsonProfessionalProfileTV;
 
     @JsonProperty("iu")
     private List<String> imageUrls = new ArrayList<>();
@@ -66,12 +66,12 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return this;
     }
 
-    public JsonProfessionalProfilePersonal getJsonProfessionalProfilePersonal() {
-        return jsonProfessionalProfilePersonal;
+    public JsonProfessionalProfileTV getJsonProfessionalProfileTV() {
+        return jsonProfessionalProfileTV;
     }
 
-    public JsonVigyaapanTV setJsonProfessionalProfilePersonal(JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
-        this.jsonProfessionalProfilePersonal = jsonProfessionalProfilePersonal;
+    public JsonVigyaapanTV setJsonProfessionalProfileTV(JsonProfessionalProfileTV jsonProfessionalProfileTV) {
+        this.jsonProfessionalProfileTV = jsonProfessionalProfileTV;
         return this;
     }
 
@@ -97,7 +97,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
     public String toString() {
         return "JsonVigyaapanTV{" +
                 "vigyaapanId='" + vigyaapanId + '\'' +
-                ", jsonProfessionalProfilePersonal=" + jsonProfessionalProfilePersonal +
+                ", jsonProfessionalProfileTV=" + jsonProfessionalProfileTV +
                 ", imageUrls=" + imageUrls +
                 ", vigyaapanType=" + vigyaapanType +
                 ", error=" + error +

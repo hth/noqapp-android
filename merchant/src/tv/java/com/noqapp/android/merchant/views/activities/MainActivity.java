@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     private int currentPage = 0;
     private Timer timer;
     private final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
-    private final long PERIOD_MS = 10*1000;
+    private final long PERIOD_MS = 10 * 1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
     private JsonVigyaapanTV jsonVigyaapanTV;
-    private boolean isNotification =false;
+    private boolean isNotification = false;
     private DetailFragment detailFragment;
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
 
@@ -97,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
 
             VigyaapanModel vigyaapanModel = new VigyaapanModel();
             vigyaapanModel.setVigyaapanPresenter(this);
-            vigyaapanModel.getVigyaapan(  UserUtils.getDeviceId(),
+            vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),VigyaapanTypeEnum.MV);
+                    LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.PP);
         }
     }
 
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                             @Override
                             public void onServiceCreated(CastRemoteDisplayLocalService service) {
                                 ((PresentationService) service).setTopicAndQueueTV(
-                                        topicAndQueueTVList.get(0),0);
+                                        topicAndQueueTVList.get(0), 0);
                             }
 
                             @Override
@@ -251,49 +251,49 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
                 topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
             }
-            if(topicAndQueueTVList.size() ==0) {
+            if (topicAndQueueTVList.size() == 0) {
                 topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(null).setJsonQueueTV(null));
             }
-            if(null == detailFragment)
-              detailFragment = new DetailFragment();
+            if (null == detailFragment)
+                detailFragment = new DetailFragment();
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
             ft.commit();
 
-            if(!isNotification) {
-                    final Handler handler = new Handler();
-                    final Runnable Update = new Runnable() {
-                        public void run() {
-                            if (currentPage == topicAndQueueTVList.size()) {
-                                currentPage = 0;
-                            }
-                            detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
-                            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                            ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
-                            ft.commit();
-                            Toast.makeText(MainActivity.this,"Screen changed",Toast.LENGTH_LONG).show();
-                            if (CastRemoteDisplayLocalService.getInstance() != null) {
-                                ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV,currentPage);
-                                ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList.get(currentPage),currentPage);
-                            }
-                            currentPage++;
+            if (!isNotification) {
+                final Handler handler = new Handler();
+                final Runnable Update = new Runnable() {
+                    public void run() {
+                        if (currentPage == topicAndQueueTVList.size()) {
+                            currentPage = 0;
                         }
-                    };
-
-
-                    if (timer != null) {
-                        timer.cancel();
-                        timer = null;
+                        detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
+                        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+                        ft.commit();
+                        Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
+                        if (CastRemoteDisplayLocalService.getInstance() != null) {
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, currentPage);
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList.get(currentPage), currentPage);
+                        }
+                        currentPage++;
                     }
-                    timer = new Timer(); // This will create a new Thread
-                    timer.schedule(new TimerTask() { // task to be scheduled
+                };
 
-                        @Override
-                        public void run() {
-                            handler.post(Update);
-                        }
-                    }, DELAY_MS, PERIOD_MS);
+
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
                 }
+                timer = new Timer(); // This will create a new Thread
+                timer.schedule(new TimerTask() { // task to be scheduled
+
+                    @Override
+                    public void run() {
+                        handler.post(Update);
+                    }
+                }, DELAY_MS, PERIOD_MS);
+            }
 
         }
         dismissProgress();
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
 
     @Override
     public void vigyaapanResponse(JsonVigyaapanTV jsonVigyaapanTV) {
-        Log.v("data",jsonVigyaapanTV.toString());
+        Log.v("data", jsonVigyaapanTV.toString());
         this.jsonVigyaapanTV = jsonVigyaapanTV;
     }
 
@@ -356,20 +356,20 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
 
     private boolean isCurrentTimeInRange(String start, String end) {
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm",Locale.getDefault());
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Date date = new Date();
             String current = formatter.format(date);
 
-            Date time1 = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(start);
+            Date time1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(start);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(time1);
 
-            Date time2 = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(end);
+            Date time2 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(end);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(time2);
             calendar2.add(Calendar.DATE, 1);
 
-            Date d = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(current);
+            Date d = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(current);
             Calendar calendar3 = Calendar.getInstance();
             calendar3.setTime(d);
             calendar3.add(Calendar.DATE, 1);

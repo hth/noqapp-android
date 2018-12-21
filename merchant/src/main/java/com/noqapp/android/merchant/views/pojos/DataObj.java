@@ -86,7 +86,7 @@ public class DataObj implements Comparable<DataObj> {
     }
 
     private String toCamelCase(final String init) {
-        if (init==null)
+        if (init == null)
             return null;
 
         final StringBuilder ret = new StringBuilder(init.length());
@@ -96,7 +96,7 @@ public class DataObj implements Comparable<DataObj> {
                 ret.append(word.substring(0, 1).toUpperCase());
                 ret.append(word.substring(1).toLowerCase());
             }
-            if (!(ret.length()==init.length()))
+            if (!(ret.length() == init.length()))
                 ret.append(" ");
         }
 
