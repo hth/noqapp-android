@@ -274,6 +274,18 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
+
+            if(null != storeServiceImages && storeServiceImages.size()>0){
+                iv_category_banner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(CategoryInfoActivity.this, SliderActivity.class);
+                        intent.putExtra("pos", 0);
+                        intent.putExtra("imageurls", (ArrayList<String>) bizStoreElastic.getBizServiceImages());
+                        startActivity(intent);
+                    }
+                });
+            }
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
 
             if (isFuture) {

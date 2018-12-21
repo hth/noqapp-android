@@ -112,6 +112,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
                 tv_mobile.setText(datetime);
+                edt_review.setHint("Please provide review for "+jtk.getDisplayName());
                 if (UserUtils.isLogin()) {
                     List<JsonProfile> profileList = new ArrayList<>();
                     if (null != NoQueueBaseActivity.getUserProfile().getDependents()) {

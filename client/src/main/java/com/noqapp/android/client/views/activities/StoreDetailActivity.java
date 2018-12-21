@@ -153,7 +153,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
         getMenuInflater().inflate(R.menu.menu_doc_profile, menu);
         //@TODO Chandra enable when the feature add on server
-       // menu.findItem(R.id.menu_favourite).setVisible(false);
+        // menu.findItem(R.id.menu_favourite).setVisible(false);
         return true;
     }
 
@@ -251,12 +251,23 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         ThumbnailGalleryAdapter serviceAdapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
         rv_thumb_images.setAdapter(serviceAdapter);
         //
-        ArrayList<String> storeInteriorImages = new ArrayList<>(jsonQueue.getStoreInteriorImages());
+        final ArrayList<String> storeInteriorImages = new ArrayList<>(jsonQueue.getStoreInteriorImages());
         for (int i = 0; i < storeInteriorImages.size(); i++) {
             storeInteriorImages.set(i, jsonQueue.getCodeQR() + "/" + storeInteriorImages.get(i));
         }
         ThumbnailGalleryAdapter interiorAdapter = new ThumbnailGalleryAdapter(this, storeInteriorImages);
         rv_photos.setAdapter(interiorAdapter);
+        if (null != storeInteriorImages && storeInteriorImages.size() > 0) {
+            iv_category_banner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(StoreDetailActivity.this, SliderActivity.class);
+                    intent.putExtra("pos", 0);
+                    intent.putExtra("imageurls", storeInteriorImages);
+                    startActivity(intent);
+                }
+            });
+        }
         //
         String defaultCategory = "Un-Categorized";
         //  {
