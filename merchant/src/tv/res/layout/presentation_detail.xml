@@ -100,7 +100,7 @@
                 android:id="@+id/ll_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black"
+                android:background="#99d4e5"
                 android:padding="50dp"
                 android:weightSum="1"
                 android:orientation="horizontal"
@@ -125,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="32sp"/>
 
                 <TextView
@@ -133,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
@@ -141,8 +141,16 @@
                         android:id="@+id/tv_doctor_degree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="@android:color/white"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:text="About me:"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
@@ -150,7 +158,7 @@
                         android:id="@+id/tv_about_doctor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
 
@@ -162,30 +170,30 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@android:color/black"
+            android:background="@android:color/white"
             android:layout_weight=".1">
 
 
         <TextView
-                android:id="@+id/iv_banner"
                 android:layout_width="400dp"
                 android:layout_height="match_parent"
-                android:background="@android:color/black"
                 android:gravity="center_vertical"
                 android:textSize="24sp"
                 android:paddingStart="10dp"
                 android:text="powered by"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:layout_alignParentStart="true"/>
 
-        <ImageView
-                android:id="@+id/iv_banner1"
+        <TextView
                 android:layout_width="500dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
-                android:scaleType="center"
-                android:background="@drawable/powered_by"
+                android:paddingEnd="10dp"
+                android:textSize="42sp"
+                android:text="NoQApp"
+                android:textStyle="bold"
+                android:gravity="right|top"
+                android:textColor="#8c1515"
                 android:layout_height="match_parent"/>
 
     </RelativeLayout>
