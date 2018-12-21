@@ -33,11 +33,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
@@ -56,28 +54,27 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements CustomSimpleOnPageChangeListener.OnPageChangePosition, ClientInQueuePresenter, VigyaapanPresenter {
+public class MainActivity extends AppCompatActivity implements ClientInQueuePresenter, VigyaapanPresenter {
+
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
-    private int currentPosition;
-    private ScreenSlidePagerAdapter fragmentStatePagerAdapter;
     private MediaRouter mediaRouter;
     private CastDevice castDevice;
-    int currentPage = 0;
-    Timer timer;
-    final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 10*1000;
+    private int currentPage = 0;
+    private Timer timer;
+    private final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
+    private final long PERIOD_MS = 10*1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
-    private ViewPager viewPager;
     private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
     private JsonVigyaapanTV jsonVigyaapanTV;
-
     private boolean isNotification =false;
+    private DetailFragment detailFragment;
+    private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv);
-        viewPager = findViewById(R.id.pager);
         initProgress();
         setupMediaRouter();
         broadcastReceiver = new BroadcastReceiver() {
@@ -194,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                             @Override
                             public void onServiceCreated(CastRemoteDisplayLocalService service) {
                                 ((PresentationService) service).setTopicAndQueueTV(
-                                        fragmentStatePagerAdapter.getAdAt(currentPosition),currentPosition);
+                                        topicAndQueueTVList.get(0),0);
                             }
 
                             @Override
@@ -226,15 +223,6 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         toast.show();
     }
 
-    @Override
-    public void onCurrentPageChange(int position) {
-        currentPosition = position;
-        if (CastRemoteDisplayLocalService.getInstance() != null) {
-            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setImageList(jsonVigyaapanTV.getImageUrls(),fragmentStatePagerAdapter.getCount());
-            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(fragmentStatePagerAdapter.getAdAt(position),position);
-        }
-    }
-
     @NonNull
     private QueueDetail getQueueDetails() {
         QueueDetail queueDetail = new QueueDetail();
@@ -258,27 +246,37 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
 
             Log.v("TV Data", jsonQueueTVList.getQueues().toString());
-            List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
+            topicAndQueueTVList.clear();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
                 JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
                 topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
             }
-            fragmentStatePagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-            fragmentStatePagerAdapter.addAds(topicAndQueueTVList);
-            if (viewPager != null) {
-                viewPager.setAdapter(fragmentStatePagerAdapter);
-                fragmentStatePagerAdapter.notifyDataSetChanged();
-                viewPager.addOnPageChangeListener(new CustomSimpleOnPageChangeListener(this));
+            if(topicAndQueueTVList.size() ==0) {
+                topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(null).setJsonQueueTV(null));
+            }
+            if(null == detailFragment)
+              detailFragment = new DetailFragment();
+            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+            ft.commit();
 
-                if(!isNotification) {
-                    /*After setting the adapter use the timer */
+            if(!isNotification) {
                     final Handler handler = new Handler();
                     final Runnable Update = new Runnable() {
                         public void run() {
-                            if (currentPage == fragmentStatePagerAdapter.getCount()) {
+                            if (currentPage == topicAndQueueTVList.size()) {
                                 currentPage = 0;
                             }
-                            viewPager.setCurrentItem(currentPage++, true);
+                            detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
+                            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+                            ft.commit();
+                            Toast.makeText(MainActivity.this,"Screen changed",Toast.LENGTH_LONG).show();
+                            if (CastRemoteDisplayLocalService.getInstance() != null) {
+                                ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV,currentPage);
+                                ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList.get(currentPage),currentPage);
+                            }
+                            currentPage++;
                         }
                     };
 
@@ -296,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
                         }
                     }, DELAY_MS, PERIOD_MS);
                 }
-            }
+
         }
         dismissProgress();
         isNotification = false;
@@ -344,34 +342,6 @@ public class MainActivity extends AppCompatActivity implements CustomSimpleOnPag
         Log.v("data",jsonVigyaapanTV.toString());
         this.jsonVigyaapanTV = jsonVigyaapanTV;
     }
-
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private final List<TopicAndQueueTV> ads = new ArrayList<>();
-
-        ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return DetailFragment.newInstance(ads.get(position));
-        }
-
-        @Override
-        public int getCount() {
-            return ads.size();
-        }
-
-        void addAds(List<TopicAndQueueTV> ads) {
-            this.ads.addAll(ads);
-            notifyDataSetChanged();
-        }
-
-        public TopicAndQueueTV getAdAt(int position) {
-            return ads.get(position);
-        }
-    }
-
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);

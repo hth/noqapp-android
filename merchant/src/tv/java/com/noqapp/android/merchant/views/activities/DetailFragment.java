@@ -66,51 +66,53 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
-            Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
-        } else {
-            Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
-                @Override
-                public void onSuccess() {
+        if(null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
+            if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
+                Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
+            } else {
+                Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
 
-                }
-
-                @Override
-                public void onError() {
-                    Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
-                }
-            });
-        }
-        // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
-        // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
-        title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
-        tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
-        tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
-                + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
-        ll_list.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        if (null != topicAndQueueTV.getJsonQueueTV()) {
-
-            List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
-            Collections.sort(
-                    data,
-                    new Comparator<JsonQueuedPersonTV>() {
-                        public int compare(JsonQueuedPersonTV lhs, JsonQueuedPersonTV rhs) {
-                            return Integer.compare(lhs.getToken(), rhs.getToken());
-                        }
                     }
-            );
-            for (int i = 0; i < data.size(); i++) {
-                View customView = inflater.inflate(R.layout.lay_text, null, false);
-                TextView textView = customView.findViewById(R.id.tv_name);
-                TextView tv_seq = customView.findViewById(R.id.tv_seq);
-                TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
-                tv_seq.setText(String.valueOf((data.get(i).getToken())));
-                textView.setText(data.get(i).getCustomerName());
-                String phoneNo = data.get(i).getCustomerPhone();
-                tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
 
-                ll_list.addView(customView);
+                    @Override
+                    public void onError() {
+                        Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
+                    }
+                });
+            }
+            // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
+            // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
+            title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
+            tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
+            tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
+                    + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
+            ll_list.removeAllViews();
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            if (null != topicAndQueueTV.getJsonQueueTV()) {
+
+                List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
+                Collections.sort(
+                        data,
+                        new Comparator<JsonQueuedPersonTV>() {
+                            public int compare(JsonQueuedPersonTV lhs, JsonQueuedPersonTV rhs) {
+                                return Integer.compare(lhs.getToken(), rhs.getToken());
+                            }
+                        }
+                );
+                for (int i = 0; i < data.size(); i++) {
+                    View customView = inflater.inflate(R.layout.lay_text, null, false);
+                    TextView textView = customView.findViewById(R.id.tv_name);
+                    TextView tv_seq = customView.findViewById(R.id.tv_seq);
+                    TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
+                    tv_seq.setText(String.valueOf((data.get(i).getToken())));
+                    textView.setText(data.get(i).getCustomerName());
+                    String phoneNo = data.get(i).getCustomerPhone();
+                    tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+
+                    ll_list.addView(customView);
+                }
             }
         }
     }
