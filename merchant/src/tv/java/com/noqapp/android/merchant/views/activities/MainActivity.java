@@ -381,4 +381,13 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             return false;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        super.onBackPressed();
+    }
 }
