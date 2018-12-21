@@ -186,7 +186,6 @@
     <string name="health_care">Health Care</string>
     <string name="merchant_near">Merchants around you</string>
     <string name="view_all">View All</string>
-    <string name="recent_activity">Recent Activity</string>
     <string name="scan_info">Scan NoQueue QR Code to join queue or place an order</string>
     <string name="prompt_address_status">Address</string>
     <string name="prompt_dob">DD-MM-YYYY</string>
