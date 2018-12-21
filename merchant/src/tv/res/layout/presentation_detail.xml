@@ -19,7 +19,6 @@
                     android:id="@+id/ad_image"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/ic_dialog_close_dark"
                     android:layout_alignParentStart="true"
                     android:scaleType="fitXY"
                     android:contentDescription="@string/presentation_detail_description_title"/>
@@ -35,7 +34,7 @@
                     android:maxLines="1"
                     android:minLines="1"
                     android:ellipsize="end"
-                    android:text="sfsdf"
+                    android:text=""
                     android:textColor="@color/colorAddress"
                     android:textStyle="bold"
                     android:textSize="38sp"/>
@@ -50,7 +49,7 @@
                     android:minLines="1"
                     android:ellipsize="end"
                     android:layout_alignBaseline="@+id/ad_title"
-                    android:text="sfsdf"
+                    android:text=""
                     android:textColor="@color/colorAddress"
                     android:textStyle="bold"
                     android:textSize="18sp"/>
@@ -72,7 +71,7 @@
                 android:id="@+id/ll_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".65"
+                android:layout_weight=".7"
                 android:layout_gravity="bottom|start"
                 android:layout_marginTop="3dp"
                 android:background="@android:color/white"
@@ -85,14 +84,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@android:color/black"
-                android:layout_weight=".15">
+                android:layout_weight=".1">
 
 
-            <ImageView
+            <TextView
                     android:id="@+id/iv_banner"
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/ssd"
+                    android:background="@android:color/black"
+                    android:gravity="center_vertical"
+                    android:textSize="24sp"
+                    android:paddingStart="10dp"
+                    android:text="powered by"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
                     android:layout_alignParentStart="true"/>
 
             <ImageView
