@@ -300,6 +300,7 @@
                                 android:maxLines="4"
                                 android:minLines="4"
                                 android:maxLength="256"
+                                android:textSize="@dimen/text_size_fourteen"
                                 android:padding="5dp"/>
 
                     </LinearLayout>

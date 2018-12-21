@@ -95,7 +95,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     }
 
     public class DetailPresentation extends CastPresentation {
-        public ImageView image, iv_banner1, iv_advertisement, iv_profile;
+        public ImageView image, iv_advertisement, iv_profile;
         private TextView title, tv_timing, tv_degree, tv_doctor_name, tv_doctor_category, tv_doctor_degree, tv_about_doctor;
         public LinearLayout ll_list, ll_profile;
         public Context context;
@@ -110,7 +110,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.presentation_detail);
             image = findViewById(R.id.ad_image);
-            iv_banner1 = findViewById(R.id.iv_banner1);
             iv_advertisement = findViewById(R.id.iv_advertisement);
             iv_profile = findViewById(R.id.iv_profile);
             title = findViewById(R.id.ad_title);
@@ -180,6 +179,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             default:
                         }
 
+                }else{
+                    iv_advertisement.setVisibility(View.GONE);
+                    ll_profile.setVisibility(View.GONE);
                 }
                 sequence++;
                 if (sequence > no_of_q + buffer_size) {
@@ -202,7 +204,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         });
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
-                    tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
+                    if(!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation())))
+                     tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
+                    else
+                        tv_degree.setText("");
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                             + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
                     if (pos % 2 == 0)
