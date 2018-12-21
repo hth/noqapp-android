@@ -50,4 +50,12 @@ public class JsonProfessionalProfileTV extends JsonProfessionalProfilePersonal {
         this.professionType = professionType;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonProfessionalProfileTV{" +
+                "profileImage='" + profileImage + '\'' +
+                ", professionType='" + professionType + '\'' +
+                '}';
+    }
 }

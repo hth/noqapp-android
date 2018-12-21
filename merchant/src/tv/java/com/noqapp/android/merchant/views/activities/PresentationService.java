@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -94,9 +95,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     }
 
     public class DetailPresentation extends CastPresentation {
-        public ImageView image, iv_banner1, iv_advertisement;
-        private TextView title, tv_timing, tv_degree;
-        public LinearLayout ll_list;
+        public ImageView image, iv_banner1, iv_advertisement, iv_profile;
+        private TextView title, tv_timing, tv_degree, tv_doctor_name, tv_doctor_category, tv_doctor_degree, tv_about_doctor;
+        public LinearLayout ll_list, ll_profile;
         public Context context;
 
         public DetailPresentation(Context context, Display display) {
@@ -111,10 +112,16 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             image = findViewById(R.id.ad_image);
             iv_banner1 = findViewById(R.id.iv_banner1);
             iv_advertisement = findViewById(R.id.iv_advertisement);
+            iv_profile = findViewById(R.id.iv_profile);
             title = findViewById(R.id.ad_title);
             tv_timing = findViewById(R.id.tv_timing);
             tv_degree = findViewById(R.id.tv_degree);
+            tv_doctor_name = findViewById(R.id.tv_doctor_name);
+            tv_doctor_category = findViewById(R.id.tv_doctor_category);
+            tv_doctor_degree = findViewById(R.id.tv_doctor_degree);
+            tv_about_doctor = findViewById(R.id.tv_about_doctor);
             ll_list = findViewById(R.id.ll_list);
+            ll_profile = findViewById(R.id.ll_profile);
             updateDetail(topicAndQueueTV);
         }
 
@@ -124,6 +131,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 if (null != jsonVigyaapanTV)
                     switch (jsonVigyaapanTV.getVigyaapanType()) {
                         case MV: {
+                            ll_profile.setVisibility(View.GONE);
                             if (url_pos < urlList.size()) {
                                 Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
                                 iv_advertisement.setVisibility(View.VISIBLE);
@@ -136,7 +144,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         }
                         break;
                         case PP:
-                            // Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET +jsonVigyaapanTV.getJsonProfessionalProfilePersonal().).into(iv_advertisement);
+                            ll_profile.setVisibility(View.VISIBLE);
+                            Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
+                            tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
+                            tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
+                            tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
+                            tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
                             break;
                         default:
                     }
@@ -145,6 +158,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     if (null != jsonVigyaapanTV)
                         switch (jsonVigyaapanTV.getVigyaapanType()) {
                             case MV: {
+                                ll_profile.setVisibility(View.GONE);
                                 if (url_pos < urlList.size()) {
                                     Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
                                     iv_advertisement.setVisibility(View.VISIBLE);
@@ -156,7 +170,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             }
                             break;
                             case PP:
-                                // Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET +jsonVigyaapanTV.getJsonProfessionalProfilePersonal().).into(iv_advertisement);
+                                ll_profile.setVisibility(View.VISIBLE);
+                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
+                                tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
+                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
+                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
+                                tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
                                 break;
                             default:
                         }
@@ -225,4 +244,15 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             super.onDetachedFromWindow();
         }
     }
+
+    private String getSelectedData(List<JsonNameDatePair> temp) {
+        String data = "";
+        for (int i = 0; i < temp.size(); i++) {
+            data += temp.get(i).getName() + ", ";
+        }
+        if (data.endsWith(", "))
+            data = data.substring(0, data.length() - 2);
+        return data;
+    }
+
 }
