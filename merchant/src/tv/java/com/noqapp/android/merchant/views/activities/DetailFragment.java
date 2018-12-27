@@ -28,9 +28,9 @@ import java.util.List;
 public class DetailFragment extends Fragment {
     private static final String ARG_LIST_DATA = "data";
     private TopicAndQueueTV topicAndQueueTV;
-    private TextView title, tv_timing, tv_degree;
-    private ImageView image, iv_banner, iv_banner1;
-    private LinearLayout ll_list;
+    private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1;
+    private ImageView image, image1;
+    private LinearLayout ll_list, ll_no_list;
 
     public static DetailFragment newInstance(TopicAndQueueTV ad) {
         DetailFragment fragment = new DetailFragment();
@@ -52,15 +52,18 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_detail, container, false);
-        image = fragmentView.findViewById(R.id.ad_image);
-        iv_banner = fragmentView.findViewById(R.id.iv_banner);
-        iv_banner1 = fragmentView.findViewById(R.id.iv_banner1);
-        title = fragmentView.findViewById(R.id.ad_title);
-        tv_timing = fragmentView.findViewById(R.id.tv_timing);
-        tv_degree = fragmentView.findViewById(R.id.tv_degree);
-        ll_list = fragmentView.findViewById(R.id.ll_list);
-        return fragmentView;
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        image = view.findViewById(R.id.ad_image);
+        title = view.findViewById(R.id.ad_title);
+        tv_timing = view.findViewById(R.id.tv_timing);
+        tv_degree = view.findViewById(R.id.tv_degree);
+        image1 = view.findViewById(R.id.ad_image1);
+        title1 = view.findViewById(R.id.ad_title1);
+        tv_timing1 = view.findViewById(R.id.tv_timing1);
+        tv_degree1 = view.findViewById(R.id.tv_degree1);
+        ll_list = view.findViewById(R.id.ll_list);
+        ll_no_list = view.findViewById(R.id.ll_no_list);
+        return view;
     }
 
     @Override
@@ -69,6 +72,7 @@ public class DetailFragment extends Fragment {
         if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
             if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                 Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
+                Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image1);
             } else {
                 Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                     @Override
@@ -81,13 +85,26 @@ public class DetailFragment extends Fragment {
                         Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
                     }
                 });
+                Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image1);
+                    }
+                });
             }
-            // Picasso.with(getActivity()).load("http://businessplaces.in/wp-content/uploads/2017/07/ssdhospital-logo-2.jpg").into(iv_banner);
-            // Picasso.with(getActivity()).load("https://steamuserimages-a.akamaihd.net/ugc/824566056082911413/D6CF5FF8C8E7C3C693E70B02C55CD2CB0E87D740/").into(iv_banner1);
             title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
             tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
             tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                     + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
+
+            title1.setText(title.getText().toString());
+            tv_degree1.setText(tv_degree.getText().toString());
+            tv_timing1.setText(tv_timing.getText().toString());
             ll_list.removeAllViews();
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             if (null != topicAndQueueTV.getJsonQueueTV()) {
@@ -114,6 +131,11 @@ public class DetailFragment extends Fragment {
                     ll_list.addView(customView);
                 }
             }
+            if (ll_list.getChildCount() > 0)
+                ll_no_list.setVisibility(View.GONE);
+            else
+                ll_no_list.setVisibility(View.VISIBLE);
+
         }
     }
 
