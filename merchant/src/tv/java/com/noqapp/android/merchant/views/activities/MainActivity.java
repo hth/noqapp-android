@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             JsonTopic jsonTopic = LaunchActivity.merchantListFragment.getTopics().get(i);
             String start = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getStartHour());
             String end = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getEndHour());
-            if (isCurrentTimeInRange(start, end)) {
+            if (isTimeBetweenTwoTime(start, end)) {
                 tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
                 topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), LaunchActivity.merchantListFragment.getTopics().get(i));
             }
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                         ft.commit();
                         Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
                         if (CastRemoteDisplayLocalService.getInstance() != null) {
-                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, currentPage);
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList.get(currentPage), currentPage);
                         }
                         currentPage++;
@@ -360,27 +360,71 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             Date date = new Date();
             String current = formatter.format(date);
 
-            Date time1 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(start);
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.setTime(time1);
+            Date startDate = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(start);
+            Calendar calendarStart = Calendar.getInstance();
+            calendarStart.setTime(startDate);
 
-            Date time2 = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(end);
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTime(time2);
-            calendar2.add(Calendar.DATE, 1);
+            Date endDate = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(end);
+            Calendar calendarEnd = Calendar.getInstance();
+            calendarEnd.setTime(endDate);
+            calendarEnd.add(Calendar.DATE, 1);
 
-            Date d = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(current);
-            Calendar calendar3 = Calendar.getInstance();
-            calendar3.setTime(d);
-            calendar3.add(Calendar.DATE, 1);
+            Date currentDate = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(current);
+            Calendar calendarCurrent = Calendar.getInstance();
+            calendarCurrent.setTime(currentDate);
+            calendarCurrent.add(Calendar.DATE, 1);
 
-            Date x = calendar3.getTime();
-            return x.after(calendar1.getTime()) && x.before(calendar2.getTime());
+            return calendarCurrent.getTime().after(calendarStart.getTime()) && calendarCurrent.getTime().before(calendarEnd.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
         }
     }
+
+
+    public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
+
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date date = new Date();
+            String currentTime = formatter.format(date);
+            //Start Time
+            //all times are from java.util.Date
+            Date inTime = new SimpleDateFormat("HH:mm").parse(initialTime);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(inTime);
+
+            //Current Time
+            Date checkTime = new SimpleDateFormat("HH:mm").parse(currentTime);
+            Calendar calendar3 = Calendar.getInstance();
+            calendar3.setTime(checkTime);
+
+            //End Time
+            Date finTime = new SimpleDateFormat("HH:mm").parse(finalTime);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(finTime);
+
+            if (finalTime.compareTo(initialTime) < 0) {
+                calendar2.add(Calendar.DATE, 1);
+                calendar3.add(Calendar.DATE, 1);
+            }
+
+            java.util.Date actualTime = calendar3.getTime();
+            if ((actualTime.after(calendar1.getTime()) ||
+                    actualTime.compareTo(calendar1.getTime()) == 0) &&
+                    actualTime.before(calendar2.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+    }
+
 
     @Override
     public void onBackPressed() {

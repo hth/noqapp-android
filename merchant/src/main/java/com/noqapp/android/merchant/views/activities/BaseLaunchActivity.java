@@ -265,8 +265,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 }
             } else {
                 if (new AppUtils().isTablet(getApplicationContext())) {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-                    LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+                    LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
                     list_fragment.setLayoutParams(lp1);
                     list_detail_fragment.setLayoutParams(lp0);
                 }
@@ -279,8 +279,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             setUserName();
         } else {
             if (new AppUtils().isTablet(getApplicationContext())) {
-                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 1.0f);
-                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.0f);
+                LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+                LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
                 list_fragment.setLayoutParams(lp1);
                 list_detail_fragment.setLayoutParams(lp0);
             }
