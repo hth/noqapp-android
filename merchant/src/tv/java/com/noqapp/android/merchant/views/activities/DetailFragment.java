@@ -143,4 +143,9 @@ public class DetailFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
 }

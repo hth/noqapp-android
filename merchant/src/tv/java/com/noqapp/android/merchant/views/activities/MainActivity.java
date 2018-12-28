@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                         detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
                         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
-                        ft.commit();
+                        ft.commitAllowingStateLoss();
                         Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
                         if (CastRemoteDisplayLocalService.getInstance() != null) {
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
