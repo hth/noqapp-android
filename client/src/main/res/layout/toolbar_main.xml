@@ -5,12 +5,13 @@
                                    android:layout_width="match_parent"
                                    android:layout_height="58dp"
                                    android:background="#fefefe"
-                                   app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                                   app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                                   app:contentInsetStartWithNavigation="0dp"
+        >
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
 
         <TextView
@@ -18,16 +19,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/rl_right"
-                android:layout_alignParentLeft="true"
-                android:padding="5dp"
+                android:layout_toStartOf="@+id/rl_right"
+                android:layout_alignParentStart="true"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="5dp"
                 android:maxLines="1"
                 android:minLines="1"
                 android:ellipsize="end"
-                android:drawableRight="@drawable/ic_arrow_down"
+                android:drawableEnd="@drawable/ic_arrow_down"
                 android:drawablePadding="5dp"
-                android:drawableLeft="@drawable/map_icon"
-                android:gravity="center"
+                android:drawableStart="@drawable/map_icon"
+                android:gravity="center_vertical"
                 android:text="Mumbai"
                 android:textColor="#000000"
                 android:textSize="14sp"
@@ -45,18 +48,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/fl_notification"
+                    android:layout_toStartOf="@+id/fl_notification"
                     android:background="@drawable/ic_search"
                     android:padding="12dp"
                     android:backgroundTint="@color/theme_color_red"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             <FrameLayout
                     android:id="@+id/fl_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentEnd="true"
                     android:clipToPadding="false"
                     android:focusable="true"
                     android:visibility="gone">
@@ -68,7 +71,7 @@
                         android:layout_margin="5dp"
                         android:background="@drawable/ic_notification"
                         android:backgroundTint="@color/theme_color_red"
-                        android:padding="12dp" />
+                        android:padding="12dp"/>
 
                 <TextView
                         android:id="@+id/tv_badge"
@@ -80,7 +83,7 @@
                         android:padding="3dp"
                         android:text="0"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"/>
 
             </FrameLayout>
 
@@ -88,15 +91,15 @@
                     android:id="@+id/iv_home"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/ic_home"
                     android:clipToPadding="false"
                     android:focusable="true"
                     android:backgroundTint="@color/theme_color_red"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
         </RelativeLayout>
 
     </RelativeLayout>
