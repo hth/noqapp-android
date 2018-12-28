@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingTop="20dp"
+              android:paddingBottom="20dp"
+              android:background="@drawable/dialog_round_corner"
+              android:gravity="center"
+              android:orientation="vertical">
+
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Rate Us"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="We’re glad you’re enjoying using our app! Would you mind giving us 5 star review in the play store? It really helps us out! Thanks for your support :)"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:textColor="@android:color/black"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#80000000"/>
+
+    <TextView
+            android:id="@+id/tv_rate_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Sure, take me there"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:textColor="@color/theme_color_dark"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#80000000"/>
+
+    <TextView
+            android:id="@+id/tv_remind_later"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Remind me later"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:textColor="#f6734a"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#80000000"/>
+
+    <TextView
+            android:id="@+id/tv_no_thanks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="No, thanks"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:textColor="#f6734a"/>
+
+</LinearLayout>
