@@ -14,6 +14,8 @@ import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -186,15 +188,16 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             break;
                             case PP:
                                 ll_profile.setVisibility(View.VISIBLE);
-                                String imageName = "";
-                                String temp = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
-                                if (temp.toLowerCase().endsWith(".jpg")) {
-                                    imageName = temp.replace(".jpg", "_o.jpg");
-                                } else if (temp.toLowerCase().endsWith(".png")) {
-                                    imageName = temp.replace(".png", "_o.png");
+                                String imageName = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
+                                if (StringUtils.isNotBlank(imageName)) {
+                                    if (imageName.contains(".")) {
+                                        String[] file = imageName.split(".");
+                                        imageName = file[0] + "_o." + file[1];
+                                    }
                                 } else {
-                                    imageName = temp;
+                                    imageName = "";
                                 }
+
                                 Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
                                     @Override
                                     public void onSuccess() {
@@ -252,10 +255,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         });
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
-                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation())))
-                        tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
-                    else
+                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()))) {
+                        tv_degree.setText(" (" + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + ") ");
+                    } else {
                         tv_degree.setText("");
+                    }
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                             + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
 
@@ -268,14 +272,14 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
                     ++text_list_pos;
 
-                    if (pos % 2 == 0)
+                    if (pos % 2 == 0) {
                         ll_list.setBackground(ContextCompat.getDrawable(context, R.mipmap.temp_2));//"#85b8cb"));
-                    else
+                    } else {
                         ll_list.setBackground(ContextCompat.getDrawable(context, R.mipmap.pp_bg));   //Color.parseColor("#4a87ab"));
+                    }
                     ll_list.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
-
                         List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
                         Collections.sort(
                                 data,
@@ -285,6 +289,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                                     }
                                 }
                         );
+
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
                             TextView textView = customView.findViewById(R.id.tv_name);
@@ -297,10 +302,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             ll_list.addView(customView);
                         }
                     }
-                    if (ll_list.getChildCount() > 0)
+                    if (ll_list.getChildCount() > 0) {
                         ll_no_list.setVisibility(View.GONE);
-                    else
+                    } else {
                         ll_no_list.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -317,8 +323,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         for (int i = 0; i < temp.size(); i++) {
             data += temp.get(i).getName() + ", ";
         }
-        if (data.endsWith(", "))
+        if (data.endsWith(", ")) {
             data = data.substring(0, data.length() - 2);
+        }
         return data;
     }
 
