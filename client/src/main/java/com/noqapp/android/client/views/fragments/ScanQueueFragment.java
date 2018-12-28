@@ -19,6 +19,7 @@ import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -340,6 +341,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         if (NoQueueBaseActivity.getShowHelper() && isAdded()) {
             presentShowcaseSequence();
             NoQueueBaseActivity.setShowHelper(false);
+        }else {
+            new RateTheAppManager().app_launched(getActivity());
         }
     }
 
