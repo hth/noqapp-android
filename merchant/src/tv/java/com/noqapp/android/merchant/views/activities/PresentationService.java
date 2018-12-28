@@ -186,7 +186,26 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             break;
                             case PP:
                                 ll_profile.setVisibility(View.VISIBLE);
-                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
+                                String imageName = "";
+                                String temp = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
+                                if (temp.toLowerCase().endsWith(".jpg")) {
+                                    imageName = temp.replace(".jpg", "_o.jpg");
+                                } else if (temp.toLowerCase().endsWith(".png")) {
+                                    imageName = temp.replace(".png", "_o.png");
+                                } else {
+                                    imageName = temp;
+                                }
+                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Picasso.with(context).load(R.drawable.profile_tv).into(iv_profile);
+                                    }
+                                });
                                 tv_doctor_name.setText("Dr. " + jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
                                 tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
                                 tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
