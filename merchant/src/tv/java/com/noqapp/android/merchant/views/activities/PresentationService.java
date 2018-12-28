@@ -15,9 +15,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,7 +40,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     private int no_of_q = 0;
     private int sequence = 1;
     private int buffer_size = 0;
+    private int text_list_pos = 0;
     private List<String> urlList = new ArrayList<>();
+    private List<String> textList = new ArrayList<>();
     private JsonVigyaapanTV jsonVigyaapanTV;
 
     @Override
@@ -97,11 +98,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     }
 
     public class DetailPresentation extends CastPresentation {
-        public ImageView image,image1, iv_advertisement, iv_profile;
-        private TextView title, tv_timing, tv_degree,title1, tv_timing1, tv_degree1, tv_doctor_name, tv_doctor_category, tv_doctor_degree, tv_about_doctor;
-        public LinearLayout ll_list, ll_profile;
-        public RelativeLayout rl_no_list;
-        public Context context;
+        private ImageView image, image1, iv_advertisement, iv_profile;
+        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_doctor_name, tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1;
+        private LinearLayout ll_list, ll_profile, ll_no_list;
+        private Context context;
 
         public DetailPresentation(Context context, Display display) {
             super(context, display);
@@ -127,9 +127,17 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             tv_doctor_category = findViewById(R.id.tv_doctor_category);
             tv_doctor_degree = findViewById(R.id.tv_doctor_degree);
             tv_about_doctor = findViewById(R.id.tv_about_doctor);
+            tv_info1 = findViewById(R.id.tv_info1);
             ll_list = findViewById(R.id.ll_list);
-            rl_no_list = findViewById(R.id.rl_no_list);
+            ll_no_list = findViewById(R.id.ll_no_list);
             ll_profile = findViewById(R.id.ll_profile);
+            textList.add("Doctor is now available on <font color='#8c1515'><b>NoQApp</b></font>.");
+            textList.add("Save time. Book appointment online on <font color='#8c1515'><b>NoQApp</b></font>.");
+            textList.add("Forgot your medical file. Now medical records are securely available on <font color='#8c1515'><b>NoQApp</b></font>");
+            textList.add("See all your medical records online on <font color='#8c1515'><b>NoQApp</b></font>.");
+            textList.add("Get real time appointment updates on <font color='#8c1515'><b>NoQApp</b></font>.");
+            textList.add("Front desk can book your appointment just by your phone number.");
+            textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
             updateDetail(topicAndQueueTV);
         }
 
@@ -179,7 +187,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             case PP:
                                 ll_profile.setVisibility(View.VISIBLE);
                                 Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
-                                tv_doctor_name.setText("Dr. "+jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
+                                tv_doctor_name.setText("Dr. " + jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
                                 tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
                                 tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
                                 tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
@@ -187,7 +195,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                             default:
                         }
 
-                }else{
+                } else {
                     iv_advertisement.setVisibility(View.GONE);
                     ll_profile.setVisibility(View.GONE);
                 }
@@ -225,8 +233,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         });
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
-                    if(!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation())))
-                     tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
+                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation())))
+                        tv_degree.setText(" ( " + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + " ) ");
                     else
                         tv_degree.setText("");
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
@@ -235,11 +243,16 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     title1.setText(title.getText().toString());
                     tv_degree1.setText(tv_degree.getText().toString());
                     tv_timing1.setText(tv_timing.getText().toString());
+                    if (text_list_pos >= textList.size()) {
+                        text_list_pos = 0;
+                    }
+                    tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
+                    ++text_list_pos;
 
                     if (pos % 2 == 0)
-                        ll_list.setBackground(ContextCompat.getDrawable(context,R.mipmap.temp_2) );//"#85b8cb"));
+                        ll_list.setBackground(ContextCompat.getDrawable(context, R.mipmap.temp_2));//"#85b8cb"));
                     else
-                        ll_list.setBackground(ContextCompat.getDrawable(context,R.mipmap.pp_bg) );   //Color.parseColor("#4a87ab"));
+                        ll_list.setBackground(ContextCompat.getDrawable(context, R.mipmap.pp_bg));   //Color.parseColor("#4a87ab"));
                     ll_list.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
@@ -266,9 +279,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         }
                     }
                     if (ll_list.getChildCount() > 0)
-                        rl_no_list.setVisibility(View.GONE);
+                        ll_no_list.setVisibility(View.GONE);
                     else
-                        rl_no_list.setVisibility(View.VISIBLE);
+                        ll_no_list.setVisibility(View.VISIBLE);
                 }
             }
 
