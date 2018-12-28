@@ -395,7 +395,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
                     edt.setText("");
                 } else {
-                    edt.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
+                    edt.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
                 }
 
             }
