@@ -31,6 +31,27 @@
             android:textStyle="normal"
             android:textColor="@android:color/black"/>
 
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+        <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:scaleX="1.0"
+                android:scaleY="1.0"
+                android:transformPivotX="0dp"
+                android:transformPivotY="0dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="5.0"
+                android:clickable="false"/>
+    </RelativeLayout>
+
+
     <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
