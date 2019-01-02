@@ -110,6 +110,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private boolean isFirstTimeUpdate = true;
     private static final String SHOWCASE_ID = "screen helper";
     private boolean isProgressFirstTime = true;
+    private boolean isRateUsFirstTime = true;
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
@@ -342,7 +343,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             presentShowcaseSequence();
             NoQueueBaseActivity.setShowHelper(false);
         }else {
-            new RateTheAppManager().app_launched(getActivity());
+            if(isRateUsFirstTime) {
+                new RateTheAppManager().appLaunched(getActivity());
+                isRateUsFirstTime = false;
+            }
         }
     }
 
