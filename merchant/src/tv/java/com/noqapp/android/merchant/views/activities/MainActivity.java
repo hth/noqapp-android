@@ -2,6 +2,8 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.VigyaapanTypeEnum;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ClientInQueueModel;
@@ -17,12 +19,15 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
 
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.common.api.Status;
+
+import org.apache.commons.lang3.StringUtils;
 
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -82,13 +87,45 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
                     // new push notification is received
-                    updateTv();
+                    Bundle extras = intent.getExtras();
+                    ArrayList<JsonTopic> topics = LaunchActivity.merchantListFragment.getTopics();
+                    if (extras != null) {
+                        String codeQR = intent.getStringExtra(Constants.QRCODE);
+                        String status = intent.getStringExtra(Constants.STATUS);
+                        String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
+                        String lastNumber = intent.getStringExtra(Constants.LASTNO);
+                        String payload = intent.getStringExtra(Constants.Firebase_Type);
+                        try {
+                            for (int i = 0; i < topics.size(); i++) {
+                                JsonTopic jt = topics.get(i);
+                                if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
+                                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                                        /* Update only from merchant msg. */
+                                        jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                                    }
+                                    if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)||QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.N)) {
+                                        jt.setToken(Integer.parseInt(lastNumber));
+                                        jt.setServingNumber(Integer.parseInt(current_serving));
+                                    } else {
+                                        if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                            jt.setToken(Integer.parseInt(lastNumber));
+                                        }
+                                    }
+                                    topics.set(i, jt);
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    updateTv(topics);
                 }
             }
         };
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            QueueDetail queueDetail = getQueueDetails();
+            QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
             ClientInQueueModel clientInQueueModel = new ClientInQueueModel(this);
             clientInQueueModel.toBeServedClients(
                     UserUtils.getDeviceId(),
@@ -224,17 +261,17 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     }
 
     @NonNull
-    private QueueDetail getQueueDetails() {
+    private QueueDetail getQueueDetails(ArrayList<JsonTopic> jsonTopics) {
         QueueDetail queueDetail = new QueueDetail();
         List<String> tvObjects = new ArrayList<>();
         topicHashMap.clear();
-        for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
-            JsonTopic jsonTopic = LaunchActivity.merchantListFragment.getTopics().get(i);
+        for (int i = 0; i < jsonTopics.size(); i++) {
+            JsonTopic jsonTopic = jsonTopics.get(i);
             String start = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getStartHour());
             String end = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getEndHour());
             if (isTimeBetweenTwoTime(start, end)) {
-                tvObjects.add(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR());
-                topicHashMap.put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), LaunchActivity.merchantListFragment.getTopics().get(i));
+                tvObjects.add(jsonTopics.get(i).getCodeQR());
+                topicHashMap.put(jsonTopics.get(i).getCodeQR(), jsonTopics.get(i));
             }
         }
         queueDetail.setCodeQRs(tvObjects);
@@ -324,11 +361,11 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
         isNotification = false;
     }
 
-    public void updateTv() {
+    public void updateTv(ArrayList<JsonTopic> topics) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             isNotification = true;
             progressDialog.show();
-            QueueDetail queueDetail = getQueueDetails();
+            QueueDetail queueDetail = getQueueDetails(topics);
             ClientInQueueModel clientInQueueModel = new ClientInQueueModel(this);
             clientInQueueModel.toBeServedClients(
                     UserUtils.getDeviceId(),
