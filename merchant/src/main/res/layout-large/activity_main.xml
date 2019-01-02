@@ -57,9 +57,20 @@
                 android:id="@+id/drawer_list"
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/tv_version"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/iv_app_logo"
                 android:background="@android:color/white"
                 android:dividerHeight="0dp"/>
+
+
+        <ImageView
+                android:id="@+id/iv_app_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:layout_above="@+id/tv_version"
+                android:background="@drawable/login_logo_small"/>
 
         <TextView
                 android:id="@+id/tv_version"

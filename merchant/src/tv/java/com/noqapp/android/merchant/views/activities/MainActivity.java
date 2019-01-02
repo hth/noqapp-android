@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                         ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
                         ft.commitAllowingStateLoss();
-                        Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
                         if (CastRemoteDisplayLocalService.getInstance() != null) {
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList.get(currentPage), currentPage);
