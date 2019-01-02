@@ -136,7 +136,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
 
     @Override
     public void updateLocationUI() {
-        Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Long: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
+       // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Long: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
 
     }
 }

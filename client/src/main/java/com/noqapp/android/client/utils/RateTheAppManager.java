@@ -10,16 +10,17 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 public class RateTheAppManager {
 
-    private final int DAYS_UNTIL_PROMPT = 3;//Min number of days
+    private final int DAYS_UNTIL_PROMPT = 0;//Min number of days
     private final int LAUNCHES_UNTIL_PROMPT = 5;//Min number of launches
 
-    public void app_launched(Context mContext) {
+    public void appLaunched(Context mContext) {
         SharedPreferences prefs = mContext.getSharedPreferences("ratetheapp", 0);
         if (prefs.getBoolean("dontshowagain", false)) {
             return;
@@ -28,19 +29,19 @@ public class RateTheAppManager {
         SharedPreferences.Editor editor = prefs.edit();
 
         // Increment launch counter
-        long launch_count = prefs.getLong("launch_count", 0) + 1;
-        editor.putLong("launch_count", launch_count);
+        long launchCount = prefs.getLong("launchCount", 0) + 1;
+        editor.putLong("launchCount", launchCount);
 
         // Get date of first launch
-        Long date_firstLaunch = prefs.getLong("date_firstlaunch", 0);
-        if (date_firstLaunch == 0) {
-            date_firstLaunch = System.currentTimeMillis();
-            editor.putLong("date_firstlaunch", date_firstLaunch);
+        Long dateFirstLaunch = prefs.getLong("dateFirstLaunch", 0);
+        if (dateFirstLaunch == 0) {
+            dateFirstLaunch = System.currentTimeMillis();
+            editor.putLong("dateFirstLaunch", dateFirstLaunch);
         }
-
+       // Log.e("Update", "launchCount "+launchCount+" dateFirstLaunch"+dateFirstLaunch);
         // Wait at least n days before opening
-        if (launch_count >= LAUNCHES_UNTIL_PROMPT) {
-            if (System.currentTimeMillis() >= date_firstLaunch +
+        if (launchCount >= LAUNCHES_UNTIL_PROMPT) {
+            if (System.currentTimeMillis() >= dateFirstLaunch +
                     (DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
                 showRateDialog(mContext, editor);
             }
@@ -57,6 +58,7 @@ public class RateTheAppManager {
         TextView tv_rate_app = dialogView.findViewById(R.id.tv_rate_app);
         tv_rate_app.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                editor.putLong("launchCount", 0).apply();
                 mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getPackageName())));
                 dialog.dismiss();
             }
@@ -64,6 +66,7 @@ public class RateTheAppManager {
         TextView tv_remind_later = dialogView.findViewById(R.id.tv_remind_later);
         tv_remind_later.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                editor.putLong("launchCount", 0).apply();
                 dialog.dismiss();
             }
         });

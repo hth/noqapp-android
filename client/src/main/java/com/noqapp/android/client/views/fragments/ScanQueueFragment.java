@@ -110,6 +110,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private boolean isFirstTimeUpdate = true;
     private static final String SHOWCASE_ID = "screen helper";
     private boolean isProgressFirstTime = true;
+    private boolean isRateUsFirstTime = true;
     private static final int MSG_CURRENT_QUEUE = 0;
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
@@ -127,7 +128,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 log = longitude;
                 city = cityName;
                 isFirstTimeUpdate = false;
+                LaunchActivity.getLaunchActivity().tv_location.setText(city);
             } else {
+               // LaunchActivity.getLaunchActivity().tv_location.setText(city);
                 cv_update_location.setVisibility(View.VISIBLE);
                 tv_update.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -136,6 +139,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                         lat = latitude;
                         log = longitude;
                         city = cityName;
+                        LaunchActivity.getLaunchActivity().tv_location.setText(cityName);
                         cv_update_location.setVisibility(View.GONE);
                     }
                 });
@@ -149,6 +153,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         } else {
             cv_update_location.setVisibility(View.GONE);
         }
+        Log.e("Loc Data :", "latitude :" + lat+" longitude: " + log+" city: " + city);
     }
 
     @Override
@@ -323,12 +328,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
-//        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-//            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.PH &&
-//                    bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
-//                nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
-//            }
-//        }
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, log)));
         StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
@@ -342,7 +341,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             presentShowcaseSequence();
             NoQueueBaseActivity.setShowHelper(false);
         }else {
-            new RateTheAppManager().app_launched(getActivity());
+            if(isRateUsFirstTime) {
+                new RateTheAppManager().appLaunched(getActivity());
+                isRateUsFirstTime = false;
+            }
         }
     }
 

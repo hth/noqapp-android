@@ -13,10 +13,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,6 +48,8 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (null != getActivity())
+            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (getArguments() != null) {
             topicAndQueueTV = (TopicAndQueueTV) getArguments().getSerializable(ARG_LIST_DATA);
         }
@@ -120,6 +126,7 @@ public class DetailFragment extends Fragment {
                 );
                 for (int i = 0; i < data.size(); i++) {
                     View customView = inflater.inflate(R.layout.lay_text, null, false);
+                    CardView cardview = customView.findViewById(R.id.cardview);
                     TextView textView = customView.findViewById(R.id.tv_name);
                     TextView tv_seq = customView.findViewById(R.id.tv_seq);
                     TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
@@ -127,6 +134,15 @@ public class DetailFragment extends Fragment {
                     textView.setText(data.get(i).getCustomerName());
                     String phoneNo = data.get(i).getCustomerPhone();
                     tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+
+                    if (topicAndQueueTV.getJsonTopic().getServingNumber() == data.get(i).getToken()) {
+                        tv_mobile.setText("It's your turn");
+                        Animation startAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.show_anim);
+                        cardview.startAnimation(startAnimation);
+                    }else{
+                        Animation startAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.remove_anim);
+                        cardview.startAnimation(startAnimation);
+                    }
 
                     ll_list.addView(customView);
                 }

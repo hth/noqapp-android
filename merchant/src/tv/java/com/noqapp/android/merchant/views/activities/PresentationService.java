@@ -17,8 +17,10 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.StringUtils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.Display;
@@ -191,7 +193,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                                 String imageName = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
                                 if (StringUtils.isNotBlank(imageName)) {
                                     if (imageName.contains(".")) {
-                                        String[] file = imageName.split(".");
+                                        String[] file = imageName.split("\\.");
                                         imageName = file[0] + "_o." + file[1];
                                     }
                                 } else {
@@ -292,13 +294,24 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
-                            TextView textView = customView.findViewById(R.id.tv_name);
+                            CardView cardview = customView.findViewById(R.id.cardview);
+                            TextView tv_name = customView.findViewById(R.id.tv_name);
                             TextView tv_seq = customView.findViewById(R.id.tv_seq);
                             TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
                             tv_seq.setText(String.valueOf((data.get(i).getToken())));
-                            textView.setText(data.get(i).getCustomerName());
+                            tv_name.setText(data.get(i).getCustomerName());
                             String phoneNo = data.get(i).getCustomerPhone();
                             tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+                            if (topicAndQueueTV.getJsonTopic().getServingNumber() == data.get(i).getToken()) {
+                                tv_mobile.setText("It's your turn");
+                                cardview.setCardBackgroundColor(Color.parseColor("#8c1515"));
+                                tv_name.setTextColor(Color.WHITE);
+                                tv_mobile.setTextColor(Color.WHITE);
+                            } else {
+                                cardview.setCardBackgroundColor(Color.WHITE);
+                                tv_name.setTextColor(Color.BLACK);
+                                tv_mobile.setTextColor(Color.BLACK);
+                            }
                             ll_list.addView(customView);
                         }
                     }
