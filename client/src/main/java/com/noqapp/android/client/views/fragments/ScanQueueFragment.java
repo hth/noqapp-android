@@ -128,7 +128,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 log = longitude;
                 city = cityName;
                 isFirstTimeUpdate = false;
+                LaunchActivity.getLaunchActivity().tv_location.setText(city);
             } else {
+               // LaunchActivity.getLaunchActivity().tv_location.setText(city);
                 cv_update_location.setVisibility(View.VISIBLE);
                 tv_update.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -137,6 +139,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                         lat = latitude;
                         log = longitude;
                         city = cityName;
+                        LaunchActivity.getLaunchActivity().tv_location.setText(cityName);
                         cv_update_location.setVisibility(View.GONE);
                     }
                 });
@@ -150,6 +153,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         } else {
             cv_update_location.setVisibility(View.GONE);
         }
+        Log.e("Loc Data :", "latitude :" + lat+" longitude: " + log+" city: " + city);
     }
 
     @Override
