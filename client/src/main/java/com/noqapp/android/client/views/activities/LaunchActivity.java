@@ -303,7 +303,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     public void updateLocationUI() {
         if (null != scanFragment) {
             scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
-            tv_location.setText(cityName);
+            //tv_location.setText(cityName);
         }
     }
 
@@ -313,6 +313,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         latitute = lat;
         longitute = log;
         cityName = city;
+        tv_location.setText(cityName);
         updateLocationUI();
     }
 
