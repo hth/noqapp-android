@@ -9,11 +9,11 @@ import java.util.List;
  * 8/17/18 5:31 PM
  */
 public enum DailyFrequencyEnum {
-    OD("OD", "1 time a day", 1),
-    TD("TD", "2 times a day", 2),
-    HD("HD", "3 times a day", 3),
-    FD("FD", "4 times a day", 4),
-    VD("VD", "5 times a day", 5);
+    OD("OD", "Once a day", 1),
+    TD("TD", "Twice a day", 2),
+    HD("HD", "Thrice a day", 3),
+    FD("FD", "Four times a day", 4),
+    VD("VD", "Five times a day", 5);
 
     private final String description;
     private final String name;
@@ -49,13 +49,13 @@ public enum DailyFrequencyEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for(DailyFrequencyEnum dailyFrequencyEnum : DailyFrequencyEnum.values()) {
+        for (DailyFrequencyEnum dailyFrequencyEnum : DailyFrequencyEnum.values()) {
             a.add(dailyFrequencyEnum.description);
         }
         return a;
     }
 
-    public static String getValueFromTimes(String input){
+    public static String getValueFromTimes(String input) {
         try {
             switch (input) {
                 case "1":
@@ -71,28 +71,28 @@ public enum DailyFrequencyEnum {
                 default:
                     return input;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return input;
         }
     }
 
-    public static String getValue(String input){
+    public static String getValue(String input) {
         try {
             switch (input) {
-                case "1 time a day":
+                case "Once a day":
                     return "OD";
-                case "2 times a day":
+                case "Twice a day":
                     return "TD";
-                case "3 times a day":
+                case "Thrice a day":
                     return "HD";
-                case "4 times a day":
+                case "Four times a day":
                     return "FD";
-                case "5 times a day":
+                case "Five times a day":
                     return "VD";
                 default:
                     return input;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return input;
         }
     }
