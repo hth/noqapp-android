@@ -98,7 +98,7 @@ public class MedicalRecordAdapterNew extends BaseAdapter {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
                         RadioButton radioButton = group.findViewById(checkedId);
-                        medicalRecordList.get(position).setMedicationWithFood(radioButton.getText().toString());
+                        medicalRecordList.get(position).setMedicationIntake(radioButton.getText().toString());
                     }
                 }
         );
