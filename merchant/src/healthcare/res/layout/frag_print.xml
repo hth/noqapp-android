@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -349,54 +348,30 @@
                     android:textSize="18sp"
                     android:padding="10dp"/>
 
-            <LinearLayout
+
+            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/sc_follow_up"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:columnCount="6"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
 
-                <EditText
-                        android:id="@+id/actv_followup"
-                        style="@style/style_mdh_details"
-                        android:layout_width="200dp"
-                        android:layout_marginRight="50dp"
-                        android:digits="0123456789"
-                        android:inputType="numberSigned"
-                        android:imeActionLabel="Done"
-                        android:singleLine="true"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:text=""/>
-
-
-                <info.hoang8f.android.segmented.SegmentedGroup
-
-                        android:id="@+id/rg_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/segment_margin"
-                        android:layout_marginRight="@dimen/segment_margin"
-                        android:orientation="horizontal"
-                        segmentedgroup:sc_border_width="@dimen/segment_border_width"
-                        segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
-
-                    <RadioButton
-                            android:id="@+id/rb_days"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/rb_height"
-                            android:text="@string/days"
-                            android:checked="true"
-                            style="@style/RadioButton"/>
-
-                    <RadioButton
-                            android:id="@+id/rb_months"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/rb_height"
-                            android:text="@string/month"
-                            style="@style/RadioButton"/>
-                </info.hoang8f.android.segmented.SegmentedGroup>
-            </LinearLayout>
 
             <Button
                     android:id="@+id/btn_submit"

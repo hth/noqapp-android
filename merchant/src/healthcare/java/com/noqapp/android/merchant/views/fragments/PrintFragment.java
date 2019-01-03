@@ -18,12 +18,13 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapterNew;
+import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,21 +32,25 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import info.hoang8f.android.segmented.SegmentedGroup;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import java.util.ArrayList;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
-    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_pathology,actv_followup,tv_clinical_findings,tv_examination,tv_provisional_diagnosis;
+    private TextView tv_patient_name,tv_address,tv_info,tv_symptoms,tv_diagnosis,tv_instruction,tv_pathology,tv_clinical_findings,tv_examination,tv_provisional_diagnosis;
     private TextView tv_radio_xray,tv_radio_sono,tv_radio_scan,tv_radio_mri;
     private MedicalHistoryModel medicalHistoryModel;
+    private SegmentedControl sc_follow_up;
     private Button btn_submit;
     private ListView lv_medicine;
-    private MedicalRecordAdapterNew adapter;
-    private SegmentedGroup rg_duration;
+    private MedicalRecordAdapter adapter;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
     private ProgressDialog progressDialog;
+    private ArrayList<String> follow_up_data = new ArrayList<>();
+    private String followup;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,8 +72,32 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_examination = v.findViewById(R.id.tv_examination);
         tv_provisional_diagnosis = v.findViewById(R.id.tv_provisional_diagnosis);
         lv_medicine = v.findViewById(R.id.lv_medicine);
-        actv_followup = v.findViewById(R.id.actv_followup);
-        rg_duration = v.findViewById(R.id.rg_duration);
+        sc_follow_up = v.findViewById(R.id.sc_follow_up);
+
+        follow_up_data.add("1");
+        follow_up_data.add("2");
+        follow_up_data.add("3");
+        follow_up_data.add("4");
+        follow_up_data.add("5");
+        follow_up_data.add("6");
+        follow_up_data.add("7");
+        follow_up_data.add("10");
+        follow_up_data.add("15");
+        follow_up_data.add("30");
+        follow_up_data.add("45");
+        follow_up_data.add("60");
+        follow_up_data.add("90");
+        follow_up_data.add("180");
+        sc_follow_up.addSegments(follow_up_data);
+
+        sc_follow_up.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
+                }
+            }
+        });
         btn_submit = v.findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,14 +165,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
                 jsonMedicalRecord.setPlanToPatient(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getInstructions());
-                if (!actv_followup.getText().toString().equals("")) {
-                    String value = actv_followup.getText().toString();
-                    int selectedId = rg_duration.getCheckedRadioButtonId();
-                    if (selectedId == R.id.rb_months) {
-                        jsonMedicalRecord.setFollowUpInDays(String.valueOf(Integer.parseInt(value) * 30));
-                    } else {
-                        jsonMedicalRecord.setFollowUpInDays(value);
-                    }
+                if (!TextUtils.isEmpty(followup)) {
+                    jsonMedicalRecord.setFollowUpInDays(followup);
                 }
                 medicalHistoryModel.add(
                         BaseLaunchActivity.getDeviceID(),
@@ -170,7 +193,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_radio_sono.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getSonoList()));
         tv_radio_xray.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getXrayList()));
         tv_pathology.setText(covertStringList2String(MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getPathologyList()));
-        adapter = new MedicalRecordAdapterNew(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getJsonMedicineList());
+        adapter = new MedicalRecordAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().getJsonMedicineList());
         lv_medicine.setAdapter(adapter);
     }
 

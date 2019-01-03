@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -24,14 +23,28 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
-    private int drawableSelect = -1;
-    private int drawableUnSelect = -1;
+    private int drawableSelect;
+    private int drawableUnSelect;
+    private StaggeredClick staggeredClick;
+
+    public interface StaggeredClick {
+        void staggeredClick(boolean isOpen, String medicineName);
+    }
 
     public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList) {
         this.context = context;
         this.dataObjArrayList = dataObjArrayList;
         drawableSelect = R.drawable.bg_select;
         drawableUnSelect = R.drawable.bg_unselect;
+        Collections.sort(dataObjArrayList);
+    }
+
+    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredClick staggeredClick) {
+        this.context = context;
+        this.dataObjArrayList = dataObjArrayList;
+        drawableSelect = R.drawable.bg_select;
+        drawableUnSelect = R.drawable.bg_unselect;
+        this.staggeredClick = staggeredClick;
         Collections.sort(dataObjArrayList);
     }
 
@@ -65,18 +78,15 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
+                   // Toast.makeText(context, "You click the button ", Toast.LENGTH_LONG).show();
+                    if(null != staggeredClick)
+                        staggeredClick.staggeredClick(true,dataObjArrayList.get(position).getShortName());
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
+                    if(null != staggeredClick)
+                        staggeredClick.staggeredClick(false,dataObjArrayList.get(position).getShortName());
                 }
 
-            }
-        });
-
-        holder.name.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(context,"You press the button enough long",Toast.LENGTH_LONG).show();
-                return true;
             }
         });
     }
@@ -116,19 +126,6 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         for (int i = 0; i < dataObjArrayList.size(); i++) {
             if (dataObjArrayList.get(i).isSelect()) {
                 temp.add(dataObjArrayList.get(i).getShortName());
-            }
-        }
-        return temp;
-    }
-
-    public ArrayList<JsonMedicalMedicine> getSelectedDataListObject() {
-        ArrayList<JsonMedicalMedicine> temp = new ArrayList<>();
-        for (int i = 0; i < dataObjArrayList.size(); i++) {
-            if (dataObjArrayList.get(i).isSelect()) {
-                JsonMedicalMedicine jsonMedicalMedicine = new JsonMedicalMedicine();
-                jsonMedicalMedicine.setName(dataObjArrayList.get(i).getShortName());
-                jsonMedicalMedicine.setPharmacyCategory(dataObjArrayList.get(i).getCategory());
-                temp.add(jsonMedicalMedicine);
             }
         }
         return temp;

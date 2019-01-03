@@ -5,6 +5,9 @@ public class DataObj implements Comparable<DataObj> {
     private String fullName;
     private String category;
     private boolean isSelect = false;
+    private String medicineTiming;
+    private String medicineDuration;
+    private String medicineFrequency;
 
     public DataObj() {
     }
@@ -73,7 +76,37 @@ public class DataObj implements Comparable<DataObj> {
                 ", fullName='" + fullName + '\'' +
                 ", category='" + category + '\'' +
                 ", isSelect=" + isSelect +
+                ", medicineTiming='" + medicineTiming + '\'' +
+                ", medicineDuration='" + medicineDuration + '\'' +
+                ", medicineFrequency='" + medicineFrequency + '\'' +
                 '}';
+    }
+
+    public String getMedicineTiming() {
+        return medicineTiming;
+    }
+
+    public DataObj setMedicineTiming(String medicineTiming) {
+        this.medicineTiming = medicineTiming;
+        return this;
+    }
+
+    public String getMedicineDuration() {
+        return medicineDuration;
+    }
+
+    public DataObj setMedicineDuration(String medicineDuration) {
+        this.medicineDuration = medicineDuration;
+        return this;
+    }
+
+    public String getMedicineFrequency() {
+        return medicineFrequency;
+    }
+
+    public DataObj setMedicineFrequency(String medicineFrequency) {
+        this.medicineFrequency = medicineFrequency;
+        return this;
     }
 
     public int compareTo(DataObj other) {
