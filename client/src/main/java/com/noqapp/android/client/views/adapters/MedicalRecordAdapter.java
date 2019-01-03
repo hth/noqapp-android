@@ -64,7 +64,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
         recordHolder.tv_medication.setText(PharmacyCategoryEnum.getValueOfField(medicalRecord.getPharmacyCategory()));
         recordHolder.tv_dose.setText(medicalRecord.getStrength());
         recordHolder.tv_frequency.setText(DailyFrequencyEnum.getValueOfField(medicalRecord.getDailyFrequency()));
-        recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationWithFood());
+        recordHolder.tv_dose_timing.setText(medicalRecord.getMedicationIntake());
         recordHolder.tv_course.setText(medicalRecord.getCourse());
         recordHolder.tv_medicine_name.setText(medicalRecord.getName());
         return view;
