@@ -38,8 +38,8 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
     @JsonProperty("co")
     private String course;
 
-    @JsonProperty("mf")
-    private String medicationWithFood;
+    @JsonProperty("mi")
+    private String medicationIntake;
 
     @JsonProperty("pc")
     private String pharmacyCategory;
@@ -82,12 +82,12 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
         return this;
     }
 
-    public String getMedicationWithFood() {
-        return medicationWithFood;
+    public String getMedicationIntake() {
+        return medicationIntake;
     }
 
-    public JsonMedicalMedicine setMedicationWithFood(String medicationWithFood) {
-        this.medicationWithFood = medicationWithFood;
+    public JsonMedicalMedicine setMedicationIntake(String medicationIntake) {
+        this.medicationIntake = medicationIntake;
         return this;
     }
 
@@ -124,7 +124,7 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, strength, dailyFrequency, course, medicationWithFood, pharmacyCategory, isFavourite);
+        return Objects.hash(name, strength, dailyFrequency, course, medicationIntake, pharmacyCategory, isFavourite);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
                 ", strength='" + strength + '\'' +
                 ", dailyFrequency='" + dailyFrequency + '\'' +
                 ", course='" + course + '\'' +
-                ", medicationWithFood='" + medicationWithFood + '\'' +
+                ", medicationIntake='" + medicationIntake + '\'' +
                 ", pharmacyCategory='" + pharmacyCategory + '\'' +
                 ", isFavourite=" + isFavourite +
                 '}';

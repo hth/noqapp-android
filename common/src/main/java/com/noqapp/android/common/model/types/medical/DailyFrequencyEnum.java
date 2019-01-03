@@ -15,8 +15,6 @@ public enum DailyFrequencyEnum {
     FD("FD", "Four times a day", 4),
     VD("VD", "Five times a day", 5);
 
-
-
     private final String description;
     private final String name;
     private int times;
@@ -51,13 +49,13 @@ public enum DailyFrequencyEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for(DailyFrequencyEnum dailyFrequencyEnum : DailyFrequencyEnum.values()) {
+        for (DailyFrequencyEnum dailyFrequencyEnum : DailyFrequencyEnum.values()) {
             a.add(dailyFrequencyEnum.description);
         }
         return a;
     }
 
-    public static String getValueFromTimes(String input){
+    public static String getValueFromTimes(String input) {
         try {
             switch (input) {
                 case "1":
@@ -73,12 +71,12 @@ public enum DailyFrequencyEnum {
                 default:
                     return input;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return input;
         }
     }
 
-    public static String getValue(String input){
+    public static String getValue(String input) {
         try {
             switch (input) {
                 case "Once a day":
@@ -94,7 +92,7 @@ public enum DailyFrequencyEnum {
                 default:
                     return input;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return input;
         }
     }
