@@ -2,6 +2,8 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.google.gson.Gson;
 
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
@@ -21,12 +23,14 @@ import com.noqapp.android.merchant.views.pojos.FormDataObj;
 import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
 
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.widget.Toast;
 
 
@@ -48,7 +52,8 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
     private TestCaseObjects testCaseObjects;
-
+    private LoadTabs loadTabs;
+    private JsonMedicalRecord jsonMedicalRecord;
     public MedicalCasePojo getMedicalCasePojo() {
         return medicalCasePojo;
     }
@@ -83,55 +88,30 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         }
         if (null == testCaseObjects)
             testCaseObjects = new TestCaseObjects();
-        initLists();
         medicalCasePojo = new MedicalCasePojo();
         viewPager = findViewById(R.id.pager);
-
         rcv_header = findViewById(R.id.rcv_header);
         data.add("Primary checkup");
         data.add("Symptoms");
-        data.add("Examination & Investigation");
-        data.add("Tests");
+        data.add("Examination");
+        data.add("Investigation");
         data.add("Treatment");
         data.add("Instructions");
         data.add("Preview");
-        primaryCheckupFragment = new PrimaryCheckupFragment();
-        Bundle bppf = new Bundle();
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
+        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("medicalPhysical");
         codeQR = getIntent().getStringExtra("qCodeQR");
-        bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
-        bppf.putString("qCodeQR", codeQR);
-        bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
-        primaryCheckupFragment.setArguments(bppf);
-        symptomsFragment = new SymptomsFragment();
-        diagnosisFragment = new DiagnosisFragment();
-        labTestsFragment = new LabTestsFragment();
-        treatmentFragment = new TreatmentFragment();
-        instructionFragment = new InstructionFragment();
-        printFragment = new PrintFragment();
-        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
-        adapter.addFragment(symptomsFragment, "FRAG" + 1);
-        adapter.addFragment(diagnosisFragment, "FRAG" + 2);
-        adapter.addFragment(labTestsFragment, "FRAG" + 3);
-        adapter.addFragment(treatmentFragment, "FRAG" + 4);
-        adapter.addFragment(instructionFragment, "FRAG" + 5);
-        adapter.addFragment(printFragment, "FRAG" + 6);
-
+        JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
+        medicalCasePojo.setName(jsonProfile.getName());
+        medicalCasePojo.setAddress(jsonProfile.getAddress());
+        medicalCasePojo.setDetails("<b> Blood Group: </b> B+ ,<b> Weight: </b> 75 Kg");
+        medicalCasePojo.setAge(new AppUtils().calculateAge(jsonProfile.getBirthday()));
+        medicalCasePojo.setGender(jsonProfile.getGender().name());
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rcv_header.setLayoutManager(horizontalLayoutManagaer);
         rcv_header.setItemAnimator(new DefaultItemAnimator());
-
-
-        menuAdapter = new MenuHeaderAdapter(data, this, this);
-        rcv_header.setAdapter(menuAdapter);
-        menuAdapter.notifyDataSetChanged();
-        viewPager.setOffscreenPageLimit(data.size());
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
-        adapter.notifyDataSetChanged();
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -151,12 +131,10 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
             }
         });
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
+        loadTabs = new LoadTabs();
+        loadTabs.execute();
     }
 
     @Override
@@ -175,7 +153,13 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != loadTabs) {
+            loadTabs.cancel(true);
+        }
+    }
     @Override
     public void menuHeaderClick(int pos) {
         viewPager.setCurrentItem(pos);
@@ -450,6 +434,50 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getInstructionList().add("30 min Brisk walking a day");
         formDataObj.getInstructionList().add("Drink milk every day");
     }
+    private class LoadTabs extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            return null;
+        }
 
+        protected void onPostExecute(String result) {
+            try {
+                setupViewPager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void setupViewPager() {
+        initLists();
+        primaryCheckupFragment = new PrimaryCheckupFragment();
+        Bundle bppf = new Bundle();
+        bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
+        bppf.putString("qCodeQR", codeQR);
+        bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
+        bppf.putSerializable("medicalPhysical",jsonMedicalRecord);
+        primaryCheckupFragment.setArguments(bppf);
+        symptomsFragment = new SymptomsFragment();
+        diagnosisFragment = new DiagnosisFragment();
+        labTestsFragment = new LabTestsFragment();
+        treatmentFragment = new TreatmentFragment();
+        instructionFragment = new InstructionFragment();
+        printFragment = new PrintFragment();
+        TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
+        adapter.addFragment(symptomsFragment, "FRAG" + 1);
+        adapter.addFragment(diagnosisFragment, "FRAG" + 2);
+        adapter.addFragment(labTestsFragment, "FRAG" + 3);
+        adapter.addFragment(treatmentFragment, "FRAG" + 4);
+        adapter.addFragment(instructionFragment, "FRAG" + 5);
+        adapter.addFragment(printFragment, "FRAG" + 6);
+        menuAdapter = new MenuHeaderAdapter(data, this, this);
+        rcv_header.setAdapter(menuAdapter);
+        menuAdapter.notifyDataSetChanged();
+        viewPager.setOffscreenPageLimit(data.size());
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
+        adapter.notifyDataSetChanged();
+    }
 
 }

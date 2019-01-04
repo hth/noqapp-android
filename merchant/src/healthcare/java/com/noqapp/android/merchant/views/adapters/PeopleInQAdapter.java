@@ -17,7 +17,7 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.SimpleFormActivity;
@@ -212,7 +212,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
                     }
                     if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
-                        Intent intent = new Intent(context, MedicalCaseActivity.class);
+                        Intent intent = new Intent(context, PatientProfileActivity.class);
                         intent.putExtra("qCodeQR", qCodeQR);
                         intent.putExtra("data", jsonQueuedPerson);
                         context.startActivity(intent);

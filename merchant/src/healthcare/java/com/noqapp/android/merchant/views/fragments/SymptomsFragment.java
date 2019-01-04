@@ -1,11 +1,9 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
-import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
@@ -21,31 +19,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SymptomsFragment extends Fragment {
 
     private RecyclerView recyclerView, rcv_obstretics;
     private TextView tv_add_new;
     private StaggeredGridAdapter symptomsAdapter, obstreticsAdapter;
-    private ListView listview;
-
+    private AutoCompleteTextView actv_past_history, actv_known_allergy, actv_family_history;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_symptoms, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
         rcv_obstretics = v.findViewById(R.id.rcv_obstretics);
+        actv_past_history = v.findViewById(R.id.actv_past_history);
+        actv_family_history = v.findViewById(R.id.actv_family_history);
+        actv_known_allergy = v.findViewById(R.id.actv_known_allergy);
         tv_add_new = v.findViewById(R.id.tv_add_new);
-        listview = v.findViewById(R.id.listview);
         tv_add_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +114,9 @@ public class SymptomsFragment extends Fragment {
     }
 
     public void saveData() {
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setKnownAllergies(actv_known_allergy.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPastHistory(actv_past_history.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFamilyHistory(actv_family_history.getText().toString());
         String temp = obstreticsAdapter.getSelectedData();
         if (TextUtils.isEmpty(temp))
             MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomsAdapter.getSelectedData());
@@ -123,9 +124,5 @@ public class SymptomsFragment extends Fragment {
             MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomsAdapter.getSelectedData() + "," + obstreticsAdapter.getSelectedData());
     }
 
-    public void updateList(List<JsonMedicalRecord> jsonMedicalRecords) {
-        MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(getActivity(), jsonMedicalRecords);
-        listview.setAdapter(adapter);
-    }
 
 }
