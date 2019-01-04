@@ -124,7 +124,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                     break;
                 case PL:
                     label = physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getPluse();
+                            + jsonMedicalPhysicalExaminations.getPulse();
                     break;
                 case OX:
                     label = physicalExam.getDescription() + ": "

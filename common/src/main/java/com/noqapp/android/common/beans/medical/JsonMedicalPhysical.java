@@ -30,7 +30,7 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
     private String temperature;
 
     @JsonProperty("pl")
-    private String pluse;
+    private String pulse;
 
     @JsonProperty("bp")
     private String[] bloodPressure;
@@ -59,12 +59,12 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
         return this;
     }
 
-    public String getPluse() {
-        return pluse;
+    public String getPulse() {
+        return pulse;
     }
 
-    public JsonMedicalPhysical setPluse(String pluse) {
-        this.pluse = pluse;
+    public JsonMedicalPhysical setPulse(String pulse) {
+        this.pulse = pulse;
         return this;
     }
 
@@ -126,7 +126,7 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
     public String toString() {
         return "JsonMedicalPhysical{" +
                 "temperature='" + temperature + '\'' +
-                ", pluse='" + pluse + '\'' +
+                ", pulse='" + pulse + '\'' +
                 ", bloodPressure=" + Arrays.toString(bloodPressure) +
                 ", oxygen='" + oxygen + '\'' +
                 ", weight='" + weight + '\'' +
