@@ -277,8 +277,8 @@ public class PrimaryCheckupFragment extends Fragment implements PatientProfilePr
                 } else {
                     sc_enable_oxygen.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getPluse()) {
-                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
                 } else {
                     sc_enable_pulse.setChecked(false);

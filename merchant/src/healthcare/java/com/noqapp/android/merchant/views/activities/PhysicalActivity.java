@@ -251,9 +251,9 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical();
 
                 if (sc_enable_pulse.isChecked()) {
-                   jsonMedicalPhysical.setPluse(mv_pulse.getValueAsString());
+                   jsonMedicalPhysical.setPulse(mv_pulse.getValueAsString());
                 } else {
-                   jsonMedicalPhysical.setPluse(null);
+                   jsonMedicalPhysical.setPulse(null);
                 }
                 if(sc_enable_bp.isChecked()) {
                    jsonMedicalPhysical.setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
@@ -369,8 +369,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 }else{
                     sc_enable_oxygen.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getPluse()) {
-                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
                 }else{
                     sc_enable_pulse.setChecked(false);
