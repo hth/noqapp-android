@@ -38,8 +38,14 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
     @JsonProperty("ox")
     private String oxygen;
 
+    @JsonProperty("rp")
+    private String respiratory;
+
     @JsonProperty("wt")
     private String weight;
+
+    @JsonProperty("ht")
+    private String height;
 
     @JsonProperty("dbi")
     private String diagnosedById;
@@ -80,12 +86,30 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
         return this;
     }
 
+    public String getHeight() {
+        return height;
+    }
+
+    public JsonMedicalPhysical setHeight(String height) {
+        this.height = height;
+        return this;
+    }
+
     public String getOxygen() {
         return oxygen;
     }
 
     public JsonMedicalPhysical setOxygen(String oxygen) {
         this.oxygen = oxygen;
+        return this;
+    }
+
+    public String getRespiratory() {
+        return respiratory;
+    }
+
+    public JsonMedicalPhysical setRespiratory(String respiratory) {
+        this.respiratory = respiratory;
         return this;
     }
 
