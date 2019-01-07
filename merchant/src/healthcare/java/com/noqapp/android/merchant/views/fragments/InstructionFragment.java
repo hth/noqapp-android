@@ -104,7 +104,7 @@ public class InstructionFragment extends Fragment {
                 } else {
                     if(isMedicine){
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                        temp.add(new DataObj(edt_item.getText().toString(),false));
+                        temp.add(new DataObj(edt_item.getText().toString(),false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                         recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView

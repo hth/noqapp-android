@@ -212,7 +212,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     edt_item.setError("Empty field not allowed");
                 } else {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         recyclerView_one.setLayoutManager(staggeredGridLayoutManager);
@@ -279,7 +279,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     String category = category_data.get(selectionPos);
                     String medicineName = category.substring(0,3)+" "+edt_item.getText().toString();
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                    temp.add(new DataObj(medicineName, category,false));
+                    temp.add(new DataObj(medicineName, category,false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                     recyclerView.setLayoutManager(staggeredGridLayoutManager);
