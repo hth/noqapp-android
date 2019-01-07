@@ -337,13 +337,15 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         pb_near.setVisibility(View.GONE);
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
-        if (NoQueueBaseActivity.getShowHelper() && isAdded()) {
-            presentShowcaseSequence();
-            NoQueueBaseActivity.setShowHelper(false);
-        }else {
-            if(isRateUsFirstTime) {
-                new RateTheAppManager().appLaunched(getActivity());
-                isRateUsFirstTime = false;
+        if(isAdded()) {
+            if (NoQueueBaseActivity.getShowHelper()) {
+                presentShowcaseSequence();
+                NoQueueBaseActivity.setShowHelper(false);
+            } else {
+                if (isRateUsFirstTime && null != getActivity()) {
+                    new RateTheAppManager().appLaunched(getActivity());
+                    isRateUsFirstTime = false;
+                }
             }
         }
     }
