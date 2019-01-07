@@ -16,21 +16,21 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.CustomExpandListAdapter;
-import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
+import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicineFragment extends Fragment {
+public class MedicineFragment extends Fragment implements SelectItemListAdapter.RemoveListItem{
     private CustomExpandListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
     private ListView lv_tests;
     private ArrayList<DataObj> selectedList = new ArrayList<>();
-    private MultiSelectListAdapter multiSelectListAdapter;
+    private SelectItemListAdapter selectItemListAdapter;
 
     public ArrayList<DataObj> getSelectedList() {
         return selectedList;
@@ -52,8 +52,8 @@ public class MedicineFragment extends Fragment {
          selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
         if (null == selectedList)
             selectedList = new ArrayList<>();
-        multiSelectListAdapter = new MultiSelectListAdapter(getActivity(), selectedList);
-        lv_tests.setAdapter(multiSelectListAdapter);
+        selectItemListAdapter = new SelectItemListAdapter(getActivity(), selectedList,this);
+        lv_tests.setAdapter(selectItemListAdapter);
         listAdapter = new CustomExpandListAdapter(getActivity(), listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -89,7 +89,7 @@ public class MedicineFragment extends Fragment {
                 dataObj.setCategory(getCategory(listDataHeader.get(groupPosition)));
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
-                    multiSelectListAdapter.notifyDataSetChanged();
+                    selectItemListAdapter.notifyDataSetChanged();
                 }
                 return false;
             }
@@ -150,5 +150,13 @@ public class MedicineFragment extends Fragment {
             default:
                 return PharmacyCategoryEnum.TA.getDescription();
         }
+    }
+
+    @Override
+    public void removeItem(int pos) {
+        selectedList.remove(pos);
+        selectItemListAdapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), "Record deleted from List", Toast.LENGTH_LONG).show();
+
     }
 }

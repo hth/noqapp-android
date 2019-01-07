@@ -123,7 +123,7 @@ public class LabTestsFragment extends Fragment {
                     edt_item.setError("Empty field not allowed");
                 } else {
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList();
-                    temp.add(new DataObj(edt_item.getText().toString(), false));
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setPathologyList(temp);
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                     rcv_pathology.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
@@ -193,7 +193,7 @@ public class LabTestsFragment extends Fragment {
                 }else {
                     if(selectionPos == 0) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSonoList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_sono.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
@@ -203,7 +203,7 @@ public class LabTestsFragment extends Fragment {
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
                     }else if(selectionPos == 1){
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMriList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_mri.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
@@ -213,7 +213,7 @@ public class LabTestsFragment extends Fragment {
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
                     }else if(selectionPos == 2){
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setScanList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_scan.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
@@ -223,7 +223,7 @@ public class LabTestsFragment extends Fragment {
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
                     }else{
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false));
+                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setXrayList(temp);
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_xray.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView

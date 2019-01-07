@@ -163,7 +163,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 } else {
 
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
-                    temp.add(new DataObj(edt_item.getText().toString(), false));
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
                     StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
                     rcv_gynac.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView

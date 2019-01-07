@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -73,6 +75,18 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
 
             }
         });
+        if(dataObjArrayList.get(position).isNewlyAdded()){
+            Animation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(150); //You can manage the blinking time with this parameter
+            anim.setStartOffset(20);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setRepeatCount(20);
+            holder.name.startAnimation(anim);
+
+
+        }else{
+            holder.name.clearAnimation();
+        }
     }
 
 
