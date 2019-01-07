@@ -24,6 +24,7 @@ import com.noqapp.android.merchant.interfaces.FilePresenter;
 import com.noqapp.android.merchant.model.MasterLabModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
@@ -189,7 +190,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         mapList.put(HealthCareServiceEnum.SONO.getName(),preferenceSonoFragment.getSelectedList());
         mapList.put(HealthCareServiceEnum.XRAY.getName(),preferenceXrayFragment.getSelectedList());
         mapList.put(HealthCareServiceEnum.PATH.getName(),preferencePathFragment.getSelectedList());
-        mapList.put("MEDICINE",medicineFragment.getSelectedList());
+        mapList.put(Constants.MEDICINE,medicineFragment.getSelectedList());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
     }

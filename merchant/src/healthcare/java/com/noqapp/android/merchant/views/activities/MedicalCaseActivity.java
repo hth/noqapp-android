@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -30,11 +32,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener {
 
@@ -51,6 +55,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private DiagnosisFragment diagnosisFragment;
     private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
+
+    public TestCaseObjects getTestCaseObjects() {
+        return testCaseObjects;
+    }
+
     private TestCaseObjects testCaseObjects;
     private LoadTabs loadTabs;
     private JsonMedicalRecord jsonMedicalRecord;
@@ -140,6 +149,20 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     @Override
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
+
+        Map<String, List<DataObj>> mapList = new HashMap<>();
+        mapList.put(HealthCareServiceEnum.MRI.getName(),testCaseObjects.getMriList());
+        mapList.put(HealthCareServiceEnum.SCAN.getName(),testCaseObjects.getScanList());
+        mapList.put(HealthCareServiceEnum.SONO.getName(),testCaseObjects.getSonoList());
+        mapList.put(HealthCareServiceEnum.XRAY.getName(),testCaseObjects.getXrayList());
+        mapList.put(HealthCareServiceEnum.PATH.getName(),testCaseObjects.getPathologyList());
+        mapList.put(Constants.MEDICINE,testCaseObjects.getMedicineList());
+        mapList.put(Constants.SYMPTOMS,testCaseObjects.getSymptomsList());
+        mapList.put(Constants.PROVISIONAL_DIAGNOSIS,testCaseObjects.getProDiagnosisList());
+        mapList.put(Constants.DIAGNOSIS,testCaseObjects.getDiagnosisList());
+        mapList.put(Constants.INSTRUCTION,testCaseObjects.getInstructionList());
+
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
         if (currentTime - lastPress > 3000) {
             backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
             backPressToast.show();
@@ -269,6 +292,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getSymptomsList().add(new DataObj("PAIN AT ILIAC REGION", "PAIN AT ILIAC REGION", "", false));
         formDataObj.getSymptomsList().add(new DataObj("POST MENOPAUSAL SYMPTOMS", "POST MENOPAUSAL SYMPTOMS", "", false));
         formDataObj.getSymptomsList().add(new DataObj("HEAVINESS IN LOWER ABDOMEN", "HEAVINESS IN LOWER ABDOMEN", "", false));
+        formDataObj.getSymptomsList().addAll(testCaseObjects.getSymptomsList());
 
 
         formDataObj.getObstreticsList().clear();
@@ -330,7 +354,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getDiagnosisList().add(new DataObj("OLIGOHYDRAMNIOS", "OLIGOHYDRAMNIOS", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 1ST TRIMESTER", "MTP 1", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 2ND TRIMESTER", "MTP 2", "", false));
-
+        formDataObj.getDiagnosisList().addAll(testCaseObjects.getDiagnosisList());
 
 //
 //        formDataObj.getDiagnosisList().add(new DataObj("Hand foot and mouth", false));
@@ -389,7 +413,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("OLIGOHYDRAMNIOS", "OLIGOHYDRAMNIOS", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 1ST TRIMESTER", "MTP 1", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 2ND TRIMESTER", "MTP 2", "", false));
-
+        formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.getProDiagnosisList());
 
 //        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Hand foot and mouth", false));
 //        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Acute Gastritis", false));
@@ -433,6 +457,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getInstructionList().add("Consume less sugar");
         formDataObj.getInstructionList().add("30 min Brisk walking a day");
         formDataObj.getInstructionList().add("Drink milk every day");
+        formDataObj.getInstructionList().addAll(convertToStringList(testCaseObjects.getInstructionList()));
     }
     private class LoadTabs extends AsyncTask<String, String, String> {
         @Override
@@ -478,6 +503,15 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         adapter.notifyDataSetChanged();
+    }
+
+    private ArrayList<String> convertToStringList(List<DataObj> temp){
+        ArrayList<String> strList = new ArrayList<>();
+        if (null != temp && temp.size() > 0)
+        for (int i = 0; i < temp.size(); i++) {
+            strList.add(temp.get(i).getShortName());
+        }
+        return strList;
     }
 
 }

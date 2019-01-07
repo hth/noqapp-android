@@ -40,6 +40,12 @@ public class Constants extends BaseConstants {
     private static final String TAG = Constants.class.getName();
     private static String VERSION_RELEASE;
 
+    public static final String SYMPTOMS = "SYMPTOMS";
+    public static final String PROVISIONAL_DIAGNOSIS = "PROVISIONAL_DIAGNOSIS";
+    public static final String DIAGNOSIS = "DIAGNOSIS";
+    public static final String INSTRUCTION = "INSTRUCTION";
+    public static final String MEDICINE = "MEDICINE";
+
     /**
      * Computes App version.
      *

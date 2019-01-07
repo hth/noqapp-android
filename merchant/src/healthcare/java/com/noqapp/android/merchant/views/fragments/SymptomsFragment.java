@@ -171,6 +171,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     rcv_gynac.setAdapter(symptomsAdapter);
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
+                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSymptomsList().add(new DataObj(edt_item.getText().toString(), false));
                 }
             }
         });

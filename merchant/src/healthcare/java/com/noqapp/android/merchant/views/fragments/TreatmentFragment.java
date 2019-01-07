@@ -226,6 +226,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                         recyclerView_one.setLayoutManager(staggeredGridLayoutManager);
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
                         recyclerView_one.setAdapter(customAdapter);
+                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
                     }
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();

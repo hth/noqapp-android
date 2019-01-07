@@ -120,6 +120,7 @@ public class InstructionFragment extends Fragment {
                         dataObj.setSelect(false);
                         instructionAdapter.addData(dataObj);
                         list_view.setAdapter(instructionAdapter);
+                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getInstructionList().add(new DataObj(edt_item.getText().toString(), false));
                     }
                     Toast.makeText(getActivity(),"'"+edt_item.getText().toString()+"' added successfully to list",Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
