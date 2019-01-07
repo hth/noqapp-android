@@ -35,7 +35,7 @@ public class LabTestsFragment extends Fragment {
     private RecyclerView rcv_mri, rcv_scan, rcv_sono, rcv_xray, rcv_pathology;
     private TextView tv_add_pathology, tv_add_new;
     private StaggeredGridAdapter mriAdapter, scanAdapter, sonoAdapter, xrayAdapter, pathalogyAdapter;
-    int selectionPos = -1;
+    private int selectionPos = -1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -26,6 +26,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -51,6 +52,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     private View view_med;
     private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
     private DataObj dataObj;
+    private int selectionPos = -1;
 
     @Nullable
     @Override
@@ -73,13 +75,13 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
         tv_add_medicine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Medicine", true);
+                AddMedicineDialog(getActivity(), "Add Medicine");
             }
         });
         tv_add_diagnosis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Diagnosis", false);
+                AddItemDialog(getActivity(), "Add Diagnosis");
             }
         });
         tv_close.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +183,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
         rcv_medicine.setAdapter(medicineSelectedAdapter);
     }
 
-    private void AddItemDialog(final Context mContext, String title, final boolean isMedicine) {
+    private void AddItemDialog(final Context mContext, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
@@ -209,16 +211,6 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
                 } else {
-                    if (isMedicine) {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
-                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
-                        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-
-                        StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), TreatmentFragment.this,false);
-                        recyclerView.setAdapter(customAdapter);
-                    } else {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
                         temp.add(new DataObj(edt_item.getText().toString(), false));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
@@ -227,8 +219,76 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
                         recyclerView_one.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
-                    }
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    mAlertDialog.dismiss();
+                }
+            }
+        });
+        mAlertDialog.show();
+    }
+
+
+    private void AddMedicineDialog(final Context mContext, String title) {
+        selectionPos = -1;
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.add_item_with_category, null, false);
+        final EditText edt_item = customDialogView.findViewById(R.id.edt_item);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+        SegmentedControl sc_category = customDialogView.findViewById(R.id.sc_category);
+        final List<String> category_data = new ArrayList<>();
+        category_data.addAll(PharmacyCategoryEnum.asListOfDescription());
+
+
+        sc_category.addSegments(category_data);
+        sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    selectionPos = segmentViewHolder.getAbsolutePosition();
+                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+
+        tvtitle.setText(title);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
+        Button btn_add = customDialogView.findViewById(R.id.btn_add);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        btn_add.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                edt_item.setError(null);
+                if (edt_item.getText().toString().equals("")) {
+                    edt_item.setError("Empty field not allowed");
+                }  else if (selectionPos == -1){
+                    Toast.makeText(getActivity(),"please select a category",Toast.LENGTH_LONG).show();
+                }else {
+                    String category = category_data.get(selectionPos);
+                    String medicineName = category.substring(0,3)+" "+edt_item.getText().toString();
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
+                    temp.add(new DataObj(medicineName, category,false));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
+                    recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+                    StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), TreatmentFragment.this,false);
+                    recyclerView.setAdapter(customAdapter);
+
+                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMedicineList().add(new DataObj(medicineName, category,false));
                     mAlertDialog.dismiss();
                 }
             }
