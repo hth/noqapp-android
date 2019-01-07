@@ -23,6 +23,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -34,20 +35,27 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import info.hoang8f.android.segmented.SegmentedGroup;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+
+import java.util.ArrayList;
 
 
 public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter,JsonMedicalRecordPresenter , MeterView.MeterViewValueChanged{
     private ProgressDialog progressDialog;
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
-    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low;
+    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low,tv_followup;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high;
-    private EditText actv_followup;
-    private SegmentedGroup rg_duration;
     private MedicalHistoryModel medicalHistoryModel;
     private JsonQueuedPerson jsonQueuedPerson;
     protected boolean isDialog = false;
     protected ImageView actionbarBack;
     private SwitchCompat sc_enable_pulse,sc_enable_temp,sc_enable_weight,sc_enable_oxygen,sc_enable_bp;
+    private SegmentedControl sc_follow_up;
+    private ArrayList<String> follow_up_data = new ArrayList<>();
+    private String followup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isDialog) {
@@ -86,8 +94,6 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         final String codeQR = getIntent().getStringExtra("qCodeQR");
         tv_title.setText(jsonQueuedPerson.getCustomerName());
-        actv_followup = findViewById(R.id.actv_followup);
-        rg_duration = findViewById(R.id.rg_duration);
         mv_weight1 = findViewById(R.id.mv_weight1);
         mv_weight2 = findViewById(R.id.mv_weight2);
         mv_pulse = findViewById(R.id.mv_pulse);
@@ -96,6 +102,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         mv_oxygen = findViewById(R.id.mv_oxygen);
 
 
+        tv_followup = findViewById(R.id.tv_followup);
         tv_weight = findViewById(R.id.tv_weight);
         tv_pulse = findViewById(R.id.tv_pulse);
         tv_temperature = findViewById(R.id.tv_temperature);
@@ -114,6 +121,34 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         sc_enable_weight.setChecked(false);
         sc_enable_oxygen.setChecked(false);
         sc_enable_bp.setChecked(false);
+
+        sc_follow_up = findViewById(R.id.sc_follow_up);
+
+        follow_up_data.add("1");
+        follow_up_data.add("2");
+        follow_up_data.add("3");
+        follow_up_data.add("4");
+        follow_up_data.add("5");
+        follow_up_data.add("6");
+        follow_up_data.add("7");
+        follow_up_data.add("10");
+        follow_up_data.add("15");
+        follow_up_data.add("30");
+        follow_up_data.add("45");
+        follow_up_data.add("60");
+        follow_up_data.add("90");
+        follow_up_data.add("180");
+        sc_follow_up.addSegments(follow_up_data);
+
+        sc_follow_up.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
+                    tv_followup.setText("in "+followup+" days");
+                }
+            }
+        });
 
         final Button ll_pulse_disable = findViewById(R.id.ll_pulse_disable);
         final Button ll_temp_disable = findViewById(R.id.ll_temp_disable);
@@ -216,9 +251,9 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical();
 
                 if (sc_enable_pulse.isChecked()) {
-                   jsonMedicalPhysical.setPluse(mv_pulse.getValueAsString());
+                   jsonMedicalPhysical.setPulse(mv_pulse.getValueAsString());
                 } else {
-                   jsonMedicalPhysical.setPluse(null);
+                   jsonMedicalPhysical.setPulse(null);
                 }
                 if(sc_enable_bp.isChecked()) {
                    jsonMedicalPhysical.setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
@@ -241,15 +276,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                    jsonMedicalPhysical.setOxygen(null);
                 }
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
-
-                if (!actv_followup.getText().toString().equals("")) {
-                    String value = actv_followup.getText().toString();
-                    int selectedId = rg_duration.getCheckedRadioButtonId();
-                    if (selectedId == R.id.rb_months) {
-                        jsonMedicalRecord.setFollowUpInDays(String.valueOf(Integer.parseInt(value) * 30));
-                    } else {
-                        jsonMedicalRecord.setFollowUpInDays(value);
-                    }
+                if (!TextUtils.isEmpty(followup)) {
+                    jsonMedicalRecord.setFollowUpInDays(followup);
                 }
                 medicalHistoryModel.add(
                         BaseLaunchActivity.getDeviceID(),
@@ -333,15 +361,16 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
-                actv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
+                sc_follow_up.setSelectedSegment(follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays()));
+                tv_followup.setText("in "+followup+" days");
                 if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                     sc_enable_oxygen.setChecked(true);
                 }else{
                     sc_enable_oxygen.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getPluse()) {
-                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPluse()));
+                if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+                    mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
                 }else{
                     sc_enable_pulse.setChecked(false);

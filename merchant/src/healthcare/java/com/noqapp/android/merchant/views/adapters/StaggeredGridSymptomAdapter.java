@@ -14,47 +14,32 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.MyViewHolder> {
+public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredGridSymptomAdapter.MyViewHolder> {
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
-    private int drawableSelect;
-    private int drawableUnSelect;
     private StaggeredClick staggeredClick;
+    private boolean isEdit;
 
     public interface StaggeredClick {
-        void staggeredClick(boolean isOpen, String medicineName);
+        void staggeredClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos);
     }
 
-    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList) {
-        this.context = context;
-        this.dataObjArrayList = dataObjArrayList;
-        drawableSelect = R.drawable.bg_select;
-        drawableUnSelect = R.drawable.bg_unselect;
-        Collections.sort(dataObjArrayList);
-    }
 
-    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredClick staggeredClick) {
+
+    public StaggeredGridSymptomAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredClick staggeredClick, boolean isEdit) {
         this.context = context;
         this.dataObjArrayList = dataObjArrayList;
-        drawableSelect = R.drawable.bg_select;
-        drawableUnSelect = R.drawable.bg_unselect;
         this.staggeredClick = staggeredClick;
+        this.isEdit = isEdit;
         Collections.sort(dataObjArrayList);
     }
 
-    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList, int drawableUnSelect) {
-        this.dataObjArrayList = dataObjArrayList;
-        this.context = context;
-        drawableSelect = R.drawable.bg_select;
-        this.drawableUnSelect = drawableUnSelect;
-        Collections.sort(dataObjArrayList);
-    }
+
 
 
     @Override
@@ -68,23 +53,22 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
-            holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
+            holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
         } else {
-            holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
+            holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                dataObjArrayList.get(position).setSelect(isChecked);
+                  dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
-                    holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
-                   // Toast.makeText(context, "You click the button ", Toast.LENGTH_LONG).show();
-                    if(null != staggeredClick)
-                        staggeredClick.staggeredClick(true,dataObjArrayList.get(position).getShortName());
+                    holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    if (null != staggeredClick)
+                        staggeredClick.staggeredClick(true,isEdit, dataObjArrayList.get(position),position);
                 } else {
-                    holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
-                    if(null != staggeredClick)
-                        staggeredClick.staggeredClick(false,dataObjArrayList.get(position).getShortName());
+                    holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    if (null != staggeredClick)
+                        staggeredClick.staggeredClick(true,isEdit, dataObjArrayList.get(position),position);
                 }
 
             }
@@ -109,25 +93,16 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         }
     }
 
+
     public String getSelectedData() {
         String data = "";
         for (int i = 0; i < dataObjArrayList.size(); i++) {
             if (dataObjArrayList.get(i).isSelect()) {
-                data += dataObjArrayList.get(i).getShortName() + ", ";
+                data +=   "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getAdditionalNotes() + " days"   + "\n";
             }
         }
         if (data.endsWith(", "))
             data = data.substring(0, data.length() - 2);
         return data;
-    }
-
-    public ArrayList<String> getSelectedDataList() {
-        ArrayList<String> temp = new ArrayList<>();
-        for (int i = 0; i < dataObjArrayList.size(); i++) {
-            if (dataObjArrayList.get(i).isSelect()) {
-                temp.add(dataObjArrayList.get(i).getShortName());
-            }
-        }
-        return temp;
     }
 }

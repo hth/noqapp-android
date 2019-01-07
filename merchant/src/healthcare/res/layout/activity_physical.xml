@@ -43,66 +43,57 @@
 
             <include layout="@layout/lay_physical_exam"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/mds_follow_up"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:padding="5dp"/>
-
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
                     android:orientation="horizontal">
 
-                <EditText
-                        android:id="@+id/actv_followup"
-                        style="@style/style_mdh_details"
-                        android:layout_width="100dp"
-                        android:layout_marginRight="50dp"
-                        android:digits="0123456789"
-                        android:inputType="numberSigned"
-                        android:imeActionLabel="Done"
-                        android:singleLine="true"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textColor="@android:color/black"
-                        android:text=""/>
-
-
-                <info.hoang8f.android.segmented.SegmentedGroup
-
-                        android:id="@+id/rg_duration"
+                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/segment_margin"
-                        android:layout_marginRight="@dimen/segment_margin"
-                        android:orientation="horizontal"
-                        segmentedgroup:sc_border_width="@dimen/segment_border_width"
-                        segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
+                        android:text="@string/mds_follow_up"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:padding="5dp"/>
 
-                    <RadioButton
-                            android:id="@+id/rb_days"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/rb_height"
-                            android:text="@string/days"
-                            android:checked="true"
-                            style="@style/RadioButton"/>
+                <TextView
+                        android:id="@+id/tv_followup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No follow up"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:textSize="14sp"
+                        android:padding="5dp"/>
 
-                    <RadioButton
-                            android:id="@+id/rb_months"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/rb_height"
-                            android:text="@string/month"
-                            style="@style/RadioButton"/>
-                </info.hoang8f.android.segmented.SegmentedGroup>
             </LinearLayout>
+
+            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/sc_follow_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:columnCount="4"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
 
             <Button
                     android:id="@+id/btn_submit"

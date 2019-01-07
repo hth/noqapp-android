@@ -11,6 +11,8 @@ public class MedicalCasePojo {
     private String name;
     private String address;
     private String details;
+    private String age;
+    private String gender;
     private String knownAllergies;
     private String pastHistory;
     private String familyHistory;
@@ -251,12 +253,32 @@ public class MedicalCasePojo {
         return this;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public MedicalCasePojo setAge(String age) {
+        this.age = age;
+        return this;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public MedicalCasePojo setGender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "MedicalCasePojo{" +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", details='" + details + '\'' +
+                ", age='" + age + '\'' +
+                ", gender='" + gender + '\'' +
                 ", knownAllergies='" + knownAllergies + '\'' +
                 ", pastHistory='" + pastHistory + '\'' +
                 ", familyHistory='" + familyHistory + '\'' +

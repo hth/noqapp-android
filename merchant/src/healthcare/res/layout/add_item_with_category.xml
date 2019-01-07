@@ -1,0 +1,124 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:paddingTop="10dp">
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+        <TextView
+                android:id="@+id/tvtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="Add item "
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
+
+        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                android:id="@+id/sc_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                segmentedcontrol:distributeEvenly="false"
+                segmentedcontrol:radius="6dp"
+                segmentedcontrol:columnCount="4"
+                android:layout_below="@+id/tvtitle"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                segmentedcontrol:radiusForEverySegment="false"
+                segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                segmentedcontrol:strokeWidth="1dp"
+                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                segmentedcontrol:textVerticalPadding="5dp"
+                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+
+        <EditText
+                android:id="@+id/edt_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:padding="5dp"
+                android:layout_below="@+id/sc_category"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textSize="16sp"
+                android:background="@drawable/table_border"
+                android:inputType="text|textMultiLine"
+                android:gravity="left"
+                android:maxLength="100"
+                android:maxLines="2"
+                android:minLines="2"
+                />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/edt_item"
+                android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_item"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+            <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@android:color/transparent"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"/>
+
+            <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray"/>
+
+            <Button
+                    android:id="@+id/btn_add"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@android:color/transparent"
+                    android:text="Add"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

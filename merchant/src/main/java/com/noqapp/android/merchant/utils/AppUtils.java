@@ -95,18 +95,18 @@ public class AppUtils extends CommonHelper {
 
     }
 
-    public static void authenticationProcessing(){
+    public static void authenticationProcessing() {
         LaunchActivity.getLaunchActivity().clearLoginData(true);
     }
 
 
-    public String getCompleteEducation(List<JsonNameDatePair> education){
-        if(null == education || education.size() == 0)
+    public String getCompleteEducation(List<JsonNameDatePair> education) {
+        if (null == education || education.size() == 0)
             return "";
-        else{
+        else {
             String edu = "";
             for (int i = 0; i < education.size(); i++) {
-                edu += education.get(i).getName()+", ";
+                edu += education.get(i).getName() + ", ";
             }
             if (edu.endsWith(", ")) {
                 edu = edu.substring(0, edu.length() - 2);
@@ -115,11 +115,21 @@ public class AppUtils extends CommonHelper {
         }
     }
 
-    public String hidePhoneNumberWithX(String phoneNo){
+    public String hidePhoneNumberWithX(String phoneNo) {
         if (null != phoneNo && phoneNo.length() >= 10) {
             return phoneNo.substring(0, 4) + "XXXXX" + phoneNo.substring(phoneNo.length() - 3, phoneNo.length());
         } else {
             return "";
         }
+    }
+
+    public int calculateColumnCount(int length) {
+        if (length > 3) {
+            if (length % 3 == 0)
+                return (length / 3);
+            else
+                return (length / 3) + 1;
+        } else
+            return 1;
     }
 }

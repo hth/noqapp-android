@@ -1,421 +1,440 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
-
-    <ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="vertical">
+                android:layout_margin="5dp"
+                card_view:cardBackgroundColor="#f2f2f2"
+                card_view:cardCornerRadius="2dp">
 
-            <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="About Patient"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-
-            <TableLayout
-                    android:id="@+id/tabla_cuerpo"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:stretchColumns="0,1">
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:weightSum="1">
 
-                <TableRow
-                        android:id="@+id/tableRow1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
-                    <TextView
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="vertical"
+                        android:layout_weight=".33">
 
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Patient Name"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <TextView
                             android:id="@+id/tv_patient_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
                             android:text=""
+                            android:textColor="@android:color/black"
                             android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-
-                </TableRow>
-
-                <TableRow
-                        android:id="@+id/tableRow5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
                     <TextView
+                            android:id="@+id/tv_details"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Address"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+                            android:layout_marginTop="5dp"
+                            android:text=""
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <TextView
                             android:id="@+id/tv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
+                            android:layout_marginTop="5dp"
                             android:text=""
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                </TableRow>
+                </LinearLayout>
 
-                <TableRow
-                        android:id="@+id/tableRow6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="vertical"
+                        android:layout_weight=".33">
+
 
                     <TextView
-
+                            android:id="@+id/tv_pulse"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Additional Info"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+                            android:text="Pulse:"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <TextView
-                            android:id="@+id/tv_info"
+                            android:id="@+id/tv_bp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="78.5 Kg"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+                            android:layout_marginTop="5dp"
+                            android:text="Blood Pressure:"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-                </TableRow>
-            </TableLayout>
+                    <TextView
+                            android:id="@+id/tv_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Temp:"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="vertical"
+                        android:layout_weight=".33">
+
+
+                    <TextView
+                            android:id="@+id/tv_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Weight:"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <TextView
+                            android:id="@+id/tv_height"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Height:"
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <TextView
+                            android:id="@+id/tv_respiratory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Respiration Rate: "
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Symptoms:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_symptoms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Examination:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Examination Result:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_examination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clinical Findings:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_clinical_findings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Provisional Diagnosis:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_provisional_diagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Diagnosis:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_diagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Test Investigation:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radiology >> MRI:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_radio_mri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radiology >> SCAN:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_radio_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radiology >> SONO:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_radio_sono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radiology >> X-RAY:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_radio_xray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pahtology:"
+                android:textSize="16sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_pathology"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="16sp"
+                android:paddingLeft="10dp"/>
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Medicines:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                android:id="@+id/lv_medicine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Instructions:"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="10dp"/>
+
+        <TextView
+                android:id="@+id/tv_instruction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:paddingLeft="10dp"
+                />
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal">
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Symptoms:"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_symptoms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Examination:"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Examination Result:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_examination"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Clinical Findings:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_clinical_findings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Provisional Diagnosis (?):"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_provisional_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Diagnosis:"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_diagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Test Investigation:"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Radiology >> MRI:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_radio_mri"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Radiology >> SCAN:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_radio_scan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Radiology >> SONO:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_radio_sono"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Radiology >> X-RAY:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_radio_xray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pahtology:"
-                    android:textSize="16sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_pathology"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:paddingLeft="10dp"/>
-
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Medicines:"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                    android:id="@+id/lv_medicine"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@null"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Instructions:"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp"/>
-
-            <TextView
-                    android:id="@+id/tv_instruction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:paddingLeft="10dp"
-                    />
-
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:text="@string/mds_follow_up"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:padding="10dp"/>
+                    android:padding="5dp"/>
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                <EditText
-                        android:id="@+id/actv_followup"
-                        style="@style/style_mdh_details"
-                        android:layout_width="200dp"
-                        android:layout_marginRight="50dp"
-                        android:digits="0123456789"
-                        android:inputType="numberSigned"
-                        android:imeActionLabel="Done"
-                        android:singleLine="true"
-                        android:maxLength="2"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:text=""/>
-
-
-                <info.hoang8f.android.segmented.SegmentedGroup
-
-                        android:id="@+id/rg_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/segment_margin"
-                        android:layout_marginRight="@dimen/segment_margin"
-                        android:orientation="horizontal"
-                        segmentedgroup:sc_border_width="@dimen/segment_border_width"
-                        segmentedgroup:sc_corner_radius="@dimen/segment_corner_radius">
-
-                    <RadioButton
-                            android:id="@+id/rb_days"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/rb_height"
-                            android:text="@string/days"
-                            android:checked="true"
-                            style="@style/RadioButton"/>
-
-                    <RadioButton
-                            android:id="@+id/rb_months"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/rb_height"
-                            android:text="@string/month"
-                            style="@style/RadioButton"/>
-                </info.hoang8f.android.segmented.SegmentedGroup>
-            </LinearLayout>
-
-            <Button
-                    android:id="@+id/btn_submit"
+            <TextView
+                    android:id="@+id/tv_followup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/button_drawable"
-                    android:drawablePadding="5dp"
-                    android:gravity="center"
-                    android:paddingLeft="90dp"
-                    android:paddingRight="90dp"
-                    android:text="@string/submit"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorMobile"
-                    android:textSize="@dimen/text_size_fourteen"/>
+                    android:text="No follow up"
+                    android:textColor="@android:color/black"
+                    android:textStyle="normal"
+                    android:textSize="14sp"
+                    android:padding="5dp"/>
 
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+
+        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/sc_follow_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                segmentedcontrol:distributeEvenly="false"
+                segmentedcontrol:radius="6dp"
+                segmentedcontrol:columnCount="6"
+                segmentedcontrol:radiusForEverySegment="false"
+                segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                segmentedcontrol:strokeWidth="1dp"
+                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                segmentedcontrol:textVerticalPadding="5dp"
+                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+
+        <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_drawable"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingLeft="90dp"
+                android:paddingRight="90dp"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/colorMobile"
+                android:textSize="@dimen/text_size_fourteen"/>
+
+    </LinearLayout>
+</ScrollView>
