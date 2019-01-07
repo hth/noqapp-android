@@ -256,6 +256,13 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getMedicineDuration()));
             sc_medicine_timing.setSelectedSegment(timing_data.indexOf(dataObj.getMedicineTiming()));
             sc_frequency.setSelectedSegment(frequency_data.indexOf(dataObj.getMedicineFrequency()));
+        }else{
+            medicineTiming = "";
+            medicineDuration = "";
+            medicineFrequency = "";
+            sc_medicine_timing.clearSelection();
+            sc_duration.clearSelection();
+            sc_frequency.clearSelection();
         }
         btn_done.setOnClickListener(new View.OnClickListener() {
             @Override

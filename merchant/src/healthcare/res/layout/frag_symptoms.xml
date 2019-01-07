@@ -1,93 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-    <LinearLayout
+    <FrameLayout
             android:layout_width="0dp"
             android:layout_weight=".5"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:orientation="vertical">
-
-
-        <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="History"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
+            android:layout_height="match_parent">
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
                 android:orientation="vertical">
+
 
             <TextView
-                    style="@style/style_mdh_header"
-                    android:text="@string/mds_known_allergies"/>
 
-            <AutoCompleteTextView
-                    android:id="@+id/actv_known_allergy"
-                    style="@style/style_mdh_details"
-                    android:gravity="top"
-                    android:minLines="5"
-                    android:text=""/>
-        </LinearLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="History"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2.5dp"
-                android:layout_marginRight="2.5dp"
-                android:orientation="vertical">
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
                 <TextView
                         style="@style/style_mdh_header"
-                        android:text="@string/mds_past_history"/>
+                        android:text="@string/mds_known_allergies"/>
 
                 <AutoCompleteTextView
-                        android:id="@+id/actv_past_history"
+                        android:id="@+id/actv_known_allergy"
                         style="@style/style_mdh_details"
                         android:gravity="top"
                         android:minLines="5"
                         android:text=""/>
+            </LinearLayout>
 
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2.5dp"
+                    android:layout_marginRight="2.5dp"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical">
+
+                    <TextView
+                            style="@style/style_mdh_header"
+                            android:text="@string/mds_past_history"/>
+
+                    <AutoCompleteTextView
+                            android:id="@+id/actv_past_history"
+                            style="@style/style_mdh_details"
+                            android:gravity="top"
+                            android:minLines="5"
+                            android:text=""/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <TextView
+                        style="@style/style_mdh_header"
+                        android:text="@string/mds_family_history"/>
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_family_history"
+                        style="@style/style_mdh_details"
+                        android:gravity="top"
+                        android:minLines="5"
+                        android:text=""/>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+                android:id="@+id/ll_symptom_note"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="#A6000000">
 
-            <TextView
-                    style="@style/style_mdh_header"
-                    android:text="@string/mds_family_history"/>
 
-            <AutoCompleteTextView
-                    android:id="@+id/actv_family_history"
-                    style="@style/style_mdh_details"
-                    android:gravity="top"
-                    android:minLines="5"
-                    android:text=""/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="580dp"
+                    android:orientation="vertical"
+                    android:layout_margin="15dp"
+                    android:padding="20dp"
+                    android:background="@android:color/white">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/tv_remove"
+                            android:text="Remove"
+                            android:layout_width="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btn_add_round"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_close"
+                            android:text="Close"
+                            android:layout_width="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btn_add_round"
+                            android:layout_alignParentRight="true"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/tv_symptoms_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:text=""/>
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="Symptom appears since last few days:"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@android:color/black"/>
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        android:id="@+id/sc_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        segmentedcontrol:distributeEvenly="false"
+                        segmentedcontrol:radius="6dp"
+                        segmentedcontrol:columnCount="4"
+                        segmentedcontrol:radiusForEverySegment="false"
+                        segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:strokeWidth="1dp"
+                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                        segmentedcontrol:textVerticalPadding="5dp"
+                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+
+                <TextView
+                        android:id="@+id/tv_output"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:text=""/>
+
+
+                <Button
+                        android:id="@+id/btn_done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:text="Done"/>
+
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </FrameLayout>
+
     <View
             android:background="#80000000"
             android:layout_width="1dp"
             android:layout_height="match_parent"/>
+
     <ScrollView
             android:layout_width="0dp"
             android:layout_weight=".5"
@@ -130,6 +257,19 @@
                         android:layout_height="wrap_content"/>
             </RelativeLayout>
 
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcv_symptom_select"
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <View
+                    android:id="@+id/view_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:visibility="gone"
+                    android:background="@android:color/darker_gray"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,7 +280,7 @@
                     android:gravity="center"/>
 
             <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/rcv_gynac"
                     android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
