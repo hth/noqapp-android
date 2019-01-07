@@ -29,12 +29,12 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
-import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
+import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 
-public class PreferenceHCServiceFragment extends Fragment implements MasterLabPresenter {
+public class PreferenceHCServiceFragment extends Fragment implements MasterLabPresenter, SelectItemListAdapter.RemoveListItem {
 
     private ListView lv_tests, lv_all_tests;
     private AutoCompleteTextView actv_search;
@@ -48,7 +48,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
     }
 
     private ArrayList<DataObj> selectedList = new ArrayList<>();
-    private MultiSelectListAdapter multiSelectListAdapter;
+    private SelectItemListAdapter selectItemListAdapter;
     private ArrayAdapter<String> actvAdapter;
 
     @Nullable
@@ -73,7 +73,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 dataObj.setSelect(false);
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
-                    multiSelectListAdapter.notifyDataSetChanged();
+                    selectItemListAdapter.notifyDataSetChanged();
                     actv_search.setText("");
                 } else {
                     Toast.makeText(getActivity(), "Already selected", Toast.LENGTH_LONG).show();
@@ -100,8 +100,8 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             }
         });
 
-        multiSelectListAdapter = new MultiSelectListAdapter(getActivity(), selectedList);
-        lv_tests.setAdapter(multiSelectListAdapter);
+        selectItemListAdapter = new SelectItemListAdapter(getActivity(), selectedList,this);
+        lv_tests.setAdapter(selectItemListAdapter);
         lv_all_tests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,7 +110,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 dataObj.setSelect(false);
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
-                    multiSelectListAdapter.notifyDataSetChanged();
+                    selectItemListAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -146,7 +146,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             dataObj.setShortName(edt_add.getText().toString());
             dataObj.setSelect(false);
             selectedList.add(dataObj);
-            multiSelectListAdapter.notifyDataSetChanged();
+            selectItemListAdapter.notifyDataSetChanged();
             edt_add.setText("");
             Toast.makeText(getActivity(), "Test updated Successfully", Toast.LENGTH_LONG).show();
         } else {
@@ -229,4 +229,11 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
     }
 
 
+    @Override
+    public void removeItem(int pos) {
+        selectedList.remove(pos);
+        selectItemListAdapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), "Record deleted from List", Toast.LENGTH_LONG).show();
+
+    }
 }
