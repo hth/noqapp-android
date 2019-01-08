@@ -21,6 +21,8 @@ public class MedicalCasePojo {
     private String weight;
     private String temperature;
     private String oxygenLevel;
+    private String height;
+    private String respiratory;
     private String symptoms;
     private String clinicalFindings;
     private String examinationResults;
@@ -271,6 +273,24 @@ public class MedicalCasePojo {
         return this;
     }
 
+    public String getHeight() {
+        return height;
+    }
+
+    public MedicalCasePojo setHeight(String height) {
+        this.height = height;
+        return this;
+    }
+
+    public String getRespiratory() {
+        return respiratory;
+    }
+
+    public MedicalCasePojo setRespiratory(String respiratory) {
+        this.respiratory = respiratory;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "MedicalCasePojo{" +
@@ -287,6 +307,8 @@ public class MedicalCasePojo {
                 ", weight='" + weight + '\'' +
                 ", temperature='" + temperature + '\'' +
                 ", oxygenLevel='" + oxygenLevel + '\'' +
+                ", height='" + height + '\'' +
+                ", respiratory='" + respiratory + '\'' +
                 ", symptoms='" + symptoms + '\'' +
                 ", clinicalFindings='" + clinicalFindings + '\'' +
                 ", examinationResults='" + examinationResults + '\'' +

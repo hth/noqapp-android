@@ -95,6 +95,7 @@ public class DiagnosisFragment extends Fragment {
                         provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
                         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getProDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     } else {
 
                     }

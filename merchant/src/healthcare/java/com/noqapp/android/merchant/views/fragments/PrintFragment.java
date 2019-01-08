@@ -209,16 +209,16 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_radio_sono.setText(covertStringList2String(medicalCasePojo.getSonoList()));
         tv_radio_xray.setText(covertStringList2String(medicalCasePojo.getXrayList()));
         tv_pathology.setText(covertStringList2String(medicalCasePojo.getPathologyList()));
-//        if (null != medicalCasePojo.getRespiratory()) {
-//            tv_respiratory.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
-//        } else {
-        tv_respiratory.setText("Respiration Rate: " + notAvailable);
-//        }
-//        if (null != medicalCasePojo.getHeight()) {
-//            tv_height.setText(jsonMedicalRecord.getMedicalPhysical().getHeight());
-//        } else {
-        tv_height.setText("Height: " + notAvailable);
-        // }
+        if (null != medicalCasePojo.getRespiratory()) {
+            tv_respiratory.setText(medicalCasePojo.getRespiratory());
+        } else {
+            tv_respiratory.setText("Respiration Rate: " + notAvailable);
+        }
+        if (null != medicalCasePojo.getHeight()) {
+            tv_height.setText(medicalCasePojo.getHeight());
+        } else {
+            tv_height.setText("Height: " + notAvailable);
+        }
         if (null != medicalCasePojo.getPulse()) {
             tv_pulse.setText("Pulse: " + medicalCasePojo.getPulse());
         } else {

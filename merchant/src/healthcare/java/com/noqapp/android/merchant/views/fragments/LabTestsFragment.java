@@ -133,6 +133,7 @@ public class LabTestsFragment extends Fragment {
 
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getPathologyList().add(new DataObj(edt_item.getText().toString(), false));
+                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
                 }
             }
@@ -232,7 +233,7 @@ public class LabTestsFragment extends Fragment {
                         rcv_xray.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
                     }
-
+                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
                 }
