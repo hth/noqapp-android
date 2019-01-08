@@ -65,8 +65,22 @@ public class MedicalRecordAdapter extends BaseAdapter {
         recordHolder.tv_medication.setText(medicalRecord.getPharmacyCategory());
         recordHolder.tv_medication_with_food.setText(medicalRecord.getMedicationIntake());
         recordHolder.tv_daily_frequency.setText(medicalRecord.getDailyFrequency());
-        recordHolder.tv_course.setText(medicalRecord.getCourse()+" days");
+        recordHolder.tv_course.setText(medicalRecord.getCourse() + " days");
         recordHolder.tv_medicine_name.setText(medicalRecord.getName());
+        if (medicalRecord.getPharmacyCategory().equals(PharmacyCategoryEnum.CA.getDescription()))
+            recordHolder.tv_medication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.med_capsule, 0, 0, 0);
+        else if (medicalRecord.getPharmacyCategory().equals(PharmacyCategoryEnum.TA.getDescription()))
+            recordHolder.tv_medication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.med_tablet, 0, 0, 0);
+        else if (medicalRecord.getPharmacyCategory().equals(PharmacyCategoryEnum.SY.getDescription()))
+            recordHolder.tv_medication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.med_syrup, 0, 0, 0);
+        else if (medicalRecord.getPharmacyCategory().equals(PharmacyCategoryEnum.IJ.getDescription()))
+            recordHolder.tv_medication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.med_injection, 0, 0, 0);
+        else if (medicalRecord.getPharmacyCategory().equals(PharmacyCategoryEnum.LO.getDescription()))
+            recordHolder.tv_medication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.med_lotion, 0, 0, 0);
+        else if (medicalRecord.getPharmacyCategory().equals(PharmacyCategoryEnum.CR.getDescription()))
+            recordHolder.tv_medication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.med_cream, 0, 0, 0);
+        else
+            recordHolder.tv_medication.setCompoundDrawables(null, null, null, null);
         return view;
     }
 

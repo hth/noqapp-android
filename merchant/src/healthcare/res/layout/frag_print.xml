@@ -129,88 +129,255 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Symptoms:"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:padding="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_symptoms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Examination:"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:padding="10dp"/>
+
+
+                <TextView
+                        android:id="@+id/tv_examination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"/>
+
+
+                <TextView
+                        android:id="@+id/tv_clinical_findings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Provisional Diagnosis:"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:padding="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_provisional_diagnosis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Symptoms:"
+                android:text="Investigation:"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:id="@+id/tv_symptoms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
                 android:paddingLeft="10dp"
-                />
+                android:paddingTop="10dp"/>
 
-        <TextView
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Examination:"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:padding="10dp"/>
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Examination Result:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
 
-        <TextView
-                android:id="@+id/tv_examination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="16sp"
-                android:paddingLeft="10dp"
-                />
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".2"
+                    android:orientation="vertical">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Clinical Findings:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
 
-        <TextView
-                android:id="@+id/tv_clinical_findings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="16sp"
-                android:paddingLeft="10dp"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Radiology >> MRI:"
+                        android:textSize="16sp"
+                        android:padding="10dp"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Provisional Diagnosis:"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:padding="10dp"/>
+                <TextView
+                        android:id="@+id/tv_radio_mri"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        />
 
-        <TextView
-                android:id="@+id/tv_provisional_diagnosis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"
-                />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".2"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Radiology >> SCAN:"
+                        android:textSize="16sp"
+                        android:padding="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_radio_scan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".2"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Radiology >> SONO:"
+                        android:textSize="16sp"
+                        android:padding="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_radio_sono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".2"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Radiology >> X-RAY:"
+                        android:textSize="16sp"
+                        android:padding="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_radio_xray"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"
+                        />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".2"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pahtology:"
+                        android:textSize="16sp"
+                        android:padding="10dp"/>
+
+                <TextView
+                        android:id="@+id/tv_pathology"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -224,108 +391,12 @@
 
         <TextView
                 android:id="@+id/tv_diagnosis"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"
-                />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Test Investigation:"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Radiology >> MRI:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:id="@+id/tv_radio_mri"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:text=""
                 android:textSize="16sp"
                 android:paddingLeft="10dp"
                 />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Radiology >> SCAN:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:id="@+id/tv_radio_scan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="16sp"
-                android:paddingLeft="10dp"
-                />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Radiology >> SONO:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:id="@+id/tv_radio_sono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="16sp"
-                android:paddingLeft="10dp"
-                />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Radiology >> X-RAY:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:id="@+id/tv_radio_xray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="16sp"
-                android:paddingLeft="10dp"
-                />
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pahtology:"
-                android:textSize="16sp"
-                android:padding="10dp"/>
-
-        <TextView
-                android:id="@+id/tv_pathology"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="16sp"
-                android:paddingLeft="10dp"/>
-
 
         <TextView
                 android:layout_width="wrap_content"
@@ -341,6 +412,9 @@
                 android:id="@+id/lv_medicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/square_grey_bg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:divider="@null"/>
 
         <TextView
@@ -358,8 +432,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:paddingLeft="10dp"
                 />
 
@@ -369,7 +442,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="0dp"
                 android:orientation="horizontal">
 
             <TextView
@@ -379,7 +452,7 @@
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:padding="5dp"/>
+                    android:padding="10dp"/>
 
             <TextView
                     android:id="@+id/tv_followup"

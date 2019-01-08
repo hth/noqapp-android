@@ -25,6 +25,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
-    private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_details,tv_followup;
+    private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
     private MedicalHistoryModel medicalHistoryModel;
     private SegmentedControl sc_follow_up;
@@ -84,7 +85,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_provisional_diagnosis = v.findViewById(R.id.tv_provisional_diagnosis);
         lv_medicine = v.findViewById(R.id.lv_medicine);
         sc_follow_up = v.findViewById(R.id.sc_follow_up);
-
+        follow_up_data.clear();
         follow_up_data.add("1");
         follow_up_data.add("2");
         follow_up_data.add("3");
@@ -106,7 +107,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
-                    tv_followup.setText("in "+followup+" days");
+                    tv_followup.setText("in " + followup + " days");
                 }
             }
         });
@@ -159,7 +160,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 }
                 if (medicalCasePojo.getScanList().size() > 0) {
                     ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
-                    for (int i = 0; i <medicalCasePojo.getScanList().size(); i++) {
+                    for (int i = 0; i < medicalCasePojo.getScanList().size(); i++) {
                         medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
                     }
                     jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
@@ -201,8 +202,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_diagnosis.setText(medicalCasePojo.getDiagnosis());
         tv_instruction.setText(medicalCasePojo.getInstructions());
         tv_provisional_diagnosis.setText(medicalCasePojo.getProvisionalDiagnosis());
-        tv_clinical_findings.setText(medicalCasePojo.getClinicalFindings());
-        tv_examination.setText(medicalCasePojo.getExaminationResults());
+        tv_clinical_findings.setText(Html.fromHtml("<b>" + "Clinical Findings: " + "</b> " + medicalCasePojo.getClinicalFindings()));
+        tv_examination.setText(Html.fromHtml("<b>" + "Result: " + "</b> " + medicalCasePojo.getExaminationResults()));
         tv_radio_mri.setText(covertStringList2String(medicalCasePojo.getMriList()));
         tv_radio_scan.setText(covertStringList2String(medicalCasePojo.getScanList()));
         tv_radio_sono.setText(covertStringList2String(medicalCasePojo.getSonoList()));
@@ -211,32 +212,32 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 //        if (null != medicalCasePojo.getRespiratory()) {
 //            tv_respiratory.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
 //        } else {
-        tv_respiratory.setText("Temp: "+notAvailable);
+        tv_respiratory.setText("Respiration Rate: " + notAvailable);
 //        }
 //        if (null != medicalCasePojo.getHeight()) {
 //            tv_height.setText(jsonMedicalRecord.getMedicalPhysical().getHeight());
 //        } else {
-        tv_height.setText("Height: "+notAvailable);
+        tv_height.setText("Height: " + notAvailable);
         // }
         if (null != medicalCasePojo.getPulse()) {
-            tv_pulse.setText("Pulse: "+medicalCasePojo.getPulse());
+            tv_pulse.setText("Pulse: " + medicalCasePojo.getPulse());
         } else {
-            tv_pulse.setText("Pulse: "+notAvailable);
+            tv_pulse.setText("Pulse: " + notAvailable);
         }
         if (null != medicalCasePojo.getBloodPressure() && medicalCasePojo.getBloodPressure().length == 2) {
-            tv_bp.setText("Blood Pressure: "+medicalCasePojo.getBloodPressure()[0] + "/" + medicalCasePojo.getBloodPressure()[1]);
+            tv_bp.setText("Blood Pressure: " + medicalCasePojo.getBloodPressure()[0] + "/" + medicalCasePojo.getBloodPressure()[1]);
         } else {
-            tv_bp.setText("Blood Pressure: "+notAvailable);
+            tv_bp.setText("Blood Pressure: " + notAvailable);
         }
         if (null != medicalCasePojo.getWeight()) {
-            tv_weight.setText("Weight: "+medicalCasePojo.getWeight());
+            tv_weight.setText("Weight: " + medicalCasePojo.getWeight());
         } else {
-            tv_weight.setText("Weight: "+notAvailable);
+            tv_weight.setText("Weight: " + notAvailable);
         }
         if (null != medicalCasePojo.getTemperature()) {
-            tv_temperature.setText("Temp: "+medicalCasePojo.getTemperature());
+            tv_temperature.setText("Temp: " + medicalCasePojo.getTemperature());
         } else {
-            tv_temperature.setText("Temp: "+notAvailable);
+            tv_temperature.setText("Temp: " + notAvailable);
         }
         adapter = new MedicalRecordAdapter(getActivity(), medicalCasePojo.getJsonMedicineList());
         lv_medicine.setAdapter(adapter);
@@ -246,7 +247,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private String covertStringList2String(ArrayList<String> data) {
         String temp = "";
         for (int i = 0; i < data.size(); i++) {
-            temp += "(" + (i + 1) + ") " + data.get(i) + "\n";
+            //temp += "(" + (i + 1) + ") " + data.get(i) + "\n";
+            temp += "\u2022" + " " + data.get(i) + "\n";
         }
         return temp;
     }
