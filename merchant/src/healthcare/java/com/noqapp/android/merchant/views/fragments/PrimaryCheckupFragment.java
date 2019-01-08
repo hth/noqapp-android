@@ -239,6 +239,8 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setOxygenLevel(null);
         }
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setHeight(null);
+        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setRespiratory(null);
     }
 
     @Override

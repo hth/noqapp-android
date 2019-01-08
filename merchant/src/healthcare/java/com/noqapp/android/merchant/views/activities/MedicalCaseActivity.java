@@ -63,6 +63,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private TestCaseObjects testCaseObjects;
     private LoadTabs loadTabs;
     private JsonMedicalRecord jsonMedicalRecord;
+
     public MedicalCasePojo getMedicalCasePojo() {
         return medicalCasePojo;
     }
@@ -150,19 +151,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
 
-        Map<String, List<DataObj>> mapList = new HashMap<>();
-        mapList.put(HealthCareServiceEnum.MRI.getName(),testCaseObjects.getMriList());
-        mapList.put(HealthCareServiceEnum.SCAN.getName(),testCaseObjects.getScanList());
-        mapList.put(HealthCareServiceEnum.SONO.getName(),testCaseObjects.getSonoList());
-        mapList.put(HealthCareServiceEnum.XRAY.getName(),testCaseObjects.getXrayList());
-        mapList.put(HealthCareServiceEnum.PATH.getName(),testCaseObjects.getPathologyList());
-        mapList.put(Constants.MEDICINE,testCaseObjects.getMedicineList());
-        mapList.put(Constants.SYMPTOMS,testCaseObjects.getSymptomsList());
-        mapList.put(Constants.PROVISIONAL_DIAGNOSIS,testCaseObjects.getProDiagnosisList());
-        mapList.put(Constants.DIAGNOSIS,testCaseObjects.getDiagnosisList());
-        mapList.put(Constants.INSTRUCTION,testCaseObjects.getInstructionList());
-
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+        updateSuggestions();
         if (currentTime - lastPress > 3000) {
             backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
             backPressToast.show();
@@ -176,6 +165,21 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         }
     }
 
+    public void updateSuggestions() {
+        Map<String, List<DataObj>> mapList = new HashMap<>();
+        mapList.put(HealthCareServiceEnum.MRI.getName(), testCaseObjects.getMriList());
+        mapList.put(HealthCareServiceEnum.SCAN.getName(), testCaseObjects.getScanList());
+        mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.getSonoList());
+        mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.getXrayList());
+        mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.getPathologyList());
+        mapList.put(Constants.MEDICINE, testCaseObjects.getMedicineList());
+        mapList.put(Constants.SYMPTOMS, testCaseObjects.getSymptomsList());
+        mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.getProDiagnosisList());
+        mapList.put(Constants.DIAGNOSIS, testCaseObjects.getDiagnosisList());
+        mapList.put(Constants.INSTRUCTION, testCaseObjects.getInstructionList());
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -183,6 +187,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
             loadTabs.cancel(true);
         }
     }
+
     @Override
     public void menuHeaderClick(int pos) {
         viewPager.setCurrentItem(pos);
@@ -459,6 +464,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getInstructionList().add("Drink milk every day");
         formDataObj.getInstructionList().addAll(convertToStringList(testCaseObjects.getInstructionList()));
     }
+
     private class LoadTabs extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -473,6 +479,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
             }
         }
     }
+
     private void setupViewPager() {
         initLists();
         primaryCheckupFragment = new PrimaryCheckupFragment();
@@ -480,7 +487,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
         bppf.putString("qCodeQR", codeQR);
         bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
-        bppf.putSerializable("medicalPhysical",jsonMedicalRecord);
+        bppf.putSerializable("medicalPhysical", jsonMedicalRecord);
         primaryCheckupFragment.setArguments(bppf);
         symptomsFragment = new SymptomsFragment();
         diagnosisFragment = new DiagnosisFragment();
@@ -505,12 +512,12 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<String> convertToStringList(List<DataObj> temp){
+    private ArrayList<String> convertToStringList(List<DataObj> temp) {
         ArrayList<String> strList = new ArrayList<>();
         if (null != temp && temp.size() > 0)
-        for (int i = 0; i < temp.size(); i++) {
-            strList.add(temp.get(i).getShortName());
-        }
+            for (int i = 0; i < temp.size(); i++) {
+                strList.add(temp.get(i).getShortName());
+            }
         return strList;
     }
 

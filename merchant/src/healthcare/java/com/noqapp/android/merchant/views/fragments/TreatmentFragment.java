@@ -212,14 +212,15 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
                 } else {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
-                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
-                        recyclerView_one.setLayoutManager(staggeredGridLayoutManager);
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
-                        recyclerView_one.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
+                    recyclerView_one.setLayoutManager(staggeredGridLayoutManager);
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
+                    recyclerView_one.setAdapter(customAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
                 }
@@ -290,6 +291,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
 
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMedicineList().add(new DataObj(medicineName, category,false));
+                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
                 }
             }
