@@ -73,6 +73,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             }
         });
         duration_data = new ArrayList<>();
+        duration_data.clear();
         duration_data.add("1");
         duration_data.add("2");
         duration_data.add("3");
