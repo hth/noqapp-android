@@ -83,7 +83,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
 
-    protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next,tv_skip;
+    protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next, tv_skip;
     private Chronometer chronometer;
     protected int currrentpos = 0;
     protected static AdapterCallback mAdapterCallback;
@@ -95,7 +95,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private int lastSelectedPos = -1;
     protected ManageQueueModel manageQueueModel;
     protected ArrayList<JsonTopic> topicsList;
-    protected ImageView iv_generate_token, iv_queue_history,iv_view_followup;
+    protected ImageView iv_generate_token, iv_queue_history, iv_view_followup;
     // variable to track event time
     private long mLastClickTime = 0;
 
@@ -283,7 +283,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(),jsonTopic.getJsonDataVisibility());
+                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataVisibility());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         } else {
@@ -438,14 +438,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     protected void updateUI() {
-
         final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
         queueStatusOuter = queueStatus == QueueStatusEnum.N;
         String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
-        if (TextUtils.isEmpty(cName))
+        if (TextUtils.isEmpty(cName)) {
             tv_counter_name.setText("");
-        else
+        } else {
             tv_counter_name.setText(cName);
+        }
 
         tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
                 + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
