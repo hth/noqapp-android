@@ -64,7 +64,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
             if (UserUtils.isLogin()) {
                 if (jsonMedicalRecords.size() == 0) {
-                    new MedicalRecordApiModel(this).getMedicalRecord(UserUtils.getEmail(), UserUtils.getAuth());
+                    new MedicalRecordApiModel(this).history(UserUtils.getEmail(), UserUtils.getAuth());
                     progressDialog.show();
                 }
             } else {
