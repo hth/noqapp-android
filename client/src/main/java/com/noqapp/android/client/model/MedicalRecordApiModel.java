@@ -25,13 +25,13 @@ public class MedicalRecordApiModel {
         medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);
     }
 
-    public void getMedicalRecord(String mail, String auth) {
-        medicalRecordService.getMedicalRecord(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
+    public void history(String mail, String auth) {
+        medicalRecordService.history(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Resp getMedicalRecord", String.valueOf(response.body()));
+                        Log.d("Resp history", String.valueOf(response.body()));
                         medicalRecordPresenter.medicalRecordResponse(response.body());
                     } else {
                         medicalRecordPresenter.responseErrorPresenter(response.body().getError());
@@ -47,7 +47,7 @@ public class MedicalRecordApiModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
-                Log.e("getMedicalRecord fail", t.getLocalizedMessage(), t);
+                Log.e("history fail", t.getLocalizedMessage(), t);
                 medicalRecordPresenter.responseErrorPresenter(null);
             }
         });
