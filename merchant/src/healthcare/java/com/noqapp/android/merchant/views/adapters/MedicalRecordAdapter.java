@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
@@ -94,6 +95,7 @@ public class MedicalRecordAdapter extends BaseAdapter {
                 jsonMedicalMedicine.setPharmacyCategory(PharmacyCategoryEnum.getValue(jsonMedicalMedicine.getPharmacyCategory()));
                 jsonMedicalMedicine.setDailyFrequency(DailyFrequencyEnum.getValueFromTimes(jsonMedicalMedicine.getDailyFrequency()));
                 jsonMedicalMedicine.setMedicationIntake(MedicationIntakeEnum.getValue(jsonMedicalMedicine.getMedicationIntake()));
+                jsonMedicalMedicine.setCourse(String.valueOf(DurationDaysEnum.getValueFromDesc(jsonMedicalMedicine.getCourse())));
                 temp.add(jsonMedicalMedicine);
             }
             return temp;

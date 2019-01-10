@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
 
@@ -47,7 +48,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
     private MedicalHistoryModel medicalHistoryModel;
     private SegmentedControl sc_follow_up;
-    private Button btn_submit;
+    private Button btn_submit,btn_print_pdf;
     private ListView lv_medicine;
     private MedicalRecordAdapter adapter;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
@@ -112,6 +113,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             }
         });
         btn_submit = v.findViewById(R.id.btn_submit);
+        btn_print_pdf = v.findViewById(R.id.btn_print_pdf);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,7 +189,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     }
 
     public void updateUI() {
-        MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
+        final MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
         String notAvailable = "N/A";
         tv_patient_name.setText(medicalCasePojo.getName());
         tv_address.setText(medicalCasePojo.getAddress());
@@ -235,6 +237,14 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         }
         adapter = new MedicalRecordAdapter(getActivity(), medicalCasePojo.getJsonMedicineList());
         lv_medicine.setAdapter(adapter);
+        btn_print_pdf.setVisibility(View.VISIBLE);
+        btn_print_pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
+                pdfGenerator.createPdf(medicalCasePojo);
+            }
+        });
     }
 
 
