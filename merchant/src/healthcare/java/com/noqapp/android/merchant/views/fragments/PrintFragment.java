@@ -144,35 +144,29 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     }
                     jsonMedicalRecord.setMedicalPathologies(pathologies);
                 }
+
+                ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
                 if (medicalCasePojo.getMriList().size() > 0) {
-                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
                     for (int i = 0; i < medicalCasePojo.getMriList().size(); i++) {
                         medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getMriList().get(i)));
                     }
-                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                 }
                 if (medicalCasePojo.getSonoList().size() > 0) {
-                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
                     for (int i = 0; i < medicalCasePojo.getSonoList().size(); i++) {
                         medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getSonoList().get(i)));
                     }
-                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                 }
                 if (medicalCasePojo.getScanList().size() > 0) {
-                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
                     for (int i = 0; i < medicalCasePojo.getScanList().size(); i++) {
                         medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
                     }
-                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                 }
                 if (medicalCasePojo.getXrayList().size() > 0) {
-                    ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
                     for (int i = 0; i < medicalCasePojo.getXrayList().size(); i++) {
                         medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getXrayList().get(i)));
                     }
-                    jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                 }
-
+                jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
                 //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                 //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
 
