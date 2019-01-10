@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.utils;
 
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -40,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PdfGenerator {
     private BaseFont baseFont;
@@ -65,7 +67,7 @@ public class PdfGenerator {
 
     public void createPdf(MedicalCasePojo mcp) {
         this.medicalCasePojo = mcp;
-        String fileName = new SimpleDateFormat("yyyyMMddHHmm'.pdf'").format(new Date());
+        String fileName = new SimpleDateFormat("'NoQueue_"+medicalCasePojo.getName()+"_'yyyyMMdd'.pdf'",Locale.getDefault()).format(new Date());
         String dest = getAppPath(mContext) + fileName;
         if (new File(dest).exists()) {
             new File(dest).delete();
@@ -262,15 +264,15 @@ public class PdfGenerator {
 
     private PdfPTable getInvestigationData() {
         PdfPTable table = new PdfPTable(1);
-        table.addCell(pdfPCellWithoutBorder("Pathology:", normalBoldFont));
+        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getPathologyList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder("X-ray:", normalBoldFont));
+        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getXrayList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder("MRI:", normalBoldFont));
+        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getMriList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder("SONO:", normalBoldFont));
+        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getSonoList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder("SCAN:", normalBoldFont));
+        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getScanList()), normalFont));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
