@@ -23,7 +23,8 @@
             android:label="@string/flavored_app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            tools:replace="android:label,android:allowBackup">
+            tools:replace="android:label,android:allowBackup"
+            tools:ignore="GoogleAppIndexingWarning" >
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@mipmap/notification_icon"/>
