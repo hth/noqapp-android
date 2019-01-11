@@ -6,8 +6,10 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
@@ -40,6 +42,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_col
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
@@ -147,28 +150,61 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRecord.setMedicalPathologies(pathologies);
                 }
 
-                ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+                ArrayList<JsonMedicalRadiology> mriList = new ArrayList<>();
                 if (medicalCasePojo.getMriList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getMriList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getMriList().get(i)));
+                        mriList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getMriList().get(i)));
                     }
                 }
+                ArrayList<JsonMedicalRadiology> sonoList = new ArrayList<>();
                 if (medicalCasePojo.getSonoList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getSonoList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getSonoList().get(i)));
+                        sonoList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getSonoList().get(i)));
                     }
                 }
+                ArrayList<JsonMedicalRadiology> scanList = new ArrayList<>();
                 if (medicalCasePojo.getScanList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getScanList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
+                        scanList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
                     }
                 }
+                ArrayList<JsonMedicalRadiology> xrayList = new ArrayList<>();
                 if (medicalCasePojo.getXrayList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getXrayList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getXrayList().get(i)));
+                        xrayList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getXrayList().get(i)));
                     }
                 }
-                jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
+                List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
+                if (mriList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.MRI);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+                if (sonoList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SONO);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+                if (scanList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SCAN);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+                if (xrayList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.XRAY);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+
+                jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
                 //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                 //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
 

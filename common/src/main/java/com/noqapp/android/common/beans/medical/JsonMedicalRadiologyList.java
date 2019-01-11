@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonMedicalRadiologyList extends AbstractDomain {
+public class JsonMedicalRadiologyList extends AbstractDomain implements Serializable {
 
     @JsonProperty("lc")
     private LabCategoryEnum labCategory;
