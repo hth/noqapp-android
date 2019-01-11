@@ -127,4 +127,14 @@ public class TestCaseObjects {
         this.instructionList = instructionList;
         return this;
     }
+
+
+    public ArrayList<DataObj> clearListSelection(ArrayList<DataObj> selectList) {
+        ArrayList<DataObj> temp = new ArrayList<>();
+        for (DataObj d :
+                selectList) {
+            temp.add(d.setSelect(false));
+        }
+        return temp;
+    }
 }

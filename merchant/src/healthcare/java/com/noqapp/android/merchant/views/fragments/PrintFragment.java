@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,13 +53,14 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
     private MedicalHistoryModel medicalHistoryModel;
     private SegmentedControl sc_follow_up;
-    private Button btn_submit,btn_print_pdf;
+    private Button btn_submit, btn_print_pdf;
     private ListView lv_medicine;
     private MedicalRecordAdapter adapter;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
     private ProgressDialog progressDialog;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
+    private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_path;
 
     @Nullable
     @Override
@@ -89,6 +91,13 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_followup = v.findViewById(R.id.tv_followup);
         tv_provisional_diagnosis = v.findViewById(R.id.tv_provisional_diagnosis);
         lv_medicine = v.findViewById(R.id.lv_medicine);
+
+        ll_sono = v.findViewById(R.id.ll_sono);
+        ll_scan = v.findViewById(R.id.ll_scan);
+        ll_mri = v.findViewById(R.id.ll_mri);
+        ll_xray = v.findViewById(R.id.ll_xray);
+        ll_path = v.findViewById(R.id.ll_path);
+
         sc_follow_up = v.findViewById(R.id.sc_follow_up);
         follow_up_data.clear();
         follow_up_data.add(String.valueOf(DurationDaysEnum.D1D.getValue()));
@@ -248,6 +257,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_radio_sono.setText(covertStringList2String(medicalCasePojo.getSonoList()));
         tv_radio_xray.setText(covertStringList2String(medicalCasePojo.getXrayList()));
         tv_pathology.setText(covertStringList2String(medicalCasePojo.getPathologyList()));
+        hideInvestigationViews(medicalCasePojo);
         if (null != medicalCasePojo.getRespiratory()) {
             tv_respiratory.setText(medicalCasePojo.getRespiratory());
         } else {
@@ -288,6 +298,14 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 pdfGenerator.createPdf(medicalCasePojo);
             }
         });
+    }
+
+    private void hideInvestigationViews(MedicalCasePojo medicalCasePojo) {
+        ll_mri.setVisibility(medicalCasePojo.getMriList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_scan.setVisibility(medicalCasePojo.getScanList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_sono.setVisibility(medicalCasePojo.getSonoList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_xray.setVisibility(medicalCasePojo.getXrayList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_path.setVisibility(medicalCasePojo.getPathologyList().size() == 0 ? View.GONE : View.VISIBLE);
     }
 
 

@@ -47,6 +47,15 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
         return selectedList;
     }
 
+    public ArrayList<DataObj> clearListSelection() {
+        ArrayList<DataObj> temp = new ArrayList<>();
+        for (DataObj d :
+                selectedList) {
+            temp.add(d.setSelect(false));
+        }
+        return temp;
+    }
+
     private ArrayList<DataObj> selectedList = new ArrayList<>();
     private SelectItemListAdapter selectItemListAdapter;
     private ArrayAdapter<String> actvAdapter;

@@ -245,12 +245,12 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="vertical">
 
 
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_mri"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight=".2"
                     android:orientation="vertical">
@@ -277,9 +277,9 @@
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_scan"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".2"
                     android:orientation="vertical">
 
                 <TextView
@@ -303,9 +303,9 @@
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_sono"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".2"
                     android:orientation="vertical">
 
                 <TextView
@@ -329,9 +329,9 @@
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_xray"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".2"
                     android:orientation="vertical">
 
                 <TextView
@@ -355,9 +355,9 @@
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_path"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".2"
                     android:orientation="vertical">
 
                 <TextView
