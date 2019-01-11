@@ -6,8 +6,11 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
+import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
@@ -18,6 +21,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
 
@@ -39,6 +43,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_col
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
@@ -47,7 +52,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
     private MedicalHistoryModel medicalHistoryModel;
     private SegmentedControl sc_follow_up;
-    private Button btn_submit;
+    private Button btn_submit,btn_print_pdf;
     private ListView lv_medicine;
     private MedicalRecordAdapter adapter;
     private JsonPreferredBusinessList jsonPreferredBusinessList;
@@ -86,20 +91,20 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         lv_medicine = v.findViewById(R.id.lv_medicine);
         sc_follow_up = v.findViewById(R.id.sc_follow_up);
         follow_up_data.clear();
-        follow_up_data.add("1");
-        follow_up_data.add("2");
-        follow_up_data.add("3");
-        follow_up_data.add("4");
-        follow_up_data.add("5");
-        follow_up_data.add("6");
-        follow_up_data.add("7");
-        follow_up_data.add("10");
-        follow_up_data.add("15");
-        follow_up_data.add("30");
-        follow_up_data.add("45");
-        follow_up_data.add("60");
-        follow_up_data.add("90");
-        follow_up_data.add("180");
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D1D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D2D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D3D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D4D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D5D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D6D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D7D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D10D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D15D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D1M.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D45D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D2M.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D3M.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D6M.getValue()));
         sc_follow_up.addSegments(follow_up_data);
 
         sc_follow_up.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
@@ -108,10 +113,13 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 if (isSelected) {
                     followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
                     tv_followup.setText("in " + followup + " days");
+                    MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFollowup(tv_followup.getText().toString());
+
                 }
             }
         });
         btn_submit = v.findViewById(R.id.btn_submit);
+        btn_print_pdf = v.findViewById(R.id.btn_print_pdf);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,30 +153,66 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRecord.setMedicalPathologies(pathologies);
                 }
 
-                ArrayList<JsonMedicalRadiology> medicalRadiologies = new ArrayList<>();
+                ArrayList<JsonMedicalRadiology> mriList = new ArrayList<>();
                 if (medicalCasePojo.getMriList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getMriList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getMriList().get(i)));
+                        mriList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getMriList().get(i)));
                     }
                 }
+                ArrayList<JsonMedicalRadiology> sonoList = new ArrayList<>();
                 if (medicalCasePojo.getSonoList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getSonoList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getSonoList().get(i)));
+                        sonoList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getSonoList().get(i)));
                     }
                 }
+                ArrayList<JsonMedicalRadiology> scanList = new ArrayList<>();
                 if (medicalCasePojo.getScanList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getScanList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
+                        scanList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
                     }
                 }
+                ArrayList<JsonMedicalRadiology> xrayList = new ArrayList<>();
                 if (medicalCasePojo.getXrayList().size() > 0) {
                     for (int i = 0; i < medicalCasePojo.getXrayList().size(); i++) {
-                        medicalRadiologies.add(new JsonMedicalRadiology().setName(medicalCasePojo.getXrayList().get(i)));
+                        xrayList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getXrayList().get(i)));
                     }
                 }
-                jsonMedicalRecord.setMedicalRadiologies(medicalRadiologies);
+                List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
+                if (mriList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("5bf4e1c4b85cb7234d420ecd");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.MRI);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+                if (sonoList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("5c00cbfc62575d06fbca1368");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SONO);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+                if (scanList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("5c00cbfc62575d06fbca1368");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SCAN);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+                if (xrayList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    jsonMedicalRadiologyList.setBizStoreId("5bf4e1c4b85cb7234d420ecd");
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.XRAY);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
+
+                jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
                 //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                 //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
+
+                jsonMedicalRecord.setStoreIdPharmacy("5b7a7079783cea2a6c2556fa");
+                jsonMedicalRecord.setStoreIdPathology("5c00cbfc62575d06fbca1368");
 
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
@@ -187,7 +231,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     }
 
     public void updateUI() {
-        MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
+        final MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
+        medicalCasePojo.setFollowup(tv_followup.getText().toString());
         String notAvailable = "N/A";
         tv_patient_name.setText(medicalCasePojo.getName());
         tv_address.setText(medicalCasePojo.getAddress());
@@ -235,6 +280,14 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         }
         adapter = new MedicalRecordAdapter(getActivity(), medicalCasePojo.getJsonMedicineList());
         lv_medicine.setAdapter(adapter);
+        btn_print_pdf.setVisibility(View.VISIBLE);
+        btn_print_pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
+                pdfGenerator.createPdf(medicalCasePojo);
+            }
+        });
     }
 
 

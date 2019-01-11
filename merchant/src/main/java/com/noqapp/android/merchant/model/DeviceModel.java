@@ -18,6 +18,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+
 /**
  * User: hitender
  * Date: 4/2/17 6:40 PM
@@ -99,6 +102,11 @@ public class DeviceModel {
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
                 Log.e(TAG, "isSupportedAppVersion " + t.getLocalizedMessage(), t);
+                if(t instanceof ConnectException){
+                    Log.e("Code Red :", "Connection refused. Please try again.");
+                }else if(t instanceof SocketTimeoutException){
+                    Log.e("Code Orange :", "Socket Time out. Please try again.");
+                }
                 appBlacklistPresenter.appBlacklistResponse();
             }
         });

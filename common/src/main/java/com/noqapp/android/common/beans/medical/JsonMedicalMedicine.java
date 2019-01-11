@@ -46,6 +46,17 @@ public class JsonMedicalMedicine extends AbstractDomain implements Serializable 
 
     private boolean isFavourite = false;
 
+    public JsonMedicalMedicine() {
+    }
+
+    public JsonMedicalMedicine(String name, String dailyFrequency, String course, String medicationIntake, String pharmacyCategory) {
+        this.name = name;
+        this.dailyFrequency = dailyFrequency;
+        this.course = course;
+        this.medicationIntake = medicationIntake;
+        this.pharmacyCategory = pharmacyCategory;
+    }
+
     public String getName() {
         return name;
     }

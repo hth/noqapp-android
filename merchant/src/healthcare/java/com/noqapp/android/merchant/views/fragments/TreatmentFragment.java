@@ -25,6 +25,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_col
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
@@ -90,22 +91,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 clearOptionSelection();
             }
         });
-        duration_data = new ArrayList<>();
-        duration_data.clear();
-        duration_data.add("1");
-        duration_data.add("2");
-        duration_data.add("3");
-        duration_data.add("4");
-        duration_data.add("5");
-        duration_data.add("6");
-        duration_data.add("7");
-        duration_data.add("10");
-        duration_data.add("15");
-        duration_data.add("30");
-        duration_data.add("45");
-        duration_data.add("60");
-        duration_data.add("90");
-        duration_data.add("180");
+        duration_data = DurationDaysEnum.asListOfDescription();
         sc_duration.addSegments(duration_data);
 
         sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {

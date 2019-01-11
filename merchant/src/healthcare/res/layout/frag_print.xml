@@ -491,23 +491,53 @@
                 segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
 
 
-        <Button
-                android:id="@+id/btn_submit"
+        <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/button_drawable"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:paddingLeft="90dp"
-                android:paddingRight="90dp"
-                android:text="@string/submit"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_fourteen"/>
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                >
+
+            <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_drawable"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="90dp"
+                    android:paddingRight="90dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_fourteen"/>
+
+            <Button
+                    android:id="@+id/btn_print_pdf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_drawable"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="90dp"
+                    android:paddingRight="90dp"
+                    android:text="Print PDF"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorMobile"
+                    android:visibility="gone"
+                    android:textSize="@dimen/text_size_fourteen"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>

@@ -9,7 +9,7 @@ public class DataObj implements Comparable<DataObj> {
     private String medicineDuration;
     private String medicineFrequency;
     private String additionalNotes;
-    private boolean isNewlyAdded= false;
+    private boolean isNewlyAdded = false;
 
     public DataObj() {
     }
@@ -52,16 +52,7 @@ public class DataObj implements Comparable<DataObj> {
         this.fullName = fullName;
         return this;
     }
-
-    public boolean isSelect() {
-        return isSelect;
-    }
-
-    public DataObj setSelect(boolean select) {
-        isSelect = select;
-        return this;
-    }
-
+    
     public String getCategory() {
         return category;
     }
@@ -71,19 +62,13 @@ public class DataObj implements Comparable<DataObj> {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "DataObj{" +
-                "shortName='" + shortName + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", category='" + category + '\'' +
-                ", isSelect=" + isSelect +
-                ", medicineTiming='" + medicineTiming + '\'' +
-                ", medicineDuration='" + medicineDuration + '\'' +
-                ", medicineFrequency='" + medicineFrequency + '\'' +
-                ", additionalNotes='" + additionalNotes + '\'' +
-                ", isNewlyAdded=" + isNewlyAdded +
-                '}';
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public DataObj setSelect(boolean select) {
+        isSelect = select;
+        return this;
     }
 
     public String getMedicineTiming() {
@@ -156,5 +141,20 @@ public class DataObj implements Comparable<DataObj> {
         }
 
         return ret.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "DataObj{" +
+                "shortName='" + shortName + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", category='" + category + '\'' +
+                ", isSelect=" + isSelect +
+                ", medicineTiming='" + medicineTiming + '\'' +
+                ", medicineDuration='" + medicineDuration + '\'' +
+                ", medicineFrequency='" + medicineFrequency + '\'' +
+                ", additionalNotes='" + additionalNotes + '\'' +
+                ", isNewlyAdded=" + isNewlyAdded +
+                '}';
     }
 }

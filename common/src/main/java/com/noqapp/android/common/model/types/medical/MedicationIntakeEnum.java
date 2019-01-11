@@ -8,6 +8,7 @@ import java.util.List;
  * 2019-01-03 13:29
  */
 public enum MedicationIntakeEnum {
+    AT("AT", "Any Time"),
     BF("BF", "Before Food"),
     AF("AF", "After Food"),
     ES("ES", "Empty Stomach");
@@ -44,6 +45,8 @@ public enum MedicationIntakeEnum {
     public static String getValue(String input) {
         try {
             switch (input) {
+                case "Any Time":
+                    return "AT";
                 case "Before Food":
                     return "BF";
                 case "After Food":

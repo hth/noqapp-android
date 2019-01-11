@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({
@@ -45,7 +46,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("ka")
     private String knownAllergies;
 
-    @JsonProperty("pe")
+    @JsonProperty("ps")
     private JsonMedicalPhysical medicalPhysical;
 
     @JsonProperty("cc")
@@ -60,26 +61,23 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("dd")
     private String provisionalDifferentialDiagnosis;
 
-    @JsonProperty("le")
-    private List<JsonMedicalPathology> medicalPathologies;
+    @JsonProperty("pa")
+    private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
 
-    @JsonProperty("re")
-    private List<JsonMedicalRadiology> medicalRadiologies;
+    @JsonProperty("rs")
+    private List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
 
     @JsonProperty("me")
-    private List<JsonMedicalMedicine> medicalMedicines;
+    private List<JsonMedicalMedicine> medicalMedicines = new ArrayList<>();
 
     @JsonProperty("di")
     private String diagnosis;
 
     @JsonProperty("sf")
     private String storeIdPharmacy;
-
-    @JsonProperty("sr")
-    private String storeIdRadiology;
 
     @JsonProperty("sp")
     private String storeIdPathology;
@@ -105,10 +103,8 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("n")
     private String businessName;
 
-    /**
-     * Convert to Category Name instead of Id.
-     */
-    @JsonProperty("bc")
+    /** Convert to Category Name instead of Id. */
+    @JsonProperty ("bc")
     private String bizCategoryName;
 
     @JsonProperty("u")
@@ -237,12 +233,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public List<JsonMedicalRadiology> getMedicalRadiologies() {
-        return medicalRadiologies;
+    public List<JsonMedicalRadiologyList> getMedicalRadiologyLists() {
+        return medicalRadiologyLists;
     }
 
-    public JsonMedicalRecord setMedicalRadiologies(List<JsonMedicalRadiology> medicalRadiologies) {
-        this.medicalRadiologies = medicalRadiologies;
+    public JsonMedicalRecord setMedicalRadiologyLists(List<JsonMedicalRadiologyList> medicalRadiologyLists) {
+        this.medicalRadiologyLists = medicalRadiologyLists;
         return this;
     }
 
@@ -270,15 +266,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setStoreIdPharmacy(String storeIdPharmacy) {
         this.storeIdPharmacy = storeIdPharmacy;
-        return this;
-    }
-
-    public String getStoreIdRadiology() {
-        return storeIdRadiology;
-    }
-
-    public JsonMedicalRecord setStoreIdRadiology(String storeIdRadiology) {
-        this.storeIdRadiology = storeIdRadiology;
         return this;
     }
 
@@ -419,30 +406,39 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonMedicalRecord{" +
-                "businessType=" + businessType +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", chiefComplain='" + chiefComplain + '\'' +
-                ", pastHistory='" + pastHistory + '\'' +
-                ", familyHistory='" + familyHistory + '\'' +
-                ", knownAllergies='" + knownAllergies + '\'' +
-                ", medicalPhysical=" + medicalPhysical +
-                ", clinicalFinding='" + clinicalFinding + '\'' +
-                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", medicalPathologies=" + medicalPathologies +
-                ", pathologyTestResult='" + pathologyTestResult + '\'' +
-                ", medicalRadiologies=" + medicalRadiologies +
-                ", medicalMedicines=" + medicalMedicines +
-                ", planToPatient='" + planToPatient + '\'' +
-                ", followUpInDays='" + followUpInDays + '\'' +
-                ", diagnosedById='" + diagnosedById + '\'' +
-                ", recordAccess=" + recordAccess +
-                ", businessName='" + businessName + '\'' +
-                ", bizCategoryName='" + bizCategoryName + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", codeQR='" + codeQR + '\'' +
-                ", formVersion=" + formVersion +
-                ", recordReferenceId='" + recordReferenceId + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonMedicalRecord{");
+        sb.append("businessType=").append(businessType);
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", pastHistory='").append(pastHistory).append('\'');
+        sb.append(", familyHistory='").append(familyHistory).append('\'');
+        sb.append(", knownAllergies='").append(knownAllergies).append('\'');
+        sb.append(", medicalPhysical=").append(medicalPhysical);
+        sb.append(", chiefComplain='").append(chiefComplain).append('\'');
+        sb.append(", examination='").append(examination).append('\'');
+        sb.append(", clinicalFinding='").append(clinicalFinding).append('\'');
+        sb.append(", provisionalDifferentialDiagnosis='").append(provisionalDifferentialDiagnosis).append('\'');
+        sb.append(", medicalPathologies=").append(medicalPathologies);
+        sb.append(", pathologyTestResult='").append(pathologyTestResult).append('\'');
+        sb.append(", medicalRadiologyLists=").append(medicalRadiologyLists);
+        sb.append(", medicalMedicines=").append(medicalMedicines);
+        sb.append(", diagnosis='").append(diagnosis).append('\'');
+        sb.append(", storeIdPharmacy='").append(storeIdPharmacy).append('\'');
+        sb.append(", storeIdPathology='").append(storeIdPathology).append('\'');
+        sb.append(", planToPatient='").append(planToPatient).append('\'');
+        sb.append(", followUpInDays='").append(followUpInDays).append('\'');
+        sb.append(", noteForPatient='").append(noteForPatient).append('\'');
+        sb.append(", noteToDiagnoser='").append(noteToDiagnoser).append('\'');
+        sb.append(", diagnosedById='").append(diagnosedById).append('\'');
+        sb.append(", recordAccess=").append(recordAccess);
+        sb.append(", businessName='").append(businessName).append('\'');
+        sb.append(", bizCategoryName='").append(bizCategoryName).append('\'');
+        sb.append(", createDate='").append(createDate).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", formVersion=").append(formVersion);
+        sb.append(", recordReferenceId='").append(recordReferenceId).append('\'');
+        sb.append(", diagnosedByDisplayName='").append(diagnosedByDisplayName).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }
