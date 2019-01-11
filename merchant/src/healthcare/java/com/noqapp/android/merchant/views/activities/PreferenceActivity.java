@@ -185,11 +185,11 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             finish();
         }
         Map<String, List<DataObj>> mapList = new HashMap<>();
-        mapList.put(HealthCareServiceEnum.MRI.getName(),preferenceMriFragment.getSelectedList());
-        mapList.put(HealthCareServiceEnum.SCAN.getName(),preferenceScanFragment.getSelectedList());
-        mapList.put(HealthCareServiceEnum.SONO.getName(),preferenceSonoFragment.getSelectedList());
-        mapList.put(HealthCareServiceEnum.XRAY.getName(),preferenceXrayFragment.getSelectedList());
-        mapList.put(HealthCareServiceEnum.PATH.getName(),preferencePathFragment.getSelectedList());
+        mapList.put(HealthCareServiceEnum.MRI.getName(),preferenceMriFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.SCAN.getName(),preferenceScanFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.SONO.getName(),preferenceSonoFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.XRAY.getName(),preferenceXrayFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.PATH.getName(),preferencePathFragment.clearListSelection());
         mapList.put(Constants.MEDICINE,medicineFragment.getSelectedList());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);

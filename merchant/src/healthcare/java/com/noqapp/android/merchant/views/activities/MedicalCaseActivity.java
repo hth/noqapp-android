@@ -167,16 +167,16 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
     public void updateSuggestions() {
         Map<String, List<DataObj>> mapList = new HashMap<>();
-        mapList.put(HealthCareServiceEnum.MRI.getName(), testCaseObjects.getMriList());
-        mapList.put(HealthCareServiceEnum.SCAN.getName(), testCaseObjects.getScanList());
-        mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.getSonoList());
-        mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.getXrayList());
-        mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.getPathologyList());
-        mapList.put(Constants.MEDICINE, testCaseObjects.getMedicineList());
-        mapList.put(Constants.SYMPTOMS, testCaseObjects.getSymptomsList());
-        mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.getProDiagnosisList());
-        mapList.put(Constants.DIAGNOSIS, testCaseObjects.getDiagnosisList());
-        mapList.put(Constants.INSTRUCTION, testCaseObjects.getInstructionList());
+        mapList.put(HealthCareServiceEnum.MRI.getName(), testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
+        mapList.put(HealthCareServiceEnum.SCAN.getName(), testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
+        mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
+        mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
+        mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
+        mapList.put(Constants.MEDICINE, testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
+        mapList.put(Constants.SYMPTOMS, testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+        mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+        mapList.put(Constants.DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+        mapList.put(Constants.INSTRUCTION, testCaseObjects.clearListSelection(testCaseObjects.getInstructionList()));
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
     }
 
@@ -239,10 +239,10 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 //        formDataObj.getMriList().add(new DataObj("VSC (obst) c", false));
 //        formDataObj.getMriList().add(new DataObj("Color Doppler", false));
         // Add selected list
-        formDataObj.getMriList().addAll(testCaseObjects.getMriList());
-        formDataObj.getScanList().addAll(testCaseObjects.getScanList());
-        formDataObj.getSonoList().addAll(testCaseObjects.getSonoList());
-        formDataObj.getXrayList().addAll(testCaseObjects.getXrayList());
+        formDataObj.getMriList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
+        formDataObj.getScanList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
+        formDataObj.getSonoList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
+        formDataObj.getXrayList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
         //
 
 
@@ -253,7 +253,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 //        formDataObj.getPathologyList().add(new DataObj("Hb Electrophoresis", false));
 //        formDataObj.getPathologyList().add(new DataObj("BS 2hrs after 75gm of glucos", false));
         // Add selected list
-        formDataObj.getPathologyList().addAll(testCaseObjects.getPathologyList());
+        formDataObj.getPathologyList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
         //
 
         formDataObj.getSymptomsList().clear();
@@ -297,7 +297,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getSymptomsList().add(new DataObj("PAIN AT ILIAC REGION", "PAIN AT ILIAC REGION", "", false));
         formDataObj.getSymptomsList().add(new DataObj("POST MENOPAUSAL SYMPTOMS", "POST MENOPAUSAL SYMPTOMS", "", false));
         formDataObj.getSymptomsList().add(new DataObj("HEAVINESS IN LOWER ABDOMEN", "HEAVINESS IN LOWER ABDOMEN", "", false));
-        formDataObj.getSymptomsList().addAll(testCaseObjects.getSymptomsList());
+        formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
 
 
         formDataObj.getObstreticsList().clear();
@@ -359,7 +359,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getDiagnosisList().add(new DataObj("OLIGOHYDRAMNIOS", "OLIGOHYDRAMNIOS", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 1ST TRIMESTER", "MTP 1", "", false));
         formDataObj.getDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 2ND TRIMESTER", "MTP 2", "", false));
-        formDataObj.getDiagnosisList().addAll(testCaseObjects.getDiagnosisList());
+        formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
 
 //
 //        formDataObj.getDiagnosisList().add(new DataObj("Hand foot and mouth", false));
@@ -418,7 +418,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("OLIGOHYDRAMNIOS", "OLIGOHYDRAMNIOS", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 1ST TRIMESTER", "MTP 1", "", false));
         formDataObj.getProvisionalDiagnosisList().add(new DataObj("MEDICAL TERMINATION OF PREGNANCY: 2ND TRIMESTER", "MTP 2", "", false));
-        formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.getProDiagnosisList());
+        formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
 
 //        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Hand foot and mouth", false));
 //        formDataObj.getProvisionalDiagnosisList().add(new DataObj("Pro Acute Gastritis", false));
@@ -447,7 +447,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getMedicineList().add(new DataObj("Cap  Fluoride", PharmacyCategoryEnum.CA.getDescription(), false));
 
         // Add selected list
-        formDataObj.getMedicineList().addAll(testCaseObjects.getMedicineList());
+        formDataObj.getMedicineList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
         //
 
         formDataObj.getInstructionList().clear();
