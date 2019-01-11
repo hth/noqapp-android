@@ -52,7 +52,7 @@ public class DataObj implements Comparable<DataObj> {
         this.fullName = fullName;
         return this;
     }
-    
+
     public String getCategory() {
         return category;
     }
