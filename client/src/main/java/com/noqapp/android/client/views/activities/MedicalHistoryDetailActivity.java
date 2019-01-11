@@ -7,6 +7,7 @@ import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
@@ -145,11 +146,13 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 ll_investigation_pathology.addView(getView(jsonMedicalRecord.getMedicalPathologies().get(i).getName()));
             }
         }
-        if (jsonMedicalRecord.getMedicalRadiologies().size() == 0)
+        if (jsonMedicalRecord.getMedicalRadiologyLists().size() == 0)
             ll_radiology.setVisibility(View.GONE);
         else {
-            for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologies().size(); i++) {
-                ll_investigation_radiology.addView(getView(jsonMedicalRecord.getMedicalRadiologies().get(i).getName()));
+            for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
+                List<JsonMedicalRadiology> radioList = jsonMedicalRecord.getMedicalRadiologyLists().get(i).getJsonMedicalRadiologies();
+                for (int j=0; j<radioList.size();j++)
+                ll_investigation_radiology.addView(getView(radioList.get(i).getName()));
             }
         }
     }
