@@ -518,13 +518,31 @@
                     android:layout_height="wrap_content"/>
         </RelativeLayout>
 
-        <ListView
-                android:id="@+id/listview"
+        <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:divider="@null"
-                android:layout_margin="5dp"/>
+                android:layout_height="match_parent">
+
+            <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:divider="@null"
+                    android:layout_margin="5dp"/>
+
+            <TextView
+                    android:id="@+id/tv_empty_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textSize="14sp"
+                    android:background="@android:color/white"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    android:text="Medical history not created for this patient yet :(."/>
+
+        </FrameLayout>
 
     </LinearLayout>
 </LinearLayout>

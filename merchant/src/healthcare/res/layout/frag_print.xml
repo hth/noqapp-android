@@ -259,7 +259,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Radiology >> MRI:"
+                        android:text="MRI:"
                         android:textSize="16sp"
                         android:padding="10dp"/>
 
@@ -285,7 +285,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Radiology >> SCAN:"
+                        android:text="SCAN:"
                         android:textSize="16sp"
                         android:padding="10dp"/>
 
@@ -311,7 +311,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Radiology >> SONO:"
+                        android:text="SONO:"
                         android:textSize="16sp"
                         android:padding="10dp"/>
 
@@ -337,7 +337,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Radiology >> X-RAY:"
+                        android:text="X-RAY:"
                         android:textSize="16sp"
                         android:padding="10dp"/>
 

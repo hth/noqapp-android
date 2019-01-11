@@ -53,6 +53,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     private final String notAvailable = "N/A";
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private JsonProfile jsonProfile;
+    private TextView tv_empty_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         tv_height = findViewById(R.id.tv_height);
         tv_bp = findViewById(R.id.tv_bp);
         tv_respiration = findViewById(R.id.tv_respiration);
+
+        tv_empty_list = findViewById(R.id.tv_empty_list);
         TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
         tv_start_diagnosis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +171,9 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         Collections.reverse(jsonMedicalRecords);
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
         listview.setAdapter(adapter);
+        if(null == jsonMedicalRecords ||jsonMedicalRecords.size() == 0){
+            tv_empty_list.setVisibility(View.VISIBLE);
+        }
         dismissProgress();
     }
 

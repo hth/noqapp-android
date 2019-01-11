@@ -69,22 +69,22 @@ public class LabTestsFragment extends Fragment {
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList().size()), LinearLayoutManager.HORIZONTAL);
         rcv_mri.setLayoutManager(staggeredGridLayoutManager);
-        mriAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList(),R.drawable.bg_unselect_mri);
+        mriAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
         rcv_mri.setAdapter(mriAdapter);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList().size()), LinearLayoutManager.HORIZONTAL);
         rcv_scan.setLayoutManager(staggeredGridLayoutManager1);
-        scanAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList(),R.drawable.bg_unselect_scan);
+        scanAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
         rcv_scan.setAdapter(scanAdapter);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager2 = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList().size()), LinearLayoutManager.HORIZONTAL);
         rcv_sono.setLayoutManager(staggeredGridLayoutManager2);
-        sonoAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList(),R.drawable.bg_unselect_sono);
+        sonoAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList());
         rcv_sono.setAdapter(sonoAdapter);
 
         StaggeredGridLayoutManager staggeredGridLayoutManager3 = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList().size()), LinearLayoutManager.HORIZONTAL);
         rcv_xray.setLayoutManager(staggeredGridLayoutManager3);
-        xrayAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList(),R.drawable.bg_unselect_xray);
+        xrayAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList());
         rcv_xray.setAdapter(xrayAdapter);
 
 
@@ -199,7 +199,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_sono.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList(),R.drawable.bg_unselect_sono);
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList());
                         rcv_sono.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
                     }else if(selectionPos == 1){
@@ -209,7 +209,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_mri.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList(),R.drawable.bg_unselect_mri);
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
                         rcv_mri.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
                     }else if(selectionPos == 2){
@@ -219,7 +219,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_scan.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList(),R.drawable.bg_unselect_scan);
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
                         rcv_scan.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
                     }else{
@@ -229,7 +229,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
                         rcv_xray.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList(),R.drawable.bg_unselect_xray);
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList());
                         rcv_xray.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
                     }
