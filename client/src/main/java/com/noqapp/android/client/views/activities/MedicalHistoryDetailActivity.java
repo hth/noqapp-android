@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
@@ -10,6 +9,8 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
+
+import org.apache.commons.lang3.StringUtils;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,13 +22,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
 public class MedicalHistoryDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history_details);
-
 
         TextView tv_diagnosed_by = findViewById(R.id.tv_diagnosed_by);
         TextView tv_business_name = findViewById(R.id.tv_business_name);
@@ -81,28 +80,28 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
         tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
 
-        if (tv_complaints.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_complaints.getText())) {
             ll_complaints.setVisibility(View.GONE);
         }
-        if (tv_past_history.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_past_history.getText())) {
             ll_past_history.setVisibility(View.GONE);
         }
-        if (tv_family_history.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_family_history.getText())) {
             ll_family_history.setVisibility(View.GONE);
         }
-        if (tv_known_allergy.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_known_allergy.getText())) {
             ll_known_allergies.setVisibility(View.GONE);
         }
-        if (tv_clinical_finding.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_clinical_finding.getText())) {
             ll_clinical_finding.setVisibility(View.GONE);
         }
-        if (tv_provisional.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_provisional.getText())) {
             ll_provisional.setVisibility(View.GONE);
         }
-        if (tv_instruction.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_instruction.getText())) {
             ll_instruction.setVisibility(View.GONE);
         }
-        if (tv_followup.getText().toString().equals("")) {
+        if (StringUtils.isBlank(tv_followup.getText())) {
             ll_followup.setVisibility(View.GONE);
         }
         JsonMedicalPhysical jsonMedicalPhysicalExaminations = jsonMedicalRecord.getMedicalPhysical();
@@ -110,49 +109,46 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         List<JsonMedicalMedicine> medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
         MedicalRecordAdapter adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
-        if (medicalRecordList.size() == 0)
+        if (0 == medicalRecordList.size()) {
             ll_medication.setVisibility(View.GONE);
+        }
+
         for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
             String label = "";
             switch (physicalExam) {
                 case TE:
-                    label = physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getTemperature();
+                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
                     break;
                 case BP:
-                    label = physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
+                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
                     break;
                 case PL:
-                    label = physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getPulse();
+                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
                     break;
                 case OX:
-                    label = physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getOxygen();
+                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
                     break;
                 case WT:
-                    label = physicalExam.getDescription() + ": "
-                            + jsonMedicalPhysicalExaminations.getWeight();
+                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
                     break;
             }
-
             ll_physical.addView(getView(label));
         }
-        if (jsonMedicalRecord.getMedicalPathologies().size() == 0)
+        if (jsonMedicalRecord.getMedicalPathologies().size() == 0) {
             ll_pathology.setVisibility(View.GONE);
-        else {
+        } else {
             for (int i = 0; i < jsonMedicalRecord.getMedicalPathologies().size(); i++) {
                 ll_investigation_pathology.addView(getView(jsonMedicalRecord.getMedicalPathologies().get(i).getName()));
             }
         }
-        if (jsonMedicalRecord.getMedicalRadiologyLists().size() == 0)
+        if (jsonMedicalRecord.getMedicalRadiologyLists().size() == 0) {
             ll_radiology.setVisibility(View.GONE);
-        else {
+        } else {
             for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
                 List<JsonMedicalRadiology> radioList = jsonMedicalRecord.getMedicalRadiologyLists().get(i).getJsonMedicalRadiologies();
-                for (int j=0; j<radioList.size();j++)
-                ll_investigation_radiology.addView(getView(radioList.get(i).getName()));
+                for (JsonMedicalRadiology jsonMedicalRadiology : radioList) {
+                    ll_investigation_radiology.addView(getView(jsonMedicalRadiology.getName()));
+                }
             }
         }
     }
