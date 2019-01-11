@@ -8,6 +8,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
@@ -90,20 +91,20 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         lv_medicine = v.findViewById(R.id.lv_medicine);
         sc_follow_up = v.findViewById(R.id.sc_follow_up);
         follow_up_data.clear();
-        follow_up_data.add("1");
-        follow_up_data.add("2");
-        follow_up_data.add("3");
-        follow_up_data.add("4");
-        follow_up_data.add("5");
-        follow_up_data.add("6");
-        follow_up_data.add("7");
-        follow_up_data.add("10");
-        follow_up_data.add("15");
-        follow_up_data.add("30");
-        follow_up_data.add("45");
-        follow_up_data.add("60");
-        follow_up_data.add("90");
-        follow_up_data.add("180");
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D1D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D2D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D3D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D4D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D5D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D6D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D7D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D10D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D15D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D1M.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D45D.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D2M.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D3M.getValue()));
+        follow_up_data.add(String.valueOf(DurationDaysEnum.D6M.getValue()));
         sc_follow_up.addSegments(follow_up_data);
 
         sc_follow_up.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
@@ -177,28 +178,28 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
                 if (mriList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setBizStoreId("5bf4e1c4b85cb7234d420ecd");
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.MRI);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 if (sonoList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setBizStoreId("5c00cbfc62575d06fbca1368");
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SONO);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 if (scanList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setBizStoreId("5c00cbfc62575d06fbca1368");
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SCAN);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 if (xrayList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("");
+                    jsonMedicalRadiologyList.setBizStoreId("5bf4e1c4b85cb7234d420ecd");
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.XRAY);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
@@ -207,6 +208,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
                 //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                 //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
+
+                jsonMedicalRecord.setStoreIdPharmacy("5b7a7079783cea2a6c2556fa");
+                jsonMedicalRecord.setStoreIdPathology("5c00cbfc62575d06fbca1368");
 
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
