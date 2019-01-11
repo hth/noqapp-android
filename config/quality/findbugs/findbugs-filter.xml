@@ -16,11 +16,7 @@
     </Match>
 
     <Match>
-        <Package name="com.receiptofi.receiptapp.model" />
-    </Match>
-
-    <Match>
-        <Package name="com.receiptofi.receiptapp.fragments" />
+        <Package name="com.noqapp.android" />
     </Match>
 
 </FindBugsFilter>
