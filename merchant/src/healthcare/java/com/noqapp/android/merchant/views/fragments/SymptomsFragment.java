@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -72,22 +73,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 clearOptionSelection();
             }
         });
-        duration_data = new ArrayList<>();
-        duration_data.clear();
-        duration_data.add("1");
-        duration_data.add("2");
-        duration_data.add("3");
-        duration_data.add("4");
-        duration_data.add("5");
-        duration_data.add("6");
-        duration_data.add("7");
-        duration_data.add("10");
-        duration_data.add("15");
-        duration_data.add("30");
-        duration_data.add("45");
-        duration_data.add("60");
-        duration_data.add("90");
-        duration_data.add("180");
+        duration_data =  DurationDaysEnum.asListOfDescription();
         sc_duration.addSegments(duration_data);
 
         sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
@@ -96,7 +82,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 if (isSelected) {
                     no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
                     //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
-                    tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days + " days");
+                    tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
                     if(null != dataObj)
                         dataObj.setAdditionalNotes(no_of_days);
                 }
@@ -204,7 +190,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             // Pre fill the data
             sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getAdditionalNotes()));
             no_of_days = dataObj.getAdditionalNotes();
-            tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days + " days");
+            tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
         }else{
             sc_duration.clearSelection();
             tv_output.setText("");

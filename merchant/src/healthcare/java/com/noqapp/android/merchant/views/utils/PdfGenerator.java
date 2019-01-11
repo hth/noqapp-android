@@ -13,6 +13,7 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -29,16 +30,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -56,9 +62,9 @@ public class PdfGenerator {
         this.mContext = mContext;
         try {
             baseFont = BaseFont.createFont("assets/fonts/opensan.ttf", "UTF-8", BaseFont.EMBEDDED);
-            normalFont = new Font(baseFont, 8.0f, Font.NORMAL, BaseColor.BLACK);
-            normalBoldFont = new Font(baseFont, 8.0f, Font.BOLD, BaseColor.BLACK);
-            normalBigFont = new Font(baseFont, 10.0f, Font.BOLD, BaseColor.BLACK);
+            normalFont = new Font(baseFont, 9.0f, Font.NORMAL, BaseColor.BLACK);
+            normalBoldFont = new Font(baseFont, 9.0f, Font.BOLD, BaseColor.BLACK);
+            normalBigFont = new Font(baseFont, 11.0f, Font.BOLD, BaseColor.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +73,7 @@ public class PdfGenerator {
 
     public void createPdf(MedicalCasePojo mcp) {
         this.medicalCasePojo = mcp;
-        String fileName = new SimpleDateFormat("'NoQueue_"+medicalCasePojo.getName()+"_'yyyyMMdd'.pdf'",Locale.getDefault()).format(new Date());
+        String fileName = new SimpleDateFormat("'NoQueue_" + medicalCasePojo.getName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         String dest = getAppPath(mContext) + fileName;
         if (new File(dest).exists()) {
             new File(dest).delete();
@@ -87,14 +93,27 @@ public class PdfGenerator {
             document.addCreator("Chandra B Sharma");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
-//            Font titleFont = new Font(baseFont, 12.0f, Font.NORMAL, BaseColor.BLACK);
-//            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-//            Paragraph titleParagraph = new Paragraph();
-//            titleParagraph.add(titleChunk);
-//            titleParagraph.add(glue);
-//            titleParagraph.add("SSD Hospital");
-//            document.add(titleParagraph);
-//            addVerticalSpace();
+
+            try {
+                // get input stream
+                InputStream ims = mContext.getAssets().open("logo.png");
+                Bitmap bmp = BitmapFactory.decodeStream(ims);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                Image image = Image.getInstance(stream.toByteArray());
+                image.scaleToFit(100, 30);
+
+                Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+                Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+                Paragraph titleParagraph = new Paragraph();
+                titleParagraph.add(titleChunk);
+                titleParagraph.add(glue);
+                titleParagraph.add(new Chunk(image, 0, -24));
+                document.add(titleParagraph);
+                addVerticalSpace();
+            } catch (IOException ex) {
+                return;
+            }
 //
 //
 //            Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
@@ -105,12 +124,12 @@ public class PdfGenerator {
 //            document.add(degreeParagraph);
 
 
-            Font titleFont = new Font(baseFont, 12.0f, Font.NORMAL, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-            Paragraph titleParagraph = new Paragraph();
-            titleParagraph.add(titleChunk);
-            document.add(titleParagraph);
-            addVerticalSpace();
+//            Font titleFont = new Font(baseFont, 12.0f, Font.NORMAL, BaseColor.BLACK);
+//            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+//            Paragraph titleParagraph = new Paragraph();
+//            titleParagraph.add(titleChunk);
+//            document.add(titleParagraph);
+//            addVerticalSpace();
 
 
             Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
@@ -118,11 +137,10 @@ public class PdfGenerator {
             degreeParagraph.add(degreeChunk);
             document.add(degreeParagraph);
 
-            Chunk hospitalChunk = new Chunk("SSD Hospital, Koparkhairane, Navi Mumbai", normalFont);
-            Paragraph hospitalParagraph = new Paragraph();
-            hospitalParagraph.add(hospitalChunk);
-            document.add(hospitalParagraph);
-
+            Paragraph hospital = new Paragraph();
+            hospital.add(new Chunk("SSD Hospital", normalBoldFont));
+            hospital.add(new Chunk(", Koparkhairane, Navi Mumbai", normalFont));
+            document.add(hospital);
 
             // LINE SEPARATOR
             LineSeparator lineSeparator = new LineSeparator();
@@ -179,15 +197,28 @@ public class PdfGenerator {
             document.add(paragraphInstructionValue);
             document.add(addVerticalSpace());
 
-            Chunk chunkFollowup = new Chunk("Follow up: 22/Jan/19", normalBigFont);
-            Paragraph paragraphFollowup = new Paragraph(chunkFollowup);
-            document.add(paragraphFollowup);
+
+            Paragraph followup = new Paragraph();
+            followup.add(new Chunk("Follow up: ", normalBigFont));
+            followup.add(new Chunk(medicalCasePojo.getFollowup(), normalFont));
+            document.add(followup);
+
+
             document.add(addVerticalSpace());
 
+            Date c = Calendar.getInstance().getTime();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault());
+            String formattedDate = df.format(c);
+
+
+            Paragraph p_sign = new Paragraph("Signature: ");
+            p_sign.add(new Chunk(new LineSeparator()));
+            p_sign.add("                                                                   ");
+            p_sign.add("Date: "+ formattedDate);
+            document.add(p_sign);
             document.close();
 
-            Toast.makeText(mContext, "Created... :)", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(mContext, "Report generated successfully... :)", Toast.LENGTH_SHORT).show();
             openFile(mContext, new File(dest));
 
         } catch (IOException | DocumentException ie) {
@@ -248,9 +279,9 @@ public class PdfGenerator {
         try {
             table.addCell(pdfPCellWithoutBorder("Symptoms:", normalBigFont, 5));
             table.addCell(pdfPCellWithoutBorder("Examination:", normalBigFont, 5));
-            table.addCell(pdfPCellWithoutBorder("Pro Diagnosis", normalBigFont, 5));
+            table.addCell(pdfPCellWithoutBorder("Provisional Diagnosis", normalBigFont, 5));
             table.addCell(pdfPCellWithoutBorder(medicalCasePojo.getSymptoms(), normalFont));
-            table.addCell(pdfPCellWithoutBorder(getExamination(), normalFont));
+            table.addCell(getExaminationPdfCell());
             table.addCell(pdfPCellWithoutBorder(medicalCasePojo.getProvisionalDiagnosis(), normalFont));
 
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
@@ -264,15 +295,15 @@ public class PdfGenerator {
 
     private PdfPTable getInvestigationData() {
         PdfPTable table = new PdfPTable(1);
-        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont,5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getPathologyList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont,5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getXrayList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont,5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getMriList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont,5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getSonoList()), normalFont));
-        table.addCell(pdfPCellWithoutBorder(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont,5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getScanList()), normalFont));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
@@ -328,6 +359,13 @@ public class PdfGenerator {
         pdfPCell.setBorder(Rectangle.NO_BORDER);
         return pdfPCell;
     }
+    private PdfPCell pdfPCellWithoutBorderWithPadding(String label, Font font, int padding) {
+        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
+        pdfPCell.setBorder(Rectangle.NO_BORDER);
+        pdfPCell.setPaddingBottom(padding);
+        pdfPCell.setPaddingTop(padding);
+        return pdfPCell;
+    }
 
     private PdfPCell pdfPCellWithoutBorder(String label, Font font, int padding) {
         PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
@@ -339,7 +377,7 @@ public class PdfGenerator {
     private String covertStringList2String(ArrayList<String> data) {
         String temp = "";
         for (int i = 0; i < data.size(); i++) {
-            temp += "\u2022" + " " + data.get(i) + "\n";
+            temp += "   " + data.get(i) + "\n";
         }
         return temp;
     }
@@ -386,7 +424,6 @@ public class PdfGenerator {
 
     private String getBloodPressure() {
         if (null != medicalCasePojo.getBloodPressure() && medicalCasePojo.getBloodPressure().length == 2) {
-
             return "Blood Pressure: " + medicalCasePojo.getBloodPressure()[0] + "/" + medicalCasePojo.getBloodPressure()[1] + " mmHg";
         } else {
             return "Blood Pressure: " + notAvailable;
@@ -394,7 +431,15 @@ public class PdfGenerator {
 
     }
 
-    private String getExamination() {
-        return "Clinical Findings: " + medicalCasePojo.getClinicalFindings() + "\n Result: " + medicalCasePojo.getExaminationResults();
+    private PdfPCell getExaminationPdfCell() {
+        PdfPTable testTable = new PdfPTable(1);
+        testTable.addCell(pdfPCellWithoutBorder("Clinical Findings: ", normalBoldFont));
+        testTable.addCell(pdfPCellWithoutBorder(medicalCasePojo.getClinicalFindings(), normalFont));
+        testTable.addCell(pdfPCellWithoutBorder("Result: ", normalBoldFont));
+        testTable.addCell(pdfPCellWithoutBorder(medicalCasePojo.getExaminationResults(), normalFont));
+        PdfPCell cell = new PdfPCell(testTable);
+        cell.setPadding(0);
+        cell.setBorder(Rectangle.NO_BORDER);
+        return cell;
     }
 }

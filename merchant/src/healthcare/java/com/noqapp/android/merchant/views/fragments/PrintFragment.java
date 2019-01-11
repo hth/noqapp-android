@@ -113,6 +113,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 if (isSelected) {
                     followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
                     tv_followup.setText("in " + followup + " days");
+                    MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFollowup(tv_followup.getText().toString());
+
                 }
             }
         });
@@ -230,6 +232,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     public void updateUI() {
         final MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
+        medicalCasePojo.setFollowup(tv_followup.getText().toString());
         String notAvailable = "N/A";
         tv_patient_name.setText(medicalCasePojo.getName());
         tv_address.setText(medicalCasePojo.getAddress());

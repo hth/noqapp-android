@@ -111,7 +111,7 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         String data = "";
         for (int i = 0; i < dataObjArrayList.size(); i++) {
             if (dataObjArrayList.get(i).isSelect()) {
-                data +=   "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getAdditionalNotes() + " days"   + "\n";
+                data +=   "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getAdditionalNotes()   + "\n";
             }
         }
         if (data.endsWith(", "))
