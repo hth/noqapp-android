@@ -89,10 +89,9 @@ public class PdfGenerator {
             // Document Settings
             document.setPageSize(PageSize.A4);
             document.addCreationDate();
-            document.addAuthor("NoQ Technologies pvt LTD");
-            document.addCreator("Chandra B Sharma");
+            document.addAuthor("NoQueue Health Merchant");
+            document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
-
 
             try {
                 // get input stream
@@ -165,62 +164,51 @@ public class PdfGenerator {
             document.add(new Paragraph(""));
             document.add(addVerticalSpaceBefore(20.0f));
 
-
             Chunk chunkDiagnosis = new Chunk("Diagnosis:", normalBigFont);
             Paragraph paragraphDiagnosis = new Paragraph(chunkDiagnosis);
             document.add(paragraphDiagnosis);
-
 
             Chunk chunkDiagnosisValue = new Chunk(medicalCasePojo.getDiagnosis(), normalFont);
             Paragraph paragraphDiagnosisValue = new Paragraph(chunkDiagnosisValue);
             document.add(paragraphDiagnosisValue);
             document.add(addVerticalSpaceAfter(20.0f));
 
-
             Chunk chunkMedicine = new Chunk("Medicines:", normalBigFont);
             Paragraph paragraphMedicine = new Paragraph(chunkMedicine);
             document.add(paragraphMedicine);
-
-
             document.add(addVerticalSpace());
             document.add(getMedicineData());
             document.add(addVerticalSpaceBefore(20f));
 
-
             Chunk chunkInstruction = new Chunk("Instruction:", normalBigFont);
             Paragraph paragraphInstruction = new Paragraph(chunkInstruction);
             document.add(paragraphInstruction);
-
 
             Chunk chunkInstructionValue = new Chunk(medicalCasePojo.getInstructions(), normalFont);
             Paragraph paragraphInstructionValue = new Paragraph(chunkInstructionValue);
             document.add(paragraphInstructionValue);
             document.add(addVerticalSpace());
 
-
             Paragraph followup = new Paragraph();
             followup.add(new Chunk("Follow up: ", normalBigFont));
             followup.add(new Chunk(medicalCasePojo.getFollowup(), normalFont));
             document.add(followup);
-
-
             document.add(addVerticalSpace());
 
             Date c = Calendar.getInstance().getTime();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault());
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
             String formattedDate = df.format(c);
 
 
             Paragraph p_sign = new Paragraph("Signature: ");
             p_sign.add(new Chunk(new LineSeparator()));
             p_sign.add("                                                                   ");
-            p_sign.add("Date: "+ formattedDate);
+            p_sign.add("Date: " + formattedDate);
             document.add(p_sign);
             document.close();
 
-            Toast.makeText(mContext, "Report generated successfully... :)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Report Generated", Toast.LENGTH_SHORT).show();
             openFile(mContext, new File(dest));
-
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
         } catch (ActivityNotFoundException ae) {
@@ -229,8 +217,7 @@ public class PdfGenerator {
     }
 
 
-    private static void openFile(Context context, File url) throws ActivityNotFoundException,
-            IOException {
+    private static void openFile(Context context, File url) throws ActivityNotFoundException {
         Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", url);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -245,7 +232,6 @@ public class PdfGenerator {
         context.startActivity(intent);
     }
 
-
     private static String getAppPath(Context context) {
         File dir = new File(android.os.Environment.getExternalStorageDirectory()
                 + File.separator
@@ -256,7 +242,6 @@ public class PdfGenerator {
         }
         return dir.getPath() + File.separator;
     }
-
 
     private PdfPTable getPatientData() {
         PdfPTable table = new PdfPTable(3);
@@ -279,7 +264,7 @@ public class PdfGenerator {
         try {
             table.addCell(pdfPCellWithoutBorder("Symptoms:", normalBigFont, 5));
             table.addCell(pdfPCellWithoutBorder("Examination:", normalBigFont, 5));
-            table.addCell(pdfPCellWithoutBorder("Provisional Diagnosis", normalBigFont, 5));
+            table.addCell(pdfPCellWithoutBorder("Provisional Diagnosis:", normalBigFont, 5));
             table.addCell(pdfPCellWithoutBorder(medicalCasePojo.getSymptoms(), normalFont));
             table.addCell(getExaminationPdfCell());
             table.addCell(pdfPCellWithoutBorder(medicalCasePojo.getProvisionalDiagnosis(), normalFont));
@@ -295,15 +280,15 @@ public class PdfGenerator {
 
     private PdfPTable getInvestigationData() {
         PdfPTable table = new PdfPTable(1);
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont,5));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getPathologyList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont,5));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getXrayList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont,5));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getMriList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont,5));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getSonoList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont,5));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(medicalCasePojo.getScanList()), normalFont));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
@@ -359,6 +344,7 @@ public class PdfGenerator {
         pdfPCell.setBorder(Rectangle.NO_BORDER);
         return pdfPCell;
     }
+
     private PdfPCell pdfPCellWithoutBorderWithPadding(String label, Font font, int padding) {
         PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
         pdfPCell.setBorder(Rectangle.NO_BORDER);
@@ -384,42 +370,44 @@ public class PdfGenerator {
 
 
     private String getRespiratory() {
-        if (null == medicalCasePojo.getRespiratory())
+        if (null == medicalCasePojo.getRespiratory()) {
             return "Respiration Rate: " + notAvailable;
-        else
+        } else {
             return "Respiration Rate: " + medicalCasePojo.getRespiratory();
+        }
     }
 
     private String getHeight() {
-        if (null == medicalCasePojo.getHeight())
+        if (null == medicalCasePojo.getHeight()) {
             return "Height: " + notAvailable;
-        else
+        } else {
             return "Height: " + medicalCasePojo.getHeight() + " cm";
+        }
 
     }
 
     private String getWeight() {
-        if (null == medicalCasePojo.getWeight())
+        if (null == medicalCasePojo.getWeight()) {
             return "Weight: " + notAvailable;
-        else
+        } else {
             return "Weight: " + medicalCasePojo.getWeight() + " kg";
-
+        }
     }
 
     private String getTemperature() {
-        if (null == medicalCasePojo.getTemperature())
+        if (null == medicalCasePojo.getTemperature()) {
             return "Temperature: " + notAvailable;
-        else
+        } else {
             return "Temperature: " + medicalCasePojo.getTemperature() + " F";
-
+        }
     }
 
     private String getPulse() {
-        if (null == medicalCasePojo.getPulse())
+        if (null == medicalCasePojo.getPulse()) {
             return "Pulse: " + notAvailable;
-        else
+        } else {
             return "Pulse: " + medicalCasePojo.getPulse() + " bpm";
-
+        }
     }
 
     private String getBloodPressure() {
@@ -428,7 +416,6 @@ public class PdfGenerator {
         } else {
             return "Blood Pressure: " + notAvailable;
         }
-
     }
 
     private PdfPCell getExaminationPdfCell() {

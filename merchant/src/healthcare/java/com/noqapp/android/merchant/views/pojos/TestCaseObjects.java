@@ -10,25 +10,33 @@ public class TestCaseObjects {
 
     @SerializedName("PATH")
     private ArrayList<DataObj> pathologyList = new ArrayList<>();
+
     @SerializedName("MRI")
     private ArrayList<DataObj> mriList = new ArrayList<>();
+
     @SerializedName("SCAN")
     private ArrayList<DataObj> scanList = new ArrayList<>();
+
     @SerializedName("SONO")
     private ArrayList<DataObj> sonoList = new ArrayList<>();
+
     @SerializedName("XRAY")
     private ArrayList<DataObj> xrayList = new ArrayList<>();
+
     @SerializedName(Constants.MEDICINE)
     private ArrayList<DataObj> medicineList = new ArrayList<>();
+
     @SerializedName(Constants.SYMPTOMS)
     private ArrayList<DataObj> symptomsList = new ArrayList<>();
+
     @SerializedName(Constants.PROVISIONAL_DIAGNOSIS)
     private ArrayList<DataObj> proDiagnosisList = new ArrayList<>();
+
     @SerializedName(Constants.DIAGNOSIS)
     private ArrayList<DataObj> diagnosisList = new ArrayList<>();
+
     @SerializedName(Constants.INSTRUCTION)
     private ArrayList<DataObj> instructionList = new ArrayList<>();
-
 
     public ArrayList<DataObj> getPathologyList() {
         return pathologyList;
