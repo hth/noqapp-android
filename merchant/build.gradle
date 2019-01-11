@@ -347,6 +347,8 @@ android {
             //Configure this flavor specific app name published in Play Store
             resValue "string", "flavored_app_name", "Merchant HealthCare"
 
+            resValue "string", "content_provider", "com.noqapp.android.merchant.healthcare.fileprovider"
+
             buildConfigField "String", "APP_FLAVOR", "\"NQMH\""
         }
 
@@ -356,6 +358,8 @@ android {
             applicationId "com.noqapp.android.merchant"
             resValue "string", "flavored_app_name", "Merchant Store"
 
+            resValue "string", "content_provider", "com.noqapp.android.merchant.fileprovider"
+
             buildConfigField "String", "APP_FLAVOR", "\"NQMS\""
         }
 
@@ -364,6 +368,8 @@ android {
 
             applicationId "com.noqapp.android.merchant.tv"
             resValue "string", "flavored_app_name", "Merchant TV"
+
+            resValue "string", "content_provider", "com.noqapp.android.merchant.tv.fileprovider"
 
             buildConfigField "String", "APP_FLAVOR", "\"NQMT\""
         }
