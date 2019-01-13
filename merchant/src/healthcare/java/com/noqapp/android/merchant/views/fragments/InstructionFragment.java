@@ -133,6 +133,6 @@ public class InstructionFragment extends Fragment {
 
     public void saveData() {
         if (null != instructionAdapter)
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setInstructions(instructionAdapter.getAllSelectedString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setInstructions(instructionAdapter.getAllSelectedString());
     }
 }

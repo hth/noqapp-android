@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MedicalCasePojo {
+public class CaseHistory {
 
     private String name;
     private String address;
@@ -46,7 +46,7 @@ public class MedicalCasePojo {
         return name;
     }
 
-    public MedicalCasePojo setName(String name) {
+    public CaseHistory setName(String name) {
         this.name = name;
         return this;
     }
@@ -55,7 +55,7 @@ public class MedicalCasePojo {
         return address;
     }
 
-    public MedicalCasePojo setAddress(String address) {
+    public CaseHistory setAddress(String address) {
         this.address = address;
         return this;
     }
@@ -64,7 +64,7 @@ public class MedicalCasePojo {
         return details;
     }
 
-    public MedicalCasePojo setDetails(String details) {
+    public CaseHistory setDetails(String details) {
         this.details = details;
         return this;
     }
@@ -73,7 +73,7 @@ public class MedicalCasePojo {
         return pulse;
     }
 
-    public MedicalCasePojo setPulse(String pulse) {
+    public CaseHistory setPulse(String pulse) {
         this.pulse = pulse;
         return this;
     }
@@ -82,7 +82,7 @@ public class MedicalCasePojo {
         return bloodPressure;
     }
 
-    public MedicalCasePojo setBloodPressure(String[] bloodPressure) {
+    public CaseHistory setBloodPressure(String[] bloodPressure) {
         this.bloodPressure = bloodPressure;
         return this;
     }
@@ -91,7 +91,7 @@ public class MedicalCasePojo {
         return weight;
     }
 
-    public MedicalCasePojo setWeight(String weight) {
+    public CaseHistory setWeight(String weight) {
         this.weight = weight;
         return this;
     }
@@ -100,7 +100,7 @@ public class MedicalCasePojo {
         return temperature;
     }
 
-    public MedicalCasePojo setTemperature(String temperature) {
+    public CaseHistory setTemperature(String temperature) {
         this.temperature = temperature;
         return this;
     }
@@ -109,7 +109,7 @@ public class MedicalCasePojo {
         return oxygenLevel;
     }
 
-    public MedicalCasePojo setOxygenLevel(String oxygenLevel) {
+    public CaseHistory setOxygenLevel(String oxygenLevel) {
         this.oxygenLevel = oxygenLevel;
         return this;
     }
@@ -118,7 +118,7 @@ public class MedicalCasePojo {
         return symptoms;
     }
 
-    public MedicalCasePojo setSymptoms(String symptoms) {
+    public CaseHistory setSymptoms(String symptoms) {
         this.symptoms = symptoms;
         return this;
     }
@@ -127,7 +127,7 @@ public class MedicalCasePojo {
         return clinicalFindings;
     }
 
-    public MedicalCasePojo setClinicalFindings(String clinicalFindings) {
+    public CaseHistory setClinicalFindings(String clinicalFindings) {
         this.clinicalFindings = clinicalFindings;
         return this;
     }
@@ -136,7 +136,7 @@ public class MedicalCasePojo {
         return examinationResults;
     }
 
-    public MedicalCasePojo setExaminationResults(String examinationResults) {
+    public CaseHistory setExaminationResults(String examinationResults) {
         this.examinationResults = examinationResults;
         return this;
     }
@@ -145,7 +145,7 @@ public class MedicalCasePojo {
         return diagnosis;
     }
 
-    public MedicalCasePojo setDiagnosis(String diagnosis) {
+    public CaseHistory setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
         return this;
     }
@@ -154,7 +154,7 @@ public class MedicalCasePojo {
         return provisionalDiagnosis;
     }
 
-    public MedicalCasePojo setProvisionalDiagnosis(String provisionalDiagnosis) {
+    public CaseHistory setProvisionalDiagnosis(String provisionalDiagnosis) {
         this.provisionalDiagnosis = provisionalDiagnosis;
         return this;
     }
@@ -163,7 +163,7 @@ public class MedicalCasePojo {
         return instructions;
     }
 
-    public MedicalCasePojo setInstructions(String instructions) {
+    public CaseHistory setInstructions(String instructions) {
         this.instructions = instructions;
         return this;
     }
@@ -172,7 +172,7 @@ public class MedicalCasePojo {
         return followup;
     }
 
-    public MedicalCasePojo setFollowup(String followup) {
+    public CaseHistory setFollowup(String followup) {
         this.followup = followup;
         return this;
     }
@@ -181,7 +181,7 @@ public class MedicalCasePojo {
         return mriList;
     }
 
-    public MedicalCasePojo setMriList(ArrayList<String> mriList) {
+    public CaseHistory setMriList(ArrayList<String> mriList) {
         this.mriList = mriList;
         return this;
     }
@@ -190,7 +190,7 @@ public class MedicalCasePojo {
         return sonoList;
     }
 
-    public MedicalCasePojo setSonoList(ArrayList<String> sonoList) {
+    public CaseHistory setSonoList(ArrayList<String> sonoList) {
         this.sonoList = sonoList;
         return this;
     }
@@ -199,7 +199,7 @@ public class MedicalCasePojo {
         return scanList;
     }
 
-    public MedicalCasePojo setScanList(ArrayList<String> scanList) {
+    public CaseHistory setScanList(ArrayList<String> scanList) {
         this.scanList = scanList;
         return this;
     }
@@ -208,7 +208,7 @@ public class MedicalCasePojo {
         return xrayList;
     }
 
-    public MedicalCasePojo setXrayList(ArrayList<String> xrayList) {
+    public CaseHistory setXrayList(ArrayList<String> xrayList) {
         this.xrayList = xrayList;
         return this;
     }
@@ -217,7 +217,7 @@ public class MedicalCasePojo {
         return pathologyList;
     }
 
-    public MedicalCasePojo setPathologyList(ArrayList<String> pathologyList) {
+    public CaseHistory setPathologyList(ArrayList<String> pathologyList) {
         this.pathologyList = pathologyList;
         return this;
     }
@@ -226,7 +226,7 @@ public class MedicalCasePojo {
         return jsonMedicineList;
     }
 
-    public MedicalCasePojo setJsonMedicineList(List<JsonMedicalMedicine> jsonMedicineList) {
+    public CaseHistory setJsonMedicineList(List<JsonMedicalMedicine> jsonMedicineList) {
         this.jsonMedicineList = jsonMedicineList;
         return this;
     }
@@ -235,7 +235,7 @@ public class MedicalCasePojo {
         return age;
     }
 
-    public MedicalCasePojo setAge(String age) {
+    public CaseHistory setAge(String age) {
         this.age = age;
         return this;
     }
@@ -244,7 +244,7 @@ public class MedicalCasePojo {
         return gender;
     }
 
-    public MedicalCasePojo setGender(String gender) {
+    public CaseHistory setGender(String gender) {
         this.gender = gender;
         return this;
     }
@@ -253,7 +253,7 @@ public class MedicalCasePojo {
         return height;
     }
 
-    public MedicalCasePojo setHeight(String height) {
+    public CaseHistory setHeight(String height) {
         this.height = height;
         return this;
     }
@@ -262,7 +262,7 @@ public class MedicalCasePojo {
         return respiratory;
     }
 
-    public MedicalCasePojo setRespiratory(String respiratory) {
+    public CaseHistory setRespiratory(String respiratory) {
         this.respiratory = respiratory;
         return this;
     }
@@ -271,7 +271,7 @@ public class MedicalCasePojo {
         return pastHistory;
     }
 
-    public MedicalCasePojo setPastHistory(String pastHistory) {
+    public CaseHistory setPastHistory(String pastHistory) {
         this.pastHistory = pastHistory;
         return this;
     }
@@ -280,7 +280,7 @@ public class MedicalCasePojo {
         return familyHistory;
     }
 
-    public MedicalCasePojo setFamilyHistory(String familyHistory) {
+    public CaseHistory setFamilyHistory(String familyHistory) {
         this.familyHistory = familyHistory;
         return this;
     }
@@ -289,7 +289,7 @@ public class MedicalCasePojo {
         return knownAllergies;
     }
 
-    public MedicalCasePojo setKnownAllergies(String knownAllergies) {
+    public CaseHistory setKnownAllergies(String knownAllergies) {
         this.knownAllergies = knownAllergies;
         return this;
     }
@@ -298,7 +298,7 @@ public class MedicalCasePojo {
         return medicineAllergies;
     }
 
-    public MedicalCasePojo setMedicineAllergies(String medicineAllergies) {
+    public CaseHistory setMedicineAllergies(String medicineAllergies) {
         this.medicineAllergies = medicineAllergies;
         return this;
     }
@@ -307,14 +307,14 @@ public class MedicalCasePojo {
         return historyDirty;
     }
 
-    public MedicalCasePojo setHistoryDirty(boolean historyDirty) {
+    public CaseHistory setHistoryDirty(boolean historyDirty) {
         this.historyDirty = historyDirty;
         return this;
     }
 
     @Override
     public String toString() {
-        return "MedicalCasePojo{" +
+        return "CaseHistory{" +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", details='" + details + '\'' +

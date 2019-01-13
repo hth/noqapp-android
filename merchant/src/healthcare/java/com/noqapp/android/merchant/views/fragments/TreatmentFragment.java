@@ -286,8 +286,8 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setJsonMedicineList(medicineSelectedAdapter.getSelectedDataListObject());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setDiagnosis(diagnosisAdapter.getSelectedData());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setJsonMedicineList(medicineSelectedAdapter.getSelectedDataListObject());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDiagnosis(diagnosisAdapter.getSelectedData());
     }
 
     @Override

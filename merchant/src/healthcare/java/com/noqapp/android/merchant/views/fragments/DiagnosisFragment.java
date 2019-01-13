@@ -108,8 +108,8 @@ public class DiagnosisFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setProvisionalDiagnosis(provisionalDiagnosisAdapter.getSelectedData());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setClinicalFindings(actv_clinical_findings.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setExaminationResults(actv_examination_results.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setProvisionalDiagnosis(provisionalDiagnosisAdapter.getSelectedData());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setClinicalFindings(actv_clinical_findings.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setExaminationResults(actv_examination_results.getText().toString());
     }
 }

@@ -243,10 +243,10 @@ public class LabTestsFragment extends Fragment {
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setMriList(mriAdapter.getSelectedDataList());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setScanList(scanAdapter.getSelectedDataList());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSonoList(sonoAdapter.getSelectedDataList());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setXrayList(xrayAdapter.getSelectedDataList());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPathologyList(pathalogyAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setMriList(mriAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setScanList(scanAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSonoList(sonoAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setXrayList(xrayAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPathologyList(pathalogyAdapter.getSelectedDataList());
     }
 }

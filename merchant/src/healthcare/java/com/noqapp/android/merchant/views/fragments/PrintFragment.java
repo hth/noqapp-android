@@ -22,7 +22,7 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
-import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
+import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 
 import android.app.ProgressDialog;
@@ -122,7 +122,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 if (isSelected) {
                     followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
                     tv_followup.setText("in " + followup + " days");
-                    MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFollowup(tv_followup.getText().toString());
+                    MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup(tv_followup.getText().toString());
 
                 }
             }
@@ -133,57 +133,57 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
+                CaseHistory caseHistory = MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory();
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getRecordReferenceId());
                 jsonMedicalRecord.setFormVersion(FormVersionEnum.MFD1);
                 jsonMedicalRecord.setCodeQR(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
                 jsonMedicalRecord.setQueueUserId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getQueueUserId());
-                jsonMedicalRecord.setChiefComplain(medicalCasePojo.getSymptoms());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setPastHistory(medicalCasePojo.getPastHistory());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setFamilyHistory(medicalCasePojo.getFamilyHistory());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setKnownAllergies(medicalCasePojo.getKnownAllergies());
-                jsonMedicalRecord.setClinicalFinding(medicalCasePojo.getClinicalFindings());
-                jsonMedicalRecord.setProvisionalDifferentialDiagnosis(medicalCasePojo.getProvisionalDiagnosis());
-                jsonMedicalRecord.setExamination(medicalCasePojo.getExaminationResults());
-                jsonMedicalRecord.setDiagnosis(medicalCasePojo.getDiagnosis());
+                jsonMedicalRecord.setChiefComplain(caseHistory.getSymptoms());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setPastHistory(caseHistory.getPastHistory());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setFamilyHistory(caseHistory.getFamilyHistory());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setKnownAllergies(caseHistory.getKnownAllergies());
+                jsonMedicalRecord.setClinicalFinding(caseHistory.getClinicalFindings());
+                jsonMedicalRecord.setProvisionalDifferentialDiagnosis(caseHistory.getProvisionalDiagnosis());
+                jsonMedicalRecord.setExamination(caseHistory.getExaminationResults());
+                jsonMedicalRecord.setDiagnosis(caseHistory.getDiagnosis());
                 JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
-                        .setBloodPressure(medicalCasePojo.getBloodPressure())
-                        .setPulse(medicalCasePojo.getPulse())
-                        .setWeight(medicalCasePojo.getWeight())
-                        .setOxygen(medicalCasePojo.getOxygenLevel())
-                        .setTemperature(medicalCasePojo.getTemperature());
+                        .setBloodPressure(caseHistory.getBloodPressure())
+                        .setPulse(caseHistory.getPulse())
+                        .setWeight(caseHistory.getWeight())
+                        .setOxygen(caseHistory.getOxygenLevel())
+                        .setTemperature(caseHistory.getTemperature());
 
-                if (medicalCasePojo.getPathologyList().size() > 0) {
+                if (caseHistory.getPathologyList().size() > 0) {
                     ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
-                    for (int i = 0; i < medicalCasePojo.getPathologyList().size(); i++) {
-                        pathologies.add(new JsonMedicalPathology().setName(medicalCasePojo.getPathologyList().get(i)));
+                    for (int i = 0; i < caseHistory.getPathologyList().size(); i++) {
+                        pathologies.add(new JsonMedicalPathology().setName(caseHistory.getPathologyList().get(i)));
                     }
                     jsonMedicalRecord.setMedicalPathologies(pathologies);
                 }
 
                 ArrayList<JsonMedicalRadiology> mriList = new ArrayList<>();
-                if (medicalCasePojo.getMriList().size() > 0) {
-                    for (int i = 0; i < medicalCasePojo.getMriList().size(); i++) {
-                        mriList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getMriList().get(i)));
+                if (caseHistory.getMriList().size() > 0) {
+                    for (int i = 0; i < caseHistory.getMriList().size(); i++) {
+                        mriList.add(new JsonMedicalRadiology().setName(caseHistory.getMriList().get(i)));
                     }
                 }
                 ArrayList<JsonMedicalRadiology> sonoList = new ArrayList<>();
-                if (medicalCasePojo.getSonoList().size() > 0) {
-                    for (int i = 0; i < medicalCasePojo.getSonoList().size(); i++) {
-                        sonoList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getSonoList().get(i)));
+                if (caseHistory.getSonoList().size() > 0) {
+                    for (int i = 0; i < caseHistory.getSonoList().size(); i++) {
+                        sonoList.add(new JsonMedicalRadiology().setName(caseHistory.getSonoList().get(i)));
                     }
                 }
                 ArrayList<JsonMedicalRadiology> scanList = new ArrayList<>();
-                if (medicalCasePojo.getScanList().size() > 0) {
-                    for (int i = 0; i < medicalCasePojo.getScanList().size(); i++) {
-                        scanList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getScanList().get(i)));
+                if (caseHistory.getScanList().size() > 0) {
+                    for (int i = 0; i < caseHistory.getScanList().size(); i++) {
+                        scanList.add(new JsonMedicalRadiology().setName(caseHistory.getScanList().get(i)));
                     }
                 }
                 ArrayList<JsonMedicalRadiology> xrayList = new ArrayList<>();
-                if (medicalCasePojo.getXrayList().size() > 0) {
-                    for (int i = 0; i < medicalCasePojo.getXrayList().size(); i++) {
-                        xrayList.add(new JsonMedicalRadiology().setName(medicalCasePojo.getXrayList().get(i)));
+                if (caseHistory.getXrayList().size() > 0) {
+                    for (int i = 0; i < caseHistory.getXrayList().size(); i++) {
+                        xrayList.add(new JsonMedicalRadiology().setName(caseHistory.getXrayList().get(i)));
                     }
                 }
                 List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
@@ -225,7 +225,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
-                jsonMedicalRecord.setPlanToPatient(medicalCasePojo.getInstructions());
+                jsonMedicalRecord.setPlanToPatient(caseHistory.getInstructions());
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
                 }
@@ -240,72 +240,72 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     }
 
     public void updateUI() {
-        final MedicalCasePojo medicalCasePojo = MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo();
-        medicalCasePojo.setFollowup(tv_followup.getText().toString());
+        final CaseHistory caseHistory = MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory();
+        caseHistory.setFollowup(tv_followup.getText().toString());
         String notAvailable = "N/A";
-        tv_patient_name.setText(medicalCasePojo.getName());
-        tv_address.setText(medicalCasePojo.getAddress());
-        tv_details.setText(medicalCasePojo.getGender() + ", " + medicalCasePojo.getAge());
-        tv_symptoms.setText(medicalCasePojo.getSymptoms());
-        tv_diagnosis.setText(medicalCasePojo.getDiagnosis());
-        tv_instruction.setText(medicalCasePojo.getInstructions());
-        tv_provisional_diagnosis.setText(medicalCasePojo.getProvisionalDiagnosis());
-        tv_clinical_findings.setText(Html.fromHtml("<b>" + "Clinical Findings: " + "</b> " + medicalCasePojo.getClinicalFindings()));
-        tv_examination.setText(Html.fromHtml("<b>" + "Result: " + "</b> " + medicalCasePojo.getExaminationResults()));
-        tv_radio_mri.setText(covertStringList2String(medicalCasePojo.getMriList()));
-        tv_radio_scan.setText(covertStringList2String(medicalCasePojo.getScanList()));
-        tv_radio_sono.setText(covertStringList2String(medicalCasePojo.getSonoList()));
-        tv_radio_xray.setText(covertStringList2String(medicalCasePojo.getXrayList()));
-        tv_pathology.setText(covertStringList2String(medicalCasePojo.getPathologyList()));
-        hideInvestigationViews(medicalCasePojo);
-        if (null != medicalCasePojo.getRespiratory()) {
-            tv_respiratory.setText(medicalCasePojo.getRespiratory());
+        tv_patient_name.setText(caseHistory.getName());
+        tv_address.setText(caseHistory.getAddress());
+        tv_details.setText(caseHistory.getGender() + ", " + caseHistory.getAge());
+        tv_symptoms.setText(caseHistory.getSymptoms());
+        tv_diagnosis.setText(caseHistory.getDiagnosis());
+        tv_instruction.setText(caseHistory.getInstructions());
+        tv_provisional_diagnosis.setText(caseHistory.getProvisionalDiagnosis());
+        tv_clinical_findings.setText(Html.fromHtml("<b>" + "Clinical Findings: " + "</b> " + caseHistory.getClinicalFindings()));
+        tv_examination.setText(Html.fromHtml("<b>" + "Result: " + "</b> " + caseHistory.getExaminationResults()));
+        tv_radio_mri.setText(covertStringList2String(caseHistory.getMriList()));
+        tv_radio_scan.setText(covertStringList2String(caseHistory.getScanList()));
+        tv_radio_sono.setText(covertStringList2String(caseHistory.getSonoList()));
+        tv_radio_xray.setText(covertStringList2String(caseHistory.getXrayList()));
+        tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
+        hideInvestigationViews(caseHistory);
+        if (null != caseHistory.getRespiratory()) {
+            tv_respiratory.setText(caseHistory.getRespiratory());
         } else {
             tv_respiratory.setText("Respiration Rate: " + notAvailable);
         }
-        if (null != medicalCasePojo.getHeight()) {
-            tv_height.setText(medicalCasePojo.getHeight());
+        if (null != caseHistory.getHeight()) {
+            tv_height.setText(caseHistory.getHeight());
         } else {
             tv_height.setText("Height: " + notAvailable);
         }
-        if (null != medicalCasePojo.getPulse()) {
-            tv_pulse.setText("Pulse: " + medicalCasePojo.getPulse());
+        if (null != caseHistory.getPulse()) {
+            tv_pulse.setText("Pulse: " + caseHistory.getPulse());
         } else {
             tv_pulse.setText("Pulse: " + notAvailable);
         }
-        if (null != medicalCasePojo.getBloodPressure() && medicalCasePojo.getBloodPressure().length == 2) {
-            tv_bp.setText("Blood Pressure: " + medicalCasePojo.getBloodPressure()[0] + "/" + medicalCasePojo.getBloodPressure()[1]);
+        if (null != caseHistory.getBloodPressure() && caseHistory.getBloodPressure().length == 2) {
+            tv_bp.setText("Blood Pressure: " + caseHistory.getBloodPressure()[0] + "/" + caseHistory.getBloodPressure()[1]);
         } else {
             tv_bp.setText("Blood Pressure: " + notAvailable);
         }
-        if (null != medicalCasePojo.getWeight()) {
-            tv_weight.setText("Weight: " + medicalCasePojo.getWeight());
+        if (null != caseHistory.getWeight()) {
+            tv_weight.setText("Weight: " + caseHistory.getWeight());
         } else {
             tv_weight.setText("Weight: " + notAvailable);
         }
-        if (null != medicalCasePojo.getTemperature()) {
-            tv_temperature.setText("Temp: " + medicalCasePojo.getTemperature());
+        if (null != caseHistory.getTemperature()) {
+            tv_temperature.setText("Temp: " + caseHistory.getTemperature());
         } else {
             tv_temperature.setText("Temp: " + notAvailable);
         }
-        adapter = new MedicalRecordAdapter(getActivity(), medicalCasePojo.getJsonMedicineList());
+        adapter = new MedicalRecordAdapter(getActivity(), caseHistory.getJsonMedicineList());
         lv_medicine.setAdapter(adapter);
         btn_print_pdf.setVisibility(View.VISIBLE);
         btn_print_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
-                pdfGenerator.createPdf(medicalCasePojo);
+                pdfGenerator.createPdf(caseHistory);
             }
         });
     }
 
-    private void hideInvestigationViews(MedicalCasePojo medicalCasePojo) {
-        ll_mri.setVisibility(medicalCasePojo.getMriList().size() == 0 ? View.GONE : View.VISIBLE);
-        ll_scan.setVisibility(medicalCasePojo.getScanList().size() == 0 ? View.GONE : View.VISIBLE);
-        ll_sono.setVisibility(medicalCasePojo.getSonoList().size() == 0 ? View.GONE : View.VISIBLE);
-        ll_xray.setVisibility(medicalCasePojo.getXrayList().size() == 0 ? View.GONE : View.VISIBLE);
-        ll_path.setVisibility(medicalCasePojo.getPathologyList().size() == 0 ? View.GONE : View.VISIBLE);
+    private void hideInvestigationViews(CaseHistory caseHistory) {
+        ll_mri.setVisibility(caseHistory.getMriList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_scan.setVisibility(caseHistory.getScanList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_sono.setVisibility(caseHistory.getSonoList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_xray.setVisibility(caseHistory.getXrayList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_path.setVisibility(caseHistory.getPathologyList().size() == 0 ? View.GONE : View.VISIBLE);
     }
 
 

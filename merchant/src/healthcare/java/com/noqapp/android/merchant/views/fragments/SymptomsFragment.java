@@ -167,10 +167,10 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setKnownAllergies(actv_known_allergy.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPastHistory(actv_past_history.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setFamilyHistory(actv_family_history.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setSymptoms(symptomSelectedAdapter.getSelectedData());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setKnownAllergies(actv_known_allergy.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPastHistory(actv_past_history.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFamilyHistory(actv_family_history.getText().toString());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptoms(symptomSelectedAdapter.getSelectedData());
 
     }
 
