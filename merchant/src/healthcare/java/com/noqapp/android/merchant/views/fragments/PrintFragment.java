@@ -21,9 +21,9 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
+import com.noqapp.android.merchant.views.utils.PdfGenerator;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -140,9 +140,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.setCodeQR(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
                 jsonMedicalRecord.setQueueUserId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getQueueUserId());
                 jsonMedicalRecord.setChiefComplain(medicalCasePojo.getSymptoms());
-                jsonMedicalRecord.setPastHistory(medicalCasePojo.getPastHistory());
-                jsonMedicalRecord.setFamilyHistory(medicalCasePojo.getFamilyHistory());
-                jsonMedicalRecord.setKnownAllergies(medicalCasePojo.getKnownAllergies());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setPastHistory(medicalCasePojo.getPastHistory());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setFamilyHistory(medicalCasePojo.getFamilyHistory());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setKnownAllergies(medicalCasePojo.getKnownAllergies());
                 jsonMedicalRecord.setClinicalFinding(medicalCasePojo.getClinicalFindings());
                 jsonMedicalRecord.setProvisionalDifferentialDiagnosis(medicalCasePojo.getProvisionalDiagnosis());
                 jsonMedicalRecord.setExamination(medicalCasePojo.getExaminationResults());
@@ -309,11 +309,11 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     }
 
 
-    private String covertStringList2String(ArrayList<String> data) {
+    private String covertStringList2String(List<String> data) {
         String temp = "";
-        for (int i = 0; i < data.size(); i++) {
+        for(String a : data) {
             //temp += "(" + (i + 1) + ") " + data.get(i) + "\n";
-            temp += "\u2022" + " " + data.get(i) + "\n";
+            temp += "\u2022" + " " + a + "\n";
         }
         return temp;
     }

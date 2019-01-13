@@ -3,6 +3,7 @@ package com.noqapp.android.common.beans.medical;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonRecordAccess;
+import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 
@@ -36,15 +37,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @JsonProperty("qid")
     private String queueUserId;
-
-    @JsonProperty("ph")
-    private String pastHistory;
-
-    @JsonProperty("fh")
-    private String familyHistory;
-
-    @JsonProperty("ka")
-    private String knownAllergies;
 
     @JsonProperty("ps")
     private JsonMedicalPhysical medicalPhysical;
@@ -122,6 +114,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("dbn")
     private String diagnosedByDisplayName;
 
+    @JsonProperty("um")
+    private JsonUserMedicalProfile jsonUserMedicalProfile = new JsonUserMedicalProfile();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -140,33 +135,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
-        return this;
-    }
-
-    public String getPastHistory() {
-        return pastHistory;
-    }
-
-    public JsonMedicalRecord setPastHistory(String pastHistory) {
-        this.pastHistory = pastHistory;
-        return this;
-    }
-
-    public String getFamilyHistory() {
-        return familyHistory;
-    }
-
-    public JsonMedicalRecord setFamilyHistory(String familyHistory) {
-        this.familyHistory = familyHistory;
-        return this;
-    }
-
-    public String getKnownAllergies() {
-        return knownAllergies;
-    }
-
-    public JsonMedicalRecord setKnownAllergies(String knownAllergies) {
-        this.knownAllergies = knownAllergies;
         return this;
     }
 
@@ -395,6 +363,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
+        return jsonUserMedicalProfile;
+    }
+
+    public JsonMedicalRecord setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -409,9 +386,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         final StringBuilder sb = new StringBuilder("JsonMedicalRecord{");
         sb.append("businessType=").append(businessType);
         sb.append(", queueUserId='").append(queueUserId).append('\'');
-        sb.append(", pastHistory='").append(pastHistory).append('\'');
-        sb.append(", familyHistory='").append(familyHistory).append('\'');
-        sb.append(", knownAllergies='").append(knownAllergies).append('\'');
         sb.append(", medicalPhysical=").append(medicalPhysical);
         sb.append(", chiefComplain='").append(chiefComplain).append('\'');
         sb.append(", examination='").append(examination).append('\'');
@@ -437,6 +411,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         sb.append(", formVersion=").append(formVersion);
         sb.append(", recordReferenceId='").append(recordReferenceId).append('\'');
         sb.append(", diagnosedByDisplayName='").append(diagnosedByDisplayName).append('\'');
+        sb.append(", jsonUserMedicalProfile=").append(jsonUserMedicalProfile);
         sb.append(", error=").append(error);
         sb.append('}');
         return sb.toString();

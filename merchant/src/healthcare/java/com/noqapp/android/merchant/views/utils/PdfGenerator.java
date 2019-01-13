@@ -43,7 +43,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -360,10 +359,10 @@ public class PdfGenerator {
         return pdfPCell;
     }
 
-    private String covertStringList2String(ArrayList<String> data) {
+    private String covertStringList2String(List<String> data) {
         String temp = "";
-        for (int i = 0; i < data.size(); i++) {
-            temp += "   " + data.get(i) + "\n";
+        for (String a : data) {
+            temp += "   " + a + "\n";
         }
         return temp;
     }

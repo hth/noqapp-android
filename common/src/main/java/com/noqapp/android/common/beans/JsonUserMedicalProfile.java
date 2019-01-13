@@ -36,8 +36,20 @@ public class JsonUserMedicalProfile implements Serializable {
     @JsonProperty("oc")
     private OccupationEnum occupation;
 
-    @JsonProperty("ht")
-    private int height;
+    @JsonProperty("ph")
+    private String pastHistory;
+
+    @JsonProperty("fh")
+    private String familyHistory;
+
+    @JsonProperty("ka")
+    private String knownAllergies;
+
+    @JsonProperty("ma")
+    private String medicineAllergies;
+
+    @JsonProperty("hd")
+    private boolean historyDirty;
 
     public BloodTypeEnum getBloodType() {
         return bloodType;
@@ -57,12 +69,48 @@ public class JsonUserMedicalProfile implements Serializable {
         return this;
     }
 
-    public int getHeight() {
-        return height;
+    public String getPastHistory() {
+        return pastHistory;
     }
 
-    public JsonUserMedicalProfile setHeight(int height) {
-        this.height = height;
+    public JsonUserMedicalProfile setPastHistory(String pastHistory) {
+        this.pastHistory = pastHistory;
+        return this;
+    }
+
+    public String getFamilyHistory() {
+        return familyHistory;
+    }
+
+    public JsonUserMedicalProfile setFamilyHistory(String familyHistory) {
+        this.familyHistory = familyHistory;
+        return this;
+    }
+
+    public String getKnownAllergies() {
+        return knownAllergies;
+    }
+
+    public JsonUserMedicalProfile setKnownAllergies(String knownAllergies) {
+        this.knownAllergies = knownAllergies;
+        return this;
+    }
+
+    public String getMedicineAllergies() {
+        return medicineAllergies;
+    }
+
+    public JsonUserMedicalProfile setMedicineAllergies(String medicineAllergies) {
+        this.medicineAllergies = medicineAllergies;
+        return this;
+    }
+
+    public boolean isHistoryDirty() {
+        return historyDirty;
+    }
+
+    public JsonUserMedicalProfile setHistoryDirty(boolean historyDirty) {
+        this.historyDirty = historyDirty;
         return this;
     }
 }

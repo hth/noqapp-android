@@ -13,9 +13,6 @@ public class MedicalCasePojo {
     private String details;
     private String age;
     private String gender;
-    private String knownAllergies;
-    private String pastHistory;
-    private String familyHistory;
     private String pulse;
     private String [] bloodPressure;
     private String weight;
@@ -31,11 +28,17 @@ public class MedicalCasePojo {
     private String instructions;
     private String followup;
 
-    private ArrayList<String> mriList = new ArrayList<>();
-    private ArrayList<String> sonoList = new ArrayList<>();
-    private ArrayList<String> scanList = new ArrayList<>();
-    private ArrayList<String> xrayList = new ArrayList<>();
-    private ArrayList<String> pathologyList = new ArrayList<>();
+    private List<String> mriList = new ArrayList<>();
+    private List<String> sonoList = new ArrayList<>();
+    private List<String> scanList = new ArrayList<>();
+    private List<String> xrayList = new ArrayList<>();
+    private List<String> pathologyList = new ArrayList<>();
+
+    private String pastHistory;
+    private String familyHistory;
+    private String knownAllergies;
+    private String medicineAllergies;
+    private boolean historyDirty;
 
     private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
 
@@ -63,33 +66,6 @@ public class MedicalCasePojo {
 
     public MedicalCasePojo setDetails(String details) {
         this.details = details;
-        return this;
-    }
-
-    public String getKnownAllergies() {
-        return knownAllergies;
-    }
-
-    public MedicalCasePojo setKnownAllergies(String knownAllergies) {
-        this.knownAllergies = knownAllergies;
-        return this;
-    }
-
-    public String getPastHistory() {
-        return pastHistory;
-    }
-
-    public MedicalCasePojo setPastHistory(String pastHistory) {
-        this.pastHistory = pastHistory;
-        return this;
-    }
-
-    public String getFamilyHistory() {
-        return familyHistory;
-    }
-
-    public MedicalCasePojo setFamilyHistory(String familyHistory) {
-        this.familyHistory = familyHistory;
         return this;
     }
 
@@ -201,7 +177,7 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public ArrayList<String> getMriList() {
+    public List<String> getMriList() {
         return mriList;
     }
 
@@ -210,7 +186,7 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public ArrayList<String> getSonoList() {
+    public List<String> getSonoList() {
         return sonoList;
     }
 
@@ -219,7 +195,7 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public ArrayList<String> getScanList() {
+    public List<String> getScanList() {
         return scanList;
     }
 
@@ -228,7 +204,7 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public ArrayList<String> getXrayList() {
+    public List<String> getXrayList() {
         return xrayList;
     }
 
@@ -237,7 +213,7 @@ public class MedicalCasePojo {
         return this;
     }
 
-    public ArrayList<String> getPathologyList() {
+    public List<String> getPathologyList() {
         return pathologyList;
     }
 
@@ -288,6 +264,51 @@ public class MedicalCasePojo {
 
     public MedicalCasePojo setRespiratory(String respiratory) {
         this.respiratory = respiratory;
+        return this;
+    }
+
+    public String getPastHistory() {
+        return pastHistory;
+    }
+
+    public MedicalCasePojo setPastHistory(String pastHistory) {
+        this.pastHistory = pastHistory;
+        return this;
+    }
+
+    public String getFamilyHistory() {
+        return familyHistory;
+    }
+
+    public MedicalCasePojo setFamilyHistory(String familyHistory) {
+        this.familyHistory = familyHistory;
+        return this;
+    }
+
+    public String getKnownAllergies() {
+        return knownAllergies;
+    }
+
+    public MedicalCasePojo setKnownAllergies(String knownAllergies) {
+        this.knownAllergies = knownAllergies;
+        return this;
+    }
+
+    public String getMedicineAllergies() {
+        return medicineAllergies;
+    }
+
+    public MedicalCasePojo setMedicineAllergies(String medicineAllergies) {
+        this.medicineAllergies = medicineAllergies;
+        return this;
+    }
+
+    public boolean isHistoryDirty() {
+        return historyDirty;
+    }
+
+    public MedicalCasePojo setHistoryDirty(boolean historyDirty) {
+        this.historyDirty = historyDirty;
         return this;
     }
 
