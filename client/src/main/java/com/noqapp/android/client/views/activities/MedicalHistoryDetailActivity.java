@@ -61,9 +61,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_toolbar_title.setText(getString(R.string.medical_history_details));
         JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable("data");
         tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
-        tv_past_history.setText(jsonMedicalRecord.getPastHistory());
-        tv_family_history.setText(jsonMedicalRecord.getFamilyHistory());
-        tv_known_allergy.setText(jsonMedicalRecord.getKnownAllergies());
+        tv_past_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory());
+        tv_family_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory());
+        tv_known_allergy.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies());
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
         tv_instruction.setText(jsonMedicalRecord.getPlanToPatient());
