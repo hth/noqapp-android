@@ -8,7 +8,7 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.views.pojos.MedicalCasePojo;
+import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
@@ -64,11 +64,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private LoadTabs loadTabs;
     private JsonMedicalRecord jsonMedicalRecord;
 
-    public MedicalCasePojo getMedicalCasePojo() {
-        return medicalCasePojo;
+    public CaseHistory getCaseHistory() {
+        return caseHistory;
     }
 
-    private MedicalCasePojo medicalCasePojo;
+    private CaseHistory caseHistory;
 
     public static MedicalCaseActivity getMedicalCaseActivity() {
         return medicalCaseActivity;
@@ -98,7 +98,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         }
         if (null == testCaseObjects)
             testCaseObjects = new TestCaseObjects();
-        medicalCasePojo = new MedicalCasePojo();
+        caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
         data.add("Primary checkup");
@@ -112,11 +112,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("medicalPhysical");
         codeQR = getIntent().getStringExtra("qCodeQR");
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
-        medicalCasePojo.setName(jsonProfile.getName());
-        medicalCasePojo.setAddress(jsonProfile.getAddress());
-        medicalCasePojo.setDetails("<b> Blood Group: </b> B+ ,<b> Weight: </b> 75 Kg");
-        medicalCasePojo.setAge(new AppUtils().calculateAge(jsonProfile.getBirthday()));
-        medicalCasePojo.setGender(jsonProfile.getGender().name());
+        caseHistory.setName(jsonProfile.getName());
+        caseHistory.setAddress(jsonProfile.getAddress());
+        caseHistory.setDetails("<b> Blood Group: </b> B+ ,<b> Weight: </b> 75 Kg");
+        caseHistory.setAge(new AppUtils().calculateAge(jsonProfile.getBirthday()));
+        caseHistory.setGender(jsonProfile.getGender().name());
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

@@ -215,32 +215,32 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
 
     public void saveData() {
         if (sc_enable_pulse.isChecked()) {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPulse(mv_pulse.getValueAsString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPulse(mv_pulse.getValueAsString());
         } else {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setPulse(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPulse(null);
         }
         if (sc_enable_bp.isChecked()) {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
         } else {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setBloodPressure(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setBloodPressure(null);
         }
         if (sc_enable_weight.isChecked()) {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
         } else {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setWeight(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setWeight(null);
         }
         if (sc_enable_temp.isChecked()) {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
         } else {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setTemperature(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setTemperature(null);
         }
         if (sc_enable_oxygen.isChecked()) {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setOxygenLevel(mv_oxygen.getValueAsString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(mv_oxygen.getValueAsString());
         } else {
-            MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setOxygenLevel(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(null);
         }
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setHeight(null);
-        MedicalCaseActivity.getMedicalCaseActivity().getMedicalCasePojo().setRespiratory(null);
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHeight(null);
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setRespiratory(null);
     }
 
     @Override
