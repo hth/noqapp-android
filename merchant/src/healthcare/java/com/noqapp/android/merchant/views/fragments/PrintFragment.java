@@ -162,7 +162,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                         .setPulse(caseHistory.getPulse())
                         .setWeight(caseHistory.getWeight())
                         .setOxygen(caseHistory.getOxygenLevel())
-                        .setTemperature(caseHistory.getTemperature());
+                        .setTemperature(caseHistory.getTemperature())
+                        .setHeight(caseHistory.getHeight())
+                        .setRespiratory(caseHistory.getRespiratory());
 
                 if (caseHistory.getPathologyList().size() > 0) {
                     ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();

@@ -129,7 +129,9 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
                 ", pulse='" + pulse + '\'' +
                 ", bloodPressure=" + Arrays.toString(bloodPressure) +
                 ", oxygen='" + oxygen + '\'' +
+                ", respiratory='" + respiratory + '\'' +
                 ", weight='" + weight + '\'' +
+                ", height='" + height + '\'' +
                 ", diagnosedById='" + diagnosedById + '\'' +
                 '}';
     }
