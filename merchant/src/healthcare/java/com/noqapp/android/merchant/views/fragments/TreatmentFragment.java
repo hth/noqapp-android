@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -45,7 +46,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     private TextView tv_add_medicine, tv_add_diagnosis, tv_close,tv_remove, tv_medicine_name;
     private StaggeredGridAdapter diagnosisAdapter;
     private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
-    private LinearLayout ll_medicine;
+    private ScrollView ll_medicine;
     private SegmentedControl sc_duration, sc_medicine_timing, sc_frequency;
     private List<String> duration_data, timing_data, frequency_data;
     private Button btn_done;

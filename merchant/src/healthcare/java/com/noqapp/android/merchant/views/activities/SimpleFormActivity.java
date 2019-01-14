@@ -79,7 +79,7 @@ public class SimpleFormActivity extends AppCompatActivity implements MedicalReco
                     jsonMedicalRecord.setNoteForPatient(edt_prescription.getText().toString());
                     //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                     //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
-                    medicalHistoryModel.add(
+                    medicalHistoryModel.update(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),

@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 

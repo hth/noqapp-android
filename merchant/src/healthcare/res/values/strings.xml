@@ -36,7 +36,9 @@
     <string name="pe_temperature">Temp (F) </string>
     <string name="pe_weight">Weight (kg) </string>
     <string name="pe_bp">B.P (mmHg) </string>
+    <string name="pe_respiratory">Respiratory </string>
     <string name="pe_pulse">Pulse (BPM)</string>
+    <string name="pe_height">Height (cm)</string>
 
     <string name="personal_info">Personal Information</string>
     <string name="dependent_list">Dependent List</string>

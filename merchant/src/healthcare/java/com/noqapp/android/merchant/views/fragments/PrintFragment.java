@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
@@ -29,6 +30,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -61,6 +63,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_path;
+    private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono,
+            acsp_xray, acsp_pathology, acsp_pharmacy;
 
     @Nullable
     @Override
@@ -91,6 +95,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_followup = v.findViewById(R.id.tv_followup);
         tv_provisional_diagnosis = v.findViewById(R.id.tv_provisional_diagnosis);
         lv_medicine = v.findViewById(R.id.lv_medicine);
+        acsp_mri = v.findViewById(R.id.acsp_mri);
+        acsp_scan = v.findViewById(R.id.acsp_scan);
+        acsp_sono = v.findViewById(R.id.acsp_sono);
+        acsp_xray = v.findViewById(R.id.acsp_xray);
+        acsp_pathology = v.findViewById(R.id.acsp_pathology);
+        acsp_pharmacy = v.findViewById(R.id.acsp_pharmacy);
 
         ll_sono = v.findViewById(R.id.ll_sono);
         ll_scan = v.findViewById(R.id.ll_scan);
@@ -152,7 +162,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                         .setPulse(caseHistory.getPulse())
                         .setWeight(caseHistory.getWeight())
                         .setOxygen(caseHistory.getOxygenLevel())
-                        .setTemperature(caseHistory.getTemperature());
+                        .setTemperature(caseHistory.getTemperature())
+                        .setHeight(caseHistory.getHeight())
+                        .setRespiratory(caseHistory.getRespiratory());
 
                 if (caseHistory.getPathologyList().size() > 0) {
                     ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
@@ -186,50 +198,70 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                         xrayList.add(new JsonMedicalRadiology().setName(caseHistory.getXrayList().get(i)));
                     }
                 }
+
+                boolean isPreferedBusinessAvailable = false;
+                if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
+                    isPreferedBusinessAvailable = true;
                 List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
                 if (mriList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("5bf4e1c4b85cb7234d420ecd");
+                    if (isPreferedBusinessAvailable) {
+                        jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_mri.getSelectedItemPosition()).getBizStoreId());
+                    } else {
+                        jsonMedicalRadiologyList.setBizStoreId("");
+                    }
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.MRI);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 if (sonoList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("5c00cbfc62575d06fbca1368");
+                    if (isPreferedBusinessAvailable) {
+                        jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_sono.getSelectedItemPosition()).getBizStoreId());
+                    } else {
+                        jsonMedicalRadiologyList.setBizStoreId("");
+                    }
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SONO);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 if (scanList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("5c00cbfc62575d06fbca1368");
+                    if (isPreferedBusinessAvailable) {
+                        jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_scan.getSelectedItemPosition()).getBizStoreId());
+                    } else {
+                        jsonMedicalRadiologyList.setBizStoreId("");
+                    }
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SCAN);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 if (xrayList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    jsonMedicalRadiologyList.setBizStoreId("5bf4e1c4b85cb7234d420ecd");
+                    if (isPreferedBusinessAvailable) {
+                        jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_xray.getSelectedItemPosition()).getBizStoreId());
+                    } else {
+                        jsonMedicalRadiologyList.setBizStoreId("");
+                    }
                     jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.XRAY);
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
-
                 jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
-                //  if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
-                //      jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(sp_preferred_list.getSelectedItemPosition()).getBizStoreId());
-
-                jsonMedicalRecord.setStoreIdPharmacy("5b7a7079783cea2a6c2556fa");
-                jsonMedicalRecord.setStoreIdPathology("5c00cbfc62575d06fbca1368");
-
+                if (isPreferedBusinessAvailable) {
+                    jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_pharmacy.getSelectedItemPosition()).getBizStoreId());
+                    jsonMedicalRecord.setStoreIdPathology(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_pathology.getSelectedItemPosition()).getBizStoreId());
+                } else {
+                    jsonMedicalRecord.setStoreIdPharmacy("");
+                    jsonMedicalRecord.setStoreIdPathology("");
+                }
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
                 jsonMedicalRecord.setPlanToPatient(caseHistory.getInstructions());
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
                 }
-                medicalHistoryModel.add(
+                medicalHistoryModel.update(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(),
@@ -298,6 +330,15 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 pdfGenerator.createPdf(caseHistory);
             }
         });
+
+        jsonPreferredBusinessList = MedicalCaseActivity.getMedicalCaseActivity().jsonPreferredBusinessList;
+        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(), jsonPreferredBusinessList.getPreferredBusinesses());
+        acsp_mri.setAdapter(spinAdapter);
+        acsp_scan.setAdapter(spinAdapter);
+        acsp_sono.setAdapter(spinAdapter);
+        acsp_xray.setAdapter(spinAdapter);
+        acsp_pathology.setAdapter(spinAdapter);
+        acsp_pharmacy.setAdapter(spinAdapter);
     }
 
     private void hideInvestigationViews(CaseHistory caseHistory) {
@@ -311,7 +352,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     private String covertStringList2String(List<String> data) {
         String temp = "";
-        for(String a : data) {
+        for (String a : data) {
             //temp += "(" + (i + 1) + ") " + data.get(i) + "\n";
             temp += "\u2022" + " " + a + "\n";
         }

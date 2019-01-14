@@ -25,6 +25,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -41,7 +42,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
     private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
     private AutoCompleteTextView actv_past_history, actv_known_allergy, actv_family_history;
-    private LinearLayout ll_symptom_note;
+    private ScrollView ll_symptom_note;
     private DataObj dataObj;
     private SegmentedControl sc_duration;
     private List<String> duration_data;

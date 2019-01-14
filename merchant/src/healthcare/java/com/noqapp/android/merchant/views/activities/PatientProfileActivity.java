@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
@@ -37,6 +38,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PatientProfileActivity extends AppCompatActivity implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter{
@@ -101,7 +103,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             progressDialog.show();
             PatientProfileModel profileModel = new PatientProfileModel(this);
             profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-            medicalHistoryModel.fetch(BaseLaunchActivity.getDeviceID(),
+            medicalHistoryModel.historical(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
 
@@ -168,7 +170,16 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         if (!jsonMedicalRecordList.getJsonMedicalRecords().isEmpty()) {
             jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
         }
-        Collections.reverse(jsonMedicalRecords);
+        Collections.sort(jsonMedicalRecords, new Comparator<JsonMedicalRecord>() {
+            public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
+                try {
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
         listview.setAdapter(adapter);
         if(null == jsonMedicalRecords ||jsonMedicalRecords.size() == 0){

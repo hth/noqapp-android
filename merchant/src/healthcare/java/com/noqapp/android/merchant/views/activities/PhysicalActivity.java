@@ -45,13 +45,13 @@ import java.util.ArrayList;
 public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter,JsonMedicalRecordPresenter , MeterView.MeterViewValueChanged{
     private ProgressDialog progressDialog;
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
-    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low,tv_followup;
-    private DiscreteSeekBar dsb_bp_low, dsb_bp_high;
+    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low,tv_followup,tv_rr,tv_height;
+    private DiscreteSeekBar dsb_bp_low, dsb_bp_high,dsb_rr,dsb_height;
     private MedicalHistoryModel medicalHistoryModel;
     private JsonQueuedPerson jsonQueuedPerson;
     protected boolean isDialog = false;
     protected ImageView actionbarBack;
-    private SwitchCompat sc_enable_pulse,sc_enable_temp,sc_enable_weight,sc_enable_oxygen,sc_enable_bp;
+    private SwitchCompat sc_enable_pulse,sc_enable_temp,sc_enable_weight,sc_enable_oxygen,sc_enable_bp,sc_enable_rr,sc_enable_height;
     private SegmentedControl sc_follow_up;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
@@ -109,18 +109,24 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         tv_oxygen = findViewById(R.id.tv_oxygen);
         tv_bp_high = findViewById(R.id.tv_bp_high);
         tv_bp_low = findViewById(R.id.tv_bp_low);
+        tv_rr = findViewById(R.id.tv_rr);
+        tv_height = findViewById(R.id.tv_height);
 
         sc_enable_pulse = findViewById(R.id.sc_enable_pulse);
         sc_enable_temp = findViewById(R.id.sc_enable_temp);
         sc_enable_weight = findViewById(R.id.sc_enable_weight);
         sc_enable_oxygen = findViewById(R.id.sc_enable_oxygen);
         sc_enable_bp = findViewById(R.id.sc_enable_bp);
+        sc_enable_rr = findViewById(R.id.sc_enable_rr);
+        sc_enable_height = findViewById(R.id.sc_enable_height);
 
         sc_enable_pulse.setChecked(false);
         sc_enable_temp.setChecked(false);
         sc_enable_weight.setChecked(false);
         sc_enable_oxygen.setChecked(false);
         sc_enable_bp.setChecked(false);
+        sc_enable_rr.setChecked(false);
+        sc_enable_height.setChecked(false);
 
         sc_follow_up = findViewById(R.id.sc_follow_up);
 
@@ -155,6 +161,30 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         final Button ll_weight_disable = findViewById(R.id.ll_weight_disable);
         final Button ll_oxygen_disable = findViewById(R.id.ll_oxygen_disable);
         final Button ll_bp_disable = findViewById(R.id.ll_bp_disable);
+        final Button ll_rr_disable = findViewById(R.id.ll_rr_disable);
+        final Button ll_height_disable = findViewById(R.id.ll_height_disable);
+
+        sc_enable_rr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_rr_disable.setVisibility(View.GONE);
+                } else {
+                    ll_rr_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        sc_enable_height.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_height_disable.setVisibility(View.GONE);
+                } else {
+                    ll_height_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         sc_enable_pulse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
@@ -222,6 +252,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         
         dsb_bp_low = findViewById(R.id.dsb_bp_low);
         dsb_bp_high = findViewById(R.id.dsb_bp_high);
+        dsb_rr = findViewById(R.id.dsb_rr);
+        dsb_height = findViewById(R.id.dsb_height);
         dsb_bp_low.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {
@@ -233,6 +265,20 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             @Override
             public int transform(int value) {
                 tv_bp_high.setText("Systolic: " + String.valueOf(value));
+                return value;
+            }
+        });
+        dsb_rr.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                tv_rr.setText("Respiratory: " + String.valueOf(value));
+                return value;
+            }
+        });
+        dsb_height.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                tv_height.setText("Height: " + String.valueOf(value));
                 return value;
             }
         });
@@ -275,11 +321,22 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 } else {
                    jsonMedicalPhysical.setOxygen(null);
                 }
+                if (sc_enable_rr.isChecked()) {
+                    jsonMedicalPhysical.setRespiratory(String.valueOf(dsb_rr.getProgress()));
+                } else {
+                    jsonMedicalPhysical.setRespiratory(null);
+                }
+
+                if (sc_enable_height.isChecked()) {
+                    jsonMedicalPhysical.setHeight(String.valueOf(dsb_height.getProgress()));
+                } else {
+                    jsonMedicalPhysical.setHeight(null);
+                }
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
                 }
-                medicalHistoryModel.add(
+                medicalHistoryModel.update(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(),
@@ -381,6 +438,20 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                     sc_enable_bp.setChecked(true);
                 }else{
                     sc_enable_bp.setChecked(false);
+                }
+
+                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight() ) {
+                    dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
+                    sc_enable_height.setChecked(true);
+                } else {
+                    sc_enable_height.setChecked(false);
+                }
+
+                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory() ) {
+                    dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
+                    sc_enable_rr.setChecked(true);
+                } else {
+                    sc_enable_rr.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     if(jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")){

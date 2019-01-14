@@ -112,28 +112,34 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         if (0 == medicalRecordList.size()) {
             ll_medication.setVisibility(View.GONE);
         }
-
-        for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
-            String label = "";
-            switch (physicalExam) {
-                case TE:
-                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
-                    break;
-                case BP:
-                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
-                    break;
-                case PL:
-                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
-                    break;
-                case OX:
-                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
-                    break;
-                case WT:
-                    label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
-                    break;
+        if (null != jsonMedicalPhysicalExaminations)
+            for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
+                String label = "";
+                switch (physicalExam) {
+                    case TE:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
+                        break;
+                    case BP:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
+                        break;
+                    case PL:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
+                        break;
+                    case OX:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
+                        break;
+                    case WT:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
+                        break;
+                    case HT:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getHeight();
+                        break;
+                    case RP:
+                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getRespiratory();
+                        break;
+                }
+                ll_physical.addView(getView(label));
             }
-            ll_physical.addView(getView(label));
-        }
         if (jsonMedicalRecord.getMedicalPathologies().size() == 0) {
             ll_pathology.setVisibility(View.GONE);
         } else {

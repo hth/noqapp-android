@@ -23,9 +23,9 @@ import android.widget.TextView;
 
 public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterViewValueChanged {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
-    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low;
-    private DiscreteSeekBar dsb_bp_low, dsb_bp_high;
-    private SwitchCompat sc_enable_pulse, sc_enable_temp, sc_enable_weight, sc_enable_oxygen, sc_enable_bp;
+    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low,tv_rr,tv_height;
+    private DiscreteSeekBar dsb_bp_low, dsb_bp_high,dsb_rr,dsb_height;
+    private SwitchCompat sc_enable_pulse, sc_enable_temp, sc_enable_weight, sc_enable_oxygen, sc_enable_bp,sc_enable_rr,sc_enable_height;
 
     @Nullable
     @Override
@@ -46,24 +46,54 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         tv_oxygen = v.findViewById(R.id.tv_oxygen);
         tv_bp_high = v.findViewById(R.id.tv_bp_high);
         tv_bp_low = v.findViewById(R.id.tv_bp_low);
+        tv_rr = v.findViewById(R.id.tv_rr);
+        tv_height = v.findViewById(R.id.tv_height);
 
         sc_enable_pulse = v.findViewById(R.id.sc_enable_pulse);
         sc_enable_temp = v.findViewById(R.id.sc_enable_temp);
         sc_enable_weight = v.findViewById(R.id.sc_enable_weight);
         sc_enable_oxygen = v.findViewById(R.id.sc_enable_oxygen);
         sc_enable_bp = v.findViewById(R.id.sc_enable_bp);
+        sc_enable_rr = v.findViewById(R.id.sc_enable_rr);
+        sc_enable_height = v.findViewById(R.id.sc_enable_height);
 
         sc_enable_pulse.setChecked(false);
         sc_enable_temp.setChecked(false);
         sc_enable_weight.setChecked(false);
         sc_enable_oxygen.setChecked(false);
         sc_enable_bp.setChecked(false);
+        sc_enable_rr.setChecked(false);
+        sc_enable_height.setChecked(false);
 
         final Button ll_pulse_disable = v.findViewById(R.id.ll_pulse_disable);
         final Button ll_temp_disable = v.findViewById(R.id.ll_temp_disable);
         final Button ll_weight_disable = v.findViewById(R.id.ll_weight_disable);
         final Button ll_oxygen_disable = v.findViewById(R.id.ll_oxygen_disable);
         final Button ll_bp_disable = v.findViewById(R.id.ll_bp_disable);
+        final Button ll_rr_disable = v.findViewById(R.id.ll_rr_disable);
+        final Button ll_height_disable = v.findViewById(R.id.ll_height_disable);
+
+        sc_enable_rr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_rr_disable.setVisibility(View.GONE);
+                } else {
+                    ll_rr_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        sc_enable_height.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_height_disable.setVisibility(View.GONE);
+                } else {
+                    ll_height_disable.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         sc_enable_pulse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
@@ -129,6 +159,8 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
 
         dsb_bp_low = v.findViewById(R.id.dsb_bp_low);
         dsb_bp_high = v.findViewById(R.id.dsb_bp_high);
+        dsb_rr = v.findViewById(R.id.dsb_rr);
+        dsb_height = v.findViewById(R.id.dsb_height);
         dsb_bp_low.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {
@@ -140,6 +172,20 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
             @Override
             public int transform(int value) {
                 tv_bp_high.setText("Systolic: " + String.valueOf(value));
+                return value;
+            }
+        });
+        dsb_rr.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                tv_rr.setText("Respiratory: " + String.valueOf(value));
+                return value;
+            }
+        });
+        dsb_height.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                tv_height.setText("Height: " + String.valueOf(value));
                 return value;
             }
         });
@@ -178,6 +224,21 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 } else {
                     sc_enable_bp.setChecked(false);
                 }
+
+                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight() ) {
+                    dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
+                    sc_enable_height.setChecked(true);
+                } else {
+                    sc_enable_height.setChecked(false);
+                }
+
+                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory() ) {
+                    dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
+                    sc_enable_rr.setChecked(true);
+                } else {
+                    sc_enable_rr.setChecked(false);
+                }
+
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
@@ -224,6 +285,19 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setBloodPressure(null);
         }
+
+        if (sc_enable_rr.isChecked()) {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setRespiratory(String.valueOf(dsb_rr.getProgress()));
+        } else {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setRespiratory(null);
+        }
+
+        if (sc_enable_height.isChecked()) {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHeight(String.valueOf(dsb_height.getProgress()));
+        } else {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHeight(null);
+        }
+
         if (sc_enable_weight.isChecked()) {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
         } else {
@@ -239,8 +313,6 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(null);
         }
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHeight(null);
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setRespiratory(null);
     }
 
     @Override
