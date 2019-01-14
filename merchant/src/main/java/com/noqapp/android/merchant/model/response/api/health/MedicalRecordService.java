@@ -27,8 +27,8 @@ public interface MedicalRecordService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/add.json")
-    Call<JsonResponse> add(
+    @POST("api/m/h/medicalRecord/update.json")
+    Call<JsonResponse> update(
             @Header("X-R-DID")
             String did,
 
@@ -78,8 +78,8 @@ public interface MedicalRecordService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/h/medicalRecord/fetch.json")
-    Call<JsonMedicalRecordList> fetch(
+    @POST("api/m/h/medicalRecord/historical.json")
+    Call<JsonMedicalRecordList> historical(
             @Header("X-R-DID")
             String did,
 

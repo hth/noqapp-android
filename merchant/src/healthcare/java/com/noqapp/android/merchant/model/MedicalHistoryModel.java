@@ -52,16 +52,16 @@ public class MedicalHistoryModel {
      * @param mail
      * @param auth
      */
-    public void add(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
-        medicalRecordService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
+    public void update(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
+        medicalRecordService.update(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("add", String.valueOf(response.body()));
+                        Log.d("update", String.valueOf(response.body()));
                         medicalRecordPresenter.medicalRecordResponse(response.body());
                     } else {
-                        Log.e(TAG, "Failed to add");
+                        Log.e(TAG, "Failed to update");
                         medicalRecordPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -75,23 +75,23 @@ public class MedicalHistoryModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
-                Log.e("add", t.getLocalizedMessage(), t);
+                Log.e("on Failure update", t.getLocalizedMessage(), t);
                 medicalRecordPresenter.medicalRecordError();
             }
         });
     }
 
 
-    public void fetch(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
-        medicalRecordService.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
+    public void historical(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
+        medicalRecordService.historical(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("fetch", String.valueOf(response.body()));
+                        Log.d("historical", String.valueOf(response.body()));
                         medicalRecordListPresenter.medicalRecordListResponse(response.body());
                     } else {
-                        Log.e(TAG, "Failed to fetch");
+                        Log.e(TAG, "Failed to fetch historical");
                         medicalRecordListPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -105,7 +105,7 @@ public class MedicalHistoryModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
-                Log.e("fetch", t.getLocalizedMessage(), t);
+                Log.e("historical onFailure", t.getLocalizedMessage(), t);
                 medicalRecordListPresenter.medicalRecordListError();
             }
         });

@@ -336,7 +336,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
                 }
-                medicalHistoryModel.add(
+                medicalHistoryModel.update(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(),

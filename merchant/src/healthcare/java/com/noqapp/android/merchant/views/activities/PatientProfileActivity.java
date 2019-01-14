@@ -103,7 +103,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             progressDialog.show();
             PatientProfileModel profileModel = new PatientProfileModel(this);
             profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-            medicalHistoryModel.fetch(BaseLaunchActivity.getDeviceID(),
+            medicalHistoryModel.historical(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
 
