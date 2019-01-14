@@ -2,12 +2,18 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.google.gson.Gson;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
+import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -32,6 +38,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -40,7 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener {
+public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
 
     private ViewPager viewPager;
     private long lastPress;
@@ -78,6 +85,9 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     public FormDataObj formDataObj;
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
+    public JsonPreferredBusinessList jsonPreferredBusinessList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +155,39 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
         loadTabs = new LoadTabs();
         loadTabs.execute();
+
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
+            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+        }
+
+    }
+
+    @Override
+    public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
+        this.jsonPreferredBusinessList = jsonPreferredBusinessList;
+        Log.e("Pref business list: ",jsonPreferredBusinessList.toString());
+       }
+
+    @Override
+    public void preferredBusinessError() {
+
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
     }
 
     @Override

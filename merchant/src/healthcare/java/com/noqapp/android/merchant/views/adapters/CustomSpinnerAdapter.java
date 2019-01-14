@@ -45,7 +45,7 @@ public class CustomSpinnerAdapter extends ArrayAdapter<JsonPreferredBusiness> {
         }
         TextView lbl = v.findViewById(R.id.tv_title);
         lbl.setTextColor(Color.BLACK);
-        lbl.setText(items.get(position).getBusinessName());
+        lbl.setText(items.get(position).getDisplayName());
         return v;
 
 

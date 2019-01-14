@@ -255,13 +255,28 @@
                     android:layout_weight=".2"
                     android:orientation="vertical">
 
-
-                <TextView
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="MRI:"
-                        android:textSize="16sp"
-                        android:padding="10dp"/>
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MRI:"
+                            android:textSize="16sp"
+                            android:padding="10dp"/>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/acsp_mri"
+                            android:layout_width="180dp"
+                            android:background="@drawable/sp_background"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
+
 
                 <TextView
                         android:id="@+id/tv_radio_mri"
@@ -282,12 +297,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SCAN:"
-                        android:textSize="16sp"
-                        android:padding="10dp"/>
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SCAN:"
+                            android:textSize="16sp"
+                            android:padding="10dp"/>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/acsp_scan"
+                            android:layout_width="180dp"
+                            android:background="@drawable/sp_background"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
 
                 <TextView
                         android:id="@+id/tv_radio_scan"
@@ -308,12 +338,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="SONO:"
-                        android:textSize="16sp"
-                        android:padding="10dp"/>
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SONO:"
+                            android:textSize="16sp"
+                            android:padding="10dp"/>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/acsp_sono"
+                            android:layout_width="180dp"
+                            android:background="@drawable/sp_background"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
 
                 <TextView
                         android:id="@+id/tv_radio_sono"
@@ -334,12 +379,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="X-RAY:"
-                        android:textSize="16sp"
-                        android:padding="10dp"/>
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="X-RAY:"
+                            android:textSize="16sp"
+                            android:padding="10dp"/>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/acsp_xray"
+                            android:layout_width="180dp"
+                            android:background="@drawable/sp_background"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
 
                 <TextView
                         android:id="@+id/tv_radio_xray"
@@ -360,12 +420,28 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:layout_width="wrap_content"
+
+                <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Pahtology:"
-                        android:textSize="16sp"
-                        android:padding="10dp"/>
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pahtology:"
+                            android:textSize="16sp"
+                            android:padding="10dp"/>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/acsp_pathology"
+                            android:layout_width="180dp"
+                            android:background="@drawable/sp_background"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:paddingEnd="20dp"
+                            android:layout_height="wrap_content"/>
+                </LinearLayout>
 
                 <TextView
                         android:id="@+id/tv_pathology"
@@ -398,15 +474,31 @@
                 android:paddingLeft="10dp"
                 />
 
-        <TextView
-                android:layout_width="wrap_content"
+
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Medicines:"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:padding="10dp"/>
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Medicines:"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp"/>
+
+            <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/acsp_pharmacy"
+                    android:layout_width="180dp"
+                    android:background="@drawable/sp_background"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:paddingEnd="20dp"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
 
         <com.noqapp.android.merchant.views.customviews.FixedHeightListView
                 android:id="@+id/lv_medicine"
