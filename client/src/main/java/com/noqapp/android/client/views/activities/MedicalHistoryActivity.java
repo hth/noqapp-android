@@ -17,6 +17,7 @@ import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MedicalHistoryActivity extends BaseActivity implements MedicalRecordPresenter {
@@ -83,7 +85,16 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         if (!jsonMedicalRecordList.getJsonMedicalRecords().isEmpty()) {
             jsonMedicalRecords = jsonMedicalRecordList.getJsonMedicalRecords();
         }
-        Collections.reverse(jsonMedicalRecords);
+        Collections.sort(jsonMedicalRecords, new Comparator<JsonMedicalRecord>() {
+            public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
+                try {
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
         listview.setAdapter(adapter);
         if (jsonMedicalRecords.size() <= 0) {
