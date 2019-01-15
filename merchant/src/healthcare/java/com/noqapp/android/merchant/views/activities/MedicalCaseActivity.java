@@ -69,6 +69,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
     private TestCaseObjects testCaseObjects;
     private LoadTabs loadTabs;
+
+    public JsonMedicalRecord getJsonMedicalRecord() {
+        return jsonMedicalRecord;
+    }
+
     private JsonMedicalRecord jsonMedicalRecord;
 
     public CaseHistory getCaseHistory() {
@@ -119,7 +124,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         data.add("Instructions");
         data.add("Preview");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("medicalPhysical");
+        jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         codeQR = getIntent().getStringExtra("qCodeQR");
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         caseHistory.setName(jsonProfile.getName());
@@ -530,7 +535,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         bppf.putString("qUserId", jsonQueuedPerson.getQueueUserId());
         bppf.putString("qCodeQR", codeQR);
         bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
-        bppf.putSerializable("medicalPhysical", jsonMedicalRecord);
         primaryCheckupFragment.setArguments(bppf);
         symptomsFragment = new SymptomsFragment();
         diagnosisFragment = new DiagnosisFragment();

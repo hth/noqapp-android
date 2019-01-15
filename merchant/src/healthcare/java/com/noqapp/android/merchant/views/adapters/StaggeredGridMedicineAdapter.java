@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
+import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<StaggeredGridMedicineAdapter.MyViewHolder> {
@@ -120,5 +123,24 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
                 temp.add(jsonMedicalMedicine);
         }
         return temp;
+    }
+
+    public ArrayList<DataObj> updateMedicineSelectList(List<JsonMedicalMedicine> temp,ArrayList<DataObj> listData) {
+        ArrayList<DataObj> tempList = new ArrayList<>();
+        for (JsonMedicalMedicine d :
+                temp) {
+            for (int i = 0; i < listData.size(); i++) {
+                if (d.getName().equals(listData.get(i).getShortName())) {
+                    DataObj dataObj = listData.get(i);
+                    dataObj.setSelect(true);
+                    dataObj.setMedicineTiming(MedicationIntakeEnum.valueOf(d.getMedicationIntake()).getDescription());
+                    dataObj.setMedicineFrequency(d.getDailyFrequency());
+                    dataObj.setMedicineDuration(DurationDaysEnum.getDescFromVal(Integer.parseInt(d.getCourse())));
+                    tempList.add(dataObj);
+                    break;
+                }
+            }
+        }
+       return tempList;
     }
 }

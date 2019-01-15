@@ -72,5 +72,15 @@ public enum DurationDaysEnum {
         }
         return value;
     }
+    public static String getDescFromVal(int value) {
+        String description = "";
+        for (DurationDaysEnum durationDaysEnum : DurationDaysEnum.values()) {
+            if (value == durationDaysEnum.value) {
+                description = durationDaysEnum.description;
+                break;
+            }
+        }
+        return description;
+    }
 
 }

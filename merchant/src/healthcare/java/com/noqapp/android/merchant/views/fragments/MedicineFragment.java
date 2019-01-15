@@ -3,34 +3,40 @@ package com.noqapp.android.merchant.views.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Toast;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.CustomExpandListAdapter;
-import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicineFragment extends Fragment implements SelectItemListAdapter.RemoveListItem{
+public class MedicineFragment extends Fragment implements CustomExpandListAdapter.RemoveChild {
     private CustomExpandListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
-    private HashMap<String, List<String>> listDataChild;
-    private ListView lv_tests;
+    private HashMap<String, List<DataObj>> listDataChild;
     private ArrayList<DataObj> selectedList = new ArrayList<>();
-    private SelectItemListAdapter selectItemListAdapter;
+    private int selectionPos = -1;
+    private EditText edt_item;
+    final List<String> category_data = new ArrayList<>();
 
     public ArrayList<DataObj> getSelectedList() {
         return selectedList;
@@ -41,121 +47,88 @@ public class MedicineFragment extends Fragment implements SelectItemListAdapter.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_medicine, container, false);
         expListView = v.findViewById(R.id.lvExp);
-        lv_tests = v.findViewById(R.id.lv_tests);
+        edt_item = v.findViewById(R.id.edt_item);
+        final SegmentedControl sc_category = v.findViewById(R.id.sc_category);
+        Button btn_add_medicine = v.findViewById(R.id.btn_add_medicine);
+        btn_add_medicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_item.setError(null);
+                if (selectionPos == -1) {
+                    Toast.makeText(getActivity(), "Please select medicine type", Toast.LENGTH_LONG).show();
+                } else if (TextUtils.isEmpty(edt_item.getText().toString())) {
+                    edt_item.setError("Medicine name cann't be empty");
+                } else {
+                    String category = category_data.get(selectionPos);
+                    String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
+                    DataObj dataObj = new DataObj(medicineName, category, false);
+                    if (selectedList.contains(dataObj)) {
+                        Toast.makeText(getActivity(), "Medicine already added", Toast.LENGTH_LONG).show();
+                    } else {
+                        listDataChild.get(category).add(dataObj);
+                        selectedList.add(dataObj);
+                        listAdapter.notifyDataSetChanged();
+                        sc_category.clearSelection();
+                        selectionPos = -1;
+                        edt_item.setText("");
+                    }
+                    new AppUtils().hideKeyBoard(getActivity());
+                }
+
+            }
+        });
+
+        category_data.addAll(PharmacyCategoryEnum.asListOfDescription());
+
+
+        sc_category.addSegments(category_data);
+        sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    selectionPos = segmentViewHolder.getAbsolutePosition();
+                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
         prepareListData();
         try {
             Log.e("medicine", LaunchActivity.getLaunchActivity().getFavouriteMedicines().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(null != PreferenceActivity.getPreferenceActivity().testCaseObjects)
-         selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
+        if (null != PreferenceActivity.getPreferenceActivity().testCaseObjects)
+            selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
         if (null == selectedList)
             selectedList = new ArrayList<>();
-        selectItemListAdapter = new SelectItemListAdapter(getActivity(), selectedList,this);
-        lv_tests.setAdapter(selectItemListAdapter);
-        listAdapter = new CustomExpandListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new CustomExpandListAdapter(getActivity(), listDataHeader, listDataChild, this);
         expListView.setAdapter(listAdapter);
-        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getActivity(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getActivity(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
-
-                DataObj dataObj = new DataObj();
-                dataObj.setShortName(listDataChild.get(
-                        listDataHeader.get(groupPosition)).get(
-                        childPosition));
-                dataObj.setSelect(false);
-                dataObj.setCategory(getCategory(listDataHeader.get(groupPosition)));
-                if (!selectedList.contains(dataObj)) {
-                    selectedList.add(dataObj);
-                    selectItemListAdapter.notifyDataSetChanged();
-                }
-                return false;
-            }
-        });
         return v;
     }
 
     private void prepareListData() {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataHeader = PharmacyCategoryEnum.asListOfDescription();
+        listDataChild = new HashMap<String, List<DataObj>>();
 
-        // Adding child data
-        listDataHeader.add("Tablet");
-        listDataHeader.add("Capsule");
-        listDataHeader.add("Syrup");
-        listDataHeader.add("Powder");
-        listDataHeader.add("Injection");
+        for (int i = 0; i < listDataHeader.size(); i++) {
+            listDataChild.put(listDataHeader.get(i), new ArrayList<DataObj>()); // Header, Child data
+        }
 
-        // Adding child data
-        List<String> tablet = new ArrayList<>();
-        tablet.add("Paracetamol");
-        tablet.add("Ibrufen");
-        tablet.add("Numofine");
 
-        List<String> capsule = new ArrayList<>();
-        capsule.add("Becasule");
-        capsule.add("Zinc 100");
-
-        List<String> syrup = new ArrayList<>();
-        syrup.add("Digine");
-        syrup.add("Corex");
-        List<String> powder = new ArrayList<>();
-        powder.add("Calicum");
-        powder.add("Zincocide");
-        List<String> injection = new ArrayList<>();
-        injection.add("Dilona 30ml");
-        injection.add("Biotax 500");
-
-        listDataChild.put(listDataHeader.get(0), tablet); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), capsule);
-        listDataChild.put(listDataHeader.get(2), syrup);
-        listDataChild.put(listDataHeader.get(3), powder);
-        listDataChild.put(listDataHeader.get(4), injection);
-    }
-
-    private String getCategory(String header) {
-        switch (header) {
-            case "Tablet":
-                return PharmacyCategoryEnum.TA.getDescription();
-            case "Capsule":
-                return PharmacyCategoryEnum.CA.getDescription();
-            case "Syrup":
-                return PharmacyCategoryEnum.SY.getDescription();
-            case "Powder":
-                return PharmacyCategoryEnum.PW.getDescription();
-            case "Injection":
-                return PharmacyCategoryEnum.IJ.getDescription();
-            default:
-                return PharmacyCategoryEnum.TA.getDescription();
+        selectedList.clear();
+        ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
+        for (int i = 0; i < temp.size(); i++) {
+            listDataChild.get(temp.get(i).getCategory()).add(temp.get(i));
+            selectedList.add(temp.get(i));
         }
     }
 
     @Override
-    public void removeItem(int pos) {
-        selectedList.remove(pos);
-        selectItemListAdapter.notifyDataSetChanged();
+    public void removeChildAtPos(int pos, DataObj dataObj) {
+        listDataChild.get(dataObj.getCategory()).remove(pos);
+        selectedList.remove(dataObj);
+        listAdapter.notifyDataSetChanged();
         Toast.makeText(getActivity(), "Record deleted from List", Toast.LENGTH_LONG).show();
 
     }

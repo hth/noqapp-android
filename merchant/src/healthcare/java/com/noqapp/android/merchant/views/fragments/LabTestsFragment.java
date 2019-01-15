@@ -1,5 +1,8 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
+import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -36,6 +39,7 @@ public class LabTestsFragment extends Fragment {
     private TextView tv_add_pathology, tv_add_new;
     private StaggeredGridAdapter mriAdapter, scanAdapter, sonoAdapter, xrayAdapter, pathalogyAdapter;
     private int selectionPos = -1;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +96,38 @@ public class LabTestsFragment extends Fragment {
         rcv_pathology.setLayoutManager(staggeredGridLayoutManager4);
         pathalogyAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
         rcv_pathology.setAdapter(pathalogyAdapter);
+
+        updateLabSelection();
+        updatePathologySelection();
+    }
+
+    private void updateLabSelection() {
+        try {
+            List<JsonMedicalRadiologyList> temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalRadiologyLists();
+            for (int i = 0; i < temp.size(); i++) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = temp.get(i);
+                if (jsonMedicalRadiologyList.getLabCategory() == LabCategoryEnum.MRI) {
+                    mriAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
+                } else if (jsonMedicalRadiologyList.getLabCategory() == LabCategoryEnum.SCAN) {
+                    scanAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
+                } else if (jsonMedicalRadiologyList.getLabCategory() == LabCategoryEnum.SONO) {
+                    sonoAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
+                } else if (jsonMedicalRadiologyList.getLabCategory() == LabCategoryEnum.XRAY) {
+                    xrayAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePathologySelection() {
+        try {
+            List<JsonMedicalPathology> temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalPathologies();
+            pathalogyAdapter.updatePathSelectList(temp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void AddPathologyItemDialog(final Context mContext, String title) {
@@ -189,10 +225,10 @@ public class LabTestsFragment extends Fragment {
                 edt_item.setError(null);
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
-                }  else if (selectionPos == -1){
-                    Toast.makeText(getActivity(),"please select a category",Toast.LENGTH_LONG).show();
-                }else {
-                    if(selectionPos == 0) {
+                } else if (selectionPos == -1) {
+                    Toast.makeText(getActivity(), "please select a category", Toast.LENGTH_LONG).show();
+                } else {
+                    if (selectionPos == 0) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSonoList(temp);
@@ -202,7 +238,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList());
                         rcv_sono.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
-                    }else if(selectionPos == 1){
+                    } else if (selectionPos == 1) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMriList(temp);
@@ -212,7 +248,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
                         rcv_mri.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
-                    }else if(selectionPos == 2){
+                    } else if (selectionPos == 2) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setScanList(temp);
@@ -222,7 +258,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
                         rcv_scan.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
-                    }else{
+                    } else {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setXrayList(temp);

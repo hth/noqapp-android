@@ -331,6 +331,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             }
         });
 
+        if(!TextUtils.isEmpty(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getFollowUpInDays())) {
+            int index = follow_up_data.indexOf(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getFollowUpInDays());
+            if (-1 != index)
+                sc_follow_up.setSelectedSegment(index);
+        }
+
         jsonPreferredBusinessList = MedicalCaseActivity.getMedicalCaseActivity().jsonPreferredBusinessList;
         CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(), jsonPreferredBusinessList.getPreferredBusinesses());
         acsp_mri.setAdapter(spinAdapter);
@@ -353,7 +359,6 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private String covertStringList2String(List<String> data) {
         String temp = "";
         for (String a : data) {
-            //temp += "(" + (i + 1) + ") " + data.get(i) + "\n";
             temp += "\u2022" + " " + a + "\n";
         }
         return temp;
