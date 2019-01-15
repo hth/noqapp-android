@@ -1,5 +1,13 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
+import com.noqapp.android.merchant.views.adapters.CustomExpandListAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,14 +23,6 @@ import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
-
-import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.PreferenceActivity;
-import com.noqapp.android.merchant.views.adapters.CustomExpandListAdapter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.HashMap;

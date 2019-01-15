@@ -15,7 +15,7 @@
     <!--medical details screen-->
 
 
-    <string name="menu_preference">Preference</string>
+    <string name="menu_preference">Case History Settings</string>
 
 
     <string name="mds_chief_complaints">Chief Complaint:</string>
@@ -43,25 +43,5 @@
     <string name="personal_info">Personal Information</string>
     <string name="dependent_list">Dependent List</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
-
-
-
-
-    <string-array name="days_array">
-        <item>1 day</item>
-        <item>2 days</item>
-        <item>3 days</item>
-        <item>4 days</item>
-        <item>5 days</item>
-        <item>6 days</item>
-        <item>7 days</item>
-        <item>10 days</item>
-        <item>15 days</item>
-        <item>20 days</item>
-        <item>30 days</item>
-        <item>45 days</item>
-        <item>60 days</item>
-    </string-array>
-
 
 </resources>

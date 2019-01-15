@@ -15,8 +15,8 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion, queueStatusEnum, jsonDataVisibility);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPostion, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId ) {
+        super(data, context, peopleInQAdapterClick, qCodeQR, glowPostion, queueStatusEnum, jsonDataVisibility,bizCategoryId);
     }
 
     @Override
@@ -31,9 +31,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson) {
+    void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
 
     }
+
 
     @Override
     public void onBindViewHolder(MyViewHolder recordHolder, int position) {

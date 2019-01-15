@@ -45,6 +45,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     private List<JsonQueuedPerson> dataSet;
     private int glowPosition = -1;
     protected String qCodeQR;
+    protected String bizCategoryId;
     protected ManageQueueModel manageQueueModel;
     protected BusinessCustomerModel businessCustomerModel;
     private QueueStatusEnum queueStatusEnum;
@@ -57,7 +58,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     abstract void editBusinessCustomerId(Context context, JsonQueuedPerson jsonQueuedPerson);
 
     // for medical Only
-    abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson);
+    abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -163,6 +164,19 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
     }
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility,String bizCategoryId) {
+        this.dataSet = data;
+        this.context = context;
+        this.peopleInQAdapterClick = peopleInQAdapterClick;
+        this.qCodeQR = qCodeQR;
+        this.glowPosition = glowPosition;
+        manageQueueModel = new ManageQueueModel();
+        manageQueueModel.setQueuePersonListPresenter(this);
+        businessCustomerModel = new BusinessCustomerModel(this);
+        this.queueStatusEnum = queueStatusEnum;
+        this.jsonDataVisibility = jsonDataVisibility;
+        this.bizCategoryId =bizCategoryId;
+    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -241,7 +255,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createCaseHistory(context, jsonQueuedPerson);
+                createCaseHistory(context, jsonQueuedPerson,bizCategoryId);
             }
         });
         recordHolder.tv_change_name.setOnClickListener(new View.OnClickListener() {

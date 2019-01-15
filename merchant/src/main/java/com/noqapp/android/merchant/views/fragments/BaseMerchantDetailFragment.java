@@ -416,7 +416,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         }
                     }
             );
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility());
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility(),jsonTopic.getBizCategoryId());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if (jsonTopic.getServingNumber() > 0)
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
