@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import java.util.HashMap;
-import java.util.List;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.DataObj;
+import java.util.HashMap;
+import java.util.List;
 
 public class CustomExpandListAdapter extends BaseExpandableListAdapter {
 

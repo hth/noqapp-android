@@ -1,5 +1,20 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.MasterLabPresenter;
+import com.noqapp.android.merchant.model.MasterLabModel;
+import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
+import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,21 +31,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.model.MasterLabModel;
-import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.PreferenceActivity;
-import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 

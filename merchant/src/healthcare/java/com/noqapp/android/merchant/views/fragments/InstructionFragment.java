@@ -2,8 +2,8 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
