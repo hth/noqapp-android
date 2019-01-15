@@ -1,80 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+              xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
 
 
     <AutoCompleteTextView
-        android:id="@+id/actv_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_search"
-        android:drawableRight="@drawable/ic_cancel"
-        android:drawablePadding="20dp"
-        android:drawableTint="@color/colorAccent"
-        android:hint="Search medicine"
-        android:inputType="text"
-        android:maxLines="1"
-        android:minLines="1"
-        android:padding="10dp"
-        android:textColor="@android:color/black" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/edt_add"
+            android:id="@+id/actv_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edt_roun_rect"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/btn_add"
-            android:hint="Add item"
+            android:drawableLeft="@drawable/ic_search"
+            android:drawableRight="@drawable/ic_cancel"
+            android:drawablePadding="20dp"
+            android:drawableTint="@color/colorAccent"
+            android:hint="Search medicine"
             android:inputType="text"
             android:maxLines="1"
             android:minLines="1"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:visibility="gone"
+            android:textColor="@android:color/black"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+        <EditText
+                android:id="@+id/edt_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edt_roun_rect"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/btn_add"
+                android:hint="Add item"
+                android:inputType="text"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="10dp"/>
 
         <Button
-            android:id="@+id/btn_add"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="25dp"
-            android:text="ADD" />
+                android:id="@+id/btn_add"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="25dp"
+                android:text="ADD"/>
     </RelativeLayout>
 
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Selected List"
-        android:textSize="@dimen/text_size_sixteen" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Selected List"
+            android:textSize="@dimen/text_size_sixteen"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <ListView
-            android:id="@+id/lv_tests"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:padding="10dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
         <ExpandableListView
-            android:id="@+id/lvExp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:padding="10dp" />
+                android:id="@+id/lvExp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:padding="10dp"/>
+
+        <LinearLayout
+                android:id="@+id/lv_tests"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Medicine Type"
+                    />
+
+            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                    android:id="@+id/sc_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    segmentedcontrol:distributeEvenly="false"
+                    segmentedcontrol:radius="6dp"
+                    segmentedcontrol:columnCount="4"
+                    android:layout_below="@+id/tvtitle"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    segmentedcontrol:radiusForEverySegment="false"
+                    segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                    segmentedcontrol:strokeWidth="1dp"
+                    segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                    segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                    segmentedcontrol:textVerticalPadding="5dp"
+                    segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                    segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                    segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+
+            <EditText
+                    android:id="@+id/edt_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:padding="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="Medicine name"
+                    android:textSize="16sp"
+                    android:background="@drawable/table_border"
+                    android:inputType="text|textMultiLine"
+                    android:gravity="left"
+                    android:maxLength="100"
+                    android:maxLines="2"
+                    android:minLines="2"
+                    />
+
+            <Button
+                    android:id="@+id/btn_add_medicine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:text="ADD Medicine"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 

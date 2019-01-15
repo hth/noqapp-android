@@ -3,9 +3,6 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
-
-import com.google.common.collect.ForwardingIterator;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;

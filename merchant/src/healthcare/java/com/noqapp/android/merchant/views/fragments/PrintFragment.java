@@ -359,7 +359,6 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private String covertStringList2String(List<String> data) {
         String temp = "";
         for (String a : data) {
-            //temp += "(" + (i + 1) + ") " + data.get(i) + "\n";
             temp += "\u2022" + " " + a + "\n";
         }
         return temp;
