@@ -67,7 +67,8 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private ArrayList<String> masterDataMri = new ArrayList<>();
     private ArrayList<String> masterDataXray = new ArrayList<>();
     private ArrayList<String> masterDataPath = new ArrayList<>();
-    private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment;
+    private ArrayList<String> masterDataSpec = new ArrayList<>();
+    private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
     private MedicineFragment medicineFragment;
     public TestCaseObjects testCaseObjects;
 
@@ -92,7 +93,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             e.printStackTrace();
             testCaseObjects = new TestCaseObjects();
         }
-        if( null == testCaseObjects)
+        if (null == testCaseObjects)
             testCaseObjects = new TestCaseObjects();
         viewPager = findViewById(R.id.pager);
 
@@ -102,10 +103,10 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         data.add("SONOGRAPHY");
         data.add("X-RAY");
         data.add("Pathology");
+        data.add("Special");
         data.add("Medicine");
         medicineFragment = new MedicineFragment();
-        preferencePathFragment = new PreferenceHCServiceFragment();
-        preferencePathFragment.setArguments(getBundle(4));
+
         preferenceMriFragment = new PreferenceHCServiceFragment();
         preferenceMriFragment.setArguments(getBundle(0));
         preferenceScanFragment = new PreferenceHCServiceFragment();
@@ -114,13 +115,18 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         preferenceSonoFragment.setArguments(getBundle(2));
         preferenceXrayFragment = new PreferenceHCServiceFragment();
         preferenceXrayFragment.setArguments(getBundle(3));
+        preferencePathFragment = new PreferenceHCServiceFragment();
+        preferencePathFragment.setArguments(getBundle(4));
+        preferenceSpecFragment = new PreferenceHCServiceFragment();
+        preferenceSpecFragment.setArguments(getBundle(5));
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(preferenceMriFragment, "FRAG" + 0);
         adapter.addFragment(preferenceScanFragment, "FRAG" + 1);
         adapter.addFragment(preferenceSonoFragment, "FRAG" + 2);
         adapter.addFragment(preferenceXrayFragment, "FRAG" + 3);
         adapter.addFragment(preferencePathFragment, "FRAG" + 4);
-        adapter.addFragment(medicineFragment, "FRAG" + 5);
+        adapter.addFragment(preferenceSpecFragment, "FRAG" + 5);
+        adapter.addFragment(medicineFragment, "FRAG" + 6);
 
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
@@ -164,7 +170,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
 
     }
 
-    private void callFileApi(){
+    private void callFileApi() {
         progressDialog.show();
         MasterLabModel masterLabModel = new MasterLabModel();
         masterLabModel.setFilePresenter(PreferenceActivity.this);
@@ -186,12 +192,13 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             finish();
         }
         Map<String, List<DataObj>> mapList = new HashMap<>();
-        mapList.put(HealthCareServiceEnum.MRI.getName(),preferenceMriFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.SCAN.getName(),preferenceScanFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.SONO.getName(),preferenceSonoFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.XRAY.getName(),preferenceXrayFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.PATH.getName(),preferencePathFragment.clearListSelection());
-        mapList.put(Constants.MEDICINE,medicineFragment.getSelectedList());
+        mapList.put(HealthCareServiceEnum.MRI.getName(), preferenceMriFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.SCAN.getName(), preferenceScanFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.SONO.getName(), preferenceSonoFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.XRAY.getName(), preferenceXrayFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.PATH.getName(), preferencePathFragment.clearListSelection());
+        mapList.put(HealthCareServiceEnum.SPEC.getName(), preferenceSpecFragment.clearListSelection());
+        mapList.put(Constants.MEDICINE, medicineFragment.getSelectedList());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
     }
@@ -285,6 +292,9 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                                     if (strArray[2].equals(HealthCareServiceEnum.PATH.getName())) {
                                         masterDataPath.add(strArray[0]);
                                     }
+                                    if (strArray[2].equals(HealthCareServiceEnum.SPEC.getName())) {
+                                        masterDataSpec.add(strArray[0]);
+                                    }
                                     Log.e("data is :", line);
 
                                 }
@@ -299,6 +309,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                     preferenceScanFragment.setData(masterDataScan);
                     preferenceMriFragment.setData(masterDataMri);
                     preferencePathFragment.setData(masterDataPath);
+                    preferenceSpecFragment.setData(masterDataSpec);
                     for (File file : files) {
                         new File(path, file.getName()).delete();
                     }

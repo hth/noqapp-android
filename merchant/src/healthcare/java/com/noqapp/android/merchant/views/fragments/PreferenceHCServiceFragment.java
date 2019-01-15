@@ -1,16 +1,10 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
+
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.model.MasterLabModel;
-import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
@@ -34,7 +28,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class PreferenceHCServiceFragment extends Fragment implements MasterLabPresenter, SelectItemListAdapter.RemoveListItem {
+public class PreferenceHCServiceFragment extends Fragment implements SelectItemListAdapter.RemoveListItem {
 
     private ListView lv_tests, lv_all_tests;
     private AutoCompleteTextView actv_search;
@@ -109,7 +103,7 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
             }
         });
 
-        selectItemListAdapter = new SelectItemListAdapter(getActivity(), selectedList,this);
+        selectItemListAdapter = new SelectItemListAdapter(getActivity(), selectedList, this);
         lv_tests.setAdapter(selectItemListAdapter);
         lv_all_tests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -133,52 +127,20 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 if (TextUtils.isEmpty(edt_add.getText().toString())) {
                     edt_add.setError(getString(R.string.error_field_required));
                 } else {
-                    progressDialog.show();
-                    MasterLabModel masterLabModel = new MasterLabModel();
-                    masterLabModel.setMasterLabPresenter(PreferenceHCServiceFragment.this);
-                    masterLabModel.add(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new JsonMasterLab().
-                            setProductName(edt_add.getText().toString()).setProductShortName(edt_add.getText().toString()).setHealthCareService(getHealthCareEnum(getArguments().getInt("type"))));
+                    masterDataString.add(edt_add.getText().toString());
+                    listAdapter.notifyDataSetChanged();
+                    actvAdapter.notifyDataSetChanged();
+                    DataObj dataObj = new DataObj();
+                    dataObj.setShortName(edt_add.getText().toString());
+                    dataObj.setSelect(false);
+                    selectedList.add(dataObj);
+                    selectItemListAdapter.notifyDataSetChanged();
+                    edt_add.setText("");
+                    Toast.makeText(getActivity(), "Test updated Successfully", Toast.LENGTH_LONG).show();
                 }
             }
         });
         return v;
-    }
-
-    @Override
-    public void masterLabUploadResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-        if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            masterDataString.add(edt_add.getText().toString());
-            listAdapter.notifyDataSetChanged();
-            actvAdapter.notifyDataSetChanged();
-            DataObj dataObj = new DataObj();
-            dataObj.setShortName(edt_add.getText().toString());
-            dataObj.setSelect(false);
-            selectedList.add(dataObj);
-            selectItemListAdapter.notifyDataSetChanged();
-            edt_add.setText("");
-            Toast.makeText(getActivity(), "Test updated Successfully", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getActivity(), "Failed to update test", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 
     private void initProgress() {
@@ -212,29 +174,33 @@ public class PreferenceHCServiceFragment extends Fragment implements MasterLabPr
                 return HealthCareServiceEnum.XRAY;
             case 4:
                 return HealthCareServiceEnum.PATH;
+            case 5:
+                return HealthCareServiceEnum.SPEC;
             default:
                 return HealthCareServiceEnum.PATH;
         }
     }
 
     private ArrayList<DataObj> getPreviousList(int pos) {
-        if(null == PreferenceActivity.getPreferenceActivity().testCaseObjects)
+        if (null == PreferenceActivity.getPreferenceActivity().testCaseObjects)
             return null;
         else
-        switch (pos) {
-            case 0:
-                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
-            case 1:
-                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
-            case 2:
-                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
-            case 3:
-                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
-            case 4:
-                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
-            default:
-                return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
-        }
+            switch (pos) {
+                case 0:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
+                case 1:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
+                case 2:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
+                case 3:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
+                case 4:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+                case 5:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getSpecList();
+                default:
+                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+            }
     }
 
 

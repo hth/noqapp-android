@@ -23,6 +23,9 @@ public class TestCaseObjects {
     @SerializedName("XRAY")
     private ArrayList<DataObj> xrayList = new ArrayList<>();
 
+    @SerializedName("SPEC")
+    private ArrayList<DataObj> specList = new ArrayList<>();
+
     @SerializedName(Constants.MEDICINE)
     private ArrayList<DataObj> medicineList = new ArrayList<>();
 
@@ -80,6 +83,15 @@ public class TestCaseObjects {
 
     public TestCaseObjects setXrayList(ArrayList<DataObj> xrayList) {
         this.xrayList = xrayList;
+        return this;
+    }
+
+    public ArrayList<DataObj> getSpecList() {
+        return specList;
+    }
+
+    public TestCaseObjects setSpecList(ArrayList<DataObj> specList) {
+        this.specList = specList;
         return this;
     }
 

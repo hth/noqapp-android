@@ -49,6 +49,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private Button btn_done;
     private View view_med;
     private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
+    private TextView tv_obes, tv_gyanc;
 
     @Nullable
     @Override
@@ -62,6 +63,8 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         actv_known_allergy = v.findViewById(R.id.actv_known_allergy);
         btn_done = v.findViewById(R.id.btn_done);
         view_med = v.findViewById(R.id.view_med);
+        tv_obes = v.findViewById(R.id.tv_obes);
+        tv_gyanc = v.findViewById(R.id.tv_gyanc);
         tv_symptoms_name = v.findViewById(R.id.tv_symptoms_name);
         tv_close = v.findViewById(R.id.tv_close);
         tv_remove = v.findViewById(R.id.tv_remove);
@@ -73,7 +76,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 clearOptionSelection();
             }
         });
-        duration_data =  DurationDaysEnum.asListOfDescription();
+        duration_data = DurationDaysEnum.asListOfDescription();
         sc_duration.addSegments(duration_data);
 
         sc_duration.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
@@ -83,7 +86,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
                     //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
                     tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
-                    if(null != dataObj)
+                    if (null != dataObj)
                         dataObj.setAdditionalNotes(no_of_days);
                 }
             }
@@ -116,10 +119,10 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
 
         StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
         rcv_symptom_select.setLayoutManager(sglm);
-        symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this,true);
+        symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
         rcv_symptom_select.setAdapter(symptomSelectedAdapter);
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
-        if(null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
+        if (null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies())
                 actv_known_allergy.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies());
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory())
@@ -134,11 +137,16 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
 
-            selectedSymptomsList = symptomSelectedAdapter.updateDataObj(temp,dataObjArrayList);
-            symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this,true);
+            selectedSymptomsList = symptomSelectedAdapter.updateDataObj(temp, dataObjArrayList);
+            symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
             rcv_symptom_select.setAdapter(symptomSelectedAdapter);
-        }catch (Exception e){
+            view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (!MedicalCaseActivity.getMedicalCaseActivity().isGynae()) {
+            tv_gyanc.setVisibility(View.GONE);
+            tv_obes.setVisibility(View.GONE);
         }
     }
 
@@ -213,7 +221,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getAdditionalNotes()));
             no_of_days = dataObj.getAdditionalNotes();
             tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
-        }else{
+        } else {
             sc_duration.clearSelection();
             tv_output.setText("");
             no_of_days = "";

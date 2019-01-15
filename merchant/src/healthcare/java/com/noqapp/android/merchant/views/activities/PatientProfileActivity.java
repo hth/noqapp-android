@@ -91,6 +91,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
                 intent.putExtra("data", jsonQueuedPerson);
                 intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                 intent.putExtra("jsonProfile",jsonProfile);
+                intent.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
                 startActivity(intent);
                 finish();
             }
