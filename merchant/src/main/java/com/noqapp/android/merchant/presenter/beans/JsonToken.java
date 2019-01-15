@@ -15,6 +15,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 
 /**
+ * Merchant this object is different from client object. It fills different requirenment.
+ * Decided not to merge for now.
  * User: hitender
  * Date: 4/16/17 5:49 PM
  */
@@ -34,8 +36,11 @@ public class JsonToken implements Serializable {
     @JsonProperty("d")
     private String displayName;
 
-    @JsonProperty ("bt")
+    @JsonProperty("bt")
     private BusinessTypeEnum businessType;
+
+    @JsonProperty("bc")
+    private String bizCategoryId;
 
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
@@ -49,7 +54,7 @@ public class JsonToken implements Serializable {
     @JsonProperty("n")
     private String customerName;
 
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private String expectedServiceBegin;
 
     @JsonProperty("error")
@@ -77,6 +82,15 @@ public class JsonToken implements Serializable {
 
     public JsonToken setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonToken setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 
