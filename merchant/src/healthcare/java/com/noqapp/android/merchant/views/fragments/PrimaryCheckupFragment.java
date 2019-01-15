@@ -190,7 +190,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
             }
         });
         // dsb_bp_low.setProgress(89); set value to discrete
-        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getArguments().getSerializable("medicalPhysical");
+        JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
         updatePhysicalUI(jsonMedicalRecord);
         return v;
     }

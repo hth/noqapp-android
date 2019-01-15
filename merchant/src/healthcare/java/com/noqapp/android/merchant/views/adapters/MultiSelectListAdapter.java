@@ -4,6 +4,8 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 
+import com.google.common.collect.ForwardingIterator;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,11 +67,11 @@ public class MultiSelectListAdapter extends ArrayAdapter<DataObj> {
         for (DataObj bean : list) {
             if (bean.isSelect()) {
                 sb.append(bean.getShortName());
-                sb.append(", ");
+                sb.append(". ");
             }
         }
         String data = sb.toString();
-        if(data.endsWith(", "))
+        if(data.endsWith(". "))
             data = data.substring(0,data.length()-2);
         return data;
     }
@@ -77,6 +79,20 @@ public class MultiSelectListAdapter extends ArrayAdapter<DataObj> {
 
     public void addData(DataObj dataObj){
         list.add(dataObj);
+        notifyDataSetChanged();
+    }
+
+    public void updateSelection(String [] temp){
+        for (String d :
+                temp) {
+            for (int i = 0; i < list.size(); i++) {
+                if(d.trim().equals(list.get(i).getShortName())){
+                    list.get(i).setSelect(true);
+                    break;
+                }
+
+            }
+        }
         notifyDataSetChanged();
     }
 }

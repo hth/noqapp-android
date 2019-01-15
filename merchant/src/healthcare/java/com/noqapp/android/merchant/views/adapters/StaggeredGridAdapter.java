@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.MyViewHolder> {
@@ -80,19 +83,19 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
-                   // Toast.makeText(context, "You click the button ", Toast.LENGTH_LONG).show();
-                    if(null != staggeredClick)
-                        staggeredClick.staggeredClick(true,dataObjArrayList.get(position).getShortName());
+                    // Toast.makeText(context, "You click the button ", Toast.LENGTH_LONG).show();
+                    if (null != staggeredClick)
+                        staggeredClick.staggeredClick(true, dataObjArrayList.get(position).getShortName());
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
-                    if(null != staggeredClick)
-                        staggeredClick.staggeredClick(false,dataObjArrayList.get(position).getShortName());
+                    if (null != staggeredClick)
+                        staggeredClick.staggeredClick(false, dataObjArrayList.get(position).getShortName());
                 }
 
             }
         });
 
-        if(dataObjArrayList.get(position).isNewlyAdded()){
+        if (dataObjArrayList.get(position).isNewlyAdded()) {
             Animation anim = new AlphaAnimation(0.0f, 1.0f);
             anim.setDuration(150); //You can manage the blinking time with this parameter
             anim.setStartOffset(20);
@@ -101,7 +104,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
             holder.name.startAnimation(anim);
 
 
-        }else{
+        } else {
             holder.name.clearAnimation();
         }
     }
@@ -144,5 +147,45 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
             }
         }
         return temp;
+    }
+
+    public void updateSelectList(List<JsonMedicalRadiology> temp) {
+        for (JsonMedicalRadiology d :
+                temp) {
+            for (int i = 0; i < dataObjArrayList.size(); i++) {
+                if (d.getName().equals(dataObjArrayList.get(i).getShortName())) {
+                    dataObjArrayList.get(i).setSelect(true);
+                    break;
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updatePathSelectList(List<JsonMedicalPathology> temp) {
+        for (JsonMedicalPathology d :
+                temp) {
+            for (int i = 0; i < dataObjArrayList.size(); i++) {
+                if (d.getName().equals(dataObjArrayList.get(i).getShortName())) {
+                    dataObjArrayList.get(i).setSelect(true);
+                    break;
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updateSelection(String [] temp) {
+        for (String d :
+                temp) {
+            for (int i = 0; i < dataObjArrayList.size(); i++) {
+                if (d.trim().equals(dataObjArrayList.get(i).getShortName())) {
+                    dataObjArrayList.get(i).setSelect(true);
+                    break;
+                }
+
+            }
+        }
+        notifyDataSetChanged();
     }
 }

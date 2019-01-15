@@ -69,6 +69,12 @@ public class InstructionFragment extends Fragment {
         }
         instructionAdapter = new MultiSelectListAdapter(getActivity(), DataObjList);
         list_view.setAdapter(instructionAdapter);
+        try {
+            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getPlanToPatient().split("\\.");
+            instructionAdapter.updateSelection(temp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
     }

@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -24,7 +25,6 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +49,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private String no_of_days;
     private Button btn_done;
     private View view_med;
-    private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
+    private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -115,10 +115,32 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         obstreticsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList(), this, false);
         rcv_obstretics.setAdapter(obstreticsAdapter);
 
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedMedicineList.size()), LinearLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
         rcv_symptom_select.setLayoutManager(sglm);
-        symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedMedicineList, this,true);
+        symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this,true);
         rcv_symptom_select.setAdapter(symptomSelectedAdapter);
+        JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
+        if(null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies())
+                actv_known_allergy.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies());
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory())
+                actv_past_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory());
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory())
+                actv_family_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory());
+        }
+
+        try {
+            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain().split("\\r?\\n");
+            ArrayList<DataObj> dataObjArrayList = new ArrayList<>();
+            dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
+            dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
+
+            selectedSymptomsList = symptomSelectedAdapter.updateDataObj(temp,dataObjArrayList);
+            symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this,true);
+            rcv_symptom_select.setAdapter(symptomSelectedAdapter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void AddItemDialog(final Context mContext, String title) {
@@ -206,16 +228,16 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     Toast.makeText(getActivity(), "All fields are mandatory", Toast.LENGTH_LONG).show();
                 } else {
                     if (isEdit) {
-                        selectedMedicineList.set(pos, dataObj);
+                        selectedSymptomsList.set(pos, dataObj);
                     } else {
-                        selectedMedicineList.add(dataObj);
+                        selectedSymptomsList.add(dataObj);
                     }
 
-                    view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
+                    view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
 
-                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedMedicineList.size()), LinearLayoutManager.HORIZONTAL);
+                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
                     rcv_symptom_select.setLayoutManager(sglm);
-                    symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedMedicineList, SymptomsFragment.this, true);
+                    symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                     rcv_symptom_select.setAdapter(symptomSelectedAdapter);
                     clearOptionSelection();
                 }
@@ -226,13 +248,13 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             public void onClick(View v) {
                 new AppUtils().hideKeyBoard(getActivity());
                 if (isEdit) {
-                    selectedMedicineList.remove(pos);
+                    selectedSymptomsList.remove(pos);
                 }
                 clearOptionSelection();
-                view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
-                StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedMedicineList.size()), LinearLayoutManager.HORIZONTAL);
+                view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
+                StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
                 rcv_symptom_select.setLayoutManager(sglm);
-                symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedMedicineList, SymptomsFragment.this, true);
+                symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                 rcv_symptom_select.setAdapter(symptomSelectedAdapter);
             }
         });
@@ -248,8 +270,8 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     }
 
     private boolean isItemExist(String name) {
-        for (int i = 0; i < selectedMedicineList.size(); i++) {
-            if (selectedMedicineList.get(i).getShortName().equals(name))
+        for (int i = 0; i < selectedSymptomsList.size(); i++) {
+            if (selectedSymptomsList.get(i).getShortName().equals(name))
                 return true;
         }
         return false;

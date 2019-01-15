@@ -117,4 +117,28 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
             data = data.substring(0, data.length() - 2);
         return data;
     }
+
+    public ArrayList<DataObj> updateDataObj(String[] temp,ArrayList<DataObj> list) {
+        ArrayList<DataObj> dataObjs = new ArrayList<>();
+        if (null != temp && temp.length>0) {
+            for (int i = 0; i < temp.length; i++) {
+                String act = temp[i].replace("Having ", "").replace(" since last ", "-");
+                if(act.contains("-")){
+                    String shortName = act.split("-")[0];
+                    String val = act.split("-")[1];
+
+                    for (DataObj d :
+                            list) {
+                        if(d.getShortName().equals(shortName)){
+                            dataObjs.add(d.setAdditionalNotes(val).setSelect(true));
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+       return dataObjs;
+    }
 }

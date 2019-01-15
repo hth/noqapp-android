@@ -169,6 +169,19 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
         rcv_medicine.setLayoutManager(sglm);
         medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this,true);
         rcv_medicine.setAdapter(medicineSelectedAdapter);
+
+        try {
+            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis().split(",");
+            diagnosisAdapter.updateSelection(temp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        selectedMedicineList = medicineSelectedAdapter.updateMedicineSelectList(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalMedicines(),
+                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
+        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this,true);
+        rcv_medicine.setAdapter(medicineSelectedAdapter);
+        clearOptionSelection();
+        view_med.setVisibility(selectedMedicineList.size()>0 ? View.VISIBLE : View.GONE);
     }
 
     private void AddItemDialog(final Context mContext, String title) {

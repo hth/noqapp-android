@@ -89,7 +89,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
                 Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
                 intent.putExtra("qCodeQR", codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
-                intent.putExtra("medicalPhysical", jsonMedicalRecordTemp);
+                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                 intent.putExtra("jsonProfile",jsonProfile);
                 startActivity(intent);
                 finish();

@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
@@ -54,6 +55,17 @@ public class DiagnosisFragment extends Fragment {
         rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager);
         provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
+
+        JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
+        actv_clinical_findings.setText(jsonMedicalRecord.getClinicalFinding());
+        actv_examination_results.setText(jsonMedicalRecord.getExamination());
+
+        try {
+            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis().split(",");
+            provisionalDiagnosisAdapter.updateSelection(temp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
