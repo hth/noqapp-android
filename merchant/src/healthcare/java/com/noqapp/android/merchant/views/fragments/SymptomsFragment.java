@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private View view_med;
     private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
     private TextView tv_obes, tv_gyanc;
+    private SwitchCompat sc_enable_history;
 
     @Nullable
     @Override
@@ -61,6 +64,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         actv_past_history = v.findViewById(R.id.actv_past_history);
         actv_family_history = v.findViewById(R.id.actv_family_history);
         actv_known_allergy = v.findViewById(R.id.actv_known_allergy);
+        sc_enable_history = v.findViewById(R.id.sc_enable_history);
         btn_done = v.findViewById(R.id.btn_done);
         view_med = v.findViewById(R.id.view_med);
         tv_obes = v.findViewById(R.id.tv_obes);
@@ -88,6 +92,18 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
                     if (null != dataObj)
                         dataObj.setAdditionalNotes(no_of_days);
+                }
+            }
+        });
+        sc_enable_history.setChecked(false);
+        final Button ll_history_disable = v.findViewById(R.id.ll_history_disable);
+        sc_enable_history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
+                if (bChecked) {
+                    ll_history_disable.setVisibility(View.GONE);
+                } else {
+                    ll_history_disable.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -129,6 +145,14 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 actv_past_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory());
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory())
                 actv_family_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory());
+
+            if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies()
+                    || null != jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory()
+                    || null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory()) {
+                sc_enable_history.setChecked(true);
+            } else {
+                sc_enable_history.setChecked(false);
+            }
         }
 
         try {
@@ -200,9 +224,16 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     }
 
     public void saveData() {
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setKnownAllergies(actv_known_allergy.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPastHistory(actv_past_history.getText().toString());
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFamilyHistory(actv_family_history.getText().toString());
+        if (sc_enable_history.isChecked()) {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setKnownAllergies(actv_known_allergy.getText().toString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPastHistory(actv_past_history.getText().toString());
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFamilyHistory(actv_family_history.getText().toString());
+        } else {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setKnownAllergies(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPastHistory(null);
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFamilyHistory(null);
+        }
+
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptoms(symptomSelectedAdapter.getSelectedData());
 
     }

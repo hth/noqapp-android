@@ -164,8 +164,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
             }
         });
-
-
         loadTabs = new LoadTabs();
         loadTabs.execute();
 

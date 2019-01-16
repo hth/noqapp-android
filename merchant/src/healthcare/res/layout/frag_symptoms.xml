@@ -31,67 +31,93 @@
                         android:textColor="@android:color/black"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-
-                <LinearLayout
-                        android:layout_width="match_parent"
+                <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/sc_enable_history"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:padding="5dp"
+                        android:theme="@style/SCBSwitch"
+                        android:layout_gravity="end"/>
 
-                    <TextView
-                            style="@style/style_mdh_header"
-                            android:text="@string/mds_known_allergies"/>
-
-                    <AutoCompleteTextView
-                            android:id="@+id/actv_known_allergy"
-                            style="@style/style_mdh_details"
-                            android:gravity="top"
-                            android:minLines="5"
-                            android:text=""/>
-                </LinearLayout>
-
-                <LinearLayout
+                <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2.5dp"
-                        android:layout_marginRight="2.5dp"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent">
 
                     <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                        <TextView
-                                style="@style/style_mdh_header"
-                                android:text="@string/mds_past_history"/>
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                        <AutoCompleteTextView
-                                android:id="@+id/actv_past_history"
-                                style="@style/style_mdh_details"
-                                android:gravity="top"
-                                android:minLines="5"
-                                android:text=""/>
+                            <TextView
+                                    style="@style/style_mdh_header"
+                                    android:text="@string/mds_known_allergies"/>
 
+                            <AutoCompleteTextView
+                                    android:id="@+id/actv_known_allergy"
+                                    style="@style/style_mdh_details"
+                                    android:gravity="top"
+                                    android:minLines="5"
+                                    android:text=""/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2.5dp"
+                                android:layout_marginRight="2.5dp"
+                                android:orientation="vertical">
+
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:orientation="vertical">
+
+                                <TextView
+                                        style="@style/style_mdh_header"
+                                        android:text="@string/mds_past_history"/>
+
+                                <AutoCompleteTextView
+                                        android:id="@+id/actv_past_history"
+                                        style="@style/style_mdh_details"
+                                        android:gravity="top"
+                                        android:minLines="5"
+                                        android:text=""/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    style="@style/style_mdh_header"
+                                    android:text="@string/mds_family_history"/>
+
+                            <AutoCompleteTextView
+                                    android:id="@+id/actv_family_history"
+                                    style="@style/style_mdh_details"
+                                    android:gravity="top"
+                                    android:minLines="5"
+                                    android:text=""/>
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    <TextView
-                            style="@style/style_mdh_header"
-                            android:text="@string/mds_family_history"/>
-
-                    <AutoCompleteTextView
-                            android:id="@+id/actv_family_history"
-                            style="@style/style_mdh_details"
-                            android:gravity="top"
-                            android:minLines="5"
-                            android:text=""/>
-                </LinearLayout>
+                    <Button
+                            android:id="@+id/ll_history_disable"
+                            android:layout_width="match_parent"
+                            android:background="#80808080"
+                            android:layout_height="match_parent"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"/>
+                </FrameLayout>
             </LinearLayout>
         </ScrollView>
 
