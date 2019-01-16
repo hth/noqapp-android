@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PreferenceHCServiceFragment extends Fragment implements SelectItemListAdapter.RemoveListItem {
 
@@ -184,23 +185,48 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     private ArrayList<DataObj> getPreviousList(int pos) {
         if (null == PreferenceActivity.getPreferenceActivity().testCaseObjects)
             return null;
-        else
+        else {
+
             switch (pos) {
-                case 0:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
-                case 1:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
-                case 2:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
-                case 3:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
-                case 4:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
-                case 5:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getSpecList();
-                default:
-                    return PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+                case 0: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
+                    Collections.sort(temp);
+                    return temp;
+                }
+                case 1: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
+                    Collections.sort(temp);
+                    return temp;
+                }
+                case 2: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
+                    Collections.sort(temp);
+                    return temp;
+                }
+                case 3: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
+                    Collections.sort(temp);
+                    return temp;
+                }
+                case 4: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+                    Collections.sort(temp);
+                    return temp;
+                }
+                case 5: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getSpecList();
+                    Collections.sort(temp);
+                    return temp;
+                }
+                default: {
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+                    Collections.sort(temp);
+                    return temp;
+                }
             }
+
+
+        }
     }
 
 

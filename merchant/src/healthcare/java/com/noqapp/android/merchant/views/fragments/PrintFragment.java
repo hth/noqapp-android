@@ -51,7 +51,7 @@ import java.util.List;
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
-    private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_details, tv_followup;
+    private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri,tv_radio_special, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
     private MedicalHistoryModel medicalHistoryModel;
     private SegmentedControl sc_follow_up;
@@ -62,9 +62,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private ProgressDialog progressDialog;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
-    private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_path;
+    private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec,ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono,
-            acsp_xray, acsp_pathology, acsp_pharmacy;
+            acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
 
     @Nullable
     @Override
@@ -79,6 +79,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_diagnosis = v.findViewById(R.id.tv_diagnosis);
         tv_instruction = v.findViewById(R.id.tv_instruction);
         tv_radio_mri = v.findViewById(R.id.tv_radio_mri);
+        tv_radio_special = v.findViewById(R.id.tv_radio_special);
         tv_radio_scan = v.findViewById(R.id.tv_radio_scan);
         tv_radio_sono = v.findViewById(R.id.tv_radio_sono);
         tv_radio_xray = v.findViewById(R.id.tv_radio_xray);
@@ -99,6 +100,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         acsp_scan = v.findViewById(R.id.acsp_scan);
         acsp_sono = v.findViewById(R.id.acsp_sono);
         acsp_xray = v.findViewById(R.id.acsp_xray);
+        acsp_special = v.findViewById(R.id.acsp_special);
         acsp_pathology = v.findViewById(R.id.acsp_pathology);
         acsp_pharmacy = v.findViewById(R.id.acsp_pharmacy);
 
@@ -106,6 +108,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         ll_scan = v.findViewById(R.id.ll_scan);
         ll_mri = v.findViewById(R.id.ll_mri);
         ll_xray = v.findViewById(R.id.ll_xray);
+        ll_spec = v.findViewById(R.id.ll_spec);
         ll_path = v.findViewById(R.id.ll_path);
 
         sc_follow_up = v.findViewById(R.id.sc_follow_up);
@@ -199,6 +202,13 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     }
                 }
 
+                ArrayList<JsonMedicalRadiology> specList = new ArrayList<>();
+                if (caseHistory.getSpecList().size() > 0) {
+                    for (int i = 0; i < caseHistory.getSpecList().size(); i++) {
+                        specList.add(new JsonMedicalRadiology().setName(caseHistory.getSpecList().get(i)));
+                    }
+                }
+
                 boolean isPreferedBusinessAvailable = false;
                 if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
                     isPreferedBusinessAvailable = true;
@@ -247,6 +257,17 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
+                if (specList.size() > 0) {
+                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                    if (isPreferedBusinessAvailable) {
+                        jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_special.getSelectedItemPosition()).getBizStoreId());
+                    } else {
+                        jsonMedicalRadiologyList.setBizStoreId("");
+                    }
+                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SPEC);
+                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(specList);
+                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                }
                 jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
                 if (isPreferedBusinessAvailable) {
                     jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_pharmacy.getSelectedItemPosition()).getBizStoreId());
@@ -288,6 +309,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_radio_scan.setText(covertStringList2String(caseHistory.getScanList()));
         tv_radio_sono.setText(covertStringList2String(caseHistory.getSonoList()));
         tv_radio_xray.setText(covertStringList2String(caseHistory.getXrayList()));
+        tv_radio_special.setText(covertStringList2String(caseHistory.getSpecList()));
         tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
         hideInvestigationViews(caseHistory);
         if (null != caseHistory.getRespiratory()) {
@@ -343,6 +365,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         acsp_scan.setAdapter(spinAdapter);
         acsp_sono.setAdapter(spinAdapter);
         acsp_xray.setAdapter(spinAdapter);
+        acsp_special.setAdapter(spinAdapter);
         acsp_pathology.setAdapter(spinAdapter);
         acsp_pharmacy.setAdapter(spinAdapter);
     }
@@ -352,6 +375,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         ll_scan.setVisibility(caseHistory.getScanList().size() == 0 ? View.GONE : View.VISIBLE);
         ll_sono.setVisibility(caseHistory.getSonoList().size() == 0 ? View.GONE : View.VISIBLE);
         ll_xray.setVisibility(caseHistory.getXrayList().size() == 0 ? View.GONE : View.VISIBLE);
+        ll_spec.setVisibility(caseHistory.getSpecList().size() == 0 ? View.GONE : View.VISIBLE);
         ll_path.setVisibility(caseHistory.getPathologyList().size() == 0 ? View.GONE : View.VISIBLE);
     }
 

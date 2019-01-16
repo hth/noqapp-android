@@ -32,6 +32,7 @@ public class CaseHistory {
     private List<String> sonoList = new ArrayList<>();
     private List<String> scanList = new ArrayList<>();
     private List<String> xrayList = new ArrayList<>();
+    private List<String> specList = new ArrayList<>();
     private List<String> pathologyList = new ArrayList<>();
 
     private String pastHistory;
@@ -213,6 +214,15 @@ public class CaseHistory {
         return this;
     }
 
+    public List<String> getSpecList() {
+        return specList;
+    }
+
+    public CaseHistory setSpecList(List<String> specList) {
+        this.specList = specList;
+        return this;
+    }
+
     public List<String> getPathologyList() {
         return pathologyList;
     }
@@ -320,9 +330,6 @@ public class CaseHistory {
                 ", details='" + details + '\'' +
                 ", age='" + age + '\'' +
                 ", gender='" + gender + '\'' +
-                ", knownAllergies='" + knownAllergies + '\'' +
-                ", pastHistory='" + pastHistory + '\'' +
-                ", familyHistory='" + familyHistory + '\'' +
                 ", pulse='" + pulse + '\'' +
                 ", bloodPressure=" + Arrays.toString(bloodPressure) +
                 ", weight='" + weight + '\'' +
@@ -341,7 +348,13 @@ public class CaseHistory {
                 ", sonoList=" + sonoList +
                 ", scanList=" + scanList +
                 ", xrayList=" + xrayList +
+                ", specList=" + specList +
                 ", pathologyList=" + pathologyList +
+                ", pastHistory='" + pastHistory + '\'' +
+                ", familyHistory='" + familyHistory + '\'' +
+                ", knownAllergies='" + knownAllergies + '\'' +
+                ", medicineAllergies='" + medicineAllergies + '\'' +
+                ", historyDirty=" + historyDirty +
                 ", jsonMedicineList=" + jsonMedicineList +
                 '}';
     }

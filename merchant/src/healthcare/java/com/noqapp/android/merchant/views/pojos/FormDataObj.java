@@ -8,6 +8,7 @@ public class FormDataObj {
     private ArrayList<DataObj> sonoList = new ArrayList<>();
     private ArrayList<DataObj> scanList = new ArrayList<>();
     private ArrayList<DataObj> xrayList = new ArrayList<>();
+    private ArrayList<DataObj> specList = new ArrayList<>();
     private ArrayList<DataObj> pathologyList = new ArrayList<>();
     private ArrayList<DataObj> symptomsList = new ArrayList<>();
     private ArrayList<DataObj> diagnosisList = new ArrayList<>();
@@ -110,8 +111,12 @@ public class FormDataObj {
         return obstreticsList;
     }
 
-    public FormDataObj setObstreticsList(ArrayList<DataObj> obstreticsList) {
-        this.obstreticsList = obstreticsList;
+    public ArrayList<DataObj> getSpecList() {
+        return specList;
+    }
+
+    public FormDataObj setSpecList(ArrayList<DataObj> specList) {
+        this.specList = specList;
         return this;
     }
 }

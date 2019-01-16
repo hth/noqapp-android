@@ -266,6 +266,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getScanList().clear();
         formDataObj.getSonoList().clear();
         formDataObj.getXrayList().clear();
+        formDataObj.getSpecList().clear();
         formDataObj.getPathologyList().clear();
 
 
@@ -274,6 +275,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getScanList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
         formDataObj.getSonoList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
         formDataObj.getXrayList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
+        formDataObj.getSpecList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
         //
         formDataObj.getPathologyList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
         //
