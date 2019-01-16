@@ -18,9 +18,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-
 /**
  * User: hitender
  * Date: 4/2/17 6:40 PM
@@ -88,9 +85,9 @@ public class DeviceModel {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null != response.body().getError()) {
-                        Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
-                        appBlacklistPresenter.appBlacklistError();
+                    Log.d("response body issupport", response.body().toString());
+                    if (null != response.body() && null == response.body().getError()) {
+                        appBlacklistPresenter.appBlacklistResponse();
                     } else {
                         appBlacklistPresenter.responseErrorPresenter(response.body().getError());
                     }
@@ -101,13 +98,8 @@ public class DeviceModel {
 
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
-                Log.e(TAG, "isSupportedAppVersion " + t.getLocalizedMessage(), t);
-                if(t instanceof ConnectException){
-                    Log.e("Code Red :", "Connection refused. Please try again.");
-                }else if(t instanceof SocketTimeoutException){
-                    Log.e("Code Orange :", "Socket Time out. Please try again.");
-                }
-                appBlacklistPresenter.appBlacklistResponse();
+                Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
+                appBlacklistPresenter.appBlacklistError();
             }
         });
     }

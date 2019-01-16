@@ -33,13 +33,15 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                     .referrer("http://www.google.com")
                     .get()
-                    .select("div[itemprop=softwareVersion]")
+                    .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
                     .first()
                     .ownText();
         } catch (IOException e) {
             Log.e(TAG, "Background check reason=" + e.getLocalizedMessage(), e);
         } catch (NullPointerException e) {
             Log.e(TAG, "NPE during version check reason=" + e.getLocalizedMessage(), e);
+        } catch (Exception e) {
+            Log.e(TAG, "Random error during version check reason=" + e.getLocalizedMessage(), e);
         }
 
         return newVersion;
@@ -50,7 +52,7 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
         super.onPostExecute(s);
         try {
             String currentVersion = Constants.appVersion();
-            if (Integer.parseInt(currentVersion) < Integer.parseInt(newVersion.replace(".", ""))) {
+            if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(newVersion.replace(".", ""))) {
                 ShowAlertInformation.showThemePlayStoreDialog(
                         context,
                         context.getString(R.string.playstore_update_title),
