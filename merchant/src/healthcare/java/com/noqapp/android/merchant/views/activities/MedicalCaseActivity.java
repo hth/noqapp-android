@@ -80,7 +80,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         return jsonMedicalRecord;
     }
 
-    private JsonMedicalRecord jsonMedicalRecord;
+    public JsonMedicalRecord jsonMedicalRecord;
 
     public CaseHistory getCaseHistory() {
         return caseHistory;
@@ -97,7 +97,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
     public JsonPreferredBusinessList jsonPreferredBusinessList;
-
+    private String bizCategoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +131,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         codeQR = getIntent().getStringExtra("qCodeQR");
-        String bizCategoryId = getIntent().getStringExtra("bizCategoryId");
+        bizCategoryId = getIntent().getStringExtra("bizCategoryId");
         if (!TextUtils.isEmpty(bizCategoryId))
             isGynae = MedicalDepartmentEnum.valueOf(bizCategoryId) == MedicalDepartmentEnum.OGY;
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
@@ -228,6 +228,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
         mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
         mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
+        mapList.put(HealthCareServiceEnum.SPEC.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
         mapList.put(Constants.MEDICINE, testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
         mapList.put(Constants.SYMPTOMS, testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
         mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
@@ -280,39 +281,79 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getPathologyList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
         //
 
-        if (isGynae) {
-            formDataObj.getSymptomsList().clear();
-            formDataObj.getSymptomsList().addAll(MedicalDataStatic.Gynae.getSymptoms());
-            formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+        switch (MedicalDepartmentEnum.valueOf(bizCategoryId)) {
+            case OGY: {
+                formDataObj.getSymptomsList().clear();
+                formDataObj.getSymptomsList().addAll(MedicalDataStatic.Gynae.getSymptoms());
+                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
 
 
-            formDataObj.getObstreticsList().clear();
-            formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                formDataObj.getObstreticsList().clear();
+                formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
 
 
-            formDataObj.getDiagnosisList().clear();
-            formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Gynae.getDiagnosis());
-            formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+                formDataObj.getDiagnosisList().clear();
+                formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Gynae.getDiagnosis());
+                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
 
 
-            formDataObj.getProvisionalDiagnosisList().clear();
-            formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Gynae.getProvisionalDiagnosis());
-            formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
-        } else {
-            formDataObj.getSymptomsList().clear();
-            formDataObj.getSymptomsList().addAll(MedicalDataStatic.Pediatrician.getSymptoms());
-            formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+                formDataObj.getProvisionalDiagnosisList().clear();
+                formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Gynae.getProvisionalDiagnosis());
+                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+            }
+            break;
+            case PAE: {
+                formDataObj.getSymptomsList().clear();
+                formDataObj.getSymptomsList().addAll(MedicalDataStatic.Pediatrician.getSymptoms());
+                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
 
-            formDataObj.getObstreticsList().clear();
-            // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+                formDataObj.getObstreticsList().clear();
+                // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
 
-            formDataObj.getDiagnosisList().clear();
-            formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getDiagnosis());
-            formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+                formDataObj.getDiagnosisList().clear();
+                formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getDiagnosis());
+                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
 
-            formDataObj.getProvisionalDiagnosisList().clear();
-            formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getProvisionalDiagnosis());
-            formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+                formDataObj.getProvisionalDiagnosisList().clear();
+                formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getProvisionalDiagnosis());
+                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+            }
+            break;
+            case ORT: {
+                formDataObj.getSymptomsList().clear();
+                formDataObj.getSymptomsList().addAll(MedicalDataStatic.Ortho.getSymptoms());
+                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+
+                formDataObj.getObstreticsList().clear();
+                // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+
+                formDataObj.getDiagnosisList().clear();
+                formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Ortho.getDiagnosis());
+                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+
+                formDataObj.getProvisionalDiagnosisList().clear();
+                formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Ortho.getProvisionalDiagnosis());
+                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+            }
+            break;
+            default: { // General Physician is default
+                formDataObj.getSymptomsList().clear();
+                formDataObj.getSymptomsList().addAll(MedicalDataStatic.Physician.getSymptoms());
+                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+
+                formDataObj.getObstreticsList().clear();
+                // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+
+                formDataObj.getDiagnosisList().clear();
+                formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Physician.getDiagnosis());
+                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+
+                formDataObj.getProvisionalDiagnosisList().clear();
+                formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Physician.getProvisionalDiagnosis());
+                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+            }
+            break;
+
         }
 
 

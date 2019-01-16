@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class PatientProfileActivity extends AppCompatActivity implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter{
+public class PatientProfileActivity extends AppCompatActivity implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter {
     private long lastPress;
     private Toast backPressToast;
     private ProgressDialog progressDialog;
@@ -90,8 +90,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
                 intent.putExtra("qCodeQR", codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                intent.putExtra("jsonProfile",jsonProfile);
-                intent.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+                intent.putExtra("jsonProfile", jsonProfile);
+                intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
                 startActivity(intent);
                 finish();
             }
@@ -138,7 +138,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         this.jsonProfile = jsonProfile;
         tv_patient_name.setText(jsonProfile.getName() + " (" + new AppUtils().calculateAge(jsonProfile.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
         tv_address.setText(jsonProfile.getAddress());
-        tv_details.setText(Html.fromHtml("<b> Blood Group: </b> B+ ,<b> Weight: </b> 75 Kg"));
+
         loadProfilePic(jsonProfile.getProfileImage());
     }
 
@@ -175,7 +175,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
                 try {
                     return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
                 }
@@ -183,7 +183,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         });
         MedicalHistoryAdapter adapter = new MedicalHistoryAdapter(this, jsonMedicalRecords);
         listview.setAdapter(adapter);
-        if(null == jsonMedicalRecords ||jsonMedicalRecords.size() == 0){
+        if (null == jsonMedicalRecords || jsonMedicalRecords.size() == 0) {
             tv_empty_list.setVisibility(View.VISIBLE);
         }
         dismissProgress();
@@ -200,7 +200,12 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
-                if(null != jsonMedicalRecord.getMedicalPhysical()) {
+                if (null != jsonMedicalRecord.getJsonUserMedicalProfile() && null != jsonMedicalRecord.getJsonUserMedicalProfile().getBloodType()) {
+                    tv_details.setText(Html.fromHtml("<b> Blood Group: </b>" + jsonMedicalRecord.getJsonUserMedicalProfile().getBloodType().getDescription()));
+                } else {
+                    tv_details.setText(Html.fromHtml("<b> Blood Group: </b> N/A"));
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical()) {
                     if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                         tv_respiration.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
                     } else {
@@ -231,7 +236,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
                     } else {
                         tv_temperature.setText(notAvailable);
                     }
-                }else{
+                } else {
                     tv_pulse.setText(notAvailable);
                     tv_bp.setText(notAvailable);
                     tv_weight.setText(notAvailable);

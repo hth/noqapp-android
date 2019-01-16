@@ -6,6 +6,7 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 
 import com.itextpdf.text.BaseColor;
@@ -42,6 +43,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +57,7 @@ public class PdfGenerator {
     private Font normalFont;
     private Font normalBoldFont;
     private Font normalBigFont;
+    private int follow_up = 0;
     private String notAvailable = "N/A";
 
     public PdfGenerator(Context mContext) {
@@ -70,8 +73,9 @@ public class PdfGenerator {
     }
 
 
-    public void createPdf(CaseHistory mcp) {
+    public void createPdf(CaseHistory mcp, int follow_up) {
         this.caseHistory = mcp;
+        this.follow_up = follow_up;
         String fileName = new SimpleDateFormat("'NoQueue_" + caseHistory.getName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         String dest = getAppPath(mContext) + fileName;
         if (new File(dest).exists()) {
@@ -92,57 +96,52 @@ public class PdfGenerator {
             document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
-            try {
-                // get input stream
-                InputStream ims = mContext.getAssets().open("logo.png");
-                Bitmap bmp = BitmapFactory.decodeStream(ims);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                Image image = Image.getInstance(stream.toByteArray());
-                image.scaleToFit(100, 30);
-
-                Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-                Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-                Paragraph titleParagraph = new Paragraph();
-                titleParagraph.add(titleChunk);
-                titleParagraph.add(glue);
-                titleParagraph.add(new Chunk(image, 0, -24));
-                document.add(titleParagraph);
-                addVerticalSpace();
-            } catch (IOException ex) {
-                return;
-            }
+//            try {
+//                // get input stream
+//                InputStream ims = mContext.getAssets().open("logo.png");
+//                Bitmap bmp = BitmapFactory.decodeStream(ims);
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                Image image = Image.getInstance(stream.toByteArray());
+//                image.scaleToFit(100, 30);
 //
-//
-//            Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
-//            Paragraph degreeParagraph = new Paragraph();
-//            degreeParagraph.add(degreeChunk);
-//            degreeParagraph.add(glue);
-//            degreeParagraph.add("Koparkhairane, Navi Mumbai");
-//            document.add(degreeParagraph);
+//                Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+//                Font titleFont1 = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
+//                Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+//                Paragraph titleParagraph = new Paragraph();
+//                titleParagraph.add(titleChunk);
+//                titleParagraph.add(glue);
+//                titleParagraph.add(new Chunk("NoQueue",titleFont1));
+//                document.add(titleParagraph);
+//                addVerticalSpace();
+//            } catch (IOException ex) {
+//                return;
+//            }
+
+            Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+            Paragraph titleParagraph = new Paragraph();
+            titleParagraph.add(titleChunk);
+            document.add(titleParagraph);
 
 
-//            Font titleFont = new Font(baseFont, 12.0f, Font.NORMAL, BaseColor.BLACK);
-//            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-//            Paragraph titleParagraph = new Paragraph();
-//            titleParagraph.add(titleChunk);
-//            document.add(titleParagraph);
-//            addVerticalSpace();
-
-
+            Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
             Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
+            degreeParagraph.add(glue);
+            degreeParagraph.add(new Chunk("NoQueue", noqFont));
             document.add(degreeParagraph);
+            addVerticalSpace();
+
 
             Paragraph hospital = new Paragraph();
-            hospital.add(new Chunk("SSD Hospital", normalBoldFont));
-            hospital.add(new Chunk(", Koparkhairane, Navi Mumbai", normalFont));
+            hospital.add(new Chunk(MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getBusinessName(), normalBoldFont));
+            hospital.add(new Chunk(", " + MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getAreaAndTown(), normalFont));
             document.add(hospital);
 
             // LINE SEPARATOR
             LineSeparator lineSeparator = new LineSeparator();
-            // lineSeparator.setOffset(-14);
             lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
 
             document.add(new Chunk(lineSeparator));
@@ -188,21 +187,32 @@ public class PdfGenerator {
             document.add(paragraphInstructionValue);
             document.add(addVerticalSpace());
 
+
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+            String followupDate = "";
+            if (follow_up > 0) {
+                Calendar c1 = Calendar.getInstance();
+                c1.add(Calendar.DATE, follow_up);
+                Date d = c1.getTime();
+                followupDate = df.format(d);
+            }
+
             Paragraph followup = new Paragraph();
             followup.add(new Chunk("Follow up: ", normalBigFont));
-            followup.add(new Chunk(caseHistory.getFollowup(), normalFont));
+            followup.add(new Chunk(followupDate, normalFont));
             document.add(followup);
-            document.add(addVerticalSpace());
+            document.add(addVerticalSpaceAfter(20f));
 
             Date c = Calendar.getInstance().getTime();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
             String formattedDate = df.format(c);
 
 
-            Paragraph p_sign = new Paragraph("Signature: ");
+            Paragraph p_sign = new Paragraph();
+            p_sign.add(new Chunk("Signature: ", normalBigFont));
             p_sign.add(new Chunk(new LineSeparator()));
             p_sign.add("                                                                   ");
-            p_sign.add("Date: " + formattedDate);
+            p_sign.add(new Chunk("Date: ", normalBigFont));
+            p_sign.add(new Chunk(formattedDate, normalFont));
             document.add(p_sign);
             document.close();
 
@@ -289,6 +299,8 @@ public class PdfGenerator {
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSonoList()), normalFont));
         table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getScanList()), normalFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SPEC.getDescription(), normalBoldFont, 5));
+        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSpecList()), normalFont));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
 

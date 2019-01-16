@@ -51,7 +51,7 @@ import java.util.List;
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
-    private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri,tv_radio_special, tv_details, tv_followup;
+    private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_radio_special, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
     private MedicalHistoryModel medicalHistoryModel;
     private SegmentedControl sc_follow_up;
@@ -62,7 +62,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private ProgressDialog progressDialog;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
-    private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec,ll_path;
+    private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono,
             acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
 
@@ -349,11 +349,11 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             @Override
             public void onClick(View v) {
                 PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
-                pdfGenerator.createPdf(caseHistory);
+                pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup));
             }
         });
 
-        if(!TextUtils.isEmpty(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getFollowUpInDays())) {
+        if (!TextUtils.isEmpty(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getFollowUpInDays())) {
             int index = follow_up_data.indexOf(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getFollowUpInDays());
             if (-1 != index)
                 sc_follow_up.setSelectedSegment(index);

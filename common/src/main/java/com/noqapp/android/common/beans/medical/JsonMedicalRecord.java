@@ -111,11 +111,14 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("rr")
     private String recordReferenceId;
 
+    @JsonProperty("um")
+    private JsonUserMedicalProfile jsonUserMedicalProfile = new JsonUserMedicalProfile();
+
     @JsonProperty("dbn")
     private String diagnosedByDisplayName;
 
-    @JsonProperty("um")
-    private JsonUserMedicalProfile jsonUserMedicalProfile = new JsonUserMedicalProfile();
+    @JsonProperty("at")
+    private String areaAndTown;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -354,6 +357,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
+        return jsonUserMedicalProfile;
+    }
+
+    public JsonMedicalRecord setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
+        return this;
+    }
+
     public String getDiagnosedByDisplayName() {
         return diagnosedByDisplayName;
     }
@@ -363,12 +375,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
-        return jsonUserMedicalProfile;
+    public String getAreaAndTown() {
+        return areaAndTown;
     }
 
-    public JsonMedicalRecord setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
-        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
+    public JsonMedicalRecord setAreaAndTown(String areaAndTown) {
+        this.areaAndTown = areaAndTown;
         return this;
     }
 
@@ -410,8 +422,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         sb.append(", codeQR='").append(codeQR).append('\'');
         sb.append(", formVersion=").append(formVersion);
         sb.append(", recordReferenceId='").append(recordReferenceId).append('\'');
-        sb.append(", diagnosedByDisplayName='").append(diagnosedByDisplayName).append('\'');
         sb.append(", jsonUserMedicalProfile=").append(jsonUserMedicalProfile);
+        sb.append(", diagnosedByDisplayName='").append(diagnosedByDisplayName).append('\'');
+        sb.append(", areaAndTown='").append(areaAndTown).append('\'');
         sb.append(", error=").append(error);
         sb.append('}');
         return sb.toString();

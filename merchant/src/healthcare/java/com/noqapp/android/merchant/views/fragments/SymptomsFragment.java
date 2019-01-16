@@ -144,7 +144,10 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!MedicalCaseActivity.getMedicalCaseActivity().isGynae()) {
+        if (MedicalCaseActivity.getMedicalCaseActivity().isGynae()) {
+            tv_gyanc.setVisibility(View.VISIBLE);
+            tv_obes.setVisibility(View.VISIBLE);
+        } else {
             tv_gyanc.setVisibility(View.GONE);
             tv_obes.setVisibility(View.GONE);
         }
