@@ -11,6 +11,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
 
     private Feedback feedback = new Feedback();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,16 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             if (null != fb) {
                 feedback = fb;
             }
+        }
+        if (UserUtils.isLogin()) {
+            btn_submit.setEnabled(true);
+            edt_body.setEnabled(true);
+            edt_subject.setEnabled(true);
+        } else {
+            btn_submit.setEnabled(false);
+            edt_body.setEnabled(false);
+            edt_subject.setEnabled(false);
+            Toast.makeText(this, "please login to contact us", Toast.LENGTH_LONG).show();
         }
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
