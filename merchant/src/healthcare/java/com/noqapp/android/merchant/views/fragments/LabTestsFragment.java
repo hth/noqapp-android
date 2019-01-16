@@ -34,9 +34,9 @@ import java.util.List;
 
 public class LabTestsFragment extends Fragment {
 
-    private RecyclerView rcv_mri, rcv_scan, rcv_sono, rcv_xray, rcv_pathology;
+    private RecyclerView rcv_mri, rcv_scan, rcv_sono, rcv_xray, rcv_pathology,rcv_special;
     private TextView tv_add_pathology, tv_add_new;
-    private StaggeredGridAdapter mriAdapter, scanAdapter, sonoAdapter, xrayAdapter, pathalogyAdapter;
+    private StaggeredGridAdapter mriAdapter, scanAdapter, sonoAdapter, xrayAdapter, specAdapter, pathalogyAdapter;
     private int selectionPos = -1;
 
     @Nullable
@@ -47,6 +47,7 @@ public class LabTestsFragment extends Fragment {
         rcv_scan = v.findViewById(R.id.rcv_scan);
         rcv_sono = v.findViewById(R.id.rcv_sono);
         rcv_xray = v.findViewById(R.id.rcv_xray);
+        rcv_special = v.findViewById(R.id.rcv_special);
 
         rcv_pathology = v.findViewById(R.id.rcv_pathology);
         tv_add_new = v.findViewById(R.id.tv_add_new);
@@ -96,6 +97,11 @@ public class LabTestsFragment extends Fragment {
         pathalogyAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
         rcv_pathology.setAdapter(pathalogyAdapter);
 
+        StaggeredGridLayoutManager staggeredGridLayoutManager5 = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList().size()), LinearLayoutManager.HORIZONTAL);
+        rcv_special.setLayoutManager(staggeredGridLayoutManager5);
+        specAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList());
+        rcv_special.setAdapter(specAdapter);
+
         updateLabSelection();
         updatePathologySelection();
     }
@@ -113,6 +119,8 @@ public class LabTestsFragment extends Fragment {
                     sonoAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
                 } else if (jsonMedicalRadiologyList.getLabCategory() == LabCategoryEnum.XRAY) {
                     xrayAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
+                }else if (jsonMedicalRadiologyList.getLabCategory() == LabCategoryEnum.SPEC) {
+                    specAdapter.updateSelectList(jsonMedicalRadiologyList.getJsonMedicalRadiologies());
                 }
             }
         } catch (Exception e) {
@@ -191,7 +199,7 @@ public class LabTestsFragment extends Fragment {
         category_data.add("MRI");
         category_data.add("SCAN");
         category_data.add("X-RAY");
-        String category = "";
+        category_data.add("SPEC");
         sc_category.addSegments(category_data);
         sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
@@ -257,7 +265,7 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
                         rcv_scan.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
-                    } else {
+                    } else if (selectionPos == 3){
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setXrayList(temp);
@@ -267,6 +275,16 @@ public class LabTestsFragment extends Fragment {
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList());
                         rcv_xray.setAdapter(customAdapter);
                         MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
+                    } else  {
+                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList();
+                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSpecList(temp);
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
+                        rcv_special.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+
+                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList());
+                        rcv_special.setAdapter(customAdapter);
+                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSpecList().add(new DataObj(edt_item.getText().toString(), false));
                     }
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
@@ -282,6 +300,7 @@ public class LabTestsFragment extends Fragment {
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setScanList(scanAdapter.getSelectedDataList());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSonoList(sonoAdapter.getSelectedDataList());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setXrayList(xrayAdapter.getSelectedDataList());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSpecList(specAdapter.getSelectedDataList());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPathologyList(pathalogyAdapter.getSelectedDataList());
     }
 }
