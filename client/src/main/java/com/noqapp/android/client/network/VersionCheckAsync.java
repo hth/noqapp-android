@@ -28,12 +28,12 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + context.getPackageName() + "&hl=en")
+            newVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + context.getPackageName()+ "&hl=en")
                     .timeout(30000)
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                     .referrer("http://www.google.com")
                     .get()
-                    .select("div[itemprop=softwareVersion]")
+                    .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
                     .first()
                     .ownText();
         } catch (IOException e) {
@@ -51,8 +51,8 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         try {
-            String currentVersion = Constants.appVersion();
-            if (Integer.parseInt(currentVersion) < Integer.parseInt(newVersion.replace(".", ""))) {
+            String currentVersion =  Constants.appVersion();
+            if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(newVersion.replace(".", ""))) {
                 ShowAlertInformation.showThemePlayStoreDialog(
                         context,
                         context.getString(R.string.playstore_update_title),

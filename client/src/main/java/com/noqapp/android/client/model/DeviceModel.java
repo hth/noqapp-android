@@ -83,9 +83,9 @@ public class DeviceModel {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
-                    if (null != response.body() && null != response.body().getError()) {
-                        Log.d(TAG, "Oldest supported version " + String.valueOf(response.body()));
-                        appBlacklistPresenter.appBlacklistError();
+                    Log.e("response body issupport",response.body().toString());
+                    if (null != response.body() && null == response.body().getError()) {
+                        appBlacklistPresenter.appBlacklistResponse();
                     } else {
                         appBlacklistPresenter.responseErrorPresenter(response.body().getError());
                     }
@@ -101,7 +101,7 @@ public class DeviceModel {
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
-                appBlacklistPresenter.appBlacklistResponse();
+                appBlacklistPresenter.appBlacklistError();
             }
         });
     }
