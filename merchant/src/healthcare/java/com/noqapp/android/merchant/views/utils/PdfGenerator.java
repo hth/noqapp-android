@@ -6,6 +6,7 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 
 import com.itextpdf.text.BaseColor;
@@ -42,6 +43,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +57,7 @@ public class PdfGenerator {
     private Font normalFont;
     private Font normalBoldFont;
     private Font normalBigFont;
+    private int follow_up = 0;
     private String notAvailable = "N/A";
 
     public PdfGenerator(Context mContext) {
@@ -70,8 +73,9 @@ public class PdfGenerator {
     }
 
 
-    public void createPdf(CaseHistory mcp) {
+    public void createPdf(CaseHistory mcp, int follow_up) {
         this.caseHistory = mcp;
+        this.follow_up = follow_up;
         String fileName = new SimpleDateFormat("'NoQueue_" + caseHistory.getName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         String dest = getAppPath(mContext) + fileName;
         if (new File(dest).exists()) {
@@ -132,8 +136,8 @@ public class PdfGenerator {
 
 
             Paragraph hospital = new Paragraph();
-            hospital.add(new Chunk("SSD Hospital", normalBoldFont));
-            hospital.add(new Chunk(", Koparkhairane, Navi Mumbai", normalFont));
+            hospital.add(new Chunk(MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getBusinessName(), normalBoldFont));
+            hospital.add(new Chunk(", " + MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getAreaAndTown(), normalFont));
             document.add(hospital);
 
             // LINE SEPARATOR
@@ -183,14 +187,23 @@ public class PdfGenerator {
             document.add(paragraphInstructionValue);
             document.add(addVerticalSpace());
 
+
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+            String followupDate = "";
+            if (follow_up > 0) {
+                Calendar c1 = Calendar.getInstance();
+                c1.add(Calendar.DATE, follow_up);
+                Date d = c1.getTime();
+                followupDate = df.format(d);
+            }
+
             Paragraph followup = new Paragraph();
             followup.add(new Chunk("Follow up: ", normalBigFont));
-            followup.add(new Chunk(caseHistory.getFollowup(), normalFont));
+            followup.add(new Chunk(followupDate, normalFont));
             document.add(followup);
             document.add(addVerticalSpaceAfter(20f));
 
             Date c = Calendar.getInstance().getTime();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
             String formattedDate = df.format(c);
 
 

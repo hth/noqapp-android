@@ -80,7 +80,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         return jsonMedicalRecord;
     }
 
-    private JsonMedicalRecord jsonMedicalRecord;
+    public JsonMedicalRecord jsonMedicalRecord;
 
     public CaseHistory getCaseHistory() {
         return caseHistory;

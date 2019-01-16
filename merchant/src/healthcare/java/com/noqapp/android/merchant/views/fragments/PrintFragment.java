@@ -349,7 +349,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             @Override
             public void onClick(View v) {
                 PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
-                pdfGenerator.createPdf(caseHistory);
+                pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup));
             }
         });
 
