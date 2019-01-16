@@ -228,6 +228,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
         mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
         mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
+        mapList.put(HealthCareServiceEnum.SPEC.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
         mapList.put(Constants.MEDICINE, testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
         mapList.put(Constants.SYMPTOMS, testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
         mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));

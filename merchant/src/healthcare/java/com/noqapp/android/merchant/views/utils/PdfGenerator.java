@@ -92,48 +92,44 @@ public class PdfGenerator {
             document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
-            try {
-                // get input stream
-                InputStream ims = mContext.getAssets().open("logo.png");
-                Bitmap bmp = BitmapFactory.decodeStream(ims);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                Image image = Image.getInstance(stream.toByteArray());
-                image.scaleToFit(100, 30);
-
-                Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-                Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-                Paragraph titleParagraph = new Paragraph();
-                titleParagraph.add(titleChunk);
-                titleParagraph.add(glue);
-                titleParagraph.add(new Chunk(image, 0, -24));
-                document.add(titleParagraph);
-                addVerticalSpace();
-            } catch (IOException ex) {
-                return;
-            }
+//            try {
+//                // get input stream
+//                InputStream ims = mContext.getAssets().open("logo.png");
+//                Bitmap bmp = BitmapFactory.decodeStream(ims);
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                Image image = Image.getInstance(stream.toByteArray());
+//                image.scaleToFit(100, 30);
 //
-//
-//            Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
-//            Paragraph degreeParagraph = new Paragraph();
-//            degreeParagraph.add(degreeChunk);
-//            degreeParagraph.add(glue);
-//            degreeParagraph.add("Koparkhairane, Navi Mumbai");
-//            document.add(degreeParagraph);
+//                Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+//                Font titleFont1 = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
+//                Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+//                Paragraph titleParagraph = new Paragraph();
+//                titleParagraph.add(titleChunk);
+//                titleParagraph.add(glue);
+//                titleParagraph.add(new Chunk("NoQueue",titleFont1));
+//                document.add(titleParagraph);
+//                addVerticalSpace();
+//            } catch (IOException ex) {
+//                return;
+//            }
+
+            Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
+            Paragraph titleParagraph = new Paragraph();
+            titleParagraph.add(titleChunk);
+            document.add(titleParagraph);
 
 
-//            Font titleFont = new Font(baseFont, 12.0f, Font.NORMAL, BaseColor.BLACK);
-//            Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-//            Paragraph titleParagraph = new Paragraph();
-//            titleParagraph.add(titleChunk);
-//            document.add(titleParagraph);
-//            addVerticalSpace();
-
-
+            Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
             Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
+            degreeParagraph.add(glue);
+            degreeParagraph.add(new Chunk("NoQueue", noqFont));
             document.add(degreeParagraph);
+            addVerticalSpace();
+
 
             Paragraph hospital = new Paragraph();
             hospital.add(new Chunk("SSD Hospital", normalBoldFont));
@@ -142,7 +138,6 @@ public class PdfGenerator {
 
             // LINE SEPARATOR
             LineSeparator lineSeparator = new LineSeparator();
-            // lineSeparator.setOffset(-14);
             lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
 
             document.add(new Chunk(lineSeparator));
@@ -192,17 +187,19 @@ public class PdfGenerator {
             followup.add(new Chunk("Follow up: ", normalBigFont));
             followup.add(new Chunk(caseHistory.getFollowup(), normalFont));
             document.add(followup);
-            document.add(addVerticalSpace());
+            document.add(addVerticalSpaceAfter(20f));
 
             Date c = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
             String formattedDate = df.format(c);
 
 
-            Paragraph p_sign = new Paragraph("Signature: ");
+            Paragraph p_sign = new Paragraph();
+            p_sign.add(new Chunk("Signature: ", normalBigFont));
             p_sign.add(new Chunk(new LineSeparator()));
             p_sign.add("                                                                   ");
-            p_sign.add("Date: " + formattedDate);
+            p_sign.add(new Chunk("Date: ", normalBigFont));
+            p_sign.add(new Chunk(formattedDate, normalFont));
             document.add(p_sign);
             document.close();
 
