@@ -105,7 +105,7 @@ public class MedicalDataStatic {
 
     }
 
-  public static class Pediatrician {
+    public static class Pediatrician {
 
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
@@ -198,6 +198,280 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("MUSCLE CRAMPS", "", false));
             dataObjs.add(new DataObj("DISCHARGE FROM EAR", "", false));
             dataObjs.add(new DataObj("DIFFICULTY IN SWALLOWING", "", false));
+            return dataObjs;
+        }
+    }
+
+    public static class Ortho {
+
+        public static ArrayList<DataObj> getDiagnosis() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("FRACTURE RIGHT CLAVICLE", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT CLAVICLE", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT HEAD OF HUMERUS", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT HEAD OF HUMERUS", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT MIDSHALF OF HUMERUS", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT MIDSHAFT OF HUMERUS", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT LOWER END OF HUMERUS", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT LOWER END OF HUMERUS", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT UPPER END OF RADIUS & ULNA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT UPPER END OF RADIUS & ULNA", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT MIDSHAFT OF RADIUS & ULNA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT MIDSHAFT OF RADIUS & ULNA", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT LOWER END OF RADIUS & ULNA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT LOWER END OF RADIUS & ULNA", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT METATARSAL BONE", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT METATARSAL BONE", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT IT FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT IT  FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT HEAD OF FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT HEAD OF FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT MIDSHAFT OF FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT MIDSHAFT OF FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT LOWER END OF FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT LOWER END OF FEMUR", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT UPPER END OF TIBIA & FIBULA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT UPPER END OF TIBIA & FIBULA", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT MIDSHAFT OF TIBIA & FIBULA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT MIDSHAFT OF TIBIA & FIBULA", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT LOWER END OF TIBIA & FIBULA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT LOWER END OF TIBIA & FIBULA", "", false));
+            dataObjs.add(new DataObj("FRACTURE LEFT METACARPAL BONES", "", false));
+            dataObjs.add(new DataObj("FRACTURE RIGHT METACARPAL BONES", "", false));
+            dataObjs.add(new DataObj("RHEUMATOID ARTHRITIS", "", false));
+            dataObjs.add(new DataObj("PROLAPSE INTERVERTIBRAL DISC", "", false));
+            dataObjs.add(new DataObj("CERVICAL SPONDYLOSIS", "", false));
+            dataObjs.add(new DataObj("LUMBAR SPONDYLOSIS", "", false));
+            dataObjs.add(new DataObj("LORDOSIS", "", false));
+            dataObjs.add(new DataObj("GOUT", "", false));
+            dataObjs.add(new DataObj("DISLOCATION OF RIGHT SHOULDER JOINT", "", false));
+            dataObjs.add(new DataObj("DISLOCATION OF LEFT SHOULDER JOINT", "", false));
+            dataObjs.add(new DataObj("FRACTURE THORACIC RIB RIGHT SIDE", "", false));
+            dataObjs.add(new DataObj("FRACTURE THORACIC RIB LEFT SIDE", "", false));
+            return dataObjs;
+        }
+
+        public static ArrayList<DataObj> getProvisionalDiagnosis() {
+            return getDiagnosis();
+        }
+
+        public static ArrayList<DataObj> getSymptoms() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("PAIN AT RIGHT SHOULDER JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT SHOULDER JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT ELBOW JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT ELBOW JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT WRIST JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT WRIST JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT HAND", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT HAND", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT HIP JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT HIP JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT KNEE JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT KNEE JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT ANKLE JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT ANKLE JOINT", "", false));
+            dataObjs.add(new DataObj("PAIN AT RIGHT FOOT", "", false));
+            dataObjs.add(new DataObj("PAIN AT LEFT FOOT", "", false));
+            dataObjs.add(new DataObj("SWELLING ", "", false));
+            dataObjs.add(new DataObj("MOVEMENT RESTRICTION", "", false));
+            dataObjs.add(new DataObj("LUMBAR PAIN", "", false));
+            dataObjs.add(new DataObj("SCAPULAR PAIN", "", false));
+            dataObjs.add(new DataObj("CERVICAL PAIN", "", false));
+            dataObjs.add(new DataObj("PAIN ALL OVER JOINTS ( MULTIPLE )", "", false));
+            dataObjs.add(new DataObj("DIFFICULTY IN WALKING", "", false));
+            dataObjs.add(new DataObj("DIFFICULTY IN SITTING", "", false));
+            dataObjs.add(new DataObj("DIFFICULTY IN LYING DOWN", "", false));
+            dataObjs.add(new DataObj("BLUNT INJURY", "", false));
+            dataObjs.add(new DataObj("CLW ", "", false));
+            dataObjs.add(new DataObj("PULSATIONS +", "", false));
+            dataObjs.add(new DataObj("PAIN OVER RIGHT CLAVICLE REGION", "", false));
+            dataObjs.add(new DataObj("PAIN OVER LEFT CLAVICLE REGION", "", false));
+            return dataObjs;
+        }
+    }
+
+    public static class Physician {
+
+        public static ArrayList<DataObj> getDiagnosis() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("ACUTE FEBRILE ILLNESS", "", false));
+            dataObjs.add(new DataObj("ACUTE GASTROENTERITIS", "", false));
+            dataObjs.add(new DataObj("ACUTE GASTRITIS", "", false));
+            dataObjs.add(new DataObj("ACUTE ABDOMEN", "", false));
+            dataObjs.add(new DataObj("MALARIA FEVER", "", false));
+            dataObjs.add(new DataObj("DENGUE FEVER", "", false));
+            dataObjs.add(new DataObj("ACUTE PANCREATITIS", "", false));
+            dataObjs.add(new DataObj("ACUTE APPENDICITIS", "", false));
+            dataObjs.add(new DataObj("ACCELERATED HYPERTENSION", "", false));
+            dataObjs.add(new DataObj("ALLERGIC RHINITIS", "", false));
+            dataObjs.add(new DataObj("DIABETES MELLITUS", "", false));
+            dataObjs.add(new DataObj("SINUSITIS", "", false));
+            dataObjs.add(new DataObj("ACUTE EXACERBATION OF BRONCHIAL ASTHMA", "", false));
+            dataObjs.add(new DataObj("ACUTE EXACERBATION OF CHRONIC OBSTRUCTIVE PULMONARY DISEASE", "", false));
+            dataObjs.add(new DataObj("ACUTE CORONARY SYNDROME", "", false));
+            dataObjs.add(new DataObj("MIGRAINE", "", false));
+            dataObjs.add(new DataObj("MYOCARDIAL INFARCTION", "", false));
+            dataObjs.add(new DataObj("ISCHAEMIC HEART DISEASE", "", false));
+            dataObjs.add(new DataObj("MITRAL STENOSIS", "", false));
+            dataObjs.add(new DataObj("AORTIC STENOSIS", "", false));
+            dataObjs.add(new DataObj("LEFT HEMIPLEGIA", "", false));
+            dataObjs.add(new DataObj("RIGHT HEMIPLEGIA", "", false));
+            dataObjs.add(new DataObj("RHEUMATOID ARTHRITIS", "", false));
+            dataObjs.add(new DataObj("GOUT", "", false));
+            dataObjs.add(new DataObj("INTERSTITIAL LUNG DISEASE", "", false));
+            dataObjs.add(new DataObj("HYPOTHYROIDISM", "", false));
+            dataObjs.add(new DataObj("HYPERTHYROIDISM", "", false));
+            dataObjs.add(new DataObj("BRONCHITIS", "", false));
+            dataObjs.add(new DataObj("PULMONARY KOCHS", "", false));
+            dataObjs.add(new DataObj("PNEUMONITIS", "", false));
+            dataObjs.add(new DataObj("PNEUMONIA", "", false));
+            dataObjs.add(new DataObj("POTS SPINE", "", false));
+            dataObjs.add(new DataObj("PHARYNGITIS", "", false));
+            dataObjs.add(new DataObj("LARYNGITIS", "", false));
+            dataObjs.add(new DataObj("JAUNDICE", "", false));
+            dataObjs.add(new DataObj("HEPATITIS", "", false));
+            dataObjs.add(new DataObj("THALASSEMIA ", "", false));
+            dataObjs.add(new DataObj("IRON DEFFICIENCY ANAEMIA", "", false));
+            dataObjs.add(new DataObj("MEGALOBLASTIC ANAEMIA", "", false));
+            dataObjs.add(new DataObj("SICKLE CELL ANAEMIA", "", false));
+            dataObjs.add(new DataObj("STROKE ", "", false));
+            dataObjs.add(new DataObj("CEREBRO VASCULAR ACCIDENT", "", false));
+            dataObjs.add(new DataObj("CHRONIC KIDNEY DISEASE", "", false));
+            dataObjs.add(new DataObj("ACUTE KIDNEY DISEASE", "", false));
+            dataObjs.add(new DataObj("ACUTE ON CHRONIC KIDNEY DISEASE", "", false));
+            dataObjs.add(new DataObj("RIGHT URETERIC COLIC", "", false));
+            dataObjs.add(new DataObj("LEFT URETERIC COLIC", "", false));
+            dataObjs.add(new DataObj("THYPHOID FEVER ( ENTERIC FEVER )", "", false));
+            dataObjs.add(new DataObj("RIGHT RENAL COLIC", "", false));
+            dataObjs.add(new DataObj("LEFT RENAL COLIC", "", false));
+            dataObjs.add(new DataObj("VASICAL CALCULOUS", "", false));
+            dataObjs.add(new DataObj("URINARY TRACT INFECTION", "", false));
+            dataObjs.add(new DataObj("DOWNS SYNDROME", "", false));
+            dataObjs.add(new DataObj("SYSTEMIC LUPUS ERYTHEMATOSUS", "", false));
+            dataObjs.add(new DataObj("HEAD INJURY", "", false));
+            dataObjs.add(new DataObj("SUBARACHNOID HAEMORRHAGE", "", false));
+            dataObjs.add(new DataObj("SUBDURAL HAEMMORRHAGE", "", false));
+            dataObjs.add(new DataObj("CHRONIC TONSILLITIS", "", false));
+            dataObjs.add(new DataObj("INFECTIVE TONSILLITIS", "", false));
+            dataObjs.add(new DataObj("PULMONARY EMBOLISM", "", false));
+            dataObjs.add(new DataObj("ATRIAL FIBRILLATION", "", false));
+            dataObjs.add(new DataObj("ATRIAL FLUTTER", "", false));
+            dataObjs.add(new DataObj("AORTIC INSUFFICIENCY", "", false));
+            dataObjs.add(new DataObj("ACUTE INTERSTITIAL GLOMERULONEPHRITIS", "", false));
+            dataObjs.add(new DataObj("AORTIC REGURGITATION", "", false));
+            dataObjs.add(new DataObj("ACUTE RHEUMATIC FEVER", "", false));
+            dataObjs.add(new DataObj("ATRIAL SEPTAL DEFECT", "", false));
+            dataObjs.add(new DataObj("OVERDOSE OF THE MEDICINES", "", false));
+            dataObjs.add(new DataObj("PHENYL POISONING", "", false));
+            dataObjs.add(new DataObj("MULTIPLE MYELOMA", "", false));
+            dataObjs.add(new DataObj("LEUKEMIA", "", false));
+            dataObjs.add(new DataObj("PROSTATOMEGALY", "", false));
+            dataObjs.add(new DataObj("CONGESTIVE CARDIAC FAILURE", "", false));
+            dataObjs.add(new DataObj("CHOLECYSTITIS", "", false));
+            dataObjs.add(new DataObj("CHOLELITHIASIS", "", false));
+            dataObjs.add(new DataObj("FACIAL PALSY", "", false));
+            dataObjs.add(new DataObj("DIABETES INSIPIDUS", "", false));
+            dataObjs.add(new DataObj("DISSEMINATED INTRAVASCULAR COAGULATION", "", false));
+            dataObjs.add(new DataObj("DIABETIC KETOACIDOSIS", "", false));
+            dataObjs.add(new DataObj("DEEP VEIN THROMBOSIS", "", false));
+            dataObjs.add(new DataObj("DUODENITIS", "", false));
+            dataObjs.add(new DataObj("GUILLAIN BARRE SYNDROME", "", false));
+            dataObjs.add(new DataObj("GLOMERULONEPHRITIS", "", false));
+            dataObjs.add(new DataObj("HYPONATREMIA", "", false));
+            dataObjs.add(new DataObj("HYPOKALEMIA", "", false));
+            dataObjs.add(new DataObj("HYPERNATREMIA", "", false));
+            dataObjs.add(new DataObj("HYPERKALEMIA", "", false));
+            dataObjs.add(new DataObj("INFLAMMATORY BOWEL DISEASE", "", false));
+            dataObjs.add(new DataObj("IRRITABLE BOWEL SYNDROME", "", false));
+            dataObjs.add(new DataObj("RIGHT BUNDLE BRANCH BLOCK", "", false));
+            dataObjs.add(new DataObj("LEFT BUNDLE BRANCH BLOCK", "", false));
+            dataObjs.add(new DataObj("MEASLES", "", false));
+            dataObjs.add(new DataObj("CHICKEN POX", "", false));
+            dataObjs.add(new DataObj("MUMPS", "", false));
+            dataObjs.add(new DataObj("MITRAL VALVE PROLAPSE", "", false));
+            dataObjs.add(new DataObj("OSTEOARTHRITIS", "", false));
+            dataObjs.add(new DataObj("SMALL BOWEL OBSTRUCTION", "", false));
+            dataObjs.add(new DataObj("CHRONIC OTITIS MEDIA", "", false));
+            dataObjs.add(new DataObj("ACUTE OTITIS MEDIA", "", false));
+            dataObjs.add(new DataObj("STOMATITIS", "", false));
+            dataObjs.add(new DataObj("POLYCYSTIC KIDNEY DISEASE", "", false));
+            dataObjs.add(new DataObj("PULMONARY HYPERTENSION", "", false));
+            dataObjs.add(new DataObj("RHEUMATIC HEART DISEASE", "", false));
+            dataObjs.add(new DataObj("ACUTE RESPIRATORY DISTRESS SYNDROME", "", false));
+            dataObjs.add(new DataObj("SQUAMOUS CELL CARCINOMA", "", false));
+            dataObjs.add(new DataObj("SEIZURE DISORDER", "", false));
+            dataObjs.add(new DataObj("DIVERTICULITIS", "", false));
+            dataObjs.add(new DataObj("TOXIC SHOCK SYNDROME", "", false));
+            dataObjs.add(new DataObj("UNSTABLE ANGINA", "", false));
+            dataObjs.add(new DataObj("ULCERATIVE COLLITIS", "", false));
+            dataObjs.add(new DataObj("UPPER RESPIRATORY TRACT INFECTION", "", false));
+            dataObjs.add(new DataObj("LOWER RESPIRATORY TRACT INFECTION", "", false));
+            return dataObjs;
+        }
+
+        public static ArrayList<DataObj> getProvisionalDiagnosis() {
+            return getDiagnosis();
+        }
+
+        public static ArrayList<DataObj> getSymptoms() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("COLD", "", false));
+            dataObjs.add(new DataObj("COUGH WITH EXPECTORATION", "", false));
+            dataObjs.add(new DataObj("DIFFICULTY IN BREATHING ( DYSPONEA )", "", false));
+            dataObjs.add(new DataObj("CHEST PAIN", "", false));
+            dataObjs.add(new DataObj("CHEST PAIN RADIATING TO SHOULDER JOINT", "", false));
+            dataObjs.add(new DataObj("UNEASINESS", "", false));
+            dataObjs.add(new DataObj("VOMITING", "", false));
+            dataObjs.add(new DataObj("NAUSEA", "", false));
+            dataObjs.add(new DataObj("LOOSE STOOL", "", false));
+            dataObjs.add(new DataObj("PAIN IN ABDOMEN", "", false));
+            dataObjs.add(new DataObj("BURNING MICTURATION", "", false));
+            dataObjs.add(new DataObj("FREQUENCY OF MICTURATION INCREASED", "", false));
+            dataObjs.add(new DataObj("HAEMAPTOSIS  ( BLOOD IN SPUTUM )", "", false));
+            dataObjs.add(new DataObj("HAEMATURIA ( BLOOD IN URINE )", "", false));
+            dataObjs.add(new DataObj("HAEMATEMESIS ( BLOOD IN VOMIT )", "", false));
+            dataObjs.add(new DataObj("SLURRED SPEECH", "", false));
+            dataObjs.add(new DataObj("TINGLING SENSATION & WEAKNESS IN RIGHT UPPER & LOWER LIMB", "", false));
+            dataObjs.add(new DataObj("TINGLING SENSATION & WEAKNESS IN LEFT UPPER & LOWER LIMB", "", false));
+            dataObjs.add(new DataObj("DEVIATION OF ANGLE OF MOUTH", "", false));
+            dataObjs.add(new DataObj("GENERALISED WEAKNESS", "", false));
+            dataObjs.add(new DataObj("WEAKNESS IN ALL FOUR LIMB ( QUADRIPLEGIA )", "", false));
+            dataObjs.add(new DataObj("PAIN IN ABDOMEN LEFT LOIN TO GROIN REGION ", "", false));
+            dataObjs.add(new DataObj("PAIN IN ABDOMEN RIGHT LOIN TO GROIN REGION ", "", false));
+            dataObjs.add(new DataObj("REDNESS IN MOUTH", "", false));
+            dataObjs.add(new DataObj("BLISTER IN MOUTH", "", false));
+            dataObjs.add(new DataObj("PAIN AT ANAL REGION", "", false));
+            dataObjs.add(new DataObj("BLEEDING FROM ANAL REGION WHILE PASSING MOTION", "", false));
+            dataObjs.add(new DataObj("PAIN IN EPIGASTRIC REGION ", "", false));
+            dataObjs.add(new DataObj("BURNING SENSATION IN EPIGASTRIC REGION ", "", false));
+            dataObjs.add(new DataObj("SWELLING ALL OVER BODY ( GENERALISED ANASARCA )", "", false));
+            dataObjs.add(new DataObj("SWELLING OVER BOTH LOVER LIMB ( PEDAL ODEMA )", "", false));
+            dataObjs.add(new DataObj("FEVER WITH CHILLS ", "", false));
+            dataObjs.add(new DataObj("ITCHING ALL OVER BODY ", "", false));
+            dataObjs.add(new DataObj("REDNESS ALL OVER BODY", "", false));
+            dataObjs.add(new DataObj("NOCTURIA ( BED WETTING AT NIGHT )", "", false));
+            dataObjs.add(new DataObj("HEADACHE", "", false));
+            dataObjs.add(new DataObj("BODYACHE ( MYALGIA )", "", false));
+            dataObjs.add(new DataObj("DRY COUGH ", "", false));
+            dataObjs.add(new DataObj("DROWSY", "", false));
+            dataObjs.add(new DataObj("UNCONSCIOUS", "", false));
+            dataObjs.add(new DataObj("ARROUSABLE", "", false));
+            dataObjs.add(new DataObj("DISORIENTED", "", false));
+            dataObjs.add(new DataObj("ALTERED SENSORIUM", "", false));
+            dataObjs.add(new DataObj("CONVULSION", "", false));
+            dataObjs.add(new DataObj("JOINT PAIN", "", false));
+            dataObjs.add(new DataObj("SWELLING OF JOINTS", "", false));
+            dataObjs.add(new DataObj("THROAT PAIN", "", false));
+            dataObjs.add(new DataObj("DIFFICULTY IN SWALLOWING", "", false));
+            dataObjs.add(new DataObj("PALPITATION", "", false));
+            dataObjs.add(new DataObj("GIDDINESS", "", false));
+            dataObjs.add(new DataObj("LOSS OF APPETITE", "", false));
+            dataObjs.add(new DataObj("WEIGHT LOSS", "", false));
+            dataObjs.add(new DataObj("WEIGHT GAIN", "", false));
+            dataObjs.add(new DataObj("YELLOWISH DISCOLOURATION OF SKIN & SCLERA ( HYPERBILIRUBINEMIA ) ", "", false));
+            dataObjs.add(new DataObj("PALLOR", "", false));
+            dataObjs.add(new DataObj("SORE THROAT", "", false));
             return dataObjs;
         }
     }

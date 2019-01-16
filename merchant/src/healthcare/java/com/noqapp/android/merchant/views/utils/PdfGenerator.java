@@ -289,6 +289,8 @@ public class PdfGenerator {
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSonoList()), normalFont));
         table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont, 5));
         table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getScanList()), normalFont));
+        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SPEC.getDescription(), normalBoldFont, 5));
+        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSpecList()), normalFont));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
 
