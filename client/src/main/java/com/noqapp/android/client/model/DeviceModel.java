@@ -56,7 +56,7 @@ public class DeviceModel {
                         Log.e(TAG, "Empty body");
                         deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
                     }
-                }else {
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         deviceRegisterPresenter.authenticationFailure();
                     } else {
@@ -83,13 +83,13 @@ public class DeviceModel {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
-                    Log.e("response body issupport",response.body().toString());
+                    Log.d("response body issupport", response.body().toString());
                     if (null != response.body() && null == response.body().getError()) {
                         appBlacklistPresenter.appBlacklistResponse();
                     } else {
                         appBlacklistPresenter.responseErrorPresenter(response.body().getError());
                     }
-                }else {
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         appBlacklistPresenter.authenticationFailure();
                     } else {
