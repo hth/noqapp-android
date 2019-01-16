@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class PreferenceHCServiceFragment extends Fragment implements SelectItemListAdapter.RemoveListItem {
 
@@ -157,6 +158,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
 
     public void setData(ArrayList<String> tempList) {
         masterDataString = tempList;
+        Collections.sort(masterDataString);
         listAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, masterDataString);
         lv_all_tests.setAdapter(listAdapter);
         actvAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, masterDataString);
@@ -190,37 +192,37 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
             switch (pos) {
                 case 0: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
                 case 1: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
                 case 2: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
                 case 3: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
                 case 4: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
                 case 5: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getSpecList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
                 default: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
-                    Collections.sort(temp);
+                    sortListData(temp);
                     return temp;
                 }
             }
@@ -229,6 +231,15 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
         }
     }
 
+    private void sortListData(ArrayList<DataObj> dataObjs){
+        Collections.sort(dataObjs, new Comparator<DataObj>() {
+            @Override
+            public int compare(DataObj item1, DataObj item2) {
+                return item1.getShortName().compareToIgnoreCase(item2.getShortName());
+            }
+
+        });
+    }
 
     @Override
     public void removeItem(int pos) {
