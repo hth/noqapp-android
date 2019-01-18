@@ -44,7 +44,6 @@ public class SearchStoreQuery {
     @JsonProperty("filters")
     private String filters;
 
-
     public String getQuery() {
         return query;
     }

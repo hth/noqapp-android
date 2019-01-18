@@ -1,4 +1,4 @@
-package com.noqapp.android.client.presenter.beans.body;
+package com.noqapp.android.client.presenter.beans.body.mail;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

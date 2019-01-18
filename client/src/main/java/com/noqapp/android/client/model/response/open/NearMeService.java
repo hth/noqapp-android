@@ -14,7 +14,6 @@ import retrofit2.http.POST;
 
 public interface NearMeService {
 
-
     /**
      * Errors
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
