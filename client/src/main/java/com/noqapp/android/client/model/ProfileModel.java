@@ -7,7 +7,7 @@ import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
-import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
+import com.noqapp.android.client.presenter.beans.body.mail.ChangeMailOTP;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.Constants;

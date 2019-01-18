@@ -4,7 +4,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.body.ChangeMailOTP;
+import com.noqapp.android.client.presenter.beans.body.mail.ChangeMailOTP;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;

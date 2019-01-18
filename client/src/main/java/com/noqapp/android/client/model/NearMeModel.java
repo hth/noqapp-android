@@ -6,7 +6,7 @@ import com.noqapp.android.client.model.response.open.NearMeService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.Constants;
 
 import android.support.annotation.NonNull;
@@ -34,10 +34,10 @@ public class NearMeModel {
 
     /**
      * @param did
-     * @param storeInfoParam
+     * @param searchStoreQuery
      */
-    public void otherMerchant(String did, StoreInfoParam storeInfoParam) {
-        nearmeService.otherMerchant(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+    public void otherMerchant(String did, SearchStoreQuery searchStoreQuery) {
+        nearmeService.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -66,10 +66,10 @@ public class NearMeModel {
 
     /**
      * @param did
-     * @param storeInfoParam
+     * @param searchStoreQuery
      */
-    public void healthCare(String did, StoreInfoParam storeInfoParam) {
-        nearmeService.healthCare(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+    public void healthCare(String did, SearchStoreQuery searchStoreQuery) {
+        nearmeService.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -96,8 +96,8 @@ public class NearMeModel {
         });
     }
 
-    public void search(String did, StoreInfoParam storeInfoParam) {
-        nearmeService.search(did, DEVICE_TYPE, storeInfoParam).enqueue(new Callback<BizStoreElasticList>() {
+    public void search(String did, SearchStoreQuery searchStoreQuery) {
+        nearmeService.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
