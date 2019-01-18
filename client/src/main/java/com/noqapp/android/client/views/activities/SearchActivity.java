@@ -17,6 +17,8 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,13 +40,12 @@ import java.util.ArrayList;
  * Created by chandra on 5/7/17.
  */
 public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener, NearMePresenter {
-
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
     private String city = "";
     private String lat = "";
-    private String longitute = "";
+    private String longitude = "";
     private NearMeModel nearMeModel;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
@@ -64,15 +65,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         nearMeModel = new NearMeModel(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
-        longitute = getIntent().getStringExtra("long");
+        longitude = getIntent().getStringExtra("long");
         scrollId = "";
         AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
         rv_search.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_search.setLayoutManager(horizontalLayoutManagaer);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rv_search.setLayoutManager(horizontalLayoutManager);
         rv_search.setItemAnimator(new DefaultItemAnimator());
-        searchAdapter = new SearchAdapter(listData, this, this,Double.parseDouble(lat),Double.parseDouble(longitute));
+        searchAdapter = new SearchAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(longitude));
         rv_search.setAdapter(searchAdapter);
 
         edt_search.setOnTouchListener(new View.OnTouchListener() {
@@ -108,7 +108,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             @Override
             public void onClick(View v) {
                 lat = String.valueOf(LaunchActivity.getLaunchActivity().latitute);
-                longitute = String.valueOf(LaunchActivity.getLaunchActivity().longitute);
+                longitude = String.valueOf(LaunchActivity.getLaunchActivity().longitute);
                 city = LaunchActivity.getLaunchActivity().cityName;
                 AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
 
@@ -124,7 +124,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 //Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                 LatLng latLng = AppUtilities.getLocationFromAddress(SearchActivity.this, city_name);
                 lat = String.valueOf(latLng.latitude);
-                longitute = String.valueOf(latLng.longitude);
+                longitude = String.valueOf(latLng.longitude);
                 city = city_name;
                 new AppUtilities().hideKeyBoard(SearchActivity.this);
 
@@ -147,18 +147,16 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     private void performSearch() {
-        if (edt_search.getText().toString().equals("")) {
-
-        } else {
+        if (StringUtils.isNotBlank(edt_search.getText().toString())) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                SearchStoreQuery searchStoreQuery = new SearchStoreQuery();
-                searchStoreQuery.setCityName(city);
-                searchStoreQuery.setLatitude(lat);
-                searchStoreQuery.setLongitude(longitute);
-                searchStoreQuery.setQuery(edt_search.getText().toString());
-                searchStoreQuery.setFilters("");
-                searchStoreQuery.setScrollId(""); //Scroll id - fresh search pass blank
+                SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
+                        .setCityName(city)
+                        .setLatitude(lat)
+                        .setLongitude(longitude)
+                        .setQuery(edt_search.getText().toString())
+                        .setFilters("")
+                        .setScrollId(""); //Scroll id - fresh search pass blank
                 nearMeModel.search(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
@@ -193,15 +191,17 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         ArrayList<BizStoreElastic> nearMeData = new ArrayList<>();
         nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
         scrollId = bizStoreElasticList.getScrollId();
-        if (scrollId == null)
+        if (scrollId == null) {
             scrollId = "";
+        }
         //sort the list, give the Comparator the current location
-       // Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitute))));
+        // Collections.sort(nearMeData, new SortPlaces(new LatLng(Double.parseDouble(lat), Double.parseDouble(longitude))));
         listData.clear();
         listData.addAll(nearMeData);
         searchAdapter.notifyDataSetChanged();
-        if (bizStoreElasticList.getBizStoreElastics().size() == 0)
+        if (bizStoreElasticList.getBizStoreElastics().size() == 0) {
             new ShowAlertInformation().showSnakeBar(ll_search, "Search element not found");
+        }
         dismissProgress();
 
     }
@@ -238,6 +238,4 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         dismissProgress();
         AppUtilities.authenticationProcessing(this);
     }
-
-
 }
