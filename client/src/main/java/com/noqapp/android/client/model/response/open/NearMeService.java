@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model.response.open;
 
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,7 +28,7 @@ public interface NearMeService {
             String dt,
 
             @Body
-            StoreInfoParam storeInfoParam
+            SearchStoreQuery searchStoreQuery
     );
 
     /**
@@ -44,7 +44,7 @@ public interface NearMeService {
             String dt,
 
             @Body
-            StoreInfoParam storeInfoParam
+            SearchStoreQuery searchStoreQuery
     );
 
     /**
@@ -60,6 +60,6 @@ public interface NearMeService {
             String dt,
 
             @Body
-            StoreInfoParam storeInfoParam
+            SearchStoreQuery searchStoreQuery
     );
 }

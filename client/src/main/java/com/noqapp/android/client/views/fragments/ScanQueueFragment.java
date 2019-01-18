@@ -18,7 +18,7 @@ import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
-import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -306,19 +306,19 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
 
     private void getNearMeInfo(String city, String lat, String longitute) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            StoreInfoParam storeInfoParam = new StoreInfoParam();
-            storeInfoParam.setCityName(city);
-            storeInfoParam.setLatitude(lat);
-            storeInfoParam.setLongitude(longitute);
-            storeInfoParam.setFilters("xyz");
-            storeInfoParam.setScrollId("");
+            SearchStoreQuery searchStoreQuery = new SearchStoreQuery();
+            searchStoreQuery.setCityName(city);
+            searchStoreQuery.setLatitude(lat);
+            searchStoreQuery.setLongitude(longitute);
+            searchStoreQuery.setFilters("xyz");
+            searchStoreQuery.setScrollId("");
             if (isProgressFirstTime) {
                 pb_near.setVisibility(View.VISIBLE);
                 pb_health_care.setVisibility(View.VISIBLE);
             }
             NearMeModel nearMeModel = new NearMeModel(this);
-            nearMeModel.otherMerchant(UserUtils.getDeviceId(), storeInfoParam);
-            // nearMeModel.healthCare(UserUtils.getDeviceId(), storeInfoParam);
+            nearMeModel.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
+            // nearMeModel.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

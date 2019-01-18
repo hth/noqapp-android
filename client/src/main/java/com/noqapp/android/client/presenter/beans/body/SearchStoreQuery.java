@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StoreInfoParam {
+public class SearchStoreQuery {
 
     @JsonProperty("q")
     private String query;
@@ -49,7 +49,7 @@ public class StoreInfoParam {
         return query;
     }
 
-    public StoreInfoParam setQuery(String query) {
+    public SearchStoreQuery setQuery(String query) {
         this.query = query;
         return this;
     }
@@ -58,7 +58,7 @@ public class StoreInfoParam {
         return cityName;
     }
 
-    public StoreInfoParam setCityName(String cityName) {
+    public SearchStoreQuery setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
@@ -67,7 +67,7 @@ public class StoreInfoParam {
         return latitude;
     }
 
-    public StoreInfoParam setLatitude(String latitude) {
+    public SearchStoreQuery setLatitude(String latitude) {
         this.latitude = latitude;
         return this;
     }
@@ -76,7 +76,7 @@ public class StoreInfoParam {
         return longitude;
     }
 
-    public StoreInfoParam setLongitude(String longitude) {
+    public SearchStoreQuery setLongitude(String longitude) {
         this.longitude = longitude;
         return this;
     }
@@ -85,7 +85,7 @@ public class StoreInfoParam {
         return filters;
     }
 
-    public StoreInfoParam setFilters(String filters) {
+    public SearchStoreQuery setFilters(String filters) {
         this.filters = filters;
         return this;
     }
@@ -94,7 +94,7 @@ public class StoreInfoParam {
         return scrollId;
     }
 
-    public StoreInfoParam setScrollId(String scrollId) {
+    public SearchStoreQuery setScrollId(String scrollId) {
         this.scrollId = scrollId;
         return this;
     }

@@ -5,7 +5,7 @@ import com.noqapp.android.client.model.NearMeModel;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.body.StoreInfoParam;
+import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -152,14 +152,14 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                StoreInfoParam storeInfoParam = new StoreInfoParam();
-                storeInfoParam.setCityName(city);
-                storeInfoParam.setLatitude(lat);
-                storeInfoParam.setLongitude(longitute);
-                storeInfoParam.setQuery(edt_search.getText().toString());
-                storeInfoParam.setFilters("");
-                storeInfoParam.setScrollId(""); //Scroll id - fresh search pass blank
-                nearMeModel.search(UserUtils.getDeviceId(), storeInfoParam);
+                SearchStoreQuery searchStoreQuery = new SearchStoreQuery();
+                searchStoreQuery.setCityName(city);
+                searchStoreQuery.setLatitude(lat);
+                searchStoreQuery.setLongitude(longitute);
+                searchStoreQuery.setQuery(edt_search.getText().toString());
+                searchStoreQuery.setFilters("");
+                searchStoreQuery.setScrollId(""); //Scroll id - fresh search pass blank
+                nearMeModel.search(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }
