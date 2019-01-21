@@ -39,17 +39,16 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 import java.util.ArrayList;
 
-
-public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter,JsonMedicalRecordPresenter , MeterView.MeterViewValueChanged{
+public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged {
     private ProgressDialog progressDialog;
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
-    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low,tv_followup,tv_rr,tv_height;
-    private DiscreteSeekBar dsb_bp_low, dsb_bp_high,dsb_rr,dsb_height;
+    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
+    private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
     private MedicalHistoryModel medicalHistoryModel;
     private JsonQueuedPerson jsonQueuedPerson;
     protected boolean isDialog = false;
     protected ImageView actionbarBack;
-    private SwitchCompat sc_enable_pulse,sc_enable_temp,sc_enable_weight,sc_enable_oxygen,sc_enable_bp,sc_enable_rr,sc_enable_height;
+    private SwitchCompat sc_enable_pulse, sc_enable_temp, sc_enable_weight, sc_enable_oxygen, sc_enable_bp, sc_enable_rr, sc_enable_height;
     private SegmentedControl sc_follow_up;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
@@ -149,7 +148,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
-                    tv_followup.setText("in "+followup+" days");
+                    tv_followup.setText("in " + followup + " days");
                 }
             }
         });
@@ -247,7 +246,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         meterViewValueChanged(mv_weight1);
         meterViewValueChanged(mv_temperature1);
         meterViewValueChanged(mv_oxygen);
-        
+
         dsb_bp_low = findViewById(R.id.dsb_bp_low);
         dsb_bp_high = findViewById(R.id.dsb_bp_high);
         dsb_rr = findViewById(R.id.dsb_rr);
@@ -295,36 +294,35 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical();
 
                 if (sc_enable_pulse.isChecked()) {
-                   jsonMedicalPhysical.setPulse(mv_pulse.getValueAsString());
+                    jsonMedicalPhysical.setPulse(mv_pulse.getValueAsString());
                 } else {
-                   jsonMedicalPhysical.setPulse(null);
+                    jsonMedicalPhysical.setPulse(null);
                 }
-                if(sc_enable_bp.isChecked()) {
-                   jsonMedicalPhysical.setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
-                }else{
-                   jsonMedicalPhysical.setBloodPressure(null);
+                if (sc_enable_bp.isChecked()) {
+                    jsonMedicalPhysical.setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
+                } else {
+                    jsonMedicalPhysical.setBloodPressure(null);
                 }
                 if (sc_enable_weight.isChecked()) {
-                   jsonMedicalPhysical.setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
+                    jsonMedicalPhysical.setWeight(mv_weight1.getValueAsString() + "." + mv_weight2.getValueAsString());
                 } else {
-                   jsonMedicalPhysical.setWeight(null);
+                    jsonMedicalPhysical.setWeight(null);
                 }
                 if (sc_enable_temp.isChecked()) {
-                   jsonMedicalPhysical.setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
+                    jsonMedicalPhysical.setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
                 } else {
-                   jsonMedicalPhysical.setTemperature(null);
+                    jsonMedicalPhysical.setTemperature(null);
                 }
                 if (sc_enable_oxygen.isChecked()) {
-                   jsonMedicalPhysical.setOxygen(mv_oxygen.getValueAsString());
+                    jsonMedicalPhysical.setOxygen(mv_oxygen.getValueAsString());
                 } else {
-                   jsonMedicalPhysical.setOxygen(null);
+                    jsonMedicalPhysical.setOxygen(null);
                 }
                 if (sc_enable_rr.isChecked()) {
                     jsonMedicalPhysical.setRespiratory(String.valueOf(dsb_rr.getProgress()));
                 } else {
                     jsonMedicalPhysical.setRespiratory(null);
                 }
-
                 if (sc_enable_height.isChecked()) {
                     jsonMedicalPhysical.setHeight(String.valueOf(dsb_height.getProgress()));
                 } else {
@@ -338,8 +336,6 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                         || null != jsonMedicalPhysical.getTemperature()
                         || null != jsonMedicalPhysical.getOxygen()) {
                     jsonMedicalPhysical.setPhysicalFilled(true);
-                }else{
-                    jsonMedicalPhysical.setPhysicalFilled(false);
                 }
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 if (!TextUtils.isEmpty(followup)) {
@@ -360,7 +356,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             medicalHistoryModel.setJsonMedicalRecordPresenter(this);
             medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(),jsonMedicalRecord);
+                    LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalActivity.this);
@@ -390,7 +386,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Medical History updated Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Medical History updated successfully", Toast.LENGTH_LONG).show();
             this.finish();
         } else {
             Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
@@ -428,62 +424,62 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             Log.e("data", jsonMedicalRecord.toString());
             try {
                 sc_follow_up.setSelectedSegment(follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays()));
-                tv_followup.setText("in "+followup+" days");
+                tv_followup.setText("in " + followup + " days");
                 if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                     sc_enable_oxygen.setChecked(true);
-                }else{
+                } else {
                     sc_enable_oxygen.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
                     mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
-                }else{
+                } else {
                     sc_enable_pulse.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
                     sc_enable_bp.setChecked(true);
-                }else{
+                } else {
                     sc_enable_bp.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight() ) {
+                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
                     sc_enable_height.setChecked(true);
                 } else {
                     sc_enable_height.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory() ) {
+                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
                     sc_enable_rr.setChecked(true);
                 } else {
                     sc_enable_rr.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
-                    if(jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")){
-                        String [] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
+                    if (jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")) {
+                        String[] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
                         mv_weight1.setValue(Integer.parseInt(temp[0]));
                         mv_weight2.setValue(Integer.parseInt(temp[1]));
                         sc_enable_weight.setChecked(true);
-                    }else{
+                    } else {
                         sc_enable_weight.setChecked(false);
                     }
-                }else{
+                } else {
                     sc_enable_weight.setChecked(false);
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
-                    if(jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")){
-                        String [] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
+                    if (jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")) {
+                        String[] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
                         mv_temperature1.setValue(Integer.parseInt(temp[0]));
                         mv_temperature2.setValue(Integer.parseInt(temp[1]));
                         sc_enable_temp.setChecked(true);
-                    }else{
+                    } else {
                         sc_enable_temp.setChecked(false);
                     }
-                }else{
+                } else {
                     sc_enable_temp.setChecked(false);
                 }
                 meterViewValueChanged(mv_pulse);
