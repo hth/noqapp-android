@@ -39,12 +39,10 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
                     .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)") // this number is different for merchant  div.hAyfc:nth-child(5) due to purchase column on playstore
                     .first()
                     .ownText();
-        } catch (IOException e) {
-            Log.e(TAG, "Background check reason=" + e.getLocalizedMessage(), e);
-        } catch (NullPointerException e) {
-            Log.e(TAG, "NPE during version check reason=" + e.getLocalizedMessage(), e);
         } catch (Exception e) {
             Log.e(TAG, "Random error during version check reason=" + e.getLocalizedMessage(), e);
+            Answers.getInstance().logCustom(new CustomEvent("Version check failed:Merchant "+context.getPackageName())
+                    .putCustomAttribute("Jsoup received version", newVersion));
         }
 
         return newVersion;
