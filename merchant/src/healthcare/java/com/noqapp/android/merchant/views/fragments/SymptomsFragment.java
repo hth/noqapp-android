@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,14 +97,13 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             }
         });
         sc_enable_history.setChecked(false);
-        final Button ll_history_disable = v.findViewById(R.id.ll_history_disable);
         sc_enable_history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
                 if (bChecked) {
-                    ll_history_disable.setVisibility(View.GONE);
+                    disableEditText(true,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
                 } else {
-                    ll_history_disable.setVisibility(View.VISIBLE);
+                    disableEditText(false,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
                 }
             }
         });
@@ -118,6 +118,15 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         return v;
     }
 
+    private void disableEditText(boolean isChecked, EditText... editTexts) {
+        for (EditText edt :
+                editTexts) {
+            edt.setEnabled(isChecked);
+            edt.setFocusable(isChecked);
+            edt.setFocusableInTouchMode(isChecked);
+            edt.setBackground(isChecked ? ContextCompat.getDrawable(getActivity(),R.drawable.square_white_bg_drawable):ContextCompat.getDrawable(getActivity(),R.drawable.edt_roun_rect));
+        }
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -153,9 +162,14 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     || null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory()
                     || null != jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies()) {
                 sc_enable_history.setChecked(true);
+                disableEditText(true,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
             } else {
                 sc_enable_history.setChecked(false);
+                disableEditText(false,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
             }
+        }else{
+            sc_enable_history.setChecked(false);
+            disableEditText(false,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
         }
 
         try {

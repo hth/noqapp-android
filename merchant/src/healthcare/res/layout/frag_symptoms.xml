@@ -39,13 +39,31 @@
                         android:theme="@style/SCBSwitch"
                         android:layout_gravity="end"/>
 
-                <FrameLayout
+                <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                     <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
+                                style="@style/style_mdh_header"
+                                android:text="@string/mds_known_allergies"/>
+
+                        <EditText
+                                android:id="@+id/edt_known_allergy"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text=""/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                         <LinearLayout
@@ -55,86 +73,52 @@
 
                             <TextView
                                     style="@style/style_mdh_header"
-                                    android:text="@string/mds_known_allergies"/>
+                                    android:text="@string/mds_past_history"/>
 
                             <EditText
-                                    android:id="@+id/edt_known_allergy"
+                                    android:id="@+id/edt_past_history"
                                     style="@style/style_mdh_details"
                                     android:gravity="top"
                                     android:minLines="5"
                                     android:text=""/>
-                        </LinearLayout>
 
-                        <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="2.5dp"
-                                android:layout_marginRight="2.5dp"
-                                android:orientation="vertical">
-
-                            <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="10dp"
-                                    android:orientation="vertical">
-
-                                <TextView
-                                        style="@style/style_mdh_header"
-                                        android:text="@string/mds_past_history"/>
-
-                                <EditText
-                                        android:id="@+id/edt_past_history"
-                                        style="@style/style_mdh_details"
-                                        android:gravity="top"
-                                        android:minLines="5"
-                                        android:text=""/>
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                            <TextView
-                                    style="@style/style_mdh_header"
-                                    android:text="@string/mds_family_history"/>
-
-                            <EditText
-                                    android:id="@+id/edt_family_history"
-                                    style="@style/style_mdh_details"
-                                    android:gravity="top"
-                                    android:minLines="5"
-                                    android:text=""/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                            <TextView
-                                    style="@style/style_mdh_header"
-                                    android:text="@string/mds_medicine_allergies"/>
-
-                            <EditText
-                                    android:id="@+id/edt_medicine_allergies"
-                                    style="@style/style_mdh_details"
-                                    android:gravity="top"
-                                    android:minLines="5"
-                                    android:text=""/>
                         </LinearLayout>
                     </LinearLayout>
 
-                    <Button
-                            android:id="@+id/ll_history_disable"
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:background="#80808080"
-                            android:layout_height="match_parent"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"/>
-                </FrameLayout>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
+                                style="@style/style_mdh_header"
+                                android:text="@string/mds_family_history"/>
+
+                        <EditText
+                                android:id="@+id/edt_family_history"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text=""/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        <TextView
+                                style="@style/style_mdh_header"
+                                android:text="@string/mds_medicine_allergies"/>
+
+                        <EditText
+                                android:id="@+id/edt_medicine_allergies"
+                                style="@style/style_mdh_details"
+                                android:gravity="top"
+                                android:minLines="5"
+                                android:text=""/>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
