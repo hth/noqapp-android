@@ -96,9 +96,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_LIST = "userList";
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
-    protected final String KEY_SUGGESTION = "suggestions";
     protected final String KEY_SUGGESTION_PREF = "suggestionsPrefs";
-    protected final String KEY_MEDICINES = "medicines";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
@@ -326,14 +324,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         sharedpreferences.edit().putString(KEY_MERCHANT_COUNTER_NAME, strInput).apply();
     }
 
-    public String getSuggestions() {
-        return sharedpreferences.getString(KEY_SUGGESTION, null);
-    }
-
-    public void setSuggestions(Map<String, List<String>> map) {
-        String strInput = new Gson().toJson(map);
-        sharedpreferences.edit().putString(KEY_SUGGESTION, strInput).apply();
-    }
     public String getSuggestionsPrefs() {
         return sharedpreferences.getString(KEY_SUGGESTION_PREF, null);
     }
@@ -341,20 +331,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void setSuggestionsPrefs(Map<String, List<DataObj>> map) {
         String strInput = new Gson().toJson(map);
         sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
-    }
-
-    public void setFavouriteMedicines(List<JsonMedicalMedicine> jsonMedicalMedicines) {
-        Gson gson = new Gson();
-        String json = gson.toJson(jsonMedicalMedicines);
-        sharedpreferences.edit().putString(KEY_MEDICINES, json).apply();
-    }
-
-    public List<JsonMedicalMedicine> getFavouriteMedicines() {
-        Type type = new TypeToken<List<JsonMedicalMedicine>>() {
-        }.getType();
-        String listData = sharedpreferences.getString(KEY_MEDICINES, null);
-        List<JsonMedicalMedicine> jsonMedicalMedicines = new Gson().fromJson(listData, type);
-        return jsonMedicalMedicines;
     }
 
     public ArrayList<String> getCounterNames() {

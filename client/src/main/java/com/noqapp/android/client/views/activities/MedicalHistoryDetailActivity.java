@@ -5,9 +5,12 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +73,16 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_instruction.setText(jsonMedicalRecord.getPlanToPatient());
         tv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
 
-        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
+        if (jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.DO) {
+            tv_diagnosed_by.setText("Dr. " + jsonMedicalRecord.getDiagnosedByDisplayName());
+        } else {
+            tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
+        }
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
         tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
         tv_create.setText(jsonMedicalRecord.getCreateDate());
-        tv_no_of_time_access.setText("No of times record view: " + jsonMedicalRecord.getRecordAccess().size());
+        tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
@@ -109,50 +117,79 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         List<JsonMedicalMedicine> medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
         MedicalRecordAdapter adapter = new MedicalRecordAdapter(this, medicalRecordList);
         listview.setAdapter(adapter);
-        if (0 == medicalRecordList.size()) {
+        if (medicalRecordList.isEmpty()) {
             ll_medication.setVisibility(View.GONE);
         }
+        String notAvailable = "N/A";
         if (null != jsonMedicalPhysicalExaminations)
             for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
                 String label = "";
                 switch (physicalExam) {
                     case TE:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
+                        if (null != jsonMedicalPhysicalExaminations.getTemperature()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case BP:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
+                        if (null != jsonMedicalPhysicalExaminations.getBloodPressure() && jsonMedicalPhysicalExaminations.getBloodPressure().length > 0) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0] + "/" + jsonMedicalPhysicalExaminations.getBloodPressure()[1];
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case PL:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
+                        if (null != jsonMedicalPhysicalExaminations.getPulse()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case OX:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
+                        if (null != jsonMedicalPhysicalExaminations.getOxygen()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case WT:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
+                        if (null != jsonMedicalPhysicalExaminations.getWeight()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case HT:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getHeight();
+                        if (null != jsonMedicalPhysicalExaminations.getHeight()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getHeight();
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case RP:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getRespiratory();
+                        if (null != jsonMedicalPhysicalExaminations.getRespiratory()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getRespiratory();
+                        } else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                 }
                 ll_physical.addView(getView(label));
             }
-        if (null != jsonMedicalRecord.getMedicalPathologies() && jsonMedicalRecord.getMedicalPathologies().size() == 0) {
+        if (jsonMedicalRecord.getMedicalPathologies().isEmpty()) {
             ll_pathology.setVisibility(View.GONE);
         } else {
-            for (int i = 0; i < jsonMedicalRecord.getMedicalPathologies().size(); i++) {
-                ll_investigation_pathology.addView(getView(jsonMedicalRecord.getMedicalPathologies().get(i).getName()));
+            for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
+                ll_investigation_pathology.addView(getView(jsonMedicalPathology.getName()));
             }
         }
-        if (null != jsonMedicalRecord.getMedicalRadiologyLists() && jsonMedicalRecord.getMedicalRadiologyLists().size() == 0) {
+        if (jsonMedicalRecord.getMedicalRadiologyLists().isEmpty()) {
             ll_radiology.setVisibility(View.GONE);
         } else {
-            for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
-                List<JsonMedicalRadiology> radioList = jsonMedicalRecord.getMedicalRadiologyLists().get(i).getJsonMedicalRadiologies();
-                for (JsonMedicalRadiology jsonMedicalRadiology : radioList) {
+            for (JsonMedicalRadiologyList jsonMedicalRadiologyList : jsonMedicalRecord.getMedicalRadiologyLists()) {
+                List<JsonMedicalRadiology> jsonMedicalRadiologies = jsonMedicalRadiologyList.getJsonMedicalRadiologies();
+                for (JsonMedicalRadiology jsonMedicalRadiology : jsonMedicalRadiologies) {
                     ll_investigation_radiology.addView(getView(jsonMedicalRadiology.getName()));
                 }
             }
