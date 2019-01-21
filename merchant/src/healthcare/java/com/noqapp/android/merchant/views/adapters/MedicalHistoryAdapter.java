@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
-
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 
@@ -57,14 +57,18 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder = (RecordHolder) view.getTag();
         }
         JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecordList.get(position);
-        recordHolder.tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
+        if (jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.DO) {
+            recordHolder.tv_diagnosed_by.setText("Dr. " + jsonMedicalRecord.getDiagnosedByDisplayName());
+        } else {
+            recordHolder.tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
+        }
         recordHolder.tv_business_name.setText(jsonMedicalRecord.getBusinessName());
-        recordHolder.tv_business_category_name.setText("("+jsonMedicalRecord.getBizCategoryName()+")");
+        recordHolder.tv_business_category_name.setText("(" + jsonMedicalRecord.getBizCategoryName() + ")");
         recordHolder.tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
         recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
-        recordHolder.tv_examination.setText( jsonMedicalRecord.getExamination());
+        recordHolder.tv_examination.setText(jsonMedicalRecord.getExamination());
         recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
-        showHideViews(recordHolder.tv_examination,recordHolder.tv_medicine,recordHolder.tv_complaints);
+        showHideViews(recordHolder.tv_examination, recordHolder.tv_medicine, recordHolder.tv_complaints);
         return view;
     }
 
@@ -86,19 +90,19 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         String output = "";
         if (null != list && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                output += PharmacyCategoryEnum.valueOf(list.get(i).getPharmacyCategory()).getDescription() + " " + list.get(i).getName() ;
-                if(i!= list.size()-1)
+                output += PharmacyCategoryEnum.valueOf(list.get(i).getPharmacyCategory()).getDescription() + " " + list.get(i).getName();
+                if (i != list.size() - 1)
                     output += "\n";
             }
         }
         return output;
     }
 
-    private void showHideViews(TextView... views){
+    private void showHideViews(TextView... views) {
         for (TextView v : views) {
             if (v.getText().toString().equals("")) {
                 v.setVisibility(View.GONE);
-            }else{
+            } else {
                 v.setVisibility(View.VISIBLE);
             }
         }

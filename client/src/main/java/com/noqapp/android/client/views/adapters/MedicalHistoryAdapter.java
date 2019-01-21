@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -52,12 +53,16 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_diagnosed_by.setText("Dr. "+jsonMedicalRecordList.get(position).getDiagnosedByDisplayName());
+        if (jsonMedicalRecordList.get(position).getBusinessType() == BusinessTypeEnum.DO) {
+            recordHolder.tv_diagnosed_by.setText("Dr. " + jsonMedicalRecordList.get(position).getDiagnosedByDisplayName());
+        } else {
+            recordHolder.tv_diagnosed_by.setText(jsonMedicalRecordList.get(position).getDiagnosedByDisplayName());
+        }
         recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
         recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
         recordHolder.tv_complaints.setText(jsonMedicalRecordList.get(position).getChiefComplain());
         recordHolder.tv_create.setText(jsonMedicalRecordList.get(position).getCreateDate());
-        recordHolder.tv_no_of_time_access.setText("No of times record view: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
+        recordHolder.tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
         return view;
     }
 
