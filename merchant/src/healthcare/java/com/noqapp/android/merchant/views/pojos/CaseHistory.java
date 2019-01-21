@@ -10,7 +10,6 @@ public class CaseHistory {
 
     private String name;
     private String address;
-    private String details;
     private String age;
     private String gender;
     private String pulse;
@@ -59,15 +58,6 @@ public class CaseHistory {
 
     public CaseHistory setAddress(String address) {
         this.address = address;
-        return this;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public CaseHistory setDetails(String details) {
-        this.details = details;
         return this;
     }
 
@@ -328,7 +318,6 @@ public class CaseHistory {
         return "CaseHistory{" +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", details='" + details + '\'' +
                 ", age='" + age + '\'' +
                 ", gender='" + gender + '\'' +
                 ", pulse='" + pulse + '\'' +
