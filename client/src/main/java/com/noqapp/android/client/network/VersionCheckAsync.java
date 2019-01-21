@@ -4,6 +4,9 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import org.jsoup.Jsoup;
 
 import android.content.Context;
@@ -33,7 +36,7 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
                     .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
                     .referrer("http://www.google.com")
                     .get()
-                    .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
+                    .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)") // this number is different for merchant  div.hAyfc:nth-child(5) due to purchase column on playstore
                     .first()
                     .ownText();
         } catch (IOException e) {
@@ -61,6 +64,8 @@ public class VersionCheckAsync extends AsyncTask<String, String, String> {
             }
         } catch (Exception e) {
             Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
+            Answers.getInstance().logCustom(new CustomEvent("Version check failed:Client")
+                    .putCustomAttribute("Jsoup received version", newVersion));
         }
     }
 }
