@@ -69,7 +69,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_instruction.setText(jsonMedicalRecord.getPlanToPatient());
         tv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
 
-        tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
+        tv_diagnosed_by.setText("Dr. "+jsonMedicalRecord.getDiagnosedByDisplayName());
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
         tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
@@ -112,30 +112,59 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         if (0 == medicalRecordList.size()) {
             ll_medication.setVisibility(View.GONE);
         }
+        String notAvailable = "N/A";
         if (null != jsonMedicalPhysicalExaminations)
             for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
                 String label = "";
                 switch (physicalExam) {
                     case TE:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
+                        if (null != jsonMedicalPhysicalExaminations.getTemperature()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case BP:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
+                        if (null != jsonMedicalPhysicalExaminations.getBloodPressure() && jsonMedicalPhysicalExaminations.getBloodPressure().length > 0) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0];
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case PL:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
+                        if (null != jsonMedicalPhysicalExaminations.getPulse()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case OX:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
+                        if (null != jsonMedicalPhysicalExaminations.getOxygen()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case WT:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
+                        if (null != jsonMedicalPhysicalExaminations.getWeight()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case HT:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getHeight();
+                        if (null != jsonMedicalPhysicalExaminations.getHeight()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getHeight();
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                     case RP:
-                        label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getRespiratory();
+                        if (null != jsonMedicalPhysicalExaminations.getRespiratory()) {
+                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getRespiratory();
+                        }else {
+                            label = physicalExam.getDescription() + ": " + notAvailable;
+                        }
                         break;
                 }
                 ll_physical.addView(getView(label));
