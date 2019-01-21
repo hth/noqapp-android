@@ -16,6 +16,7 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -166,12 +167,12 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             if (null != jsonMerchant.getJsonProfessionalProfile()) {
-                Type type = new TypeToken<HashMap<String, ArrayList<String>>>() {
+                Type type = new TypeToken<HashMap<String, ArrayList<DataObj>>>() {
                 }.getType();
                 Gson gson = new Gson();
-                Map<String, List<String>> map = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
+                Map<String, List<DataObj>> map = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
                 if (null != map && map.size() > 0) {
-                    LaunchActivity.getLaunchActivity().setSuggestions(map);
+                    LaunchActivity.getLaunchActivity().setSuggestionsPrefs(map);
                 }
             }
             if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {

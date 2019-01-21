@@ -94,6 +94,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (actv_search.getRight() - actv_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         actv_search.setText("");
+                        new AppUtils().hideKeyBoard(getActivity());
                         return true;
                     }
                     if (event.getRawX() <= (20 + actv_search.getLeft() + actv_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {

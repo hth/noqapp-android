@@ -330,6 +330,17 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 } else {
                     jsonMedicalPhysical.setHeight(null);
                 }
+                if (null != jsonMedicalPhysical.getPulse()
+                        || null != jsonMedicalPhysical.getBloodPressure()
+                        || null != jsonMedicalPhysical.getRespiratory()
+                        || null != jsonMedicalPhysical.getHeight()
+                        || null != jsonMedicalPhysical.getWeight()
+                        || null != jsonMedicalPhysical.getTemperature()
+                        || null != jsonMedicalPhysical.getOxygen()) {
+                    jsonMedicalPhysical.setPhysicalFilled(true);
+                }else{
+                    jsonMedicalPhysical.setPhysicalFilled(false);
+                }
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);

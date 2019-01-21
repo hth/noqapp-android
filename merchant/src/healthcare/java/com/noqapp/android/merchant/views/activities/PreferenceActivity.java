@@ -1,9 +1,13 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.FilePresenter;
+import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
+import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MasterLabModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -47,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class PreferenceActivity extends AppCompatActivity implements FilePresenter, MenuHeaderAdapter.OnItemClickListener {
+public class PreferenceActivity extends AppCompatActivity implements FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -203,7 +207,23 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
+        m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestionsPrefs()));
+    }
 
+    @Override
+    public void intellisenseResponse(JsonResponse jsonResponse) {
+        Log.v("intellesence upload", "" + jsonResponse.getResponse());
+    }
+
+    @Override
+    public void intellisenseError() {
+        Log.v("intellesence upload: ", "error");
+    }
     private boolean isStoragePermissionAllowed() {
         //Getting the permission status
         int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);

@@ -93,11 +93,6 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
             }
         });
         prepareListData();
-        try {
-            Log.e("medicine", LaunchActivity.getLaunchActivity().getFavouriteMedicines().toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         if (null != PreferenceActivity.getPreferenceActivity().testCaseObjects)
             selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
         if (null == selectedList)
