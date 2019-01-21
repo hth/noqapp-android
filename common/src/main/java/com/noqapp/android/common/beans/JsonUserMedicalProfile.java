@@ -113,4 +113,17 @@ public class JsonUserMedicalProfile implements Serializable {
         this.historyDirty = historyDirty;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonUserMedicalProfile{" +
+                "bloodType=" + bloodType +
+                ", occupation=" + occupation +
+                ", pastHistory='" + pastHistory + '\'' +
+                ", familyHistory='" + familyHistory + '\'' +
+                ", knownAllergies='" + knownAllergies + '\'' +
+                ", medicineAllergies='" + medicineAllergies + '\'' +
+                ", historyDirty=" + historyDirty +
+                '}';
+    }
 }

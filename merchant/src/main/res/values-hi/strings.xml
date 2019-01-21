@@ -137,4 +137,5 @@
     <string name="screen_physical">Patient Physical</string>
     <string name="followup_alert">There are no followup scheduled</string>
     <string name="error_account_block">Account is blocked. Contact support.</string>
+    <string name="mds_medicine_allergies">Medicine Allergies:</string>
 </resources>

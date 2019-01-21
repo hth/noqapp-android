@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -41,6 +42,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -98,6 +101,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     public String codeQR;
     public JsonPreferredBusinessList jsonPreferredBusinessList;
     private String bizCategoryId;
+    private ProgressBar pb_case;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
+        pb_case = findViewById(R.id.pb_case);
         data.add("Primary checkup");
         data.add("Symptoms");
         data.add("Examination");
@@ -137,7 +142,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         caseHistory.setName(jsonProfile.getName());
         caseHistory.setAddress(jsonProfile.getAddress());
-        caseHistory.setDetails("<b> Blood Group: </b> B+ ,<b> Weight: </b> 75 Kg");
         caseHistory.setAge(new AppUtils().calculateAge(jsonProfile.getBirthday()));
         caseHistory.setGender(jsonProfile.getGender().name());
         rcv_header.setHasFixedSize(true);
@@ -164,14 +168,20 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
             }
         });
-        loadTabs = new LoadTabs();
-        loadTabs.execute();
-
-
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(this);
+            PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(MedicalCaseActivity.this);
             preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadTabs = new LoadTabs();
+                loadTabs.execute();
+            }
+        }, 100);
+
+
 
     }
 
@@ -419,6 +429,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         adapter.notifyDataSetChanged();
+        pb_case.setVisibility(View.GONE);
     }
 
     private ArrayList<String> convertToStringList(List<DataObj> temp) {
