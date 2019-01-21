@@ -57,8 +57,8 @@
                                     style="@style/style_mdh_header"
                                     android:text="@string/mds_known_allergies"/>
 
-                            <AutoCompleteTextView
-                                    android:id="@+id/actv_known_allergy"
+                            <EditText
+                                    android:id="@+id/edt_known_allergy"
                                     style="@style/style_mdh_details"
                                     android:gravity="top"
                                     android:minLines="5"
@@ -82,8 +82,8 @@
                                         style="@style/style_mdh_header"
                                         android:text="@string/mds_past_history"/>
 
-                                <AutoCompleteTextView
-                                        android:id="@+id/actv_past_history"
+                                <EditText
+                                        android:id="@+id/edt_past_history"
                                         style="@style/style_mdh_details"
                                         android:gravity="top"
                                         android:minLines="5"
@@ -101,8 +101,25 @@
                                     style="@style/style_mdh_header"
                                     android:text="@string/mds_family_history"/>
 
-                            <AutoCompleteTextView
-                                    android:id="@+id/actv_family_history"
+                            <EditText
+                                    android:id="@+id/edt_family_history"
+                                    style="@style/style_mdh_details"
+                                    android:gravity="top"
+                                    android:minLines="5"
+                                    android:text=""/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            <TextView
+                                    style="@style/style_mdh_header"
+                                    android:text="@string/mds_medicine_allergies"/>
+
+                            <EditText
+                                    android:id="@+id/edt_medicine_allergies"
                                     style="@style/style_mdh_details"
                                     android:gravity="top"
                                     android:minLines="5"

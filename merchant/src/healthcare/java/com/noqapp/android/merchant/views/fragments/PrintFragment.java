@@ -156,6 +156,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.getJsonUserMedicalProfile().setPastHistory(caseHistory.getPastHistory());
                 jsonMedicalRecord.getJsonUserMedicalProfile().setFamilyHistory(caseHistory.getFamilyHistory());
                 jsonMedicalRecord.getJsonUserMedicalProfile().setKnownAllergies(caseHistory.getKnownAllergies());
+                jsonMedicalRecord.getJsonUserMedicalProfile().setMedicineAllergies(caseHistory.getMedicineAllergies());
                 jsonMedicalRecord.setClinicalFinding(caseHistory.getClinicalFindings());
                 jsonMedicalRecord.setProvisionalDifferentialDiagnosis(caseHistory.getProvisionalDiagnosis());
                 jsonMedicalRecord.setExamination(caseHistory.getExaminationResults());
