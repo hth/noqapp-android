@@ -22,9 +22,9 @@ import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
 
 import com.squareup.picasso.Picasso;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ import java.util.List;
 public class PatientProfileActivity extends AppCompatActivity implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter {
     private long lastPress;
     private Toast backPressToast;
-    private ProgressDialog progressDialog;
+    private ProgressBar pb_physical, pb_history;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
@@ -56,6 +57,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private JsonProfile jsonProfile;
     private TextView tv_empty_list;
+    private MedicalHistoryModel medicalHistoryModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,8 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         tv_respiration = findViewById(R.id.tv_respiration);
 
         tv_empty_list = findViewById(R.id.tv_empty_list);
+        pb_physical = findViewById(R.id.pb_physical);
+        pb_history = findViewById(R.id.pb_history);
         TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
         tv_start_diagnosis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,11 +102,25 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         });
 
         Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
-        initProgress();
-        MedicalHistoryModel medicalHistoryModel = new MedicalHistoryModel(this);
+        medicalHistoryModel = new MedicalHistoryModel(this);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            PatientProfileModel profileModel = new PatientProfileModel(this);
+            new AsyncTaskTemp().execute();
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+    }
+
+    class AsyncTaskTemp extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pb_history.setVisibility(View.VISIBLE);
+            pb_physical.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PatientProfileModel profileModel = new PatientProfileModel(PatientProfileActivity.this);
             profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
             medicalHistoryModel.historical(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
@@ -111,14 +129,12 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
-            medicalHistoryModel.setJsonMedicalRecordPresenter(this);
+            medicalHistoryModel.setJsonMedicalRecordPresenter(PatientProfileActivity.this);
             medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
-
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
+            return null;
         }
     }
 
@@ -131,7 +147,6 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     @Override
     public void patientProfileResponse(JsonProfile jsonProfile) {
         updateUI(jsonProfile);
-        dismissProgress();
     }
 
     private void updateUI(JsonProfile jsonProfile) {
@@ -144,24 +159,27 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
 
     @Override
     public void patientProfileError() {
-        dismissProgress();
+        pb_physical.setVisibility(View.GONE);
     }
 
     @Override
     public void authenticationFailure() {
-        dismissProgress();
+        pb_physical.setVisibility(View.GONE);
+        pb_history.setVisibility(View.GONE);
         AppUtils.authenticationProcessing();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
+        pb_physical.setVisibility(View.GONE);
+        pb_history.setVisibility(View.GONE);
         new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
+        pb_physical.setVisibility(View.GONE);
+        pb_history.setVisibility(View.GONE);
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
@@ -186,12 +204,12 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         if (null == jsonMedicalRecords || jsonMedicalRecords.size() == 0) {
             tv_empty_list.setVisibility(View.VISIBLE);
         }
-        dismissProgress();
+        pb_history.setVisibility(View.GONE);
     }
 
     @Override
     public void medicalRecordListError() {
-        dismissProgress();
+        pb_history.setVisibility(View.GONE);
     }
 
     @Override
@@ -249,18 +267,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
                 e.printStackTrace();
             }
         }
-        dismissProgress();
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
+        pb_physical.setVisibility(View.GONE);
     }
 
     private void loadProfilePic(String imageUrl) {
