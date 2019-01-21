@@ -145,6 +145,7 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
                 ", weight='" + weight + '\'' +
                 ", height='" + height + '\'' +
                 ", diagnosedById='" + diagnosedById + '\'' +
+                ", physicalFilled=" + physicalFilled +
                 '}';
     }
 }
