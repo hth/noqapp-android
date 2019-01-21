@@ -99,7 +99,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
 
         rcv_header = findViewById(R.id.rcv_header);
         data.add("MRI");
-        data.add("SCAN");
+        data.add("CT Scan");
         data.add("SONOGRAPHY");
         data.add("X-RAY");
         data.add("Pathology");

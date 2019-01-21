@@ -140,14 +140,14 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 }
                 ll_physical.addView(getView(label));
             }
-        if (jsonMedicalRecord.getMedicalPathologies().size() == 0) {
+        if (null != jsonMedicalRecord.getMedicalPathologies() && jsonMedicalRecord.getMedicalPathologies().size() == 0) {
             ll_pathology.setVisibility(View.GONE);
         } else {
             for (int i = 0; i < jsonMedicalRecord.getMedicalPathologies().size(); i++) {
                 ll_investigation_pathology.addView(getView(jsonMedicalRecord.getMedicalPathologies().get(i).getName()));
             }
         }
-        if (jsonMedicalRecord.getMedicalRadiologyLists().size() == 0) {
+        if (null != jsonMedicalRecord.getMedicalRadiologyLists() && jsonMedicalRecord.getMedicalRadiologyLists().size() == 0) {
             ll_radiology.setVisibility(View.GONE);
         } else {
             for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {

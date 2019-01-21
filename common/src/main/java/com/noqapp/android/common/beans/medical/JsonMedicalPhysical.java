@@ -50,6 +50,9 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
     @JsonProperty("dbi")
     private String diagnosedById;
 
+    @JsonProperty("pf")
+    private boolean physicalFilled;
+
     public String getTemperature() {
         return temperature;
     }
@@ -122,6 +125,15 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
         return this;
     }
 
+    public boolean isPhysicalFilled() {
+        return physicalFilled;
+    }
+
+    public JsonMedicalPhysical setPhysicalFilled(boolean physicalFilled) {
+        this.physicalFilled = physicalFilled;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonMedicalPhysical{" +
@@ -133,6 +145,7 @@ public class JsonMedicalPhysical extends AbstractDomain implements Serializable 
                 ", weight='" + weight + '\'' +
                 ", height='" + height + '\'' +
                 ", diagnosedById='" + diagnosedById + '\'' +
+                ", physicalFilled=" + physicalFilled +
                 '}';
     }
 }

@@ -23,9 +23,9 @@ import android.widget.TextView;
 
 public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterViewValueChanged {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
-    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low,tv_rr,tv_height;
-    private DiscreteSeekBar dsb_bp_low, dsb_bp_high,dsb_rr,dsb_height;
-    private SwitchCompat sc_enable_pulse, sc_enable_temp, sc_enable_weight, sc_enable_oxygen, sc_enable_bp,sc_enable_rr,sc_enable_height;
+    private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_rr, tv_height;
+    private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
+    private SwitchCompat sc_enable_pulse, sc_enable_temp, sc_enable_weight, sc_enable_oxygen, sc_enable_bp, sc_enable_rr, sc_enable_height;
 
     @Nullable
     @Override
@@ -225,14 +225,14 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                     sc_enable_bp.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight() ) {
+                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
                     sc_enable_height.setChecked(true);
                 } else {
                     sc_enable_height.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory() ) {
+                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
                     sc_enable_rr.setChecked(true);
                 } else {
@@ -312,6 +312,17 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(mv_oxygen.getValueAsString());
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(null);
+        }
+        if (null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getPulse()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getBloodPressure()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getRespiratory()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getHeight()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getWeight()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getTemperature()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getOxygenLevel()) {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPhysicalFilled(true);
+        }else{
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPhysicalFilled(false);
         }
     }
 

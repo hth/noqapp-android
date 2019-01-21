@@ -39,7 +39,8 @@ public class CaseHistory {
     private String familyHistory;
     private String knownAllergies;
     private String medicineAllergies;
-    private boolean historyDirty;
+    private boolean physicalFilled;
+
 
     private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
 
@@ -313,12 +314,12 @@ public class CaseHistory {
         return this;
     }
 
-    public boolean isHistoryDirty() {
-        return historyDirty;
+    public boolean isPhysicalFilled() {
+        return physicalFilled;
     }
 
-    public CaseHistory setHistoryDirty(boolean historyDirty) {
-        this.historyDirty = historyDirty;
+    public CaseHistory setPhysicalFilled(boolean physicalFilled) {
+        this.physicalFilled = physicalFilled;
         return this;
     }
 
@@ -354,7 +355,7 @@ public class CaseHistory {
                 ", familyHistory='" + familyHistory + '\'' +
                 ", knownAllergies='" + knownAllergies + '\'' +
                 ", medicineAllergies='" + medicineAllergies + '\'' +
-                ", historyDirty=" + historyDirty +
+                ", physicalFilled=" + physicalFilled +
                 ", jsonMedicineList=" + jsonMedicineList +
                 '}';
     }
