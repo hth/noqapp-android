@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
@@ -31,6 +32,7 @@ public class DiagnosisFragment extends Fragment {
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
     private AutoCompleteTextView actv_clinical_findings,actv_examination_results;
+    private final int columnCount = 4;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class DiagnosisFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList().size() , columnCount), LinearLayoutManager.HORIZONTAL);
         rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager);
         provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
@@ -101,7 +103,7 @@ public class DiagnosisFragment extends Fragment {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setProvisionalDiagnosisList(temp);
-                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size() , columnCount) , LinearLayoutManager.HORIZONTAL);
                         rcv_provisional_diagnosis.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
                         provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());

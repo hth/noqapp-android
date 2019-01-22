@@ -25,7 +25,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -37,6 +39,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private TextView tv_obes, tv_gyanc;
     private SwitchCompat sc_enable_history;
     private AutoCompleteTextView actv_search;
+    private final int columnCount =4;
 
     @Nullable
     @Override
@@ -122,15 +126,23 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         });
 
         actv_search = v.findViewById(R.id.actv_search);
-        actv_search.setThreshold(1);
-        actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        actv_search.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String value = (String) parent.getItemAtPosition(position);
-
-                new AppUtils().hideKeyBoard(getActivity());
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(actv_search, InputMethodManager.SHOW_IMPLICIT);
+                return false;
             }
         });
+        actv_search.setThreshold(1);
+//        actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String value = (String) parent.getItemAtPosition(position);
+//
+//                new AppUtils().hideKeyBoard(getActivity());
+//            }
+//        });
         actv_search.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -167,18 +179,18 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList().size() / columnCount) + 1, LinearLayoutManager.HORIZONTAL);
         rcv_gynac.setLayoutManager(staggeredGridLayoutManager);
         symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), this, false);
         rcv_gynac.setAdapter(symptomsAdapter);
 
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList().size() / columnCount) + 1, LinearLayoutManager.HORIZONTAL);
         rcv_obstretics.setLayoutManager(staggeredGridLayoutManager1);
         obstreticsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList(), this, false);
         rcv_obstretics.setAdapter(obstreticsAdapter);
 
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
+        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size(),columnCount), LinearLayoutManager.HORIZONTAL);
         rcv_symptom_select.setLayoutManager(sglm);
         symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
         rcv_symptom_select.setAdapter(symptomSelectedAdapter);
@@ -212,7 +224,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             ArrayList<DataObj> dataObjArrayList = new ArrayList<>();
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
-
+            setupAutoComplete(dataObjArrayList);
             selectedSymptomsList = symptomSelectedAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain(), dataObjArrayList);
             symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
             rcv_symptom_select.setAdapter(symptomSelectedAdapter);
@@ -261,7 +273,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
                     temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / columnCount) + 1, LinearLayoutManager.HORIZONTAL);
                     rcv_gynac.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
                     symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
                     rcv_gynac.setAdapter(symptomsAdapter);
@@ -343,7 +355,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
 
                     view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
 
-                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
+                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size(),columnCount), LinearLayoutManager.HORIZONTAL);
                     rcv_symptom_select.setLayoutManager(sglm);
                     symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                     rcv_symptom_select.setAdapter(symptomSelectedAdapter);
@@ -360,7 +372,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 }
                 clearOptionSelection();
                 view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
-                StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size()), LinearLayoutManager.HORIZONTAL);
+                StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size(),columnCount), LinearLayoutManager.HORIZONTAL);
                 rcv_symptom_select.setLayoutManager(sglm);
                 symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                 rcv_symptom_select.setAdapter(symptomSelectedAdapter);
@@ -386,4 +398,17 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         return false;
     }
 
+    private void setupAutoComplete( final List<DataObj> objects) {
+        List<String> names = new AbstractList<String>() {
+            @Override
+            public int size() { return objects.size(); }
+
+            @Override
+            public String get(int location) {
+                return objects.get(location).getShortName();
+            }
+        };
+
+        actv_search.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, names));
+    }
 }
