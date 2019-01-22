@@ -47,6 +47,9 @@ public class JsonPreferredBusiness implements Serializable {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
+    @JsonProperty("bc")
+    private String bizCategoryId;
+
     @JsonProperty("sa")
     private String storeAddress;
 
@@ -113,6 +116,15 @@ public class JsonPreferredBusiness implements Serializable {
 
     public JsonPreferredBusiness setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonPreferredBusiness setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
         return this;
     }
 
