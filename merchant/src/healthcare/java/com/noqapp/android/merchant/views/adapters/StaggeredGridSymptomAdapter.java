@@ -6,6 +6,7 @@ import com.noqapp.android.merchant.views.pojos.DataObj;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +26,11 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
     private Context context;
     private StaggeredClick staggeredClick;
     private boolean isEdit;
+    private final String SPLIT_SYMBOL = "|";
 
     public interface StaggeredClick {
         void staggeredClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos);
     }
-
 
 
     public StaggeredGridSymptomAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredClick staggeredClick, boolean isEdit) {
@@ -39,8 +40,6 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         this.isEdit = isEdit;
         Collections.sort(dataObjArrayList);
     }
-
-
 
 
     @Override
@@ -61,20 +60,20 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                  dataObjArrayList.get(position).setSelect(isChecked);
+                dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
                     if (null != staggeredClick)
-                        staggeredClick.staggeredClick(true,isEdit, dataObjArrayList.get(position),position);
+                        staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
                     if (null != staggeredClick)
-                        staggeredClick.staggeredClick(true,isEdit, dataObjArrayList.get(position),position);
+                        staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
                 }
 
             }
         });
-        if(dataObjArrayList.get(position).isNewlyAdded()){
+        if (dataObjArrayList.get(position).isNewlyAdded()) {
             Animation anim = new AlphaAnimation(0.0f, 1.0f);
             anim.setDuration(150); //You can manage the blinking time with this parameter
             anim.setStartOffset(20);
@@ -82,7 +81,7 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
             anim.setRepeatCount(20);
             holder.name.startAnimation(anim);
 
-        }else{
+        } else {
             holder.name.clearAnimation();
         }
     }
@@ -110,7 +109,11 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         String data = "";
         for (int i = 0; i < dataObjArrayList.size(); i++) {
             if (dataObjArrayList.get(i).isSelect()) {
-                data +=   "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getAdditionalNotes()   + "\n";
+                if (TextUtils.isEmpty(dataObjArrayList.get(i).getAdditionalNotes())) {
+                    data += "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getNoOfDays() + "." + "\n";
+                } else {
+                    data += "Having " + dataObjArrayList.get(i).getShortName() + " since last " + dataObjArrayList.get(i).getNoOfDays() + ". " + dataObjArrayList.get(i).getAdditionalNotes() + "\n";
+                }
             }
         }
         if (data.endsWith(", "))
@@ -118,27 +121,46 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         return data;
     }
 
-    public ArrayList<DataObj> updateDataObj(String[] temp,ArrayList<DataObj> list) {
+    public String getSelectedSymptomData() {
+        String data = "";
+        for (int i = 0; i < dataObjArrayList.size(); i++) {
+            if (dataObjArrayList.get(i).isSelect()) {
+                data += dataObjArrayList.get(i).getShortName() + SPLIT_SYMBOL + dataObjArrayList.get(i).getNoOfDays() + SPLIT_SYMBOL + dataObjArrayList.get(i).getAdditionalNotes() + "\n";
+            }
+        }
+        if (data.endsWith(", "))
+            data = data.substring(0, data.length() - 2);
+        return data;
+    }
+
+    public ArrayList<DataObj> updateDataObj(String str, ArrayList<DataObj> list) {
+
         ArrayList<DataObj> dataObjs = new ArrayList<>();
-        if (null != temp && temp.length>0) {
-            for (int i = 0; i < temp.length; i++) {
-                String act = temp[i].replace("Having ", "").replace(" since last ", "-");
-                if(act.contains("-")){
-                    String shortName = act.split("-")[0];
-                    String val = act.split("-")[1];
-
-                    for (DataObj d :
-                            list) {
-                        if(d.getShortName().equals(shortName)){
-                            dataObjs.add(d.setAdditionalNotes(val).setSelect(true));
-
-                            break;
+        try {
+            String[] temp = str.split("\\r?\\n");
+            if (null != temp && temp.length > 0) {
+                for (int i = 0; i < temp.length; i++) {
+                    String act = temp[i];
+                    if (act.contains(SPLIT_SYMBOL)) {
+                        String[] strArray = act.split("\\|");
+                        String shortName = strArray[0];
+                        String val = strArray[1];
+                        String desc = "";
+                        if (strArray.length == 3)
+                            desc = strArray[2];
+                        for (DataObj d :
+                                list) {
+                            if (d.getShortName().equals(shortName)) {
+                                dataObjs.add(d.setNoOfDays(val).setAdditionalNotes(desc).setSelect(true));
+                                break;
+                            }
                         }
                     }
                 }
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-       return dataObjs;
+        return dataObjs;
     }
 }

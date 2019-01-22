@@ -65,6 +65,9 @@ public class JsonPreferredBusiness implements Serializable {
     @JsonProperty("p")
     private String storePhone;
 
+    @JsonProperty("a")
+    private boolean active;
+
     public String getBizStoreId() {
         return bizStoreId;
     }
@@ -170,6 +173,15 @@ public class JsonPreferredBusiness implements Serializable {
 
     public JsonPreferredBusiness setStorePhone(String storePhone) {
         this.storePhone = storePhone;
+        return this;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public JsonPreferredBusiness setActive(boolean active) {
+        this.active = active;
         return this;
     }
 

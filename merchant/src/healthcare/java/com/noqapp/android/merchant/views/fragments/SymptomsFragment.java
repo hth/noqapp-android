@@ -21,9 +21,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -42,7 +45,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
     private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
     private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
-    private EditText edt_past_history, edt_known_allergy, edt_family_history, edt_medicine_allergies;
+    private EditText edt_past_history, edt_known_allergy, edt_family_history, edt_medicine_allergies,edt_output;
     private ScrollView ll_symptom_note;
     private DataObj dataObj;
     private SegmentedControl sc_duration;
@@ -53,6 +56,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private ArrayList<DataObj> selectedSymptomsList = new ArrayList<>();
     private TextView tv_obes, tv_gyanc;
     private SwitchCompat sc_enable_history;
+    private AutoCompleteTextView actv_search;
 
     @Nullable
     @Override
@@ -65,6 +69,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         edt_known_allergy = v.findViewById(R.id.edt_known_allergy);
         edt_family_history = v.findViewById(R.id.edt_family_history);
         edt_medicine_allergies = v.findViewById(R.id.edt_medicine_allergies);
+        edt_output = v.findViewById(R.id.edt_output);
         sc_enable_history = v.findViewById(R.id.sc_enable_history);
         btn_done = v.findViewById(R.id.btn_done);
         view_med = v.findViewById(R.id.view_med);
@@ -92,7 +97,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
                     tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
                     if (null != dataObj)
-                        dataObj.setAdditionalNotes(no_of_days);
+                        dataObj.setNoOfDays(no_of_days);
                 }
             }
         });
@@ -113,6 +118,36 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             @Override
             public void onClick(View v) {
                 AddItemDialog(getActivity(), "Add Symptoms");
+            }
+        });
+
+        actv_search = v.findViewById(R.id.actv_search);
+        actv_search.setThreshold(1);
+        actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String value = (String) parent.getItemAtPosition(position);
+
+                new AppUtils().hideKeyBoard(getActivity());
+            }
+        });
+        actv_search.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_LEFT = 0;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (actv_search.getRight() - actv_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        actv_search.setText("");
+                        new AppUtils().hideKeyBoard(getActivity());
+                        return true;
+                    }
+                    if (event.getRawX() <= (20 + actv_search.getLeft() + actv_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
+                        //performSearch();
+                        return true;
+                    }
+                }
+                return false;
             }
         });
         return v;
@@ -174,12 +209,11 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         }
 
         try {
-            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain().split("\\r?\\n");
             ArrayList<DataObj> dataObjArrayList = new ArrayList<>();
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
 
-            selectedSymptomsList = symptomSelectedAdapter.updateDataObj(temp, dataObjArrayList);
+            selectedSymptomsList = symptomSelectedAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain(), dataObjArrayList);
             symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
             rcv_symptom_select.setAdapter(symptomSelectedAdapter);
             view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
@@ -263,15 +297,17 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHistoryFilled(false);
         }
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptoms(symptomSelectedAdapter.getSelectedData());
+        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptomsObject(symptomSelectedAdapter.getSelectedSymptomData());
 
     }
 
 
     @Override
     public void staggeredClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
+        new AppUtils().hideKeyBoard(getActivity());
         if (!isEdit && isItemExist(temp.getShortName())) {
             ll_symptom_note.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "Medicine Already added in list", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Symptom Already added in list", Toast.LENGTH_LONG).show();
         } else {
             ll_symptom_note.setVisibility(isOpen ? View.VISIBLE : View.GONE);
         }
@@ -280,22 +316,25 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         tv_symptoms_name.setText(dataObj.getShortName());
         if (isEdit) {
             // Pre fill the data
-            sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getAdditionalNotes()));
-            no_of_days = dataObj.getAdditionalNotes();
+            sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getNoOfDays()));
+            no_of_days = dataObj.getNoOfDays();
             tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
+            edt_output.setText(TextUtils.isEmpty(dataObj.getAdditionalNotes())?"":dataObj.getAdditionalNotes());
         } else {
             sc_duration.clearSelection();
             tv_output.setText("");
+            edt_output.setText("");
             no_of_days = "";
         }
         btn_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AppUtils().hideKeyBoard(getActivity());
-                dataObj.setAdditionalNotes(no_of_days);
+                dataObj.setNoOfDays(no_of_days);
                 if (TextUtils.isEmpty(no_of_days)) {
                     Toast.makeText(getActivity(), "All fields are mandatory", Toast.LENGTH_LONG).show();
                 } else {
+                    dataObj.setAdditionalNotes(edt_output.getText().toString());
                     if (isEdit) {
                         selectedSymptomsList.set(pos, dataObj);
                     } else {
@@ -335,6 +374,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         sc_duration.clearSelection();
         no_of_days = "";
         tv_output.setText("");
+        edt_output.setText("");
         dataObj = null;
     }
 

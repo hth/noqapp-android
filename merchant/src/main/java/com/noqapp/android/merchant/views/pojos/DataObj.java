@@ -8,7 +8,8 @@ public class DataObj implements Comparable<DataObj> {
     private String medicineTiming;
     private String medicineDuration;
     private String medicineFrequency;
-    private String additionalNotes;
+    private String additionalNotes = "";
+    private String noOfDays;
     private boolean isNewlyAdded = false;
 
     public DataObj() {
@@ -98,6 +99,15 @@ public class DataObj implements Comparable<DataObj> {
         return this;
     }
 
+    public String getNoOfDays() {
+        return noOfDays;
+    }
+
+    public DataObj setNoOfDays(String noOfDays) {
+        this.noOfDays = noOfDays;
+        return this;
+    }
+
     public String getAdditionalNotes() {
         return additionalNotes;
     }
@@ -154,6 +164,7 @@ public class DataObj implements Comparable<DataObj> {
                 ", medicineDuration='" + medicineDuration + '\'' +
                 ", medicineFrequency='" + medicineFrequency + '\'' +
                 ", additionalNotes='" + additionalNotes + '\'' +
+                ", noOfDays='" + noOfDays + '\'' +
                 ", isNewlyAdded=" + isNewlyAdded +
                 '}';
     }

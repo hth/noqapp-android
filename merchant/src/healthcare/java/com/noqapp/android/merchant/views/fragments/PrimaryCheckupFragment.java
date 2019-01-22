@@ -220,6 +220,8 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
+                    tv_bp_low.setText("Diastolic: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]);
+                    tv_bp_high.setText("Systolic: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]);
                     sc_enable_bp.setChecked(true);
                 } else {
                     sc_enable_bp.setChecked(false);
@@ -228,6 +230,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
                     sc_enable_height.setChecked(true);
+                    tv_height.setText("Height: " + jsonMedicalRecord.getMedicalPhysical().getHeight());
                 } else {
                     sc_enable_height.setChecked(false);
                 }
@@ -235,6 +238,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
                     sc_enable_rr.setChecked(true);
+                    tv_rr.setText("Respiratory: " + jsonMedicalRecord.getMedicalPhysical().getRespiratory());
                 } else {
                     sc_enable_rr.setChecked(false);
                 }
@@ -321,7 +325,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getTemperature()
                 || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getOxygenLevel()) {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPhysicalFilled(true);
-        }else{
+        } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPhysicalFilled(false);
         }
     }
