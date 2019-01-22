@@ -120,6 +120,9 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("at")
     private String areaAndTown;
 
+    @JsonProperty("li")
+    private List<String> licenses = new ArrayList<>();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -381,6 +384,15 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setAreaAndTown(String areaAndTown) {
         this.areaAndTown = areaAndTown;
+        return this;
+    }
+
+    public List<String> getLicenses() {
+        return licenses;
+    }
+
+    public JsonMedicalRecord setLicenses(List<String> licenses) {
+        this.licenses = licenses;
         return this;
     }
 
