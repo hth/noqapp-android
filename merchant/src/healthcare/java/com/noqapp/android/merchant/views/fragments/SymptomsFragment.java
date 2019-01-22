@@ -101,9 +101,9 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
                 if (bChecked) {
-                    disableEditText(true,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
+                    disableEditText(true, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
                 } else {
-                    disableEditText(false,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
+                    disableEditText(false, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
                 }
             }
         });
@@ -124,9 +124,10 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             edt.setEnabled(isChecked);
             edt.setFocusable(isChecked);
             edt.setFocusableInTouchMode(isChecked);
-            edt.setBackground(isChecked ? ContextCompat.getDrawable(getActivity(),R.drawable.square_white_bg_drawable):ContextCompat.getDrawable(getActivity(),R.drawable.edt_roun_rect));
+            edt.setBackground(isChecked ? ContextCompat.getDrawable(getActivity(), R.drawable.square_white_bg_drawable) : ContextCompat.getDrawable(getActivity(), R.drawable.edt_roun_rect));
         }
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -162,14 +163,14 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     || null != jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory()
                     || null != jsonMedicalRecord.getJsonUserMedicalProfile().getMedicineAllergies()) {
                 sc_enable_history.setChecked(true);
-                disableEditText(true,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
+                disableEditText(true, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
             } else {
                 sc_enable_history.setChecked(false);
-                disableEditText(false,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
+                disableEditText(false, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
             }
-        }else{
+        } else {
             sc_enable_history.setChecked(false);
-            disableEditText(false,edt_family_history,edt_known_allergy,edt_medicine_allergies,edt_past_history);
+            disableEditText(false, edt_family_history, edt_known_allergy, edt_medicine_allergies, edt_past_history);
         }
 
         try {
@@ -251,6 +252,15 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPastHistory(null);
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFamilyHistory(null);
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setMedicineAllergies(null);
+        }
+
+        if (null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getKnownAllergies()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getPastHistory()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getFamilyHistory()
+                || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getMedicineAllergies()) {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHistoryFilled(true);
+        } else {
+            MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setHistoryFilled(false);
         }
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSymptoms(symptomSelectedAdapter.getSelectedData());
 
