@@ -35,11 +35,11 @@
                 android:layout_marginRight="20dp"
                 android:textSize="16sp"
                 android:background="@drawable/table_border"
-                android:inputType="text|textMultiLine"
+                android:inputType="text|textMultiLine|textCapSentences"
                 android:gravity="left"
                 android:maxLength="100"
-                android:maxLines="2"
-                android:minLines="2"
+                android:maxLines="1"
+                android:minLines="1"
                 />
 
         <View

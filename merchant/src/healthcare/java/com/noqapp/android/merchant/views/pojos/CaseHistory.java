@@ -20,6 +20,7 @@ public class CaseHistory {
     private String height;
     private String respiratory;
     private String symptoms;
+    private String symptomsObject;
     private String clinicalFindings;
     private String examinationResults;
     private String diagnosis;
@@ -323,6 +324,15 @@ public class CaseHistory {
         return this;
     }
 
+    public String getSymptomsObject() {
+        return symptomsObject;
+    }
+
+    public CaseHistory setSymptomsObject(String symptomsObject) {
+        this.symptomsObject = symptomsObject;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "CaseHistory{" +
@@ -338,6 +348,7 @@ public class CaseHistory {
                 ", height='" + height + '\'' +
                 ", respiratory='" + respiratory + '\'' +
                 ", symptoms='" + symptoms + '\'' +
+                ", symptomsObject='" + symptomsObject + '\'' +
                 ", clinicalFindings='" + clinicalFindings + '\'' +
                 ", examinationResults='" + examinationResults + '\'' +
                 ", diagnosis='" + diagnosis + '\'' +

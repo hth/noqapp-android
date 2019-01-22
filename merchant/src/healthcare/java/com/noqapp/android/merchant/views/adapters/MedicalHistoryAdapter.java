@@ -5,15 +5,18 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalHistoryAdapter extends BaseAdapter {
@@ -64,7 +67,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         }
         recordHolder.tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         recordHolder.tv_business_category_name.setText("(" + jsonMedicalRecord.getBizCategoryName() + ")");
-        recordHolder.tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
+        recordHolder.tv_complaints.setText(parseSymptoms(jsonMedicalRecord.getChiefComplain()));
         recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
         recordHolder.tv_examination.setText(jsonMedicalRecord.getExamination());
         recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
@@ -106,5 +109,36 @@ public class MedicalHistoryAdapter extends BaseAdapter {
                 v.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    public String parseSymptoms(String str) {
+        String data = "";
+        try {
+            String[] temp = str.split("\\r?\\n");
+            if (null != temp && temp.length > 0) {
+                for (int i = 0; i < temp.length; i++) {
+                    String act = temp[i];
+                    if (act.contains("|")) {
+                        String[] strArray = act.split("\\|");
+                        String shortName = strArray[0];
+                        String val = strArray[1];
+                        String desc = "";
+                        if (strArray.length == 3)
+                            desc = strArray[2];
+
+                        if (TextUtils.isEmpty(desc)) {
+                            data += "Having " + shortName + " since last " + val + "." + "\n";
+                        } else {
+                            data += "Having " + shortName + " since last " + val + ". " + desc + "\n";
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (data.endsWith(", "))
+            data = data.substring(0, data.length() - 2);
+        return data;
     }
 }
