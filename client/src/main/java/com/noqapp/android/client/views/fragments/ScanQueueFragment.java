@@ -153,7 +153,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         } else {
             cv_update_location.setVisibility(View.GONE);
         }
-        Log.e("Loc Data :", "latitude :" + lat+" longitude: " + log+" city: " + city);
+        Log.d("Loc Data: ", "latitude: " + lat+" longitude: " + log+" city: " + city);
     }
 
     @Override

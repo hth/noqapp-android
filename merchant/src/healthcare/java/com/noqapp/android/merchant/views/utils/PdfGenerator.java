@@ -35,6 +35,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -64,9 +65,9 @@ public class PdfGenerator {
         this.mContext = mContext;
         try {
             baseFont = BaseFont.createFont("assets/fonts/opensan.ttf", "UTF-8", BaseFont.EMBEDDED);
-            normalFont = new Font(baseFont, 9.0f, Font.NORMAL, BaseColor.BLACK);
-            normalBoldFont = new Font(baseFont, 9.0f, Font.BOLD, BaseColor.BLACK);
-            normalBigFont = new Font(baseFont, 11.0f, Font.BOLD, BaseColor.BLACK);
+            normalFont = new Font(baseFont, 10.0f, Font.NORMAL, BaseColor.BLACK);
+            normalBoldFont = new Font(baseFont, 10.0f, Font.BOLD, BaseColor.BLACK);
+            normalBigFont = new Font(baseFont, 12.0f, Font.BOLD, BaseColor.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,7 +127,10 @@ public class PdfGenerator {
 
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation()), normalFont);
+            String license = new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getLicenses());
+            String temp = TextUtils.isEmpty(license) ? notAvailable : license;
+            Chunk degreeChunk = new Chunk(new AppUtils().getCompleteEducation(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getEducation())
+                    + " (Reg. Id: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
@@ -289,18 +293,30 @@ public class PdfGenerator {
 
     private PdfPTable getInvestigationData() {
         PdfPTable table = new PdfPTable(1);
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont, 5));
-        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getPathologyList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont, 5));
-        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getXrayList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont, 5));
-        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getMriList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont, 5));
-        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSonoList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont, 5));
-        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getScanList()), normalFont));
-        table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SPEC.getDescription(), normalBoldFont, 5));
-        table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSpecList()), normalFont));
+        if (caseHistory.getPathologyList().size() > 0) {
+            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont, 5));
+            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getPathologyList()), normalFont));
+        }
+        if (caseHistory.getXrayList().size() > 0) {
+            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont, 5));
+            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getXrayList()), normalFont));
+        }
+        if (caseHistory.getMriList().size() > 0) {
+            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont, 5));
+            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getMriList()), normalFont));
+        }
+        if (caseHistory.getSonoList().size() > 0) {
+            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont, 5));
+            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSonoList()), normalFont));
+        }
+        if (caseHistory.getScanList().size() > 0) {
+            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont, 5));
+            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getScanList()), normalFont));
+        }
+        if (caseHistory.getSpecList().size() > 0) {
+            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SPEC.getDescription(), normalBoldFont, 5));
+            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSpecList()), normalFont));
+        }
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
 

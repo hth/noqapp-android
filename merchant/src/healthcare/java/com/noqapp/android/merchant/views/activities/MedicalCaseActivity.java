@@ -182,7 +182,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         }, 100);
 
 
-
     }
 
     @Override
@@ -432,12 +431,13 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         pb_case.setVisibility(View.GONE);
     }
 
-    private ArrayList<String> convertToStringList(List<DataObj> temp) {
+    private ArrayList<String> convertToStringList(List<DataObj> dataObjs) {
         ArrayList<String> strList = new ArrayList<>();
-        if (null != temp && temp.size() > 0)
-            for (int i = 0; i < temp.size(); i++) {
-                strList.add(temp.get(i).getShortName());
+        if (null != dataObjs && dataObjs.size() > 0) {
+            for (DataObj dataObj : dataObjs) {
+                strList.add(dataObj.getShortName());
             }
+        }
         return strList;
     }
 

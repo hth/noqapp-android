@@ -39,6 +39,7 @@ public class CaseHistory {
     private String knownAllergies;
     private String medicineAllergies;
     private boolean physicalFilled;
+    private boolean historyFilled;
 
 
     private List<JsonMedicalMedicine> jsonMedicineList = new ArrayList<>();
@@ -313,6 +314,15 @@ public class CaseHistory {
         return this;
     }
 
+    public boolean isHistoryFilled() {
+        return historyFilled;
+    }
+
+    public CaseHistory setHistoryFilled(boolean historyFilled) {
+        this.historyFilled = historyFilled;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "CaseHistory{" +
@@ -345,6 +355,7 @@ public class CaseHistory {
                 ", knownAllergies='" + knownAllergies + '\'' +
                 ", medicineAllergies='" + medicineAllergies + '\'' +
                 ", physicalFilled=" + physicalFilled +
+                ", historyFilled=" + historyFilled +
                 ", jsonMedicineList=" + jsonMedicineList +
                 '}';
     }
