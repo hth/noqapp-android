@@ -85,7 +85,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     protected DeviceModel deviceModel;
-    protected static MerchantListFragment merchantListFragment;
+    public static MerchantListFragment merchantListFragment;
     protected final String IS_LOGIN = "IsLoggedIn";
     protected final String KEY_USER_EMAIL = "userEmail";
     protected final String KEY_USER_NAME = "userName";
