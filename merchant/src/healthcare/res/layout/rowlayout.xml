@@ -16,6 +16,6 @@
           android:button="@drawable/check_box_bg"
           android:text="CheckBox"
           android:minWidth="100dp"
-          android:maxWidth="180dp"
+          android:maxWidth="250dp"
           android:textAppearance="?android:attr/textAppearanceSmall"
           android:textColor="#fff"/>
