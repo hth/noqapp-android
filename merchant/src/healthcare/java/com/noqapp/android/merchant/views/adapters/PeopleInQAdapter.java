@@ -16,6 +16,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalActivity;
@@ -46,8 +47,8 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility,String bizCategoryId) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPosition, queueStatusEnum, jsonDataVisibility,bizCategoryId);
+    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId) {
+        super(data, context, peopleInQAdapterClick, qCodeQR, glowPosition, queueStatusEnum, jsonDataVisibility, bizCategoryId);
     }
 
     @Override
@@ -187,7 +188,14 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson,String bizCategoryId) {
+    public void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson) {
+        Intent intent = new Intent(context, DocumentUploadActivity.class);
+        intent.putExtra("recordReferenceId", jsonQueuedPerson.getRecordReferenceId());
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
 
             if (new AppUtils().isTablet(context)) {
@@ -215,7 +223,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         Intent intent = new Intent(context, PatientProfileActivity.class);
                         intent.putExtra("qCodeQR", qCodeQR);
                         intent.putExtra("data", jsonQueuedPerson);
-                        intent.putExtra("bizCategoryId",bizCategoryId);
+                        intent.putExtra("bizCategoryId", bizCategoryId);
                         context.startActivity(intent);
                     } else {
                         Intent intent = new Intent(context, SimpleFormActivity.class);

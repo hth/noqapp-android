@@ -58,6 +58,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     abstract void editBusinessCustomerId(Context context, JsonQueuedPerson jsonQueuedPerson);
 
     // for medical Only
+    abstract void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson);
+
+    // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
 
     @Override
@@ -117,6 +120,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_status_msg;
         TextView tv_create_case;
         TextView tv_change_name;
+        TextView tv_upload_document;
         TextView tv_business_customer_id;
         TextView tv_join_timing;
         ImageView iv_info;
@@ -132,6 +136,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_status_msg = itemView.findViewById(R.id.tv_status_msg);
             this.tv_create_case = itemView.findViewById(R.id.tv_create_case);
             this.tv_change_name = itemView.findViewById(R.id.tv_change_name);
+            this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.iv_info = itemView.findViewById(R.id.iv_info);
@@ -262,6 +267,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             @Override
             public void onClick(View v) {
                 changePatient(context, jsonQueuedPerson);
+            }
+        });
+        recordHolder.tv_upload_document.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadDocument(context, jsonQueuedPerson);
             }
         });
         recordHolder.tv_business_customer_id.setOnClickListener(new View.OnClickListener() {

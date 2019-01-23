@@ -137,6 +137,18 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_twelve"/>
 
+        <TextView
+                android:id="@+id/tv_upload_document"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/tv_roun_rect"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/upload_document"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_twelve"/>
+
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

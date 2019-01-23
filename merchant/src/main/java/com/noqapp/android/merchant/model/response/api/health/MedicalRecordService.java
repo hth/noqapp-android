@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -123,7 +124,8 @@ public interface MedicalRecordService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/h/medicalRecord/appendImage.json")
+    @Multipart
+    @POST("api/m/h/medicalRecord/appendImage.json")
     Call<JsonResponse> appendImage(
             @Header("X-R-DID")
             String did,
