@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
+import com.noqapp.android.merchant.views.fragments.PreferredBusinessFragment;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
 
@@ -109,6 +110,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         data.add("Pathology");
         data.add("Special");
         data.add("Medicine");
+        data.add("preferred Store");
         medicineFragment = new MedicineFragment();
 
         preferenceMriFragment = new PreferenceHCServiceFragment();
@@ -131,6 +133,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         adapter.addFragment(preferencePathFragment, "FRAG" + 4);
         adapter.addFragment(preferenceSpecFragment, "FRAG" + 5);
         adapter.addFragment(medicineFragment, "FRAG" + 6);
+        adapter.addFragment(new PreferredBusinessFragment(), "FRAG" + 7);
 
         rcv_header.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer

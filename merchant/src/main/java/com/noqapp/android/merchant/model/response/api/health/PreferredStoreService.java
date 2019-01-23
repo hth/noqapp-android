@@ -15,6 +15,7 @@ import retrofit2.http.Path;
  */
 public interface PreferredStoreService {
 
+    @Deprecated
     @GET("api/m/h/preferredStore/{businessType}/{codeQR}.json")
     Call<JsonPreferredBusinessList> getPreferredStoresByBusinessType(
             @Header("X-R-DID")
@@ -41,6 +42,7 @@ public interface PreferredStoreService {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
+    @Deprecated
     @GET("api/m/h/preferredStore/{codeQR}.json")
     Call<JsonPreferredBusinessList> getAllPreferredStores(
             @Header("X-R-DID")
@@ -57,6 +59,26 @@ public interface PreferredStoreService {
 
             @Path("codeQR")
             String codeQR
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/h/preferredStore/all.json")
+    Call<JsonPreferredBusinessList> getAllPreferredStores(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
     );
 
     /**
