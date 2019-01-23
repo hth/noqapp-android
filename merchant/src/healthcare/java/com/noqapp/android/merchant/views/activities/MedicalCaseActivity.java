@@ -29,8 +29,13 @@ import com.noqapp.android.merchant.views.pojos.FormDataObj;
 import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.gson.Gson;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -439,6 +444,14 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
             }
         }
         return strList;
+    }
+
+    public FlexboxLayoutManager getFlexBoxLayoutManager(Context context) {
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
+        return layoutManager;
     }
 
 }

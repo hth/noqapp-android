@@ -122,24 +122,4 @@ public class AppUtils extends CommonHelper {
             return "";
         }
     }
-
-    public int calculateColumnCount(int length) {
-        if (length >= 3) {
-            if (length % 3 == 0)
-                return (length / 3);
-            else
-                return (length / 3) + 1;
-        } else
-            return 1;
-    }
-
-    public int calculateColumnCount(int length,int columnCount) {
-        if (length >= columnCount) {
-            if (length % columnCount == 0)
-                return (length / columnCount);
-            else
-                return (length / columnCount) + 1;
-        } else
-            return 1;
-    }
 }
