@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.model;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.response.api.health.MedicalRecordService;
 import com.noqapp.android.merchant.network.RetrofitClient;
@@ -15,6 +16,8 @@ import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +31,8 @@ public class MedicalHistoryModel {
     private QueuePersonListPresenter queuePersonListPresenter;
     private JsonMedicalRecordPresenter jsonMedicalRecordPresenter;
 
+    private ImageUploadPresenter imageUploadPresenter;
+
     public void setJsonMedicalRecordPresenter(JsonMedicalRecordPresenter jsonMedicalRecordPresenter) {
         this.jsonMedicalRecordPresenter = jsonMedicalRecordPresenter;
     }
@@ -37,6 +42,9 @@ public class MedicalHistoryModel {
     }
     public MedicalHistoryModel(QueuePersonListPresenter queuePersonListPresenter) {
         this.queuePersonListPresenter = queuePersonListPresenter;
+    }
+    public MedicalHistoryModel(ImageUploadPresenter imageUploadPresenter) {
+        this.imageUploadPresenter = imageUploadPresenter;
     }
 
     public MedicalHistoryModel(MedicalRecordPresenter medicalRecordPresenter) {
@@ -169,4 +177,32 @@ public class MedicalHistoryModel {
         });
     }
 
+    public void appendImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody recordReferenceId) {
+        medicalRecordService.appendImage(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, recordReferenceId).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("upload", String.valueOf(response.body()));
+                        imageUploadPresenter.imageUploadResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("upload", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
 }

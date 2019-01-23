@@ -31,15 +31,20 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
-
+    public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
+        // No implementation needed here
     }
 
+    @Override
+    public void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson) {
+        // No implementation needed here
+    }
 
     @Override
     public void onBindViewHolder(MyViewHolder recordHolder, int position) {
         super.onBindViewHolder(recordHolder, position);
         recordHolder.tv_create_case.setVisibility(View.GONE);
         recordHolder.tv_change_name.setVisibility(View.GONE);
+        recordHolder.tv_upload_document.setVisibility(View.GONE);
     }
 }

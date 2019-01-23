@@ -30,7 +30,12 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
+    public void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson) {
+
+    }
+
+    @Override
+    public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
 
     }
 
