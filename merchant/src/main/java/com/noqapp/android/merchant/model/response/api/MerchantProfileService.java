@@ -124,16 +124,16 @@ public interface MerchantProfileService {
     @POST("api/m/profile/remove.json")
     Call<JsonResponse> remove(
             @Header("X-R-DID")
-                    String did,
+            String did,
 
             @Header("X-R-DT")
-                    String dt,
+            String dt,
 
             @Header("X-R-MAIL")
-                    String mail,
+            String mail,
 
             @Header("X-R-AUTH")
-                    String auth,
+            String auth,
 
             @Body
             UpdateProfile updateProfile
