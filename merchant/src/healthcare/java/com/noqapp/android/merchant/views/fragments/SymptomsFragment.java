@@ -15,9 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -48,7 +45,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
     private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
     private StaggeredGridSymptomAdapter symptomsAdapter, obstreticsAdapter, symptomSelectedAdapter;
-    private EditText edt_past_history, edt_known_allergy, edt_family_history, edt_medicine_allergies,edt_output;
+    private EditText edt_past_history, edt_known_allergy, edt_family_history, edt_medicine_allergies, edt_output;
     private ScrollView ll_symptom_note;
     private DataObj dataObj;
     private SegmentedControl sc_duration;
@@ -60,7 +57,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private TextView tv_obes, tv_gyanc;
     private SwitchCompat sc_enable_history;
     private AutoCompleteTextView actv_search;
-    private final int columnCount =4;
+    private final int columnCount = 4;
 
     @Nullable
     @Override
@@ -179,19 +176,16 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList().size() / columnCount) + 1, LinearLayoutManager.HORIZONTAL);
-        rcv_gynac.setLayoutManager(staggeredGridLayoutManager);
+        rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), this, false);
         rcv_gynac.setAdapter(symptomsAdapter);
 
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList().size() / columnCount) + 1, LinearLayoutManager.HORIZONTAL);
-        rcv_obstretics.setLayoutManager(staggeredGridLayoutManager1);
+        rcv_obstretics.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         obstreticsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList(), this, false);
         rcv_obstretics.setAdapter(obstreticsAdapter);
 
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size(),columnCount), LinearLayoutManager.HORIZONTAL);
-        rcv_symptom_select.setLayoutManager(sglm);
+        rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
         rcv_symptom_select.setAdapter(symptomSelectedAdapter);
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
@@ -273,8 +267,8 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
                     temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / columnCount) + 1, LinearLayoutManager.HORIZONTAL);
-                    rcv_gynac.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
+
+                    rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                     symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
                     rcv_gynac.setAdapter(symptomsAdapter);
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
@@ -331,7 +325,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getNoOfDays()));
             no_of_days = dataObj.getNoOfDays();
             tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
-            edt_output.setText(TextUtils.isEmpty(dataObj.getAdditionalNotes())?"":dataObj.getAdditionalNotes());
+            edt_output.setText(TextUtils.isEmpty(dataObj.getAdditionalNotes()) ? "" : dataObj.getAdditionalNotes());
         } else {
             sc_duration.clearSelection();
             tv_output.setText("");
@@ -355,8 +349,8 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
 
                     view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
 
-                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size(),columnCount), LinearLayoutManager.HORIZONTAL);
-                    rcv_symptom_select.setLayoutManager(sglm);
+
+                    rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                     symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                     rcv_symptom_select.setAdapter(symptomSelectedAdapter);
                     clearOptionSelection();
@@ -372,8 +366,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 }
                 clearOptionSelection();
                 view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
-                StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedSymptomsList.size(),columnCount), LinearLayoutManager.HORIZONTAL);
-                rcv_symptom_select.setLayoutManager(sglm);
+                rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                 symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                 rcv_symptom_select.setAdapter(symptomSelectedAdapter);
             }
@@ -398,10 +391,12 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         return false;
     }
 
-    private void setupAutoComplete( final List<DataObj> objects) {
+    private void setupAutoComplete(final List<DataObj> objects) {
         List<String> names = new AbstractList<String>() {
             @Override
-            public int size() { return objects.size(); }
+            public int size() {
+                return objects.size();
+            }
 
             @Override
             public String get(int location) {

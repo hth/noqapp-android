@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
-
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;

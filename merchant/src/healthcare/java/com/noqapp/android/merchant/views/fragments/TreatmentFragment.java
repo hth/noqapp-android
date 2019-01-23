@@ -6,7 +6,6 @@ import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridMedicineAdapter;
@@ -17,9 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +37,7 @@ import java.util.List;
 public class TreatmentFragment extends Fragment implements StaggeredGridMedicineAdapter.StaggeredClick {
 
     private RecyclerView recyclerView, recyclerView_one, rcv_medicine;
-    private TextView tv_add_medicine, tv_add_diagnosis, tv_close,tv_remove, tv_medicine_name;
+    private TextView tv_add_medicine, tv_add_diagnosis, tv_close, tv_remove, tv_medicine_name;
     private StaggeredGridAdapter diagnosisAdapter;
     private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
     private ScrollView ll_medicine;
@@ -98,7 +95,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 if (isSelected) {
                     medicineDuration = duration_data.get(segmentViewHolder.getAbsolutePosition());
                     //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
-                    if(null != dataObj)
+                    if (null != dataObj)
                         dataObj.setMedicineDuration(medicineDuration);
                 }
             }
@@ -114,7 +111,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 if (isSelected) {
                     medicineTiming = timing_data.get(segmentViewHolder.getAbsolutePosition());
                     //Toast.makeText(getActivity(), medicineTiming, Toast.LENGTH_LONG).show();
-                    if(null != dataObj)
+                    if (null != dataObj)
                         dataObj.setMedicineTiming(medicineTiming);
                 }
             }
@@ -129,7 +126,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 if (isSelected) {
                     medicineFrequency = frequency_data.get(segmentViewHolder.getAbsolutePosition());
                     //Toast.makeText(getActivity(), medicineFrequency, Toast.LENGTH_LONG).show();
-                    if(null != dataObj)
+                    if (null != dataObj)
                         dataObj.setMedicineFrequency(medicineFrequency);
                 }
             }
@@ -153,32 +150,30 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        medicineAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this,false);
+        recyclerView.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+        medicineAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this, false);
         recyclerView.setAdapter(medicineAdapter);
-        StaggeredGridLayoutManager staggeredGridLayoutManager1 = new StaggeredGridLayoutManager((MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList().size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-        recyclerView_one.setLayoutManager(staggeredGridLayoutManager1);
+
+        recyclerView_one.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         diagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
         recyclerView_one.setAdapter(diagnosisAdapter);
 
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedMedicineList.size()), LinearLayoutManager.HORIZONTAL);
-        rcv_medicine.setLayoutManager(sglm);
-        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this,true);
+        rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
         rcv_medicine.setAdapter(medicineSelectedAdapter);
 
         try {
             String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis().split(",");
             diagnosisAdapter.updateSelection(temp);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         selectedMedicineList = medicineSelectedAdapter.updateMedicineSelectList(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalMedicines(),
                 MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
-        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this,true);
+        medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
         rcv_medicine.setAdapter(medicineSelectedAdapter);
         clearOptionSelection();
-        view_med.setVisibility(selectedMedicineList.size()>0 ? View.VISIBLE : View.GONE);
+        view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
     }
 
     private void AddItemDialog(final Context mContext, String title) {
@@ -212,8 +207,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
                     temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
-                    recyclerView_one.setLayoutManager(staggeredGridLayoutManager);
+                    recyclerView_one.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                     StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
                     recyclerView_one.setAdapter(customAdapter);
                     MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
@@ -272,22 +266,21 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 edt_item.setError(null);
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
-                }  else if (selectionPos == -1){
-                    Toast.makeText(getActivity(),"please select a category",Toast.LENGTH_LONG).show();
-                }else {
+                } else if (selectionPos == -1) {
+                    Toast.makeText(getActivity(), "please select a category", Toast.LENGTH_LONG).show();
+                } else {
                     String category = category_data.get(selectionPos);
-                    String medicineName = category.substring(0,3)+" "+edt_item.getText().toString();
+                    String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
                     ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                    temp.add(new DataObj(medicineName, category,false).setNewlyAdded(true));
+                    temp.add(new DataObj(medicineName, category, false).setNewlyAdded(true));
                     MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
-                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(temp.size()), LinearLayoutManager.HORIZONTAL);
-                    recyclerView.setLayoutManager(staggeredGridLayoutManager);
+                    recyclerView.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                    StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), TreatmentFragment.this,false);
+                    StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), TreatmentFragment.this, false);
                     recyclerView.setAdapter(customAdapter);
 
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
-                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMedicineList().add(new DataObj(medicineName, category,false));
+                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMedicineList().add(new DataObj(medicineName, category, false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
                 }
@@ -303,21 +296,21 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
 
     @Override
     public void staggeredClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
-        if(!isEdit && isItemExist(temp.getShortName())){
+        if (!isEdit && isItemExist(temp.getShortName())) {
             ll_medicine.setVisibility(View.GONE);
-            Toast.makeText(getActivity(),"Medicine Already added in list",Toast.LENGTH_LONG).show();
-        }else {
+            Toast.makeText(getActivity(), "Medicine Already added in list", Toast.LENGTH_LONG).show();
+        } else {
             ll_medicine.setVisibility(isOpen ? View.VISIBLE : View.GONE);
         }
         tv_remove.setVisibility(isEdit ? View.VISIBLE : View.GONE);
         dataObj = temp;
         tv_medicine_name.setText(dataObj.getShortName());
-        if(isEdit){
+        if (isEdit) {
             // Pre fill the data
             sc_duration.setSelectedSegment(duration_data.indexOf(dataObj.getMedicineDuration()));
             sc_medicine_timing.setSelectedSegment(timing_data.indexOf(dataObj.getMedicineTiming()));
             sc_frequency.setSelectedSegment(frequency_data.indexOf(dataObj.getMedicineFrequency()));
-        }else{
+        } else {
             medicineTiming = "";
             medicineDuration = "";
             medicineFrequency = "";
@@ -332,17 +325,16 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     Toast.makeText(getActivity(), "All fields are mandatory", Toast.LENGTH_LONG).show();
                 } else {
                     // medicineAdapter.updateMedicine(medicine_name, medicineTiming, medicineDuration, medicineFrequency);
-                    if(isEdit) {
-                        selectedMedicineList.set(pos,dataObj);
-                    }else{
+                    if (isEdit) {
+                        selectedMedicineList.set(pos, dataObj);
+                    } else {
                         selectedMedicineList.add(dataObj);
                     }
                     clearOptionSelection();
-                    view_med.setVisibility(selectedMedicineList.size()>0 ? View.VISIBLE : View.GONE);
+                    view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
 
-                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedMedicineList.size()), LinearLayoutManager.HORIZONTAL);
-                    rcv_medicine.setLayoutManager(sglm);
-                    medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, TreatmentFragment.this,true);
+                    rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, TreatmentFragment.this, true);
                     rcv_medicine.setAdapter(medicineSelectedAdapter);
                 }
             }
@@ -350,22 +342,21 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
         tv_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if(isEdit) {
-                        selectedMedicineList.remove(pos);
-                    }
-                    clearOptionSelection();
-                    view_med.setVisibility(selectedMedicineList.size()>0 ? View.VISIBLE : View.GONE);
-                    StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(new AppUtils().calculateColumnCount(selectedMedicineList.size()), LinearLayoutManager.HORIZONTAL);
-                    rcv_medicine.setLayoutManager(sglm);
-                    medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, TreatmentFragment.this,true);
-                    rcv_medicine.setAdapter(medicineSelectedAdapter);
+                if (isEdit) {
+                    selectedMedicineList.remove(pos);
+                }
+                clearOptionSelection();
+                view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
+                rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, TreatmentFragment.this, true);
+                rcv_medicine.setAdapter(medicineSelectedAdapter);
             }
         });
     }
 
-    private boolean isItemExist(String name){
+    private boolean isItemExist(String name) {
         for (int i = 0; i < selectedMedicineList.size(); i++) {
-            if(selectedMedicineList.get(i).getShortName().equals(name))
+            if (selectedMedicineList.get(i).getShortName().equals(name))
                 return true;
         }
         return false;
