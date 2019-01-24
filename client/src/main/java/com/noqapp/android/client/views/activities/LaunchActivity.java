@@ -11,7 +11,6 @@ import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.network.VersionCheckAsync;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
@@ -28,6 +27,7 @@ import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
@@ -38,6 +38,7 @@ import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
@@ -325,7 +326,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             if (extras.containsKey(Constants.QRCODE)
                     && extras.containsKey(Constants.ISREVIEW)
                     && extras.containsKey(Constants.TOKEN)
-                    ) {
+            ) {
                 String codeQR = extras.getString(Constants.QRCODE);
                 String token = extras.getString(Constants.TOKEN);
                 String qid = extras.getString(Constants.QID);
@@ -593,17 +594,37 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     }
 
     @Override
-    public void appBlacklistError() {
-        ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
-    }
-
-    @Override
-    public void appBlacklistResponse() {
-        if (isOnline() && !BUILD_TYPE.equals("debug")) {
-            //TODO(hth) This can be replaced with version received when looking for blacklist
-            new VersionCheckAsync(this).execute();
+    public void appBlacklistError(ErrorEncounteredJson eej) {
+        if (null != eej) {
+            if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
+                ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+            } else {
+                new ErrorResponseHandler().processError(this, eej);
+            }
         }
     }
+
+
+    @Override
+    public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
+        if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
+            if (!BUILD_TYPE.equals("debug")) {
+                try {
+                    String currentVersion = Constants.appVersion();
+                    if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
+                        ShowAlertInformation.showThemePlayStoreDialog(
+                                this,
+                                getString(R.string.playstore_update_title),
+                                getString(R.string.playstore_update_msg),
+                                true);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
+                }
+            }
+        }
+    }
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -654,7 +675,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
     @Override
     public void authenticationFailure() {
-
+        AppUtilities.authenticationProcessing(this);
     }
 
     public class FcmNotificationReceiver extends BroadcastReceiver {
@@ -707,7 +728,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getCodeQR(),
                                 ((JsonAlertData) object).getBody(),
                                 ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType()== null? BusinessTypeEnum.PA.getName():((JsonAlertData) object).getBusinessType().getName());
+                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
@@ -806,7 +827,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                                 ((JsonAlertData) object).getCodeQR(),
                                 ((JsonAlertData) object).getBody(),
                                 ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType()== null? BusinessTypeEnum.PA.getName():((JsonAlertData) object).getBusinessType().getName());
+                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
                         ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();

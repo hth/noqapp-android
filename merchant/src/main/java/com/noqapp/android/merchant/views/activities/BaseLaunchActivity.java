@@ -3,10 +3,11 @@ package com.noqapp.android.merchant.views.activities;
 import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.NavigationBean;
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.BuildConfig;
@@ -14,7 +15,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceModel;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
-import com.noqapp.android.merchant.network.VersionCheckAsync;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -503,8 +503,14 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     @Override
-    public void appBlacklistError() {
-        ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+    public void appBlacklistError(ErrorEncounteredJson eej) {
+       if(null != eej) {
+           if(MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
+               ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+           }else{
+               new ErrorResponseHandler().processError(this, eej);
+           }
+       }
     }
 
     @Override
@@ -520,11 +526,21 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     @Override
-    public void appBlacklistResponse() {
-        if (isOnline() && !BUILD_TYPE.equals("debug")) {
-            //TODO(hth) This can be replaced with version received when looking for blacklist
-            if (null != launchActivity) {
-                new VersionCheckAsync(launchActivity).execute();
+    public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
+        if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
+            if (!BUILD_TYPE.equals("debug")) {
+                try {
+                    String currentVersion =  Constants.appVersion();
+                    if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
+                        ShowAlertInformation.showThemePlayStoreDialog(
+                                this,
+                                getString(R.string.playstore_update_title),
+                                getString(R.string.playstore_update_msg),
+                                true);
+                    }
+                } catch (Exception e) {
+                    Log.e(BaseLaunchActivity.class.getSimpleName(), "Compare version check reason=" + e.getLocalizedMessage(), e);
+                }
             }
         }
     }

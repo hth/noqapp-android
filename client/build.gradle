@@ -368,7 +368,6 @@ dependencies {
         transitive = true
     }
     implementation 'com.airbnb.android:lottie:2.7.0'
-    implementation 'org.jsoup:jsoup:1.11.3'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
