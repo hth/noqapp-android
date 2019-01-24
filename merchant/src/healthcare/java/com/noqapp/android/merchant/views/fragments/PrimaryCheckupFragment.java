@@ -268,7 +268,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 meterViewValueChanged(mv_temperature1);
                 meterViewValueChanged(mv_oxygen);
             } catch (Exception e) {
-                Log.e("Failed loading physical=", e.getLocalizedMessage(), e);
+                Log.e("Failed on physical=", e.getLocalizedMessage(), e);
             }
         }
     }
