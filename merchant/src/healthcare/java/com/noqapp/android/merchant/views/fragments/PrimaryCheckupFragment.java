@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -20,7 +19,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-
 public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterViewValueChanged {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_rr, tv_height;
@@ -38,7 +36,6 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         mv_temperature2 = v.findViewById(R.id.mv_temperature2);
         mv_temperature1 = v.findViewById(R.id.mv_temperature1);
         mv_oxygen = v.findViewById(R.id.mv_oxygen);
-
 
         tv_weight = v.findViewById(R.id.tv_weight);
         tv_pulse = v.findViewById(R.id.tv_pulse);
@@ -200,10 +197,9 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         super.onActivityCreated(savedInstanceState);
     }
 
-
     public void updatePhysicalUI(JsonMedicalRecord jsonMedicalRecord) {
-        if (null != jsonMedicalRecord) {
-            Log.e("data", jsonMedicalRecord.toString());
+        if (null != jsonMedicalRecord && null != jsonMedicalRecord.getMedicalPhysical()) {
+            Log.e("Physical Data=", jsonMedicalRecord.getMedicalPhysical().toString());
             try {
                 if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
@@ -272,7 +268,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 meterViewValueChanged(mv_temperature1);
                 meterViewValueChanged(mv_oxygen);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Failed loading physical=", e.getLocalizedMessage(), e);
             }
         }
     }
@@ -284,6 +280,7 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPulse(null);
         }
+
         if (sc_enable_bp.isChecked()) {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setBloodPressure(new String[]{String.valueOf(dsb_bp_high.getProgress()), String.valueOf(dsb_bp_low.getProgress())});
         } else {
@@ -307,16 +304,19 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setWeight(null);
         }
+
         if (sc_enable_temp.isChecked()) {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setTemperature(mv_temperature1.getValueAsString() + "." + mv_temperature2.getValueAsString());
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setTemperature(null);
         }
+
         if (sc_enable_oxygen.isChecked()) {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(mv_oxygen.getValueAsString());
         } else {
             MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setOxygenLevel(null);
         }
+
         if (null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getPulse()
                 || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getBloodPressure()
                 || null != MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().getRespiratory()
@@ -347,7 +347,6 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
             case R.id.mv_oxygen:
                 tv_oxygen.setText("Oxygen: " + mv_oxygen.getValueAsString());
                 break;
-
             default:
                 break;
         }
