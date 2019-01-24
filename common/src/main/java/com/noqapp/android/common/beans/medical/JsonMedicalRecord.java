@@ -407,38 +407,38 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonMedicalRecord{");
-        sb.append("businessType=").append(businessType);
-        sb.append(", queueUserId='").append(queueUserId).append('\'');
-        sb.append(", medicalPhysical=").append(medicalPhysical);
-        sb.append(", chiefComplain='").append(chiefComplain).append('\'');
-        sb.append(", examination='").append(examination).append('\'');
-        sb.append(", clinicalFinding='").append(clinicalFinding).append('\'');
-        sb.append(", provisionalDifferentialDiagnosis='").append(provisionalDifferentialDiagnosis).append('\'');
-        sb.append(", medicalPathologies=").append(medicalPathologies);
-        sb.append(", pathologyTestResult='").append(pathologyTestResult).append('\'');
-        sb.append(", medicalRadiologyLists=").append(medicalRadiologyLists);
-        sb.append(", medicalMedicines=").append(medicalMedicines);
-        sb.append(", diagnosis='").append(diagnosis).append('\'');
-        sb.append(", storeIdPharmacy='").append(storeIdPharmacy).append('\'');
-        sb.append(", storeIdPathology='").append(storeIdPathology).append('\'');
-        sb.append(", planToPatient='").append(planToPatient).append('\'');
-        sb.append(", followUpInDays='").append(followUpInDays).append('\'');
-        sb.append(", noteForPatient='").append(noteForPatient).append('\'');
-        sb.append(", noteToDiagnoser='").append(noteToDiagnoser).append('\'');
-        sb.append(", diagnosedById='").append(diagnosedById).append('\'');
-        sb.append(", recordAccess=").append(recordAccess);
-        sb.append(", businessName='").append(businessName).append('\'');
-        sb.append(", bizCategoryName='").append(bizCategoryName).append('\'');
-        sb.append(", createDate='").append(createDate).append('\'');
-        sb.append(", codeQR='").append(codeQR).append('\'');
-        sb.append(", formVersion=").append(formVersion);
-        sb.append(", recordReferenceId='").append(recordReferenceId).append('\'');
-        sb.append(", jsonUserMedicalProfile=").append(jsonUserMedicalProfile);
-        sb.append(", diagnosedByDisplayName='").append(diagnosedByDisplayName).append('\'');
-        sb.append(", areaAndTown='").append(areaAndTown).append('\'');
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return "JsonMedicalRecord{" +
+                "businessType=" + businessType +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", medicalPhysical=" + medicalPhysical +
+                ", chiefComplain='" + chiefComplain + '\'' +
+                ", examination='" + examination + '\'' +
+                ", clinicalFinding='" + clinicalFinding + '\'' +
+                ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
+                ", medicalPathologies=" + medicalPathologies +
+                ", pathologyTestResult='" + pathologyTestResult + '\'' +
+                ", medicalRadiologyLists=" + medicalRadiologyLists +
+                ", medicalMedicines=" + medicalMedicines +
+                ", diagnosis='" + diagnosis + '\'' +
+                ", storeIdPharmacy='" + storeIdPharmacy + '\'' +
+                ", storeIdPathology='" + storeIdPathology + '\'' +
+                ", planToPatient='" + planToPatient + '\'' +
+                ", followUpInDays='" + followUpInDays + '\'' +
+                ", noteForPatient='" + noteForPatient + '\'' +
+                ", noteToDiagnoser='" + noteToDiagnoser + '\'' +
+                ", diagnosedById='" + diagnosedById + '\'' +
+                ", recordAccess=" + recordAccess +
+                ", businessName='" + businessName + '\'' +
+                ", bizCategoryName='" + bizCategoryName + '\'' +
+                ", codeQR='" + codeQR + '\'' +
+                ", formVersion=" + formVersion +
+                ", images=" + images +
+                ", createDate='" + createDate + '\'' +
+                ", recordReferenceId='" + recordReferenceId + '\'' +
+                ", jsonUserMedicalProfile=" + jsonUserMedicalProfile +
+                ", diagnosedByDisplayName='" + diagnosedByDisplayName + '\'' +
+                ", areaAndTown='" + areaAndTown + '\'' +
+                ", error=" + error +
+                '}';
     }
 }
