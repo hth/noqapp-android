@@ -201,6 +201,7 @@ android {
             buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
+            buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
 
@@ -209,6 +210,7 @@ android {
             minifyEnabled true
             zipAlignEnabled true
             matchingFallbacks = ['debug', 'release']
+
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
             proguardFile '../library-proguard/proguard-facebook.pro'
@@ -237,6 +239,7 @@ android {
             buildConfigField STRING, "AWSS3", sandboxEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
+            buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
 
@@ -273,6 +276,7 @@ android {
             buildConfigField STRING, "AWSS3", releaseEndpointAwsS3
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
+            buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
     }
