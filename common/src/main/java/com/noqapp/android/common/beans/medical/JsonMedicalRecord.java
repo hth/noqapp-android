@@ -99,14 +99,17 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty ("bc")
     private String bizCategoryName;
 
-    @JsonProperty("u")
-    private String createDate;
-
     @JsonProperty("qr")
     private String codeQR;
 
     @JsonProperty("fv")
     private FormVersionEnum formVersion;
+
+    @JsonProperty("im")
+    private List<String> images;
+
+    @JsonProperty ("u")
+    private String createDate;
 
     @JsonProperty("rr")
     private String recordReferenceId;
@@ -119,9 +122,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     @JsonProperty("at")
     private String areaAndTown;
-
-    @JsonProperty("li")
-    private List<String> licenses = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -324,15 +324,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public JsonMedicalRecord setCreateDate(String createDate) {
-        this.createDate = createDate;
-        return this;
-    }
-
     public String getCodeQR() {
         return codeQR;
     }
@@ -348,6 +339,24 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setFormVersion(FormVersionEnum formVersion) {
         this.formVersion = formVersion;
+        return this;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public JsonMedicalRecord setCreateDate(String createDate) {
+        this.createDate = createDate;
+        return this;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public JsonMedicalRecord setImages(List<String> images) {
+        this.images = images;
         return this;
     }
 
@@ -384,15 +393,6 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
 
     public JsonMedicalRecord setAreaAndTown(String areaAndTown) {
         this.areaAndTown = areaAndTown;
-        return this;
-    }
-
-    public List<String> getLicenses() {
-        return licenses;
-    }
-
-    public JsonMedicalRecord setLicenses(List<String> licenses) {
-        this.licenses = licenses;
         return this;
     }
 
