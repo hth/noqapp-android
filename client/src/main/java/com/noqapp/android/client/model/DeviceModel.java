@@ -85,9 +85,9 @@ public class DeviceModel {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     Log.d("response body issupport", response.body().toString());
                     if (null != response.body() && null == response.body().getError()) {
-                        appBlacklistPresenter.appBlacklistResponse();
+                        appBlacklistPresenter.appBlacklistResponse(response.body());
                     } else {
-                        appBlacklistPresenter.responseErrorPresenter(response.body().getError());
+                        appBlacklistPresenter.appBlacklistError(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
@@ -101,7 +101,7 @@ public class DeviceModel {
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
-                appBlacklistPresenter.appBlacklistError();
+                appBlacklistPresenter.appBlacklistError(null);
             }
         });
     }

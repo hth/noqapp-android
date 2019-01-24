@@ -191,6 +191,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     public void uploadDocument(Context context, JsonQueuedPerson jsonQueuedPerson) {
         Intent intent = new Intent(context, DocumentUploadActivity.class);
         intent.putExtra("recordReferenceId", jsonQueuedPerson.getRecordReferenceId());
+        intent.putExtra("qCodeQR", qCodeQR);
         context.startActivity(intent);
     }
 

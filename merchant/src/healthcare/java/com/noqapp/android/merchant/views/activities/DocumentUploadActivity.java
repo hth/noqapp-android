@@ -3,12 +3,14 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.ImagePathReader;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
@@ -56,7 +58,7 @@ import okhttp3.RequestBody;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter {
+public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter {
 
     private ImageView iv_1, iv_2, iv_3;
     private final int SELECT_PICTURE = 110;
@@ -65,10 +67,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-
+    private String recordReferenceId, codeQR;
     private ImageView actionbarBack;
     private MedicalHistoryModel medicalHistoryModel;
     private ProgressDialog progressDialog;
+    private JsonMedicalRecord jsonMedicalRecordTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             }
         });
         medicalHistoryModel = new MedicalHistoryModel(this);
+        recordReferenceId = getIntent().getStringExtra("recordReferenceId");
+        codeQR = getIntent().getStringExtra("qCodeQR");
         iv_1 = findViewById(R.id.iv_1);
         iv_2 = findViewById(R.id.iv_2);
         iv_3 = findViewById(R.id.iv_3);
@@ -97,6 +102,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         Picasso.with(this).load(R.drawable.profile_blue).into(iv_1);
         Picasso.with(this).load(R.drawable.profile_blue).into(iv_2);
         Picasso.with(this).load(R.drawable.profile_blue).into(iv_3);
+        JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+        jsonMedicalRecord.setRecordReferenceId(recordReferenceId);
+        jsonMedicalRecord.setCodeQR(codeQR);
+        medicalHistoryModel.setJsonMedicalRecordPresenter(this);
+        medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
     }
 
 
@@ -183,14 +195,12 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                        RequestBody recordReferenceId = RequestBody.create(MediaType.parse("text/plain"), getIntent().getStringExtra("recordReferenceId"));
-                        medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, recordReferenceId);
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
+                        medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     }
                 } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -267,6 +277,25 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @Override
     public void imageUploadError() {
         Picasso.with(this).load(R.drawable.profile_blue).into(iv_1);
+    }
+
+    @Override
+    public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
+        jsonMedicalRecordTemp = jsonMedicalRecord;
+        if (null != jsonMedicalRecord) {
+            Log.e("data", jsonMedicalRecord.toString());
+            if(null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size()>0){
+                try {
+                    if (!TextUtils.isEmpty(jsonMedicalRecord.getImages().get(0))) {
+                        Picasso.with(this)
+                                .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId+"/"+jsonMedicalRecord.getImages().get(0))
+                                .into(iv_1);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private void initProgress() {
