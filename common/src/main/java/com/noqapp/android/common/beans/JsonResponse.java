@@ -29,6 +29,9 @@ public class JsonResponse {
     @JsonProperty("r")
     private int response;
 
+    @JsonProperty("d")
+    private String data;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -38,6 +41,15 @@ public class JsonResponse {
 
     public void setResponse(int response) {
         this.response = response;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public JsonResponse setData(String data) {
+        this.data = data;
+        return this;
     }
 
     public ErrorEncounteredJson getError() {
