@@ -11,15 +11,13 @@ import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MasterLabModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import com.google.gson.Gson;
 
@@ -46,9 +44,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class PreferenceActivity extends AppCompatActivity implements FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener {
@@ -74,7 +69,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private ArrayList<String> masterDataSpec = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
     private MedicineFragment medicineFragment;
-    public TestCaseObjects testCaseObjects;
+    public PreferenceObjects testCaseObjects;
 
     public static PreferenceActivity getPreferenceActivity() {
         return preferenceActivity;
@@ -92,13 +87,13 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         initProgress();
         preferenceActivity = this;
         try {
-            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
+            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
-            testCaseObjects = new TestCaseObjects();
+            testCaseObjects = new PreferenceObjects();
         }
         if (null == testCaseObjects)
-            testCaseObjects = new TestCaseObjects();
+            testCaseObjects = new PreferenceObjects();
         viewPager = findViewById(R.id.pager);
 
         rcv_header = findViewById(R.id.rcv_header);
@@ -195,16 +190,17 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
             //super.onBackPressed();
             finish();
         }
-        Map<String, List<DataObj>> mapList = new HashMap<>();
-        mapList.put(HealthCareServiceEnum.MRI.getName(), preferenceMriFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.SCAN.getName(), preferenceScanFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.SONO.getName(), preferenceSonoFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.XRAY.getName(), preferenceXrayFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.PATH.getName(), preferencePathFragment.clearListSelection());
-        mapList.put(HealthCareServiceEnum.SPEC.getName(), preferenceSpecFragment.clearListSelection());
-        mapList.put(Constants.MEDICINE, medicineFragment.getSelectedList());
 
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+        PreferenceObjects temp = new PreferenceObjects();
+        temp.setMriList(preferenceMriFragment.clearListSelection());
+        temp.setScanList(preferenceScanFragment.clearListSelection());
+        temp.setSonoList(preferenceSonoFragment.clearListSelection());
+        temp.setXrayList(preferenceXrayFragment.clearListSelection());
+        temp.setPathologyList(preferencePathFragment.clearListSelection());
+        temp.setSpecList(preferenceSpecFragment.clearListSelection());
+        temp.setMedicineList(medicineFragment.getSelectedList());
+
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
     }
 
     @Override

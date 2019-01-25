@@ -16,10 +16,9 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
@@ -42,11 +41,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LoginFragment extends Fragment implements LoginPresenter, MerchantPresenter {
 
@@ -167,11 +162,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             if (null != jsonMerchant.getJsonProfessionalProfile()) {
-                Type type = new TypeToken<HashMap<String, ArrayList<DataObj>>>() {
-                }.getType();
-                Gson gson = new Gson();
-                Map<String, List<DataObj>> map = gson.fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), type);
-                if (null != map && map.size() > 0) {
+                PreferenceObjects map = new Gson().fromJson(jsonMerchant.getJsonProfessionalProfile().getDataDictionary(), PreferenceObjects.class);
+                if (null != map) {
                     LaunchActivity.getLaunchActivity().setSuggestionsPrefs(map);
                 }
             }

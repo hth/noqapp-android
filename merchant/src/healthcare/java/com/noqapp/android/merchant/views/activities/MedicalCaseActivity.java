@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
@@ -11,7 +10,6 @@ import com.noqapp.android.merchant.model.PreferredBusinessModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
@@ -26,7 +24,7 @@ import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.pojos.FormDataObj;
-import com.noqapp.android.merchant.views.pojos.TestCaseObjects;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import com.google.android.flexbox.AlignItems;
@@ -52,9 +50,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
 
@@ -77,11 +73,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         return isGynae;
     }
 
-    public TestCaseObjects getTestCaseObjects() {
+    public PreferenceObjects getTestCaseObjects() {
         return testCaseObjects;
     }
 
-    private TestCaseObjects testCaseObjects;
+    private PreferenceObjects testCaseObjects;
     private LoadTabs loadTabs;
 
     public JsonMedicalRecord getJsonMedicalRecord() {
@@ -120,13 +116,13 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         medicalCaseActivity = this;
         formDataObj = new FormDataObj();
         try {
-            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), TestCaseObjects.class);
+            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
-            testCaseObjects = new TestCaseObjects();
+            testCaseObjects = new PreferenceObjects();
         }
         if (null == testCaseObjects)
-            testCaseObjects = new TestCaseObjects();
+            testCaseObjects = new PreferenceObjects();
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
@@ -234,19 +230,33 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     }
 
     public void updateSuggestions() {
-        Map<String, List<DataObj>> mapList = new HashMap<>();
-        mapList.put(HealthCareServiceEnum.MRI.getName(), testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
-        mapList.put(HealthCareServiceEnum.SCAN.getName(), testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
-        mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
-        mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
-        mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
-        mapList.put(HealthCareServiceEnum.SPEC.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
-        mapList.put(Constants.MEDICINE, testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
-        mapList.put(Constants.SYMPTOMS, testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
-        mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
-        mapList.put(Constants.DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
-        mapList.put(Constants.INSTRUCTION, testCaseObjects.clearListSelection(testCaseObjects.getInstructionList()));
-        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+//        Map<String, List<DataObj>> mapList = new HashMap<>();
+//        mapList.put(HealthCareServiceEnum.MRI.getName(), testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
+//        mapList.put(HealthCareServiceEnum.SCAN.getName(), testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
+//        mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
+//        mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
+//        mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
+//        mapList.put(HealthCareServiceEnum.SPEC.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
+//        mapList.put(Constants.MEDICINE, testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
+//        mapList.put(Constants.SYMPTOMS, testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+//        mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+//        mapList.put(Constants.DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+//        mapList.put(Constants.INSTRUCTION, testCaseObjects.clearListSelection(testCaseObjects.getInstructionList()));
+//        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+        PreferenceObjects temp = new PreferenceObjects();
+        temp.setMriList(testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
+        temp.setScanList(testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
+        temp.setSonoList(testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
+        temp.setXrayList(testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
+        temp.setPathologyList(testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
+        temp.setSpecList(testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
+        temp.setMedicineList(testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
+        temp.setSymptomsList(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+        temp.setProDiagnosisList(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+        temp.setDiagnosisList(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+        temp.setInstructionList(testCaseObjects.clearListSelection(testCaseObjects.getInstructionList()));
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
+
     }
 
     @Override

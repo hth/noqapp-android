@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class TestCaseObjects {
+public class PreferenceObjects {
 
     @SerializedName("PATH")
     private ArrayList<DataObj> pathologyList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class TestCaseObjects {
         return pathologyList;
     }
 
-    public TestCaseObjects setPathologyList(ArrayList<DataObj> pathologyList) {
+    public PreferenceObjects setPathologyList(ArrayList<DataObj> pathologyList) {
         this.pathologyList = pathologyList;
         return this;
     }
@@ -54,7 +54,7 @@ public class TestCaseObjects {
         return mriList;
     }
 
-    public TestCaseObjects setMriList(ArrayList<DataObj> mriList) {
+    public PreferenceObjects setMriList(ArrayList<DataObj> mriList) {
         this.mriList = mriList;
         return this;
     }
@@ -63,7 +63,7 @@ public class TestCaseObjects {
         return scanList;
     }
 
-    public TestCaseObjects setScanList(ArrayList<DataObj> scanList) {
+    public PreferenceObjects setScanList(ArrayList<DataObj> scanList) {
         this.scanList = scanList;
         return this;
     }
@@ -72,7 +72,7 @@ public class TestCaseObjects {
         return sonoList;
     }
 
-    public TestCaseObjects setSonoList(ArrayList<DataObj> sonoList) {
+    public PreferenceObjects setSonoList(ArrayList<DataObj> sonoList) {
         this.sonoList = sonoList;
         return this;
     }
@@ -81,7 +81,7 @@ public class TestCaseObjects {
         return xrayList;
     }
 
-    public TestCaseObjects setXrayList(ArrayList<DataObj> xrayList) {
+    public PreferenceObjects setXrayList(ArrayList<DataObj> xrayList) {
         this.xrayList = xrayList;
         return this;
     }
@@ -90,7 +90,7 @@ public class TestCaseObjects {
         return specList;
     }
 
-    public TestCaseObjects setSpecList(ArrayList<DataObj> specList) {
+    public PreferenceObjects setSpecList(ArrayList<DataObj> specList) {
         this.specList = specList;
         return this;
     }
@@ -99,7 +99,7 @@ public class TestCaseObjects {
         return medicineList;
     }
 
-    public TestCaseObjects setMedicineList(ArrayList<DataObj> medicineList) {
+    public PreferenceObjects setMedicineList(ArrayList<DataObj> medicineList) {
         this.medicineList = medicineList;
         return this;
     }
@@ -108,7 +108,7 @@ public class TestCaseObjects {
         return symptomsList;
     }
 
-    public TestCaseObjects setSymptomsList(ArrayList<DataObj> symptomsList) {
+    public PreferenceObjects setSymptomsList(ArrayList<DataObj> symptomsList) {
         this.symptomsList = symptomsList;
         return this;
     }
@@ -117,7 +117,7 @@ public class TestCaseObjects {
         return proDiagnosisList;
     }
 
-    public TestCaseObjects setProDiagnosisList(ArrayList<DataObj> proDiagnosisList) {
+    public PreferenceObjects setProDiagnosisList(ArrayList<DataObj> proDiagnosisList) {
         this.proDiagnosisList = proDiagnosisList;
         return this;
     }
@@ -126,7 +126,7 @@ public class TestCaseObjects {
         return diagnosisList;
     }
 
-    public TestCaseObjects setDiagnosisList(ArrayList<DataObj> diagnosisList) {
+    public PreferenceObjects setDiagnosisList(ArrayList<DataObj> diagnosisList) {
         this.diagnosisList = diagnosisList;
         return this;
     }
@@ -135,7 +135,7 @@ public class TestCaseObjects {
         return instructionList;
     }
 
-    public TestCaseObjects setInstructionList(ArrayList<DataObj> instructionList) {
+    public PreferenceObjects setInstructionList(ArrayList<DataObj> instructionList) {
         this.instructionList = instructionList;
         return this;
     }
