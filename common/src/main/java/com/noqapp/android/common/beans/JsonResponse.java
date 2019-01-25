@@ -64,6 +64,8 @@ public class JsonResponse {
     public String toString() {
         return "JsonResponse{" +
                 "response=" + response +
+                ", data='" + data + '\'' +
+                ", error=" + error +
                 '}';
     }
 }

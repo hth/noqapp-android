@@ -177,6 +177,35 @@ public class MedicalHistoryModel {
         });
     }
 
+    public void existsMedicalRecord(String did, String mail, String auth, String codeQR,String recordReferenceId) {
+        medicalRecordService.exists(did, Constants.DEVICE_TYPE, mail, auth, codeQR, recordReferenceId).enqueue(new Callback<JsonMedicalRecord>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonMedicalRecord> call, @NonNull Response<JsonMedicalRecord> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("retrieve response", String.valueOf(response.body()));
+                        jsonMedicalRecordPresenter.jsonMedicalRecordResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while retrieve");
+                        jsonMedicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        jsonMedicalRecordPresenter.authenticationFailure();
+                    } else {
+                        jsonMedicalRecordPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonMedicalRecord> call, @NonNull Throwable t) {
+                Log.e("retrieve error", t.getLocalizedMessage(), t);
+                jsonMedicalRecordPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
     public void appendImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody recordReferenceId) {
         medicalRecordService.appendImage(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, recordReferenceId).enqueue(new Callback<JsonResponse>() {
             @Override
@@ -201,6 +230,36 @@ public class MedicalHistoryModel {
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("upload", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+
+    public void removeImage(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
+        medicalRecordService.removeImage(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("removeImage", String.valueOf(response.body()));
+                        imageUploadPresenter.imageRemoveResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to removeImage");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("on Failure removeImage", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
             }
         });
