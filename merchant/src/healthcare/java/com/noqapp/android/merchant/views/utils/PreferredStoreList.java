@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.views.utils;
 
-
-
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
@@ -11,51 +9,47 @@ import java.util.List;
 
 public class PreferredStoreList {
 
-    private List<JsonPreferredBusiness> ListScan = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListSono = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListPath = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListXray = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListSpec = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListMri = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListMedicine = new ArrayList<>();
-    private List<JsonPreferredBusiness> ListPhysio = new ArrayList<>();
+    private List<JsonPreferredBusiness> scanBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> sonoBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> pathBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> xrayBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> specBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> mriBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> pharmacyBusinesses = new ArrayList<>();
+    private List<JsonPreferredBusiness> physioBusinesses = new ArrayList<>();
 
-    public PreferredStoreList(List<JsonPreferredBusiness> jsonPreferredBusinessList ) {
+    public PreferredStoreList(List<JsonPreferredBusiness> jsonPreferredBusinessList) {
         initCheckBoxList(jsonPreferredBusinessList);
     }
 
-
     private void initCheckBoxList(List<JsonPreferredBusiness> jsonPreferredBusinessList) {
-       resetList();
-    
-        for (int i = 0; i < jsonPreferredBusinessList.size(); i++) {
-            JsonPreferredBusiness jpb = jsonPreferredBusinessList.get(i);
-            if (jpb.getBusinessType() == BusinessTypeEnum.PH) {
-                ListMedicine.add(jpb);
-            } else if (jpb.getBusinessType() == BusinessTypeEnum.HS) {
+        resetList();
 
-                HealthCareServiceEnum hcse = HealthCareServiceEnum.valueOf(jpb.getBizCategoryId());
-                switch (hcse) {
+        for (JsonPreferredBusiness jsonPreferredBusiness : jsonPreferredBusinessList) {
+            if (BusinessTypeEnum.PH == jsonPreferredBusiness.getBusinessType()) {
+                pharmacyBusinesses.add(jsonPreferredBusiness);
+            } else if (BusinessTypeEnum.HS == jsonPreferredBusiness.getBusinessType()) {
+                switch (HealthCareServiceEnum.valueOf(jsonPreferredBusiness.getBizCategoryId())) {
                     case SONO:
-                        ListSono.add(jpb);
+                        sonoBusinesses.add(jsonPreferredBusiness);
                         break;
                     case SCAN:
-                        ListScan.add(jpb);
+                        scanBusinesses.add(jsonPreferredBusiness);
                         break;
                     case MRI:
-                        ListMri.add(jpb);
+                        mriBusinesses.add(jsonPreferredBusiness);
                         break;
                     case PATH:
-                        ListPath.add(jpb);
+                        pathBusinesses.add(jsonPreferredBusiness);
                         break;
                     case XRAY:
-                        ListXray.add(jpb);
+                        xrayBusinesses.add(jsonPreferredBusiness);
                         break;
                     case SPEC:
-                        ListSpec.add(jpb);
+                        specBusinesses.add(jsonPreferredBusiness);
                         break;
                     case PHYS:
-                        ListPhysio.add(jpb);
+                        physioBusinesses.add(jsonPreferredBusiness);
                         break;
                 }
             }
@@ -63,50 +57,53 @@ public class PreferredStoreList {
     }
 
     public List<JsonPreferredBusiness> getListScan() {
-        return ListScan;
+        return scanBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListSono() {
-        return ListSono;
+        return sonoBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListPath() {
-        return ListPath;
+        return pathBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListXray() {
-        return ListXray;
+        return xrayBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListSpec() {
-        return ListSpec;
+        return specBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListMri() {
-        return ListMri;
+        return mriBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListMedicine() {
-        return ListMedicine;
+        return pharmacyBusinesses;
     }
 
     public List<JsonPreferredBusiness> getListPhysio() {
-        return ListPhysio;
+        return physioBusinesses;
     }
-    private void resetList(){
-        ListScan.clear();
-        ListSono.clear();
-        ListPath.clear();
-        ListXray.clear();
-        ListSpec.clear();
-        ListMri.clear();
-        ListMedicine.clear();
-        ListScan.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        ListSono.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        ListPath.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        ListXray.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        ListSpec.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        ListMri.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        ListMedicine.add(0, new JsonPreferredBusiness().setDisplayName("Select"));
+
+    private void resetList() {
+        scanBusinesses.clear();
+        sonoBusinesses.clear();
+        pathBusinesses.clear();
+        xrayBusinesses.clear();
+        specBusinesses.clear();
+        mriBusinesses.clear();
+        pharmacyBusinesses.clear();
+
+        JsonPreferredBusiness select = new JsonPreferredBusiness().setDisplayName("Select");
+        scanBusinesses.add(0, select);
+        sonoBusinesses.add(0, select);
+        pathBusinesses.add(0, select);
+        xrayBusinesses.add(0, select);
+        specBusinesses.add(0, select);
+        mriBusinesses.add(0, select);
+        pharmacyBusinesses.add(0, select);
     }
 }
