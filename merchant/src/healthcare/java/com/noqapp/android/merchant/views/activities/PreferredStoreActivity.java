@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.PreferredStoreFragment;
 
+import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -24,12 +25,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PreferredStoreActivity extends AppCompatActivity implements PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener {
 
+    private long lastPress;
+    private Toast backPressToast;
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
@@ -38,6 +42,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     private PreferredStoreFragment frag_sono_and_xray;
     private PreferredStoreFragment frag_path_and_spec;
     private PreferredStoreFragment frag_physio_medic;
+    private ProgressDialog progressDialog;
 
     public static PreferredStoreActivity getPreferredStoreActivity() {
         return preferredStoreActivity;
@@ -50,6 +55,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     }
 
     private List<JsonPreferredBusiness> jsonPreferredBusiness;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -59,6 +65,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         }
         super.onCreate(savedInstanceState);
         preferredStoreActivity = this;
+        initProgress();
         setContentView(R.layout.activity_preferred_business);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Preferred Stores");
@@ -72,14 +79,14 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
         data.add("MRI & CT Scan");
-        data.add("SONO & X-RAY");
+        data.add("Sonography & X-RAY");
         data.add("Pathology & Special");
-        data.add("Physio & Medicine");
+        data.add("Physiotherapy & Medicine");
 
-  
 
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
                 new PreferredBusinessModel(this)
                         .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), LaunchActivity.merchantListFragment.getTopics().get(0).getCodeQR());
             }
@@ -91,6 +98,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         viewPager.setCurrentItem(pos);
         // saveAllData();
     }
+
     @Override
     public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
         if (null != jsonPreferredBusinessList && jsonPreferredBusinessList.getPreferredBusinesses() != null && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0) {
@@ -117,7 +125,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
 
-            menuAdapter = new MenuHeaderAdapter(data, this, this);
+            menuAdapter = new MenuHeaderAdapter(data, this, this,true);
             rcv_header.setAdapter(menuAdapter);
             menuAdapter.notifyDataSetChanged();
             viewPager.setOffscreenPageLimit(data.size());
@@ -147,25 +155,29 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
 
             Log.e("Pref business list: ", jsonPreferredBusinessList.toString());
         }
+        dismissProgress();
     }
 
     @Override
     public void preferredBusinessError() {
-
+        dismissProgress();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
         new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
     public void authenticationFailure() {
+        dismissProgress();
         AppUtils.authenticationProcessing();
     }
 
@@ -175,4 +187,40 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         return b;
     }
 
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 3000) {
+            backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
+            backPressToast.show();
+            lastPress = currentTime;
+        } else {
+            if (backPressToast != null) {
+                backPressToast.cancel();
+            }
+            //super.onBackPressed();
+            finish();
+        }
+//        Map<String, List<DataObj>> mapList = new HashMap<>();
+//        mapList.put(HealthCareServiceEnum.MRI.getName(), preferenceMriFragment.clearListSelection());
+//        mapList.put(HealthCareServiceEnum.SCAN.getName(), preferenceScanFragment.clearListSelection());
+//        mapList.put(HealthCareServiceEnum.SONO.getName(), preferenceSonoFragment.clearListSelection());
+//        mapList.put(HealthCareServiceEnum.XRAY.getName(), preferenceXrayFragment.clearListSelection());
+//        mapList.put(HealthCareServiceEnum.PATH.getName(), preferencePathFragment.clearListSelection());
+//        mapList.put(HealthCareServiceEnum.SPEC.getName(), preferenceSpecFragment.clearListSelection());
+//        mapList.put(Constants.MEDICINE, medicineFragment.getSelectedList());
+//
+//        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching stores...");
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
 }

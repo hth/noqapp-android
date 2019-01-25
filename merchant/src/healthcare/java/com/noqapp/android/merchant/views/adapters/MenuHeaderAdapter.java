@@ -20,11 +20,19 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
     private final OnItemClickListener listener;
     private List<String> dataSet;
     private int selected_pos = 0;
+    private boolean isResize;
 
     public MenuHeaderAdapter(List<String> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+    }
+
+    public MenuHeaderAdapter(List<String> data, Context context, OnItemClickListener listener, boolean isResize) {
+        this.dataSet = data;
+        this.context = context;
+        this.listener = listener;
+        this.isResize = isResize;
     }
 
     public MenuHeaderAdapter setSelected_pos(int selected_pos) {
@@ -44,6 +52,10 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         holder.tv_menu_header.setText(dataSet.get(listPosition));
+        if (isResize) {
+            holder.ll_header.getLayoutParams().width = 450;
+            holder.ll_header.requestLayout();
+        }
         if (selected_pos == listPosition) {
             holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
             holder.tv_menu_header.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
