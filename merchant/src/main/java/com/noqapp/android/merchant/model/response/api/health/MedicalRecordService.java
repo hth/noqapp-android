@@ -127,7 +127,7 @@ public interface MedicalRecordService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/h/medicalRecord/exists.json")
+    @GET("api/m/h/medicalRecord/exists/{codeQR}/{recordReferenceId}.json")
     Call<JsonMedicalRecord> exists(
             @Header("X-R-DID")
             String did,
@@ -141,8 +141,11 @@ public interface MedicalRecordService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Body
-            JsonMedicalRecord jsonMedicalRecord
+            @Path("codeQR")
+            String codeQR,
+
+            @Path("recordReferenceId")
+            String recordReferenceId
     );
 
     /**

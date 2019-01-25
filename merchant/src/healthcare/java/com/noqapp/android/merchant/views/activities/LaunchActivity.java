@@ -95,8 +95,10 @@ public class LaunchActivity extends BaseLaunchActivity {
     public void updateMenuList(boolean showChart) {
         super.updateMenuList(showChart);
         try {
-            if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER)
+            if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 drawerItem.add(2, new NavigationBean(R.mipmap.me_select, getString(R.string.menu_preference)));
+                drawerItem.add(3, new NavigationBean(R.mipmap.history_grey, getString(R.string.menu_pref_store)));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,6 +108,13 @@ public class LaunchActivity extends BaseLaunchActivity {
     public void callPreference() {
         super.callPreference();
         Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
+        startActivity(intentPreference);
+    }
+
+    @Override
+    public void callPreferredStore() {
+        super.callPreferredStore();
+        Intent intentPreference = new Intent(launchActivity, PreferredStoreActivity.class);
         startActivity(intentPreference);
     }
 }
