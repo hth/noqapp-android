@@ -18,17 +18,14 @@ public class CustomSpinnerAdapter extends ArrayAdapter<JsonPreferredBusiness> {
     private final Context mContext;
     private final List<JsonPreferredBusiness> items;
 
-
-    public CustomSpinnerAdapter(Context context,
-                                List<JsonPreferredBusiness> items) {
+    public CustomSpinnerAdapter(Context context, List<JsonPreferredBusiness> items) {
         super(context, R.layout.spinner_item, items);
         mContext = context;
         this.items = items;
     }
 
     @Override
-    public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return createItemView(position, convertView, parent);
     }
 
@@ -47,7 +44,5 @@ public class CustomSpinnerAdapter extends ArrayAdapter<JsonPreferredBusiness> {
         lbl.setTextColor(Color.BLACK);
         lbl.setText(items.get(position).getDisplayName());
         return v;
-
-
     }
 }
