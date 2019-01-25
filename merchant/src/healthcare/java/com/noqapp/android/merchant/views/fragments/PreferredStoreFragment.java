@@ -50,17 +50,25 @@ public class PreferredStoreFragment extends Fragment {
         PreferredListAdapter preferredListAdapter1 = null;
         PreferredListAdapter preferredListAdapter2 = null;
         if (pos == 0) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList( HealthCareServiceEnum.MRI));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList( HealthCareServiceEnum.SCAN));
+            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.MRI));
+            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
+            tv_label_one.setText(HealthCareServiceEnum.MRI.getDescription());
+            tv_label_two.setText(HealthCareServiceEnum.SCAN.getDescription());
         } else if (pos == 1) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList( HealthCareServiceEnum.SONO));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList( HealthCareServiceEnum.XRAY));
+            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SONO));
+            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.XRAY));
+            tv_label_one.setText(HealthCareServiceEnum.SONO.getDescription());
+            tv_label_two.setText(HealthCareServiceEnum.XRAY.getDescription());
         } else if (pos == 2) {
-            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList( HealthCareServiceEnum.PATH));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList( HealthCareServiceEnum.SPEC));
+            preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PATH));
+            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SPEC));
+            tv_label_one.setText(HealthCareServiceEnum.PATH.getDescription());
+            tv_label_two.setText(HealthCareServiceEnum.SPEC.getDescription());
         } else if (pos == 3) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PHYS));
-            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList( null));
+            preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(null));
+            tv_label_one.setText(HealthCareServiceEnum.PHYS.getDescription());
+            tv_label_two.setText("Pharmacy");
         }
         rcv_one.setAdapter(preferredListAdapter1);
         rcv_two.setAdapter(preferredListAdapter2);
@@ -107,7 +115,7 @@ public class PreferredStoreFragment extends Fragment {
     private List<CheckBoxObj> checkBoxObjListMedicine = new ArrayList<>();
 
 
-    private List<ParentCheckBoxObj> initCheckBoxList( HealthCareServiceEnum healthCareServiceEnum) {
+    private List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
         checkBoxObjListScan.clear();
         checkBoxObjListSono.clear();
         checkBoxObjListPath.clear();
