@@ -4,6 +4,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,35 +25,51 @@ public class PreferredStoreList {
     }
 
     public List<JsonPreferredBusiness> getListScan() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.SCAN.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.SCAN.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.SCAN.name());
     }
 
     public List<JsonPreferredBusiness> getListSono() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.SONO.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.SONO.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.SONO.name());
     }
 
     public List<JsonPreferredBusiness> getListPath() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.PATH.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.SONO.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.SONO.name());
     }
 
     public List<JsonPreferredBusiness> getListXray() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.XRAY.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.XRAY.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.XRAY.name());
     }
 
     public List<JsonPreferredBusiness> getListSpec() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.SPEC.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.SPEC.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.SPEC.name());
     }
 
     public List<JsonPreferredBusiness> getListMri() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.MRI.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.MRI.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.MRI.name());
     }
 
     public List<JsonPreferredBusiness> getListMedicine() {
-        return preferredBusinessMap.get(BusinessTypeEnum.PH.name());
+        return null == preferredBusinessMap.get(BusinessTypeEnum.PH.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(BusinessTypeEnum.PH.name());
     }
 
     public List<JsonPreferredBusiness> getListPhysio() {
-        return preferredBusinessMap.get(HealthCareServiceEnum.PHYS.name());
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.PHYS.name())
+                ? new ArrayList<JsonPreferredBusiness>()
+                : preferredBusinessMap.get(HealthCareServiceEnum.PHYS.name());
     }
 
     private void addToPreferredBusiness(String business, final JsonPreferredBusiness jsonPreferredBusiness) {
