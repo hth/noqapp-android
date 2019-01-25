@@ -284,11 +284,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         jsonMedicalRecordTemp = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
-            if(null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size()>0){
+            if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
                 try {
                     if (!TextUtils.isEmpty(jsonMedicalRecord.getImages().get(0))) {
                         Picasso.with(this)
-                                .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId+"/"+jsonMedicalRecord.getImages().get(0))
+                                .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + jsonMedicalRecord.getImages().get(0))
                                 .into(iv_1);
                     }
                 } catch (Exception e) {

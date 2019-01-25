@@ -1,0 +1,178 @@
+package com.noqapp.android.merchant.views.activities;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
+import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.PreferredStoreFragment;
+
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PreferredStoreActivity extends AppCompatActivity implements PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener {
+
+    private RecyclerView rcv_header;
+    private MenuHeaderAdapter menuAdapter;
+    private ViewPager viewPager;
+    private ArrayList<String> data = new ArrayList<>();
+    private PreferredStoreFragment frag_mri_and_scan;
+    private PreferredStoreFragment frag_sono_and_xray;
+    private PreferredStoreFragment frag_path_and_spec;
+    private PreferredStoreFragment frag_physio_medic;
+
+    public static PreferredStoreActivity getPreferredStoreActivity() {
+        return preferredStoreActivity;
+    }
+
+    private static PreferredStoreActivity preferredStoreActivity;
+
+    public List<JsonPreferredBusiness> getJsonPreferredBusiness() {
+        return jsonPreferredBusiness;
+    }
+
+    private List<JsonPreferredBusiness> jsonPreferredBusiness;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        super.onCreate(savedInstanceState);
+        preferredStoreActivity = this;
+        setContentView(R.layout.activity_preferred_business);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("Preferred Stores");
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        viewPager = findViewById(R.id.pager);
+        rcv_header = findViewById(R.id.rcv_header);
+        data.add("MRI & CT Scan");
+        data.add("SONO & X-RAY");
+        data.add("Pathology & Special");
+        data.add("Physio & Medicine");
+
+  
+
+        if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                new PreferredBusinessModel(this)
+                        .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), LaunchActivity.merchantListFragment.getTopics().get(0).getCodeQR());
+            }
+        }
+    }
+
+    @Override
+    public void menuHeaderClick(int pos) {
+        viewPager.setCurrentItem(pos);
+        // saveAllData();
+    }
+    @Override
+    public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
+        if (null != jsonPreferredBusinessList && jsonPreferredBusinessList.getPreferredBusinesses() != null && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0) {
+            this.jsonPreferredBusiness = jsonPreferredBusinessList.getPreferredBusinesses();
+            frag_mri_and_scan = new PreferredStoreFragment();
+            frag_mri_and_scan.setArguments(getBundle(0));
+            frag_sono_and_xray = new PreferredStoreFragment();
+            frag_sono_and_xray.setArguments(getBundle(1));
+            frag_path_and_spec = new PreferredStoreFragment();
+            frag_path_and_spec.setArguments(getBundle(2));
+            frag_physio_medic = new PreferredStoreFragment();
+            frag_physio_medic.setArguments(getBundle(3));
+
+            TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
+            adapter.addFragment(frag_mri_and_scan, "FRAG" + 0);
+            adapter.addFragment(frag_sono_and_xray, "FRAG" + 1);
+            adapter.addFragment(frag_path_and_spec, "FRAG" + 2);
+            adapter.addFragment(frag_physio_medic, "FRAG" + 3);
+
+            rcv_header.setHasFixedSize(true);
+            LinearLayoutManager horizontalLayoutManagaer
+                    = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            rcv_header.setLayoutManager(horizontalLayoutManagaer);
+            rcv_header.setItemAnimator(new DefaultItemAnimator());
+
+
+            menuAdapter = new MenuHeaderAdapter(data, this, this);
+            rcv_header.setAdapter(menuAdapter);
+            menuAdapter.notifyDataSetChanged();
+            viewPager.setOffscreenPageLimit(data.size());
+            viewPager.setAdapter(adapter);
+            viewPager.setCurrentItem(0);
+            adapter.notifyDataSetChanged();
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    //saveAllData();
+                    rcv_header.smoothScrollToPosition(position);
+                    menuAdapter.setSelected_pos(position);
+                    menuAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            Log.e("Pref business list: ", jsonPreferredBusinessList.toString());
+        }
+    }
+
+    @Override
+    public void preferredBusinessError() {
+
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
+    }
+
+    private Bundle getBundle(int pos) {
+        Bundle b = new Bundle();
+        b.putInt("type", pos);
+        return b;
+    }
+
+}

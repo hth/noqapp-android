@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -223,6 +224,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     case R.mipmap.me_select:
                         callPreference();
                         break;
+                    case R.mipmap.history_grey:
+                        callPreferredStore();
+                        break;
                     default:
                 }
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -310,7 +314,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public ArrayList<String> getUserList() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String json = sharedPrefs.getString(KEY_USER_LIST, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         ArrayList<String> arrayList = new Gson().fromJson(json, type);
         return arrayList == null ? new ArrayList<String>() : arrayList;
     }
@@ -504,13 +509,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     public void appBlacklistError(ErrorEncounteredJson eej) {
-       if(null != eej) {
-           if(MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
-               ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
-           }else{
-               new ErrorResponseHandler().processError(this, eej);
-           }
-       }
+        if (null != eej) {
+            if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
+                ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+            } else {
+                new ErrorResponseHandler().processError(this, eej);
+            }
+        }
     }
 
     @Override
@@ -530,7 +535,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
             if (!BUILD_TYPE.equals("debug")) {
                 try {
-                    String currentVersion =  Constants.appVersion();
+                    String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
                                 this,
@@ -751,7 +756,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         setFCMToken(fcmToken);
     }
 
-    public void callPreference(){
+    public void callPreference() {
+
+    }
+    public void callPreferredStore() {
 
     }
 

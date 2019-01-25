@@ -26,6 +26,7 @@ import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
+import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -66,6 +67,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
     private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono,
             acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
+    private PreferredStoreList preferredStoreList;
 
     @Nullable
     @Override
@@ -213,15 +215,13 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     }
                 }
 
-                boolean isPreferedBusinessAvailable = false;
-                if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses() && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0)
-                    isPreferedBusinessAvailable = true;
+
                 List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
                 if (mriList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (isPreferedBusinessAvailable) {
+                    if (null != preferredStoreList && preferredStoreList.getListMri().size() > 0) {
                         if (acsp_mri.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_mri.getSelectedItemPosition()).getBizStoreId());
+                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_mri.getSelectedItem()).getBizStoreId());
                         } else {
                             jsonMedicalRadiologyList.setBizStoreId("");
                         }
@@ -233,11 +233,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
+
                 if (sonoList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (isPreferedBusinessAvailable) {
+                    if (null != preferredStoreList && preferredStoreList.getListSono().size() > 0) {
                         if (acsp_sono.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_sono.getSelectedItemPosition()).getBizStoreId());
+                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_sono.getSelectedItem()).getBizStoreId());
                         } else {
                             jsonMedicalRadiologyList.setBizStoreId("");
                         }
@@ -248,11 +249,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
+
                 if (scanList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (isPreferedBusinessAvailable) {
+                    if (null != preferredStoreList && preferredStoreList.getListScan().size() > 0) {
                         if (acsp_scan.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_scan.getSelectedItemPosition()).getBizStoreId());
+                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_scan.getSelectedItem()).getBizStoreId());
                         } else {
                             jsonMedicalRadiologyList.setBizStoreId("");
                         }
@@ -263,11 +265,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
+
                 if (xrayList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (isPreferedBusinessAvailable) {
+                    if (null != preferredStoreList && preferredStoreList.getListXray().size() > 0) {
                         if (acsp_xray.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_xray.getSelectedItemPosition()).getBizStoreId());
+                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_xray.getSelectedItem()).getBizStoreId());
                         } else {
                             jsonMedicalRadiologyList.setBizStoreId("");
                         }
@@ -278,11 +281,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
+
                 if (specList.size() > 0) {
                     JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (isPreferedBusinessAvailable) {
+                    if (null != preferredStoreList && preferredStoreList.getListSpec().size() > 0) {
                         if (acsp_special.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_special.getSelectedItemPosition()).getBizStoreId());
+                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_special.getSelectedItem()).getBizStoreId());
                         } else {
                             jsonMedicalRadiologyList.setBizStoreId("");
                         }
@@ -294,21 +298,27 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     medicalRadiologyLists.add(jsonMedicalRadiologyList);
                 }
                 jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
-                if (isPreferedBusinessAvailable) {
+
+                if (null != preferredStoreList && preferredStoreList.getListMedicine().size() > 0) {
                     if (acsp_pharmacy.getSelectedItemPosition() != 0) {
-                        jsonMedicalRecord.setStoreIdPharmacy(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_pharmacy.getSelectedItemPosition()).getBizStoreId());
+                        jsonMedicalRecord.setStoreIdPharmacy(((JsonPreferredBusiness) acsp_pharmacy.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRecord.setStoreIdPharmacy("");
                     }
+                } else {
+                    jsonMedicalRecord.setStoreIdPharmacy("");
+                }
+
+                if (null != preferredStoreList && preferredStoreList.getListPath().size() > 0) {
                     if (acsp_pathology.getSelectedItemPosition() != 0) {
-                        jsonMedicalRecord.setStoreIdPathology(jsonPreferredBusinessList.getPreferredBusinesses().get(acsp_pathology.getSelectedItemPosition()).getBizStoreId());
+                        jsonMedicalRecord.setStoreIdPathology(((JsonPreferredBusiness) acsp_pathology.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRecord.setStoreIdPathology("");
                     }
                 } else {
-                    jsonMedicalRecord.setStoreIdPharmacy("");
                     jsonMedicalRecord.setStoreIdPathology("");
                 }
+
                 jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
                 jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
                 jsonMedicalRecord.setPlanToPatient(caseHistory.getInstructions());
@@ -393,15 +403,16 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         }
 
         jsonPreferredBusinessList = MedicalCaseActivity.getMedicalCaseActivity().jsonPreferredBusinessList;
-        jsonPreferredBusinessList.getPreferredBusinesses().add(0, new JsonPreferredBusiness().setDisplayName("Select"));
-        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getActivity(), jsonPreferredBusinessList.getPreferredBusinesses());
-        acsp_mri.setAdapter(spinAdapter);
-        acsp_scan.setAdapter(spinAdapter);
-        acsp_sono.setAdapter(spinAdapter);
-        acsp_xray.setAdapter(spinAdapter);
-        acsp_special.setAdapter(spinAdapter);
-        acsp_pathology.setAdapter(spinAdapter);
-        acsp_pharmacy.setAdapter(spinAdapter);
+        if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses()) {
+            preferredStoreList = new PreferredStoreList(jsonPreferredBusinessList.getPreferredBusinesses());
+            acsp_mri.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListMri()));
+            acsp_scan.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListScan()));
+            acsp_sono.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListSono()));
+            acsp_xray.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListXray()));
+            acsp_special.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListSpec()));
+            acsp_pathology.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListPath()));
+            acsp_pharmacy.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListMedicine()));
+        }
     }
 
     private void hideInvestigationViews(CaseHistory caseHistory) {
