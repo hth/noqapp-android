@@ -40,6 +40,7 @@ public class PreferredBusinessModel {
         preferredStoreService = RetrofitClient.getClient().create(PreferredStoreService.class);
     }
 
+    @Deprecated
     public void getAllPreferredStores(String did, String mail, String auth, String codeQR) {
         preferredStoreService.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPreferredBusinessList>() {
             @Override
