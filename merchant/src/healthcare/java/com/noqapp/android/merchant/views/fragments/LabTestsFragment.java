@@ -165,7 +165,7 @@ public class LabTestsFragment extends Fragment {
                     rcv_pathology.setAdapter(customAdapter1);
 
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
-                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getPathologyList().add(new DataObj(edt_item.getText().toString(), false));
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPathologyList().add(new DataObj(edt_item.getText().toString(), false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
                 }
@@ -233,7 +233,7 @@ public class LabTestsFragment extends Fragment {
 
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList());
                         rcv_sono.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
                     } else if (selectionPos == 1) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
@@ -242,7 +242,7 @@ public class LabTestsFragment extends Fragment {
 
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
                         rcv_mri.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
                     } else if (selectionPos == 2) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
@@ -251,7 +251,7 @@ public class LabTestsFragment extends Fragment {
 
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
                         rcv_scan.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
                     } else if (selectionPos == 3){
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
@@ -260,7 +260,7 @@ public class LabTestsFragment extends Fragment {
 
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList());
                         rcv_xray.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
                     } else  {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
@@ -269,7 +269,7 @@ public class LabTestsFragment extends Fragment {
 
                         StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList());
                         rcv_special.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSpecList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSpecList().add(new DataObj(edt_item.getText().toString(), false));
                     }
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();

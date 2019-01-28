@@ -14,14 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PreferredListAdapter extends RecyclerView.Adapter<PreferredListAdapter.MyViewHolder> implements RadioRecyclerAdapter.UpdateGrid {
 
     private Context context;
 
-    private List<ParentCheckBoxObj> parentCheckBoxObjs = new ArrayList<>();
+    public List<ParentCheckBoxObj> getParentCheckBoxObjs() {
+        return parentCheckBoxObjs;
+    }
+
+    private List<ParentCheckBoxObj> parentCheckBoxObjs;
 
     public PreferredListAdapter(Context context, List<ParentCheckBoxObj> parentCheckBoxObjs) {
         this.context = context;

@@ -5,6 +5,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PreferenceObjects {
 
@@ -39,7 +40,10 @@ public class PreferenceObjects {
     private ArrayList<DataObj> diagnosisList = new ArrayList<>();
 
     @SerializedName(Constants.INSTRUCTION)
-    private ArrayList<DataObj> instructionList = new ArrayList<>();
+    private ArrayList<String> instructionList = new ArrayList<>();
+
+    @SerializedName(Constants.PREFERRED_STORE)
+    private HashMap<String,PreferredStoreInfo> preferredStoreInfoHashMap = new HashMap<>();
 
     public ArrayList<DataObj> getPathologyList() {
         return pathologyList;
@@ -131,15 +135,14 @@ public class PreferenceObjects {
         return this;
     }
 
-    public ArrayList<DataObj> getInstructionList() {
+    public ArrayList<String> getInstructionList() {
         return instructionList;
     }
 
-    public PreferenceObjects setInstructionList(ArrayList<DataObj> instructionList) {
+    public PreferenceObjects setInstructionList(ArrayList<String> instructionList) {
         this.instructionList = instructionList;
         return this;
     }
-
 
     public ArrayList<DataObj> clearListSelection(ArrayList<DataObj> selectList) {
         ArrayList<DataObj> temp = new ArrayList<>();
@@ -148,5 +151,14 @@ public class PreferenceObjects {
             temp.add(d.setSelect(false));
         }
         return temp;
+    }
+
+    public HashMap<String, PreferredStoreInfo> getPreferredStoreInfoHashMap() {
+        return preferredStoreInfoHashMap;
+    }
+
+    public PreferenceObjects setPreferredStoreInfoHashMap(HashMap<String, PreferredStoreInfo> preferredStoreInfoHashMap) {
+        this.preferredStoreInfoHashMap = preferredStoreInfoHashMap;
+        return this;
     }
 }

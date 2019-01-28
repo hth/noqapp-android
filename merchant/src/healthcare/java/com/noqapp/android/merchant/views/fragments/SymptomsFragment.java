@@ -57,7 +57,6 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private TextView tv_obes, tv_gyanc;
     private SwitchCompat sc_enable_history;
     private AutoCompleteTextView actv_search;
-    private final int columnCount = 4;
 
     @Nullable
     @Override
@@ -219,10 +218,12 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
             setupAutoComplete(dataObjArrayList);
-            selectedSymptomsList = symptomSelectedAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain(), dataObjArrayList);
-            symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
-            rcv_symptom_select.setAdapter(symptomSelectedAdapter);
-            view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain()) {
+                selectedSymptomsList = symptomSelectedAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain(), dataObjArrayList);
+                symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
+                rcv_symptom_select.setAdapter(symptomSelectedAdapter);
+                view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -273,7 +274,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     rcv_gynac.setAdapter(symptomsAdapter);
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
-                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getSymptomsList().add(new DataObj(edt_item.getText().toString(), false));
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSymptomsList().add(new DataObj(edt_item.getText().toString(), false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                 }
             }

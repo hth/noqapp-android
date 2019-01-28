@@ -334,10 +334,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         return sharedpreferences.getString(KEY_SUGGESTION_PREF, null);
     }
 
-    public void setSuggestionsPrefs(Map<String, List<DataObj>> map) {
-        String strInput = new Gson().toJson(map);
-        sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
-    }
+
     public void setSuggestionsPrefs(PreferenceObjects testCaseObjects) {
         String strInput = new Gson().toJson(testCaseObjects);
         sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();

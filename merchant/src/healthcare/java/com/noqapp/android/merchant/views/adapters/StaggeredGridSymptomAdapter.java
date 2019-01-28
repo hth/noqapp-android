@@ -4,6 +4,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -54,8 +55,10 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+            holder.name.setTextColor(Color.parseColor("#19769f"));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+            holder.name.setTextColor(Color.parseColor("#19769f"));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -63,10 +66,12 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
                 dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    holder.name.setTextColor(Color.parseColor("#19769f"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    holder.name.setTextColor(Color.parseColor("#19769f"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
                 }

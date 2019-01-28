@@ -6,24 +6,43 @@
               android:orientation="horizontal">
 
 
-    <ScrollView
+    <FrameLayout
             android:layout_width="0dp"
             android:layout_weight=".5"
-
             android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:descendantFocusability="blocksDescendants"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_search_dia"
+                        android:layout_width="0dp"
+                        android:layout_weight=".6"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/ic_search"
+                        android:drawableRight="@drawable/ic_cancel"
+                        android:drawableTint="@color/colorAccent"
+                        android:drawablePadding="10dp"
+                        android:hint="Search Diagnosis"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:textSize="@dimen/text_size_fourteen"
+                        />
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight=".4"
                         android:layout_height="wrap_content">
 
                     <TextView
@@ -52,183 +71,190 @@
                             android:textColor="@color/colorPrimary"
                             android:layout_height="wrap_content"/>
                 </RelativeLayout>
+            </LinearLayout>
+
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
 
                 <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerViewOne"
                         android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+            </ScrollView>
+        </LinearLayout>
+
+        <ScrollView
+                android:id="@+id/ll_medicine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="#A6000000">
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="580dp"
+                    android:orientation="vertical"
+                    android:layout_margin="15dp"
+                    android:padding="20dp"
+                    android:background="@android:color/white">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/tv_remove"
+                            android:text="Remove"
+                            android:layout_width="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btn_add_round"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_close"
+                            android:text="Close"
+                            android:layout_width="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btn_add_round"
+                            android:layout_alignParentRight="true"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/tv_medicine_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:text=""/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:text="Medicine Timing"/>
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        android:id="@+id/sc_medicine_timing"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        segmentedcontrol:distributeEvenly="false"
+                        segmentedcontrol:radius="6dp"
+                        segmentedcontrol:columnCount="4"
+                        segmentedcontrol:radiusForEverySegment="false"
+                        segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:strokeWidth="1dp"
+                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                        segmentedcontrol:textVerticalPadding="5dp"
+                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:text="Duration(in days)"/>
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        android:id="@+id/sc_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        segmentedcontrol:distributeEvenly="false"
+                        segmentedcontrol:radius="6dp"
+                        segmentedcontrol:columnCount="4"
+                        segmentedcontrol:radiusForEverySegment="false"
+                        segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:strokeWidth="1dp"
+                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                        segmentedcontrol:textVerticalPadding="5dp"
+                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:text="Frequency"/>
+
+                <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        android:id="@+id/sc_frequency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        segmentedcontrol:distributeEvenly="false"
+                        segmentedcontrol:radius="6dp"
+                        segmentedcontrol:columnCount="4"
+                        segmentedcontrol:radiusForEverySegment="false"
+                        segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
+                        segmentedcontrol:strokeWidth="1dp"
+                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                        segmentedcontrol:textVerticalPadding="5dp"
+                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+
+                <Button
+                        android:id="@+id/btn_done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:text="Done"/>
+
+
             </LinearLayout>
 
-            <ScrollView
-                    android:id="@+id/ll_medicine"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:background="#A6000000">
+        </ScrollView>
 
+    </FrameLayout>
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="580dp"
-                        android:orientation="vertical"
-                        android:layout_margin="15dp"
-                        android:padding="20dp"
-                        android:background="@android:color/white">
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <TextView
-                                android:id="@+id/tv_remove"
-                                android:text="Remove"
-                                android:layout_width="wrap_content"
-                                android:padding="10dp"
-                                android:gravity="center"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/btn_add_round"
-                                android:layout_alignParentLeft="true"
-                                android:textColor="@color/colorPrimary"
-                                android:layout_height="wrap_content"/>
-
-                        <TextView
-                                android:id="@+id/tv_close"
-                                android:text="Close"
-                                android:layout_width="wrap_content"
-                                android:padding="10dp"
-                                android:gravity="center"
-                                android:textStyle="bold"
-                                android:textSize="14sp"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/btn_add_round"
-                                android:layout_alignParentRight="true"
-                                android:textColor="@color/colorPrimary"
-                                android:layout_height="wrap_content"/>
-
-                    </RelativeLayout>
-
-                    <TextView
-                            android:id="@+id/tv_medicine_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="0dp"
-                            android:textStyle="bold"
-                            android:gravity="center"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_sixteen"
-                            android:text=""/>
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="5dp"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:text="Medicine Timing"/>
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                            android:id="@+id/sc_medicine_timing"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            segmentedcontrol:distributeEvenly="false"
-                            segmentedcontrol:radius="6dp"
-                            segmentedcontrol:columnCount="4"
-                            segmentedcontrol:radiusForEverySegment="false"
-                            segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
-                            segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
-                            segmentedcontrol:strokeWidth="1dp"
-                            segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                            segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                            segmentedcontrol:textVerticalPadding="5dp"
-                            segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="5dp"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:text="Duration(in days)"/>
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                            android:id="@+id/sc_duration"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            segmentedcontrol:distributeEvenly="false"
-                            segmentedcontrol:radius="6dp"
-                            segmentedcontrol:columnCount="4"
-                            segmentedcontrol:radiusForEverySegment="false"
-                            segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
-                            segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
-                            segmentedcontrol:strokeWidth="1dp"
-                            segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                            segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                            segmentedcontrol:textVerticalPadding="5dp"
-                            segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="5dp"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:text="Frequency"/>
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                            android:id="@+id/sc_frequency"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            segmentedcontrol:distributeEvenly="false"
-                            segmentedcontrol:radius="6dp"
-                            segmentedcontrol:columnCount="4"
-                            segmentedcontrol:radiusForEverySegment="false"
-                            segmentedcontrol:segmentHorizontalMargin="@dimen/segment_margin_r"
-                            segmentedcontrol:segmentVerticalMargin="@dimen/segment_margin_r"
-                            segmentedcontrol:strokeWidth="1dp"
-                            segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                            segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                            segmentedcontrol:textVerticalPadding="5dp"
-                            segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
-
-
-                    <Button
-                            android:id="@+id/btn_done"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="10dp"
-                            android:text="Done"/>
-
-
-                </LinearLayout>
-
-            </ScrollView>
-
-        </FrameLayout>
-    </ScrollView>
 
     <View
             android:background="#80000000"
@@ -241,36 +267,62 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <TextView
-                    android:text="Medicines"
-                    android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/tv_add_medicine"
-                    android:textColor="@android:color/black"
-                    android:layout_height="wrap_content"/>
 
-            <TextView
-                    android:id="@+id/tv_add_medicine"
-                    android:text="Add New"
-                    android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                    android:id="@+id/actv_search"
+                    android:layout_width="0dp"
+                    android:layout_weight=".6"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_search"
+                    android:drawableRight="@drawable/ic_cancel"
+                    android:drawableTint="@color/colorAccent"
+                    android:drawablePadding="10dp"
+                    android:hint="Search medicine"
+                    android:maxLines="1"
+                    android:minLines="1"
                     android:padding="10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btn_add_round"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_height="wrap_content"/>
-        </RelativeLayout>
+                    android:textSize="@dimen/text_size_fourteen"
+                    />
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".4"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:text="Medicines"
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_add_medicine"
+                        android:textColor="@android:color/black"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/tv_add_medicine"
+                        android:text="Add New"
+                        android:layout_width="wrap_content"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/btn_add_round"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
 
         <ScrollView
                 android:layout_width="match_parent"

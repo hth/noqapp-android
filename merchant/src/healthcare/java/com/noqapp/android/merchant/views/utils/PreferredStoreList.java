@@ -37,9 +37,9 @@ public class PreferredStoreList {
     }
 
     public List<JsonPreferredBusiness> getListPath() {
-        return null == preferredBusinessMap.get(HealthCareServiceEnum.SONO.name())
+        return null == preferredBusinessMap.get(HealthCareServiceEnum.PATH.name())
                 ? new ArrayList<JsonPreferredBusiness>()
-                : preferredBusinessMap.get(HealthCareServiceEnum.SONO.name());
+                : preferredBusinessMap.get(HealthCareServiceEnum.PATH.name());
     }
 
     public List<JsonPreferredBusiness> getListXray() {
@@ -79,7 +79,7 @@ public class PreferredStoreList {
             preferredBusinessMap.put(business, preferredBusinesses);
         } else {
             List<JsonPreferredBusiness> preferredBusinesses = new LinkedList<JsonPreferredBusiness>() {{
-                add(new JsonPreferredBusiness().setDisplayName("Select"));
+                add(new JsonPreferredBusiness().setDisplayName("Select").setBizStoreId(""));
                 add(jsonPreferredBusiness);
             }};
             preferredBusinessMap.put(business, preferredBusinesses);
