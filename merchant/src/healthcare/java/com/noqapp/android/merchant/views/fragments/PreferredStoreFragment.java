@@ -10,6 +10,7 @@ import com.noqapp.android.merchant.views.activities.PreferredStoreActivity;
 import com.noqapp.android.merchant.views.adapters.PreferredListAdapter;
 import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
+import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 
 
 import android.app.ProgressDialog;
@@ -34,6 +35,8 @@ public class PreferredStoreFragment extends Fragment {
     private TextView tv_label_one, tv_label_two;
     private ProgressDialog progressDialog;
     int pos = -1;
+    PreferredListAdapter preferredListAdapter1 = null;
+    PreferredListAdapter preferredListAdapter2 = null;
 
     @Nullable
     @Override
@@ -47,8 +50,7 @@ public class PreferredStoreFragment extends Fragment {
         rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         pos = getArguments().getInt("type");
-        PreferredListAdapter preferredListAdapter1 = null;
-        PreferredListAdapter preferredListAdapter2 = null;
+
         if (pos == 0) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.MRI));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
@@ -161,7 +163,8 @@ public class PreferredStoreFragment extends Fragment {
         for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
             List<CheckBoxObj> temp = new ArrayList<>();
             temp.addAll(tempList);
-            parentCheckBoxObjs.add(new ParentCheckBoxObj().setCheckBoxObjList(temp).setJsonTopic(LaunchActivity.merchantListFragment.getTopics().get(i)).setSelectedPos(-1));
+            int selectedPos = getSelectionPos(temp, LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), healthCareServiceEnum);
+            parentCheckBoxObjs.add(new ParentCheckBoxObj().setCheckBoxObjList(temp).setJsonTopic(LaunchActivity.merchantListFragment.getTopics().get(i)).setSelectedPos(selectedPos));
         }
 
         return parentCheckBoxObjs;
@@ -187,6 +190,194 @@ public class PreferredStoreFragment extends Fragment {
                 return checkBoxObjListPhysio;
             default:
                 return checkBoxObjListMedicine;
+
+        }
+    }
+
+    public void saveData() {
+        if (pos == 0) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+            for (int i = 0; i < temp1.size(); i++) {
+                if (null == PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                        get(temp1.get(i).getJsonTopic().getCodeQR())) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().put(temp1.get(i).getJsonTopic().getCodeQR(), new PreferredStoreInfo());
+                }
+
+                if (temp1.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdMri(temp1.get(i).getCheckBoxObjList().get(temp1.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdMri("");
+                }
+            }
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+            for (int i = 0; i < temp2.size(); i++) {
+                if (temp2.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdScan(temp2.get(i).getCheckBoxObjList().get(temp2.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdScan("");
+                }
+            }
+
+        } else if (pos == 1) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+            for (int i = 0; i < temp1.size(); i++) {
+                if (temp1.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdSono(temp1.get(i).getCheckBoxObjList().get(temp1.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdSono("");
+                }
+            }
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+            for (int i = 0; i < temp2.size(); i++) {
+                if (temp2.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdXray(temp2.get(i).getCheckBoxObjList().get(temp2.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdXray("");
+                }
+            }
+
+        } else if (pos == 2) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+            for (int i = 0; i < temp1.size(); i++) {
+                if (temp1.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPath(temp1.get(i).getCheckBoxObjList().get(temp1.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPath("");
+                }
+            }
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+            for (int i = 0; i < temp2.size(); i++) {
+                if (temp2.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdSpecial(temp2.get(i).getCheckBoxObjList().get(temp2.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdSpecial("");
+                }
+            }
+
+        } else if (pos == 3) {
+            List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
+            for (int i = 0; i < temp1.size(); i++) {
+                if (temp1.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPhysio(temp1.get(i).getCheckBoxObjList().get(temp1.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp1.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPhysio("");
+                }
+            }
+            List<ParentCheckBoxObj> temp2 = preferredListAdapter2.getParentCheckBoxObjs();
+            for (int i = 0; i < temp2.size(); i++) {
+                if (temp2.get(i).getSelectedPos() > -1) {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPharmacy(temp2.get(i).getCheckBoxObjList().get(temp2.get(i).
+                            getSelectedPos()).getJsonPreferredBusiness().getBizStoreId());
+                } else {
+                    PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                            get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPharmacy("");
+                }
+            }
+
+        }
+    }
+
+    private int getSelectionPos(List<CheckBoxObj> temp, String codeQR, HealthCareServiceEnum hcse) {
+        PreferredStoreInfo preferredStoreInfo = PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
+                get(codeQR);
+        if(null == preferredStoreInfo)
+            return -1;
+
+        if (null == hcse) {
+            for (int i = 0; i < temp.size(); i++) {
+                if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        switch (hcse) {
+            case SONO: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSono())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            case SCAN: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdScan())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            case MRI: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdMri())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            case PATH: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPath())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            case XRAY: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdXray())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            case SPEC: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSpecial())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            case PHYS: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPhysio())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            default: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
 
         }
     }

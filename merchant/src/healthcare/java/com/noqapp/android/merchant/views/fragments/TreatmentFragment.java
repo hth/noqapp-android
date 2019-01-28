@@ -163,8 +163,10 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
         rcv_medicine.setAdapter(medicineSelectedAdapter);
 
         try {
-            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis().split(",");
-            diagnosisAdapter.updateSelection(temp);
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis()) {
+                String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis().split(",");
+                diagnosisAdapter.updateSelection(temp);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -210,7 +212,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     recyclerView_one.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                     StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
                     recyclerView_one.setAdapter(customAdapter);
-                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
                     mAlertDialog.dismiss();
@@ -280,7 +282,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     recyclerView.setAdapter(customAdapter);
 
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
-                    MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getMedicineList().add(new DataObj(medicineName, category, false));
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getMedicineList().add(new DataObj(medicineName, category, false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
                 }

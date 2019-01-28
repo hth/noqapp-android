@@ -8,6 +8,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
@@ -25,6 +26,7 @@ import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
+import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
@@ -412,6 +414,96 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             acsp_special.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListSpec()));
             acsp_pathology.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListPath()));
             acsp_pharmacy.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListMedicine()));
+
+            acsp_mri.setSelection(getSelectionPos(preferredStoreList.getListMri(),HealthCareServiceEnum.MRI));
+            acsp_scan.setSelection(getSelectionPos(preferredStoreList.getListScan(),HealthCareServiceEnum.SCAN));
+            acsp_sono.setSelection(getSelectionPos(preferredStoreList.getListSono(),HealthCareServiceEnum.SONO));
+            acsp_xray.setSelection(getSelectionPos(preferredStoreList.getListXray(),HealthCareServiceEnum.XRAY));
+            acsp_special.setSelection(getSelectionPos(preferredStoreList.getListSpec(),HealthCareServiceEnum.SPEC));
+            acsp_pathology.setSelection(getSelectionPos(preferredStoreList.getListPath(),HealthCareServiceEnum.PATH));
+            acsp_pharmacy.setSelection(getSelectionPos(preferredStoreList.getListMedicine(),null));
+
+        }
+    }
+
+    private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse) {
+        PreferredStoreInfo preferredStoreInfo = MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPreferredStoreInfoHashMap().
+                get(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
+
+        if (null == hcse) {
+            for (int i = 0; i < temp.size(); i++) {
+                if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
+                    return i;
+                }
+            }
+            return 0;
+        }
+        switch (hcse) {
+            case SONO: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSono())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case SCAN: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdScan())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case MRI: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdMri())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case PATH: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPath())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case XRAY: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdXray())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case SPEC: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSpecial())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case PHYS: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPhysio())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            default: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+
         }
     }
 

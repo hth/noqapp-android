@@ -12,6 +12,10 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.PreferredStoreFragment;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
+import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
+
+import com.google.gson.Gson;
 
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
@@ -43,6 +47,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     private PreferredStoreFragment frag_path_and_spec;
     private PreferredStoreFragment frag_physio_medic;
     private ProgressDialog progressDialog;
+    public PreferenceObjects preferenceObjects;
 
     public static PreferredStoreActivity getPreferredStoreActivity() {
         return preferredStoreActivity;
@@ -65,6 +70,17 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         }
         super.onCreate(savedInstanceState);
         preferredStoreActivity = this;
+        try {
+            preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            preferenceObjects = new PreferenceObjects();
+            initStores();
+        }
+        if (null == preferenceObjects) {
+            preferenceObjects = new PreferenceObjects();
+            initStores();
+        }
         initProgress();
         setContentView(R.layout.activity_preferred_business);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -201,16 +217,11 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
             //super.onBackPressed();
             finish();
         }
-//        Map<String, List<DataObj>> mapList = new HashMap<>();
-//        mapList.put(HealthCareServiceEnum.MRI.getName(), preferenceMriFragment.clearListSelection());
-//        mapList.put(HealthCareServiceEnum.SCAN.getName(), preferenceScanFragment.clearListSelection());
-//        mapList.put(HealthCareServiceEnum.SONO.getName(), preferenceSonoFragment.clearListSelection());
-//        mapList.put(HealthCareServiceEnum.XRAY.getName(), preferenceXrayFragment.clearListSelection());
-//        mapList.put(HealthCareServiceEnum.PATH.getName(), preferencePathFragment.clearListSelection());
-//        mapList.put(HealthCareServiceEnum.SPEC.getName(), preferenceSpecFragment.clearListSelection());
-//        mapList.put(Constants.MEDICINE, medicineFragment.getSelectedList());
-//
-//        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
+        frag_mri_and_scan.saveData();
+        frag_sono_and_xray.saveData();
+        frag_path_and_spec.saveData();
+        frag_physio_medic.saveData();
+        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
     }
 
     private void initProgress() {
@@ -222,5 +233,12 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     protected void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+
+    private void initStores(){
+        for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
+            preferenceObjects.getPreferredStoreInfoHashMap().put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), new PreferredStoreInfo());
+        }
     }
 }

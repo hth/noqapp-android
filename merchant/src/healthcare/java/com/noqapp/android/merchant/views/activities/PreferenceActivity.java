@@ -69,7 +69,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private ArrayList<String> masterDataSpec = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
     private MedicineFragment medicineFragment;
-    public PreferenceObjects testCaseObjects;
+    public PreferenceObjects preferenceObjects;
 
     public static PreferenceActivity getPreferenceActivity() {
         return preferenceActivity;
@@ -87,13 +87,13 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         initProgress();
         preferenceActivity = this;
         try {
-            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+            preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
-            testCaseObjects = new PreferenceObjects();
+            preferenceObjects = new PreferenceObjects();
         }
-        if (null == testCaseObjects)
-            testCaseObjects = new PreferenceObjects();
+        if (null == preferenceObjects)
+            preferenceObjects = new PreferenceObjects();
         viewPager = findViewById(R.id.pager);
 
         rcv_header = findViewById(R.id.rcv_header);
@@ -199,6 +199,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         temp.setPathologyList(preferencePathFragment.clearListSelection());
         temp.setSpecList(preferenceSpecFragment.clearListSelection());
         temp.setMedicineList(medicineFragment.getSelectedList());
+        temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
 
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
     }

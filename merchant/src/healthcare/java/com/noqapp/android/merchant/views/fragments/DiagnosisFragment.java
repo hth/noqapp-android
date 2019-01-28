@@ -28,8 +28,9 @@ public class DiagnosisFragment extends Fragment {
 
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
-    private AutoCompleteTextView actv_clinical_findings,actv_examination_results;
+    private AutoCompleteTextView actv_clinical_findings, actv_examination_results;
     private final int columnCount = 4;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,9 +60,11 @@ public class DiagnosisFragment extends Fragment {
         actv_examination_results.setText(jsonMedicalRecord.getExamination());
 
         try {
-            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis().split(",");
-            provisionalDiagnosisAdapter.updateSelection(temp);
-        }catch (Exception e){
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis()) {
+                String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis().split(",");
+                provisionalDiagnosisAdapter.updateSelection(temp);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -99,11 +102,11 @@ public class DiagnosisFragment extends Fragment {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList();
                         temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
                         MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setProvisionalDiagnosisList(temp);
-                         rcv_provisional_diagnosis.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                        rcv_provisional_diagnosis.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
                         provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
                         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getProDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getProDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
                         MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     } else {
 

@@ -70,9 +70,11 @@ public class InstructionFragment extends Fragment {
         instructionAdapter = new MultiSelectListAdapter(getActivity(), DataObjList);
         list_view.setAdapter(instructionAdapter);
         try {
-            String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getPlanToPatient().split("\\.");
-            instructionAdapter.updateSelection(temp);
-        }catch (Exception e){
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getPlanToPatient()) {
+                String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getPlanToPatient().split("\\.");
+                instructionAdapter.updateSelection(temp);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -126,7 +128,7 @@ public class InstructionFragment extends Fragment {
                         dataObj.setSelect(false);
                         instructionAdapter.addData(dataObj);
                         list_view.setAdapter(instructionAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getTestCaseObjects().getInstructionList().add(new DataObj(edt_item.getText().toString(), false));
+                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getInstructionList().add(edt_item.getText().toString());
                         MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     }
                     Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();

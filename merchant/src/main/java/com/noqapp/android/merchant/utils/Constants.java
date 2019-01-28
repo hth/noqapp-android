@@ -45,6 +45,7 @@ public class Constants extends BaseConstants {
     public static final String DIAGNOSIS = "DIAGNOSIS";
     public static final String INSTRUCTION = "INSTRUCTION";
     public static final String MEDICINE = "MEDICINE";
+    public static final String PREFERRED_STORE = "PREFERRED_STORE";
 
     /**
      * Computes App version.

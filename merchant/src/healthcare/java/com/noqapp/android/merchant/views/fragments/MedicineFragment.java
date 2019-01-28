@@ -91,8 +91,8 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
             }
         });
         prepareListData();
-        if (null != PreferenceActivity.getPreferenceActivity().testCaseObjects)
-            selectedList = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
+        if (null != PreferenceActivity.getPreferenceActivity().preferenceObjects)
+            selectedList = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMedicineList();
         if (null == selectedList)
             selectedList = new ArrayList<>();
         listAdapter = new CustomExpandListAdapter(getActivity(), listDataHeader, listDataChild, this);
@@ -110,7 +110,7 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
 
 
         selectedList.clear();
-        ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMedicineList();
+        ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMedicineList();
         for (int i = 0; i < temp.size(); i++) {
             listDataChild.get(temp.get(i).getCategory()).add(temp.get(i));
             selectedList.add(temp.get(i));

@@ -25,6 +25,7 @@ import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.pojos.FormDataObj;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
+import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import com.google.android.flexbox.AlignItems;
@@ -73,11 +74,11 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         return isGynae;
     }
 
-    public PreferenceObjects getTestCaseObjects() {
-        return testCaseObjects;
+    public PreferenceObjects getPreferenceObjects() {
+        return preferenceObjects;
     }
 
-    private PreferenceObjects testCaseObjects;
+    private PreferenceObjects preferenceObjects;
     private LoadTabs loadTabs;
 
     public JsonMedicalRecord getJsonMedicalRecord() {
@@ -116,13 +117,16 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         medicalCaseActivity = this;
         formDataObj = new FormDataObj();
         try {
-            testCaseObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+            preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
         } catch (Exception e) {
             e.printStackTrace();
-            testCaseObjects = new PreferenceObjects();
+            preferenceObjects = new PreferenceObjects();
+            initStores();
         }
-        if (null == testCaseObjects)
-            testCaseObjects = new PreferenceObjects();
+        if (null == preferenceObjects) {
+            preferenceObjects = new PreferenceObjects();
+            initStores();
+        }
         caseHistory = new CaseHistory();
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
@@ -230,33 +234,20 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     }
 
     public void updateSuggestions() {
-//        Map<String, List<DataObj>> mapList = new HashMap<>();
-//        mapList.put(HealthCareServiceEnum.MRI.getName(), testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
-//        mapList.put(HealthCareServiceEnum.SCAN.getName(), testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
-//        mapList.put(HealthCareServiceEnum.SONO.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
-//        mapList.put(HealthCareServiceEnum.XRAY.getName(), testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
-//        mapList.put(HealthCareServiceEnum.PATH.getName(), testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
-//        mapList.put(HealthCareServiceEnum.SPEC.getName(), testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
-//        mapList.put(Constants.MEDICINE, testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
-//        mapList.put(Constants.SYMPTOMS, testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
-//        mapList.put(Constants.PROVISIONAL_DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
-//        mapList.put(Constants.DIAGNOSIS, testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
-//        mapList.put(Constants.INSTRUCTION, testCaseObjects.clearListSelection(testCaseObjects.getInstructionList()));
-//        LaunchActivity.getLaunchActivity().setSuggestionsPrefs(mapList);
         PreferenceObjects temp = new PreferenceObjects();
-        temp.setMriList(testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
-        temp.setScanList(testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
-        temp.setSonoList(testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
-        temp.setXrayList(testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
-        temp.setPathologyList(testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
-        temp.setSpecList(testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
-        temp.setMedicineList(testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
-        temp.setSymptomsList(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
-        temp.setProDiagnosisList(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
-        temp.setDiagnosisList(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
-        temp.setInstructionList(testCaseObjects.clearListSelection(testCaseObjects.getInstructionList()));
+        temp.setMriList(preferenceObjects.clearListSelection(preferenceObjects.getMriList()));
+        temp.setScanList(preferenceObjects.clearListSelection(preferenceObjects.getScanList()));
+        temp.setSonoList(preferenceObjects.clearListSelection(preferenceObjects.getSonoList()));
+        temp.setXrayList(preferenceObjects.clearListSelection(preferenceObjects.getXrayList()));
+        temp.setPathologyList(preferenceObjects.clearListSelection(preferenceObjects.getPathologyList()));
+        temp.setSpecList(preferenceObjects.clearListSelection(preferenceObjects.getSpecList()));
+        temp.setMedicineList(preferenceObjects.clearListSelection(preferenceObjects.getMedicineList()));
+        temp.setSymptomsList(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
+        temp.setProDiagnosisList(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
+        temp.setDiagnosisList(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
+        temp.setInstructionList(preferenceObjects.getInstructionList());
+        temp.setPreferredStoreInfoHashMap(preferenceObjects.getPreferredStoreInfoHashMap());
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(temp);
-
     }
 
     @Override
@@ -294,20 +285,20 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
 
         // Add selected list
-        formDataObj.getMriList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getMriList()));
-        formDataObj.getScanList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getScanList()));
-        formDataObj.getSonoList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSonoList()));
-        formDataObj.getXrayList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getXrayList()));
-        formDataObj.getSpecList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSpecList()));
+        formDataObj.getMriList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getMriList()));
+        formDataObj.getScanList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getScanList()));
+        formDataObj.getSonoList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSonoList()));
+        formDataObj.getXrayList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getXrayList()));
+        formDataObj.getSpecList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSpecList()));
         //
-        formDataObj.getPathologyList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getPathologyList()));
+        formDataObj.getPathologyList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getPathologyList()));
         //
 
         switch (MedicalDepartmentEnum.valueOf(bizCategoryId)) {
             case OGY: {
                 formDataObj.getSymptomsList().clear();
                 formDataObj.getSymptomsList().addAll(MedicalDataStatic.Gynae.getSymptoms());
-                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+                formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
 
                 formDataObj.getObstreticsList().clear();
@@ -316,63 +307,63 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Gynae.getDiagnosis());
-                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+                formDataObj.getDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
 
 
                 formDataObj.getProvisionalDiagnosisList().clear();
                 formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Gynae.getProvisionalDiagnosis());
-                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+                formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
             }
             break;
             case PAE: {
                 formDataObj.getSymptomsList().clear();
                 formDataObj.getSymptomsList().addAll(MedicalDataStatic.Pediatrician.getSymptoms());
-                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+                formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstreticsList().clear();
                 // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getDiagnosis());
-                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+                formDataObj.getDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
 
                 formDataObj.getProvisionalDiagnosisList().clear();
                 formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Pediatrician.getProvisionalDiagnosis());
-                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+                formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
             }
             break;
             case ORT: {
                 formDataObj.getSymptomsList().clear();
                 formDataObj.getSymptomsList().addAll(MedicalDataStatic.Ortho.getSymptoms());
-                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+                formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstreticsList().clear();
                 // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Ortho.getDiagnosis());
-                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+                formDataObj.getDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
 
                 formDataObj.getProvisionalDiagnosisList().clear();
                 formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Ortho.getProvisionalDiagnosis());
-                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+                formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
             }
             break;
             default: { // General Physician is default
                 formDataObj.getSymptomsList().clear();
                 formDataObj.getSymptomsList().addAll(MedicalDataStatic.Physician.getSymptoms());
-                formDataObj.getSymptomsList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getSymptomsList()));
+                formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
 
                 formDataObj.getObstreticsList().clear();
                 // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
 
                 formDataObj.getDiagnosisList().clear();
                 formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Physician.getDiagnosis());
-                formDataObj.getDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getDiagnosisList()));
+                formDataObj.getDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
 
                 formDataObj.getProvisionalDiagnosisList().clear();
                 formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Physician.getProvisionalDiagnosis());
-                formDataObj.getProvisionalDiagnosisList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getProDiagnosisList()));
+                formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
             }
             break;
 
@@ -381,7 +372,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
         formDataObj.getMedicineList().clear();
         // Add selected list
-        formDataObj.getMedicineList().addAll(testCaseObjects.clearListSelection(testCaseObjects.getMedicineList()));
+        formDataObj.getMedicineList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getMedicineList()));
         //
 
         formDataObj.getInstructionList().clear();
@@ -396,7 +387,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getInstructionList().add("Consume less sugar");
         formDataObj.getInstructionList().add("30 min Brisk walking a day");
         formDataObj.getInstructionList().add("Drink milk every day");
-        formDataObj.getInstructionList().addAll(convertToStringList(testCaseObjects.getInstructionList()));
+        formDataObj.getInstructionList().addAll(preferenceObjects.getInstructionList());
     }
 
     private class LoadTabs extends AsyncTask<String, String, String> {
@@ -446,16 +437,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         pb_case.setVisibility(View.GONE);
     }
 
-    private ArrayList<String> convertToStringList(List<DataObj> dataObjs) {
-        ArrayList<String> strList = new ArrayList<>();
-        if (null != dataObjs && dataObjs.size() > 0) {
-            for (DataObj dataObj : dataObjs) {
-                strList.add(dataObj.getShortName());
-            }
-        }
-        return strList;
-    }
-
     public FlexboxLayoutManager getFlexBoxLayoutManager(Context context) {
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -464,4 +445,9 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         return layoutManager;
     }
 
+    private void initStores(){
+        for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
+            preferenceObjects.getPreferredStoreInfoHashMap().put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), new PreferredStoreInfo());
+        }
+    }
 }

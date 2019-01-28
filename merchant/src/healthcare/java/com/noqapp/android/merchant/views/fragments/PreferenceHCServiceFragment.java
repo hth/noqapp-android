@@ -185,43 +185,43 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     }
 
     private ArrayList<DataObj> getPreviousList(int pos) {
-        if (null == PreferenceActivity.getPreferenceActivity().testCaseObjects)
+        if (null == PreferenceActivity.getPreferenceActivity().preferenceObjects)
             return null;
         else {
 
             switch (pos) {
                 case 0: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getMriList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMriList();
                     sortListData(temp);
                     return temp;
                 }
                 case 1: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getScanList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getScanList();
                     sortListData(temp);
                     return temp;
                 }
                 case 2: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getSonoList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getSonoList();
                     sortListData(temp);
                     return temp;
                 }
                 case 3: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getXrayList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getXrayList();
                     sortListData(temp);
                     return temp;
                 }
                 case 4: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
                     sortListData(temp);
                     return temp;
                 }
                 case 5: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getSpecList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getSpecList();
                     sortListData(temp);
                     return temp;
                 }
                 default: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().testCaseObjects.getPathologyList();
+                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
                     sortListData(temp);
                     return temp;
                 }
