@@ -22,6 +22,9 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -54,10 +57,11 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     private EditText edt_review;
     private JsonTokenAndQueue jtk;
     private ProgressDialog progressDialog;
-    private RadioButton rb_1,rb_2,rb_3,rb_4,rb_5;
+    private RadioButton rb_1, rb_2, rb_3, rb_4, rb_5;
     private RadioGroup rg_save_time;
     private int selectedRadio = 1;
-
+    private long lastPress;
+    private Toast backPressToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,19 +88,18 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         rb_5 = findViewById(R.id.rb_5);
 
         rg_save_time = findViewById(R.id.rg_save_time);
-        rg_save_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        rg_save_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                for (int i=0;i<rg_save_time.getChildCount();i++) {
+                for (int i = 0; i < rg_save_time.getChildCount(); i++) {
                     View o = rg_save_time.getChildAt(i);
                     if (o instanceof RadioButton) {
-                        o.setBackground(ContextCompat.getDrawable(ReviewActivity.this,R.drawable.time_save_unselect));
+                        o.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_unselect));
                         ((RadioButton) o).setTextColor(Color.BLACK);
                     }
                 }
                 RadioButton rb = findViewById(checkedId);
-                rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this,R.drawable.time_save_select));
+                rb.setBackground(ContextCompat.getDrawable(ReviewActivity.this, R.drawable.time_save_select));
                 rb.setTextColor(Color.WHITE);
                 tv_hr_saved.setText(getSeekbarLabel(Integer.parseInt(rb.getTag().toString())));
             }
@@ -112,7 +115,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                 tv_address.setText(jtk.getStoreAddress());
                 String datetime = DateFormat.getDateTimeInstance().format(new Date());
                 tv_mobile.setText(datetime);
-                edt_review.setHint("Please provide review for "+jtk.getDisplayName());
+                edt_review.setHint("Please provide review for " + jtk.getDisplayName());
                 if (UserUtils.isLogin()) {
                     List<JsonProfile> profileList = new ArrayList<>();
                     if (null != NoQueueBaseActivity.getUserProfile().getDependents()) {
@@ -139,16 +142,19 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         tv_review_msg.setText(getString(R.string.review_msg_queue_done));
 
                 }
+                if (BuildConfig.BUILD_TYPE.equals("release")) {
+                    Answers.getInstance().logCustom(new CustomEvent("Review Screen")
+                            .putCustomAttribute("Business Type", jtk.getBusinessType().getName()));
+                }
             }
         } else {
             //Do nothing as of now
         }
-        // actionbarBack.setVisibility(View.INVISIBLE);
+        //actionbarBack.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                returnResultBack();
-                finish();
+               onBackPressed();
             }
         });
         ratingBar.setRating(4.0f);
@@ -211,9 +217,18 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        //Toast.makeText(this, "Please review the service, It is valuable to us.", Toast.LENGTH_LONG).show();
-        returnResultBack();
-        finish();
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 3000) {
+            backPressToast = Toast.makeText(this, "Please review the service, It is valuable to us.", Toast.LENGTH_LONG);
+            backPressToast.show();
+            lastPress = currentTime;
+        } else {
+            if (backPressToast != null) {
+                backPressToast.cancel();
+            }
+            returnResultBack();
+            finish();
+        }
     }
 
     @Override

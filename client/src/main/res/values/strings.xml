@@ -246,9 +246,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="great">Great !!</string>
-    <string name="review_msg_checkup_done">Your check up has been done Successfully</string>
-    <string name="review_msg_order_done">Your order has been delivered Successfully</string>
-    <string name="review_msg_queue_done">Your were served Successfully</string>
+    <string name="review_msg_checkup_done">Your check up has been done successfully</string>
+    <string name="review_msg_order_done">Your order has been delivered successfully</string>
+    <string name="review_msg_queue_done">Your were served successfully</string>
     <!-- Language select dialog -->
 
 
