@@ -4,7 +4,9 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,12 +32,13 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 import java.util.ArrayList;
 import java.util.List;
 
-public class LabTestsFragment extends Fragment {
+public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew.SearchByPos{
 
     private RecyclerView rcv_mri, rcv_scan, rcv_sono, rcv_xray, rcv_pathology,rcv_special;
     private TextView tv_add_pathology, tv_add_new;
     private StaggeredGridAdapter mriAdapter, scanAdapter, sonoAdapter, xrayAdapter, specAdapter, pathalogyAdapter;
     private int selectionPos = -1;
+    private AutoCompleteTextView actv_search_path;
 
     @Nullable
     @Override
@@ -45,6 +49,8 @@ public class LabTestsFragment extends Fragment {
         rcv_sono = v.findViewById(R.id.rcv_sono);
         rcv_xray = v.findViewById(R.id.rcv_xray);
         rcv_special = v.findViewById(R.id.rcv_special);
+        actv_search_path = v.findViewById(R.id.actv_search_path);
+        actv_search_path.setThreshold(1);
 
         rcv_pathology = v.findViewById(R.id.rcv_pathology);
         tv_add_new = v.findViewById(R.id.tv_add_new);
@@ -95,6 +101,8 @@ public class LabTestsFragment extends Fragment {
 
         updateLabSelection();
         updatePathologySelection();
+        AutoCompleteAdapterNew adapterSearchPath = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList(), null,this);
+        actv_search_path.setAdapter(adapterSearchPath);
     }
 
     private void updateLabSelection() {
@@ -288,4 +296,13 @@ public class LabTestsFragment extends Fragment {
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setSpecList(specAdapter.getSelectedDataList());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setPathologyList(pathalogyAdapter.getSelectedDataList());
     }
+    @Override
+    public void searchByPos(DataObj dataObj) {
+        new AppUtils().hideKeyBoard(getActivity());
+        actv_search_path.setText("");
+        pathalogyAdapter.selectItem(dataObj);
+        pathalogyAdapter.notifyDataSetChanged();
+
+    }
+
 }

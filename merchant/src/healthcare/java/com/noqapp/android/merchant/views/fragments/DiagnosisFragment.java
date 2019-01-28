@@ -2,7 +2,9 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -24,11 +26,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class DiagnosisFragment extends Fragment {
+public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
     private AutoCompleteTextView actv_clinical_findings, actv_examination_results;
+    private AutoCompleteTextView actv_search_provisional_dia;
 
     @Nullable
     @Override
@@ -44,6 +47,9 @@ public class DiagnosisFragment extends Fragment {
                 AddItemDialog(getActivity(), "Add Provisional Diagnosis", true);
             }
         });
+
+        actv_search_provisional_dia = v.findViewById(R.id.actv_search_provisional_dia);
+        actv_search_provisional_dia.setThreshold(1);
         return v;
     }
 
@@ -66,7 +72,8 @@ public class DiagnosisFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        AutoCompleteAdapterNew adapterSearchPath = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList(), null,this);
+        actv_search_provisional_dia.setAdapter(adapterSearchPath);
     }
 
     private void AddItemDialog(final Context mContext, String title, final boolean isMedicine) {
@@ -122,5 +129,14 @@ public class DiagnosisFragment extends Fragment {
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setProvisionalDiagnosis(provisionalDiagnosisAdapter.getSelectedData());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setClinicalFindings(actv_clinical_findings.getText().toString());
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setExaminationResults(actv_examination_results.getText().toString());
+    }
+
+    @Override
+    public void searchByPos(DataObj dataObj) {
+        new AppUtils().hideKeyBoard(getActivity());
+        actv_search_provisional_dia.setText("");
+        provisionalDiagnosisAdapter.selectItem(dataObj);
+        provisionalDiagnosisAdapter.notifyDataSetChanged();
+
     }
 }
