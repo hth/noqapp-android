@@ -7,6 +7,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,16 +28,16 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
-    private StaggeredClick staggeredClick;
+    private StaggeredMedicineClick staggeredClick;
     private boolean isEdit;
 
-    public interface StaggeredClick {
-        void staggeredClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos);
+    public interface StaggeredMedicineClick {
+        void staggeredMedicineClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos);
     }
 
 
 
-    public StaggeredGridMedicineAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredClick staggeredClick,boolean isEdit) {
+    public StaggeredGridMedicineAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredMedicineClick staggeredClick,boolean isEdit) {
         this.context = context;
         this.dataObjArrayList = dataObjArrayList;
         this.staggeredClick = staggeredClick;
@@ -59,8 +60,10 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+            holder.name.setTextColor(Color.parseColor("#19769f"));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+            holder.name.setTextColor(Color.parseColor("#19769f"));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -68,12 +71,14 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
                   dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    holder.name.setTextColor(Color.parseColor("#19769f"));
                     if (null != staggeredClick)
-                        staggeredClick.staggeredClick(true,isEdit, dataObjArrayList.get(position),position);
+                        staggeredClick.staggeredMedicineClick(true,isEdit, dataObjArrayList.get(position),position);
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
+                    holder.name.setTextColor(Color.parseColor("#19769f"));
                     if (null != staggeredClick)
-                        staggeredClick.staggeredClick(true,isEdit, dataObjArrayList.get(position),position);
+                        staggeredClick.staggeredMedicineClick(true,isEdit, dataObjArrayList.get(position),position);
                 }
 
             }

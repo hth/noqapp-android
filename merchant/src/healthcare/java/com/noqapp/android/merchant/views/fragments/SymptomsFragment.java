@@ -57,7 +57,6 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     private TextView tv_obes, tv_gyanc;
     private SwitchCompat sc_enable_history;
     private AutoCompleteTextView actv_search;
-    private final int columnCount = 4;
 
     @Nullable
     @Override

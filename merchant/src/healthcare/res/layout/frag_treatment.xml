@@ -241,36 +241,62 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <TextView
-                    android:text="Medicines"
-                    android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/tv_add_medicine"
-                    android:textColor="@android:color/black"
-                    android:layout_height="wrap_content"/>
 
-            <TextView
-                    android:id="@+id/tv_add_medicine"
-                    android:text="Add New"
-                    android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                    android:id="@+id/actv_search"
+                    android:layout_width="0dp"
+                    android:layout_weight=".6"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_search"
+                    android:drawableRight="@drawable/ic_cancel"
+                    android:drawableTint="@color/colorAccent"
+                    android:drawablePadding="10dp"
+                    android:hint="Search medicine"
+                    android:maxLines="1"
+                    android:minLines="1"
                     android:padding="10dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btn_add_round"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_height="wrap_content"/>
-        </RelativeLayout>
+                    android:textSize="@dimen/text_size_fourteen"
+                    />
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight=".4"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:text="Medicines"
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/tv_add_medicine"
+                        android:textColor="@android:color/black"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:id="@+id/tv_add_medicine"
+                        android:text="Add New"
+                        android:layout_width="wrap_content"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/btn_add_round"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
 
         <ScrollView
                 android:layout_width="match_parent"

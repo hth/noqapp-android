@@ -6,6 +6,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,23 +43,6 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         Collections.sort(dataObjArrayList);
     }
 
-    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList, StaggeredClick staggeredClick) {
-        this.context = context;
-        this.dataObjArrayList = dataObjArrayList;
-        drawableSelect = R.drawable.bg_select;
-        drawableUnSelect = R.drawable.bg_unselect;
-        this.staggeredClick = staggeredClick;
-        Collections.sort(dataObjArrayList);
-    }
-
-    public StaggeredGridAdapter(Context context, ArrayList<DataObj> dataObjArrayList, int drawableUnSelect) {
-        this.dataObjArrayList = dataObjArrayList;
-        this.context = context;
-        drawableSelect = R.drawable.bg_select;
-        this.drawableUnSelect = drawableUnSelect;
-        Collections.sort(dataObjArrayList);
-    }
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -72,8 +56,10 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
+            holder.name.setTextColor(Color.parseColor("#19769f"));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -81,11 +67,13 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
+                    holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     // Toast.makeText(context, "You click the button ", Toast.LENGTH_LONG).show();
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(true, dataObjArrayList.get(position).getShortName());
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
+                    holder.name.setTextColor(Color.parseColor("#19769f"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(false, dataObjArrayList.get(position).getShortName());
                 }
@@ -173,7 +161,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         notifyDataSetChanged();
     }
 
-    public void updateSelection(String [] temp) {
+    public void updateSelection(String[] temp) {
         for (String d :
                 temp) {
             for (int i = 0; i < dataObjArrayList.size(); i++) {
@@ -181,9 +169,12 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                     dataObjArrayList.get(i).setSelect(true);
                     break;
                 }
-
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void selectItem(DataObj dataObj) {
+        dataObjArrayList.get(dataObjArrayList.indexOf(dataObj)).setSelect(true);
     }
 }

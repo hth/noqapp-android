@@ -29,7 +29,6 @@ public class DiagnosisFragment extends Fragment {
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
     private AutoCompleteTextView actv_clinical_findings, actv_examination_results;
-    private final int columnCount = 4;
 
     @Nullable
     @Override
