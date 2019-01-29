@@ -15,7 +15,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.recivers.AlarmReceiver;
+import com.noqapp.android.client.views.receivers.AlarmReceiver;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
@@ -57,7 +57,6 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

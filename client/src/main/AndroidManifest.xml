@@ -239,8 +239,7 @@
                 android:name="io.fabric.ApiKey"
                 android:value="fc745aa326a54082165c333f7a03cee25b12f3ff"/>
 
-        <receiver android:name="com.noqapp.android.client.views.recivers.AlarmReceiver"/>
-
+        <receiver android:name="com.noqapp.android.client.views.receivers.AlarmReceiver"/>
     </application>
 
 </manifest>

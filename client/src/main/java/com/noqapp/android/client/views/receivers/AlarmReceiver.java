@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.recivers;
+package com.noqapp.android.client.views.receivers;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -15,7 +15,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -41,7 +40,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(
-                context,channelId)
+                context, channelId)
                 .setColor(ContextCompat.getColor(context, R.color.colorMobile))
                 .setSmallIcon(getNotificationIcon())
                 .setLargeIcon(bm)
