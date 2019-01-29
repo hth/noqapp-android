@@ -13,10 +13,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- Added to install on Tablet, will not check compatibility of telephony manager -->
-    <!--<uses-feature-->
-            <!--android:name="android.hardware.telephony"-->
-            <!--android:required="false"/>-->
+    <!-- Declarative Permission Starts -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <!-- Declarative Permission Ends -->
+
     <uses-feature
             android:name="android.hardware.camera"
             android:required="false"/>
