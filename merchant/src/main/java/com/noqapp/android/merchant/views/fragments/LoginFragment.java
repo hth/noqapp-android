@@ -75,8 +75,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             public void onClick(View v) {
                 new AppUtils().hideKeyBoard(getActivity());
                 if (isValidInput()) {
-                    btn_login.setBackgroundResource(R.drawable.button_drawable_red);
-                    btn_login.setTextColor(Color.WHITE);
+                 //   btn_login.setBackgroundResource(R.drawable.button_drawable_red);
+                 //   btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         LaunchActivity.getLaunchActivity().progressDialog.setMessage("Login in progress..");
@@ -233,8 +233,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         pwd = edt_pwd.getText().toString().trim();
         actv_email.setError(null);
         edt_pwd.setError(null);
-        btn_login.setBackgroundResource(R.drawable.button_drawable);
-        btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
+       // btn_login.setBackgroundResource(R.drawable.button_drawable);
+       // btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         if (TextUtils.isEmpty(email)) {
             actv_email.setError(getString(R.string.error_email_blank));
             isValid = false;

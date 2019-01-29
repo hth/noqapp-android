@@ -1,87 +1,100 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/white"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
-        android:paddingBottom="20dp"
-        android:paddingLeft="@dimen/tab_screen_padding"
-        android:paddingRight="@dimen/tab_screen_padding"
-        android:paddingTop="20dp">
-
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_gradient_square">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/login_logo" />
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/cardview"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/tab_screen_padding"
+                                        android:layout_marginEnd="@dimen/tab_screen_padding"
+                                        android:layout_gravity="center"
+                                        android:padding="50dp"
+                                        card_view:cardBackgroundColor="@android:color/white"
+                                        card_view:cardCornerRadius="10dp"
+                                        card_view:cardElevation="2dp"
+                                        card_view:cardUseCompatPadding="true">
 
-            <AutoCompleteTextView
-                android:id="@+id/actv_email"
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/square_white_bg_drawable"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textColorHint="@color/color_login_hint"
-                android:textSize="@dimen/text_size_fourteen" />
+                android:background="@android:color/white"
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
+                android:padding="50dp"
+                >
 
-            <EditText
-                android:id="@+id/edt_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/square_white_bg_drawable"
-                android:hint="@string/prompt_pwd"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textColorHint="@color/color_login_hint"
-                android:textSize="@dimen/text_size_fourteen" />
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/button_drawable"
-                android:text="@string/sign_in"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_fourteen" />
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/complete_black_label"/>
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:hint="@string/prompt_email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/color_login_hint"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+                <EditText
+                        android:id="@+id/edt_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:hint="@string/prompt_pwd"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/color_login_hint"
+                        android:textSize="@dimen/text_size_fourteen"/>
+
+                <Button
+                        android:id="@+id/btn_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/bg_gradient_round"
+                        android:text="@string/sign_in"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_fourteen"/>
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_login"
-                android:gravity="center"
-                android:text="@string/copy_right"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_twelve"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/btn_login"
+                        android:gravity="center"
+                        android:text="@string/copy_right"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
 </ScrollView>

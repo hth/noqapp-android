@@ -2,7 +2,10 @@
 <resources>
     <color name="colorPrimary">#CD334E</color>
     <color name="colorPrimaryDark">#b82d46</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#CD334E</color>
     <color name="color_action_bar">#CD334E</color>
+
+    <color name="btn_txt_color">#fff</color>
+    <color name="radio_button_color">#CD334E</color>
 
 </resources>

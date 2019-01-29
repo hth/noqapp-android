@@ -4,7 +4,7 @@
                                    android:id="@+id/toolbar"
                                    android:layout_width="match_parent"
                                    android:layout_height="58dp"
-                                   android:background="@color/color_action_bar"
+                                   android:background="@drawable/bg_gradient_square"
                                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     <ImageView

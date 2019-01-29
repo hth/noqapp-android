@@ -10,7 +10,6 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -22,12 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,14 +36,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.ColorInt;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;

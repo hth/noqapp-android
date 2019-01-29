@@ -456,7 +456,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         tv_title.setText(jsonTopic.getDisplayName());
 
         btn_start.setText(context.getString(R.string.start));
-        btn_start.setBackgroundResource(R.mipmap.start);
+        btn_start.setBackgroundResource(R.drawable.start);
 
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
                 || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
@@ -468,53 +468,53 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             case S:
                 tv_start.setText(context.getString(R.string.start));
                 btn_next.setEnabled(false);
-                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_next.setBackgroundResource(R.drawable.next_inactive);
                 btn_skip.setEnabled(false);
-                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
+                btn_skip.setBackgroundResource(R.drawable.skip_inactive);
                 break;
             case R:
                 tv_start.setText(context.getString(R.string.continues));
                 btn_next.setEnabled(false);
-                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_next.setBackgroundResource(R.drawable.next_inactive);
                 btn_skip.setEnabled(false);
-                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
+                btn_skip.setBackgroundResource(R.drawable.skip_inactive);
                 break;
             case N:
                 tv_next.setText(context.getString(R.string.next));
                 btn_next.setEnabled(true);
-                btn_next.setBackgroundResource(R.mipmap.next);
+                btn_next.setBackgroundResource(R.drawable.next);
                 btn_skip.setEnabled(true);
-                btn_skip.setBackgroundResource(R.mipmap.skip);
+                btn_skip.setBackgroundResource(R.drawable.skip);
                 tv_start.setText(context.getString(R.string.pause));
-                btn_start.setBackgroundResource(R.mipmap.pause);
+                btn_start.setBackgroundResource(R.drawable.pause);
                 break;
             case D:
                 tv_start.setText(context.getString(R.string.done));
                 tv_total_value.setText("0");
-                btn_start.setBackgroundResource(R.mipmap.stop);
+                btn_start.setBackgroundResource(R.drawable.stop);
                 btn_next.setEnabled(false);
-                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_next.setBackgroundResource(R.drawable.next_inactive);
                 btn_skip.setEnabled(false);
-                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
+                btn_skip.setBackgroundResource(R.drawable.skip_inactive);
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 break;
             case C:
                 tv_start.setText(context.getString(R.string.closed));
                 btn_start.setEnabled(false);
-                btn_start.setBackgroundResource(R.mipmap.stop_inactive);
+                btn_start.setBackgroundResource(R.drawable.stop_inactive);
                 btn_next.setEnabled(false);
-                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_next.setBackgroundResource(R.drawable.next_inactive);
                 btn_skip.setEnabled(false);
-                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
+                btn_skip.setBackgroundResource(R.drawable.skip_inactive);
                 break;
             case P:
                 tv_start.setText(context.getString(R.string.pause));
                 btn_next.setEnabled(false);
-                btn_next.setBackgroundResource(R.mipmap.next_inactive);
+                btn_next.setBackgroundResource(R.drawable.next_inactive);
                 btn_skip.setEnabled(false);
-                btn_skip.setBackgroundResource(R.mipmap.skip_inactive);
-                btn_start.setBackgroundResource(R.mipmap.pause);
+                btn_skip.setBackgroundResource(R.drawable.skip_inactive);
+                btn_start.setBackgroundResource(R.drawable.pause);
                 break;
             default:
                 Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
