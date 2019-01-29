@@ -9,7 +9,7 @@
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/color_action_bar">
+            android:background="@drawable/bg_gradient_square">
 
         <ImageView
                 android:id="@+id/actionbarBack"
@@ -101,7 +101,7 @@
                         android:checked="true"
                         android:text="Mobile No"
                         android:textSize="@dimen/text_size_twelve"
-                        app:buttonTint="#e13e3e"/>
+                        app:buttonTint="@color/radio_button_color"/>
 
                 <android.support.v7.widget.AppCompatRadioButton
                         android:id="@+id/rb_customer_id"
@@ -112,7 +112,7 @@
                         android:checked="false"
                         android:text="Customer ID"
                         android:textSize="@dimen/text_size_twelve"
-                        app:buttonTint="#e13e3e"/>
+                        app:buttonTint="@color/radio_button_color"/>
             </RadioGroup>
 
             <EditText
@@ -123,7 +123,7 @@
                     android:maxLength="10"
                     android:maxLines="1"
                     android:minLines="1"
-                    android:background="@drawable/edt_roun_rect"
+                    android:background="@drawable/square_white_bg_drawable"
                     android:inputType="phone"
                     android:textSize="@dimen/text_size_twelve"
                     android:padding="10dp"/>
@@ -137,7 +137,7 @@
                     android:minLines="1"
                     android:maxLength="10"
                     android:inputType="text"
-                    android:background="@drawable/edt_roun_rect"
+                    android:background="@drawable/square_white_bg_drawable"
                     android:visibility="gone"
                     android:textSize="@dimen/text_size_twelve"
                     android:padding="10dp"/>
@@ -151,7 +151,7 @@
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/button_drawable_red"
+                android:background="@drawable/bg_gradient_round"
                 android:text="@string/create_token"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

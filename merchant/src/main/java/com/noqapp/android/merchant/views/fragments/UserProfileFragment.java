@@ -20,15 +20,10 @@ import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,14 +114,14 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_male.setBackgroundResource(R.drawable.bg_nogradient_square);
                 tv_male.setText(getString(R.string.male));
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
                 break;
             case R.id.tv_female:
                 gender = "F";
-                tv_female.setBackgroundResource(R.drawable.button_drawable_red_square);
+                tv_female.setBackgroundResource(R.drawable.bg_nogradient_square);
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
@@ -140,8 +135,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public void updateProfile() {
 
         if (validate()) {
-            btn_update.setBackgroundResource(R.drawable.button_drawable_red);
-            btn_update.setTextColor(Color.WHITE);
+           // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
+           // btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 //   String phoneNo = edt_phoneNo.getText().toString();
@@ -236,8 +231,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     }
 
     private boolean validate() {
-        btn_update.setBackgroundResource(R.drawable.button_drawable);
-        btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
+       // btn_update.setBackgroundResource(R.drawable.button_drawable);
+       // btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         boolean isValid = true;
         edt_name.setError(null);
         edt_email.setError(null);

@@ -313,7 +313,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
-        if (new AppUtils().isTablet(getActivity()) && topics.size() > 0) {
+        if (new AppUtils().isTablet(LaunchActivity.getLaunchActivity()) && topics.size() > 0) {
             merchantDetailFragment = new MerchantDetailFragment();
             Bundle b = new Bundle();
             b.putSerializable("jsonMerchant", topics);

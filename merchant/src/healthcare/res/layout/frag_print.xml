@@ -2,12 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
+            android:padding="10dp"
+            android:background="@drawable/bg_gradient_square"
             android:layout_height="match_parent">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:background="#fff"
             android:orientation="vertical">
 
 
@@ -639,7 +642,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/button_drawable"
+                    android:background="@drawable/bg_gradient_round"
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:paddingLeft="90dp"
@@ -647,7 +650,7 @@
                     android:layout_marginEnd="50dp"
                     android:text="@string/submit"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorMobile"
+                    android:textColor="@color/btn_txt_color"
                     android:textSize="@dimen/text_size_fourteen"/>
 
             <Button
@@ -658,14 +661,14 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/button_drawable"
+                    android:background="@drawable/bg_gradient_round"
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:paddingLeft="90dp"
                     android:paddingRight="90dp"
                     android:text="Print PDF"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorMobile"
+                    android:textColor="@color/btn_txt_color"
                     android:visibility="gone"
                     android:textSize="@dimen/text_size_fourteen"/>
 

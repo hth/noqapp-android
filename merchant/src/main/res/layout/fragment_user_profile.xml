@@ -145,11 +145,11 @@
                 android:paddingRight="100dp"
                 android:paddingLeft="100dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_drawable"
+                android:background="@drawable/bg_gradient_round"
                 android:gravity="center"
                 android:text="@string/update"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/btn_txt_color"
                 android:textSize="@dimen/text_size_fourteen"/>
     </LinearLayout>
 

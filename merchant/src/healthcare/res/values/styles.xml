@@ -35,11 +35,11 @@
 
 
     <style name="MVS_Oxygen">
-        <item name="mv_firstColor">@android:color/holo_orange_light</item>
+        <item name="mv_firstColor">@color/mv_primary</item>
         <item name="mv_numberOfFirst">1</item>
         <item name="mv_numberOfSecond">0</item>
         <item name="mv_pickerStyle">@style/MNPS_Oxygen</item>
-        <item name="mv_secondColor">@android:color/holo_orange_dark</item>
+        <item name="mv_secondColor">@color/mv_secondary</item>
     </style>
 
     <style name="MNPS_Oxygen">
@@ -53,11 +53,11 @@
     </style>
 
     <style name="MVS_Pulse">
-        <item name="mv_firstColor">@android:color/holo_orange_light</item>
+        <item name="mv_firstColor">@color/mv_primary</item>
         <item name="mv_numberOfFirst">1</item>
         <item name="mv_numberOfSecond">0</item>
         <item name="mv_pickerStyle">@style/MNPS_Pulse</item>
-        <item name="mv_secondColor">@android:color/holo_orange_dark</item>
+        <item name="mv_secondColor">@color/mv_secondary</item>
     </style>
 
     <style name="MNPS_Pulse">
@@ -71,11 +71,11 @@
     </style>
 
     <style name="MVS_Weight">
-        <item name="mv_firstColor">@android:color/holo_orange_light</item>
+        <item name="mv_firstColor">@color/mv_primary</item>
         <item name="mv_numberOfFirst">1</item>
         <item name="mv_numberOfSecond">0</item>
         <item name="mv_pickerStyle">@style/MNPS_Weight</item>
-        <item name="mv_secondColor">@android:color/holo_orange_dark</item>
+        <item name="mv_secondColor">@color/mv_secondary</item>
     </style>
 
     <style name="MNPS_Weight">
@@ -89,11 +89,11 @@
     </style>
 
     <style name="MVS_Temperature1">
-        <item name="mv_firstColor">@android:color/holo_orange_light</item>
+        <item name="mv_firstColor">@color/mv_primary</item>
         <item name="mv_numberOfFirst">1</item>
         <item name="mv_numberOfSecond">0</item>
         <item name="mv_pickerStyle">@style/MNPS_Temperature1</item>
-        <item name="mv_secondColor">@android:color/holo_orange_dark</item>
+        <item name="mv_secondColor">@color/mv_secondary</item>
     </style>
 
     <style name="MNPS_Temperature1">
@@ -107,11 +107,11 @@
     </style>
 
     <style name="MVS_Temperature2">
-        <item name="mv_firstColor">@android:color/holo_orange_light</item>
+        <item name="mv_firstColor">@color/mv_primary</item>
         <item name="mv_numberOfFirst">0</item>
         <item name="mv_numberOfSecond">1</item>
         <item name="mv_pickerStyle">@style/MNPS_Temperature2</item>
-        <item name="mv_secondColor">@android:color/holo_orange_dark</item>
+        <item name="mv_secondColor">@color/mv_secondary</item>
     </style>
 
     <style name="MNPS_Temperature2">

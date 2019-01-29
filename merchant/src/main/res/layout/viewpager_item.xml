@@ -182,7 +182,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight=".15"
-                    android:background="@drawable/square_white_bg_drawable"
+                    android:background="@drawable/temp"
                     android:weightSum="1">
 
 
@@ -209,7 +209,7 @@
                         <TextView
                                 android:id="@+id/tv_current_value"
                                 style="@style/style_join_queue_tv"
-                                android:textColor="@color/colorMobile"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/value_text_size"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -245,7 +245,7 @@
                         <TextView
                                 android:id="@+id/tv_total_value"
                                 style="@style/style_join_queue_tv"
-                                android:textColor="@color/color_total_val"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/value_text_size"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -282,7 +282,7 @@
                                 android:layout_below="@+id/tv_label"
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
-                                android:textColor="@android:color/black"
+                                android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/value_text_size"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -310,7 +310,7 @@
                             android:id="@+id/btn_skip"
                             android:layout_width="@dimen/play_btn_size"
                             android:layout_height="@dimen/play_btn_size"
-                            android:background="@mipmap/skip"
+                            android:background="@drawable/skip"
                             android:text="@string/skip"
                             android:textAllCaps="false"
                             android:textColor="@android:color/transparent"
@@ -337,7 +337,7 @@
                             android:id="@+id/btn_start"
                             android:layout_width="@dimen/play_btn_size"
                             android:layout_height="@dimen/play_btn_size"
-                            android:background="@mipmap/start"
+                            android:background="@drawable/start"
                             android:text="@string/start"
                             android:textAllCaps="false"
                             android:textColor="@android:color/transparent"
@@ -364,7 +364,7 @@
                             android:id="@+id/btn_next"
                             android:layout_width="@dimen/play_btn_size"
                             android:layout_height="@dimen/play_btn_size"
-                            android:background="@mipmap/next"
+                            android:background="@drawable/next"
                             android:text="@string/next"
                             android:textAllCaps="false"
                             android:textColor="@android:color/transparent"
@@ -429,7 +429,7 @@
                                     android:layout_weight=".33"
                                     android:id="@+id/iv_generate_token"
                                     android:layout_margin="5dp"
-                                    android:background="@color/colorMobile"
+                                    android:background="@color/colorPrimaryDark"
                                     android:scaleType="centerInside"
                                     android:src="@drawable/add_token"
                                     android:tint="@android:color/white"/>
@@ -440,7 +440,7 @@
                                     android:layout_weight=".33"
                                     android:id="@+id/iv_view_followup"
                                     android:layout_margin="5dp"
-                                    android:background="@color/colorMobile"
+                                    android:background="@color/colorPrimaryDark"
                                     android:scaleType="centerInside"
                                     android:src="@drawable/follow_up"
                                     android:tint="@android:color/white"/>
@@ -451,7 +451,7 @@
                                     android:layout_weight=".33"
                                     android:id="@+id/iv_queue_history"
                                     android:layout_margin="5dp"
-                                    android:background="@color/colorMobile"
+                                    android:background="@color/colorPrimaryDark"
                                     android:scaleType="centerInside"
                                     android:src="@drawable/history"
                                     android:tint="@android:color/white"/>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5a74a9</color>
-    <color name="colorPrimaryDark">#2a497a</color>
-    <color name="colorAccent">#8aa2db</color>
-    <color name="color_action_bar">#5a74a9</color>
-    <color name="pressed_color">#8aa2db</color>
+    <color name="colorPrimary">#2f83a8</color>
+    <color name="colorPrimaryDark">#19769f</color>
+    <color name="colorAccent">#4691b2</color>
+    <color name="color_action_bar">#19769f</color>
+    <color name="pressed_color">#31b7bd</color>
     <color name="segment_bg_color">#e3e8f5</color>
     <color name="segment_bg_color_select">#36B6AF</color>
     <color name="segment_text_color">@android:color/black</color>
@@ -13,5 +13,12 @@
     <color name="disable_physical">#E6808080</color>
 
     <color name="icon_color">#6ec8cd</color>
+    <color name="btn_txt_color">#fff</color>
+    <color name="radio_button_color">#19769f</color>
     <color name="form_background_color">#31b7bd</color>
+
+
+    <color name="mv_primary">#31b7bd</color>
+    <color name="mv_secondary">#2f83a8</color>
+
 </resources>

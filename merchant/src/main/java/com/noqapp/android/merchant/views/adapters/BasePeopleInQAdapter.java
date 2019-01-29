@@ -287,7 +287,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
                     recordHolder.tv_create_case.setClickable(true);
-                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
                 } else {
                     recordHolder.tv_create_case.setClickable(false);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
@@ -295,7 +295,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             } else if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
                 if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                     recordHolder.tv_create_case.setClickable(true);
-                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.tv_roun_rect);
+                    recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
                 } else {
                     recordHolder.tv_create_case.setClickable(false);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.grey_background);
@@ -310,7 +310,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
         if (jsonQueuedPerson.getDependents().size() > 0) {
             //recordHolder.tv_change_name.setVisibility(View.VISIBLE);
-            recordHolder.tv_change_name.setBackgroundResource(R.drawable.tv_roun_rect);
+            recordHolder.tv_change_name.setBackgroundResource(R.drawable.bg_nogradient_round);
             recordHolder.tv_change_name.setClickable(true);
         } else {
             //recordHolder.tv_change_name.setVisibility(View.GONE);
