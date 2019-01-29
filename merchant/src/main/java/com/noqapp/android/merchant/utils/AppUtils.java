@@ -49,25 +49,17 @@ public class AppUtils extends CommonHelper {
     }
 
 
-    //TODO(chandra) conditioned to call when permission available
     public void makeCall(Activity context, String phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
-            int checkPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
-            if (checkPermission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        context,
-                        new String[]{Manifest.permission.CALL_PHONE},
-                        111);
-            } else {
-                try {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:" + phoneNumber));
-                    context.startActivity(callIntent);
-                } catch (ActivityNotFoundException ex) {
-                    Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
-                    Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
-                }
+            try {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                context.startActivity(callIntent);
+            } catch (ActivityNotFoundException ex) {
+                Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
+                Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
             }
+
         }
     }
 
