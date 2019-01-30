@@ -4,6 +4,7 @@ import com.noqapp.android.merchant.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ShowAlertInformation {
+
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 600;
     public static void showNetworkDialog(Context context) {
         showThemeDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
@@ -28,6 +32,7 @@ public class ShowAlertInformation {
         tv_msg.setText(message);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
@@ -44,6 +49,7 @@ public class ShowAlertInformation {
             }
         });
         mAlertDialog.show();
+        mAlertDialog.getWindow().setLayout(WIDTH, HEIGHT);
     }
 
     public static void showThemePlayStoreDialog(final Context context, String title, String message, boolean isNegativeEnable) {
@@ -58,6 +64,7 @@ public class ShowAlertInformation {
         tv_msg.setText(message);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mAlertDialog.setCanceledOnTouchOutside(false);
         mAlertDialog.setCancelable(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
@@ -83,6 +90,7 @@ public class ShowAlertInformation {
         });
         try {
             mAlertDialog.show();
+            mAlertDialog.getWindow().setLayout(WIDTH, HEIGHT);
         } catch(Exception e){
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
@@ -105,6 +113,7 @@ public class ShowAlertInformation {
             tv_msg.setGravity(Gravity.LEFT);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
@@ -121,6 +130,7 @@ public class ShowAlertInformation {
             }
         });
         mAlertDialog.show();
+        mAlertDialog.getWindow().setLayout(WIDTH, HEIGHT);
     }
 
     public static void showThemeDialog(Context context, String title, String message, int icon) {
