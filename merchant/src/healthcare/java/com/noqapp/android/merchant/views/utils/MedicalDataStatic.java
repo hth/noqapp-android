@@ -12,20 +12,20 @@ public class MedicalDataStatic {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
             dataObjs.add(new DataObj("DISCHARGE FROM VAGINA", "PV DISCHARGE", "", false));
             dataObjs.add(new DataObj("ITCHING AT VAGINA", "ITCHING AT VAGINA", "", false));
-            dataObjs.add(new DataObj("DYSPAREUNIA ( PAINFUL INTERCOURSE )", "DYSPAREUNIA ( PAINFUL INTERCOURSE )", "", false));
+            dataObjs.add(new DataObj("DYSPAREUNIA (PAINFUL INTERCOURSE)", "DYSPAREUNIA (PAINFUL INTERCOURSE)", "", false));
             dataObjs.add(new DataObj("PAIN IN LOWER ABDOMEN", "PAIN IN LOWER ABDOMEN", "", false));
             dataObjs.add(new DataObj("PER VAGINAL BLEEDING", "PV BLEED", "", false));
             dataObjs.add(new DataObj("MENORRHAGIA", "MENORRHAGIA", "", false));
             dataObjs.add(new DataObj("MENOMETRORRHAGIA", "MENOMETRORRHAGIA", "", false));
             dataObjs.add(new DataObj("POLYMENORRHOEA", "POLYMENORRHOEA", "", false));
             dataObjs.add(new DataObj("FEVER", "FEVER", "", false));
-            dataObjs.add(new DataObj("PAIN IN BREAST ( MASTALGIA )", "PAIN IN BREAST ( MASTALGIA )", "", false));
+            dataObjs.add(new DataObj("PAIN IN BREAST (MASTALGIA)", "PAIN IN BREAST (MASTALGIA)", "", false));
             dataObjs.add(new DataObj("AMENORRHOEA", "AMENORRHOEA", "", false));
             dataObjs.add(new DataObj("PALLOR", "PALLOR", "", false));
             dataObjs.add(new DataObj("LOOSE MOTIONS", "LOOSE MOTIONS", "", false));
             dataObjs.add(new DataObj("PAIN AT VAGINAL REGION", "PAIN AT VAGINAL REGION", "", false));
             dataObjs.add(new DataObj("WEIGHT GAIN", "WEIGHT GAIN", "", false));
-            dataObjs.add(new DataObj("WHITE DISCHARGE PER VAGINAL ( LEUCORRHOEA )", "WHITE DISCHARGE PER VAGINAL ( LEUCORRHOEA )", "", false));
+            dataObjs.add(new DataObj("WHITE DISCHARGE PER VAGINAL (LEUCORRHOEA)", "WHITE DISCHARGE PER VAGINAL (LEUCORRHOEA)", "", false));
             dataObjs.add(new DataObj("BURNING MICTURATION", "BURNING MICTURATION", "", false));
             dataObjs.add(new DataObj("DELAYED & IRREGULAR CYCLES", "DELAYED & IRREGULAR CYCLES", "", false));
             dataObjs.add(new DataObj("PAIN AT ILIAC REGION", "PAIN AT ILIAC REGION", "", false));
@@ -46,7 +46,7 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("INFERTILITY : PRIMARY", "INFERTILITY : PRIMARY", "", false));
             dataObjs.add(new DataObj("INFERTILITY – SECONDARY", "INFERTILITY – SECONDARY", "", false));
             dataObjs.add(new DataObj("5 - 40 WEEKS PREGNANCY", "5 - 40 WEEKS PREGNANCY", "", false));
-            dataObjs.add(new DataObj("EARLY PREGANCY WITH PV BLEEDING", "EARLY PREGNANCY WITH PV BLEEDING", "", false));
+            dataObjs.add(new DataObj("EARLY PREGNANCY WITH PV BLEEDING", "EARLY PREGNANCY WITH PV BLEEDING", "", false));
             dataObjs.add(new DataObj("VESICULAR MOLE", "VESICULAR MOLE", "", false));
             dataObjs.add(new DataObj("BARTHOLIN CYST", "BARTHOLIN CYST", "", false));
             dataObjs.add(new DataObj("BARTHOLIN ABSCESS", "BARTHOLIN ABSCESS", "", false));
@@ -198,6 +198,110 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("MUSCLE CRAMPS", "", false));
             dataObjs.add(new DataObj("DISCHARGE FROM EAR", "", false));
             dataObjs.add(new DataObj("DIFFICULTY IN SWALLOWING", "", false));
+            return dataObjs;
+        }
+    }
+
+    public static class Surgeon {
+        public static ArrayList<DataObj> getDiagnosis() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("RENAL STONE","",false));
+            dataObjs.add(new DataObj("URETERIC STONE","",false));
+            dataObjs.add(new DataObj("ACUTE APPENDICITIS","",false));
+            dataObjs.add(new DataObj("CHRONIC APPENDICITIS","",false));
+            dataObjs.add(new DataObj("ACUTE PANCREATITIS","",false));
+            dataObjs.add(new DataObj("CHOLELITHIASIS","",false));
+            dataObjs.add(new DataObj("CHOLECYSTITIS","",false));
+            dataObjs.add(new DataObj("CHRONIC PANCREATITIS","",false));
+            dataObjs.add(new DataObj("CARBUNCLE","",false));
+            dataObjs.add(new DataObj("BOILS","",false));
+            dataObjs.add(new DataObj("INTESTINAL OBSTRUCTION","",false));
+            dataObjs.add(new DataObj("URINARY OBSTRUCTION","",false));
+            dataObjs.add(new DataObj("MALENA","",false));
+            dataObjs.add(new DataObj("HAEMATEMESIS","",false));
+            dataObjs.add(new DataObj("HAEMAPTOSIS","",false));
+            dataObjs.add(new DataObj("GASTRITIS","",false));
+            dataObjs.add(new DataObj("IRRITABLE BOWEL SYNDROME","",false));
+            dataObjs.add(new DataObj("SPLEENOMEGALY","",false));
+            dataObjs.add(new DataObj("DIABETIC FOOT","",false));
+            dataObjs.add(new DataObj("DIABETIC ULCERS","",false));
+            dataObjs.add(new DataObj("DUODINITIS","",false));
+            dataObjs.add(new DataObj("CELLULITIS","",false));
+            dataObjs.add(new DataObj("VASICAL STONE","",false));
+            dataObjs.add(new DataObj("CLW SUTURING","",false));
+            dataObjs.add(new DataObj("PENILE INJURY","",false));
+            dataObjs.add(new DataObj("CIRCUMCISION","",false));
+            dataObjs.add(new DataObj("HYDROCELE","",false));
+            dataObjs.add(new DataObj("INGUINAL HERNIA","",false));
+            dataObjs.add(new DataObj("UMBILICAL HERNIA","",false));
+            dataObjs.add(new DataObj("RETENTION OF URINE","",false));
+            dataObjs.add(new DataObj("TORTION OF TESTIS","",false));
+            dataObjs.add(new DataObj("AVUSION OF NAIL","",false));
+            dataObjs.add(new DataObj("CRUSH INJURY","",false));
+            dataObjs.add(new DataObj("TENDON CUT","",false));
+            dataObjs.add(new DataObj("FISSURE IN ANO","",false));
+            dataObjs.add(new DataObj("HAEMORRHOIDS","",false));
+            dataObjs.add(new DataObj("FISTULA IN ANO","",false));
+            dataObjs.add(new DataObj("URINARY TRACT INFECTION","",false));
+            dataObjs.add(new DataObj("PERITONITIS","",false));
+            dataObjs.add(new DataObj("PERFORATIVE PERITONITIS","",false));
+            dataObjs.add(new DataObj("DEODENAL ULCER","",false));
+            dataObjs.add(new DataObj("GASTRIC ULCER","",false));
+            dataObjs.add(new DataObj("ULCERATIVE COLLITIS","",false));
+            dataObjs.add(new DataObj("ENTERITIS","",false));
+            dataObjs.add(new DataObj("CORN","",false));
+            dataObjs.add(new DataObj("BURN INJURY","",false));
+            dataObjs.add(new DataObj("TRAUMATIC INJURY TO SPLEEN","",false));
+            dataObjs.add(new DataObj("TRAUMATIC INJURY TO LIVER","",false));
+            dataObjs.add(new DataObj("SPLEENIC CYST","",false));
+            dataObjs.add(new DataObj("DRY GANGRENE","",false));
+            dataObjs.add(new DataObj("WET GANGRENE","",false));
+        }
+
+        public static ArrayList<DataObj> getProvisionalDiagnosis() {
+            return getDiagnosis();
+        }
+
+        public static ArrayList<DataObj> getSymptoms() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("PAIN IN ABDOMEN","PAIN IN ABDOMEN","",false));
+            dataObjs.add(new DataObj("NAUSEA","NAUSEA","",false));
+            dataObjs.add(new DataObj("VOMITING","VOMITING","",false));
+            dataObjs.add(new DataObj("FEVER","FEVER","",false));
+            dataObjs.add(new DataObj("PAIN IN ABDOMEN LOIN TO GROIN REGION","PAIN IN ABDOMEN LOIN TO GROIN REGION","",false));
+            dataObjs.add(new DataObj("BURNING MICTURATION","BURNING MICTURATION","",false));
+            dataObjs.add(new DataObj("INCREASED FREQUENCY OF URINATION ","INCREASED FREQUENCY OF URINATION ","",false));
+            dataObjs.add(new DataObj("DRIBBLING OF MICTURATION","DRIBBLING OF MICTURATION","",false));
+            dataObjs.add(new DataObj("PAIN AT ANAL REGION WHILE PASSING MOTION","PAIN AT ANAL REGION WHILE PASSING MOTION","",false));
+            dataObjs.add(new DataObj("BLEEDING FROM ANAL REGION WHILE PASSING MOTION","BLEEDING FROM ANAL REGION WHILE PASSING MOTION","",false));
+            dataObjs.add(new DataObj("REDNESS AT ANAL REGION","REDNESS AT ANAL REGION","",false));
+            dataObjs.add(new DataObj("WOUND OVER BODY","WOUND OVER BODY","",false));
+            dataObjs.add(new DataObj("DISCHARGE FROM WOUND","DISCHARGE FROM WOUND","",false));
+            dataObjs.add(new DataObj("SWELLING OVER LOWER LIMB","SWELLING OVER LOWER LIMB","",false));
+            dataObjs.add(new DataObj("SWELLING OVER UPPER LIMB","SWELLING OVER UPPER LIMB","",false));
+            dataObjs.add(new DataObj("REDNESS +","REDNESS +","",false));
+            dataObjs.add(new DataObj("CARBUNCLE +","CARBUNCLE +","",false));
+            dataObjs.add(new DataObj("ERUCTATIONS","ERUCTATIONS","",false));
+            dataObjs.add(new DataObj("CONSTIPATIONS","CONSTIPATIONS","",false));
+            dataObjs.add(new DataObj("AVULSION OF NAIL PAIN","AVULSION OF NAIL PAIN","",false));
+            dataObjs.add(new DataObj("LOOSE STOOLS","LOOSE STOOLS","",false));
+            dataObjs.add(new DataObj("BLEEDING IN VOMITING","BLEEDING IN VOMITING","",false));
+            dataObjs.add(new DataObj("BLEEDING IN SPUTUM","BLEEDING IN SPUTUM","",false));
+            dataObjs.add(new DataObj("BURNING AT EPIGASTRIC REGION","BURNING AT EPIGASTRIC REGION","",false));
+            dataObjs.add(new DataObj("INGESTION OF FOREIGN BODY","INGESTION OF FOREIGN BODY","",false));
+            dataObjs.add(new DataObj("CLW","CLW","",false));
+            dataObjs.add(new DataObj("SWELLING AT INGUINAL REGION WHILE COUGHING","SWELLING AT INGUINAL REGION WHILE COUGHING","",false));
+            dataObjs.add(new DataObj("SWELLING AT UMBILICAL REGION","SWELLING AT UMBILICAL REGION","",false));
+            dataObjs.add(new DataObj("HEAVINESS IN ABDOMEN","HEAVINESS IN ABDOMEN","",false));
+            dataObjs.add(new DataObj("GASES DISTENTION","GASES DISTENTION","",false));
+            dataObjs.add(new DataObj("PENILE INJURY","PENILE INJURY","",false));
+            dataObjs.add(new DataObj("PAIN IN PENIS","PAIN IN PENIS","",false));
+            dataObjs.add(new DataObj("PAIN AT EPIGASTRIC REGION RADIATED TOWARDS BACK","PAIN AT EPIGASTRIC REGION RADIATED TOWARDS BACK","",false));
+            dataObjs.add(new DataObj("PAIN AT SPLEENIC REGION","PAIN AT SPLEENIC REGION","",false));
+            dataObjs.add(new DataObj("PAIN AT TESTIS","PAIN AT TESTIS","",false));
+            dataObjs.add(new DataObj("SWELLING AT SCROTUM","SWELLING AT SCROTUM","",false));
+            dataObjs.add(new DataObj("ACCIDENTAL BURN INJURY ","ACCIDENTAL BURN INJURY ","",false));
+            dataObjs.add(new DataObj("PUS DISCHARGE","PUS DISCHARGE","",false));
             return dataObjs;
         }
     }
