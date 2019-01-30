@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,7 +53,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
     private DataObj dataObj;
     private int selectionPos = -1;
-    private AutoCompleteTextView actv_search,actv_search_dia;
+    private AutoCompleteTextView actv_search_medicine,actv_search_dia;
 
     @Nullable
     @Override
@@ -136,10 +137,30 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             }
         });
 
-        actv_search = v.findViewById(R.id.actv_search);
-        actv_search.setThreshold(1);
+        actv_search_medicine = v.findViewById(R.id.actv_search_medicine);
+        actv_search_medicine.setThreshold(1);
         actv_search_dia = v.findViewById(R.id.actv_search_dia);
         actv_search_dia.setThreshold(1);
+
+
+
+
+        ImageView iv_clear_actv_medicine = v.findViewById(R.id.iv_clear_actv_medicine);
+        iv_clear_actv_medicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actv_search_medicine.setText("");
+                new AppUtils().hideKeyBoard(getActivity());
+            }
+        });
+        ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
+        iv_clear_actv_dia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actv_search_dia.setText("");
+                new AppUtils().hideKeyBoard(getActivity());
+            }
+        });
         return v;
     }
 
@@ -186,7 +207,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
         view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
 
         AutoCompleteAdapterNew adapter = new AutoCompleteAdapterNew(getActivity(), android.R.layout.simple_dropdown_item_1line, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this,null);
-        actv_search.setAdapter(adapter);
+        actv_search_medicine.setAdapter(adapter);
         AutoCompleteAdapterNew adapterSearchDia = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList(), null,this);
         actv_search_dia.setAdapter(adapterSearchDia);
     }
@@ -380,7 +401,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     @Override
     public void searchClick(boolean isOpen, boolean isEdit, DataObj dataObj, int pos) {
         new AppUtils().hideKeyBoard(getActivity());
-        actv_search.setText("");
+        actv_search_medicine.setText("");
         staggeredMedicineClick(isOpen, isEdit, dataObj, pos);
     }
 

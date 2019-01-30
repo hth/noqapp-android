@@ -35,7 +35,6 @@ public class ShowPersonInQAdapter extends RecyclerView.Adapter<ShowPersonInQAdap
         TextView tv_customer_name;
         TextView tv_customer_mobile;
         TextView tv_sequence_number;
-        RelativeLayout rl_status;
         CardView cardview;
 
         private MyViewHolder(View itemView) {
@@ -43,7 +42,6 @@ public class ShowPersonInQAdapter extends RecyclerView.Adapter<ShowPersonInQAdap
             this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
             this.tv_sequence_number = itemView.findViewById(R.id.tv_sequence_number);
-            this.rl_status = itemView.findViewById(R.id.rl_status);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
