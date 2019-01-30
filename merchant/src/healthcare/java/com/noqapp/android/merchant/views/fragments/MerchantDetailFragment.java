@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -37,6 +38,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), FollowUpListActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    in.putExtra("visibility", DataVisibilityEnum.H.getName().equals(jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name()));
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);

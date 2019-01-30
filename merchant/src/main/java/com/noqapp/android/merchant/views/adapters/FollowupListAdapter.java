@@ -23,12 +23,14 @@ public class FollowupListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<Date> listDataHeader;
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
+    private boolean visibility;
 
     public FollowupListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData) {
+                               Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+        this.visibility = visibility;
     }
 
     @Override
@@ -60,7 +62,7 @@ public class FollowupListAdapter extends BaseExpandableListAdapter {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         childViewHolder.rv.setLayoutManager(horizontalLayoutManager);
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        FollowupAllListAdapter followupAllListAdapter = new FollowupAllListAdapter(childData.getQueuedPeople(), context, null);
+        FollowupAllListAdapter followupAllListAdapter = new FollowupAllListAdapter(childData.getQueuedPeople(), context, null,visibility);
         childViewHolder.rv.setAdapter(followupAllListAdapter);
         followupAllListAdapter.notifyDataSetChanged();
         return convertView;

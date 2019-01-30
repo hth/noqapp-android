@@ -95,7 +95,7 @@ public class FollowUpListActivity extends AppCompatActivity implements QueuePers
             Log.e("data size", "" + jsonQueuePersonList.getQueuedPeople().size());
             createData(jsonQueuePersonList.getQueuedPeople());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-            FollowupListAdapter adapter = new FollowupListAdapter(FollowUpListActivity.this, expandableListTitle, expandableListDetail);
+            FollowupListAdapter adapter = new FollowupListAdapter(FollowUpListActivity.this, expandableListTitle, expandableListDetail,getIntent().getBooleanExtra("visibility",false));
             listview.setAdapter(adapter);
 //            for(int i=0; i < adapter.getGroupCount(); i++)
 //                listview.expandGroup(i);

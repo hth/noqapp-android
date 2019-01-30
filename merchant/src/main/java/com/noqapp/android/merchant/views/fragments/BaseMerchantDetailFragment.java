@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -183,6 +184,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    in.putExtra("visibility", DataVisibilityEnum.H.getName().equals(jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name()));
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);

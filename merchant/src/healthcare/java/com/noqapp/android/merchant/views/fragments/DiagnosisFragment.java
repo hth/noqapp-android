@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,14 @@ public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNe
 
         actv_search_provisional_dia = v.findViewById(R.id.actv_search_provisional_dia);
         actv_search_provisional_dia.setThreshold(1);
+        ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
+        iv_clear_actv_dia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actv_search_provisional_dia.setText("");
+                new AppUtils().hideKeyBoard(getActivity());
+            }
+        });
         return v;
     }
 

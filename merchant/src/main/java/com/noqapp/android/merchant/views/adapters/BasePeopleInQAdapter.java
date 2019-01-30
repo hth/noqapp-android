@@ -124,9 +124,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_upload_document;
         TextView tv_business_customer_id;
         TextView tv_join_timing;
-        ImageView iv_info;
         ImageView iv_new;
-        RelativeLayout rl_status;
         CardView cardview;
 
         private MyViewHolder(View itemView) {
@@ -140,9 +138,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
-            this.iv_info = itemView.findViewById(R.id.iv_info);
             this.iv_new = itemView.findViewById(R.id.iv_new);
-            this.rl_status = itemView.findViewById(R.id.rl_status);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
@@ -215,7 +211,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         } else {
             recordHolder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
-        recordHolder.rl_status.setOnClickListener(new View.OnClickListener() {
+        recordHolder.tv_status_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 peopleInQAdapterClick.PeopleInQClick(position);
@@ -227,30 +223,30 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId())) {
-                    recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_available);
+                    recordHolder.tv_status_msg.setBackgroundResource(R.drawable.bg_nogradient_round);
                     recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_available));
                 } else if (jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                    recordHolder.iv_info.setBackgroundResource(R.drawable.acquired_by_you);
+                    recordHolder.tv_status_msg.setBackgroundResource(R.drawable.bg_nogradient_round);
                     recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_acquired_by_you));
                 } else {
-                    recordHolder.iv_info.setBackgroundResource(R.drawable.acquired_already);
+                    recordHolder.tv_status_msg.setBackgroundResource(R.drawable.grey_background);
                     recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_already_acquired));
                 }
                 recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
                 break;
             case A:
-                recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
+                recordHolder.tv_status_msg.setBackgroundResource(R.drawable.grey_background);
                 recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
                         context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
                 break;
             case N:
-                recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
+                recordHolder.tv_status_msg.setBackgroundResource(R.drawable.grey_background);
                 recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_merchant_skip));
                 break;
             case S:
-                recordHolder.iv_info.setBackgroundResource(R.drawable.acquire_cancel_by_user);
+                recordHolder.tv_status_msg.setBackgroundResource(R.drawable.grey_background);
                 recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_merchant_served));
                 break;
