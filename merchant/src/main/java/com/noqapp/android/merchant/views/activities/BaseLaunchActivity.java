@@ -44,6 +44,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -633,9 +634,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = (Button) customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = (Button) customDialogView.findViewById(R.id.btn_no);
+        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+        Button btn_no = customDialogView.findViewById(R.id.btn_no);
         btn_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -653,6 +655,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         });
         mAlertDialog.show();
+        mAlertDialog.getWindow().setLayout(ShowAlertInformation.WIDTH, ShowAlertInformation.HEIGHT);
     }
 
     public void setActionBarTitle(String title) {
