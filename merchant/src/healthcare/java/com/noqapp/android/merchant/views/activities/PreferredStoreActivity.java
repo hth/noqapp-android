@@ -1,8 +1,12 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
+import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.PreferredBusinessModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
@@ -34,7 +38,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferredStoreActivity extends AppCompatActivity implements PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener {
+public class PreferredStoreActivity extends AppCompatActivity implements PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener, IntellisensePresenter {
 
     private long lastPress;
     private Toast backPressToast;
@@ -141,7 +145,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
 
-            menuAdapter = new MenuHeaderAdapter(data, this, this,true);
+            menuAdapter = new MenuHeaderAdapter(data, this, this, true);
             rcv_header.setAdapter(menuAdapter);
             menuAdapter.notifyDataSetChanged();
             viewPager.setOffscreenPageLimit(data.size());
@@ -236,9 +240,27 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     }
 
 
-    private void initStores(){
+    private void initStores() {
         for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
             preferenceObjects.getPreferredStoreInfoHashMap().put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), new PreferredStoreInfo());
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
+        m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestionsPrefs()));
+    }
+
+    @Override
+    public void intellisenseResponse(JsonResponse jsonResponse) {
+        Log.v("IntelliSense upload", "" + jsonResponse.getResponse());
+    }
+
+    @Override
+    public void intellisenseError() {
+        Log.v("IntelliSense upload: ", "error");
     }
 }

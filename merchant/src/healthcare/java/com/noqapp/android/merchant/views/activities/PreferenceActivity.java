@@ -214,13 +214,14 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
 
     @Override
     public void intellisenseResponse(JsonResponse jsonResponse) {
-        Log.v("intellesence upload", "" + jsonResponse.getResponse());
+        Log.v("IntelliSense upload", "" + jsonResponse.getResponse());
     }
 
     @Override
     public void intellisenseError() {
-        Log.v("intellesence upload: ", "error");
+        Log.v("IntelliSense upload: ", "error");
     }
+
     private boolean isStoragePermissionAllowed() {
         //Getting the permission status
         int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -278,6 +279,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
 
                     File[] files = directory.listFiles();
                     Log.d("Files", "Size: " + files.length);
+                    masterData.clear();
                     for (File file : files) {
                         String fileName = file.getName();
                         Log.d("Files", "FileName:" + fileName);
