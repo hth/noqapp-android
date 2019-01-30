@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -51,6 +52,14 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
         rcv_special = v.findViewById(R.id.rcv_special);
         actv_search_path = v.findViewById(R.id.actv_search_path);
         actv_search_path.setThreshold(1);
+        ImageView iv_clear_actv_path = v.findViewById(R.id.iv_clear_actv_path);
+        iv_clear_actv_path.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actv_search_path.setText("");
+                new AppUtils().hideKeyBoard(getActivity());
+            }
+        });
 
         rcv_pathology = v.findViewById(R.id.rcv_pathology);
         tv_add_new = v.findViewById(R.id.tv_add_new);

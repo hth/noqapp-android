@@ -59,7 +59,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
             holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
-            holder.name.setTextColor(Color.parseColor("#19769f"));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -73,7 +73,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                         staggeredClick.staggeredClick(true, dataObjArrayList.get(position).getShortName());
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableUnSelect));
-                    holder.name.setTextColor(Color.parseColor("#19769f"));
+                    holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(false, dataObjArrayList.get(position).getShortName());
                 }

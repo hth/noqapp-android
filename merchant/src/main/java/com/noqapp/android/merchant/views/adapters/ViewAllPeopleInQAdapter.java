@@ -3,7 +3,9 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.AppUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +22,13 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonQueuedPerson> dataSet;
+    private boolean visibility;
 
-    public ViewAllPeopleInQAdapter(List<JsonQueuedPerson> data, Context context, OnItemClickListener listener) {
+    public ViewAllPeopleInQAdapter(List<JsonQueuedPerson> data, Context context, OnItemClickListener listener,boolean visibility) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        this.visibility = visibility;
     }
 
     @Override
@@ -41,11 +45,21 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         holder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
                 ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
                 : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
-        String phoneNo = jsonQueuedPerson.getCustomerPhone();
-        holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo)
-                ? context.getString(R.string.unregister_user)
+        final String phoneNo = jsonQueuedPerson.getCustomerPhone();
+        holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
-                : PhoneFormatterUtil.formatNumber("IN", phoneNo));
+                PhoneFormatterUtil.formatNumber("IN", phoneNo));
+        if (visibility) {
+            holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber("IN", phoneNo));
+                }
+            });
+        } else {
+            holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+        }
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

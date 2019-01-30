@@ -96,7 +96,7 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             Log.e("data size", "" + jsonQueuePersonList.getQueuedPeople().size());
             createData(jsonQueuePersonList.getQueuedPeople());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-            ViewAllExpandableListAdapter adapter = new ViewAllExpandableListAdapter(ViewAllPeopleInQActivity.this, expandableListTitle, expandableListDetail);
+            ViewAllExpandableListAdapter adapter = new ViewAllExpandableListAdapter(ViewAllPeopleInQActivity.this, expandableListTitle, expandableListDetail,getIntent().getBooleanExtra("visibility",false));
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
                 listview.setVisibility(View.GONE);

@@ -60,10 +60,10 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-            holder.name.setTextColor(Color.parseColor("#19769f"));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-            holder.name.setTextColor(Color.parseColor("#19769f"));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -71,12 +71,12 @@ public class StaggeredGridMedicineAdapter extends RecyclerView.Adapter<Staggered
                   dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-                    holder.name.setTextColor(Color.parseColor("#19769f"));
+                    holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredMedicineClick(true,isEdit, dataObjArrayList.get(position),position);
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-                    holder.name.setTextColor(Color.parseColor("#19769f"));
+                    holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredMedicineClick(true,isEdit, dataObjArrayList.get(position),position);
                 }

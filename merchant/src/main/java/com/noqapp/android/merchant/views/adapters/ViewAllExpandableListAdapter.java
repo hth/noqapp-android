@@ -30,12 +30,14 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
     private List<Date> listDataHeader; // header titles
     // child data in format of header title, child title
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
+    private boolean visibility;
 
     public ViewAllExpandableListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData) {
+                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+        this.visibility =visibility;
     }
 
     @Override
@@ -73,7 +75,7 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null);
+        ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null,visibility);
         childViewHolder.rv.setAdapter(currentActivityAdapter);
         currentActivityAdapter.notifyDataSetChanged();
         return convertView;

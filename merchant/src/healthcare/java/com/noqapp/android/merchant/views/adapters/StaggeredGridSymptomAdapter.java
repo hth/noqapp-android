@@ -55,10 +55,10 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-            holder.name.setTextColor(Color.parseColor("#19769f"));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-            holder.name.setTextColor(Color.parseColor("#19769f"));
+            holder.name.setTextColor(Color.parseColor("#FFFFFF"));
         }
         holder.name.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -66,12 +66,12 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
                 dataObjArrayList.get(position).setSelect(isChecked);
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-                    holder.name.setTextColor(Color.parseColor("#19769f"));
+                    holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
                 } else {
                     holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));
-                    holder.name.setTextColor(Color.parseColor("#19769f"));
+                    holder.name.setTextColor(Color.parseColor("#FFFFFF"));
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(true, isEdit, dataObjArrayList.get(position), position);
                 }

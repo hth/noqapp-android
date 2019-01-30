@@ -122,7 +122,7 @@
     <string name="error_invalid_date">Please select a valid date</string>
     <string name="error_past_date">Please select a date in future</string>
     <string name="error_dob_blank">Please enter date of birth</string>
-    <string name="create_case">Case History</string>
+    <string name="create_case">Case \nHistory</string>
 
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
@@ -146,7 +146,7 @@
     <string name="error_pwd_not_match">Both password should match</string>
     <string name="password">Password <font color='red'>\u2731</font></string>
     <string name="update_medical_history">Submit Case History</string>
-    <string name="change_name">Change Patient</string>
+    <string name="change_name">Change \nPatient</string>
     <string name="update_details">Update Details</string>
     <string name="patient_details">Business Patient ID</string>
     <string name="customer_id">Reg. Id</string>
@@ -203,6 +203,6 @@
     <string name="followup_alert">There are no followup scheduled</string>
     <string name="error_account_block">Account is blocked. Contact support.</string>
     <string name="mds_medicine_allergies">Medicine Allergies:</string>
-    <string name="upload_document">Upload Document</string>
+    <string name="upload_document">Upload \nDocument</string>
     <string name="privacy_bydefault">Privacy by default and by design</string>
 </resources>

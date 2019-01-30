@@ -429,7 +429,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse) {
         PreferredStoreInfo preferredStoreInfo = MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPreferredStoreInfoHashMap().
                 get(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
-
+        if(null == preferredStoreInfo){
+            return 0;
+        }
         if (null == hcse) {
             for (int i = 0; i < temp.size(); i++) {
                 if (temp.get(i).getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
