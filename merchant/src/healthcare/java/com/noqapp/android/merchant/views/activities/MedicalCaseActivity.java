@@ -349,6 +349,23 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
                 formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
             }
             break;
+            case GSR: {
+                formDataObj.getSymptomsList().clear();
+                formDataObj.getSymptomsList().addAll(MedicalDataStatic.Surgeon.getSymptoms());
+                formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
+
+                formDataObj.getObstreticsList().clear();
+                // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+
+                formDataObj.getDiagnosisList().clear();
+                formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Surgeon.getDiagnosis());
+                formDataObj.getDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
+
+                formDataObj.getProvisionalDiagnosisList().clear();
+                formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Surgeon.getProvisionalDiagnosis());
+                formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
+            }
+            break;
             default: { // General Physician is default
                 formDataObj.getSymptomsList().clear();
                 formDataObj.getSymptomsList().addAll(MedicalDataStatic.Physician.getSymptoms());
@@ -374,7 +391,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         // Add selected list
         formDataObj.getMedicineList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getMedicineList()));
         //
-
         formDataObj.getInstructionList().clear();
         formDataObj.getInstructionList().add("Steam Inhalation");
         formDataObj.getInstructionList().add("Plenty of fluids");
@@ -387,6 +403,8 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         formDataObj.getInstructionList().add("Consume less sugar");
         formDataObj.getInstructionList().add("30 min Brisk walking a day");
         formDataObj.getInstructionList().add("Drink milk every day");
+        formDataObj.getInstructionList().add("Unwilling to admit");
+        formDataObj.getInstructionList().add("Admit immediately");
         formDataObj.getInstructionList().addAll(preferenceObjects.getInstructionList());
     }
 
@@ -445,7 +463,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         return layoutManager;
     }
 
-    private void initStores(){
+    private void initStores() {
         for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
             preferenceObjects.getPreferredStoreInfoHashMap().put(LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), new PreferredStoreInfo());
         }
