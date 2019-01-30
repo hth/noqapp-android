@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 public class ShowAlertInformation {
 
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 400;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 600;
     public static void showNetworkDialog(Context context) {
         showThemeDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
