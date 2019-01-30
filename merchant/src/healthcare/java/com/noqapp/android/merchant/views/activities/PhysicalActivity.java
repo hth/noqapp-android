@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.customviews.MeterView;
+import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -251,35 +252,10 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         dsb_bp_high = findViewById(R.id.dsb_bp_high);
         dsb_rr = findViewById(R.id.dsb_rr);
         dsb_height = findViewById(R.id.dsb_height);
-        dsb_bp_low.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_bp_low.setText("Diastolic: " + String.valueOf(value));
-                return value;
-            }
-        });
-        dsb_bp_high.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_bp_high.setText("Systolic: " + String.valueOf(value));
-                return value;
-            }
-        });
-        dsb_rr.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_rr.setText("Respiratory: " + String.valueOf(value));
-                return value;
-            }
-        });
-        dsb_height.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_height.setText("Height: " + String.valueOf(value));
-                return value;
-            }
-        });
-
+        dsb_height.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_height, tv_height, "Height: "));
+        dsb_bp_low.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_bp_low, tv_bp_low, "Diastolic: "));
+        dsb_bp_high.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_bp_high, tv_bp_high, "Systolic: "));
+        dsb_rr.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_rr, tv_rr, "Respiratory: "));
         Button btn_submit = findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -423,8 +399,11 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
-                sc_follow_up.setSelectedSegment(follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays()));
-                tv_followup.setText("in " + followup + " days");
+                if (!TextUtils.isEmpty(jsonMedicalRecord.getFollowUpInDays())) {
+                    int index = follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays());
+                    if (-1 != index)
+                        sc_follow_up.setSelectedSegment(index);
+                }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                     sc_enable_oxygen.setChecked(true);
