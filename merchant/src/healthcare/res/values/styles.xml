@@ -46,7 +46,7 @@
         <item name="mnp_min">75</item>
         <item name="mnp_max">100</item>
         <item name="mnp_value">95</item>
-        <item name="mnp_textColor">@android:color/primary_text_light</item>
+        <item name="mnp_textColor">@android:color/white</item>
         <item name="mnp_textSize">50sp</item>
         <item name="mnp_paddingHorizontal">10dp</item>
         <item name="mnp_paddingVertical">25dp</item>
@@ -64,7 +64,7 @@
         <item name="mnp_min">60</item>
         <item name="mnp_max">100</item>
         <item name="mnp_value">90</item>
-        <item name="mnp_textColor">@android:color/primary_text_light</item>
+        <item name="mnp_textColor">@android:color/white</item>
         <item name="mnp_textSize">50sp</item>
         <item name="mnp_paddingHorizontal">10dp</item>
         <item name="mnp_paddingVertical">25dp</item>
@@ -82,7 +82,7 @@
         <item name="mnp_min">0</item>
         <item name="mnp_max">499</item>
         <item name="mnp_value">80</item>
-        <item name="mnp_textColor">@android:color/primary_text_light</item>
+        <item name="mnp_textColor">@android:color/white</item>
         <item name="mnp_textSize">50sp</item>
         <item name="mnp_paddingHorizontal">10dp</item>
         <item name="mnp_paddingVertical">25dp</item>
@@ -100,7 +100,7 @@
         <item name="mnp_min">95</item>
         <item name="mnp_max">107</item>
         <item name="mnp_value">97</item>
-        <item name="mnp_textColor">@android:color/primary_text_light</item>
+        <item name="mnp_textColor">@android:color/white</item>
         <item name="mnp_textSize">50sp</item>
         <item name="mnp_paddingHorizontal">10dp</item>
         <item name="mnp_paddingVertical">25dp</item>
@@ -118,7 +118,7 @@
         <item name="mnp_min">0</item>
         <item name="mnp_max">9</item>
         <item name="mnp_value">5</item>
-        <item name="mnp_textColor">@android:color/primary_text_light</item>
+        <item name="mnp_textColor">@android:color/white</item>
         <item name="mnp_textSize">50sp</item>
         <item name="mnp_paddingHorizontal">10dp</item>
         <item name="mnp_paddingVertical">25dp</item>

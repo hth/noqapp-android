@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.customviews.MeterView;
+import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -158,35 +159,13 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
         dsb_bp_high = v.findViewById(R.id.dsb_bp_high);
         dsb_rr = v.findViewById(R.id.dsb_rr);
         dsb_height = v.findViewById(R.id.dsb_height);
-        dsb_bp_low.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_bp_low.setText("Diastolic: " + String.valueOf(value));
-                return value;
-            }
-        });
-        dsb_bp_high.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_bp_high.setText("Systolic: " + String.valueOf(value));
-                return value;
-            }
-        });
-        dsb_rr.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_rr.setText("Respiratory: " + String.valueOf(value));
-                return value;
-            }
-        });
-        dsb_height.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                tv_height.setText("Height: " + String.valueOf(value));
-                return value;
-            }
-        });
-        // dsb_bp_low.setProgress(89); set value to discrete
+
+        dsb_height.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_height,tv_height,"Height: "));
+        dsb_bp_low.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_bp_low,tv_bp_low,"Diastolic: "));
+        dsb_bp_high.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_bp_high,tv_bp_high,"Systolic: "));
+        dsb_rr.setOnProgressChangeListener(new DescreteProgressChangeListner(dsb_rr,tv_rr,"Respiratory: "));
+
+
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
         updatePhysicalUI(jsonMedicalRecord);
         return v;
@@ -216,8 +195,6 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
-                    tv_bp_low.setText("Diastolic: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]);
-                    tv_bp_high.setText("Systolic: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]);
                     sc_enable_bp.setChecked(true);
                 } else {
                     sc_enable_bp.setChecked(false);
@@ -226,7 +203,6 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
                     sc_enable_height.setChecked(true);
-                    tv_height.setText("Height: " + jsonMedicalRecord.getMedicalPhysical().getHeight());
                 } else {
                     sc_enable_height.setChecked(false);
                 }
@@ -234,7 +210,6 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
                 if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
                     sc_enable_rr.setChecked(true);
-                    tv_rr.setText("Respiratory: " + jsonMedicalRecord.getMedicalPhysical().getRespiratory());
                 } else {
                     sc_enable_rr.setChecked(false);
                 }
