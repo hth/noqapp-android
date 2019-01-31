@@ -159,7 +159,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     public void setData(ArrayList<String> tempList) {
         masterDataString = tempList;
         Collections.sort(masterDataString);
-        listAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, masterDataString);
+        listAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_array_adapter, masterDataString);
         lv_all_tests.setAdapter(listAdapter);
         actvAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, masterDataString);
         actv_search.setAdapter(actvAdapter);
