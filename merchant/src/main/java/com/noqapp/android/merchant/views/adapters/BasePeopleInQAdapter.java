@@ -254,7 +254,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-        recordHolder.tv_upload_document.setVisibility(BuildConfig.BUILD_TYPE.equals("debug")?View.VISIBLE:View.GONE);
+
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

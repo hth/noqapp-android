@@ -62,18 +62,17 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="@dimen/text_size_fourteen"/>
 
-                    <ToggleButton
+                    <android.support.v7.widget.SwitchCompat
                             android:id="@+id/togglePreventJoin"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            card_view:thumbTint="@color/colorPrimaryDark"
+                            card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.2"
-                            android:background="@null"
-                            android:drawableRight="@drawable/toggle_selector"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:textOff=""
-                            android:textOn=""/>
+                            android:scaleX="1.5"
+                            android:scaleY="1.5"
+                            android:paddingEnd="@dimen/swith_padding"
+                            android:layout_height="wrap_content"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -104,18 +103,17 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="@dimen/text_size_fourteen"/>
 
-                    <ToggleButton
+                    <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggleTodayClosed"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            card_view:thumbTint="@color/colorPrimaryDark"
+                            card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.2"
-                            android:background="@null"
-                            android:drawableRight="@drawable/toggle_selector"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:textOff=""
-                            android:textOn=""/>
+                            android:scaleX="1.5"
+                            android:scaleY="1.5"
+                            android:paddingEnd="@dimen/swith_padding"
+                            android:layout_height="wrap_content"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -514,7 +512,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="0.20"
-                            android:button="@drawable/checkbox_selector"
+                            android:buttonTint="@color/colorPrimaryDark"
                             android:layoutDirection="rtl"/>
                 </LinearLayout>
 
@@ -546,18 +544,17 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="@dimen/text_size_fourteen"/>
 
-                    <ToggleButton
+                    <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggleDayClosed"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            card_view:thumbTint="@color/colorPrimaryDark"
+                            card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.2"
-                            android:background="@null"
-                            android:drawableRight="@drawable/toggle_selector"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:textOff=""
-                            android:textOn=""/>
+                            android:scaleX="1.5"
+                            android:scaleY="1.5"
+                            android:paddingEnd="@dimen/swith_padding"
+                            android:layout_height="wrap_content"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -588,18 +585,17 @@
                             android:textColor="@color/color_total_val"
                             android:textSize="@dimen/text_size_fourteen"/>
 
-                    <ToggleButton
+                    <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggleStoreOffline"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            card_view:thumbTint="@color/colorPrimaryDark"
+                            card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="0.2"
-                            android:background="@null"
-                            android:drawableRight="@drawable/toggle_selector"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:textOff=""
-                            android:textOn=""/>
+                            android:scaleX="1.5"
+                            android:scaleY="1.5"
+                            android:paddingEnd="@dimen/swith_padding"
+                            android:layout_height="wrap_content"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

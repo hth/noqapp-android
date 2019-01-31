@@ -9,4 +9,6 @@
     <color name="segment_text_color">@android:color/black</color>
     <color name="radio_button_color">#2a497a</color>
     <color name="btn_txt_color">#fff</color>
+
+    <color name="switch_tack_color">#adbde5</color>
 </resources>

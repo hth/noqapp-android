@@ -26,6 +26,7 @@ import org.rauschig.jarchivelib.ArchiverFactory;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -77,11 +78,11 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        if (new AppUtils().isTablet(getApplicationContext())) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        } else {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        }
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
         initProgress();
