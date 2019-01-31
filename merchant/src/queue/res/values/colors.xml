@@ -8,4 +8,6 @@
     <color name="btn_txt_color">#fff</color>
     <color name="radio_button_color">#CD334E</color>
 
+    <color name="switch_tack_color">#db96a2</color>
+
 </resources>
