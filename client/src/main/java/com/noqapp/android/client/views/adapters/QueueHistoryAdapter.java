@@ -102,7 +102,18 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.colorMobile));
                 break;
             case Q:
-                holder.tv_queue_status.setText(QueueUserStateEnum.Q.getDescription() + " (Expired)");
+                String business;
+                switch (jsonQueueHistorical.getBusinessType()) {
+                    case DO:
+                        business = "Doctor";
+                        break;
+                    case BK:
+                        business = "Bank";
+                        break;
+                    default:
+                        business = "Business";
+                }
+                holder.tv_queue_status.setText(business + " has not confirmed");
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
                 break;
             case S:
