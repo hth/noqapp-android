@@ -7,7 +7,6 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerModel;
 import com.noqapp.android.merchant.model.ManageQueueModel;
@@ -124,6 +123,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_upload_document;
         TextView tv_business_customer_id;
         TextView tv_join_timing;
+        RelativeLayout rl_sequence_new_time;
         ImageView iv_new;
         CardView cardview;
 
@@ -138,6 +138,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
+            this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
@@ -218,7 +219,13 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             }
         });
         // check parameter to show client is new or has previously visited
-        recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.VISIBLE : View.INVISIBLE);
+        recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE: View.VISIBLE);
+
+        if(jsonQueuedPerson.isClientVisitedThisBusiness()){
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.WHITE);
+        }else{
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
+        }
 
         switch (jsonQueuedPerson.getQueueUserState()) {
             case Q:
