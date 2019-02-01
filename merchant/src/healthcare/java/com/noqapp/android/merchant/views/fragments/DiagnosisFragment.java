@@ -70,11 +70,12 @@ public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNe
         rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
 
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
-        actv_clinical_findings.setText(jsonMedicalRecord.getClinicalFinding());
-        actv_examination_results.setText(jsonMedicalRecord.getExamination());
-
+        if(null != jsonMedicalRecord) {
+            actv_clinical_findings.setText(jsonMedicalRecord.getClinicalFinding() == null ? "" :jsonMedicalRecord.getClinicalFinding() );
+            actv_examination_results.setText(jsonMedicalRecord.getExamination() == null ? "" : jsonMedicalRecord.getExamination());
+        }
         try {
-            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis()) {
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() && null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis()) {
                 String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getProvisionalDifferentialDiagnosis().split(",");
                 provisionalDiagnosisAdapter.updateSelection(temp);
             }

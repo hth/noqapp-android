@@ -358,12 +358,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         tv_pathology.setText(covertStringList2String(caseHistory.getPathologyList()));
         hideInvestigationViews(caseHistory);
         if (null != caseHistory.getRespiratory()) {
-            tv_respiratory.setText(caseHistory.getRespiratory());
+            tv_respiratory.setText("Respiration Rate: " +caseHistory.getRespiratory());
         } else {
             tv_respiratory.setText("Respiration Rate: " + notAvailable);
         }
         if (null != caseHistory.getHeight()) {
-            tv_height.setText(caseHistory.getHeight());
+            tv_height.setText("Height: " + caseHistory.getHeight());
         } else {
             tv_height.setText("Height: " + notAvailable);
         }

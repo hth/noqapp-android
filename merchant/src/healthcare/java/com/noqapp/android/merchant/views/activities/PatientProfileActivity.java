@@ -90,14 +90,18 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         tv_start_diagnosis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
-                intent.putExtra("data", jsonQueuedPerson);
-                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                intent.putExtra("jsonProfile", jsonProfile);
-                intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
-                startActivity(intent);
-                finish();
+                if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                    Toast.makeText(PatientProfileActivity.this,"Please wait while patient data is loading...",Toast.LENGTH_LONG).show();
+                }else {
+                    Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    intent.putExtra("jsonProfile", jsonProfile);
+                    intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
