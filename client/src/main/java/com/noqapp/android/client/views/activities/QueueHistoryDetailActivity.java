@@ -135,12 +135,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             default:
         }
         tv_order_number.setText("TOKEN NO.  " + String.valueOf(jsonQueueHistorical.getTokenNumber()));
-        try {
-            tv_order_date.setText(CommonHelper.SDF_DD_MMM_YY_HH_MM_A.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonQueueHistorical.getCreated())));
-        } catch (Exception e) {
-            e.printStackTrace();
-            tv_order_date.setText("Order timing: Exception");
-        }
+        tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
     }
 
 }

@@ -9,6 +9,7 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -393,7 +394,7 @@ public class JsonQueue implements Serializable {
     }
 
     public JsonQueue setCreated(Date created) {
-        this.created = DateFormatUtils.format(created, Constants.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.created = DateFormatUtils.format(created, CommonHelper.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
     }
 

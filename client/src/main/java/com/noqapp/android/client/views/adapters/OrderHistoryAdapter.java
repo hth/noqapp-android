@@ -67,12 +67,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
         final JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonPurchaseOrderHistorical.getDisplayName());
         holder.tv_address.setText(AppUtilities.getStoreAddress(jsonPurchaseOrderHistorical.getTown(), jsonPurchaseOrderHistorical.getArea()));
-        try {
-            holder.tv_order_date.setText(CommonHelper.SDF_DD_MMM_YY_HH_MM_A.
-                    format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrderHistorical.getCreated())));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        holder.tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrderHistorical.getCreated()));
         holder.tv_order_item.setText(getOrderItems(jsonPurchaseOrderHistorical.getJsonPurchaseOrderProductHistoricalList()));
         try {
             holder.tv_order_amount.setText(AppUtilities.getCurrencySymbol(jsonPurchaseOrderHistorical.getCountryShortName()) + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrderHistorical.getOrderPrice()) / 100));

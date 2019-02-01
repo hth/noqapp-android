@@ -26,6 +26,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -467,8 +468,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private void setAlarm(JsonMedicalFollowUp jsonMedicalFollowUp) {
         try {
-            Date startDate = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonMedicalFollowUp.getPopFollowUpAlert());
-            Date endDate = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonMedicalFollowUp.getFollowUpDay());
+            Date startDate = CommonHelper.stringToDate(jsonMedicalFollowUp.getPopFollowUpAlert());
+            Date endDate = CommonHelper.stringToDate(jsonMedicalFollowUp.getFollowUpDay());
             long duration = endDate.getTime() - startDate.getTime();
             long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
             Log.e("difference in day : ", String.valueOf(diffInDays));

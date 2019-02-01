@@ -132,12 +132,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));
-        try {
-            tv_order_date.setText(CommonHelper.SDF_DD_MMM_YY_HH_MM_A.format(new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault()).parse(jsonPurchaseOrder.getCreated())));
-        } catch (Exception e) {
-            e.printStackTrace();
-            tv_order_date.setText("Order timing: Exception");
-        }
+        tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrder.getCreated()));
         tv_additional_info.setText("Additional Note: " + jsonPurchaseOrder.getAdditionalNote());
         tv_additional_info.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
     }

@@ -21,10 +21,12 @@ import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class CommonHelper {
     private static final String TAG = CommonHelper.class.getSimpleName();
 
+    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final SimpleDateFormat SDF_DOB_FROM_UI = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     public static final SimpleDateFormat SDF_YYYY_MM_DD_HH_MM_A = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
@@ -138,4 +140,29 @@ public class CommonHelper {
         }
     }
 
+    public static String formatStringDate(SimpleDateFormat simpleDateFormat, String date) {
+        String formattedDate = "";
+        try {
+            formattedDate = simpleDateFormat.format(new SimpleDateFormat(ISO8601_FMT, Locale.getDefault()).parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
+    }
+
+    public static Date stringToDate(String date) {
+        try {
+            return new SimpleDateFormat(CommonHelper.ISO8601_FMT, Locale.getDefault()).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return new Date();
+    }
+
+    public static String changeUTCDateToString(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat(CommonHelper.ISO8601_FMT, Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return dateFormat.format(date);
+    }
 }

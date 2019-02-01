@@ -6,6 +6,7 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.NotificationBeans;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -40,9 +41,7 @@ public class NotificationDB {
         cv.put(DatabaseTable.Notification.TITLE, title);
         cv.put(DatabaseTable.Notification.STATUS, KEY_UNREAD); // added default
         // Returns the current date with the same format as Javascript's new Date().toJSON(), ISO 8601
-        DateFormat dateFormat = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String dateString = dateFormat.format(new Date());
+        String dateString = CommonHelper.changeUTCDateToString(new Date());
         cv.put(DatabaseTable.Notification.CREATE_DATE, dateString);
         cv.put(DatabaseTable.Notification.BUSINESS_TYPE,businessType);
         try {
