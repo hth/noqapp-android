@@ -188,7 +188,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
         rcv_symptom_select.setAdapter(symptomSelectedAdapter);
         JsonMedicalRecord jsonMedicalRecord = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord();
-        if (null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
+        if (null != jsonMedicalRecord && null != jsonMedicalRecord.getJsonUserMedicalProfile()) {
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies())
                 edt_known_allergy.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies());
             if (null != jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory())
@@ -218,7 +218,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getObstreticsList());
             dataObjArrayList.addAll(MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList());
             setupAutoComplete(dataObjArrayList);
-            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain()) {
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord() && null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain()) {
                 selectedSymptomsList = symptomSelectedAdapter.updateDataObj(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getChiefComplain(), dataObjArrayList);
                 symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, this, true);
                 rcv_symptom_select.setAdapter(symptomSelectedAdapter);

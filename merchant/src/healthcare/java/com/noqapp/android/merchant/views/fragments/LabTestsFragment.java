@@ -311,7 +311,6 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
         actv_search_path.setText("");
         pathalogyAdapter.selectItem(dataObj);
         pathalogyAdapter.notifyDataSetChanged();
-
     }
 
 }
