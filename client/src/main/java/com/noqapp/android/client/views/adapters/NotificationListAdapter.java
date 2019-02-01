@@ -7,6 +7,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.common.beans.NotificationBeans;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -65,9 +66,7 @@ public class NotificationListAdapter extends BaseAdapter {
         recordHolder.tv_msg.setText(notificationsList.get(position).getMsg());
         try {
             String dateString = notificationsList.get(position).getNotificationCreate();
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.ISO8601_FMT, Locale.getDefault());
-            Date date = sdf.parse(dateString);
-            long startDate = new Date().getTime() - date.getTime();
+            long startDate = new Date().getTime() - CommonHelper.stringToDate(dateString).getTime();
             recordHolder.tv_create.setText(GetTimeAgoUtils.getTimeInAgo(startDate));
         } catch (Exception e) {
             e.printStackTrace();

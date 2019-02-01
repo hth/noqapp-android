@@ -13,7 +13,6 @@ import android.util.Log;
  */
 public class Constants extends BaseConstants{
     public static final String DEVICE_TYPE = "A";
-    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final int requestCodeJoinQActivity = 11;
     public static final int requestCodeAfterJoinQActivity = 12;
     public static final int requestCodeNotification = 2;
@@ -55,7 +54,7 @@ public class Constants extends BaseConstants{
         if (StringUtils.isBlank(VERSION_RELEASE)) {
             switch (BuildConfig.BUILD_TYPE) {
                 case "debug":
-                    VERSION_RELEASE = "1.2.200";
+                    VERSION_RELEASE = "1.2.250";
                     break;
                 default:
                     VERSION_RELEASE = BuildConfig.VERSION_NAME;
