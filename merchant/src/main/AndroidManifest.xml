@@ -13,10 +13,10 @@
     <uses-permission android:name="android.permission.BILLING"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
-    <!-- Declarative Permission Starts -->
-    <!--<uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>-->
-    <!-- Declarative Permission Ends -->
-
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
     <application
             android:name=".views.activities.MyApplication"
             android:allowBackup="false"
@@ -25,7 +25,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:replace="android:label,android:allowBackup"
-            tools:ignore="GoogleAppIndexingWarning" >
+            tools:ignore="GoogleAppIndexingWarning">
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@mipmap/notification_icon"/>
@@ -264,7 +264,7 @@
                 android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_paths" />
+                    android:resource="@xml/provider_paths"/>
         </provider>
 
     </application>

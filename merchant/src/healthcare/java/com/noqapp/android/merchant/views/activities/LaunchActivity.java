@@ -96,8 +96,8 @@ public class LaunchActivity extends BaseLaunchActivity {
         super.updateMenuList(showChart);
         try {
             if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                drawerItem.add(2, new NavigationBean(R.mipmap.me_select, getString(R.string.menu_preference)));
-                drawerItem.add(3, new NavigationBean(R.mipmap.history_grey, getString(R.string.menu_pref_store)));
+                drawerItem.add(2, new NavigationBean(R.drawable.case_history, getString(R.string.menu_preference)));
+                drawerItem.add(3, new NavigationBean(R.drawable.pharmacy, getString(R.string.menu_pref_store)));
             }
         } catch (Exception e) {
             e.printStackTrace();

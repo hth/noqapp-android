@@ -223,10 +223,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                         startActivity(in);
                         break;
                     }
-                    case R.mipmap.me_select:
+                    case R.drawable.case_history:
                         callPreference();
                         break;
-                    case R.mipmap.history_grey:
+                    case R.drawable.pharmacy:
                         callPreferredStore();
                         break;
                     default:
