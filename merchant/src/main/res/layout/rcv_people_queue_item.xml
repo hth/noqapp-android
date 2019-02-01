@@ -18,21 +18,6 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-        <!--<TextView-->
-                <!--android:id="@+id/tv_customer_first_visit"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:minLines="1"-->
-                <!--android:ellipsize="end"-->
-                <!--android:gravity="center"-->
-                <!--android:text="First visit in Hospital"-->
-                <!--android:textColor="@android:color/black"-->
-                <!--android:visibility="gone"-->
-                <!--android:textSize="@dimen/text_size_fourteen"/>-->
-
-
         <RelativeLayout
                 android:id="@+id/rl_sequence_new_time"
                 android:layout_width="match_parent"

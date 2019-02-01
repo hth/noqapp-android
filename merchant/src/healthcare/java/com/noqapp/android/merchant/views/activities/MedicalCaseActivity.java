@@ -166,6 +166,8 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
                 rcv_header.smoothScrollToPosition(position);
                 menuAdapter.setSelected_pos(position);
                 menuAdapter.notifyDataSetChanged();
+                if(position == 6)
+                    printFragment.updateUI();
             }
 
             @Override
@@ -267,11 +269,10 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     private void saveAllData() {
         primaryCheckupFragment.saveData();
         symptomsFragment.saveData();
+        diagnosisFragment.saveData();
         labTestsFragment.saveData();
         treatmentFragment.saveData();
         instructionFragment.saveData();
-        diagnosisFragment.saveData();
-        printFragment.updateUI();
     }
 
     private void initLists() {
