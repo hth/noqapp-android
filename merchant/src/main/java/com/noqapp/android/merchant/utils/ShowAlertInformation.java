@@ -2,21 +2,23 @@ package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.merchant.R;
 
-import android.app.AlertDialog;
+import android.app.Activity;
+
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ShowAlertInformation {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
     public static void showNetworkDialog(Context context) {
         showThemeDialog(context, context.getString(R.string.networkerror), context.getString(R.string.offline));
     }
@@ -49,7 +51,7 @@ public class ShowAlertInformation {
             }
         });
         mAlertDialog.show();
-        mAlertDialog.getWindow().setLayout(WIDTH, HEIGHT);
+        resizeAlert(mAlertDialog,context);
     }
 
     public static void showThemePlayStoreDialog(final Context context, String title, String message, boolean isNegativeEnable) {
@@ -90,7 +92,7 @@ public class ShowAlertInformation {
         });
         try {
             mAlertDialog.show();
-            mAlertDialog.getWindow().setLayout(WIDTH, HEIGHT);
+            resizeAlert(mAlertDialog,context);
         } catch(Exception e){
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
@@ -130,10 +132,33 @@ public class ShowAlertInformation {
             }
         });
         mAlertDialog.show();
-        mAlertDialog.getWindow().setLayout(WIDTH, HEIGHT);
+        resizeAlert(mAlertDialog,context);
     }
 
     public static void showThemeDialog(Context context, String title, String message, int icon) {
         showThemeDialogWithIcon(context, title, message, false,  icon);
+    }
+
+
+    public static void resizeAlert(AlertDialog dialog, Context context){
+        try {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int displayWidth = displayMetrics.widthPixels;
+            int displayHeight = displayMetrics.heightPixels;
+
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+            int dialogWindowWidth = (int) (displayWidth * 0.75f);
+            // Set alert dialog height equal to screen height 70%
+            int dialogWindowHeight = (int) (displayHeight * 0.5f);
+            layoutParams.width = dialogWindowWidth;
+            layoutParams.height = dialogWindowHeight;
+
+            // Apply the newly created layout parameters to the alert dialog window
+            dialog.getWindow().setAttributes(layoutParams);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

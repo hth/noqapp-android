@@ -655,7 +655,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         });
         mAlertDialog.show();
-        mAlertDialog.getWindow().setLayout(ShowAlertInformation.WIDTH, ShowAlertInformation.HEIGHT);
+        ShowAlertInformation.resizeAlert(mAlertDialog,this);
     }
 
     public void setActionBarTitle(String title) {
