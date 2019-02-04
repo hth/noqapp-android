@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_me_bg"
     android:orientation="vertical">
 
     <ScrollView
@@ -14,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@mipmap/invite_bg"
+            android:background="#f2f2f2"
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
 
@@ -51,14 +50,14 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/invite" />
+                    android:background="@drawable/invite_code" />
 
                 <TextView
                     style="@style/style_invite_tv"
                     android:layout_marginBottom="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/your_invite_code"
-                    android:textColor="@color/color_total_val"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
                 <RelativeLayout
@@ -99,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="20dp"
-                    android:background="@mipmap/send_invite"
+                    android:background="@drawable/btn_bg_enable"
                     android:text="@string/send_invite"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
