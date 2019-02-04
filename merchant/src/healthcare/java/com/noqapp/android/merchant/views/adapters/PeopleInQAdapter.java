@@ -21,7 +21,6 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
-import com.noqapp.android.merchant.views.activities.SimpleFormActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -220,18 +219,13 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         // temporary crash fix
                         LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
                     }
-                    if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
-                        Intent intent = new Intent(context, PatientProfileActivity.class);
-                        intent.putExtra("qCodeQR", qCodeQR);
-                        intent.putExtra("data", jsonQueuedPerson);
-                        intent.putExtra("bizCategoryId", bizCategoryId);
-                        context.startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(context, SimpleFormActivity.class);
-                        intent.putExtra("qCodeQR", qCodeQR);
-                        intent.putExtra("data", jsonQueuedPerson);
-                        context.startActivity(intent);
-                    }
+                    //  if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
+                    Intent intent = new Intent(context, PatientProfileActivity.class);
+                    intent.putExtra("qCodeQR", qCodeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("bizCategoryId", bizCategoryId);
+                    context.startActivity(intent);
+                    //}
                 } else {
                     Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
                 }

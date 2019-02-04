@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
 import com.noqapp.android.merchant.views.utils.PermissionUtils;
 import com.noqapp.android.merchant.views.utils.FileUtils;
 
@@ -28,14 +29,16 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,7 +58,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter {
+public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
 
     private static final int PICK_IMAGE_CAMERA = 121;
     private static final int PICK_IMAGE_GALLERY = 122;
@@ -63,20 +66,20 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    private ImageView[] imageViews = new ImageView[3];
-    private ImageView[] imageViewsDelete = new ImageView[3];
-    private ImageView[] imageViewsEnlarge= new ImageView[3];
     private String recordReferenceId;
 
     private MedicalHistoryModel medicalHistoryModel;
     private ProgressDialog progressDialog;
     private JsonMedicalRecord jsonMedicalRecordTemp;
-    private int selectPos = -1;
     private String userChoosenTask;
     private Uri imageUri;
     private FrameLayout frame_image;
-    private ImageView iv_large, iv_close;
-    private ImageView iv_inlarge_1,iv_inlarge_2,iv_inlarge_3;
+    private ImageView iv_large;
+    private RecyclerView rcv_photo;
+    private ImageUploadAdapter imageUploadAdapter;
+    private int selectPos;
+    private FloatingActionButton fab_add_image;
+    private final int MAX_IMAGE_UPLOAD_LIMIT = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,48 +103,24 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         medicalHistoryModel = new MedicalHistoryModel(this);
         recordReferenceId = getIntent().getStringExtra("recordReferenceId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
-        ImageView iv_1 = findViewById(R.id.iv_1);
-        ImageView iv_2 = findViewById(R.id.iv_2);
-        ImageView iv_3 = findViewById(R.id.iv_3);
-        imageViews[0] = iv_1;
-        imageViews[1] = iv_2;
-        imageViews[2] = iv_3;
 
-
-        ImageView iv_delete_1 = findViewById(R.id.iv_delete_1);
-        ImageView iv_delete_2 = findViewById(R.id.iv_delete_2);
-        ImageView iv_delete_3 = findViewById(R.id.iv_delete_3);
-
-        imageViewsDelete[0] = iv_delete_1;
-        imageViewsDelete[1] = iv_delete_2;
-        imageViewsDelete[2] = iv_delete_3;
+        rcv_photo = findViewById(R.id.rcv_photo);
+        rcv_photo.setLayoutManager(new GridLayoutManager(this, 3));
         frame_image = findViewById(R.id.frame_image);
         iv_large = findViewById(R.id.iv_large);
-        iv_close = findViewById(R.id.iv_close);
-
-        iv_inlarge_1 = findViewById(R.id.iv_inlarge_1);
-        iv_inlarge_2 = findViewById(R.id.iv_inlarge_2);
-        iv_inlarge_3 = findViewById(R.id.iv_inlarge_3);
-
-        imageViewsEnlarge[0] = iv_inlarge_1;
-        imageViewsEnlarge[1] = iv_inlarge_2;
-        imageViewsEnlarge[2] = iv_inlarge_3;
-
-        iv_inlarge_1.setOnClickListener(this);
-        iv_inlarge_2.setOnClickListener(this);
-        iv_inlarge_3.setOnClickListener(this);
-        iv_1.setOnClickListener(this);
-        iv_2.setOnClickListener(this);
-        iv_3.setOnClickListener(this);
-        iv_delete_1.setOnClickListener(this);
-        iv_delete_2.setOnClickListener(this);
-        iv_delete_3.setOnClickListener(this);
+        ImageView iv_close = findViewById(R.id.iv_close);
         iv_close.setOnClickListener(this);
+        fab_add_image = findViewById(R.id.fab_add_image);
+        fab_add_image.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (null != jsonMedicalRecordTemp && null != jsonMedicalRecordTemp.getImages() && jsonMedicalRecordTemp.getImages().size() < MAX_IMAGE_UPLOAD_LIMIT) {
+                    selectImage();
+                } else {
+                    Toast.makeText(DocumentUploadActivity.this, "Maximum " + MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
-
-        Picasso.with(this).load(R.drawable.profile_blue).into(iv_1);
-        Picasso.with(this).load(R.drawable.profile_blue).into(iv_2);
-        Picasso.with(this).load(R.drawable.profile_blue).into(iv_3);
         progressDialog.show();
         progressDialog.setMessage("Fetching documents...");
         medicalHistoryModel.setJsonMedicalRecordPresenter(this);
@@ -184,69 +163,15 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.iv_1:
-                selectPos = 0;
-                selectImage();
-//                if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA)
-//                        == PackageManager.PERMISSION_DENIED) {
-//                    ActivityCompat.requestPermissions(DocumentUploadActivity.this, new String[]{Manifest.permission.CAMERA}, 55);
-//                } else {
-//                    selectImageNew();
-//                }
-                break;
-            case R.id.iv_2:
-                selectPos = 1;
-                selectImage();
-                break;
-            case R.id.iv_3:
-                selectPos = 2;
-                selectImage();
-                break;
-            case R.id.iv_delete_1:
-                if (jsonMedicalRecordTemp.getImages().size() >= 1) {
-                    selectPos = 0;
-                    deleteImage(jsonMedicalRecordTemp.getImages().get(0));
-                }
-                break;
-            case R.id.iv_delete_2:
-                if (jsonMedicalRecordTemp.getImages().size() >= 2) {
-                    selectPos = 1;
-                    deleteImage(jsonMedicalRecordTemp.getImages().get(1));
-                }
-                break;
-            case R.id.iv_delete_3:
-                if (jsonMedicalRecordTemp.getImages().size() >= 3) {
-                    selectPos = 2;
-                    deleteImage(jsonMedicalRecordTemp.getImages().get(2));
-                }
-                break;
             case R.id.iv_close:
                 frame_image.setVisibility(View.GONE);
                 iv_large.setBackgroundResource(0);
+                fab_add_image.show();
                 break;
-            case R.id.iv_inlarge_1:
-                enlargeImage(0);
-                break;
-            case R.id.iv_inlarge_2:
-                enlargeImage(1);
-                break;
-            case R.id.iv_inlarge_3:
-                enlargeImage(2);
-                break;
+
         }
     }
 
-    private void enlargeImage(int pos){
-        if (!TextUtils.isEmpty(jsonMedicalRecordTemp.getImages().get(pos))) {
-            Picasso.with(DocumentUploadActivity.this)
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + jsonMedicalRecordTemp.getImages().get(pos))
-                    .into(iv_large);
-            frame_image.setVisibility(View.VISIBLE);
-        }else{
-            Toast.makeText(this,"Image not available",Toast.LENGTH_LONG).show();
-        }
-
-    }
     private void selectImage1() {
         if (isExternalStoragePermissionAllowed()) {
             try {
@@ -367,13 +292,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             jsonMedicalRecordResponse(jsonMedicalRecordTemp);
         } else {
             Toast.makeText(this, "Failed to update document", Toast.LENGTH_LONG).show();
-            if (-1 != selectPos) {
-                Picasso.with(this).load(R.drawable.profile_blue).into(imageViews[selectPos]);
-                imageViewsDelete[selectPos].setVisibility(View.GONE);
-                imageViewsEnlarge[selectPos].setVisibility(View.GONE);
-            }
         }
-        selectPos = -1;
+
     }
 
     @Override
@@ -382,9 +302,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         Log.v("Image removed", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             if (-1 != selectPos) {
-                Picasso.with(this).load(R.drawable.profile_blue).into(imageViews[selectPos]);
-                imageViewsDelete[selectPos].setVisibility(View.GONE);
-                imageViewsEnlarge[selectPos].setVisibility(View.GONE);
                 jsonMedicalRecordTemp.getImages().remove(selectPos);
                 jsonMedicalRecordResponse(jsonMedicalRecordTemp);
             }
@@ -397,12 +314,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
     @Override
     public void imageUploadError() {
-        if (-1 != selectPos) {
-            Picasso.with(this).load(R.drawable.profile_blue).into(imageViews[selectPos]);
-            imageViewsDelete[selectPos].setVisibility(View.GONE);
-            imageViewsEnlarge[selectPos].setVisibility(View.GONE);
-            selectPos = -1;
-        }
         dismissProgress();
     }
 
@@ -412,23 +323,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
-
-                for (int i = 0; i < jsonMedicalRecord.getImages().size(); i++) {
-                    try {
-                        if (!TextUtils.isEmpty(jsonMedicalRecord.getImages().get(i))) {
-                            Picasso.with(this)
-                                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + jsonMedicalRecord.getImages().get(i))
-                                    .into(imageViews[i]);
-                            imageViewsDelete[i].setVisibility(View.VISIBLE);
-                            imageViewsEnlarge[i].setVisibility(View.VISIBLE);
-                        } else {
-                            imageViewsDelete[i].setVisibility(View.GONE);
-                            imageViewsEnlarge[i].setVisibility(View.GONE);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
+                rcv_photo.setAdapter(imageUploadAdapter);
             }
         }
         dismissProgress();
@@ -469,7 +365,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onClick(View v) {
-
+                try {
+                    selectPos = jsonMedicalRecordTemp.getImages().indexOf(imageName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(recordReferenceId);
                 jsonMedicalRecord.setImages(new ArrayList<String>() {
@@ -508,18 +408,18 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
+        final CharSequence[] items = {"Camera", "Choose from Library",
                 "Cancel"};
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Add Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 boolean result = PermissionUtils.checkPermission(DocumentUploadActivity.this);
 
-                if (items[item].equals("Take Photo")) {
-                    userChoosenTask = "Take Photo";
+                if (items[item].equals("Camera")) {
+                    userChoosenTask = "Camera";
                     if (result)
                         cameraIntent();
 
@@ -597,11 +497,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            if (-1 != selectPos) {
-                imageViews[selectPos].setImageBitmap(thumbnail);
-                imageViewsDelete[selectPos].setVisibility(View.VISIBLE);
-                imageViewsEnlarge[selectPos].setVisibility(View.VISIBLE);
-            }
 
             if (!TextUtils.isEmpty(path)) {
                 progressDialog.show();
@@ -635,22 +530,17 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 try {
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
-
-                    if (-1 != selectPos) {
-                        imageViews[selectPos].setImageBitmap(bm);
-                        imageViewsDelete[selectPos].setVisibility(View.VISIBLE);
-                        imageViewsEnlarge[selectPos].setVisibility(View.VISIBLE);
-                        if (!TextUtils.isEmpty(convertedPath)) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Uploading document");
-                            String type = getMimeType(convertedPath);
-                          //  Log.e("File type :", type);
-                            File file = new File(convertedPath);
-                            MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                            RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-                            medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-                        }
+                    if (!TextUtils.isEmpty(convertedPath)) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Uploading document");
+                        String type = getMimeType(convertedPath);
+                        //  Log.e("File type :", type);
+                        File file = new File(convertedPath);
+                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
+                        medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -658,5 +548,24 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void imageEnlargeClick(String imageUrl) {
+        if (!TextUtils.isEmpty(imageUrl)) {
+            Picasso.with(DocumentUploadActivity.this)
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
+                    .into(iv_large);
+            frame_image.setVisibility(View.VISIBLE);
+        } else {
+            Toast.makeText(this, "Image not available", Toast.LENGTH_LONG).show();
+            frame_image.setVisibility(View.GONE);
+        }
+        fab_add_image.hide();
+    }
+
+    @Override
+    public void imageDeleteClick(String imageUrl) {
+        deleteImage(imageUrl);
     }
 }

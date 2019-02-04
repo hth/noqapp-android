@@ -319,10 +319,12 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             b.putSerializable("jsonMerchant", topics);
             b.putInt("position", selected_pos);
             merchantDetailFragment.setArguments(b);
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.list_detail_fragment, merchantDetailFragment);
-            //  fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            if(null != getActivity()) {
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.list_detail_fragment, merchantDetailFragment);
+                //  fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
         }
     }
 

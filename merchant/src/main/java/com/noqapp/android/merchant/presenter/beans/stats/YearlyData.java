@@ -12,7 +12,7 @@ import java.io.Serializable;
  * hitender
  * 5/15/18 8:58 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -69,6 +69,7 @@ public class YearlyData implements Serializable {
     public String toString() {
         return "YearlyData{" +
                 "yearMonth=" + yearMonth +
+                ", year=" + year +
                 ", value=" + value +
                 '}';
     }

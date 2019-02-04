@@ -26,7 +26,7 @@
     <string name="how_it_works">How it works?</string>
     <string name="your_invite_code">Your Invite Code</string>
     <string name="copy">Copy</string>
-    <string name="send_invite">Send Invites -></string>
+    <string name="send_invite">Send Invites</string>
     <string name="empty_invite_code">Please login to have invite code to share.</string>
     <string name="empty_history">You don\'t have any \n recent history.</string>
     <string name="close">Close</string>

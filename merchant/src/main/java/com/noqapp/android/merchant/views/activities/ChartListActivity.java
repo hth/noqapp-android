@@ -48,10 +48,10 @@ public class ChartListActivity extends AppCompatActivity {
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               onBackPressed();
             }
         });
-        tv_toolbar_title.setText("Charts");
+        tv_toolbar_title.setText("Statistics");
         ChartListFragment merchantChartListFragment = new ChartListFragment();
         Bundle b = new Bundle();
         b.putSerializable("jsonTopic", getIntent().getExtras().getSerializable("jsonTopic"));

@@ -206,7 +206,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                         Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
                         startActivity(in3);
                         break;
-                    case R.mipmap.logout:
+                    case R.drawable.logout:
                         showLogoutDialog();
                         break;
                     case R.drawable.ic_menu_share:
@@ -655,7 +655,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         });
         mAlertDialog.show();
-        mAlertDialog.getWindow().setLayout(ShowAlertInformation.WIDTH, ShowAlertInformation.HEIGHT);
+        ShowAlertInformation.resizeAlert(mAlertDialog,this);
     }
 
     public void setActionBarTitle(String title) {
@@ -740,9 +740,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
         drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
-        drawerItem.add(new NavigationBean(R.mipmap.logout, "Logout"));
+        drawerItem.add(new NavigationBean(R.drawable.logout, "Logout"));
         if (showChart)
-            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
+            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Statistics"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

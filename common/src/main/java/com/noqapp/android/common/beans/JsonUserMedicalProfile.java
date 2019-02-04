@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * hitender
@@ -50,6 +51,9 @@ public class JsonUserMedicalProfile implements Serializable {
 
     @JsonProperty("hd")
     private boolean historyDirty;
+
+    @JsonProperty("er")
+    private List<JsonNameDatePair> externalMedicalReports;
 
     public BloodTypeEnum getBloodType() {
         return bloodType;
@@ -114,6 +118,15 @@ public class JsonUserMedicalProfile implements Serializable {
         return this;
     }
 
+    public List<JsonNameDatePair> getExternalMedicalReports() {
+        return externalMedicalReports;
+    }
+
+    public JsonUserMedicalProfile setExternalMedicalReports(List<JsonNameDatePair> externalMedicalReports) {
+        this.externalMedicalReports = externalMedicalReports;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonUserMedicalProfile{" +
@@ -124,6 +137,7 @@ public class JsonUserMedicalProfile implements Serializable {
                 ", knownAllergies='" + knownAllergies + '\'' +
                 ", medicineAllergies='" + medicineAllergies + '\'' +
                 ", historyDirty=" + historyDirty +
+                ", externalMedicalReports=" + externalMedicalReports +
                 '}';
     }
 }

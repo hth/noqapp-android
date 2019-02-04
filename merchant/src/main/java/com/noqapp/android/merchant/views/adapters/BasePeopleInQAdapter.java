@@ -222,9 +222,13 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE: View.VISIBLE);
 
         if(jsonQueuedPerson.isClientVisitedThisBusiness()){
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.WHITE);
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
+            recordHolder.tv_sequence_number.setTextColor(Color.BLACK);
+            recordHolder.tv_join_timing.setTextColor(Color.BLACK);
         }else{
             recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
+            recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
+            recordHolder.tv_join_timing.setTextColor(Color.WHITE);
         }
 
         switch (jsonQueuedPerson.getQueueUserState()) {
@@ -312,11 +316,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
 
         if (jsonQueuedPerson.getDependents().size() > 0) {
-            //recordHolder.tv_change_name.setVisibility(View.VISIBLE);
             recordHolder.tv_change_name.setBackgroundResource(R.drawable.bg_nogradient_round);
             recordHolder.tv_change_name.setClickable(true);
         } else {
-            //recordHolder.tv_change_name.setVisibility(View.GONE);
             recordHolder.tv_change_name.setBackgroundResource(R.drawable.grey_background);
             recordHolder.tv_change_name.setClickable(false);
         }
