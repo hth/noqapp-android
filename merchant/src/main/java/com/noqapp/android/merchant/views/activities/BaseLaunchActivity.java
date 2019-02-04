@@ -742,7 +742,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
         drawerItem.add(new NavigationBean(R.mipmap.logout, "Logout"));
         if (showChart)
-            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Charts"));
+            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Statistics"));
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
