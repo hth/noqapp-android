@@ -30,11 +30,11 @@ import java.util.List;
 public class PreferredStoreFragment extends Fragment {
 
     private RecyclerView rcv_one, rcv_two;
-    private TextView tv_label_one, tv_label_two;
+    private TextView tv_label_one, tv_label_two, tv_sublabel_one, tv_sublabel_two;
     private ProgressDialog progressDialog;
-    int pos = -1;
-    PreferredListAdapter preferredListAdapter1 = null;
-    PreferredListAdapter preferredListAdapter2 = null;
+    private int pos = -1;
+    private PreferredListAdapter preferredListAdapter1 = null;
+    private PreferredListAdapter preferredListAdapter2 = null;
 
     @Nullable
     @Override
@@ -45,6 +45,8 @@ public class PreferredStoreFragment extends Fragment {
         rcv_two = v.findViewById(R.id.rcv_two);
         tv_label_one = v.findViewById(R.id.tv_label_one);
         tv_label_two = v.findViewById(R.id.tv_label_two);
+        tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
+        tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
         rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         pos = getArguments().getInt("type");
@@ -54,21 +56,29 @@ public class PreferredStoreFragment extends Fragment {
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
             tv_label_one.setText(HealthCareServiceEnum.MRI.getDescription());
             tv_label_two.setText(HealthCareServiceEnum.SCAN.getDescription());
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.MRI.getDescription()));
+            tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.SCAN.getDescription()));
         } else if (pos == 1) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SONO));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.XRAY));
             tv_label_one.setText(HealthCareServiceEnum.SONO.getDescription());
             tv_label_two.setText(HealthCareServiceEnum.XRAY.getDescription());
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SONO.getDescription()));
+            tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.XRAY.getDescription()));
         } else if (pos == 2) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PATH));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SPEC));
             tv_label_one.setText(HealthCareServiceEnum.PATH.getDescription());
             tv_label_two.setText(HealthCareServiceEnum.SPEC.getDescription());
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PATH.getDescription()));
+            tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.SPEC.getDescription()));
         } else if (pos == 3) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PHYS));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(null));
             tv_label_one.setText(HealthCareServiceEnum.PHYS.getDescription());
             tv_label_two.setText("Pharmacy");
+            tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PHYS.getDescription()));
+            tv_sublabel_two.setText(getMessage("Pharmacy"));
         }
         rcv_one.setAdapter(preferredListAdapter1);
         rcv_two.setAdapter(preferredListAdapter2);
@@ -300,7 +310,7 @@ public class PreferredStoreFragment extends Fragment {
     private int getSelectionPos(List<CheckBoxObj> temp, String codeQR, HealthCareServiceEnum hcse) {
         PreferredStoreInfo preferredStoreInfo = PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
                 get(codeQR);
-        if(null == preferredStoreInfo)
+        if (null == preferredStoreInfo)
             return -1;
 
         if (null == hcse) {
@@ -378,5 +388,9 @@ public class PreferredStoreFragment extends Fragment {
             }
 
         }
+    }
+
+    private String getMessage(String str){
+        return  "Select preferred store to receive "+str+" requested for patients";
     }
 }

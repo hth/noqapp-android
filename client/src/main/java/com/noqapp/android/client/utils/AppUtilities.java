@@ -506,16 +506,6 @@ public class AppUtilities extends CommonHelper {
         ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
-    public static String getStoreAddress(String town, String area) {
-        String address = "";
-        if (!TextUtils.isEmpty(town)) {
-            address = town;
-        }
-        if (!TextUtils.isEmpty(area)) {
-            address = area + ", " + address;
-        }
-        return address;
-    }
 
     public String formatTodayStoreTiming(Context context, StoreHourElastic storeHourElastic) {
         return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());

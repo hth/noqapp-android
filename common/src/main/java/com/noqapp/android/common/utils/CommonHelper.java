@@ -165,4 +165,15 @@ public class CommonHelper {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return dateFormat.format(date);
     }
+
+    public static String getStoreAddress(String town, String area) {
+        String address = "";
+        if (!TextUtils.isEmpty(town)) {
+            address = town;
+        }
+        if (!TextUtils.isEmpty(area)) {
+            address = area + ", " + address;
+        }
+        return address;
+    }
 }
