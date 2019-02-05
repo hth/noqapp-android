@@ -63,6 +63,9 @@ public class JsonQueuedPerson implements Serializable {
     @JsonProperty ("vs")
     private boolean clientVisitedThisStore;
 
+    @JsonProperty("vsd")
+    private String clientVisitedThisStoreDate;
+
     @JsonProperty ("vb")
     private boolean clientVisitedThisBusiness;
 
@@ -160,6 +163,15 @@ public class JsonQueuedPerson implements Serializable {
 
     public JsonQueuedPerson setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public JsonQueuedPerson setClientVisitedThisStoreDate(String clientVisitedThisStoreDate) {
+        this.clientVisitedThisStoreDate = clientVisitedThisStoreDate;
         return this;
     }
 
