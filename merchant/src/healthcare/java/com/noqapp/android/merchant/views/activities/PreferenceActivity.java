@@ -61,13 +61,12 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private static PreferenceActivity preferenceActivity;
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterData = new ArrayList<>();
-    private ArrayList<String> masterDataString = new ArrayList<>();
-    private ArrayList<String> masterDataSono = new ArrayList<>();
-    private ArrayList<String> masterDataScan = new ArrayList<>();
-    private ArrayList<String> masterDataMri = new ArrayList<>();
-    private ArrayList<String> masterDataXray = new ArrayList<>();
-    private ArrayList<String> masterDataPath = new ArrayList<>();
-    private ArrayList<String> masterDataSpec = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterDataSono = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterDataScan = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterDataMri = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterDataXray = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterDataPath = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterDataSpec = new ArrayList<>();
     private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
     private MedicineFragment medicineFragment;
     public PreferenceObjects preferenceObjects;
@@ -296,24 +295,29 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                                     String[] strArray = line.split(",");
                                     masterData.add(new JsonMasterLab().
                                             setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-                                    masterDataString.add(strArray[0]);
                                     if (strArray[2].equals(HealthCareServiceEnum.SCAN.getName())) {
-                                        masterDataScan.add(strArray[0]);
+                                        masterDataScan.add(new JsonMasterLab().
+                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     if (strArray[2].equals(HealthCareServiceEnum.SONO.getName())) {
-                                        masterDataSono.add(strArray[0]);
+                                        masterDataSono.add(new JsonMasterLab().
+                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     if (strArray[2].equals(HealthCareServiceEnum.MRI.getName())) {
-                                        masterDataMri.add(strArray[0]);
+                                        masterDataMri.add(new JsonMasterLab().
+                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     if (strArray[2].equals(HealthCareServiceEnum.XRAY.getName())) {
-                                        masterDataXray.add(strArray[0]);
+                                        masterDataXray.add(new JsonMasterLab().
+                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     if (strArray[2].equals(HealthCareServiceEnum.PATH.getName())) {
-                                        masterDataPath.add(strArray[0]);
+                                        masterDataPath.add(new JsonMasterLab().
+                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     if (strArray[2].equals(HealthCareServiceEnum.SPEC.getName())) {
-                                        masterDataSpec.add(strArray[0]);
+                                        masterDataSpec.add(new JsonMasterLab().
+                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     Log.e("data is :", line);
 

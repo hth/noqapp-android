@@ -42,7 +42,7 @@ public class MasterLabModel {
     }
 
     public void add(String did, String mail, String auth, JsonMasterLab jsonMasterLab) {
-        masterLabService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
+        masterLabService. add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -65,6 +65,35 @@ public class MasterLabModel {
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("failureMedicalProfileFe", t.getLocalizedMessage(), t);
+                masterLabPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void flag(String did, String mail, String auth, JsonMasterLab jsonMasterLab) {
+        masterLabService. flag(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("data flagged", String.valueOf(response.body()));
+                        masterLabPresenter.masterLabUploadResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to flag data");
+                        masterLabPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        masterLabPresenter.authenticationFailure();
+                    } else {
+                        masterLabPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("failure data flag", t.getLocalizedMessage(), t);
                 masterLabPresenter.responseErrorPresenter(null);
             }
         });
