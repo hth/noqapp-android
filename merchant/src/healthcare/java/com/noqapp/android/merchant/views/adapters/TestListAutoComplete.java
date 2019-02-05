@@ -17,19 +17,16 @@ import java.util.List;
 
 public class TestListAutoComplete extends ArrayAdapter<JsonMasterLab> implements Filterable {
 
-    private final boolean isLocalUpdate = false;
     private ArrayList<JsonMasterLab> fullList;
     private ArrayList<JsonMasterLab> mOriginalValues;
     private ArrayFilter mFilter;
     private Context context;
-    public TestListAutoComplete(Context context, List<JsonMasterLab> objects) {
 
+    public TestListAutoComplete(Context context, List<JsonMasterLab> objects) {
         super(context, R.layout.layout_autocomplete, objects);
         fullList = (ArrayList<JsonMasterLab>) objects;
-        mOriginalValues = new ArrayList<JsonMasterLab>(fullList);
+        mOriginalValues = new ArrayList<>(fullList);
         this.context = context;
-
-
     }
 
     @Override
@@ -54,17 +51,6 @@ public class TestListAutoComplete extends ArrayAdapter<JsonMasterLab> implements
         TextView lblName = view.findViewById(R.id.lbl_name);
         if (lblName != null)
             lblName.setText(JsonMasterLab.getProductShortName());
-//        lblName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(null != searchClick && !isLocalUpdate){
-//                    searchClick.searchClick(true,false, fullList.get(position),position);
-//                }
-//                if( null != searchByPos){
-//                    searchByPos.searchByPos(fullList.get(position));
-//                }
-//            }
-//        });
 
         return view;
     }
@@ -123,10 +109,9 @@ public class TestListAutoComplete extends ArrayAdapter<JsonMasterLab> implements
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
-            if(results.values!=null){
+            if (results.values != null) {
                 fullList = (ArrayList<JsonMasterLab>) results.values;
-            }else{
+            } else {
                 fullList = new ArrayList<JsonMasterLab>();
             }
             if (results.count > 0) {
