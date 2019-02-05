@@ -67,6 +67,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private EditText edt_Mail;
     private TextView tv_male;
     private TextView tv_female;
+    private TextView tv_transgender;
     private TextView tv_remove_image;
 
     private DatePickerDialog fromDatePickerDialog;
@@ -91,6 +92,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         edt_Mail = findViewById(R.id.edt_email);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
+        tv_transgender = findViewById(R.id.tv_transgender);
         tv_remove_image = findViewById(R.id.tv_remove_image);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
@@ -107,6 +109,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        tv_transgender.setOnClickListener(this);
         btn_update.setOnClickListener(this);
         tv_remove_image.setOnClickListener(this);
         edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -209,18 +212,32 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
                 tv_male.setText(getString(R.string.male));
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
+                tv_transgender.setTextColor(Color.BLACK);
                 break;
             case R.id.tv_female:
                 gender = "F";
                 tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
+                tv_transgender.setTextColor(Color.BLACK);
                 tv_female.setText(getString(R.string.female));
+                break;
+            case R.id.tv_transgender:
+                gender = "T";
+                tv_transgender.setBackgroundColor(ContextCompat.getColor(UserProfileEditActivity.this, R.color.review_color));
+                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_male.setTextColor(Color.BLACK);
+                tv_female.setTextColor(Color.BLACK);
+                tv_transgender.setTextColor(Color.WHITE);
+                tv_transgender.setText(getString(R.string.transgender));
                 break;
         }
     }
