@@ -60,8 +60,9 @@ import java.util.ArrayList;
 
 public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
 
-    private static final int PICK_IMAGE_CAMERA = 121;
-    private static final int PICK_IMAGE_GALLERY = 122;
+    private static final int PICK_IMAGE_CAMERA = 101;
+    private static final int PICK_IMAGE_GALLERY = 102;
+    private static final int PERMISSION_REQUEST_CAMERA = 103;
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -113,10 +114,14 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         fab_add_image = findViewById(R.id.fab_add_image);
         fab_add_image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (null != jsonMedicalRecordTemp && null != jsonMedicalRecordTemp.getImages() && jsonMedicalRecordTemp.getImages().size() < MAX_IMAGE_UPLOAD_LIMIT) {
-                    selectImage();
+                if (null != jsonMedicalRecordTemp && null != jsonMedicalRecordTemp.getImages()) {
+                    if (jsonMedicalRecordTemp.getImages().size() < MAX_IMAGE_UPLOAD_LIMIT) {
+                        selectImage();
+                    } else {
+                        Toast.makeText(DocumentUploadActivity.this, "Maximum " + MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(DocumentUploadActivity.this, "Maximum " + MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
+                    selectImage();
                 }
             }
         });
@@ -394,12 +399,21 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case PermissionUtils.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+            case PermissionUtils.PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (userChoosenTask.equals("Take Photo"))
                         cameraIntent();
                     else if (userChoosenTask.equals("Choose from Library"))
                         galleryIntent();
+                } else {
+                    //code for deny
+                }
+                break;
+
+            case PERMISSION_REQUEST_CAMERA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Take Photo"))
+                        cameraIntent();
                 } else {
                     //code for deny
                 }
@@ -444,14 +458,19 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     }
 
     private void cameraIntent() {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-        imageUri = getContentResolver().insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, PICK_IMAGE_CAMERA);
+        if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(DocumentUploadActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+            imageUri = getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, PICK_IMAGE_CAMERA);
+        }
     }
 
     @Override
