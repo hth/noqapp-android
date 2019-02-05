@@ -126,4 +126,18 @@ public class JsonQueuedDependent implements Serializable {
         this.gender = gender;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonQueuedDependent{" +
+                "token=" + token +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", guardianPhone='" + guardianPhone + '\'' +
+                ", guardianQueueUserId='" + guardianQueueUserId + '\'' +
+                ", queueUserState=" + queueUserState +
+                ", age='" + age + '\'' +
+                ", gender=" + gender +
+                '}';
+    }
 }

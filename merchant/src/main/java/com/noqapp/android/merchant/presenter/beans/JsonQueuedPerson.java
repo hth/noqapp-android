@@ -213,7 +213,9 @@ public class JsonQueuedPerson implements Serializable {
                 ", serverDeviceId='" + serverDeviceId + '\'' +
                 ", dependents=" + dependents +
                 ", businessCustomerId='" + businessCustomerId + '\'' +
+                ", businessCustomerIdChangeCount=" + businessCustomerIdChangeCount +
                 ", clientVisitedThisStore=" + clientVisitedThisStore +
+                ", clientVisitedThisStoreDate='" + clientVisitedThisStoreDate + '\'' +
                 ", clientVisitedThisBusiness=" + clientVisitedThisBusiness +
                 ", recordReferenceId='" + recordReferenceId + '\'' +
                 ", created='" + created + '\'' +
