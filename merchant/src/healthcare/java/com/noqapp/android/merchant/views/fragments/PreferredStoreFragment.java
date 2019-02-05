@@ -12,7 +12,6 @@ import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,7 +21,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
 import java.util.ArrayList;

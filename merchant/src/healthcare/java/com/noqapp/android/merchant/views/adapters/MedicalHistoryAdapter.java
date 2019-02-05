@@ -5,7 +5,6 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalHistoryAdapter extends BaseAdapter {

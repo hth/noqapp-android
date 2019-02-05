@@ -22,7 +22,6 @@ import com.noqapp.android.merchant.views.fragments.PrintFragment;
 import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
 import com.noqapp.android.merchant.views.fragments.TreatmentFragment;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
-import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.pojos.FormDataObj;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
@@ -51,7 +50,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
 
