@@ -68,7 +68,7 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
         if (isFirstTime) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                merchantStatsModel.doctor(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+                merchantStatsModel.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
                 isFirstTime = false;
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
