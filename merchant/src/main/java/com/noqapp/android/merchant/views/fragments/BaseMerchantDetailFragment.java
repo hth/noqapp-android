@@ -116,7 +116,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         context = getActivity();
         manageQueueModel = new ManageQueueModel();
         manageQueueModel.setManageQueuePresenter(this);
-        jsonTopic = topicsList.get(currrentpos);
+        if (null != topicsList && topicsList.size() > 0)
+            jsonTopic = topicsList.get(currrentpos);
 
 
         progressDialog = itemView.findViewById(R.id.progress_bar);
@@ -418,7 +419,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         }
                     }
             );
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility(),jsonTopic.getBizCategoryId());
+            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility(), jsonTopic.getBizCategoryId());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if (jsonTopic.getServingNumber() > 0)
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);

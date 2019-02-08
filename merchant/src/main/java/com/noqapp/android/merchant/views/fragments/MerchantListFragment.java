@@ -197,11 +197,13 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             initListView();
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                LaunchActivity.getLaunchActivity().progressDialog.show();
-                manageQueueModel.getQueues(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth());
+                if (null != LaunchActivity.getLaunchActivity()) {
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    manageQueueModel.getQueues(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth());
+                }
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
@@ -313,17 +315,19 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().setLastUpdateTime(System.currentTimeMillis());
         updateSnackbarTxt();
         snackbar.show();
-        if (new AppUtils().isTablet(LaunchActivity.getLaunchActivity()) && topics.size() > 0) {
-            merchantDetailFragment = new MerchantDetailFragment();
-            Bundle b = new Bundle();
-            b.putSerializable("jsonMerchant", topics);
-            b.putInt("position", selected_pos);
-            merchantDetailFragment.setArguments(b);
-            if(null != getActivity()) {
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.list_detail_fragment, merchantDetailFragment);
-                //  fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+        if (new AppUtils().isTablet(LaunchActivity.getLaunchActivity())) {
+            if (null != topics && topics.size() > 0) {
+                merchantDetailFragment = new MerchantDetailFragment();
+                Bundle b = new Bundle();
+                b.putSerializable("jsonMerchant", topics);
+                b.putInt("position", selected_pos);
+                merchantDetailFragment.setArguments(b);
+                if (null != getActivity()) {
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.list_detail_fragment, merchantDetailFragment);
+                    //  fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
             }
         }
     }
@@ -381,7 +385,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                             topics.set(i, jt);
                             adapter.notifyDataSetChanged();
                             temp_adapter = null;
-                            if(null != getActivity()) {
+                            if (null != getActivity()) {
                                 temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                                 auto_complete_search.setAdapter(temp_adapter);
                             }
@@ -413,7 +417,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                         merchantDetailFragment.updateListData(topics);
                     }
                     temp_adapter = null;
-                    if(null != getActivity()) {
+                    if (null != getActivity()) {
                         temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                         auto_complete_search.setAdapter(temp_adapter);
                     }
@@ -437,7 +441,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                     topics.set(i, jt);
                     adapter.notifyDataSetChanged();
                     temp_adapter = null;
-                    if(null != getActivity()) {
+                    if (null != getActivity()) {
                         temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                         auto_complete_search.setAdapter(temp_adapter);
                     }
