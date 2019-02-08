@@ -274,31 +274,53 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-
-            <AutoCompleteTextView
-                    android:id="@+id/actv_search"
+            <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight=".3"
+                    android:layout_weight=".6"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_search"
-                    android:drawableRight="@drawable/ic_cancel"
-                    android:drawableTint="@color/colorAccent"
-                    android:drawablePadding="10dp"
-                    android:hint="Se"
-                    android:completionThreshold="1"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:visibility="invisible"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_fourteen"/>
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:id="@+id/iv_search"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:backgroundTint="@color/colorAccent"
+                        android:background="@drawable/ic_search"/>
+
+                <AutoCompleteTextView
+                        android:id="@+id/actv_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="10dp"
+                        android:hint="Search Symptoms"
+                        android:minWidth="200dp"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:padding="10dp"
+                        android:layout_toRightOf="@+id/iv_search"
+                        android:layout_toLeftOf="@+id/iv_clear_actv"
+                        android:textSize="@dimen/text_size_fourteen"
+                        />
+
+                <ImageView
+                        android:id="@+id/iv_clear_actv"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:backgroundTint="@color/colorAccent"
+                        android:background="@drawable/ic_cancel"/>
+            </RelativeLayout>
 
             <TextView
                     android:text="Symptoms"
                     android:layout_width="0dp"
-                    android:layout_weight=".6"
+                    android:layout_weight=".4"
                     android:padding="10dp"
                     android:gravity="center"
                     android:textStyle="bold"
