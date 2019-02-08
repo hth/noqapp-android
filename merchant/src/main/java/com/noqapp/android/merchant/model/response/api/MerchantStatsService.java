@@ -18,7 +18,7 @@ public interface MerchantStatsService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @GET("api/m/stats/healthCare.json")
-    Call<HealthCareStatList> doctor(
+    Call<HealthCareStatList> healthCare(
             @Header("X-R-DID")
             String did,
 

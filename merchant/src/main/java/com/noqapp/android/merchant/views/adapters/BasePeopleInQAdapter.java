@@ -5,6 +5,7 @@ import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -123,6 +124,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_upload_document;
         TextView tv_business_customer_id;
         TextView tv_join_timing;
+        TextView tv_last_visit;
         RelativeLayout rl_sequence_new_time;
         ImageView iv_new;
         CardView cardview;
@@ -138,6 +140,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
+            this.tv_last_visit = itemView.findViewById(R.id.tv_last_visit);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
@@ -167,7 +170,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
     }
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility,String bizCategoryId) {
+
+    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -178,7 +182,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerModel = new BusinessCustomerModel(this);
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
-        this.bizCategoryId =bizCategoryId;
+        this.bizCategoryId = bizCategoryId;
     }
 
     @Override
@@ -194,6 +198,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
+        recordHolder.tv_last_visit.setText(TextUtils.isEmpty(jsonQueuedPerson.getClientVisitedThisStoreDate()) ? "" : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user)) :
                 Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
@@ -219,13 +224,13 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             }
         });
         // check parameter to show client is new or has previously visited
-        recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE: View.VISIBLE);
+        recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
 
-        if(jsonQueuedPerson.isClientVisitedThisBusiness()){
+        if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
             recordHolder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
             recordHolder.tv_sequence_number.setTextColor(Color.BLACK);
             recordHolder.tv_join_timing.setTextColor(Color.BLACK);
-        }else{
+        } else {
             recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
             recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
             recordHolder.tv_join_timing.setTextColor(Color.WHITE);
@@ -269,7 +274,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createCaseHistory(context, jsonQueuedPerson,bizCategoryId);
+                createCaseHistory(context, jsonQueuedPerson, bizCategoryId);
             }
         });
         recordHolder.tv_change_name.setOnClickListener(new View.OnClickListener() {

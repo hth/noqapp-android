@@ -20,12 +20,17 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
+import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.common.cache.Cache;
 
 import com.squareup.picasso.Picasso;
@@ -40,7 +45,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -76,8 +80,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView rv_thumb_images;
     private ImageView iv_category_banner;
     private Button btn_join_queues;
-    private SegmentedControl sc_amenities;
-    private SegmentedControl sc_facility;
+    private RecyclerView rcv_amenities;
+    private RecyclerView rcv_facility;
     private String codeQR;
     private BizStoreElastic bizStoreElastic;
     private boolean isFuture = false;
@@ -102,8 +106,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         iv_category_banner = findViewById(R.id.iv_category_banner);
         btn_join_queues = findViewById(R.id.btn_join_queues);
-        sc_amenities = findViewById(R.id.sc_amenities);
-        sc_facility = findViewById(R.id.sc_facility);
+        rcv_amenities = findViewById(R.id.rcv_amenities);
+        rcv_facility = findViewById(R.id.rcv_facility);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         listener = this;
@@ -233,25 +237,21 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             });
             codeQR = bizStoreElastic.getCodeQR();
-            try {
-                // clear all the segments before load new
-                sc_amenities.removeAllSegments();
-                sc_facility.removeAllSegments();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
             List<AmenityEnum> amenityEnums = bizStoreElastic.getAmenities();
             List<String> amenities = new ArrayList<>();
             for (int j = 0; j < amenityEnums.size(); j++) {
                 amenities.add(amenityEnums.get(j).getDescription());
             }
-            sc_amenities.addSegments(amenities);
+            rcv_amenities.setLayoutManager(getFlexBoxLayoutManager());
+            rcv_amenities.setAdapter(new StaggeredGridAdapter(amenities));
             List<FacilityEnum> facilityEnums = bizStoreElastic.getFacilities();
             List<String> facilities = new ArrayList<>();
             for (int j = 0; j < facilityEnums.size(); j++) {
                 facilities.add(facilityEnums.get(j).getDescription());
             }
-            sc_facility.addSegments(facilities);
+            rcv_facility.setLayoutManager(getFlexBoxLayoutManager());
+            rcv_facility.setAdapter(new StaggeredGridAdapter(facilities));
             Picasso.with(this)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
@@ -415,5 +415,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             in.putExtra("title", title);
             startActivity(in);
         }
+    }
+
+    public FlexboxLayoutManager getFlexBoxLayoutManager() {
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
+        return layoutManager;
     }
 }

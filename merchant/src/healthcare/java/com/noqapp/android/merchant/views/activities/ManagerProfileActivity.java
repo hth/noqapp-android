@@ -3,14 +3,13 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
-import com.noqapp.android.merchant.views.fragments.UserProfileSettingFragment;
 
 import android.support.v4.view.ViewPager;
 
 public class ManagerProfileActivity extends BaseManagerProfileActivity {
 
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
-    private UserProfileSettingFragment userProfileSettingFragment;
+
 
 
     @Override
@@ -21,9 +20,7 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
             switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
                 case DO:
                     userAdditionalInfoFragment = new UserAdditionalInfoFragment();
-                    userProfileSettingFragment = new UserProfileSettingFragment();
                     adapter.addFragment(userAdditionalInfoFragment, "Professional Profile");
-                    adapter.addFragment(userProfileSettingFragment, "Professional Settings");
                     break;
                 default:
                     //Do nothing
@@ -43,7 +40,6 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
                     case DO:
                         LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                         userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
-                        userProfileSettingFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
                         break;
                     default:
                         //Do nothing

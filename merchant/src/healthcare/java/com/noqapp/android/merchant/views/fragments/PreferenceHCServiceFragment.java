@@ -1,11 +1,22 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.MasterLabPresenter;
+import com.noqapp.android.merchant.model.MasterLabModel;
+import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAutoComplete;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.app.ProgressDialog;
@@ -18,7 +29,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,14 +39,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class PreferenceHCServiceFragment extends Fragment implements SelectItemListAdapter.RemoveListItem {
+public class PreferenceHCServiceFragment extends Fragment implements SelectItemListAdapter.RemoveListItem, TestListAdapter.FlagListItem, MasterLabPresenter {
 
     private ListView lv_tests, lv_all_tests;
     private AutoCompleteTextView actv_search;
     private EditText edt_add;
-    private ArrayAdapter<String> listAdapter;
+    private TestListAdapter testListAdapter;
     private ProgressDialog progressDialog;
-    private ArrayList<String> masterDataString = new ArrayList<>();
+    private ArrayList<JsonMasterLab> masterLabArrayList = new ArrayList<>();
 
     public ArrayList<DataObj> getSelectedList() {
         return selectedList;
@@ -53,7 +63,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
 
     private ArrayList<DataObj> selectedList = new ArrayList<>();
     private SelectItemListAdapter selectItemListAdapter;
-    private ArrayAdapter<String> actvAdapter;
+    private TestListAutoComplete testListAutoComplete;
 
     @Nullable
     @Override
@@ -71,9 +81,9 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
         actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String value = (String) parent.getItemAtPosition(position);
+                JsonMasterLab value = (JsonMasterLab) parent.getItemAtPosition(position);
                 DataObj dataObj = new DataObj();
-                dataObj.setShortName(value);
+                dataObj.setShortName(value.getProductShortName());
                 dataObj.setSelect(false);
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
@@ -111,7 +121,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DataObj dataObj = new DataObj();
-                dataObj.setShortName(masterDataString.get(position));
+                dataObj.setShortName(masterLabArrayList.get(position).getProductShortName());
                 dataObj.setSelect(false);
                 if (!selectedList.contains(dataObj)) {
                     selectedList.add(dataObj);
@@ -129,9 +139,6 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
                 if (TextUtils.isEmpty(edt_add.getText().toString())) {
                     edt_add.setError(getString(R.string.error_field_required));
                 } else {
-                    masterDataString.add(edt_add.getText().toString());
-                    listAdapter.notifyDataSetChanged();
-                    actvAdapter.notifyDataSetChanged();
                     DataObj dataObj = new DataObj();
                     dataObj.setShortName(edt_add.getText().toString());
                     dataObj.setSelect(false);
@@ -148,7 +155,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     private void initProgress() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
+        progressDialog.setMessage("Flag the data...");
     }
 
     protected void dismissProgress() {
@@ -156,13 +163,19 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
             progressDialog.dismiss();
     }
 
-    public void setData(ArrayList<String> tempList) {
-        masterDataString = tempList;
-        Collections.sort(masterDataString);
-        listAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_array_adapter, masterDataString);
-        lv_all_tests.setAdapter(listAdapter);
-        actvAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, masterDataString);
-        actv_search.setAdapter(actvAdapter);
+    public void setData(ArrayList<JsonMasterLab> tempList) {
+        masterLabArrayList = tempList;
+
+        Collections.sort(masterLabArrayList, new Comparator<JsonMasterLab>() {
+            @Override
+            public int compare(JsonMasterLab item1, JsonMasterLab item2) {
+                return item1.getProductShortName().compareToIgnoreCase(item2.getProductShortName());
+            }
+        });
+        testListAdapter = new TestListAdapter(getActivity(), masterLabArrayList, this);
+        lv_all_tests.setAdapter(testListAdapter);
+        testListAutoComplete = new TestListAutoComplete(getActivity(), masterLabArrayList);
+        actv_search.setAdapter(testListAutoComplete);
     }
 
     private HealthCareServiceEnum getHealthCareEnum(int pos) {
@@ -188,7 +201,6 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
         if (null == PreferenceActivity.getPreferenceActivity().preferenceObjects)
             return null;
         else {
-
             switch (pos) {
                 case 0: {
                     ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMriList();
@@ -226,12 +238,10 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
                     return temp;
                 }
             }
-
-
         }
     }
 
-    private void sortListData(ArrayList<DataObj> dataObjs){
+    private void sortListData(ArrayList<DataObj> dataObjs) {
         Collections.sort(dataObjs, new Comparator<DataObj>() {
             @Override
             public int compare(DataObj item1, DataObj item2) {
@@ -247,5 +257,46 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
         selectItemListAdapter.notifyDataSetChanged();
         Toast.makeText(getActivity(), "Record deleted from List", Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void flagItem(int pos) {
+        Toast.makeText(getActivity(), "Record flagged", Toast.LENGTH_LONG).show();
+        initProgress();
+        progressDialog.show();
+        MasterLabModel masterLabModel = new MasterLabModel();
+        masterLabModel.setMasterLabPresenter(this);
+        masterLabModel.flag(BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(), masterLabArrayList.get(pos));
+    }
+
+    @Override
+    public void masterLabUploadResponse(JsonResponse jsonResponse) {
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Toast.makeText(getActivity(), "Data flagged successfully!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "Failed to flag data", Toast.LENGTH_LONG).show();
+        }
+        dismissProgress();
+    }
+
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(getActivity(), eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtils.authenticationProcessing();
     }
 }

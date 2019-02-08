@@ -26,7 +26,7 @@ public class MigrateActivity extends OTPActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-        tv_toolbar_title.setText("Migrate No");
+        tv_toolbar_title.setText("Migrate Number");
         btn_login.setText("Start Migrate");
     }
 

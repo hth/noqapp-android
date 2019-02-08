@@ -29,8 +29,8 @@ public class MerchantStatsModel {
         merchantStatsService = RetrofitClient.getClient().create(MerchantStatsService.class);
     }
 
-    public void doctor(String did, String mail, String auth) {
-        merchantStatsService.doctor(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
+    public void healthCare(String did, String mail, String auth) {
+        merchantStatsService.healthCare(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
             @Override
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

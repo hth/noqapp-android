@@ -14,8 +14,8 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
-import com.noqapp.android.merchant.views.utils.PermissionUtils;
 import com.noqapp.android.merchant.views.utils.FileUtils;
+import com.noqapp.android.merchant.views.utils.PermissionUtils;
 
 import com.squareup.picasso.Picasso;
 
