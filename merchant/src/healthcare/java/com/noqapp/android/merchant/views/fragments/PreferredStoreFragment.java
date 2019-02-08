@@ -115,92 +115,93 @@ public class PreferredStoreFragment extends Fragment {
         }
     }
 
-    private List<CheckBoxObj> checkBoxObjListScan = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListSono = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListPath = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListXray = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListSpec = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListMri = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListPhysio = new ArrayList<>();
-    private List<CheckBoxObj> checkBoxObjListMedicine = new ArrayList<>();
+
 
 
     private List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
-        checkBoxObjListScan.clear();
-        checkBoxObjListSono.clear();
-        checkBoxObjListPath.clear();
-        checkBoxObjListXray.clear();
-        checkBoxObjListSpec.clear();
-        checkBoxObjListMri.clear();
-        checkBoxObjListPhysio.clear();
-        checkBoxObjListMedicine.clear();
-        for (int i = 0; i < PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusiness().size(); i++) {
-            JsonPreferredBusiness jpb = PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusiness().get(i);
-            if (jpb.getBusinessType() == BusinessTypeEnum.PH) {
-                checkBoxObjListMedicine.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-            } else if (jpb.getBusinessType() == BusinessTypeEnum.HS) {
 
-                HealthCareServiceEnum hcse = HealthCareServiceEnum.valueOf(jpb.getBizCategoryId());
-                switch (hcse) {
-                    case SONO:
-                        checkBoxObjListSono.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
-                    case SCAN:
-                        checkBoxObjListScan.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
-                    case MRI:
-                        checkBoxObjListMri.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
-                    case PATH:
-                        checkBoxObjListPath.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
-                    case XRAY:
-                        checkBoxObjListXray.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
-                    case SPEC:
-                        checkBoxObjListSpec.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
-                    case PHYS:
-                        checkBoxObjListPhysio.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
-                        break;
+        List<ParentCheckBoxObj> parentCheckBoxObjs = new ArrayList<>();
+        for (int j = 0; j < LaunchActivity.merchantListFragment.getTopics().size(); j++) {
+            List<CheckBoxObj> temp = new ArrayList<>();
+
+            List<CheckBoxObj> checkBoxObjListScan = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListSono = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListPath = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListXray = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListSpec = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListMri = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListPhysio = new ArrayList<>();
+            List<CheckBoxObj> checkBoxObjListMedicine = new ArrayList<>();
+            List<JsonPreferredBusiness> jsonPreferredBusinessList = getBusinessStoreList(LaunchActivity.merchantListFragment.getTopics().get(j).getCodeQR());
+            for (int i = 0; i < jsonPreferredBusinessList.size(); i++) {
+                JsonPreferredBusiness jpb = jsonPreferredBusinessList
+                        .get(i);
+                if (jpb.getBusinessType() == BusinessTypeEnum.PH) {
+                    checkBoxObjListMedicine.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                } else if (jpb.getBusinessType() == BusinessTypeEnum.HS) {
+
+                    HealthCareServiceEnum hcse = HealthCareServiceEnum.valueOf(jpb.getBizCategoryId());
+                    switch (hcse) {
+                        case SONO:
+                            checkBoxObjListSono.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                        case SCAN:
+                            checkBoxObjListScan.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                        case MRI:
+                            checkBoxObjListMri.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                        case PATH:
+                            checkBoxObjListPath.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                        case XRAY:
+                            checkBoxObjListXray.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                        case SPEC:
+                            checkBoxObjListSpec.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                        case PHYS:
+                            checkBoxObjListPhysio.add(new CheckBoxObj().setJsonPreferredBusiness(jpb).setSelect(false));
+                            break;
+                    }
                 }
             }
-        }
-        List<CheckBoxObj> tempList = getList(healthCareServiceEnum);
-        List<ParentCheckBoxObj> parentCheckBoxObjs = new ArrayList<>();
-        for (int i = 0; i < LaunchActivity.merchantListFragment.getTopics().size(); i++) {
-            List<CheckBoxObj> temp = new ArrayList<>();
-            temp.addAll(tempList);
-            int selectedPos = getSelectionPos(temp, LaunchActivity.merchantListFragment.getTopics().get(i).getCodeQR(), healthCareServiceEnum);
-            parentCheckBoxObjs.add(new ParentCheckBoxObj().setCheckBoxObjList(temp).setJsonTopic(LaunchActivity.merchantListFragment.getTopics().get(i)).setSelectedPos(selectedPos));
-        }
+            if (null == healthCareServiceEnum) {
+                temp = checkBoxObjListMedicine;
+            } else {
+                switch (healthCareServiceEnum) {
+                    case SONO:
+                        temp = checkBoxObjListSono;
+                        break;
+                    case SCAN:
+                        temp = checkBoxObjListScan;
+                        break;
+                    case MRI:
+                        temp = checkBoxObjListMri;
+                        break;
+                    case PATH:
+                        temp = checkBoxObjListPath;
+                        break;
+                    case XRAY:
+                        temp = checkBoxObjListXray;
+                        break;
+                    case SPEC:
+                        temp = checkBoxObjListSpec;
+                        break;
+                    case PHYS:
+                        temp = checkBoxObjListPhysio;
+                        break;
+                    default:
+                        temp = checkBoxObjListMedicine;
+                }
+            }
 
+            int selectedPos = getSelectionPos(temp, LaunchActivity.merchantListFragment.getTopics().get(j).getCodeQR(), healthCareServiceEnum);
+            parentCheckBoxObjs.add(new ParentCheckBoxObj().setCheckBoxObjList(temp).setJsonTopic(LaunchActivity.merchantListFragment.getTopics().get(j)).setSelectedPos(selectedPos));
+        }
         return parentCheckBoxObjs;
     }
 
-    private List<CheckBoxObj> getList(HealthCareServiceEnum hcse) {
-        if (null == hcse)
-            return checkBoxObjListMedicine;
-        switch (hcse) {
-            case SONO:
-                return checkBoxObjListSono;
-            case SCAN:
-                return checkBoxObjListScan;
-            case MRI:
-                return checkBoxObjListMri;
-            case PATH:
-                return checkBoxObjListPath;
-            case XRAY:
-                return checkBoxObjListXray;
-            case SPEC:
-                return checkBoxObjListSpec;
-            case PHYS:
-                return checkBoxObjListPhysio;
-            default:
-                return checkBoxObjListMedicine;
-
-        }
-    }
 
     public void saveData() {
         if (pos == 0) {
@@ -392,5 +393,18 @@ public class PreferredStoreFragment extends Fragment {
 
     private String getMessage(String str){
         return  "Select preferred store to receive "+str+" requested for patients";
+    }
+
+
+    private List<JsonPreferredBusiness> getBusinessStoreList(String codeQR) {
+        if (null != PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists()) {
+            for (int i = 0; i < PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists().size(); i++) {
+                if (PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists().get(i).getCodeQR().equals(codeQR)) {
+                    return PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists().get(i).getPreferredBusinesses();
+
+                }
+            }
+        }
+        return null;
     }
 }

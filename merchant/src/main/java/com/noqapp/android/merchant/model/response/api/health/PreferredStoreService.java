@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -15,51 +14,6 @@ import retrofit2.http.Path;
  */
 public interface PreferredStoreService {
 
-    @Deprecated
-    @GET("api/m/h/preferredStore/{businessType}/{codeQR}.json")
-    Call<JsonPreferredBusinessList> getPreferredStoresByBusinessType(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("businessType")
-            BusinessTypeEnum businessType,
-
-            @Path("codeQR")
-            String codeQR
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @Deprecated
-    @GET("api/m/h/preferredStore/{codeQR}.json")
-    Call<JsonPreferredBusinessList> getAllPreferredStores(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
 
     /**
      * Errors
@@ -67,7 +21,7 @@ public interface PreferredStoreService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @GET("api/m/h/preferredStore/all.json")
-    Call<JsonPreferredBusinessList> getAllPreferredStores(
+    Call<JsonPreferredBusinessBucket> getAllPreferredStores(
             @Header("X-R-DID")
             String did,
 

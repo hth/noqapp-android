@@ -62,7 +62,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private Button btn_submit, btn_print_pdf;
     private ListView lv_medicine;
     private MedicalRecordAdapter adapter;
-    private JsonPreferredBusinessList jsonPreferredBusinessList;
+    private List<JsonPreferredBusiness> jsonPreferredBusinessList;
     private ProgressDialog progressDialog;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
@@ -404,9 +404,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 sc_follow_up.setSelectedSegment(index);
         }
 
-        jsonPreferredBusinessList = MedicalCaseActivity.getMedicalCaseActivity().jsonPreferredBusinessList;
-        if (null != jsonPreferredBusinessList && null != jsonPreferredBusinessList.getPreferredBusinesses()) {
-            preferredStoreList = new PreferredStoreList(jsonPreferredBusinessList.getPreferredBusinesses());
+        jsonPreferredBusinessList = MedicalCaseActivity.getMedicalCaseActivity().jsonPreferredBusiness;
+        if (null != jsonPreferredBusinessList &&  jsonPreferredBusinessList.size() > 0) {
+            preferredStoreList = new PreferredStoreList(jsonPreferredBusinessList);
             acsp_mri.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListMri()));
             acsp_scan.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListScan()));
             acsp_sono.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListSono()));

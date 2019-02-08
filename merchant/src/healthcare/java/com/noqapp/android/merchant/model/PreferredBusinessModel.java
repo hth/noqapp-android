@@ -4,6 +4,7 @@ import com.noqapp.android.merchant.interfaces.FilePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.response.api.health.PreferredStoreService;
 import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.Constants;
 
@@ -40,11 +41,11 @@ public class PreferredBusinessModel {
         preferredStoreService = RetrofitClient.getClient().create(PreferredStoreService.class);
     }
 
-    @Deprecated
-    public void getAllPreferredStores(String did, String mail, String auth, String codeQR) {
-        preferredStoreService.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPreferredBusinessList>() {
+
+    public void getAllPreferredStores(String did, String mail, String auth) {
+        preferredStoreService.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonPreferredBusinessBucket>() {
             @Override
-            public void onResponse(@NonNull Call<JsonPreferredBusinessList> call, @NonNull Response<JsonPreferredBusinessList> response) {
+            public void onResponse(@NonNull Call<JsonPreferredBusinessBucket> call, @NonNull Response<JsonPreferredBusinessBucket> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("getAllPreferredStores", String.valueOf(response.body()));
@@ -63,7 +64,7 @@ public class PreferredBusinessModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonPreferredBusinessList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPreferredBusinessBucket> call, @NonNull Throwable t) {
                 Log.e("getAllPreferredStores", t.getLocalizedMessage(), t);
                 preferredBusinessPresenter.preferredBusinessError();
             }

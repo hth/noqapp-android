@@ -59,4 +59,12 @@ public class JsonPreferredBusinessBucket implements Serializable {
         this.error = error;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonPreferredBusinessBucket{" +
+                "jsonPreferredBusinessLists=" + jsonPreferredBusinessLists +
+                ", error=" + error +
+                '}';
+    }
 }
