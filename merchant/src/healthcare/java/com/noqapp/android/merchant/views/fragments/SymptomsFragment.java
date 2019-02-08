@@ -6,6 +6,7 @@ import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridSymptomAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
@@ -29,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +42,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAdapter.StaggeredClick {
+public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
     private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
@@ -122,40 +124,13 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         });
 
         actv_search = v.findViewById(R.id.actv_search);
-        actv_search.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(actv_search, InputMethodManager.SHOW_IMPLICIT);
-                return false;
-            }
-        });
         actv_search.setThreshold(1);
-//        actv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String value = (String) parent.getItemAtPosition(position);
-//
-//                new AppUtils().hideKeyBoard(getActivity());
-//            }
-//        });
-        actv_search.setOnTouchListener(new View.OnTouchListener() {
+        ImageView iv_clear_actv = v.findViewById(R.id.iv_clear_actv);
+        iv_clear_actv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_LEFT = 0;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (actv_search.getRight() - actv_search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        actv_search.setText("");
-                        new AppUtils().hideKeyBoard(getActivity());
-                        return true;
-                    }
-                    if (event.getRawX() <= (20 + actv_search.getLeft() + actv_search.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
-                        //performSearch();
-                        return true;
-                    }
-                }
-                return false;
+            public void onClick(View v) {
+                actv_search.setText("");
+                new AppUtils().hideKeyBoard(getActivity());
             }
         });
         return v;
@@ -393,18 +368,15 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     }
 
     private void setupAutoComplete(final List<DataObj> objects) {
-        List<String> names = new AbstractList<String>() {
-            @Override
-            public int size() {
-                return objects.size();
-            }
+        AutoCompleteAdapterNew adapterSearch = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, objects, null, this);
+        actv_search.setAdapter(adapterSearch);
+    }
 
-            @Override
-            public String get(int location) {
-                return objects.get(location).getShortName();
-            }
-        };
+    @Override
+    public void searchByPos(DataObj dataObj) {
+        new AppUtils().hideKeyBoard(getActivity());
+        actv_search.setText("");
+        staggeredClick(true, false, dataObj, 0);
 
-        actv_search.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, names));
     }
 }

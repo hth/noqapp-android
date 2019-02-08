@@ -38,8 +38,10 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
                 // Additional profile will be only visible to store manager
                 switch (jsonMerchant.getJsonProfile().getBusinessType()) {
                     case DO:
-                        LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
-                        userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+                        if(null != jsonMerchant.getJsonProfessionalProfile()) {
+                            LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
+                            userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+                        }
                         break;
                     default:
                         //Do nothing
