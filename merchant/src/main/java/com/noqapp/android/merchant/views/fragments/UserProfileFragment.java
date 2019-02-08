@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -47,8 +48,9 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private EditText edt_phoneNo;
     private EditText edt_name;
     private EditText edt_email;
-    private EditText tv_male;
-    private EditText tv_female;
+    private TextView tv_male;
+    private TextView tv_female;
+    private TextView tv_transgender;
     private String gender = "";
     private DatePickerDialog fromDatePickerDialog;
     private MerchantProfileModel merchantProfileModel;
@@ -64,6 +66,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         initProgress();
         tv_male = view.findViewById(R.id.tv_male);
         tv_female = view.findViewById(R.id.tv_female);
+        tv_transgender = view.findViewById(R.id.tv_transgender);
 
         edt_email = view.findViewById(R.id.edt_email);
         edt_name = view.findViewById(R.id.edt_name);
@@ -78,6 +81,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         edt_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        tv_transgender.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
@@ -114,18 +118,32 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setBackgroundResource(R.drawable.bg_nogradient_square);
                 tv_male.setText(getString(R.string.male));
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
+                tv_transgender.setTextColor(Color.BLACK);
                 break;
             case R.id.tv_female:
                 gender = "F";
                 tv_female.setBackgroundResource(R.drawable.bg_nogradient_square);
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
+                tv_transgender.setTextColor(Color.BLACK);
                 tv_female.setText(getString(R.string.female));
+                break;
+            case R.id.tv_transgender:
+                gender = "T";
+                tv_transgender.setBackgroundResource(R.drawable.bg_nogradient_square);
+                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_male.setTextColor(Color.BLACK);
+                tv_female.setTextColor(Color.BLACK);
+                tv_transgender.setTextColor(Color.WHITE);
+                tv_transgender.setText(getString(R.string.transgender));
                 break;
 
 
@@ -135,8 +153,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public void updateProfile() {
 
         if (validate()) {
-           // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
-           // btn_update.setTextColor(Color.WHITE);
+            // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
+            // btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 //   String phoneNo = edt_phoneNo.getText().toString();
@@ -210,6 +228,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         edt_address.setText(jsonProfile.getAddress());
         if (jsonProfile.getGender().name().equals("M")) {
             onClick(tv_male);
+        } else if (jsonProfile.getGender().name().equals("T")) {
+            onClick(tv_transgender);
         } else {
             onClick(tv_female);
         }
@@ -231,8 +251,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     }
 
     private boolean validate() {
-       // btn_update.setBackgroundResource(R.drawable.button_drawable);
-       // btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
+        // btn_update.setBackgroundResource(R.drawable.button_drawable);
+        // btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         boolean isValid = true;
         edt_name.setError(null);
         edt_email.setError(null);

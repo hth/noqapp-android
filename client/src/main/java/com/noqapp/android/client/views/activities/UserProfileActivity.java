@@ -62,7 +62,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     private LinearLayout ll_dependent;
     private ImageView iv_profile;
     private String gender = "";
+    private TextView tv_transgender;
     private ArrayList<String> nameList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
         tv_info = findViewById(R.id.tv_info);
+        tv_transgender = findViewById(R.id.tv_transgender);
         TextView tv_migrate = findViewById(R.id.tv_migrate);
         tv_email_verification = findViewById(R.id.tv_email_verification);
         tv_modify_email = findViewById(R.id.tv_modify_email);
@@ -166,8 +169,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         int id = v.getId();
         switch (id) {
             case R.id.iv_profile:
-               // selectImage();
-               // break;
+                // selectImage();
+                // break;
             case R.id.iv_edit:
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                 in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
@@ -289,6 +292,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         int id = 0;
         if (NoQueueBaseActivity.getGender().equals("M")) {
             id = R.id.tv_male;
+        } else if (NoQueueBaseActivity.getGender().equals("T")) {
+            id = R.id.tv_transgender;
         } else {
             id = R.id.tv_female;
         }
@@ -296,18 +301,32 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.tv_male:
                 gender = "M";
                 tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.theme_aqua));
+                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_male.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.review_color));
                 tv_male.setText(getString(R.string.male));
                 tv_male.setTextColor(Color.WHITE);
                 tv_female.setTextColor(Color.BLACK);
+                tv_transgender.setTextColor(Color.BLACK);
                 break;
             case R.id.tv_female:
                 gender = "F";
-                tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.theme_aqua));
+                tv_female.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.review_color));
                 tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
                 tv_male.setTextColor(Color.BLACK);
                 tv_female.setTextColor(Color.WHITE);
+                tv_transgender.setTextColor(Color.BLACK);
                 tv_female.setText(getString(R.string.female));
+                break;
+            case R.id.tv_transgender:
+                gender = "T";
+                tv_transgender.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this, R.color.review_color));
+                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+                tv_male.setTextColor(Color.BLACK);
+                tv_female.setTextColor(Color.BLACK);
+                tv_transgender.setTextColor(Color.WHITE);
+                tv_transgender.setText(getString(R.string.transgender));
                 break;
         }
         try {

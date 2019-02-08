@@ -391,6 +391,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 qUserId = dependentProfile.getQueueUserId();
                 if (dependentProfile.getGender().name().equals("M")) {
                     onClick(tv_male);
+                } else if (dependentProfile.getGender().name().equals("T")) {
+                    onClick(tv_transgender);
                 } else {
                     onClick(tv_female);
                 }
@@ -416,6 +418,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             qUserId = NoQueueBaseActivity.getUserProfile().getQueueUserId();
             if (NoQueueBaseActivity.getGender().equals("M")) {
                 onClick(tv_male);
+            } else if (NoQueueBaseActivity.getGender().equals("T")) {
+                onClick(tv_transgender);
             } else {
                 onClick(tv_female);
             }
