@@ -103,13 +103,10 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CheckBox name;
-        ImageView image;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
-            image = itemView.findViewById(R.id.image);
-
         }
     }
 

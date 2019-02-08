@@ -15,6 +15,7 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -23,6 +24,11 @@ import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,7 +46,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -59,7 +64,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     private RecyclerView rv_thumb_images, rv_photos;
     private boolean canAddItem = true;
     private TextView tv_rating, tv_rating_review;
-    private SegmentedControl sc_amenities, sc_delivery_types, sc_payment_mode;
+    private RecyclerView rcv_payment_mode;
+    private RecyclerView rcv_amenities;
+    private RecyclerView rcv_delivery_types;
     private Button tv_menu;
     private ImageView iv_category_banner;
     private View view_loader;
@@ -81,9 +88,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_rating_review = findViewById(R.id.tv_rating_review);
         tv_rating = findViewById(R.id.tv_rating);
         iv_category_banner = findViewById(R.id.iv_category_banner);
-        sc_payment_mode = findViewById(R.id.sc_payment_mode);
-        sc_delivery_types = findViewById(R.id.sc_delivery_types);
-        sc_amenities = findViewById(R.id.sc_amenities);
+        rcv_payment_mode = findViewById(R.id.rcv_payment_mode);
+        rcv_amenities = findViewById(R.id.rcv_amenities);
+        rcv_delivery_types = findViewById(R.id.rcv_delivery_types);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
 
@@ -199,8 +206,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int i = 0; i < temp.size(); i++) {
             payment_data.add(temp.get(i).getDescription());
         }
-        sc_payment_mode.removeAllSegments();
-        sc_payment_mode.addSegments(payment_data);
+        rcv_payment_mode.setLayoutManager(getFlexBoxLayoutManager());
+        rcv_payment_mode.setAdapter(new StaggeredGridAdapter(payment_data));
 
         tv_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
         if (tv_rating.getText().toString().equals("0.0")) {
@@ -231,16 +238,16 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         for (int j = 0; j < amenities.size(); j++) {
             amenitiesdata.add(amenities.get(j).getDescription());
         }
-        sc_amenities.removeAllSegments();
-        sc_amenities.addSegments(amenitiesdata);
+        rcv_amenities.setLayoutManager(getFlexBoxLayoutManager());
+        rcv_amenities.setAdapter(new StaggeredGridAdapter(amenitiesdata));
 
         List<DeliveryTypeEnum> deliveryTypes = jsonQueue.getDeliveryTypes();
         ArrayList<String> deliveryTypesdata = new ArrayList<>();
         for (int j = 0; j < deliveryTypes.size(); j++) {
             deliveryTypesdata.add(deliveryTypes.get(j).getDescription());
         }
-        sc_delivery_types.removeAllSegments();
-        sc_delivery_types.addSegments(deliveryTypesdata);
+        rcv_delivery_types.setLayoutManager(getFlexBoxLayoutManager());
+        rcv_delivery_types.setAdapter(new StaggeredGridAdapter(deliveryTypesdata));
 
 
         //
@@ -372,5 +379,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             default:
                 return true;
         }
+    }
+
+    public FlexboxLayoutManager getFlexBoxLayoutManager() {
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
+        return layoutManager;
     }
 }
