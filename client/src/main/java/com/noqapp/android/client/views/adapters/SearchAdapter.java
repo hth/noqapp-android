@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -90,7 +91,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
                 holder.tv_store_review.setText("No Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             }
-
+            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
+            holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,16 +133,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
                 case DO:
                 case BK:
                     holder.tv_store_special.setVisibility(View.GONE);
-                    holder.tv_status.setVisibility(View.GONE);
-                    holder.tv_category_name.setText("");
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
-                    holder.tv_status.setText("");
                     break;
                 default:
                     holder.tv_store_special.setVisibility(View.GONE);
-                    holder.tv_status.setVisibility(View.GONE); // hide temporary
-                    holder.tv_status.setText(AppUtilities.getStoreOpenStatus(bizStoreElastic));
-                    holder.tv_category_name.setText("");
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }
@@ -168,10 +164,9 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private TextView tv_phoneno;
         private TextView tv_store_rating;
         private TextView tv_store_review;
-        private TextView tv_category_name;
         private TextView tv_store_special;
-        private TextView tv_status;
         private TextView tv_distance;
+        private TextView tv_store_timing;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -184,11 +179,10 @@ public class SearchAdapter extends RecyclerView.Adapter {
             this.tv_phoneno = itemView.findViewById(R.id.tv_phoneno);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
-            this.tv_category_name = itemView.findViewById(R.id.tv_category_name);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
-            this.tv_status = itemView.findViewById(R.id.tv_status);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.iv_main = itemView.findViewById(R.id.iv_main);
+            this.tv_store_timing = itemView.findViewById(R.id.tv_store_timing);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

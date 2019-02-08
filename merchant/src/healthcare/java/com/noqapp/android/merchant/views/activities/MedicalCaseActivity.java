@@ -7,6 +7,8 @@ import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -50,6 +52,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
 
@@ -99,7 +102,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     public FormDataObj formDataObj;
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
-    public JsonPreferredBusinessList jsonPreferredBusinessList;
+    public List<JsonPreferredBusiness> jsonPreferredBusiness;
     private String bizCategoryId;
     private ProgressBar pb_case;
 
@@ -175,7 +178,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
         });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(MedicalCaseActivity.this);
-            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         }
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -190,9 +193,16 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     }
 
     @Override
-    public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
-        this.jsonPreferredBusinessList = jsonPreferredBusinessList;
-        Log.e("Pref business list: ", jsonPreferredBusinessList.toString());
+    public void preferredBusinessResponse(JsonPreferredBusinessBucket jsonPreferredBusinessBucket) {
+        if (null != jsonPreferredBusinessBucket && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists() != null && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().size() > 0) {
+            for (int i = 0; i < jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().size(); i++) {
+                if(jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(i).getCodeQR().equals(codeQR)){
+                    this.jsonPreferredBusiness = jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(i).getPreferredBusinesses();
+                    return;
+                }
+            }
+        }
+        Log.e("Pref business list: ", jsonPreferredBusinessBucket.toString());
     }
 
     @Override

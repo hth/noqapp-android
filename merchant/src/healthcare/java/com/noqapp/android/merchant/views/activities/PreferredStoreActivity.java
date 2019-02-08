@@ -9,6 +9,7 @@ import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.PreferredBusinessModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -56,14 +57,12 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     public static PreferredStoreActivity getPreferredStoreActivity() {
         return preferredStoreActivity;
     }
-
     private static PreferredStoreActivity preferredStoreActivity;
+    private List<JsonPreferredBusinessList> jsonPreferredBusinessLists;
 
-    public List<JsonPreferredBusiness> getJsonPreferredBusiness() {
-        return jsonPreferredBusiness;
+    public List<JsonPreferredBusinessList> getJsonPreferredBusinessLists() {
+        return jsonPreferredBusinessLists;
     }
-
-    private List<JsonPreferredBusiness> jsonPreferredBusiness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +107,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 new PreferredBusinessModel(this)
-                        .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), LaunchActivity.merchantListFragment.getTopics().get(0).getCodeQR());
+                        .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
             }
         }
     }
@@ -120,9 +119,10 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     }
 
     @Override
-    public void preferredBusinessResponse(JsonPreferredBusinessList jsonPreferredBusinessList) {
-        if (null != jsonPreferredBusinessList && jsonPreferredBusinessList.getPreferredBusinesses() != null && jsonPreferredBusinessList.getPreferredBusinesses().size() > 0) {
-            this.jsonPreferredBusiness = jsonPreferredBusinessList.getPreferredBusinesses();
+    public void preferredBusinessResponse(JsonPreferredBusinessBucket jsonPreferredBusinessBucket) {
+        if (null != jsonPreferredBusinessBucket && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists() != null && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().size() > 0) {
+            //this.jsonPreferredBusiness = jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(0).getPreferredBusinesses();
+            this.jsonPreferredBusinessLists = jsonPreferredBusinessBucket.getJsonPreferredBusinessLists();
             frag_mri_and_scan = new PreferredStoreFragment();
             frag_mri_and_scan.setArguments(getBundle(0));
             frag_sono_and_xray = new PreferredStoreFragment();
@@ -173,7 +173,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
                 }
             });
 
-            Log.e("Pref business list: ", jsonPreferredBusinessList.toString());
+            Log.e("Pref business list: ", jsonPreferredBusinessBucket.toString());
         }
         dismissProgress();
     }

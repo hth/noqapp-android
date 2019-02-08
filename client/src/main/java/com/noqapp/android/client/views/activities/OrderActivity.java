@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -201,10 +202,16 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         (float) latLng_s.longitude,
                         (float) latLng_d.latitude,
                         (float) latLng_d.longitude);
-                if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                    tv_address.setError("Please change the address. This address is very far from the store");
-                    isValid = false;
-
+                if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.RS) {
+                    if (distance > getIntent().getExtras().getInt("deliveryRange")) {
+                        tv_address.setError("Please change the address. This address is very far from the store");
+                        isValid = false;
+                    }
+                } else {
+                    if (distance > 150) { // Set for washing car stores
+                        tv_address.setError("Please change the address. This address is very far from the store");
+                        isValid = false;
+                    }
                 }
             }
         }

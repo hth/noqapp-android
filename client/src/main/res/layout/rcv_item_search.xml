@@ -86,7 +86,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_toLeftOf="@+id/tv_store_rating"
                         android:layout_toRightOf="@+id/cv_main"
                         android:orientation="vertical">
@@ -116,6 +116,16 @@
                             android:textSize="@dimen/text_size_ten"/>
 
                     <TextView
+                            android:id="@+id/tv_store_timing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_marginTop="3dp"
+                            android:textSize="@dimen/text_size_ten"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"/>
+
+                    <TextView
                             android:id="@+id/tv_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -131,23 +141,6 @@
                             android:layout_marginTop="3dp"
                             android:textSize="@dimen/text_size_ten"/>
 
-
-                    <TextView
-                            android:id="@+id/tv_category_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:textSize="@dimen/text_size_ten"/>
-
-                    <TextView
-                            android:id="@+id/tv_status"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:gravity="center_vertical"
-                            android:textColor="@android:color/black"
-                            android:text=""
-                            android:textSize="@dimen/text_size_twelve"/>
 
                 </LinearLayout>
 
