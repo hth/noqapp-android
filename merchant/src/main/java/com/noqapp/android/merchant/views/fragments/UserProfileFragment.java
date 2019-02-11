@@ -1,9 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-/**
- * Created by chandra on 10/4/18.
- */
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
