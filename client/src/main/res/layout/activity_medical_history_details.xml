@@ -24,6 +24,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />
 
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_thumb_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
 
             <LinearLayout
                 android:id="@+id/ll_patient_name"
@@ -31,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
+                android:layout_marginTop="10dp"
                 android:background="#ededed"
                 android:orientation="vertical">
 
