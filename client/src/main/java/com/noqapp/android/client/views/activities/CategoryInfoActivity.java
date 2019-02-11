@@ -257,9 +257,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
-            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             rv_thumb_images.setHasFixedSize(true);
-            rv_thumb_images.setLayoutManager(horizontalLayoutManager);
+            rv_thumb_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             List<String> storeServiceImages = new ArrayList<>();
             // initialize list if we are receiving urls from server
             if (bizStoreElastic.getBizServiceImages().size() > 0) {

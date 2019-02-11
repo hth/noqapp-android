@@ -57,7 +57,13 @@ public class SliderActivity extends AppCompatActivity {
             slider_image_list = b.getStringArrayList("imageurls");
         else
             slider_image_list = new ArrayList<>();
-        SliderPagerAdapter sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
+        SliderPagerAdapter sliderPagerAdapter ;
+        if(b.getBoolean("isDocument")){
+            sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list,true,b.getString("recordReferenceId"));
+        }else{
+            sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
+        }
+
         vp_slider.setAdapter(sliderPagerAdapter);
         vp_slider.setCurrentItem(page_position);
         vp_slider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

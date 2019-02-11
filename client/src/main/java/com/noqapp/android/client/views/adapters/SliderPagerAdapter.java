@@ -4,6 +4,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.views.customviews.TouchImageView;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,10 +26,19 @@ import java.util.ArrayList;
 public class SliderPagerAdapter extends PagerAdapter {
     private Activity activity;
     private ArrayList<String> image_arraylist;
+    private boolean isDocument = false;
+    private String recordReferenceId;
 
     public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist) {
         this.activity = activity;
         this.image_arraylist = image_arraylist;
+    }
+
+    public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist, boolean isDocument, String recordReferenceId) {
+        this.activity = activity;
+        this.image_arraylist = image_arraylist;
+        this.isDocument = isDocument;
+        this.recordReferenceId = recordReferenceId;
     }
 
     @Override
@@ -36,13 +46,20 @@ public class SliderPagerAdapter extends PagerAdapter {
         LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = layoutInflater.inflate(R.layout.layout_slider, container, false);
-        ImageView im_slider = view.findViewById(R.id.im_slider);
-        String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
-        Picasso.with(activity.getApplicationContext())
-                .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
-                .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
-                .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
-                .into(im_slider);
+        TouchImageView im_slider = view.findViewById(R.id.im_slider);
+        if(isDocument){
+            Picasso.with(activity.getApplicationContext())
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
+                    .into(im_slider);
+        }else {
+            String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
+            Picasso.with(activity.getApplicationContext())
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
+                    .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
+                    .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
+                    .into(im_slider);
+        }
+
         container.addView(view);
         return view;
     }

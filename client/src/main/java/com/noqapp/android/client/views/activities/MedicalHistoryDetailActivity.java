@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
+import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
@@ -17,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -61,9 +64,15 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         LinearLayout ll_followup = findViewById(R.id.ll_followup);
         LinearLayout ll_radiology = findViewById(R.id.ll_radiology);
         LinearLayout ll_pathology = findViewById(R.id.ll_pathology);
+        RecyclerView rv_thumb_images = findViewById(R.id.rv_thumb_images);
+        rv_thumb_images.setHasFixedSize(true);
+        rv_thumb_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.medical_history_details));
         JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable("data");
+        ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(),true,jsonMedicalRecord.getRecordReferenceId());
+        rv_thumb_images.setAdapter(thumbnailGalleryAdapter);
         tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
         tv_past_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory());
         tv_family_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory());

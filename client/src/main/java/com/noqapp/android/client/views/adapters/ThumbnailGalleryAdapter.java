@@ -27,10 +27,18 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
     private final int baseVisibleCount = 4;
     private List<String> imageUrls;
     private Context context;
+    private boolean isDocument = false;
+    private String recordReferenceId;
 
     public ThumbnailGalleryAdapter(Context context, List<String> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
+    }
+    public ThumbnailGalleryAdapter(Context context, List<String> imageUrls,boolean isDocument, String recordReferenceId ) {
+        this.context = context;
+        this.imageUrls = imageUrls;
+        this.isDocument = isDocument;
+        this.recordReferenceId = recordReferenceId;
     }
 
     @Override
@@ -44,11 +52,17 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
     @Override
     public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
-        Picasso.with(context)
-                .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
-                .placeholder(ImageUtils.getThumbPlaceholder(context))
-                .error(ImageUtils.getThumbErrorPlaceholder(context))
-                .into(holder.iv_photo);
+        if(isDocument){
+            Picasso.with(context)
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(position))
+                    .into(holder.iv_photo);
+        }else {
+            Picasso.with(context)
+                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
+                    .placeholder(ImageUtils.getThumbPlaceholder(context))
+                    .error(ImageUtils.getThumbErrorPlaceholder(context))
+                    .into(holder.iv_photo);
+        }
         if (position < 3 || imageUrls.size() == 4) {
             holder.tv_title.setVisibility(View.GONE);
         } else {
@@ -78,6 +92,8 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
             Intent intent = new Intent(context, SliderActivity.class);
             intent.putExtra("pos", getAdapterPosition());
             intent.putExtra("imageurls", (ArrayList<String>) imageUrls);
+            intent.putExtra("isDocument",isDocument);
+            intent.putExtra("recordReferenceId",recordReferenceId);
             context.startActivity(intent);
         }
     }
