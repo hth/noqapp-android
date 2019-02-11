@@ -100,13 +100,6 @@
                             android:textStyle="bold"
                             android:textSize="@dimen/text_size_twelve"/>
 
-                    <TextView
-                            android:id="@+id/tv_bussiness_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_marginTop="3dp"
-                            android:textSize="@dimen/text_size_ten"/>
 
                     <TextView
                             android:id="@+id/tv_business_category"
@@ -120,16 +113,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            android:layout_marginTop="3dp"
                             android:textSize="@dimen/text_size_ten"
-                            android:textStyle="bold"
                             android:textColor="@android:color/black"/>
+
+                    <TextView
+                            android:id="@+id/tv_bussiness_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
+                            android:layout_marginTop="5dp"
+                            android:textSize="@dimen/text_size_ten"/>
 
                     <TextView
                             android:id="@+id/tv_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="7dp"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_ten"/>
 
@@ -138,7 +137,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
-                            android:layout_marginTop="3dp"
                             android:textSize="@dimen/text_size_ten"/>
 
 
