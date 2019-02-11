@@ -7,11 +7,9 @@
     android:background="@android:color/black"
     android:orientation="vertical">
 
-    <ImageView
+    <com.noqapp.android.client.views.customviews.TouchImageView
         android:id="@+id/im_slider"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".5"
-        android:scaleType="fitXY" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

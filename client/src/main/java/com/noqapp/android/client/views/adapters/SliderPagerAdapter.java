@@ -44,14 +44,16 @@ public class SliderPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view = layoutInflater.inflate(R.layout.layout_slider, container, false);
-        TouchImageView im_slider = view.findViewById(R.id.im_slider);
-        if(isDocument){
+        View view;
+        if (isDocument) {
+            view = layoutInflater.inflate(R.layout.layout_slider_document, container, false);
+            TouchImageView im_slider = view.findViewById(R.id.im_slider);
             Picasso.with(activity.getApplicationContext())
                     .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
                     .into(im_slider);
-        }else {
+        } else {
+            view = layoutInflater.inflate(R.layout.layout_slider, container, false);
+            ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
             Picasso.with(activity.getApplicationContext())
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
