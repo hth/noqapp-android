@@ -304,6 +304,7 @@
     <string name="error_account_block">Account is blocked. Contact support.</string>
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
+    <string name="screen_all_feeds">All Feeds</string>
     <!-- Category Info Screen -->
 
 </resources>

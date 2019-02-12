@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,11 +21,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonFeed> dataSet;
+    private boolean increaseCardWidth;
     public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
 
+    }
+    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener, boolean increaseCardWidth) {
+        this.dataSet = data;
+        this.context = context;
+        this.listener = listener;
+        this.increaseCardWidth = increaseCardWidth;
     }
 
     @Override
@@ -38,6 +46,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+        if(increaseCardWidth) {
+            holder.card_view.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+            LinearLayout.MarginLayoutParams params = (LinearLayout.MarginLayoutParams) holder.card_view.getLayoutParams();
+            params.leftMargin = 20;
+            params.rightMargin = 20;
+        }
         JsonFeed item = dataSet.get(listPosition);
         Picasso.with(context).load(item.getImageUrl()).into(holder.iv_bg);
         holder.tv_title.setText(item.getTitle());
@@ -70,6 +84,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.iv_bg = itemView.findViewById(R.id.iv_bg);
             this.card_view = itemView.findViewById(R.id.card_view);
+
         }
     }
 

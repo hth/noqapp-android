@@ -27,6 +27,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
+import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
@@ -90,6 +91,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private RecyclerView rv_merchant_around_you;
     private TextView tv_health_care_view_all;
     private TextView tv_near_view_all;
+    private TextView tv_feed_view_all;
     private ProgressBar pb_current;
     private ProgressBar pb_health_care;
     private ProgressBar pb_near;
@@ -115,6 +117,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private static final int MSG_HISTORY_QUEUE = 1;
     private static TokenQueueViewInterface tokenQueueViewInterface;
     private static QueueHandler mHandler;
+    private List<JsonFeed> jsonFeeds = new ArrayList<>();
 
     public ScanQueueFragment() {
 
@@ -130,7 +133,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 isFirstTimeUpdate = false;
                 LaunchActivity.getLaunchActivity().tv_location.setText(city);
             } else {
-               // LaunchActivity.getLaunchActivity().tv_location.setText(city);
+                // LaunchActivity.getLaunchActivity().tv_location.setText(city);
                 cv_update_location.setVisibility(View.VISIBLE);
                 tv_update.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -153,7 +156,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         } else {
             cv_update_location.setVisibility(View.GONE);
         }
-        Log.d("Loc Data: ", "latitude: " + lat+" longitude: " + log+" city: " + city);
+        Log.d("Loc Data: ", "latitude: " + lat + " longitude: " + log + " city: " + city);
     }
 
     @Override
@@ -171,6 +174,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
 
         tv_health_care_view_all = view.findViewById(R.id.tv_health_care_view_all);
         tv_near_view_all = view.findViewById(R.id.tv_near_view_all);
+        tv_feed_view_all = view.findViewById(R.id.tv_feed_view_all);
         pb_current = view.findViewById(R.id.pb_current);
         pb_health_care = view.findViewById(R.id.pb_health_care);
         pb_near = view.findViewById(R.id.pb_near);
@@ -182,6 +186,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         rl_scan.setOnClickListener(this);
         tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
+        tv_feed_view_all.setOnClickListener(this);
 
         rv_feed = view.findViewById(R.id.rv_feed);
         rv_feed.setHasFixedSize(true);
@@ -212,7 +217,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         //
         rv_merchant_around_you.setHasFixedSize(true);
         rv_merchant_around_you.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        // rv_merchant_around_you.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -337,7 +341,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         pb_near.setVisibility(View.GONE);
         tv_near_view_all.setVisibility(nearMeData.size() == 0 ? View.GONE : View.VISIBLE);
         isProgressFirstTime = false;
-        if(isAdded()) {
+        if (isAdded()) {
             if (NoQueueBaseActivity.getShowHelper()) {
                 presentShowcaseSequence();
                 NoQueueBaseActivity.setShowHelper(false);
@@ -445,6 +449,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         intent.putExtra("lat", "" + lat);
         intent.putExtra("long", "" + log);
         intent.putExtra("city", city);
+        startActivity(intent);
+    }
+
+    private void allFeedsClick() {
+        Intent intent = new Intent(getActivity(), AllFeedsActivity.class);
+        intent.putExtra("list", (Serializable) jsonFeeds);
+
         startActivity(intent);
     }
 
@@ -640,6 +651,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             case R.id.tv_near_view_all:
                 nearClick();
                 break;
+            case R.id.tv_feed_view_all:
+                allFeedsClick();
+                break;
 
         }
     }
@@ -647,8 +661,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void allActiveFeedResponse(JsonFeedList jsonFeedList) {
         if (null != jsonFeedList && jsonFeedList.getJsonFeeds().size() > 0) {
+            jsonFeeds = jsonFeedList.getJsonFeeds();
             FeedAdapter feedAdapter = new FeedAdapter(jsonFeedList.getJsonFeeds(), getActivity(), this);
             rv_feed.setAdapter(feedAdapter);
+            tv_feed_view_all.setVisibility(jsonFeedList.getJsonFeeds().size() == 0 ? View.GONE : View.VISIBLE);
         }
         pb_feed.setVisibility(View.GONE);
     }
