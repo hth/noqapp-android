@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -223,6 +224,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     }
 
     public String parseCheifComplanits(String str) {
+        if(TextUtils.isEmpty(str))
+            return "";
         String cheifComplanits = "";
         try {
             String[] temp = str.split("\\r?\\n");
@@ -233,7 +236,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                         String[] strArray = act.split("\\|");
                         String shortName = strArray[0];
                         String val = strArray[1];
-                        if (i < temp.length - 2) {
+                        if (i < temp.length - 1) {
                             cheifComplanits += "Having " + shortName + " since last " + val + "." + "\n";
                         } else {
                             cheifComplanits += "Having " + shortName + " since last " + val + ".";
