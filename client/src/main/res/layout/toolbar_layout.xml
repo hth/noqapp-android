@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/iv_home"
+                android:layout_toStartOf="@+id/iv_favourite"
                 android:layout_toEndOf="@+id/actionbarBack"
                 android:padding="5dp"
                 android:layout_marginStart="10dp"
@@ -37,6 +37,20 @@
                 android:textAllCaps="true"
                 android:textStyle="bold"/>
 
+
+        <ImageView
+                android:id="@+id/iv_favourite"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_toLeftOf="@+id/iv_home"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/heart_fill"
+                android:clipToPadding="false"
+                android:focusable="true"
+                android:backgroundTint="@color/theme_color_red"
+                android:visibility="invisible"/>
 
         <ImageView
                 android:id="@+id/iv_home"

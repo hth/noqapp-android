@@ -16,7 +16,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="BaseTheme" parent="AppBaseTheme.NoActionBar">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:typeface">serif</item>
@@ -126,6 +128,11 @@
     </style>
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/theme_color_red</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="AppBaseTheme.NoActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <item name="colorControlNormal">@color/colorAccent</item>
     </style>
 
 </resources>
