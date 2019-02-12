@@ -7,6 +7,7 @@ import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
@@ -60,18 +61,15 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
-
     public NoQueueMessagingService() {
     }
 
@@ -79,6 +77,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+
     }
 
     public static void subscribeTopics(String topic) {
@@ -165,9 +164,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
                         object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonMedicalFollowUp.class);
-                        NotificationDB.insertNotification(
-                                NotificationDB.KEY_NOTIFY,
-                                ((JsonMedicalFollowUp) object).getCodeQR(), body, title, BusinessTypeEnum.PA.getName());
                         Log.e("FCM Medical Followup", object.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -189,6 +185,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     //save data to database
                     String payload = remoteMessage.getData().get(Firebase_Type);
                     String codeQR = remoteMessage.getData().get(CodeQR);
+
+                    if (null == LaunchActivity.dbHandler) {
+                        LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                    }
                     /*
                      * When u==S then it is re-view
                      *      u==N then it is skip(Rejoin) Pending task
@@ -342,6 +342,13 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             }
                         }
                     }
+                    if (object instanceof JsonMedicalFollowUp) {
+                        Log.e("JsonMedicalFollowUp", ((JsonMedicalFollowUp) object).toString());
+                        NotificationDB.insertNotification(
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
+                                ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName());
+                    }
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
@@ -477,13 +484,13 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             Calendar c = Calendar.getInstance();
             c.setTime(startDate);
             Calendar calendar = Calendar.getInstance();
-            calendar.set(c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
+            calendar.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
             calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
             calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE) + 1);
             calendar.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND));
             Intent intent = new Intent(this, AlarmReceiver.class);
-            intent.putExtra("title",jsonMedicalFollowUp.getTitle());
-            intent.putExtra("body",jsonMedicalFollowUp.getBody());
+            intent.putExtra("title", jsonMedicalFollowUp.getTitle());
+            intent.putExtra("body", jsonMedicalFollowUp.getBody());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager am = (AlarmManager) getSystemService(this.ALARM_SERVICE);
             am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);

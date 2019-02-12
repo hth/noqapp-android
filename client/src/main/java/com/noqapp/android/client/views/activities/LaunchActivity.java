@@ -33,6 +33,7 @@ import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -719,6 +720,12 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
                 } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
+                } else if (object instanceof JsonMedicalFollowUp) {
+                    Log.e("JsonMedicalFollowUp", ((JsonMedicalFollowUp) object).toString());
+                    NotificationDB.insertNotification(
+                            NotificationDB.KEY_NOTIFY,
+                            ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
+                            ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
