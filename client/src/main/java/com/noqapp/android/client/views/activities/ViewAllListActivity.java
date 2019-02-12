@@ -67,7 +67,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
-        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this,Double.parseDouble(lat),Double.parseDouble(longitute));
+        storeInfoViewAllAdapter = new StoreInfoViewAllAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(longitute));
         rv_merchant_around_you.setAdapter(storeInfoViewAllAdapter);
 
     }
