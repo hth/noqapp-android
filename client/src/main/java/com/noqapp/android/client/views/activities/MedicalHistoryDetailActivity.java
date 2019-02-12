@@ -71,9 +71,11 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.medical_history_details));
         JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable("data");
-        ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(),true,jsonMedicalRecord.getRecordReferenceId());
-        rv_thumb_images.setAdapter(thumbnailGalleryAdapter);
-        tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
+        if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
+            ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(), true, jsonMedicalRecord.getRecordReferenceId());
+            rv_thumb_images.setAdapter(thumbnailGalleryAdapter);
+        }
+        tv_complaints.setText(parseCheifComplanits(jsonMedicalRecord.getChiefComplain()));
         tv_past_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory());
         tv_family_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getFamilyHistory());
         tv_known_allergy.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getKnownAllergies());
@@ -89,7 +91,6 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         }
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
-        tv_complaints.setText(jsonMedicalRecord.getChiefComplain());
         tv_create.setText(jsonMedicalRecord.getCreateDate());
         tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
@@ -219,5 +220,30 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         mType.setText(label);
         childLayout.addView(mType, 0);
         return childLayout;
+    }
+
+    public String parseCheifComplanits(String str) {
+        String cheifComplanits = "";
+        try {
+            String[] temp = str.split("\\r?\\n");
+            if (null != temp && temp.length > 0) {
+                for (int i = 0; i < temp.length; i++) {
+                    String act = temp[i];
+                    if (act.contains("|")) {
+                        String[] strArray = act.split("\\|");
+                        String shortName = strArray[0];
+                        String val = strArray[1];
+                        if (i < temp.length - 2) {
+                            cheifComplanits += "Having " + shortName + " since last " + val + "." + "\n";
+                        } else {
+                            cheifComplanits += "Having " + shortName + " since last " + val + ".";
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cheifComplanits;
     }
 }
