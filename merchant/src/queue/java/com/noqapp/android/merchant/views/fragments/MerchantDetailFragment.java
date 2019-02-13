@@ -100,8 +100,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                     }
             );
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this);
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
+            if (jsonTopic.getServingNumber() > 0)
+                rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
         }
         dismissProgress();
     }
@@ -481,8 +483,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 }
             }
         }
-        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this);
+        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
+        if (jsonTopic.getServingNumber() > 0)
+            rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

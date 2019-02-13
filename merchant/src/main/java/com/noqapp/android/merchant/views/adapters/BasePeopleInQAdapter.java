@@ -158,19 +158,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.jsonDataVisibility = jsonDataVisibility;
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility) {
-        this.dataSet = data;
-        this.context = context;
-        this.peopleInQAdapterClick = peopleInQAdapterClick;
-        this.qCodeQR = qCodeQR;
-        this.glowPosition = glowPosition;
-        manageQueueModel = new ManageQueueModel();
-        manageQueueModel.setQueuePersonListPresenter(this);
-        businessCustomerModel = new BusinessCustomerModel(this);
-        this.queueStatusEnum = queueStatusEnum;
-        this.jsonDataVisibility = jsonDataVisibility;
-    }
-
     protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId) {
         this.dataSet = data;
         this.context = context;
