@@ -20,6 +20,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
+import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
@@ -69,10 +70,13 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     protected void createToken(Context context, String codeQR) {
-        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O)
-            Toast.makeText(context, "Show the order screen", Toast.LENGTH_LONG).show();
-        else
+        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+            Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
+            intent.putExtra("codeQR", jsonTopic.getCodeQR());
+            ((Activity) context).startActivity(intent);
+        } else {
             showCreateTokenDialog(context, codeQR);
+        }
     }
 
     @Override
@@ -299,7 +303,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 /* Add to show only remaining people in queue */
                 tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
                 tv_title.setText(jsonTopic.getDisplayName());
-                iv_generate_token.setVisibility(View.GONE);
+                //   iv_generate_token.setVisibility(View.GONE);
                 iv_view_followup.setVisibility(View.GONE);
                 btn_start.setText(context.getString(R.string.start));
                 btn_start.setBackgroundResource(R.drawable.start);
