@@ -54,8 +54,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
-        iv_product_list.setVisibility(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS? View.VISIBLE:View.INVISIBLE);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        iv_product_list.setVisibility(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS ? View.VISIBLE : View.INVISIBLE);
         iv_product_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

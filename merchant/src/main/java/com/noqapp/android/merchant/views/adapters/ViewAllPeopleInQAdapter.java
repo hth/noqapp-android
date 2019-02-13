@@ -4,6 +4,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -47,14 +48,13 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
                 : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
-                PhoneFormatterUtil.formatNumber("IN", phoneNo));
+                PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         if (visibility) {
             holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber("IN", phoneNo));
+                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
                 }
             });
         } else {

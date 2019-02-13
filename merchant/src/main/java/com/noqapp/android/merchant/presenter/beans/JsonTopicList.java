@@ -46,4 +46,12 @@ public class JsonTopicList {
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTopicList{" +
+                "topics=" + topics +
+                ", error=" + error +
+                '}';
+    }
 }

@@ -44,14 +44,13 @@ public class FollowupAllListAdapter extends RecyclerView.Adapter<FollowupAllList
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                //TODO : @ Chandra Please change the country code dynamically, country code you can get it from TOPIC
-                PhoneFormatterUtil.formatNumber("IN", phoneNo));
+                PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         if (visibility) {
             holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber("IN", phoneNo));
+                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
                 }
             });
         } else {
