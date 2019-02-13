@@ -508,7 +508,10 @@ public class AppUtilities extends CommonHelper {
 
 
     public String formatTodayStoreTiming(Context context, StoreHourElastic storeHourElastic) {
-        return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
+        if (storeHourElastic.isDayClosed())
+            return context.getString(R.string.store_closed);
+        else
+            return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
     }
 
     public String formatTodayStoreTiming(Context context, int startHour, int endHour) {
