@@ -141,6 +141,7 @@ public interface PurchaseOrderService {
 
     /**
      * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      */
     @Multipart
@@ -167,6 +168,7 @@ public interface PurchaseOrderService {
 
     /**
      * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      */
     @POST("api/m/s/purchaseOrder/removeImage.json")
