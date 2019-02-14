@@ -5,7 +5,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.MasterLabPresenter;
+import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
 import com.noqapp.android.merchant.model.MasterLabModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;

@@ -1,11 +1,7 @@
 package com.noqapp.android.merchant.model;
 
-
-
-import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
-import com.noqapp.android.merchant.model.response.api.health.PreferredStoreService;
+import com.noqapp.android.merchant.model.response.api.health.MasterLabService;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 
@@ -22,58 +18,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class PreferredBusinessModel {
-    private static final String TAG = PreferredBusinessModel.class.getSimpleName();
+public class BaseMasterLabModel {
+    protected static final String TAG = BaseMasterLabModel.class.getSimpleName();
+    protected static final MasterLabService masterLabService;
+    protected FilePresenter filePresenter;
 
-    private static final PreferredStoreService preferredStoreService;
-    private PreferredBusinessPresenter preferredBusinessPresenter;
-
+    static {
+        masterLabService = RetrofitClient.getClient().create(MasterLabService.class);
+    }
     public void setFilePresenter(FilePresenter filePresenter) {
         this.filePresenter = filePresenter;
     }
 
-    private FilePresenter filePresenter;
-
-    public PreferredBusinessModel(PreferredBusinessPresenter preferredBusinessPresenter) {
-        this.preferredBusinessPresenter = preferredBusinessPresenter;
-    }
-
-    static {
-        preferredStoreService = RetrofitClient.getClient().create(PreferredStoreService.class);
-    }
-
-
-    public void getAllPreferredStores(String did, String mail, String auth) {
-        preferredStoreService.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonPreferredBusinessBucket>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonPreferredBusinessBucket> call, @NonNull Response<JsonPreferredBusinessBucket> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("getAllPreferredStores", String.valueOf(response.body()));
-                        preferredBusinessPresenter.preferredBusinessResponse(response.body());
-                    } else {
-                        Log.e(TAG, "Failed getAllPreferredStores");
-                        preferredBusinessPresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        preferredBusinessPresenter.authenticationFailure();
-                    } else {
-                        preferredBusinessPresenter.responseErrorPresenter(response.code());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonPreferredBusinessBucket> call, @NonNull Throwable t) {
-                Log.e("getAllPreferredStores", t.getLocalizedMessage(), t);
-                preferredBusinessPresenter.preferredBusinessError();
-            }
-        });
-    }
-
-    public void fetchFile(String did, String mail, String auth, String codeQR, String bizStoreId) {
-        preferredStoreService.file(did, Constants.DEVICE_TYPE, mail, auth, codeQR, bizStoreId).enqueue(new Callback<ResponseBody>() {
+    public void fetchFile(String did, String mail, String auth) {
+        masterLabService.file(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -105,10 +63,10 @@ public class PreferredBusinessModel {
                         Log.e(TAG, "Failed fetchFile");
                         filePresenter.fileError();
                     }
-                }else {
+                } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         filePresenter.authenticationFailure();
-                    }else{
+                    } else {
                         filePresenter.responseErrorPresenter(response.code());
                     }
                 }
@@ -121,6 +79,4 @@ public class PreferredBusinessModel {
             }
         });
     }
-
-
 }

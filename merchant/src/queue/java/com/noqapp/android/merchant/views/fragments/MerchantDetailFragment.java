@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
@@ -71,9 +72,15 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     protected void createToken(Context context, String codeQR) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
-            intent.putExtra("codeQR", jsonTopic.getCodeQR());
-            ((Activity) context).startActivity(intent);
+            if(jsonTopic.getBusinessType() == BusinessTypeEnum.HS) {
+                Intent intent = new Intent(getActivity(), HCSMenuActivity.class);
+                intent.putExtra("jsonTopic", jsonTopic);
+                ((Activity) context).startActivity(intent);
+            }else{
+                Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
+                intent.putExtra("codeQR", jsonTopic.getCodeQR());
+                ((Activity) context).startActivity(intent);
+            }
         } else {
             showCreateTokenDialog(context, codeQR);
         }
