@@ -54,6 +54,7 @@
                             android:layout_toLeftOf="@+id/iv_clear_actv_dia"
                             android:textSize="@dimen/text_size_fourteen"
                             />
+
                     <ImageView
                             android:id="@+id/iv_clear_actv_dia"
                             android:layout_width="35dp"
@@ -98,17 +99,13 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <ScrollView
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewOne"
+                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"/>
 
-
-                <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerViewOne"
-                        android:layout_margin="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-            </ScrollView>
         </LinearLayout>
 
         <ScrollView
@@ -330,6 +327,7 @@
                         android:layout_toLeftOf="@+id/iv_clear_actv_medicine"
                         android:textSize="@dimen/text_size_fourteen"
                         />
+
                 <ImageView
                         android:id="@+id/iv_clear_actv_medicine"
                         android:layout_width="35dp"
@@ -374,35 +372,32 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <ScrollView
+
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <LinearLayout
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcv_medicine"
+                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"/>
 
+            <View
+                    android:id="@+id/view_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:visibility="gone"
+                    android:background="@android:color/darker_gray"/>
 
-                <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rcv_medicine"
-                        android:layout_margin="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-                <View
-                        android:id="@+id/view_med"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:visibility="gone"
-                        android:background="@android:color/darker_gray"/>
-
-                <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_margin="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </ScrollView>
     </LinearLayout>
 </LinearLayout>

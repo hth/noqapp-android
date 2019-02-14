@@ -179,6 +179,7 @@
                         android:layout_toLeftOf="@+id/iv_clear_actv_path"
                         android:textSize="@dimen/text_size_fourteen"
                         />
+
                 <ImageView
                         android:id="@+id/iv_clear_actv_path"
                         android:layout_width="35dp"
@@ -223,15 +224,11 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rcv_pathology"
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-        </ScrollView>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_pathology"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
     </LinearLayout>
 </LinearLayout>
