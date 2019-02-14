@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
@@ -186,31 +187,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     }
 
-    @Override
-    public void PeopleInQOrderClick(int position) {
-        if (tv_counter_name.getText().toString().trim().equals("")) {
-            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-        } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                //progressDialog.setVisibility(View.VISIBLE);
-                // lastSelectedPos = position;
-                LaunchActivity.getLaunchActivity().progressDialog.show();
-                OrderServed orderServed = new OrderServed();
-                orderServed.setCodeQR(jsonTopic.getCodeQR());
-                orderServed.setServedNumber(purchaseOrders.get(position).getToken());
-                orderServed.setGoTo(tv_counter_name.getText().toString());
-                orderServed.setQueueStatus(QueueStatusEnum.N);
-                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-
-
-                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                purchaseOrderModel.setAcquireOrderPresenter(this);
-                purchaseOrderModel.acquire(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-            } else {
-                ShowAlertInformation.showNetworkDialog(getActivity());
-            }
-        }
-    }
 
     @Override
     public void orderDoneClick(int position) {

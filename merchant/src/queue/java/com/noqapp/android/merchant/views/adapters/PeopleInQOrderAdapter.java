@@ -6,9 +6,11 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -36,8 +38,6 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
     public interface PeopleInQOrderAdapterClick {
 
-        void PeopleInQOrderClick(int position);
-
         void orderDoneClick(int position);
 
         void orderCancelClick(int position);
@@ -55,6 +55,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_order_prepared;
         TextView tv_order_done;
         TextView tv_order_cancel;
+        TextView tv_upload_document;
 
         CardView cardview;
 
@@ -68,6 +69,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_order_prepared = itemView.findViewById(R.id.tv_order_prepared);
             this.tv_order_done = itemView.findViewById(R.id.tv_order_done);
             this.tv_order_cancel = itemView.findViewById(R.id.tv_order_cancel);
+            this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
@@ -130,6 +132,15 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 peopleInQOrderAdapterClick.orderDoneClick(position);
             }
         });
+        recordHolder.tv_upload_document.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DocumentUploadActivity.class);
+                intent.putExtra("recordReferenceId", jsonPurchaseOrder.getTransactionId());
+                intent.putExtra("qCodeQR", qCodeQR);
+                context.startActivity(intent);
+            }
+        });
         recordHolder.tv_order_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +187,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 recordHolder.tv_order_cancel.setText("Cancel Order");
                 recordHolder.tv_order_prepared.setText("Order prepared");
         }
-        recordHolder.tv_order_status.setText("Status: "+jsonPurchaseOrder.getPresentOrderState().getDescription());
+        recordHolder.tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getDescription());
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             recordHolder.tv_order_prepared.setVisibility(View.VISIBLE);
         } else {
@@ -195,7 +206,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                     new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
             }
         });
-        if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP ) {
+        if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
             recordHolder.cardview.startAnimation(startAnimation);
             Log.v("Animation true: ", String.valueOf(position));
@@ -224,8 +235,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
         TextView tv_notes = customDialogView.findViewById(R.id.tv_notes);
         CardView cv_notes = customDialogView.findViewById(R.id.cv_notes);
-        tv_notes.setText("Additional Notes: "+jsonPurchaseOrder.getAdditionalNote());
-        cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote())?View.GONE:View.VISIBLE);
+        tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
+        cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
         tv_payment_mode.setText(Html.fromHtml(jsonPurchaseOrder.getPaymentType().getDescription()));
         try {

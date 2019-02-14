@@ -7,8 +7,6 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -16,6 +14,7 @@ import com.noqapp.android.merchant.utils.FileUtils;
 import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
+import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
 
 import com.squareup.picasso.Picasso;
 
@@ -58,7 +57,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
+public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, ImageUploadAdapter.OnItemClickListener {
 
     private static final int PICK_IMAGE_CAMERA = 101;
     private static final int PICK_IMAGE_GALLERY = 102;
@@ -69,7 +68,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     };
     private String recordReferenceId;
 
-    private MedicalHistoryModel medicalHistoryModel;
+    private PurchaseOrderModel purchaseOrderModel;
     private ProgressDialog progressDialog;
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private String userChoosenTask;
@@ -101,7 +100,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 finish();
             }
         });
-        medicalHistoryModel = new MedicalHistoryModel(this);
+        purchaseOrderModel = new PurchaseOrderModel();
+        purchaseOrderModel.setImageUploadPresenter(this);
         recordReferenceId = getIntent().getStringExtra("recordReferenceId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
 
@@ -126,12 +126,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             }
         });
 
-        progressDialog.show();
-        progressDialog.setMessage("Fetching documents...");
-        medicalHistoryModel.setJsonMedicalRecordPresenter(this);
-        medicalHistoryModel.existsMedicalRecord(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), codeQR, recordReferenceId);
+//        progressDialog.show();
+//        progressDialog.setMessage("Uploading documents...");
 
     }
 
@@ -291,10 +287,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         Log.v("Image upload", "" + jsonResponse);
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Toast.makeText(this, "Document upload successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
-            if (null == jsonMedicalRecordTemp.getImages())
-                jsonMedicalRecordTemp.setImages(new ArrayList<String>());
-            jsonMedicalRecordTemp.getImages().add(jsonResponse.getData());
-            jsonMedicalRecordResponse(jsonMedicalRecordTemp);
         } else {
             Toast.makeText(this, "Failed to update document", Toast.LENGTH_LONG).show();
         }
@@ -307,8 +299,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         Log.v("Image removed", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             if (-1 != selectPos) {
-                jsonMedicalRecordTemp.getImages().remove(selectPos);
-                jsonMedicalRecordResponse(jsonMedicalRecordTemp);
+                // jsonMedicalRecordTemp.getImages().remove(selectPos);
             }
             selectPos = -1;
             Toast.makeText(this, "Document removed successfully!", Toast.LENGTH_LONG).show();
@@ -322,18 +313,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         dismissProgress();
     }
 
-    @Override
-    public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
-        jsonMedicalRecordTemp = jsonMedicalRecord;
-        if (null != jsonMedicalRecord) {
-            Log.e("data", jsonMedicalRecord.toString());
-            if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
-                imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
-                rcv_photo.setAdapter(imageUploadAdapter);
-            }
-        }
-        dismissProgress();
-    }
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
@@ -384,9 +363,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 });
                 progressDialog.show();
                 progressDialog.setMessage("Deleting image...");
-                medicalHistoryModel.removeImage(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
+//                medicalHistoryModel.removeImage(BaseLaunchActivity.getDeviceID(),
+//                        LaunchActivity.getLaunchActivity().getEmail(),
+//                        LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
 
                 mAlertDialog.dismiss();
@@ -524,7 +503,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 File file = new File(path);
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-                medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                purchaseOrderModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
             }
 //            if (!TextUtils.isEmpty(destination.getAbsolutePath())) {
 //                progressDialog.show();
@@ -557,7 +536,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-                        medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                        purchaseOrderModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     }
 
                 } catch (Exception e) {

@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.model;
 
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -12,6 +14,8 @@ import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +27,11 @@ public class PurchaseOrderModel {
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private OrderProcessedPresenter orderProcessedPresenter;
     private AcquireOrderPresenter acquireOrderPresenter;
+    private ImageUploadPresenter imageUploadPresenter;
+
+    public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
+        this.imageUploadPresenter = imageUploadPresenter;
+    }
 
     public void setOrderProcessedPresenter(OrderProcessedPresenter orderProcessedPresenter) {
         this.orderProcessedPresenter = orderProcessedPresenter;
@@ -181,6 +190,35 @@ public class PurchaseOrderModel {
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Order served fail", t.getLocalizedMessage(), t);
                 acquireOrderPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void appendImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody recordReferenceId) {
+        purchaseOrderService.appendImage(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, recordReferenceId).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("upload", String.valueOf(response.body()));
+                        imageUploadPresenter.imageUploadResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("upload", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
             }
         });
     }
