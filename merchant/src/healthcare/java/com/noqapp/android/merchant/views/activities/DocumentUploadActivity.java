@@ -17,6 +17,7 @@ import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.Manifest;
@@ -55,7 +56,6 @@ import okhttp3.RequestBody;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
@@ -68,9 +68,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private String recordReferenceId;
-
     private MedicalHistoryModel medicalHistoryModel;
     private ProgressDialog progressDialog;
+    private ProgressDialog progressDialogImage;
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private String userChoosenTask;
     private Uri imageUri;
@@ -107,7 +107,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         medicalHistoryModel = new MedicalHistoryModel(this);
         recordReferenceId = getIntent().getStringExtra("recordReferenceId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
-
         rcv_photo = findViewById(R.id.rcv_photo);
         rcv_photo.setLayoutManager(new GridLayoutManager(this, columnCount));
         frame_image = findViewById(R.id.frame_image);
@@ -343,6 +342,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading data...");
+
+        progressDialogImage = new ProgressDialog(this, R.style.progressbar_center_theme);
+        progressDialogImage.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
     }
 
     protected void dismissProgress() {
@@ -576,9 +579,20 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @Override
     public void imageEnlargeClick(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
+            progressDialogImage.show();
             Picasso.with(DocumentUploadActivity.this)
                     .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
-                    .into(iv_large);
+                    .into(iv_large ,new Callback() {
+                @Override
+                public void onSuccess() {
+                    progressDialogImage.dismiss();
+                }
+
+                @Override
+                public void onError() {
+                    progressDialogImage.dismiss();
+                }
+            });
             frame_image.setVisibility(View.VISIBLE);
             isExpandScreenOpen = true;
         } else {
