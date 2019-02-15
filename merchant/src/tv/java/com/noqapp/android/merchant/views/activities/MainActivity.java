@@ -391,33 +391,6 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             progressDialog.dismiss();
     }
 
-    private boolean isCurrentTimeInRange(String start, String end) {
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            Date date = new Date();
-            String current = formatter.format(date);
-
-            Date startDate = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(start);
-            Calendar calendarStart = Calendar.getInstance();
-            calendarStart.setTime(startDate);
-
-            Date endDate = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(end);
-            Calendar calendarEnd = Calendar.getInstance();
-            calendarEnd.setTime(endDate);
-            calendarEnd.add(Calendar.DATE, 1);
-
-            Date currentDate = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(current);
-            Calendar calendarCurrent = Calendar.getInstance();
-            calendarCurrent.setTime(currentDate);
-            calendarCurrent.add(Calendar.DATE, 1);
-
-            return calendarCurrent.getTime().after(calendarStart.getTime()) && calendarCurrent.getTime().before(calendarEnd.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 
     public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
 
@@ -427,17 +400,17 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             String currentTime = formatter.format(date);
             //Start Time
             //all times are from java.util.Date
-            Date inTime = new SimpleDateFormat("HH:mm").parse(initialTime);
+            Date inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(initialTime);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(inTime);
 
             //Current Time
-            Date checkTime = new SimpleDateFormat("HH:mm").parse(currentTime);
+            Date checkTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(currentTime);
             Calendar calendar3 = Calendar.getInstance();
             calendar3.setTime(checkTime);
 
             //End Time
-            Date finTime = new SimpleDateFormat("HH:mm").parse(finalTime);
+            Date finTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(finalTime);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(finTime);
 
@@ -458,8 +431,6 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             e.printStackTrace();
             return false;
         }
-
-
     }
 
 
