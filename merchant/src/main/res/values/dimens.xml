@@ -28,4 +28,14 @@
     <dimen name="text_size_medication">10sp</dimen>
     <dimen name="btn_height">40dp</dimen>
     <dimen name="swith_padding">5dp</dimen>
+
+    <dimen name="documnet_width">160dp</dimen>
+    <dimen name="documnet_height">160dp</dimen>
+    <dimen name="documnet_icon_size">30dp</dimen>
+    <dimen name="frame_margin">10dp</dimen>
+
+    <dimen name="close_image_margin">25dp</dimen>
+    <dimen name="close_image_size">40dp</dimen>
+
+    <dimen name="image_item_margin">10dp</dimen>
 </resources>

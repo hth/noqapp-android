@@ -2,8 +2,8 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                     android:id="@+id/cardview"
-                                    android:layout_width="350dp"
-                                    android:layout_height="300dp"
+                                    android:layout_width="@dimen/documnet_width"
+                                    android:layout_height="@dimen/documnet_height"
                                     android:padding="10dp"
                                     card_view:cardBackgroundColor="@android:color/white"
                                     card_view:cardCornerRadius="10dp"
@@ -23,18 +23,18 @@
 
         <ImageView
                 android:id="@+id/iv_delete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/documnet_icon_size"
+                android:layout_height="@dimen/documnet_icon_size"
                 android:layout_gravity="right|top"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/image_item_margin"
                 android:background="@drawable/delete_record"/>
 
         <ImageView
                 android:id="@+id/iv_inlarge"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/documnet_icon_size"
+                android:layout_height="@dimen/documnet_icon_size"
                 android:layout_gravity="left|top"
-                android:layout_margin="20dp"
+                android:layout_margin="@dimen/image_item_margin"
                 android:background="@drawable/enlarge"/>
     </FrameLayout>
 </android.support.v7.widget.CardView>

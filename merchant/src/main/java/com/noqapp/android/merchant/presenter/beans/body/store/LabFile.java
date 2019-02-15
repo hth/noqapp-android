@@ -1,5 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans.body.store;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,6 +43,9 @@ public class LabFile implements Serializable {
     @JsonProperty("rr")
     private String recordReferenceId;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getTransactionId() {
         return transactionId;
     }
@@ -75,5 +80,25 @@ public class LabFile implements Serializable {
     public LabFile setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+
+    @Override
+    public String toString() {
+        return "LabFile{" +
+                "transactionId='" + transactionId + '\'' +
+                ", deleteAttachment='" + deleteAttachment + '\'' +
+                ", files=" + files +
+                ", recordReferenceId='" + recordReferenceId + '\'' +
+                ", error=" + error +
+                '}';
     }
 }

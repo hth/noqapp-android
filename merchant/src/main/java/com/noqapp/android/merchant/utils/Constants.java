@@ -47,6 +47,8 @@ public class Constants extends BaseConstants {
     public static final String MEDICINE = "MEDICINE";
     public static final String PREFERRED_STORE = "PREFERRED_STORE";
 
+    public static final int MAX_IMAGE_UPLOAD_LIMIT = 25;
+
     /**
      * Computes App version.
      *

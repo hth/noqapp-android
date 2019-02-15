@@ -136,7 +136,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DocumentUploadActivity.class);
-                intent.putExtra("recordReferenceId", jsonPurchaseOrder.getTransactionId());
+                intent.putExtra("transactionId", jsonPurchaseOrder.getTransactionId());
                 intent.putExtra("qCodeQR", qCodeQR);
                 context.startActivity(intent);
             }

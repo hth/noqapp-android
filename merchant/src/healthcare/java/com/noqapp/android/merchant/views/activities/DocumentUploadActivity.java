@@ -80,14 +80,17 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private ImageUploadAdapter imageUploadAdapter;
     private int selectPos;
     private FloatingActionButton fab_add_image;
-    private final int MAX_IMAGE_UPLOAD_LIMIT = 25;
+    private int columnCount = 2;
+    private boolean isExpandScreenOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            columnCount = 3;
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            columnCount = 2;
         }
         super.onCreate(savedInstanceState);
         initProgress();
@@ -106,7 +109,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         String codeQR = getIntent().getStringExtra("qCodeQR");
 
         rcv_photo = findViewById(R.id.rcv_photo);
-        rcv_photo.setLayoutManager(new GridLayoutManager(this, 3));
+        rcv_photo.setLayoutManager(new GridLayoutManager(this, columnCount));
         frame_image = findViewById(R.id.frame_image);
         iv_large = findViewById(R.id.iv_large);
         ImageView iv_close = findViewById(R.id.iv_close);
@@ -115,10 +118,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         fab_add_image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (null != jsonMedicalRecordTemp && null != jsonMedicalRecordTemp.getImages()) {
-                    if (jsonMedicalRecordTemp.getImages().size() < MAX_IMAGE_UPLOAD_LIMIT) {
+                    if (jsonMedicalRecordTemp.getImages().size() < Constants.MAX_IMAGE_UPLOAD_LIMIT) {
                         selectImage();
                     } else {
-                        Toast.makeText(DocumentUploadActivity.this, "Maximum " + MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     selectImage();
@@ -172,6 +175,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 frame_image.setVisibility(View.GONE);
                 iv_large.setBackgroundResource(0);
                 fab_add_image.show();
+                isExpandScreenOpen = false;
                 break;
 
         }
@@ -327,7 +331,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         jsonMedicalRecordTemp = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
-            if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
+            if (null != jsonMedicalRecord.getImages()) {
                 imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
                 rcv_photo.setAdapter(imageUploadAdapter);
             }
@@ -576,9 +580,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
                     .into(iv_large);
             frame_image.setVisibility(View.VISIBLE);
+            isExpandScreenOpen = true;
         } else {
             Toast.makeText(this, "Image not available", Toast.LENGTH_LONG).show();
             frame_image.setVisibility(View.GONE);
+            isExpandScreenOpen = false;
         }
         fab_add_image.hide();
     }
@@ -586,5 +592,16 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @Override
     public void imageDeleteClick(String imageUrl) {
         deleteImage(imageUrl);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if(isExpandScreenOpen){
+            frame_image.setVisibility(View.GONE);
+            isExpandScreenOpen = false;
+        }else {
+            super.onBackPressed();
+        }
     }
 }
