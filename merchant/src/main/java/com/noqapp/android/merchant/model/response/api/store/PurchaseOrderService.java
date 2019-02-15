@@ -194,7 +194,7 @@ public interface PurchaseOrderService {
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      */
     @POST("api/m/s/purchaseOrder/showAttachment.json")
-    Call<JsonResponse> showAttachment(
+    Call<LabFile> showAttachment(
             @Header("X-R-DID")
             String did,
 
