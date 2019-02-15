@@ -194,8 +194,8 @@ public class PurchaseOrderModel {
         });
     }
 
-    public void appendImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody recordReferenceId) {
-        purchaseOrderService.appendImage(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, recordReferenceId).enqueue(new Callback<JsonResponse>() {
+    public void addAttachment(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody transactionId) {
+        purchaseOrderService.addAttachment(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, transactionId).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

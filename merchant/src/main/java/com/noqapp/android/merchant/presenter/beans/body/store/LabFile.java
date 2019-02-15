@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * hitender
@@ -25,29 +27,53 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RemoveLabFile implements Serializable {
+public class LabFile implements Serializable {
 
-    @JsonProperty("transactionId")
-    String transactionId;
+    @JsonProperty("ti")
+    private String transactionId;
 
-    @JsonProperty("filename")
-    String filename;
+    @JsonProperty("da")
+    private String deleteAttachment;
+
+    @JsonProperty("files")
+    private List<String> files = new LinkedList<>();
+
+    @JsonProperty("rr")
+    private String recordReferenceId;
 
     public String getTransactionId() {
         return transactionId;
     }
 
-    public RemoveLabFile setTransactionId(String transactionId) {
+    public LabFile setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getDeleteAttachment() {
+        return deleteAttachment;
     }
 
-    public RemoveLabFile setFilename(String filename) {
-        this.filename = filename;
+    public LabFile setDeleteAttachment(String deleteAttachment) {
+        this.deleteAttachment = deleteAttachment;
+        return this;
+    }
+
+    public List<String> getFiles() {
+        return files;
+    }
+
+    public LabFile setFiles(List<String> files) {
+        this.files = files;
+        return this;
+    }
+
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
+    public LabFile setRecordReferenceId(String recordReferenceId) {
+        this.recordReferenceId = recordReferenceId;
         return this;
     }
 }
