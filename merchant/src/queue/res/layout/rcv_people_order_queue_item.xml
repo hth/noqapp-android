@@ -92,6 +92,19 @@
                 android:textSize="@dimen/text_size_twelve"/>
 
         <TextView
+                android:id="@+id/tv_order_accept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="10dp"
+                android:background="@drawable/button_drawable_red"
+                android:textColor="@android:color/white"
+                android:text="Accept Order"
+                android:gravity="center"
+                android:layout_marginTop="3dp"
+                android:textSize="@dimen/text_size_twelve"/>
+
+        <TextView
                 android:id="@+id/tv_order_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

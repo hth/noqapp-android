@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -38,6 +39,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
     public interface PeopleInQOrderAdapterClick {
 
+        void orderAcceptClick(int position);
+
         void orderDoneClick(int position);
 
         void orderCancelClick(int position);
@@ -55,6 +58,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_order_prepared;
         TextView tv_order_done;
         TextView tv_order_cancel;
+        TextView tv_order_accept;
         TextView tv_upload_document;
 
         CardView cardview;
@@ -69,6 +73,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_order_prepared = itemView.findViewById(R.id.tv_order_prepared);
             this.tv_order_done = itemView.findViewById(R.id.tv_order_done);
             this.tv_order_cancel = itemView.findViewById(R.id.tv_order_cancel);
+            this.tv_order_accept = itemView.findViewById(R.id.tv_order_accept);
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
@@ -123,9 +128,12 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
             recordHolder.tv_order_cancel.setVisibility(View.VISIBLE);
+            recordHolder.tv_order_accept.setVisibility(View.VISIBLE);
         } else {
             recordHolder.tv_order_cancel.setVisibility(View.GONE);
+            recordHolder.tv_order_accept.setVisibility(View.GONE);
         }
+
         recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,11 +189,13 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 recordHolder.tv_order_done.setText("Service Completed");
                 recordHolder.tv_order_cancel.setText("Cancel Service");
                 recordHolder.tv_order_prepared.setText("Start Service");
+                recordHolder.tv_upload_document.setVisibility(View.VISIBLE);
                 break;
             default:
                 recordHolder.tv_order_done.setText("Order Done");
                 recordHolder.tv_order_cancel.setText("Cancel Order");
                 recordHolder.tv_order_prepared.setText("Order prepared");
+                recordHolder.tv_upload_document.setVisibility(View.GONE);
         }
         recordHolder.tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getDescription());
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
@@ -206,6 +216,14 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                     new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
             }
         });
+
+        recordHolder.tv_order_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQOrderAdapterClick.orderAcceptClick(position);
+            }
+        });
+
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);
             recordHolder.cardview.startAnimation(startAnimation);

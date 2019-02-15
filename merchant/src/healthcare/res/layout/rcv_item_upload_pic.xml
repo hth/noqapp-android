@@ -25,6 +25,7 @@
                 android:id="@+id/iv_delete"
                 android:layout_width="@dimen/documnet_icon_size"
                 android:layout_height="@dimen/documnet_icon_size"
+                android:backgroundTint="@color/colorAccent"
                 android:layout_gravity="right|top"
                 android:layout_margin="@dimen/image_item_margin"
                 android:background="@drawable/delete_record"/>
@@ -32,6 +33,7 @@
         <ImageView
                 android:id="@+id/iv_inlarge"
                 android:layout_width="@dimen/documnet_icon_size"
+                android:backgroundTint="@color/colorAccent"
                 android:layout_height="@dimen/documnet_icon_size"
                 android:layout_gravity="left|top"
                 android:layout_margin="@dimen/image_item_margin"

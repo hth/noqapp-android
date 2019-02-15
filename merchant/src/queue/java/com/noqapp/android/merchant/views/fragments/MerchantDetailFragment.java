@@ -99,6 +99,33 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
     }
 
+
+    @Override
+    public void orderAcceptClick(int position) {
+        if (tv_counter_name.getText().toString().trim().equals("")) {
+            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+        } else {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                LaunchActivity.getLaunchActivity().progressDialog.show();
+                OrderServed orderServed = new OrderServed();
+                orderServed.setCodeQR(jsonTopic.getCodeQR());
+                orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+                orderServed.setGoTo(tv_counter_name.getText().toString());
+                orderServed.setQueueStatus(QueueStatusEnum.N);
+                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
+
+
+                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
+                purchaseOrderModel.setAcquireOrderPresenter(this);
+                purchaseOrderModel.acquire(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
+            }
+        }
+    }
+
+
+
     @Override
     public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         if (null != jsonPurchaseOrderList) {

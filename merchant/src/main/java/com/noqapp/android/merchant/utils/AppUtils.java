@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.app.Activity;
@@ -110,4 +111,23 @@ public class AppUtils extends CommonHelper {
             return "";
         }
     }
+
+    public static String getImageUrls(String bucket_type, String url) {
+        String location;
+        switch (bucket_type) {
+            case BuildConfig.PROFILE_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + url;
+                break;
+            case BuildConfig.SERVICE_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.SERVICE_BUCKET + url;
+                break;
+            default:
+                Log.e("App Utils", "Un-supported bucketType=" + bucket_type);
+                throw new UnsupportedOperationException("Reached unsupported condition");
+        }
+
+        //Log.i(TAG, "File location " + location);
+        return location;
+    }
+
 }

@@ -291,7 +291,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                                     }
                                 }
                         );
-
+                        if (data.size() > 0) {
+                            View v = inflater.inflate(R.layout.lay_header, null, false);
+                            ll_list.addView(v);
+                        }
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
                             CardView cardview = customView.findViewById(R.id.cardview);

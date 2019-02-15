@@ -5,8 +5,10 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.SliderActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalHistoryAdapter extends BaseAdapter {
@@ -38,7 +41,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         return 0;
     }
 
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         RecordHolder recordHolder;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (view == null) {
@@ -52,12 +55,14 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder.tv_create = view.findViewById(R.id.tv_create);
             recordHolder.tv_examination = view.findViewById(R.id.tv_examination);
             recordHolder.tv_medicine = view.findViewById(R.id.tv_medicine);
+            recordHolder.tv_attachment = view.findViewById(R.id.tv_attachment);
+            recordHolder.view_seperator = view.findViewById(R.id.view_seperator);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecordList.get(position);
+        final JsonMedicalRecord jsonMedicalRecord = jsonMedicalRecordList.get(position);
         if (jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.DO) {
             recordHolder.tv_diagnosed_by.setText("Dr. " + jsonMedicalRecord.getDiagnosedByDisplayName());
         } else {
@@ -69,6 +74,25 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
         recordHolder.tv_examination.setText(jsonMedicalRecord.getExamination());
         recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
+        if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
+            recordHolder.tv_attachment.setText("Attachment Available : " + jsonMedicalRecord.getImages().size());
+            recordHolder.tv_attachment.setVisibility(View.VISIBLE);
+            recordHolder.view_seperator.setVisibility(View.VISIBLE);
+            recordHolder.tv_attachment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, SliderActivity.class);
+                    intent.putExtra("imageurls", (ArrayList<String>) jsonMedicalRecord.getImages());
+                    intent.putExtra("isDocument", true);
+                    intent.putExtra("recordReferenceId", jsonMedicalRecord.getRecordReferenceId());
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            recordHolder.tv_attachment.setText("No Attachment Available");
+            recordHolder.tv_attachment.setVisibility(View.GONE);
+            recordHolder.view_seperator.setVisibility(View.GONE);
+        }
         showHideViews(recordHolder.tv_examination, recordHolder.tv_medicine, recordHolder.tv_complaints);
         return view;
     }
@@ -81,6 +105,8 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         TextView tv_business_category_name;
         TextView tv_examination;
         TextView tv_medicine;
+        TextView tv_attachment;
+        View view_seperator;
         CardView cardview;
 
         RecordHolder() {
