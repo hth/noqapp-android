@@ -402,7 +402,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private void onSelectFromGalleryResult(Intent data) {
         if (data != null) {
             try {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+               // Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 try {
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
@@ -420,7 +420,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

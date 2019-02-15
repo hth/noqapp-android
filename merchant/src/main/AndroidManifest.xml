@@ -14,9 +14,17 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+
+    <uses-feature
+            android:name="android.hardware.camera"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.camera.front"
+            android:required="false"/>
+    <uses-feature
+            android:name="android.hardware.camera.autofocus"
+            android:required="false"/>
+
     <application
             android:name=".views.activities.MyApplication"
             android:allowBackup="false"
@@ -24,6 +32,7 @@
             android:label="@string/flavored_app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:largeHeap="true"
             tools:replace="android:label,android:allowBackup"
             tools:ignore="GoogleAppIndexingWarning">
         <meta-data
