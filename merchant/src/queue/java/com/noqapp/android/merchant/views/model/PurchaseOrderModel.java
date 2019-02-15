@@ -1,17 +1,23 @@
 package com.noqapp.android.merchant.views.model;
 
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +29,12 @@ public class PurchaseOrderModel {
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private OrderProcessedPresenter orderProcessedPresenter;
     private AcquireOrderPresenter acquireOrderPresenter;
+    private ImageUploadPresenter imageUploadPresenter;
+    private LabFilePresenter labFilePresenter;
+
+    public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
+        this.imageUploadPresenter = imageUploadPresenter;
+    }
 
     public void setOrderProcessedPresenter(OrderProcessedPresenter orderProcessedPresenter) {
         this.orderProcessedPresenter = orderProcessedPresenter;
@@ -34,6 +46,10 @@ public class PurchaseOrderModel {
 
     public void setAcquireOrderPresenter(AcquireOrderPresenter acquireOrderPresenter) {
         this.acquireOrderPresenter = acquireOrderPresenter;
+    }
+
+    public void setLabFilePresenter(LabFilePresenter labFilePresenter) {
+        this.labFilePresenter = labFilePresenter;
     }
 
     static {
@@ -181,6 +197,93 @@ public class PurchaseOrderModel {
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Order served fail", t.getLocalizedMessage(), t);
                 acquireOrderPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void addAttachment(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody transactionId) {
+        purchaseOrderService.addAttachment(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, transactionId).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("upload", String.valueOf(response.body()));
+                        imageUploadPresenter.imageUploadResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("upload", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+    public void removeAttachment(String did, String mail, String auth, LabFile labFile) {
+        purchaseOrderService.removeAttachment(did, Constants.DEVICE_TYPE, mail, auth, labFile).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("upload", String.valueOf(response.body()));
+                        imageUploadPresenter.imageRemoveResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image upload");
+                        imageUploadPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        imageUploadPresenter.authenticationFailure();
+                    } else {
+                        imageUploadPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("upload", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+    public void showAttachment(String did, String mail, String auth, LabFile labFile) {
+        purchaseOrderService.showAttachment(did, Constants.DEVICE_TYPE, mail, auth, labFile).enqueue(new Callback<LabFile>() {
+            @Override
+            public void onResponse(@NonNull Call<LabFile> call, @NonNull Response<LabFile> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("showAttachment", String.valueOf(response.body()));
+                        labFilePresenter.showAttachmentResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed showAttachment");
+                        labFilePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        labFilePresenter.authenticationFailure();
+                    } else {
+                        labFilePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LabFile> call, @NonNull Throwable t) {
+                Log.e("onFailureShowAttachment", t.getLocalizedMessage(), t);
+                labFilePresenter.responseErrorPresenter(null);
             }
         });
     }

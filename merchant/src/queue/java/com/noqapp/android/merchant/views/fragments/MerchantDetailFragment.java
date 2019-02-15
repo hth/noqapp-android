@@ -18,8 +18,11 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
+import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
+import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
@@ -54,8 +57,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
-        iv_product_list.setVisibility(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS? View.VISIBLE:View.INVISIBLE);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        iv_product_list.setVisibility(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS ? View.VISIBLE : View.INVISIBLE);
         iv_product_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,10 +72,19 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     protected void createToken(Context context, String codeQR) {
-        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O)
-            Toast.makeText(context, "Show the order screen", Toast.LENGTH_LONG).show();
-        else
+        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+            if(jsonTopic.getBusinessType() == BusinessTypeEnum.HS) {
+                Intent intent = new Intent(getActivity(), HCSMenuActivity.class);
+                intent.putExtra("jsonTopic", jsonTopic);
+                ((Activity) context).startActivity(intent);
+            }else{
+                Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
+                intent.putExtra("codeQR", jsonTopic.getCodeQR());
+                ((Activity) context).startActivity(intent);
+            }
+        } else {
             showCreateTokenDialog(context, codeQR);
+        }
     }
 
     @Override
@@ -100,8 +112,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                     }
             );
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this);
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
+            if (jsonTopic.getServingNumber() > 0)
+                rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
         }
         dismissProgress();
     }
@@ -173,31 +187,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     }
 
-    @Override
-    public void PeopleInQOrderClick(int position) {
-        if (tv_counter_name.getText().toString().trim().equals("")) {
-            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-        } else {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                //progressDialog.setVisibility(View.VISIBLE);
-                // lastSelectedPos = position;
-                LaunchActivity.getLaunchActivity().progressDialog.show();
-                OrderServed orderServed = new OrderServed();
-                orderServed.setCodeQR(jsonTopic.getCodeQR());
-                orderServed.setServedNumber(purchaseOrders.get(position).getToken());
-                orderServed.setGoTo(tv_counter_name.getText().toString());
-                orderServed.setQueueStatus(QueueStatusEnum.N);
-                orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-
-
-                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                purchaseOrderModel.setAcquireOrderPresenter(this);
-                purchaseOrderModel.acquire(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-            } else {
-                ShowAlertInformation.showNetworkDialog(getActivity());
-            }
-        }
-    }
 
     @Override
     public void orderDoneClick(int position) {
@@ -297,7 +286,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 /* Add to show only remaining people in queue */
                 tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
                 tv_title.setText(jsonTopic.getDisplayName());
-                iv_generate_token.setVisibility(View.GONE);
+                //   iv_generate_token.setVisibility(View.GONE);
                 iv_view_followup.setVisibility(View.GONE);
                 btn_start.setText(context.getString(R.string.start));
                 btn_start.setBackgroundResource(R.drawable.start);
@@ -481,8 +470,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 }
             }
         }
-        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this);
+        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
+        if (jsonTopic.getServingNumber() > 0)
+            rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

@@ -5,7 +5,6 @@ import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.FilePresenter;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.model.M_MerchantProfileModel;
 import com.noqapp.android.merchant.model.MasterLabModel;
@@ -17,6 +16,7 @@ import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.MedicineFragment;
 import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
+import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import com.google.gson.Gson;
@@ -172,7 +172,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     private void callFileApi() {
         progressDialog.show();
         MasterLabModel masterLabModel = new MasterLabModel();
-        masterLabModel.setFilePresenter(PreferenceActivity.this);
+        masterLabModel.setFilePresenter(this);
         masterLabModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
     }
 

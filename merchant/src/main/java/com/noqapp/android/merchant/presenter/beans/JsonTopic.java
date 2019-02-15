@@ -59,4 +59,13 @@ public class JsonTopic extends JsonToken implements Serializable {
         this.jsonDataVisibility = jsonDataVisibility;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTopic{" +
+                "topic='" + topic + '\'' +
+                ", hour=" + hour +
+                ", jsonDataVisibility=" + jsonDataVisibility +
+                '}';
+    }
 }
