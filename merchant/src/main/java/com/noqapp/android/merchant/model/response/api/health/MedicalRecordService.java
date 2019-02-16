@@ -28,6 +28,7 @@ public interface MedicalRecordService {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_POPULATED_WITH_LAB}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
