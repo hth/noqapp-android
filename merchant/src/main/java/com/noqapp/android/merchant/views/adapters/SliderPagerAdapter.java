@@ -54,21 +54,21 @@ public class SliderPagerAdapter extends PagerAdapter {
             final ProgressBar progress_bar = view.findViewById(R.id.progress_bar);
             progress_bar.setVisibility(View.VISIBLE);
             TouchImageView im_slider = view.findViewById(R.id.im_slider);
-//            Picasso.with(activity.getApplicationContext())
-//                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
-//                    .into(im_slider, new Callback() {
-//                        @Override
-//                        public void onSuccess() {
-//                            progress_bar.setVisibility(View.GONE);
-//                        }
-//
-//                        @Override
-//                        public void onError() {
-//
-//                        }
-//                    });
+            Picasso.with(activity.getApplicationContext())
+                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
+                    .into(im_slider, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progress_bar.setVisibility(View.GONE);
+                        }
 
-            Glide.with(activity.getApplicationContext()).load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position)).into(im_slider);
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+
+          //  Glide.with(activity.getApplicationContext()).load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position)).into(im_slider);
         } else {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);
             ImageView im_slider = view.findViewById(R.id.im_slider);
