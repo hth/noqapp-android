@@ -45,7 +45,7 @@ import java.util.List;
 public class PatientProfileActivity extends AppCompatActivity implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter {
     private long lastPress;
     private Toast backPressToast;
-    private ProgressBar pb_physical, pb_history;
+    public ProgressBar pb_physical, pb_history;
     private TextView tv_patient_name, tv_address, tv_details;
     private ImageView iv_profile;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
@@ -58,6 +58,12 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     private JsonProfile jsonProfile;
     private TextView tv_empty_list;
     private MedicalHistoryModel medicalHistoryModel;
+    public static PatientProfileActivity patientProfileActivity;
+
+
+    public static PatientProfileActivity getPatientProfileActivity() {
+        return patientProfileActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
+        patientProfileActivity = this;
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         codeQR = getIntent().getStringExtra("qCodeQR");
         listview = findViewById(R.id.listview);
@@ -302,5 +309,16 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             //super.onBackPressed();
             finish();
         }
+    }
+
+    public void updateList(){
+        pb_history.setVisibility(View.VISIBLE);
+        PatientProfileModel profileModel = new PatientProfileModel(PatientProfileActivity.this);
+        profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
+        medicalHistoryModel.historical(BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
+
+
     }
 }
