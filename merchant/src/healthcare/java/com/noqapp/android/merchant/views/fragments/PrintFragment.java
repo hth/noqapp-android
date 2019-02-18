@@ -4,6 +4,7 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
+import com.noqapp.android.common.beans.medical.JsonMedicalPathologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
@@ -15,7 +16,6 @@ import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryModel;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
-import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -182,7 +182,11 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     for (int i = 0; i < caseHistory.getPathologyList().size(); i++) {
                         pathologies.add(new JsonMedicalPathology().setName(caseHistory.getPathologyList().get(i)));
                     }
-                    jsonMedicalRecord.setMedicalPathologies(pathologies);
+                    JsonMedicalPathologyList jsonMedicalPathologyList = new JsonMedicalPathologyList();
+                    jsonMedicalPathologyList.setJsonMedicalPathologies(pathologies);
+                    ArrayList<JsonMedicalPathologyList> listData = new ArrayList<>();
+                    listData.add(jsonMedicalPathologyList);
+                    jsonMedicalRecord.setMedicalPathologiesLists(listData);
                 }
 
                 ArrayList<JsonMedicalRadiology> mriList = new ArrayList<>();

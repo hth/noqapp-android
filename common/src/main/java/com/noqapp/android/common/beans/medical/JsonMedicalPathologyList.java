@@ -85,4 +85,15 @@ public class JsonMedicalPathologyList extends AbstractDomain implements Serializ
         this.observation = observation;
         return this;
     }
+
+
+    @Override
+    public String toString() {
+        return "JsonMedicalPathologyList{" +
+                "recordReferenceId='" + recordReferenceId + '\'' +
+                ", jsonMedicalPathologies=" + jsonMedicalPathologies +
+                ", images=" + images +
+                ", observation='" + observation + '\'' +
+                '}';
+    }
 }

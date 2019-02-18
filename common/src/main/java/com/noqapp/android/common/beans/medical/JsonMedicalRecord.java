@@ -53,7 +53,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("dd")
     private String provisionalDifferentialDiagnosis;
 
-    @JsonProperty("ps")
+    @JsonProperty("pa")
     private List<JsonMedicalPathologyList> medicalPathologiesLists = new ArrayList<>();
 
     @JsonProperty("pr")

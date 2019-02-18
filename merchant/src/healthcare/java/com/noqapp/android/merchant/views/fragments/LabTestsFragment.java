@@ -138,8 +138,11 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
 
     private void updatePathologySelection() {
         try {
-            List<JsonMedicalPathology> temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalPathologies();
-            pathalogyAdapter.updatePathSelectList(temp);
+            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalPathologiesLists() &&
+                    MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalPathologiesLists().size() > 0) {
+                List<JsonMedicalPathology> temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalPathologiesLists().get(0).getJsonMedicalPathologies();
+                pathalogyAdapter.updatePathSelectList(temp);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
