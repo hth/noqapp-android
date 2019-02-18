@@ -53,8 +53,8 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("dd")
     private String provisionalDifferentialDiagnosis;
 
-    @JsonProperty("pa")
-    private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
+    @JsonProperty("ps")
+    private List<JsonMedicalPathologyList> medicalPathologiesLists = new ArrayList<>();
 
     @JsonProperty("pr")
     private String pathologyTestResult;
@@ -189,12 +189,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public List<JsonMedicalPathology> getMedicalPathologies() {
-        return medicalPathologies;
+    public List<JsonMedicalPathologyList> getMedicalPathologiesLists() {
+        return medicalPathologiesLists;
     }
 
-    public JsonMedicalRecord setMedicalPathologies(List<JsonMedicalPathology> medicalPathologies) {
-        this.medicalPathologies = medicalPathologies;
+    public JsonMedicalRecord setMedicalPathologiesLists(List<JsonMedicalPathologyList> medicalPathologiesLists) {
+        this.medicalPathologiesLists = medicalPathologiesLists;
         return this;
     }
 
@@ -415,7 +415,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
                 ", examination='" + examination + '\'' +
                 ", clinicalFinding='" + clinicalFinding + '\'' +
                 ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", medicalPathologies=" + medicalPathologies +
+                ", medicalPathologiesLists=" + medicalPathologiesLists +
                 ", pathologyTestResult='" + pathologyTestResult + '\'' +
                 ", medicalRadiologyLists=" + medicalRadiologyLists +
                 ", medicalMedicines=" + medicalMedicines +
