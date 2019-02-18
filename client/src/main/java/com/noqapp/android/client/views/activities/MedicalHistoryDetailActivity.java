@@ -188,10 +188,11 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 }
                 ll_physical.addView(getView(label));
             }
-        if (jsonMedicalRecord.getMedicalPathologies().isEmpty()) {
+        if (null == jsonMedicalRecord.getMedicalPathologiesLists() || jsonMedicalRecord.getMedicalPathologiesLists().size() == 0
+                || jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies().isEmpty()) {
             ll_pathology.setVisibility(View.GONE);
         } else {
-            for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologies()) {
+            for (JsonMedicalPathology jsonMedicalPathology : jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies()) {
                 ll_investigation_pathology.addView(getView(jsonMedicalPathology.getName()));
             }
         }
