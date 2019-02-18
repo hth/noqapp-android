@@ -6,7 +6,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.customviews.TouchImageView;
 
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +63,7 @@ public class SliderPagerAdapter extends PagerAdapter {
 
                         @Override
                         public void onError() {
-
+                            progress_bar.setVisibility(View.GONE);
                         }
                     });
 
