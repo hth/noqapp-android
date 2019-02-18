@@ -5,12 +5,14 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
+import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
 import com.noqapp.android.merchant.model.response.api.health.MedicalRecordService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
@@ -30,8 +32,13 @@ public class MedicalHistoryModel {
     private MedicalRecordListPresenter medicalRecordListPresenter;
     private QueuePersonListPresenter queuePersonListPresenter;
     private JsonMedicalRecordPresenter jsonMedicalRecordPresenter;
-
+    private UpdateObservationPresenter updateObservationPresenter;
     private ImageUploadPresenter imageUploadPresenter;
+
+
+    public MedicalHistoryModel(UpdateObservationPresenter updateObservationPresenter) {
+        this.updateObservationPresenter = updateObservationPresenter;
+    }
 
     public void setJsonMedicalRecordPresenter(JsonMedicalRecordPresenter jsonMedicalRecordPresenter) {
         this.jsonMedicalRecordPresenter = jsonMedicalRecordPresenter;
@@ -40,9 +47,11 @@ public class MedicalHistoryModel {
     public MedicalHistoryModel(MedicalRecordListPresenter medicalRecordListPresenter) {
         this.medicalRecordListPresenter = medicalRecordListPresenter;
     }
+
     public MedicalHistoryModel(QueuePersonListPresenter queuePersonListPresenter) {
         this.queuePersonListPresenter = queuePersonListPresenter;
     }
+
     public MedicalHistoryModel(ImageUploadPresenter imageUploadPresenter) {
         this.imageUploadPresenter = imageUploadPresenter;
     }
@@ -177,7 +186,7 @@ public class MedicalHistoryModel {
         });
     }
 
-    public void existsMedicalRecord(String did, String mail, String auth, String codeQR,String recordReferenceId) {
+    public void existsMedicalRecord(String did, String mail, String auth, String codeQR, String recordReferenceId) {
         medicalRecordService.exists(did, Constants.DEVICE_TYPE, mail, auth, codeQR, recordReferenceId).enqueue(new Callback<JsonMedicalRecord>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecord> call, @NonNull Response<JsonMedicalRecord> response) {
@@ -231,6 +240,35 @@ public class MedicalHistoryModel {
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e("upload", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+    public void updateObservation(String did, String mail, String auth, LabFile labFile) {
+        medicalRecordService.updateObservation(did, Constants.DEVICE_TYPE, mail, auth, labFile).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("updateObservation", String.valueOf(response.body()));
+                        updateObservationPresenter.updateObservationResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed updateObservation");
+                        updateObservationPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        updateObservationPresenter.authenticationFailure();
+                    } else {
+                        updateObservationPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("onFailUpdateObservation", t.getLocalizedMessage(), t);
+                updateObservationPresenter.responseErrorPresenter(null);
             }
         });
     }

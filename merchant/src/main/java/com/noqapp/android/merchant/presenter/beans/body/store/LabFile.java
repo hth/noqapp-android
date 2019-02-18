@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans.body.store;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +44,12 @@ public class LabFile implements Serializable {
     @JsonProperty("rr")
     private String recordReferenceId;
 
+    @JsonProperty("ob")
+    private String observation;
+
+    @JsonProperty("lc")
+    private LabCategoryEnum labCategory;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -79,6 +86,24 @@ public class LabFile implements Serializable {
 
     public LabFile setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
+        return this;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public LabFile setObservation(String observation) {
+        this.observation = observation;
+        return this;
+    }
+
+    public LabCategoryEnum getLabCategory() {
+        return labCategory;
+    }
+
+    public LabFile setLabCategory(LabCategoryEnum labCategory) {
+        this.labCategory = labCategory;
         return this;
     }
 

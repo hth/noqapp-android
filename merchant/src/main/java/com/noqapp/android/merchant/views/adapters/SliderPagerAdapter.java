@@ -6,6 +6,8 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.customviews.TouchImageView;
 
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,7 @@ public class SliderPagerAdapter extends PagerAdapter {
     private ArrayList<String> image_arraylist;
     private boolean isDocument = false;
     private String recordReferenceId;
+    private ProgressBar progress_bar;
 
     public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist) {
         this.activity = activity;
@@ -47,10 +51,24 @@ public class SliderPagerAdapter extends PagerAdapter {
         View view;
         if (isDocument) {
             view = layoutInflater.inflate(R.layout.layout_slider_document, container, false);
+            final ProgressBar progress_bar = view.findViewById(R.id.progress_bar);
+            progress_bar.setVisibility(View.VISIBLE);
             TouchImageView im_slider = view.findViewById(R.id.im_slider);
-            Picasso.with(activity.getApplicationContext())
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
-                    .into(im_slider);
+//            Picasso.with(activity.getApplicationContext())
+//                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
+//                    .into(im_slider, new Callback() {
+//                        @Override
+//                        public void onSuccess() {
+//                            progress_bar.setVisibility(View.GONE);
+//                        }
+//
+//                        @Override
+//                        public void onError() {
+//
+//                        }
+//                    });
+
+            Glide.with(activity.getApplicationContext()).load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position)).into(im_slider);
         } else {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);
             ImageView im_slider = view.findViewById(R.id.im_slider);

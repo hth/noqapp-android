@@ -126,7 +126,7 @@
                     android:textSize="@dimen/text_size_twelve"/>
 
             <View
-                    android:id="@+id/view_seperator"
+                    android:id="@+id/view_separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
@@ -141,10 +141,319 @@
                     android:layout_marginStart="5dp"
                     android:gravity="center_vertical"
                     android:text=""
-                    android:drawableRight="@drawable/picture_attachment"
+                    android:drawableRight="@drawable/attachment"
                     android:drawablePadding="5dp"
                     android:textSize="@dimen/text_size_twelve"/>
 
+            <View
+                    android:id="@+id/view_seperator1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/color_separator"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Reports:"
+                    android:textColor="@android:color/black"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="5dp"
+                    android:textSize="12sp"/>
+
+            <LinearLayout
+                    android:id="@+id/ll_xray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="X-ray"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_attachment_xray"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center_vertical|start"
+                        android:text="Attachment "
+                        android:drawableLeft="@drawable/attachment"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_observation_xray_label"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:padding="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Observation"
+                        android:layout_marginStart="5dp"
+                        android:drawableRight="@drawable/edit"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_ten"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/ll_sono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Sono"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_attachment_sono"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center_vertical|start"
+                        android:text="Attachment "
+                        android:drawableLeft="@drawable/attachment"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_observation_sono_label"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:padding="5dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:text="Observation"
+                        android:drawableRight="@drawable/edit"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_ten"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/ll_scan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Scan"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_attachment_scan"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center_vertical|start"
+                        android:text="Attachment "
+                        android:drawableLeft="@drawable/attachment"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_observation_scan_label"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:padding="5dp"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Observation"
+                        android:drawableRight="@drawable/edit"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_ten"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/ll_pathology"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Pathology"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_attachment_pathology"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center_vertical|start"
+                        android:text="Attachment "
+                        android:drawableLeft="@drawable/attachment"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_observation_pathology_label"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:padding="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Observation"
+                        android:drawableRight="@drawable/edit"
+                        android:drawablePadding="5dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="@dimen/text_size_ten"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/ll_spec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Spec"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_attachment_spec"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center_vertical|start"
+                        android:text="Attachment "
+                        android:drawableLeft="@drawable/attachment"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_observation_spec_label"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:padding="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Observation"
+                        android:drawableRight="@drawable/edit"
+                        android:layout_marginStart="5dp"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_ten"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/ll_mri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="MRI"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_attachment_mri"
+                        android:layout_width="0dp"
+                        android:layout_weight=".15"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center_vertical|start"
+                        android:text="Attachment "
+                        android:drawableLeft="@drawable/attachment"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_observation_mri_label"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:padding="5dp"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Observation"
+                        android:drawableRight="@drawable/edit"
+                        android:drawablePadding="5dp"
+                        android:textSize="@dimen/text_size_ten"/>
+
+
+            </LinearLayout>
+
+
         </LinearLayout>
+
+
     </android.support.v7.widget.CardView>
 </RelativeLayout>

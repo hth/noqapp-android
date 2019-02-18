@@ -38,7 +38,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty("ps")
+    @JsonProperty("ph")
     private JsonMedicalPhysical medicalPhysical;
 
     @JsonProperty("cc")
@@ -54,10 +54,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
     private String provisionalDifferentialDiagnosis;
 
     @JsonProperty("pa")
-    private List<JsonMedicalPathology> medicalPathologies = new ArrayList<>();
-
-    @JsonProperty("pr")
-    private String pathologyTestResult;
+    private List<JsonMedicalPathologyList> medicalPathologiesLists = new ArrayList<>();
 
     @JsonProperty("rs")
     private List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
@@ -189,21 +186,12 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public List<JsonMedicalPathology> getMedicalPathologies() {
-        return medicalPathologies;
+    public List<JsonMedicalPathologyList> getMedicalPathologiesLists() {
+        return medicalPathologiesLists;
     }
 
-    public JsonMedicalRecord setMedicalPathologies(List<JsonMedicalPathology> medicalPathologies) {
-        this.medicalPathologies = medicalPathologies;
-        return this;
-    }
-
-    public String getPathologyTestResult() {
-        return pathologyTestResult;
-    }
-
-    public JsonMedicalRecord setPathologyTestResult(String pathologyTestResult) {
-        this.pathologyTestResult = pathologyTestResult;
+    public JsonMedicalRecord setMedicalPathologiesLists(List<JsonMedicalPathologyList> medicalPathologiesLists) {
+        this.medicalPathologiesLists = medicalPathologiesLists;
         return this;
     }
 
@@ -415,8 +403,7 @@ public class JsonMedicalRecord extends AbstractDomain implements Serializable {
                 ", examination='" + examination + '\'' +
                 ", clinicalFinding='" + clinicalFinding + '\'' +
                 ", provisionalDifferentialDiagnosis='" + provisionalDifferentialDiagnosis + '\'' +
-                ", medicalPathologies=" + medicalPathologies +
-                ", pathologyTestResult='" + pathologyTestResult + '\'' +
+                ", medicalPathologiesLists=" + medicalPathologiesLists +
                 ", medicalRadiologyLists=" + medicalRadiologyLists +
                 ", medicalMedicines=" + medicalMedicines +
                 ", diagnosis='" + diagnosis + '\'' +

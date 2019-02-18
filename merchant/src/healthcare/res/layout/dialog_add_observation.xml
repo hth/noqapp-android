@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/white">
+
+    <RelativeLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_gradient_square">
+
+        <ImageView
+                android:id="@+id/actionbarBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/cross"
+                android:padding="10dp"/>
+
+
+        <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Add Observation"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_top"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+
+        <TextView
+                android:layout_width="@dimen/edit_field_width"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Observation"
+                android:textColor="@android:color/black"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_twelve"/>
+
+
+        <EditText
+                android:id="@+id/edt_observation"
+                android:layout_width="@dimen/edit_field_width"
+                android:layout_height="120dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/square_white_bg_drawable"
+                android:layout_gravity="center_horizontal"
+                android:gravity="start"
+                android:hint="Observation"
+                android:maxLines="2"
+                android:minLines="2"
+                android:maxLength="256"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_twelve"/>
+
+
+        <Button
+                android:id="@+id/btn_update"
+                android:layout_width="@dimen/edit_field_width"
+                android:layout_height="40dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_gradient_round"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/update_details"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_twelve"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
