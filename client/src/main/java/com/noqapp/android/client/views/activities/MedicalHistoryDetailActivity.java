@@ -12,10 +12,12 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
@@ -206,6 +209,143 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 }
             }
         }
+
+        LinearLayout ll_xray = findViewById(R.id.ll_xray);
+        LinearLayout ll_sono = findViewById(R.id.ll_sono);
+        LinearLayout ll_scan = findViewById(R.id.ll_scan);
+        LinearLayout ll_path = findViewById(R.id.ll_path);
+        LinearLayout ll_spec = findViewById(R.id.ll_spec);
+        LinearLayout ll_mri = findViewById(R.id.ll_mri);
+
+        TextView tv_attachment_xray = findViewById(R.id.tv_attachment_xray);
+        TextView tv_attachment_sono = findViewById(R.id.tv_attachment_sono);
+        TextView tv_attachment_scan = findViewById(R.id.tv_attachment_scan);
+        TextView tv_attachment_pathology = findViewById(R.id.tv_attachment_pathology);
+        TextView tv_attachment_spec = findViewById(R.id.tv_attachment_spec);
+        TextView tv_attachment_mri = findViewById(R.id.tv_attachment_mri);
+
+        TextView tv_observation_xray_label = findViewById(R.id.tv_observation_xray_label);
+        TextView tv_observation_sono_label = findViewById(R.id.tv_observation_sono_label);
+        TextView tv_observation_scan_label = findViewById(R.id.tv_observation_scan_label);
+        TextView tv_observation_pathology_label = findViewById(R.id.tv_observation_pathology_label);
+        TextView tv_observation_spec_label = findViewById(R.id.tv_observation_spec_label);
+        TextView tv_observation_mri_label = findViewById(R.id.tv_observation_mri_label);
+
+        if (null != jsonMedicalRecord.getMedicalPathologiesLists() && jsonMedicalRecord.getMedicalPathologiesLists().size() > 0
+                && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null &&
+                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0) {
+            tv_attachment_pathology.setText("Attachment Available: " + jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size());
+            tv_observation_pathology_label.setText(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation());
+            ll_path.setVisibility(View.VISIBLE);
+        } else {
+            tv_attachment_pathology.setText("No Attachment Available");
+            tv_observation_pathology_label.setText("N/A");
+            ll_path.setVisibility(View.GONE);
+        }
+        if (null != jsonMedicalRecord.getMedicalRadiologyLists() && jsonMedicalRecord.getMedicalRadiologyLists().size() > 0) {
+            for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
+                final JsonMedicalRadiologyList jsonMedicalRadiologyList = jsonMedicalRecord.getMedicalRadiologyLists().get(i);
+                LabCategoryEnum labCategory = jsonMedicalRadiologyList.getLabCategory();
+                String value, observation;
+                boolean showLayout;
+                if (null != jsonMedicalRadiologyList.getImages() && jsonMedicalRadiologyList.getImages().size() > 0) {
+                    value = "" + jsonMedicalRadiologyList.getImages().size();
+                    showLayout = true;
+                } else {
+                    value = "No Attachment";
+                    showLayout = false;
+                }
+                if (TextUtils.isEmpty(jsonMedicalRadiologyList.getObservation())) {
+                    observation = "N/A";
+                } else {
+                    observation = jsonMedicalRadiologyList.getObservation();
+                }
+                switch (labCategory) {
+                    case SPEC:
+                        tv_attachment_spec.setText(value);
+                        tv_attachment_spec.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+                            }
+                        });
+                        tv_observation_spec_label.setText(observation);
+                        ll_spec.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+                        break;
+                    case SONO:
+                        tv_attachment_sono.setText(value);
+                        tv_attachment_sono.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+                            }
+                        });
+                        tv_observation_sono_label.setText(observation);
+                        ll_sono.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+                        break;
+                    case XRAY:
+                        tv_attachment_xray.setText(value);
+                        tv_attachment_xray.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+                            }
+                        });
+                        tv_observation_xray_label.setText(observation);
+                        ll_xray.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+                        break;
+                    case PATH:
+                        tv_attachment_pathology.setText(value);
+                        tv_attachment_pathology.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+                            }
+                        });
+                        tv_observation_pathology_label.setText(observation);
+                        ll_path.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+                        break;
+                    case MRI:
+                        tv_attachment_mri.setText(value);
+                        tv_attachment_mri.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+                            }
+                        });
+                        tv_observation_mri_label.setText(observation);
+                        ll_mri.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+                        break;
+                    case SCAN:
+                        tv_attachment_scan.setText(value);
+                        tv_attachment_scan.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+                            }
+                        });
+                        tv_observation_scan_label.setText(observation);
+                        ll_scan.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+                        break;
+                    default:
+                }
+            }
+        } else {
+            ll_scan.setVisibility(View.GONE);
+            ll_spec.setVisibility(View.GONE);
+            ll_xray.setVisibility(View.GONE);
+            ll_path.setVisibility(View.GONE);
+            ll_mri.setVisibility(View.GONE);
+            ll_sono.setVisibility(View.GONE);
+        }
+    }
+
+    private void callSliderScreen(List<String> images, String recordReferenceId) {
+        Intent intent = new Intent(this, SliderActivity.class);
+        intent.putExtra("imageurls", (ArrayList<String>) images);
+        intent.putExtra("isDocument", true);
+        intent.putExtra("recordReferenceId", recordReferenceId);
+        startActivity(intent);
     }
 
     private LinearLayout getView(String label) {
@@ -225,7 +365,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
     }
 
     public String parseCheifComplanits(String str) {
-        if(TextUtils.isEmpty(str))
+        if (TextUtils.isEmpty(str))
             return "";
         String cheifComplanits = "";
         try {
