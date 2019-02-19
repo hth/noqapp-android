@@ -167,6 +167,12 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                 } else {
                     observation = jsonMedicalRadiologyList.getObservation();
                 }
+                recordHolder.ll_scan.setVisibility(View.GONE);
+                recordHolder.ll_spec.setVisibility(View.GONE);
+                recordHolder.ll_xray.setVisibility(View.GONE);
+                recordHolder.ll_pathology.setVisibility(View.GONE);
+                recordHolder.ll_mri.setVisibility(View.GONE);
+                recordHolder.ll_sono.setVisibility(View.GONE);
                 switch (labCategory) {
                     case SPEC:
                         recordHolder.tv_attachment_spec.setText(value);
