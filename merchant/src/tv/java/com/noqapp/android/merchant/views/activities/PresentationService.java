@@ -72,6 +72,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private AsyncTaskRunner asyncTaskRunner;
     private final String LOOP_TIME = "1";
     private final String SERVER_LOOP_TIME = "5";
+    private final int MILLI_SECONDS = 1000;
+    private final int SECONDS = 60;
+    private final int MINUTE = SECONDS * MILLI_SECONDS;
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -97,14 +100,14 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         }
     }
 
-    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, int position,boolean notificationUpdate) {
-        if(notificationUpdate){
+    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, int position, boolean notificationUpdate) {
+        if (notificationUpdate) {
             if (null != fetchLatestData) {
                 fetchLatestData.cancel(true);
                 fetchLatestData = null;
             }
         }
-        setTopicAndQueueTV(topicAndQueueTVListTemp,position);
+        setTopicAndQueueTV(topicAndQueueTVListTemp, position);
 
     }
 
@@ -150,7 +153,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public void clientInResponse(JsonQueueTVList jsonQueueTVList) {
         {
             if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
-
                 Log.v("TV Data", jsonQueueTVList.getQueues().toString());
                 List<TopicAndQueueTV> topicAndQueueTVListTemp = new ArrayList<>();
                 for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
@@ -161,7 +163,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     topicAndQueueTVListTemp.add(new TopicAndQueueTV().setJsonTopic(null).setJsonQueueTV(null));
                 }
 
-               // setTopicAndQueueTV(topicAndQueueTVListTemp, 0);
+                // setTopicAndQueueTV(topicAndQueueTVListTemp, 0);
                 topicAndQueueTVList = topicAndQueueTVListTemp;
             }
 
@@ -415,7 +417,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                 }
             }
-
         }
 
         @Override
@@ -436,14 +437,12 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
-
         private String resp;
 
         @Override
         protected String doInBackground(String... params) {
             try {
-                int time = Integer.parseInt(params[0]) * 1000;
-
+                int time = Integer.parseInt(params[0]) * MILLI_SECONDS;
                 Thread.sleep(time);
                 resp = "Slept for " + params[0] + " seconds";
             } catch (InterruptedException e) {
@@ -467,23 +466,18 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             }
 
             new AsyncTaskRunner().execute(LOOP_TIME);
-
         }
-
     }
 
-
     private class FetchLatestData extends AsyncTask<String, String, String> {
-
         private String resp;
 
         @Override
         protected String doInBackground(String... params) {
             try {
-                int time = Integer.parseInt(params[0])*60 * 1000;
-
-                Thread.sleep(time);
-                resp = "Slept for " + params[0] + " seconds";
+                int timeInMinutes = Integer.parseInt(params[0]) * MINUTE;
+                Thread.sleep(timeInMinutes);
+                resp = "Slept for " + timeInMinutes + " minutes";
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 resp = e.getMessage();
@@ -493,7 +487,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             }
             return resp;
         }
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -532,7 +525,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     }
 
     public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
-
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Date date = new Date();
@@ -571,5 +563,4 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             return false;
         }
     }
-
 }
