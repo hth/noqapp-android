@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     private CastDevice castDevice;
     private int currentPage = 0;
     private Timer timer;
-    private final long DELAY_MS = 3000;//delay in milliseconds before task is to be executed
-    private final long PERIOD_MS = 10 * 1000;
+    private final long DELAY_MS = 1000;//delay in milliseconds before task is to be executed
+    private final long PERIOD_MS = 5 * 1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.PP);
+
         }
     }
 
@@ -228,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                             @Override
                             public void onServiceCreated(CastRemoteDisplayLocalService service) {
                                 ((PresentationService) service).setTopicAndQueueTV(
-                                        topicAndQueueTVList.get(0), 0);
+                                        topicAndQueueTVList,0);
                             }
 
                             @Override
@@ -298,6 +299,10 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             ft.commit();
 
             if (!isNotification) {
+                if (CastRemoteDisplayLocalService.getInstance() != null) {
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList,currentPage,true);
+                }
                 final Handler handler = new Handler();
                 final Runnable Update = new Runnable() {
                     public void run() {
@@ -309,10 +314,10 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                         ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
                         ft.commitAllowingStateLoss();
                         //Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
-                        if (CastRemoteDisplayLocalService.getInstance() != null) {
-                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
-                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList.get(currentPage), currentPage);
-                        }
+//                        if (CastRemoteDisplayLocalService.getInstance() != null) {
+//                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
+//                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, currentPage);
+//                        }
                         currentPage++;
                     }
                 };

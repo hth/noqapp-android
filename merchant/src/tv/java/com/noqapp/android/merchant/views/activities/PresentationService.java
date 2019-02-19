@@ -1,12 +1,23 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ClientInQueueModel;
+import com.noqapp.android.merchant.model.VigyaapanModel;
+import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
+import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.UserUtils;
 
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -18,11 +29,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +44,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
-public class PresentationService extends CastRemoteDisplayLocalService {
+public class PresentationService extends CastRemoteDisplayLocalService implements ClientInQueuePresenter, VigyaapanPresenter {
     private DetailPresentation castPresentation;
     private TopicAndQueueTV topicAndQueueTV;
     private int pos = 0;
@@ -48,6 +66,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     private List<String> urlList = new ArrayList<>();
     private List<String> textList = new ArrayList<>();
     private JsonVigyaapanTV jsonVigyaapanTV;
+    private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
+    private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
+    private FetchLatestData fetchLatestData;
+    private AsyncTaskRunner asyncTaskRunner;
+    private final String LOOP_TIME = "1";
+    private final String SERVER_LOOP_TIME = "30";
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -73,12 +97,33 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
     }
 
-    public void setTopicAndQueueTV(TopicAndQueueTV ad, int position) {
-        pos = position;
-        topicAndQueueTV = ad;
-        if (castPresentation != null) {
-            castPresentation.updateDetail(ad);
+    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, int position,boolean notificationUpdate) {
+        if(notificationUpdate){
+            if (null != fetchLatestData) {
+                fetchLatestData.cancel(true);
+                fetchLatestData = null;
+            }
         }
+        setTopicAndQueueTV(topicAndQueueTVListTemp,position);
+
+    }
+
+    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, int position) {
+        pos = position;
+        this.topicAndQueueTVList = topicAndQueueTVListTemp;
+        topicAndQueueTV = topicAndQueueTVList.get(pos);
+        if (castPresentation != null) {
+            castPresentation.updateDetail(topicAndQueueTVList.get(pos));
+        }
+        if (null == fetchLatestData) {
+            fetchLatestData = new FetchLatestData();
+            fetchLatestData.execute(String.valueOf(SERVER_LOOP_TIME));
+        }
+        if (null == asyncTaskRunner) {
+            asyncTaskRunner = new AsyncTaskRunner();
+            asyncTaskRunner.execute(LOOP_TIME);
+        }
+
     }
 
     public void setVigyaapan(JsonVigyaapanTV jsonVigyaapanTV, int no_of_q) {
@@ -99,6 +144,51 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
 
+    }
+
+    @Override
+    public void clientInResponse(JsonQueueTVList jsonQueueTVList) {
+        {
+            if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
+
+                Log.v("TV Data", jsonQueueTVList.getQueues().toString());
+                List<TopicAndQueueTV> topicAndQueueTVListTemp = new ArrayList<>();
+                for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
+                    JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
+                    topicAndQueueTVListTemp.add(new TopicAndQueueTV().setJsonTopic(topicHashMap.get(jsonQueueTV.getCodeQR())).setJsonQueueTV(jsonQueueTV));
+                }
+                if (topicAndQueueTVListTemp.size() == 0) {
+                    topicAndQueueTVListTemp.add(new TopicAndQueueTV().setJsonTopic(null).setJsonQueueTV(null));
+                }
+
+               // setTopicAndQueueTV(topicAndQueueTVListTemp, 0);
+                topicAndQueueTVList = topicAndQueueTVListTemp;
+            }
+
+        }
+        fetchLatestData = null;
+    }
+
+    @Override
+    public void vigyaapanResponse(JsonVigyaapanTV jsonVigyaapanTV) {
+        this.jsonVigyaapanTV = jsonVigyaapanTV;
+        setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
+        fetchLatestData = null;
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        fetchLatestData = null;
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        fetchLatestData = null;
+    }
+
+    @Override
+    public void authenticationFailure() {
+        fetchLatestData = null;
     }
 
     public class DetailPresentation extends CastPresentation {
@@ -343,6 +433,143 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             data = data.substring(0, data.length() - 2);
         }
         return data;
+    }
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+        private String resp;
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                int time = Integer.parseInt(params[0]) * 1000;
+
+                Thread.sleep(time);
+                resp = "Slept for " + params[0] + " seconds";
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            } catch (Exception e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e("TV loop", "done");
+            if (pos + 1 < topicAndQueueTVList.size()) {
+                setTopicAndQueueTV(topicAndQueueTVList, pos + 1);
+            } else {
+                setTopicAndQueueTV(topicAndQueueTVList, 0);
+            }
+
+            new AsyncTaskRunner().execute(LOOP_TIME);
+
+        }
+
+    }
+
+
+    private class FetchLatestData extends AsyncTask<String, String, String> {
+
+        private String resp;
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                int time = Integer.parseInt(params[0]) * 1000;
+
+                Thread.sleep(time);
+                resp = "Slept for " + params[0] + " seconds";
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            } catch (Exception e) {
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e("datafetching", "done");
+            // execution of result of Long time consuming operation
+            QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
+            ClientInQueueModel clientInQueueModel = new ClientInQueueModel(PresentationService.this);
+            clientInQueueModel.toBeServedClients(
+                    UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+
+            VigyaapanModel vigyaapanModel = new VigyaapanModel();
+            vigyaapanModel.setVigyaapanPresenter(PresentationService.this);
+            vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.PP);
+        }
+
+        private QueueDetail getQueueDetails(ArrayList<JsonTopic> jsonTopics) {
+            QueueDetail queueDetail = new QueueDetail();
+            List<String> tvObjects = new ArrayList<>();
+            topicHashMap.clear();
+            for (int i = 0; i < jsonTopics.size(); i++) {
+                JsonTopic jsonTopic = jsonTopics.get(i);
+                String start = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getStartHour());
+                String end = Formatter.convertMilitaryTo24HourFormat(jsonTopic.getHour().getEndHour());
+                if (isTimeBetweenTwoTime(start, end)) {
+                    tvObjects.add(jsonTopics.get(i).getCodeQR());
+                    topicHashMap.put(jsonTopics.get(i).getCodeQR(), jsonTopics.get(i));
+                }
+            }
+            queueDetail.setCodeQRs(tvObjects);
+            return queueDetail;
+        }
+    }
+
+    public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
+
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date date = new Date();
+            String currentTime = formatter.format(date);
+            //Start Time
+            //all times are from java.util.Date
+            Date inTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(initialTime);
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.setTime(inTime);
+
+            //Current Time
+            Date checkTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(currentTime);
+            Calendar calendar3 = Calendar.getInstance();
+            calendar3.setTime(checkTime);
+
+            //End Time
+            Date finTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(finalTime);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(finTime);
+
+            if (finalTime.compareTo(initialTime) < 0) {
+                calendar2.add(Calendar.DATE, 1);
+                calendar3.add(Calendar.DATE, 1);
+            }
+
+            java.util.Date actualTime = calendar3.getTime();
+            if ((actualTime.after(calendar1.getTime()) ||
+                    actualTime.compareTo(calendar1.getTime()) == 0) &&
+                    actualTime.before(calendar2.getTime())) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
