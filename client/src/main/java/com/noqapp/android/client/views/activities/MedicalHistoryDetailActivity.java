@@ -260,6 +260,12 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 } else {
                     observation = jsonMedicalRadiologyList.getObservation();
                 }
+                ll_scan.setVisibility(View.GONE);
+                ll_spec.setVisibility(View.GONE);
+                ll_xray.setVisibility(View.GONE);
+                ll_path.setVisibility(View.GONE);
+                ll_mri.setVisibility(View.GONE);
+                ll_sono.setVisibility(View.GONE);
                 switch (labCategory) {
                     case SPEC:
                         tv_attachment_spec.setText(value);
