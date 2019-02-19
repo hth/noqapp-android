@@ -72,6 +72,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private AsyncTaskRunner asyncTaskRunner;
     private final String LOOP_TIME = "1";
     private final String SERVER_LOOP_TIME = "5";
+    private final int MILLI_SECONDS = 1000;
+    private final int SECONDS = 60;
+    private final int MINUTE = SECONDS * MILLI_SECONDS;
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -439,7 +442,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         @Override
         protected String doInBackground(String... params) {
             try {
-                int time = Integer.parseInt(params[0]) * DateUtils.SECOND_IN_MILLIS;
+                int time = Integer.parseInt(params[0]) * MILLI_SECONDS;
                 Thread.sleep(time);
                 resp = "Slept for " + params[0] + " seconds";
             } catch (InterruptedException e) {
@@ -472,7 +475,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         @Override
         protected String doInBackground(String... params) {
             try {
-                int timeInMinutes = Integer.parseInt(params[0]) * DateUtils.MINUTE_IN_MILLIS;
+                int timeInMinutes = Integer.parseInt(params[0]) * MINUTE;
                 Thread.sleep(timeInMinutes);
                 resp = "Slept for " + timeInMinutes + " minutes";
             } catch (InterruptedException e) {
