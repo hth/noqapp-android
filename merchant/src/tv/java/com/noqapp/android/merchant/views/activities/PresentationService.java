@@ -71,7 +71,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private FetchLatestData fetchLatestData;
     private AsyncTaskRunner asyncTaskRunner;
     private final String LOOP_TIME = "1";
-    private final String SERVER_LOOP_TIME = "30";
+    private final String SERVER_LOOP_TIME = "5";
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -480,7 +480,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         @Override
         protected String doInBackground(String... params) {
             try {
-                int time = Integer.parseInt(params[0]) * 1000;
+                int time = Integer.parseInt(params[0])*60 * 1000;
 
                 Thread.sleep(time);
                 resp = "Slept for " + params[0] + " seconds";
