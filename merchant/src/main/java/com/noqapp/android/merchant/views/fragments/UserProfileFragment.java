@@ -29,8 +29,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -40,19 +44,17 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     private EditText edt_birthday;
     private EditText edt_address;
-    private Button btn_update;
     private EditText edt_phoneNo;
     private EditText edt_name;
     private EditText edt_email;
-    private TextView tv_male;
-    private TextView tv_female;
-    private TextView tv_transgender;
+
     private String gender = "";
     private DatePickerDialog fromDatePickerDialog;
     private MerchantProfileModel merchantProfileModel;
     private ProgressDialog progressDialog;
     private String qUserId = "";
-
+    private SegmentedControl sc_gender;
+    private ArrayList<String> gender_list = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
@@ -60,24 +62,43 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         merchantProfileModel = new MerchantProfileModel();
         initProgress();
-        tv_male = view.findViewById(R.id.tv_male);
-        tv_female = view.findViewById(R.id.tv_female);
-        tv_transgender = view.findViewById(R.id.tv_transgender);
-
         edt_email = view.findViewById(R.id.edt_email);
         edt_name = view.findViewById(R.id.edt_name);
         edt_phoneNo = view.findViewById(R.id.edt_phone);
 
-        btn_update = view.findViewById(R.id.btn_update);
+        Button btn_update = view.findViewById(R.id.btn_update);
         edt_address = view.findViewById(R.id.edt_address);
         edt_birthday = view.findViewById(R.id.edt_birthday);
         edt_birthday.setInputType(InputType.TYPE_NULL);
-        btn_update = view.findViewById(R.id.btn_update);
+        gender_list.clear();
+        gender_list.add("Male");
+        gender_list.add("Female");
+        gender_list.add("Transgender");
+        sc_gender = view.findViewById(R.id.sc_gender);
+        sc_gender.addSegments(gender_list);
+        sc_gender.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+            @Override
+            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                if (isSelected) {
+                    int selection = segmentViewHolder.getAbsolutePosition();
+                    switch (selection) {
+                        case 0:
+                            gender = "M";
+                            break;
+                        case 1:
+                            gender = "F";
+                            break;
+                        case 2:
+                            gender = "T";
+                            break;
+                        default:
+                            gender = "M";
+                    }
+                }
+            }
+        });
         btn_update.setOnClickListener(this);
         edt_birthday.setOnClickListener(this);
-        tv_male.setOnClickListener(this);
-        tv_female.setOnClickListener(this);
-        tv_transgender.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
@@ -111,38 +132,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             case R.id.btn_update:
                 updateProfile();
                 break;
-            case R.id.tv_male:
-                gender = "M";
-                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setBackgroundResource(R.drawable.bg_nogradient_square);
-                tv_male.setText(getString(R.string.male));
-                tv_male.setTextColor(Color.WHITE);
-                tv_female.setTextColor(Color.BLACK);
-                tv_transgender.setTextColor(Color.BLACK);
-                break;
-            case R.id.tv_female:
-                gender = "F";
-                tv_female.setBackgroundResource(R.drawable.bg_nogradient_square);
-                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setTextColor(Color.BLACK);
-                tv_female.setTextColor(Color.WHITE);
-                tv_transgender.setTextColor(Color.BLACK);
-                tv_female.setText(getString(R.string.female));
-                break;
-            case R.id.tv_transgender:
-                gender = "T";
-                tv_transgender.setBackgroundResource(R.drawable.bg_nogradient_square);
-                tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_male.setTextColor(Color.BLACK);
-                tv_female.setTextColor(Color.BLACK);
-                tv_transgender.setTextColor(Color.WHITE);
-                tv_transgender.setText(getString(R.string.transgender));
-                break;
-
-
         }
     }
 
@@ -222,12 +211,13 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         edt_phoneNo.setEnabled(false);
         edt_email.setEnabled(false);
         edt_address.setText(jsonProfile.getAddress());
+        gender = jsonProfile.getGender().name();
         if (jsonProfile.getGender().name().equals("M")) {
-            onClick(tv_male);
-        } else if (jsonProfile.getGender().name().equals("T")) {
-            onClick(tv_transgender);
+            sc_gender.setSelectedSegment(0);
+        } else if (jsonProfile.getGender().name().equals("F")) {
+            sc_gender.setSelectedSegment(1);
         } else {
-            onClick(tv_female);
+            sc_gender.setSelectedSegment(2);
         }
         try {
             edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfile.getBirthday())));

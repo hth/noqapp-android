@@ -10,4 +10,10 @@
 
     <color name="switch_tack_color">#db96a2</color>
 
+
+    <color name="segment_bg_color">#ffffff</color>
+    <color name="segment_bg_color_select">#CD334E</color>
+    <color name="segment_text_color">@android:color/black</color>
+    <color name="segment_text_color_select">@android:color/white</color>
+
 </resources>
