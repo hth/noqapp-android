@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.response.api.store;
 
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -117,7 +118,7 @@ public interface PurchaseOrderService {
     );
 
     @POST("api/m/s/purchaseOrder/findCustomer.json")
-    Call<JsonPurchaseOrderList> findCustomer(
+    Call<JsonProfile> findCustomer(
             @Header("X-R-DID")
             String did,
 

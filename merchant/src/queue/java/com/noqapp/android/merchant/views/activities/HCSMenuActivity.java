@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
-
 import com.noqapp.android.merchant.model.BaseMasterLabModel;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;

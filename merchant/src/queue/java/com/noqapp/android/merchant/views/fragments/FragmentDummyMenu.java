@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
-import com.noqapp.android.merchant.views.adapters.MenuAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuOrderAdapter;
 
 import android.os.Bundle;
