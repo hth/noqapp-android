@@ -53,14 +53,34 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                    <TextView
+
+                    <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
                             android:gravity="center_vertical"
-                            android:text="@string/preventjoining"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="@string/preventjoining"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/togglePreventJoinLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_twelve"/>
+
+                    </LinearLayout>
+
 
                     <android.support.v7.widget.SwitchCompat
                             android:id="@+id/togglePreventJoin"
@@ -69,8 +89,8 @@
                             card_view:thumbTint="@color/colorPrimaryDark"
                             card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:scaleX="1.5"
-                            android:scaleY="1.5"
+                            android:scaleX="1.0"
+                            android:scaleY="1.0"
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -94,14 +114,33 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                    <TextView
+
+                    <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
                             android:gravity="center_vertical"
-                            android:text="@string/todayclosed"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="@string/todayclosed"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/toggleTodayClosedLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_twelve"/>
+
+                    </LinearLayout>
 
                     <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggleTodayClosed"
@@ -110,8 +149,8 @@
                             card_view:thumbTint="@color/colorPrimaryDark"
                             card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:scaleX="1.5"
-                            android:scaleY="1.5"
+                            android:scaleX="1.0"
+                            android:scaleY="1.0"
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -535,14 +574,33 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                    <TextView
-                            android:id="@+id/tv_close_day_of_week"
+                    <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
                             android:gravity="center_vertical"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/tv_close_day_of_week"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="@string/todayclosed"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/toggleDayClosedLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_twelve"/>
+
+                    </LinearLayout>
 
                     <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggleDayClosed"
@@ -551,8 +609,8 @@
                             card_view:thumbTint="@color/colorPrimaryDark"
                             card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:scaleX="1.5"
-                            android:scaleY="1.5"
+                            android:scaleX="1.0"
+                            android:scaleY="1.0"
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -575,15 +633,34 @@
                         android:paddingLeft="@dimen/screen_padding"
                         android:paddingRight="@dimen/screen_padding">
 
-                    <TextView
-                            android:id="@+id/tv_store_offline"
+
+                    <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.8"
-                            android:text="@string/store_offline"
                             android:gravity="center_vertical"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/tv_store_offline"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text="@string/store_offline"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/toggleStoreOfflineLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_twelve"/>
+
+                    </LinearLayout>
 
                     <android.support.v7.widget.SwitchCompat
                             android:id="@+id/toggleStoreOffline"
@@ -592,8 +669,8 @@
                             card_view:thumbTint="@color/colorPrimaryDark"
                             card_view:trackTint="@color/switch_tack_color"
                             android:layout_gravity="center_vertical"
-                            android:scaleX="1.5"
-                            android:scaleY="1.5"
+                            android:scaleX="1.0"
+                            android:scaleY="1.0"
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>

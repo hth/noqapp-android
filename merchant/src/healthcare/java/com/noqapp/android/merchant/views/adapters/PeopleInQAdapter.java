@@ -213,7 +213,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             }
 
         } else {
-            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
+            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q||jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
                     if (null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()) {
                         // temporary crash fix

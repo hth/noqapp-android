@@ -283,7 +283,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         });
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q && queueStatusEnum == QueueStatusEnum.N) {
+                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q|| jsonQueuedPerson.getQueueUserState() ==QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
                 } else {

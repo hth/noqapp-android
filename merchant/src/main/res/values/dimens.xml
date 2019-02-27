@@ -5,7 +5,7 @@
     <dimen name="left_right_icon">36dp</dimen>
     <dimen name="logout_icon_size">24dp</dimen>
     <dimen name="play_btn_size">50dp</dimen>
-    <dimen name="cell_size">55dp</dimen>
+    <dimen name="cell_size">60dp</dimen>
     <dimen name="screen_padding">20dp</dimen>
     <dimen name="tab_screen_padding">350dp</dimen>
     <dimen name="edit_icon_size">36dp</dimen>
