@@ -498,4 +498,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             return o1.getRemaining() - o2.getRemaining();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
+    }
 }

@@ -1,7 +1,9 @@
 package com.noqapp.android.merchant.model.response.api.store;
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
@@ -112,6 +114,42 @@ public interface PurchaseOrderService {
 
             @Body
             OrderServed OrderServed
+    );
+
+    @POST("api/m/s/purchaseOrder/findCustomer.json")
+    Call<JsonPurchaseOrderList> findCustomer(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonBusinessCustomerLookup jsonBusinessCustomerLookup
+    );
+
+    @POST("api/m/s/purchaseOrder/purchase.json")
+    Call<JsonPurchaseOrderList> purchase(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonPurchaseOrder jsonPurchaseOrder
     );
 
     /**
