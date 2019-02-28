@@ -7,7 +7,6 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistori
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -21,9 +20,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public class OrderHistoryDetailActivity extends BaseActivity {
 

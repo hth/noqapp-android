@@ -2,24 +2,31 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuOrderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummyMenu;
-import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
+import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
+import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
+import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
 import com.noqapp.android.merchant.views.model.StoreProductModel;
 
 import android.app.ProgressDialog;
@@ -33,6 +40,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +50,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,8 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StoreMenuActivity extends AppCompatActivity implements StoreProductPresenter, MenuHeaderAdapter.OnItemClickListener,
-        MenuOrderAdapter.CartOrderUpdate, DispenseTokenPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
-
+        MenuOrderAdapter.CartOrderUpdate, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
 
     private Button tv_place_order;
     private RecyclerView rcv_header;
@@ -61,8 +69,12 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     private HashMap<String, ChildData> orders = new HashMap<>();
     private ProgressDialog progressDialog;
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
-    private ManageQueueModel manageQueueModel;
+    private PurchaseOrderModel purchaseOrderModel;
     private EditText edt_mobile;
+    private Spinner sp_patient_list;
+    private TextView tv_select_patient;
+    private Button btn_create_order, btn_create_token;
+    private String codeQR = "";
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
@@ -96,7 +108,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         rcv_header = findViewById(R.id.rcv_header);
         tv_place_order = findViewById(R.id.tv_place_order);
         //  jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
-        final String codeQR = getIntent().getStringExtra("codeQR");
+        codeQR = getIntent().getStringExtra("codeQR");
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
@@ -106,57 +118,13 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-        manageQueueModel = new ManageQueueModel();
-        manageQueueModel.setDispenseTokenPresenter(this);
+        purchaseOrderModel = new PurchaseOrderModel();
+        purchaseOrderModel.setFindCustomerPresenter(this);
+        purchaseOrderModel.setPurchaseOrderPresenter(this);
 
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (UserUtils.isLogin()) {
-//                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-//                        //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
-//                        HashMap<String, ChildData> getOrder = getOrders();
-//
-//                        List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-//                        int price = 0;
-//                        for (ChildData value : getOrder.values()) {
-//                            ll.add(new JsonPurchaseOrderProduct()
-//                                    .setProductId(value.getJsonStoreProduct().getProductId())
-//                                    .setProductPrice(value.getFinalDiscountedPrice() * 100)
-//                                    .setProductQuantity(value.getChildInput())
-//                                    .setProductName(value.getJsonStoreProduct().getProductName()));
-//                            price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
-//                        }
-//                        if (price / 100 >= jsonQueue.getMinimumDeliveryOrder()) {
-//                            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-//                                    .setBizStoreId(jsonQueue.getBizStoreId())
-//                                    .setBusinessType(jsonQueue.getBusinessType())
-//                                    .setOrderPrice(String.valueOf(price));
-//                            jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-//
-//                            Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
-//                            Bundle bundle = new Bundle();
-//                            bundle.putSerializable("data", jsonPurchaseOrder);
-//                            bundle.putString("storeName", jsonQueue.getDisplayName());
-//                            bundle.putString("storeAddress", jsonQueue.getStoreAddress());
-//                            bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
-//                            bundle.putString("topic", jsonQueue.getTopic());
-//                            bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
-//                            bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-//                            intent.putExtras(bundle);
-//                            startActivity(intent);
-//                        } else {
-//                            Toast.makeText(StoreMenuActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder(), Toast.LENGTH_LONG).show();
-//                        }
-//                    } else {
-//                        ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
-//                    }
-//                } else {
-//                    // Navigate to login screen
-//                    Intent loginIntent = new Intent(StoreMenuActivity.this, LoginActivity.class);
-//                    startActivity(loginIntent);
-//                }
-
                 showCreateTokenDialogWithMobile(StoreMenuActivity.this, codeQR);
             }
         });
@@ -271,6 +239,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         if (null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+            btn_create_token.setClickable(true);
             Toast.makeText(this, eej.getReason(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(this, LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
@@ -298,19 +267,19 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        TextView tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_toolbar_title = customDialogView.findViewById(R.id.tv_toolbar_title);
+        View view = inflater.inflate(R.layout.dialog_create_order_with_mobile, null, false);
+        ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
+        TextView tv_create_token = view.findViewById(R.id.tvtitle);
+        TextView tv_toolbar_title = view.findViewById(R.id.tv_toolbar_title);
+        sp_patient_list = view.findViewById(R.id.sp_patient_list);
+        tv_select_patient = view.findViewById(R.id.tv_select_patient);
         tv_toolbar_title.setText("Create order");
         tv_create_token.setText("Click button to create order");
-        ImageView iv_banner = customDialogView.findViewById(R.id.iv_banner);
-        TextView tvcount = customDialogView.findViewById(R.id.tvcount);
-        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
-        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
-        final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
-        final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
-        builder.setView(customDialogView);
+        edt_mobile = view.findViewById(R.id.edt_mobile);
+        final EditText edt_id = view.findViewById(R.id.edt_id);
+        final RadioGroup rg_user_id = view.findViewById(R.id.rg_user_id);
+        final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
+        builder.setView(view);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -326,8 +295,9 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                 }
             }
         });
-        final Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setText("Create order");
+        btn_create_token = view.findViewById(R.id.btn_create_token);
+        btn_create_order = view.findViewById(R.id.btn_create_order);
+        btn_create_token.setText("Search patient");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -350,29 +320,26 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                     }
                 }
                 if (isValid) {
-                    if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-
-
-                        String phone = "";
-                        String cid = "";
-                        if (rb_mobile.isChecked()) {
-                            edt_id.setText("");
-                            phone = "91" + edt_mobile.getText().toString();
-                        } else {
-                            cid = edt_id.getText().toString();
-                            edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
-                        }
-                        manageQueueModel.dispenseTokenWithClientInfo(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                        btn_create_token.setClickable(false);
-                        mAlertDialog.dismiss();
+                    String phone = "";
+                    String cid = "";
+                    if (rb_mobile.isChecked()) {
+                        edt_id.setText("");
+                        phone = "91" + edt_mobile.getText().toString();
                     } else {
-                        mAlertDialog.dismiss();
+                        cid = edt_id.getText().toString();
+                        edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                     }
+                    progressDialog.show();
+
+
+                    purchaseOrderModel.findCustomer(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                    btn_create_token.setClickable(false);
+                    // mAlertDialog.dismiss();
+
                 }
             }
         });
@@ -388,11 +355,75 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
 
     @Override
     public void passPhoneNo(String phoneNo, String countryShortName) {
+        // coming from login or registration activity
         dismissProgress();
     }
 
+
     @Override
-    public void dispenseTokenResponse(JsonToken token) {
+    public void findCustomerResponse(final JsonProfile jsonProfile) {
+        dismissProgress();
+        if (null != jsonProfile && jsonProfile.getDependents().size() > 0) {
+            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfile.getDependents());
+            sp_patient_list.setAdapter(adapter);
+            sp_patient_list.setVisibility(View.VISIBLE);
+            edt_mobile.setEnabled(false);
+            tv_select_patient.setVisibility(View.VISIBLE);
+            btn_create_order.setVisibility(View.VISIBLE);
+            btn_create_token.setVisibility(View.GONE);
+            btn_create_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.setMessage("Placing order....");
+                        progressDialog.show();
+                        //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
+                        HashMap<String, ChildData> getOrder = getOrders();
+                        List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
+                        int price = 0;
+                        for (ChildData value : getOrder.values()) {
+                            ll.add(new JsonPurchaseOrderProduct()
+                                    .setProductId(value.getJsonStoreProduct().getProductId())
+                                    .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                    .setProductQuantity(value.getChildInput())
+                                    .setProductName(value.getJsonStoreProduct().getProductName()));
+                            price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
+                        }
+                        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                                .setCodeQR(codeQR)
+                                .setQueueUserId(jsonProfile.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
+                                .setOrderPrice(String.valueOf(price));
+                        jsonPurchaseOrder.setPurchaseOrderProducts(ll);
+
+
+                        jsonPurchaseOrder.setDeliveryAddress("");
+                        jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
+                        jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
+                        jsonPurchaseOrder.setCustomerPhone("");
+                        jsonPurchaseOrder.setAdditionalNote("");
+                        purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
+                    }
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+        dismissProgress();
+        if (null != jsonPurchaseOrderList) {
+            Log.v("order data:", jsonPurchaseOrderList.toString());
+            finish();
+        }
+    }
+
+    @Override
+    public void purchaseOrderError() {
         dismissProgress();
     }
 }

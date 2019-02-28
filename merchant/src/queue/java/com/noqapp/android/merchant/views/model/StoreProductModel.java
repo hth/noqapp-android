@@ -5,10 +5,10 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.model.response.api.store.StoreProductService;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
-import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
+import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;

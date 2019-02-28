@@ -5,7 +5,6 @@ import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
@@ -18,9 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class QueueHistoryDetailActivity extends BaseActivity {
 
