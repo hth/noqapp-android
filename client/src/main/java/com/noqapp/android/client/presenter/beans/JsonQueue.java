@@ -5,7 +5,7 @@ import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -170,7 +170,7 @@ public class JsonQueue implements Serializable {
     private List<PaymentModeEnum> paymentModes = new LinkedList<>();
 
     @JsonProperty("dm")
-    private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
+    private List<DeliveryModeEnum> deliveryModes = new LinkedList<>();
 
     @JsonProperty("am")
     private List<AmenityEnum> amenities = new LinkedList<>();
@@ -530,12 +530,12 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public List<DeliveryTypeEnum> getDeliveryTypes() {
-        return deliveryTypes;
+    public List<DeliveryModeEnum> getDeliveryModes() {
+        return deliveryModes;
     }
 
-    public JsonQueue setDeliveryTypes(List<DeliveryTypeEnum> deliveryTypes) {
-        this.deliveryTypes = deliveryTypes;
+    public JsonQueue setDeliveryModes(List<DeliveryModeEnum> deliveryModes) {
+        this.deliveryModes = deliveryModes;
         return this;
     }
 
@@ -647,7 +647,7 @@ public class JsonQueue implements Serializable {
         sb.append(", storeServiceImages=").append(storeServiceImages);
         sb.append(", storeInteriorImages=").append(storeInteriorImages);
         sb.append(", paymentModes=").append(paymentModes);
-        sb.append(", deliveryTypes=").append(deliveryTypes);
+        sb.append(", deliveryModes=").append(deliveryModes);
         sb.append(", amenities=").append(amenities);
         sb.append(", facilities=").append(facilities);
         sb.append(", error=").append(error);

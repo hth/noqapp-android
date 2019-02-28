@@ -574,7 +574,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
 //
 //
 //                        jsonPurchaseOrder.setDeliveryAddress("");
-//                        jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
+//                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
 //                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
 //                        jsonPurchaseOrder.setCustomerPhone("");
 //                        jsonPurchaseOrder.setAdditionalNote("");
