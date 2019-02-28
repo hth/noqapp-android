@@ -9,8 +9,8 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
-import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
@@ -397,8 +397,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
 
 
                         jsonPurchaseOrder.setDeliveryAddress("");
-                        jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
-                        jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
+                        jsonPurchaseOrder.setDeliveryMode(DeliveryTypeEnum.HD);
+                        jsonPurchaseOrder.setPaymentMode(PaymentTypeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone("");
                         jsonPurchaseOrder.setAdditionalNote("");
                         purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
@@ -410,7 +410,6 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                 }
             });
         }
-
     }
 
     @Override
