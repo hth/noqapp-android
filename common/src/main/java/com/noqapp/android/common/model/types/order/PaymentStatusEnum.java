@@ -1,20 +1,18 @@
 package com.noqapp.android.common.model.types.order;
 
 /**
- * Created by hitender on 3/27/18.
+ * hitender
+ * 2019-02-28 14:53
  */
-
-public enum PaymentTypeEnum {
-    CA("CA", "Cash"),
-    CC("CC", "Credit Card"),
-    DC("DC", "Debit Card"),
-    CQ("CQ", "Cheque"),
-    AP("AP", "Apple Pay");
+public enum PaymentStatusEnum {
+    UP("UP", "Un-Paid"),
+    PA("PA", "Paid"),
+    PF("PF", "Payment Fail");
 
     private final String description;
     private final String name;
 
-    PaymentTypeEnum(String name, String description) {
+    PaymentStatusEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

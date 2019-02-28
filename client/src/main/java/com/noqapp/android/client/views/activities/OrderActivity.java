@@ -20,8 +20,8 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
-import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -155,8 +155,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         progressDialog.show();
                         progressDialog.setMessage("Order placing in progress..");
                         jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
-                        jsonPurchaseOrder.setDeliveryType(DeliveryTypeEnum.HD);
-                        jsonPurchaseOrder.setPaymentType(PaymentTypeEnum.CA);
+                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
+                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
                         jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
 

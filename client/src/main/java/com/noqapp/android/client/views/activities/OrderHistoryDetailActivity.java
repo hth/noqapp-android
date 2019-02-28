@@ -124,7 +124,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         }
         tv_store_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(jsonPurchaseOrder.getStoreAddress());
-        tv_payment_mode.setText("Paid via " + jsonPurchaseOrder.getPaymentType().getDescription());
+        tv_payment_mode.setText("Paid via " + jsonPurchaseOrder.getPaymentMode().getDescription());
         tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));
