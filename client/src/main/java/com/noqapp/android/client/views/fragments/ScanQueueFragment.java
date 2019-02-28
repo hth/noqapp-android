@@ -32,6 +32,7 @@ import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
+import com.noqapp.android.client.views.activities.ImageViewerActivity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -52,6 +53,8 @@ import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import com.squareup.picasso.Picasso;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,6 +70,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -101,6 +105,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private LinearLayout rl_current_activity;
     private TextView tv_no_thanks;
     private TextView tv_update;
+    private ImageView iv_event;
 
     private boolean fromList = false;
     private ArrayList<BizStoreElastic> nearMeData;
@@ -184,6 +189,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
+        iv_event = view.findViewById(R.id.iv_event);
+        Picasso.with(getActivity())
+                .load("https://noqapp.com/imgs/appmages/garbhasanskar-ssd-march-2019.png")
+                .into(iv_event);
+        iv_event.setOnClickListener(this);
         rl_scan.setOnClickListener(this);
         tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
@@ -559,12 +569,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
             currentActivityAdapter.notifyDataSetChanged();
 
-            if(null != currentQueueList && currentQueueList.size()>0)
-            for (JsonTokenAndQueue jtq :
-                    currentQueueList) {
-                NoQueueMessagingService.subscribeTopics(jtq.getTopic());
+            if (null != currentQueueList && currentQueueList.size() > 0)
+                for (JsonTokenAndQueue jtq :
+                        currentQueueList) {
+                    NoQueueMessagingService.subscribeTopics(jtq.getTopic());
 
-            }
+                }
         }
     }
 
@@ -661,6 +671,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 break;
             case R.id.tv_feed_view_all:
                 allFeedsClick();
+                break;
+            case R.id.iv_event:
+                Intent in = new Intent(getActivity(),ImageViewerActivity.class);
+                startActivity(in);
                 break;
 
         }
