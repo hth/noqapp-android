@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                     android:id="@+id/cardview"
                                     android:layout_width="@dimen/documnet_width"
@@ -39,4 +39,4 @@
                 android:layout_margin="@dimen/image_item_margin"
                 android:background="@drawable/enlarge"/>
     </FrameLayout>
-</android.support.v7.widget.CardView>
+</androidx.appcompat.widget.CardView>

@@ -14,7 +14,7 @@
             android:orientation="vertical">
 
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
                 android:id="@+id/cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
         <LinearLayout
@@ -270,7 +270,7 @@
                             android:textSize="16sp"
                             android:padding="10dp"/>
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/acsp_mri"
                             android:layout_width="180dp"
                             android:background="@drawable/sp_background"
@@ -312,7 +312,7 @@
                             android:textSize="16sp"
                             android:padding="10dp"/>
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/acsp_scan"
                             android:layout_width="180dp"
                             android:background="@drawable/sp_background"
@@ -353,7 +353,7 @@
                             android:textSize="16sp"
                             android:padding="10dp"/>
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/acsp_sono"
                             android:layout_width="180dp"
                             android:background="@drawable/sp_background"
@@ -394,7 +394,7 @@
                             android:textSize="16sp"
                             android:padding="10dp"/>
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/acsp_xray"
                             android:layout_width="180dp"
                             android:background="@drawable/sp_background"
@@ -435,7 +435,7 @@
                             android:textSize="16sp"
                             android:padding="10dp"/>
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/acsp_special"
                             android:layout_width="180dp"
                             android:background="@drawable/sp_background"
@@ -477,7 +477,7 @@
                             android:textSize="16sp"
                             android:padding="10dp"/>
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/acsp_pathology"
                             android:layout_width="180dp"
                             android:background="@drawable/sp_background"
@@ -534,7 +534,7 @@
                     android:textSize="18sp"
                     android:padding="10dp"/>
 
-            <android.support.v7.widget.AppCompatSpinner
+            <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/acsp_pharmacy"
                     android:layout_width="180dp"
                     android:background="@drawable/sp_background"

@@ -32,10 +32,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -160,7 +160,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         snackbar = Snackbar.make(listview, "", Snackbar.LENGTH_INDEFINITE);
         snackbar.getView().setBackgroundResource(R.drawable.red_gredient);
         final View v = snackbar.getView();
-        final TextView tv = v.findViewById(android.support.design.R.id.snackbar_text);
+        final TextView tv = v.findViewById(R.id.snackbar_text);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.0f);
         tv.setTextColor(Color.BLACK);
 

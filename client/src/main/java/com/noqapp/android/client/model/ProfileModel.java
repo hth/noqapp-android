@@ -16,7 +16,7 @@ import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
