@@ -1,0 +1,67 @@
+package com.noqapp.android.common.beans.payment.cashfree;
+
+import com.noqapp.android.common.beans.AbstractDomain;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.io.Serializable;
+
+/**
+ * hitender
+ * 2019-02-28 14:09
+ */
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JsonPurchaseToken extends AbstractDomain implements Serializable {
+
+    @JsonProperty("status")
+    private String status;
+
+    @JsonProperty("message")
+    private String message;
+
+    @JsonProperty("cftoken")
+    private String cftoken;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public JsonPurchaseToken setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public JsonPurchaseToken setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public String getCftoken() {
+        return cftoken;
+    }
+
+    public JsonPurchaseToken setCftoken(String cftoken) {
+        this.cftoken = cftoken;
+        return this;
+    }
+}

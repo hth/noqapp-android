@@ -23,7 +23,7 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
-import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -201,7 +201,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_known_for.setText(jsonQueue.getFamousFor());
         if (TextUtils.isEmpty(jsonQueue.getFamousFor()))
             tv_header_famous.setVisibility(View.GONE);
-        List<PaymentTypeEnum> temp = jsonQueue.getPaymentTypes();
+        List<PaymentModeEnum> temp = jsonQueue.getPaymentModes();
         ArrayList<String> payment_data = new ArrayList<>();
         for (int i = 0; i < temp.size(); i++) {
             payment_data.add(temp.get(i).getDescription());

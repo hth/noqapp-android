@@ -6,7 +6,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
-import com.noqapp.android.common.model.types.order.PaymentTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -167,7 +167,7 @@ public class JsonQueue implements Serializable {
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @JsonProperty("pm")
-    private List<PaymentTypeEnum> paymentTypes = new LinkedList<>();
+    private List<PaymentModeEnum> paymentModes = new LinkedList<>();
 
     @JsonProperty("dm")
     private List<DeliveryTypeEnum> deliveryTypes = new LinkedList<>();
@@ -521,12 +521,12 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public List<PaymentTypeEnum> getPaymentTypes() {
-        return paymentTypes;
+    public List<PaymentModeEnum> getPaymentModes() {
+        return paymentModes;
     }
 
-    public JsonQueue setPaymentTypes(List<PaymentTypeEnum> paymentTypes) {
-        this.paymentTypes = paymentTypes;
+    public JsonQueue setPaymentModes(List<PaymentModeEnum> paymentModes) {
+        this.paymentModes = paymentModes;
         return this;
     }
 
@@ -646,7 +646,7 @@ public class JsonQueue implements Serializable {
         sb.append(", deliveryRange=").append(deliveryRange);
         sb.append(", storeServiceImages=").append(storeServiceImages);
         sb.append(", storeInteriorImages=").append(storeInteriorImages);
-        sb.append(", paymentTypes=").append(paymentTypes);
+        sb.append(", paymentModes=").append(paymentModes);
         sb.append(", deliveryTypes=").append(deliveryTypes);
         sb.append(", amenities=").append(amenities);
         sb.append(", facilities=").append(facilities);
