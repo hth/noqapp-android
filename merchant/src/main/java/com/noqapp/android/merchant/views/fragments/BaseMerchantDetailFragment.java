@@ -319,6 +319,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
                     btn_create_token.setClickable(true);
                     btn_create_token.setText(context.getString(R.string.queue_closed));
+                    if (null != getActivity())
+                        ShowAlertInformation.showThemeDialog(getActivity(), "Queue is closed", "Cannot generate token.");
                     break;
                 case D:
                 case N:
