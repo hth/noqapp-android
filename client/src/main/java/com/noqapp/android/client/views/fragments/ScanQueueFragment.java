@@ -8,6 +8,7 @@ import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.NearMePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
@@ -557,6 +558,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             rv_current_activity.setAdapter(currentActivityAdapter);
             tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
             currentActivityAdapter.notifyDataSetChanged();
+
+            if(null != currentQueueList && currentQueueList.size()>0)
+            for (JsonTokenAndQueue jtq :
+                    currentQueueList) {
+                NoQueueMessagingService.subscribeTopics(jtq.getTopic());
+
+            }
         }
     }
 
