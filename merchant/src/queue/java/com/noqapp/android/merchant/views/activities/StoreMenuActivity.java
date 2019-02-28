@@ -239,6 +239,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
         if (null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+            btn_create_token.setClickable(true);
             Toast.makeText(this, eej.getReason(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(this, LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
