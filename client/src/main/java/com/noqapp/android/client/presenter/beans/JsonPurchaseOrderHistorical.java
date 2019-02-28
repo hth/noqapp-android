@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -58,6 +59,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     @JsonProperty("pm")
     private PaymentModeEnum paymentMode;
+
+    @JsonProperty("py")
+    private PaymentStatusEnum paymentStatus;
 
     @JsonProperty("ps")
     private PurchaseOrderStateEnum presentOrderState;
@@ -115,7 +119,6 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
-
 
     public String getQueueUserId() {
         return queueUserId;
@@ -177,6 +180,15 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
 
     public JsonPurchaseOrderHistorical setPaymentMode(PaymentModeEnum paymentMode) {
         this.paymentMode = paymentMode;
+        return this;
+    }
+
+    public PaymentStatusEnum getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public JsonPurchaseOrderHistorical setPaymentStatus(PaymentStatusEnum paymentStatus) {
+        this.paymentStatus = paymentStatus;
         return this;
     }
 
