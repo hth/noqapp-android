@@ -4,17 +4,17 @@ package com.noqapp.android.common.model.types.order;
  * Created by hitender on 3/27/18.
  */
 
-public enum PaymentTypeEnum {
+public enum PaymentModeEnum {
     CA("CA", "Cash"),
     CC("CC", "Credit Card"),
     DC("DC", "Debit Card"),
-    CQ("CQ", "Cheque"),
-    AP("AP", "Apple Pay");
+    PT("PT", "Paytm"),
+    UP("UP", "UPI");
 
     private final String description;
     private final String name;
 
-    PaymentTypeEnum(String name, String description) {
+    PaymentModeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
