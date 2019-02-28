@@ -397,8 +397,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
 
 
                         jsonPurchaseOrder.setDeliveryAddress("");
-                        jsonPurchaseOrder.setDeliveryMode(DeliveryTypeEnum.HD);
-                        jsonPurchaseOrder.setPaymentMode(PaymentTypeEnum.CA);
+                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
+                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone("");
                         jsonPurchaseOrder.setAdditionalNote("");
                         purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
