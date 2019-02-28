@@ -4,7 +4,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.views.adapters.FeedAdapter;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

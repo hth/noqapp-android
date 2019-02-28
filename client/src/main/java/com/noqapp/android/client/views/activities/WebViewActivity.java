@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.Constants;
 
 import android.app.ProgressDialog;
@@ -9,7 +8,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,8 +17,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class WebViewActivity extends BaseActivity {
     private WebView webView;

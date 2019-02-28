@@ -21,7 +21,6 @@ import com.noqapp.android.common.utils.ImagePathReader;
 
 import com.squareup.picasso.Picasso;
 
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;

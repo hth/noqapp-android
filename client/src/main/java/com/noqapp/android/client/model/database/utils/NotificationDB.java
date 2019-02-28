@@ -3,7 +3,6 @@ package com.noqapp.android.client.model.database.utils;
 import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
 
 import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.NotificationBeans;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -14,13 +13,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by chandra on 8/7/17.
