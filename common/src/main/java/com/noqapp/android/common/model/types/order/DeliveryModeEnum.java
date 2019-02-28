@@ -4,14 +4,14 @@ package com.noqapp.android.common.model.types.order;
  * Created by hitender on 3/27/18.
  */
 
-public enum DeliveryTypeEnum {
+public enum DeliveryModeEnum {
     HD("HD", "Home Delivery"),
     TO("TO", "Takeaway");
 
     private final String description;
     private final String name;
 
-    DeliveryTypeEnum(String name, String description) {
+    DeliveryModeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

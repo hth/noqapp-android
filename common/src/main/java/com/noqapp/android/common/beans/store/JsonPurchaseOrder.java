@@ -4,7 +4,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonPurchaseToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -59,7 +59,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     private String orderPrice;
 
     @JsonProperty ("dm")
-    private DeliveryTypeEnum deliveryType;
+    private DeliveryModeEnum deliveryMode;
 
     @JsonProperty ("pm")
     private PaymentModeEnum paymentMode;
@@ -179,12 +179,12 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public DeliveryTypeEnum getDeliveryType() {
-        return deliveryType;
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
     }
 
-    public JsonPurchaseOrder setDeliveryType(DeliveryTypeEnum deliveryType) {
-        this.deliveryType = deliveryType;
+    public JsonPurchaseOrder setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
         return this;
     }
 
@@ -317,7 +317,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         sb.append(", deliveryAddress='").append(deliveryAddress).append('\'');
         sb.append(", storeDiscount=").append(storeDiscount);
         sb.append(", orderPrice='").append(orderPrice).append('\'');
-        sb.append(", deliveryType=").append(deliveryType);
+        sb.append(", deliveryMode=").append(deliveryMode);
         sb.append(", paymentMode=").append(paymentMode);
         sb.append(", businessType=").append(businessType);
         sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);

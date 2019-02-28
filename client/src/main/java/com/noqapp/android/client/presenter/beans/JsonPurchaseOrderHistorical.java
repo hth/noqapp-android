@@ -3,7 +3,7 @@ package com.noqapp.android.client.presenter.beans;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
@@ -54,7 +54,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     private String orderPrice;
 
     @JsonProperty("dm")
-    private DeliveryTypeEnum deliveryType;
+    private DeliveryModeEnum deliveryMode;
 
     @JsonProperty("pm")
     private PaymentModeEnum paymentMode;
@@ -162,12 +162,12 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
         return this;
     }
 
-    public DeliveryTypeEnum getDeliveryType() {
-        return deliveryType;
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
     }
 
-    public JsonPurchaseOrderHistorical setDeliveryType(DeliveryTypeEnum deliveryType) {
-        this.deliveryType = deliveryType;
+    public JsonPurchaseOrderHistorical setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
         return this;
     }
 
@@ -349,7 +349,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", storeDiscount=" + storeDiscount +
                 ", orderPrice='" + orderPrice + '\'' +
-                ", deliveryType=" + deliveryType +
+                ", deliveryMode=" + deliveryMode +
                 ", paymentMode=" + paymentMode +
                 ", presentOrderState=" + presentOrderState +
                 ", businessType=" + businessType +

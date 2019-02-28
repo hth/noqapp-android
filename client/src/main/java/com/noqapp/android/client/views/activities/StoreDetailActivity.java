@@ -22,7 +22,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.model.types.order.DeliveryTypeEnum;
+import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 
 import com.google.android.flexbox.AlignItems;
@@ -241,13 +241,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         rcv_amenities.setLayoutManager(getFlexBoxLayoutManager());
         rcv_amenities.setAdapter(new StaggeredGridAdapter(amenitiesdata));
 
-        List<DeliveryTypeEnum> deliveryTypes = jsonQueue.getDeliveryTypes();
-        ArrayList<String> deliveryTypesdata = new ArrayList<>();
-        for (int j = 0; j < deliveryTypes.size(); j++) {
-            deliveryTypesdata.add(deliveryTypes.get(j).getDescription());
+        List<DeliveryModeEnum> deliveryModes = jsonQueue.getDeliveryModes();
+        ArrayList<String> deliveryModesdata = new ArrayList<>();
+        for (int j = 0; j < deliveryModes.size(); j++) {
+            deliveryModesdata.add(deliveryModes.get(j).getDescription());
         }
         rcv_delivery_types.setLayoutManager(getFlexBoxLayoutManager());
-        rcv_delivery_types.setAdapter(new StaggeredGridAdapter(deliveryTypesdata));
+        rcv_delivery_types.setAdapter(new StaggeredGridAdapter(deliveryModesdata));
 
 
         //
