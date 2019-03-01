@@ -6,6 +6,8 @@ import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
 import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTVList;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 
+import com.google.gson.annotations.Since;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -33,7 +35,10 @@ public interface VigyaapanService {
             String codeQR
     );
 
-
+    @Deprecated
+    /**
+     * @Since 1.2.226
+     */
     @GET("api/tv/vigyaapan/{vt}.json")
     Call<JsonVigyaapanTV> getVigyaapan(
             @Header("X-R-DID")
