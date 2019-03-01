@@ -14,7 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -209,7 +209,7 @@ public class GPSTracker implements LocationListener {
      * Function to show settings alert dialog
      */
     public void showSettingsAlert() {
-        final android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(mContext);
+        final androidx.appcompat.app.AlertDialog.Builder dialog = new androidx.appcompat.app.AlertDialog.Builder(mContext);
         dialog.setTitle("Enable GPS")
                 .setMessage("Gps is disabled, in order to use the application properly you need to enable GPS of your device")
                 .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {

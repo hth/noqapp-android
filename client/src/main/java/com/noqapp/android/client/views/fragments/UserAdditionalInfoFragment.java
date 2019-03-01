@@ -10,7 +10,7 @@ import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

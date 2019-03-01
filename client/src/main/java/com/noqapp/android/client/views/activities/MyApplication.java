@@ -5,7 +5,7 @@ import com.noqapp.android.common.utils.FontsOverride;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 import android.util.Log;
 
 import java.util.Locale;

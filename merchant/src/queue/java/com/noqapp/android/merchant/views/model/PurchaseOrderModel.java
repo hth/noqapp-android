@@ -18,7 +18,7 @@ import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

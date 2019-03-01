@@ -8,7 +8,7 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;

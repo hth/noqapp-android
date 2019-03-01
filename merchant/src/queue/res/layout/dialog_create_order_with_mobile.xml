@@ -92,7 +92,7 @@
                     android:padding="10dp"
                     android:layout_marginBottom="5dp">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rb_mobile"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                         android:textSize="@dimen/text_size_twelve"
                         app:buttonTint="@color/radio_button_color"/>
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rb_customer_id"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

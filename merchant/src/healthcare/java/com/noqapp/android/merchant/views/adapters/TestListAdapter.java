@@ -5,8 +5,8 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

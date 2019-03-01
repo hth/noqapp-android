@@ -5,7 +5,7 @@ import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

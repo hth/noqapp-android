@@ -10,7 +10,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 
 import android.os.Environment;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

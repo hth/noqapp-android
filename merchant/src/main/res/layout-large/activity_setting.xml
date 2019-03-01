@@ -37,7 +37,7 @@
                     android:visibility="gone"/>
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -80,7 +80,7 @@
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.SwitchCompat
+                    <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/togglePreventJoin"
                             android:layout_width="0dp"
                             android:layout_weight=".2"
@@ -95,9 +95,9 @@
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -142,7 +142,7 @@
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.SwitchCompat
+                    <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/toggleTodayClosed"
                             android:layout_width="0dp"
                             android:layout_weight=".2"
@@ -155,10 +155,10 @@
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -217,9 +217,9 @@
 
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -405,9 +405,9 @@
                             android:textSize="@dimen/text_size_fourteen"/>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -533,9 +533,9 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -589,9 +589,9 @@
                 </LinearLayout>
 
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -637,7 +637,7 @@
                     </LinearLayout>
 
 
-                    <android.support.v7.widget.SwitchCompat
+                    <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/toggleDayClosed"
                             android:layout_width="0dp"
                             android:layout_weight=".2"
@@ -649,9 +649,9 @@
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -698,7 +698,7 @@
                     </LinearLayout>
 
 
-                    <android.support.v7.widget.SwitchCompat
+                    <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/toggleStoreOffline"
                             android:layout_width="0dp"
                             android:layout_weight=".2"
@@ -710,7 +710,7 @@
                             android:paddingEnd="@dimen/swith_padding"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
         </LinearLayout>

@@ -15,9 +15,8 @@ import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;

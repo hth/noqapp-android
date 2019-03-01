@@ -4,7 +4,7 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
 public class ManagerProfileActivity extends BaseManagerProfileActivity {
 

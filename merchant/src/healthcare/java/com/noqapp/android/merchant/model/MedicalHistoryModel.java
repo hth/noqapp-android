@@ -16,7 +16,7 @@ import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

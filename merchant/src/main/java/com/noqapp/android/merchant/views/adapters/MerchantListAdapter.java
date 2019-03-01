@@ -7,8 +7,8 @@ import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

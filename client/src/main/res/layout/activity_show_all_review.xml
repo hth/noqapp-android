@@ -83,7 +83,7 @@
                         android:textSize="@dimen/text_size_fourteen"/>
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_all_review"
                     android:layout_width="match_parent"
                     android:layout_marginTop="5dp"
