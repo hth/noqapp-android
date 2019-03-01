@@ -85,9 +85,7 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
         tv_timing = itemView.findViewById(R.id.tv_timing);
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
         rv_queue_people.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
+        rv_queue_people.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
 
         TextView tv_deviceId = itemView.findViewById(R.id.tv_deviceId);
