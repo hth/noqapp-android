@@ -2,6 +2,7 @@ package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
+import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
 import retrofit2.Call;
@@ -104,5 +105,28 @@ public interface PurchaseOrderService {
 
             @Body
             OrderDetail orderDetail
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("api/c/purchaseOrder/cf/notify.json")
+    Call<JsonPurchaseOrder> cashfreeNotify(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonCashfreeNotification jsonCashfreeNotification
     );
 }
