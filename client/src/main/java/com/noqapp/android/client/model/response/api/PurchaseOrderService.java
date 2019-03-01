@@ -2,6 +2,7 @@ package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
@@ -113,7 +114,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
     @POST("api/c/purchaseOrder/cf/notify.json")
-    Call<JsonPurchaseOrder> cashfreeNotify(
+    Call<JsonResponse> cashFreeNotify(
             @Header("X-R-DID")
             String did,
 
