@@ -240,7 +240,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (null != jsonPurchaseOrder) {
-            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 jsonPurchaseOrderServer = jsonPurchaseOrder;
                 triggerPayment();
                 profileModel.setProfilePresenter(this);
