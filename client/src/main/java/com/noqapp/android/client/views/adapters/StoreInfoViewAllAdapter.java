@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -112,7 +113,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             else {
                 Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
-            holder.iv_main.setOnClickListener(new View.OnClickListener() {
+            holder.card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
@@ -169,6 +170,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
         private TextView tv_business_category;
         private TextView tv_distance;
         private ImageView iv_main;
+        private CardView card_view;
 
 
         private MyViewHolder(View itemView) {
@@ -184,6 +186,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.iv_main = itemView.findViewById(R.id.iv_main);
+            this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
 

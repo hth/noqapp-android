@@ -63,7 +63,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         scrollId = getIntent().getStringExtra("scrollId");
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
@@ -77,6 +77,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         switch (item.getBusinessType()) {
             case DO:
             case BK:
+            case HS:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();
                 b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());

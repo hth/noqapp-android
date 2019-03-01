@@ -69,7 +69,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         scrollId = "";
         AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
         rv_search.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_search.setLayoutManager(horizontalLayoutManager);
         rv_search.setItemAnimator(new DefaultItemAnimator());
         searchAdapter = new SearchAdapter(listData, this, this, Double.parseDouble(lat), Double.parseDouble(longitude));
@@ -170,6 +170,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         switch (item.getBusinessType()) {
             case DO:
             case BK:
+            case HS:
                 Intent in = new Intent(this, JoinActivity.class);
                 in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);

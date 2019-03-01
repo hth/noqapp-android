@@ -33,6 +33,7 @@ public class Constants extends BaseConstants{
     //error codes
     public static final int INVALID_BAR_CODE = 404;
     public static final int DEFAULT_REVIEW_TIME_SAVED = 3;
+    public static final String UNPAID = "Payment Pending";
 
     //Google place search api
     static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
