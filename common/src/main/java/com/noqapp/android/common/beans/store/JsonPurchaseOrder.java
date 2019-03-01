@@ -65,7 +65,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     private PaymentModeEnum paymentMode;
 
     @JsonProperty("py")
-    private PaymentStatusEnum paymentStatus = PaymentStatusEnum.UP;
+    private PaymentStatusEnum paymentStatus;
 
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
