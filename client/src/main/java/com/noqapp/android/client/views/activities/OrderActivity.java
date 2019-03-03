@@ -10,7 +10,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.model.PurchaseOrderApiModel;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -74,7 +74,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ProfileModel profileModel;
-    private PurchaseApiModel purchaseApiModel;
+    private PurchaseOrderApiModel purchaseOrderApiModel;
     private long mLastClickTime = 0;
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
@@ -135,7 +135,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(true);
-        purchaseApiModel = new PurchaseApiModel(this);
+        purchaseOrderApiModel = new PurchaseOrderApiModel(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
         currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
@@ -178,7 +178,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
                         jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
 
-                        purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         tv_place_order.setEnabled(false);
                         tv_place_order.setClickable(false);
                     } else {
@@ -415,7 +415,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        purchaseApiModel.setCashFreeNotifyPresenter(this);
+        purchaseOrderApiModel.setCashFreeNotifyPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setxTime(map.get("txTime"));
@@ -425,7 +425,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
         jsonCashfreeNotification.setOrderId(map.get("orderId"));
-        purchaseApiModel.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        purchaseOrderApiModel.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override

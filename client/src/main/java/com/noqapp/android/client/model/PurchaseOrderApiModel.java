@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.PurchaseOrderService;
+import com.noqapp.android.client.model.response.api.PurchaseOrderApiService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
@@ -17,13 +17,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PurchaseApiModel {
-    private final String TAG = PurchaseApiModel.class.getSimpleName();
-    private final static PurchaseOrderService purchaseOrderService;
+public class PurchaseOrderApiModel {
+    private final String TAG = PurchaseOrderApiModel.class.getSimpleName();
+    private final static PurchaseOrderApiService PURCHASE_ORDER_API_SERVICE;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private CashFreeNotifyPresenter cashFreeNotifyPresenter;
 
-    public PurchaseApiModel(PurchaseOrderPresenter purchaseOrderPresenter) {
+    public PurchaseOrderApiModel(PurchaseOrderPresenter purchaseOrderPresenter) {
         this.purchaseOrderPresenter = purchaseOrderPresenter;
     }
 
@@ -32,11 +32,11 @@ public class PurchaseApiModel {
     }
 
     static {
-        purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderService.class);
+        PURCHASE_ORDER_API_SERVICE = RetrofitClient.getClient().create(PurchaseOrderApiService.class);
     }
 
     public void purchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        PURCHASE_ORDER_API_SERVICE.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -64,7 +64,7 @@ public class PurchaseApiModel {
     }
 
     public void cancelOrder(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.cancel(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        PURCHASE_ORDER_API_SERVICE.cancel(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -92,7 +92,7 @@ public class PurchaseApiModel {
     }
 
     public void activateOrder(String did, String mail, String auth, JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
-        purchaseOrderService.activate(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrderHistorical).enqueue(new Callback<JsonPurchaseOrderHistorical>() {
+        PURCHASE_ORDER_API_SERVICE.activate(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrderHistorical).enqueue(new Callback<JsonPurchaseOrderHistorical>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderHistorical> call, @NonNull Response<JsonPurchaseOrderHistorical> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -120,7 +120,7 @@ public class PurchaseApiModel {
     }
 
     public void orderDetail(String did, String mail, String auth, OrderDetail orderDetail) {
-        purchaseOrderService.orderDetail(did, Constants.DEVICE_TYPE, mail, auth, orderDetail).enqueue(new Callback<JsonPurchaseOrder>() {
+        PURCHASE_ORDER_API_SERVICE.orderDetail(did, Constants.DEVICE_TYPE, mail, auth, orderDetail).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -148,7 +148,7 @@ public class PurchaseApiModel {
     }
 
     public void cashFreeNotify(String did, String mail, String auth, JsonCashfreeNotification jsonCashfreeNotification) {
-        purchaseOrderService.cashFreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonResponse>() {
+        PURCHASE_ORDER_API_SERVICE.cashFreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

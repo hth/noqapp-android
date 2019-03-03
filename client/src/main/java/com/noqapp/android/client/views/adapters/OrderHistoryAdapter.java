@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.model.PurchaseOrderApiModel;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
@@ -22,9 +22,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +29,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +50,11 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_order_history, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(
+            ViewGroup parent,
+            int viewType
+    ) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_order_history, parent, false);
         RecyclerView.ViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -121,7 +122,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Activating order in progress...");
                     progressDialog.show();
-                    new PurchaseApiModel(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
+                    new PurchaseOrderApiModel(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
