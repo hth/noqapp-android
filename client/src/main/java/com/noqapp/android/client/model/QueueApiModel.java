@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.QueueService;
+import com.noqapp.android.client.model.response.api.TokenQueueApiService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class QueueApiModel {
     private final String TAG = QueueApiModel.class.getSimpleName();
-    private final static QueueService queueService;
+    private final static TokenQueueApiService TOKEN_QUEUE_API_SERVICE;
     private QueuePresenter queuePresenter;
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
@@ -52,11 +52,11 @@ public class QueueApiModel {
     }
 
     static {
-        queueService = RetrofitClient.getClient().create(QueueService.class);
+        TOKEN_QUEUE_API_SERVICE = RetrofitClient.getClient().create(TokenQueueApiService.class);
     }
 
     public void getQueueState(String did, String mail, String auth, String codeQR) {
-        queueService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
+        TOKEN_QUEUE_API_SERVICE.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -85,7 +85,7 @@ public class QueueApiModel {
     }
 
     public void getAllJoinedQueues(String did, String mail, String auth) {
-        queueService.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
+        TOKEN_QUEUE_API_SERVICE.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -116,7 +116,7 @@ public class QueueApiModel {
     }
 
     public void allHistoricalJoinedQueue(String did, String mail, String auth, DeviceToken deviceToken) {
-        queueService.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+        TOKEN_QUEUE_API_SERVICE.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -145,7 +145,7 @@ public class QueueApiModel {
     }
 
     public void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        queueService.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+        TOKEN_QUEUE_API_SERVICE.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -174,7 +174,7 @@ public class QueueApiModel {
     }
 
     public void abortQueue(String did, String mail, String auth, String codeQR) {
-        queueService.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
+        TOKEN_QUEUE_API_SERVICE.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

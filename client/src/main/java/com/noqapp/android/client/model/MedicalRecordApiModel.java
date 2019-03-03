@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.health.MedicalRecordService;
+import com.noqapp.android.client.model.response.api.health.MedicalRecordApiService;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -14,7 +14,7 @@ import retrofit2.Response;
 
 
 public class MedicalRecordApiModel {
-    private final static MedicalRecordService medicalRecordService;
+    private final static MedicalRecordApiService MEDICAL_RECORD_API_SERVICE;
     private MedicalRecordPresenter medicalRecordPresenter;
 
     public MedicalRecordApiModel(MedicalRecordPresenter medicalRecordPresenter) {
@@ -22,11 +22,11 @@ public class MedicalRecordApiModel {
     }
 
     static {
-        medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);
+        MEDICAL_RECORD_API_SERVICE = RetrofitClient.getClient().create(MedicalRecordApiService.class);
     }
 
     public void history(String mail, String auth) {
-        medicalRecordService.history(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
+        MEDICAL_RECORD_API_SERVICE.history(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
