@@ -484,7 +484,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
             Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("data", jsonPurchaseOrderServer);
+            bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
             bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
             bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
