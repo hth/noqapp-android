@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.NearMeModel;
-import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.model.SearchBusinessStoreModel;
+import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -29,7 +29,7 @@ import java.util.Collections;
 /**
  * Created by chandra on 5/7/17.
  */
-public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
+public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, SearchBusinessStorePresenter {
 
     private ArrayList<BizStoreElastic> listData;
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
@@ -53,7 +53,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_view_all));
-        NearMeModel nearMeModel = new NearMeModel(this);
+        SearchBusinessStoreModel searchBusinessStoreModel = new SearchBusinessStoreModel(this);
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         if (null == listData)
             listData = new ArrayList<>();

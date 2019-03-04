@@ -9,7 +9,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.model.ClientProfileModel;
 import com.noqapp.android.client.model.PurchaseOrderApiModel;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
@@ -73,7 +73,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private Button btn_add_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private ProfileModel profileModel;
+    private ClientProfileModel clientProfileModel;
     private PurchaseOrderApiModel purchaseOrderApiModel;
     private long mLastClickTime = 0;
     private String currencySymbol;
@@ -112,7 +112,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Adding address in progress..");
-                        profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
+                        clientProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                     }
                 }
             }
@@ -143,9 +143,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        profileModel = new ProfileModel();
-        profileModel.setProfilePresenter(this);
-        profileModel.setProfileAddressPresenter(this);
+        clientProfileModel = new ClientProfileModel();
+        clientProfileModel.setProfilePresenter(this);
+        clientProfileModel.setProfileAddressPresenter(this);
         tv_tax_amt.setText(currencySymbol + "" + "0.0");
         tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
@@ -243,7 +243,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 jsonPurchaseOrderServer = jsonPurchaseOrder;
                 triggerPayment();
-                profileModel.setProfilePresenter(this);
+                clientProfileModel.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
@@ -253,7 +253,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setGender(NoQueueBaseActivity.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                    profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    clientProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
@@ -359,7 +359,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         progressDialog.show();
                                         progressDialog.setMessage("Deleting address..");
-                                        profileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
+                                        clientProfileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                                     }

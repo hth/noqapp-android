@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.NearMeModel;
-import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.model.SearchBusinessStoreModel;
+import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
@@ -39,14 +39,14 @@ import java.util.ArrayList;
 /**
  * Created by chandra on 5/7/17.
  */
-public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener, NearMePresenter {
+public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener, SearchBusinessStorePresenter {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
     private String city = "";
     private String lat = "";
     private String longitude = "";
-    private NearMeModel nearMeModel;
+    private SearchBusinessStoreModel searchBusinessStoreModel;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
@@ -62,7 +62,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         ll_search = findViewById(R.id.ll_search);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
-        nearMeModel = new NearMeModel(this);
+        searchBusinessStoreModel = new SearchBusinessStoreModel(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitude = getIntent().getStringExtra("long");
@@ -157,7 +157,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                         .setQuery(edt_search.getText().toString())
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
-                nearMeModel.search(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreModel.search(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }

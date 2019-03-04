@@ -2,9 +2,9 @@ package com.noqapp.android.client.model;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-import com.noqapp.android.client.model.response.open.NearMeService;
+import com.noqapp.android.client.model.response.open.SearchBusinessStoreService;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.Constants;
@@ -20,16 +20,16 @@ import retrofit2.Response;
  * Date: 5/7/17 12:39 PM
  */
 
-public class NearMeModel {
-    private static final NearMeService nearmeService;
-    private NearMePresenter nearMePresenter;
+public class SearchBusinessStoreModel {
+    private static final SearchBusinessStoreService SEARCH_BUSINESS_STORE_SERVICE;
+    private SearchBusinessStorePresenter searchBusinessStorePresenter;
 
-    public NearMeModel(NearMePresenter nearMePresenter) {
-        this.nearMePresenter = nearMePresenter;
+    public SearchBusinessStoreModel(SearchBusinessStorePresenter searchBusinessStorePresenter) {
+        this.searchBusinessStorePresenter = searchBusinessStorePresenter;
     }
 
     static {
-        nearmeService = RetrofitClient.getClient().create(NearMeService.class);
+        SEARCH_BUSINESS_STORE_SERVICE = RetrofitClient.getClient().create(SearchBusinessStoreService.class);
     }
 
     /**
@@ -37,21 +37,21 @@ public class NearMeModel {
      * @param searchStoreQuery
      */
     public void otherMerchant(String did, SearchStoreQuery searchStoreQuery) {
-        nearmeService.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        SEARCH_BUSINESS_STORE_SERVICE.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response NearMe", String.valueOf(response.body()));
-                        nearMePresenter.nearMeResponse(response.body());
+                        searchBusinessStorePresenter.nearMeResponse(response.body());
                     } else {
-                        nearMePresenter.responseErrorPresenter(response.body().getError());
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        nearMePresenter.authenticationFailure();
+                        searchBusinessStorePresenter.authenticationFailure();
                     } else {
-                        nearMePresenter.responseErrorPresenter(response.code());
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
@@ -59,7 +59,7 @@ public class NearMeModel {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("NearMe failed", t.getLocalizedMessage(), t);
-                nearMePresenter.nearMeError();
+                searchBusinessStorePresenter.nearMeError();
             }
         });
     }
@@ -69,21 +69,21 @@ public class NearMeModel {
      * @param searchStoreQuery
      */
     public void healthCare(String did, SearchStoreQuery searchStoreQuery) {
-        nearmeService.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        SEARCH_BUSINESS_STORE_SERVICE.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response NearMeHospital", String.valueOf(response.body()));
-                        nearMePresenter.nearMeHospitalResponse(response.body());
+                        searchBusinessStorePresenter.nearMeHospitalResponse(response.body());
                     } else {
-                        nearMePresenter.responseErrorPresenter(response.body().getError());
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        nearMePresenter.authenticationFailure();
+                        searchBusinessStorePresenter.authenticationFailure();
                     } else {
-                        nearMePresenter.responseErrorPresenter(response.code());
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
@@ -91,27 +91,27 @@ public class NearMeModel {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("NearMeHospital failed", t.getLocalizedMessage(), t);
-                nearMePresenter.nearMeHospitalError();
+                searchBusinessStorePresenter.nearMeHospitalError();
             }
         });
     }
 
     public void search(String did, SearchStoreQuery searchStoreQuery) {
-        nearmeService.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        SEARCH_BUSINESS_STORE_SERVICE.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response search", String.valueOf(response.body()));
-                        nearMePresenter.nearMeResponse(response.body());
+                        searchBusinessStorePresenter.nearMeResponse(response.body());
                     } else {
-                        nearMePresenter.responseErrorPresenter(response.body().getError());
+                        searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        nearMePresenter.authenticationFailure();
+                        searchBusinessStorePresenter.authenticationFailure();
                     } else {
-                        nearMePresenter.responseErrorPresenter(response.code());
+                        searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class NearMeModel {
             @Override
             public void onFailure(@NonNull Call<BizStoreElasticList> call, @NonNull Throwable t) {
                 Log.e("onFailure search", t.getLocalizedMessage(), t);
-                nearMePresenter.nearMeError();
+                searchBusinessStorePresenter.nearMeError();
             }
         });
     }

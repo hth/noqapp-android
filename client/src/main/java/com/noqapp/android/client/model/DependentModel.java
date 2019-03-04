@@ -14,12 +14,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public final class DependencyModel {
-    private final String TAG = DependencyModel.class.getSimpleName();
+public final class DependentModel {
+    private final String TAG = DependentModel.class.getSimpleName();
     private static final DependentApiService dependentApiService;
     private DependencyPresenter dependencyPresenter;
 
-    public DependencyModel(DependencyPresenter dependencyPresenter) {
+    public DependentModel(DependencyPresenter dependencyPresenter) {
         this.dependencyPresenter = dependencyPresenter;
     }
 

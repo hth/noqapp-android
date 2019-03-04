@@ -2,14 +2,14 @@ package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedModel;
-import com.noqapp.android.client.model.NearMeModel;
+import com.noqapp.android.client.model.SearchBusinessStoreModel;
 import com.noqapp.android.client.model.QueueApiModel;
 import com.noqapp.android.client.model.QueueModel;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -84,7 +84,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener, FeedAdapter.OnItemClickListener, CurrentActivityAdapter.OnItemClickListener, NearMePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener, FeedAdapter.OnItemClickListener, CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     private RelativeLayout rl_scan;
@@ -331,9 +331,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 pb_near.setVisibility(View.VISIBLE);
                 pb_health_care.setVisibility(View.VISIBLE);
             }
-            NearMeModel nearMeModel = new NearMeModel(this);
-            nearMeModel.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
-            // nearMeModel.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
+            SearchBusinessStoreModel searchBusinessStoreModel = new SearchBusinessStoreModel(this);
+            searchBusinessStoreModel.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
+            // searchBusinessStoreModel.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

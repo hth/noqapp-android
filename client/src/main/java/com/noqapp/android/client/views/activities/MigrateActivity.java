@@ -5,7 +5,7 @@ package com.noqapp.android.client.views.activities;
  */
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.model.ClientProfileModel;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
@@ -38,9 +38,9 @@ public class MigrateActivity extends OTPActivity {
         migratePhone.setCountryShortName(countryShortName);
         migratePhone.setTimeZoneId(tz.getID());
         migratePhone.setPhone(phoneNumber);
-        ProfileModel profileModel = new ProfileModel();
-        profileModel.setProfilePresenter(this);
-        profileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
+        ClientProfileModel clientProfileModel = new ClientProfileModel();
+        clientProfileModel.setProfilePresenter(this);
+        clientProfileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
     }
 
     @Override

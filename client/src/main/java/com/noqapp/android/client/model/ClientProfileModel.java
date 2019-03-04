@@ -24,9 +24,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileModel {
+public class ClientProfileModel {
 
-    private final String TAG = ProfileModel.class.getSimpleName();
+    private final String TAG = ClientProfileModel.class.getSimpleName();
     private static final ClientProfileApiService CLIENT_PROFILE_API_SERVICE;
     private ProfilePresenter profilePresenter;
     private ImageUploadPresenter imageUploadPresenter;

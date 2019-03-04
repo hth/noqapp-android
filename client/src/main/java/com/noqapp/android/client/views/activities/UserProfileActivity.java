@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.model.ClientProfileModel;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -111,9 +111,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ProfileModel profileModel = new ProfileModel();
-            profileModel.setProfilePresenter(this);
-            profileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
+            ClientProfileModel clientProfileModel = new ClientProfileModel();
+            clientProfileModel.setProfilePresenter(this);
+            clientProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -211,9 +211,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                        ProfileModel profileModel = new ProfileModel();
-                        profileModel.setImageUploadPresenter(this);
-                        profileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        ClientProfileModel clientProfileModel = new ClientProfileModel();
+                        clientProfileModel.setImageUploadPresenter(this);
+                        clientProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

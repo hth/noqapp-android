@@ -8,7 +8,7 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
  * Date: 5/10/17 8:28 PM
  */
 
-public interface NearMePresenter extends ResponseErrorPresenter {
+public interface SearchBusinessStorePresenter extends ResponseErrorPresenter {
 
     void nearMeResponse(BizStoreElasticList bizStoreElasticList);
 
