@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FeedbackApiModel;
+import com.noqapp.android.client.model.FeedbackApiCall;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -62,7 +62,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
                 } else {
                     progressDialog.setMessage("Sending feedback..");
                     progressDialog.show();
-                    new FeedbackApiModel(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                    new FeedbackApiCall(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                             feedback.setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
                 }
             }

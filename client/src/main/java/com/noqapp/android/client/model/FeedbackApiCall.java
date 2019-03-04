@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.api.FeedbackApiService;
+import com.noqapp.android.client.model.response.api.FeedbackApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.Constants;
@@ -14,18 +14,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackApiModel {
+public class FeedbackApiCall {
     private final String TAG = RegisterModel.class.getSimpleName();
-    private static final FeedbackApiService feedbackApiService;
+    private static final FeedbackApiUrls feedbackApiService;
     private FeedbackPresenter feedbackPresenter;
 
-    public FeedbackApiModel(FeedbackPresenter feedbackPresenter) {
+    public FeedbackApiCall(FeedbackPresenter feedbackPresenter) {
         this.feedbackPresenter = feedbackPresenter;
     }
 
 
     static {
-        feedbackApiService = RetrofitClient.getClient().create(FeedbackApiService.class);
+        feedbackApiService = RetrofitClient.getClient().create(FeedbackApiUrls.class);
     }
 
     public void review(String did, String mail, String auth, Feedback feedback) {

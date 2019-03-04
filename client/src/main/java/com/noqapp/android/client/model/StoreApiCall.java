@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.open.StoreDetailService;
+import com.noqapp.android.client.model.response.open.StoreDetailApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.JsonStore;
@@ -18,17 +18,17 @@ import retrofit2.Response;
  * User: omkar
  * Date: 3/26/17 11:49 PM
  */
-public final class StoreModel {
-    private final String TAG = StoreModel.class.getSimpleName();
-    private static final StoreDetailService STORE_DETAIL_SERVICE;
+public class StoreApiCall {
+    private final String TAG = StoreApiCall.class.getSimpleName();
+    private static final StoreDetailApiUrls STORE_DETAIL_SERVICE;
     private StorePresenter storePresenter;
 
-    public StoreModel(StorePresenter storePresenter) {
+    public StoreApiCall(StorePresenter storePresenter) {
         this.storePresenter = storePresenter;
     }
 
     static {
-        STORE_DETAIL_SERVICE = RetrofitClient.getClient().create(StoreDetailService.class);
+        STORE_DETAIL_SERVICE = RetrofitClient.getClient().create(StoreDetailApiUrls.class);
     }
 
     /**

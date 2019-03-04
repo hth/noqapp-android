@@ -2,7 +2,7 @@ package com.noqapp.android.client.model;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-import com.noqapp.android.client.model.response.open.ProfessionalProfileService;
+import com.noqapp.android.client.model.response.open.ProfessionalProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
@@ -14,18 +14,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfessionalProfileModel {
+public class ProfessionalProfileApiCall {
 
-    private final String TAG = ProfessionalProfileModel.class.getSimpleName();
-    private static final ProfessionalProfileService professionalProfileService;
+    private final String TAG = ProfessionalProfileApiCall.class.getSimpleName();
+    private static final ProfessionalProfileApiUrls professionalProfileService;
     private QueueManagerPresenter queueManagerPresenter;
 
-    public ProfessionalProfileModel(QueueManagerPresenter queueManagerPresenter) {
+    public ProfessionalProfileApiCall(QueueManagerPresenter queueManagerPresenter) {
         this.queueManagerPresenter = queueManagerPresenter;
     }
 
     static {
-        professionalProfileService = RetrofitClient.getClient().create(ProfessionalProfileService.class);
+        professionalProfileService = RetrofitClient.getClient().create(ProfessionalProfileApiUrls.class);
     }
 
     /**

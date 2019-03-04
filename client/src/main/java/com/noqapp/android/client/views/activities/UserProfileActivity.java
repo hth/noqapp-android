@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientProfileModel;
+import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -111,7 +111,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ClientProfileModel clientProfileModel = new ClientProfileModel();
+            ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
             clientProfileModel.setProfilePresenter(this);
             clientProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
         } else {
@@ -211,7 +211,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                        ClientProfileModel clientProfileModel = new ClientProfileModel();
+                        ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
                         clientProfileModel.setImageUploadPresenter(this);
                         clientProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }

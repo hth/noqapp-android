@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.ClientProfileApiService;
+import com.noqapp.android.client.model.response.api.ClientProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
@@ -24,10 +24,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClientProfileModel {
+public class ClientProfileApiCall {
 
-    private final String TAG = ClientProfileModel.class.getSimpleName();
-    private static final ClientProfileApiService CLIENT_PROFILE_API_SERVICE;
+    private final String TAG = ClientProfileApiCall.class.getSimpleName();
+    private static final ClientProfileApiUrls CLIENT_PROFILE_API_SERVICE;
     private ProfilePresenter profilePresenter;
     private ImageUploadPresenter imageUploadPresenter;
     private ProfileAddressPresenter profileAddressPresenter;
@@ -50,7 +50,7 @@ public class ClientProfileModel {
     }
 
     static {
-        CLIENT_PROFILE_API_SERVICE = RetrofitClient.getClient().create(ClientProfileApiService.class);
+        CLIENT_PROFILE_API_SERVICE = RetrofitClient.getClient().create(ClientProfileApiUrls.class);
     }
 
     public void fetchProfile(final String mail, final String auth) {

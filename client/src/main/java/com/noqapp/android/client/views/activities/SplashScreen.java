@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.DeviceModel;
+import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -128,7 +128,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Log.d(TAG, "Created deviceId=" + deviceId);
             sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
             //Call this api only once in life time
-            DeviceModel deviceModel = new DeviceModel();
+            DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setDeviceRegisterPresenter(this);
             deviceModel.register(deviceId, deviceToken);
         } else {

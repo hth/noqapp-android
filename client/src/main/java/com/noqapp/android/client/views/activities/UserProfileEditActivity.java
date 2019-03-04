@@ -2,8 +2,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DependentModel;
-import com.noqapp.android.client.model.ClientProfileModel;
+import com.noqapp.android.client.model.DependentApiCall;
+import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
@@ -73,7 +73,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
-    private ClientProfileModel clientProfileModel;
+    private ClientProfileApiCall clientProfileModel;
     private List<String> nameList = new ArrayList<>();
     private String imageUrl = "";
     private String qUserId = "";
@@ -97,7 +97,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
-        clientProfileModel = new ClientProfileModel();
+        clientProfileModel = new ClientProfileApiCall();
         iv_profile.setOnClickListener(this);
         progressDialog.setMessage("Updating profile....");
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
@@ -312,7 +312,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         registration.setTimeZoneId(TimeZone.getDefault().getID());
                         registration.setCountryShortName(NoQueueBaseActivity.getCountryShortName());
                         registration.setInviteCode("");
-                        DependentModel dependentModel = new DependentModel(this);
+                        DependentApiCall dependentModel = new DependentApiCall(this);
                         dependentModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
                     }
                 } else {

@@ -6,8 +6,8 @@ package com.noqapp.android.client.views.activities;
 
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiModel;
-import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.QueueApiAuthenticCall;
+import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
@@ -73,8 +73,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private int profile_pos;
     private List<JsonProfile> profileList;
     private String queueUserId = "";
-    private QueueModel queueModel;
-    private QueueApiModel queueApiModel;
+    private QueueApiUnAuthenticCall queueModel;
+    private QueueApiAuthenticCall queueApiModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +105,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         });
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
-        queueModel = new QueueModel();
-        queueApiModel = new QueueApiModel();
+        queueModel = new QueueApiUnAuthenticCall();
+        queueApiModel = new QueueApiAuthenticCall();
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {

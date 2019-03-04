@@ -12,7 +12,7 @@ import retrofit2.http.POST;
  * Created by chandra on 3/22/18.
  */
 
-public interface SearchBusinessStoreService {
+public interface SearchBusinessStoreApiUrls {
 
     /**
      * Errors

@@ -4,7 +4,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.client.presenter.QueuePresenter;
@@ -138,7 +138,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             if (NetworkUtils.isConnectingToInternet(this)) {
                 progressDialog.show();
-                QueueModel queueModel = new QueueModel();
+                QueueApiUnAuthenticCall queueModel = new QueueApiUnAuthenticCall();
                 queueModel.setQueuePresenter(this);
                 if (bundle.getBoolean("CallCategory", false)) {
                     queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);

@@ -11,7 +11,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 6/4/18 11:00 AM
  */
-public interface ProfessionalProfileService {
+public interface ProfessionalProfileApiUrls {
 
     /**
      * ERROR

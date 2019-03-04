@@ -7,7 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 
-public interface HistoricalApiService {
+public interface HistoricalApiUrls {
 
     @GET("api/c/historical/orders.json")
     Call<JsonPurchaseOrderHistoricalList> orders(

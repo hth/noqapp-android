@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientProfileModel;
+import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
@@ -64,7 +64,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
                     changeMailOTP.setUserId(edt_email.getText().toString());
                     changeMailOTP.setMailOTP(edt_otp.getText().toString());
-                    ClientProfileModel clientProfileModel = new ClientProfileModel();
+                    ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
                     clientProfileModel.setProfilePresenter(this);
                     clientProfileModel.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
                 }
@@ -78,7 +78,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();
                     migrateMail.setMail(edt_email.getText().toString());
-                    ClientProfileModel clientProfileModel = new ClientProfileModel();
+                    ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
                     clientProfileModel.setMigrateEmailPresenter(this);
                     clientProfileModel.changeMail(UserUtils.getEmail(), UserUtils.getAuth(), migrateMail);
                 } else {

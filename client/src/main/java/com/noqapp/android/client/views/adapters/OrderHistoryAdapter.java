@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.adapters;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.PurchaseOrderApiModel;
+import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
@@ -122,7 +122,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Activating order in progress...");
                     progressDialog.show();
-                    new PurchaseOrderApiModel(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
+                    new PurchaseOrderApiCall(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }

@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 /**
  * Created by chandra on 3/23/18.
  */
-public interface StoreDetailService {
+public interface StoreDetailApiUrls {
 
     /**
      * No Errors

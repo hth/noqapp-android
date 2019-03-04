@@ -10,7 +10,7 @@ import retrofit2.http.Header;
  * hitender
  * 2018-12-07 12:12
  */
-public interface FeedService {
+public interface FeedApiUrls {
     /**
      * ERROR
      * {@link com.noqapp.android.client.presenter.beans.JsonFeedList#jsonFeeds} is empty when not found

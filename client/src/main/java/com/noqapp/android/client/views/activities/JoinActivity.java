@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.QueueApiModel;
-import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.QueueApiAuthenticCall;
+import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -145,12 +145,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     progressDialog.setMessage("Loading queue details...");
                     progressDialog.show();
                     if (UserUtils.isLogin()) {
-                        QueueApiModel queueApiModel = new QueueApiModel();
+                        QueueApiAuthenticCall queueApiModel = new QueueApiAuthenticCall();
                         queueApiModel.setQueuePresenter(this);
                         queueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
 
                     } else {
-                        QueueModel queueModel = new QueueModel();
+                        QueueApiUnAuthenticCall queueModel = new QueueApiUnAuthenticCall();
                         queueModel.setQueuePresenter(this);
                         queueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
                     }

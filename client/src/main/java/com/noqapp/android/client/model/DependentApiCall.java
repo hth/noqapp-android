@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.DependentApiService;
+import com.noqapp.android.client.model.response.api.DependentApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
@@ -14,17 +14,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public final class DependentModel {
-    private final String TAG = DependentModel.class.getSimpleName();
-    private static final DependentApiService dependentApiService;
+public class DependentApiCall {
+    private final String TAG = DependentApiCall.class.getSimpleName();
+    private static final DependentApiUrls dependentApiService;
     private DependencyPresenter dependencyPresenter;
 
-    public DependentModel(DependencyPresenter dependencyPresenter) {
+    public DependentApiCall(DependencyPresenter dependencyPresenter) {
         this.dependencyPresenter = dependencyPresenter;
     }
 
     static {
-        dependentApiService = RetrofitClient.getClient().create(DependentApiService.class);
+        dependentApiService = RetrofitClient.getClient().create(DependentApiUrls.class);
     }
 
     /**

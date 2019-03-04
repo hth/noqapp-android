@@ -9,8 +9,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientProfileModel;
-import com.noqapp.android.client.model.PurchaseOrderApiModel;
+import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -73,8 +73,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private Button btn_add_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private ClientProfileModel clientProfileModel;
-    private PurchaseOrderApiModel purchaseOrderApiModel;
+    private ClientProfileApiCall clientProfileModel;
+    private PurchaseOrderApiCall purchaseOrderApiModel;
     private long mLastClickTime = 0;
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
@@ -135,7 +135,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(true);
-        purchaseOrderApiModel = new PurchaseOrderApiModel(this);
+        purchaseOrderApiModel = new PurchaseOrderApiCall(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
         currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
@@ -143,7 +143,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        clientProfileModel = new ClientProfileModel();
+        clientProfileModel = new ClientProfileApiCall();
         clientProfileModel.setProfilePresenter(this);
         clientProfileModel.setProfileAddressPresenter(this);
         tv_tax_amt.setText(currencySymbol + "" + "0.0");
@@ -460,8 +460,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         params.put(PARAM_CUSTOMER_PHONE, customerPhone);
         params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
 //        for (Map.Entry entry : params.entrySet()) {
-//            Log.d("CFSKDSample", entry.getKey() + " " + entry.getValue());
-//        }
+////            Log.d("CFSKDSample", entry.getKey() + " " + entry.getValue());
+////        }
 
         CFPaymentService cfPaymentService = CFPaymentService.getCFPaymentServiceInstance();
         cfPaymentService.setOrientation(0);

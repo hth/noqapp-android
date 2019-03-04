@@ -3,8 +3,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewApiModel;
-import com.noqapp.android.client.model.ReviewModel;
+import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
+import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.ReviewPresenter;
@@ -196,12 +196,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                                 orderReview.setToken(jtk.getToken());
                                 orderReview.setRatingCount(Math.round(ratingBar.getRating()));
                                 orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
-                                new ReviewApiModel(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
+                                new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
-                                new ReviewApiModel(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
+                                new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                             }
                         } else {
-                            ReviewModel reviewModel = new ReviewModel();
+                            ReviewApiUnAuthenticCall reviewModel = new ReviewApiUnAuthenticCall();
                             reviewModel.setReviewPresenter(ReviewActivity.this);
                             reviewModel.queue(UserUtils.getDeviceId(), rr);
                         }

@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.PurchaseOrderApiService;
+import com.noqapp.android.client.model.response.api.PurchaseOrderApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
@@ -17,13 +17,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PurchaseOrderApiModel {
-    private final String TAG = PurchaseOrderApiModel.class.getSimpleName();
-    private final static PurchaseOrderApiService PURCHASE_ORDER_API_SERVICE;
+public class PurchaseOrderApiCall {
+    private final String TAG = PurchaseOrderApiCall.class.getSimpleName();
+    private final static PurchaseOrderApiUrls PURCHASE_ORDER_API_SERVICE;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private CashFreeNotifyPresenter cashFreeNotifyPresenter;
 
-    public PurchaseOrderApiModel(PurchaseOrderPresenter purchaseOrderPresenter) {
+    public PurchaseOrderApiCall(PurchaseOrderPresenter purchaseOrderPresenter) {
         this.purchaseOrderPresenter = purchaseOrderPresenter;
     }
 
@@ -32,7 +32,7 @@ public class PurchaseOrderApiModel {
     }
 
     static {
-        PURCHASE_ORDER_API_SERVICE = RetrofitClient.getClient().create(PurchaseOrderApiService.class);
+        PURCHASE_ORDER_API_SERVICE = RetrofitClient.getClient().create(PurchaseOrderApiUrls.class);
     }
 
     public void purchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {

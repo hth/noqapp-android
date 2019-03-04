@@ -4,7 +4,7 @@ import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DeviceModel;
+import com.noqapp.android.client.model.DeviceApiCall;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -295,7 +295,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
 
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            DeviceModel deviceModel = new DeviceModel();
+            DeviceApiCall deviceModel = new DeviceApiCall();
             deviceModel.setAppBlacklistPresenter(this);
             deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
         }
@@ -959,7 +959,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         String deviceId = UUID.randomUUID().toString().toUpperCase();
         Log.d(TAG, "Re-Created deviceId=" + deviceId);
         NoQueueBaseActivity.setDeviceID(deviceId);
-        DeviceModel deviceModel = new DeviceModel();
+        DeviceApiCall deviceModel = new DeviceApiCall();
         deviceModel.setDeviceRegisterPresenter(this);
         deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
     }

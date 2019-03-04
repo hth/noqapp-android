@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.SearchBusinessStoreModel;
+import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -46,7 +46,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private String city = "";
     private String lat = "";
     private String longitude = "";
-    private SearchBusinessStoreModel searchBusinessStoreModel;
+    private SearchBusinessStoreApiCall searchBusinessStoreModel;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
@@ -62,7 +62,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         ll_search = findViewById(R.id.ll_search);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
-        searchBusinessStoreModel = new SearchBusinessStoreModel(this);
+        searchBusinessStoreModel = new SearchBusinessStoreApiCall(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitude = getIntent().getStringExtra("long");

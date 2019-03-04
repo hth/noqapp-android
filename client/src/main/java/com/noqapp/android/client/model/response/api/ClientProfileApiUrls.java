@@ -25,7 +25,7 @@ import retrofit2.http.Part;
  * User: hitender
  * Date: 3/27/17 8:05 PM
  */
-public interface ClientProfileApiService {
+public interface ClientProfileApiUrls {
 
     /**
      * Errors

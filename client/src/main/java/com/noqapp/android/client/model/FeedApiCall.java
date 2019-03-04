@@ -2,7 +2,7 @@ package com.noqapp.android.client.model;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-import com.noqapp.android.client.model.response.open.FeedService;
+import com.noqapp.android.client.model.response.open.FeedApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.FeedPresenter;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
@@ -14,18 +14,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedModel {
+public class FeedApiCall {
 
-    private final String TAG = FeedModel.class.getSimpleName();
-    private static final FeedService feedService;
+    private final String TAG = FeedApiCall.class.getSimpleName();
+    private static final FeedApiUrls feedService;
     private FeedPresenter feedPresenter;
 
-    public FeedModel(FeedPresenter feedPresenter) {
+    public FeedApiCall(FeedPresenter feedPresenter) {
         this.feedPresenter = feedPresenter;
     }
 
     static {
-        feedService = RetrofitClient.getClient().create(FeedService.class);
+        feedService = RetrofitClient.getClient().create(FeedApiUrls.class);
     }
 
 

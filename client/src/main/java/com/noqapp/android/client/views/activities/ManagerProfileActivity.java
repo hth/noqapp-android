@@ -6,7 +6,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfessionalProfileModel;
+import com.noqapp.android.client.model.ProfessionalProfileApiCall;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -93,7 +93,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Loading doctor's profile...");
             progressDialog.show();
-            new ProfessionalProfileModel(this).profile(UserUtils.getDeviceId(), webProfileId);
+            new ProfessionalProfileApiCall(this).profile(UserUtils.getDeviceId(), webProfileId);
         }
     }
 

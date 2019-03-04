@@ -14,7 +14,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 6/20/18 12:35 PM
  */
-public interface DependentApiService {
+public interface DependentApiUrls {
 
     /**
      * Errors

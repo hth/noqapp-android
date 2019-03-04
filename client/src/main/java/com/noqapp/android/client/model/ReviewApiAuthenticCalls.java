@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.ReviewApiService;
+import com.noqapp.android.client.model.response.api.ReviewApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.body.OrderReview;
@@ -14,18 +14,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReviewApiModel {
+public class ReviewApiAuthenticCalls {
     private final String TAG = RegisterModel.class.getSimpleName();
-    private static final ReviewApiService reviewApiService;
+    private static final ReviewApiUrls reviewApiService;
     private ReviewPresenter reviewPresenter;
 
-    public ReviewApiModel(ReviewPresenter reviewPresenter) {
+    public ReviewApiAuthenticCalls(ReviewPresenter reviewPresenter) {
         this.reviewPresenter = reviewPresenter;
     }
 
 
     static {
-        reviewApiService = RetrofitClient.getClient().create(ReviewApiService.class);
+        reviewApiService = RetrofitClient.getClient().create(ReviewApiUrls.class);
     }
 
     /**

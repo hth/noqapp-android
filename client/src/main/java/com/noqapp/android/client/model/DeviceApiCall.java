@@ -1,7 +1,7 @@
 package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.model.response.open.DeviceService;
+import com.noqapp.android.client.model.response.open.DeviceApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.utils.Constants;
@@ -20,9 +20,9 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/2/17 6:40 PM
  */
-public class DeviceModel {
-    private final String TAG = DeviceModel.class.getSimpleName();
-    private static final DeviceService deviceService;
+public class DeviceApiCall {
+    private final String TAG = DeviceApiCall.class.getSimpleName();
+    private static final DeviceApiUrls deviceService;
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -35,7 +35,7 @@ public class DeviceModel {
     }
 
     static {
-        deviceService = RetrofitClient.getClient().create(DeviceService.class);
+        deviceService = RetrofitClient.getClient().create(DeviceApiUrls.class);
     }
 
     /**

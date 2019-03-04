@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.api.HistoricalApiService;
+import com.noqapp.android.client.model.response.api.HistoricalApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.OrderHistoryPresenter;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
@@ -14,9 +14,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderQueueHistoryModel {
-    private final String TAG = OrderQueueHistoryModel.class.getSimpleName();
-    private static final HistoricalApiService historicalApiService;
+public class OrderQueueHistoryApiCall {
+    private final String TAG = OrderQueueHistoryApiCall.class.getSimpleName();
+    private static final HistoricalApiUrls historicalApiService;
     private OrderHistoryPresenter orderHistoryPresenter;
     private QueueHistoryPresenter queueHistoryPresenter;
 
@@ -29,7 +29,7 @@ public class OrderQueueHistoryModel {
     }
 
     static {
-        historicalApiService = RetrofitClient.getClient().create(HistoricalApiService.class);
+        historicalApiService = RetrofitClient.getClient().create(HistoricalApiUrls.class);
     }
 
 

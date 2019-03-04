@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewModel;
+import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.AllReviewPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -70,7 +70,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 jsonReviews = new ArrayList<>();
                 String codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
                 if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
-                    ReviewModel reviewModel = new ReviewModel();
+                    ReviewApiUnAuthenticCall reviewModel = new ReviewApiUnAuthenticCall();
                     reviewModel.setAllReviewPresenter(this);
                     if (bundle.getBooleanExtra("isLevelUp", false)) {
                         reviewModel.reviewsLevelUp(UserUtils.getDeviceId(), codeQR);

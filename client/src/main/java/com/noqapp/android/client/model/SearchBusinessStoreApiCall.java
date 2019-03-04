@@ -2,7 +2,7 @@ package com.noqapp.android.client.model;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-import com.noqapp.android.client.model.response.open.SearchBusinessStoreService;
+import com.noqapp.android.client.model.response.open.SearchBusinessStoreApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -20,16 +20,16 @@ import retrofit2.Response;
  * Date: 5/7/17 12:39 PM
  */
 
-public class SearchBusinessStoreModel {
-    private static final SearchBusinessStoreService SEARCH_BUSINESS_STORE_SERVICE;
+public class SearchBusinessStoreApiCall {
+    private static final SearchBusinessStoreApiUrls SEARCH_BUSINESS_STORE_SERVICE;
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
 
-    public SearchBusinessStoreModel(SearchBusinessStorePresenter searchBusinessStorePresenter) {
+    public SearchBusinessStoreApiCall(SearchBusinessStorePresenter searchBusinessStorePresenter) {
         this.searchBusinessStorePresenter = searchBusinessStorePresenter;
     }
 
     static {
-        SEARCH_BUSINESS_STORE_SERVICE = RetrofitClient.getClient().create(SearchBusinessStoreService.class);
+        SEARCH_BUSINESS_STORE_SERVICE = RetrofitClient.getClient().create(SearchBusinessStoreApiUrls.class);
     }
 
     /**

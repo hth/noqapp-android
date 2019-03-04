@@ -1,10 +1,10 @@
 package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.FeedModel;
-import com.noqapp.android.client.model.SearchBusinessStoreModel;
-import com.noqapp.android.client.model.QueueApiModel;
-import com.noqapp.android.client.model.QueueModel;
+import com.noqapp.android.client.model.FeedApiCall;
+import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
+import com.noqapp.android.client.model.QueueApiAuthenticCall;
+import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
@@ -232,7 +232,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             callCurrentAndHistoryQueue();
-            FeedModel feedModel = new FeedModel(this);
+            FeedApiCall feedModel = new FeedApiCall(this);
             feedModel.activeFeed(UserUtils.getDeviceId());
             pb_feed.setVisibility(View.VISIBLE);
         } else {
@@ -272,7 +272,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private void callCurrentAndHistoryQueue() {
         if (UserUtils.isLogin()) { // Call secure API if user is loggedIn else normal API
             //Call the current queue
-            QueueApiModel queueApiModel = new QueueApiModel();
+            QueueApiAuthenticCall queueApiModel = new QueueApiAuthenticCall();
             queueApiModel.setTokenAndQueuePresenter(this);
             //Log.e("DEVICE ID NULL", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
             queueApiModel.getAllJoinedQueues(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
@@ -282,7 +282,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             queueApiModel.allHistoricalJoinedQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             //Call the current queue
-            QueueModel queueModel = new QueueModel();
+            QueueApiUnAuthenticCall queueModel = new QueueApiUnAuthenticCall();
             queueModel.setTokenAndQueuePresenter(this);
             queueModel.getAllJoinedQueue(UserUtils.getDeviceId());
             //Log.e("DEVICE ID NULL Un", "DID: " + UserUtils.getDeviceId() + " Email: " + UserUtils.getEmail() + " Auth: " + UserUtils.getAuth());
@@ -331,7 +331,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 pb_near.setVisibility(View.VISIBLE);
                 pb_health_care.setVisibility(View.VISIBLE);
             }
-            SearchBusinessStoreModel searchBusinessStoreModel = new SearchBusinessStoreModel(this);
+            SearchBusinessStoreApiCall searchBusinessStoreModel = new SearchBusinessStoreApiCall(this);
             searchBusinessStoreModel.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
             // searchBusinessStoreModel.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {

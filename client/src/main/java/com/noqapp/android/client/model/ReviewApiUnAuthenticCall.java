@@ -2,7 +2,7 @@ package com.noqapp.android.client.model;
 
 import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
-import com.noqapp.android.client.model.response.open.ReviewService;
+import com.noqapp.android.client.model.response.open.ReviewApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.AllReviewPresenter;
 import com.noqapp.android.client.presenter.ReviewPresenter;
@@ -22,9 +22,9 @@ import retrofit2.Response;
  * Date: 5/7/17 12:39 PM
  */
 
-public class ReviewModel {
+public class ReviewApiUnAuthenticCall {
     private final String TAG = RegisterModel.class.getSimpleName();
-    private static final ReviewService reviewService;
+    private static final ReviewApiUrls reviewService;
     private ReviewPresenter reviewPresenter;
     private AllReviewPresenter allReviewPresenter;
 
@@ -37,7 +37,7 @@ public class ReviewModel {
     }
 
     static {
-        reviewService = RetrofitClient.getClient().create(ReviewService.class);
+        reviewService = RetrofitClient.getClient().create(ReviewApiUrls.class);
     }
 
     /**
