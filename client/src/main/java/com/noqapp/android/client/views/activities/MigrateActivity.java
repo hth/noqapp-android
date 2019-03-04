@@ -38,9 +38,9 @@ public class MigrateActivity extends OTPActivity {
         migratePhone.setCountryShortName(countryShortName);
         migratePhone.setTimeZoneId(tz.getID());
         migratePhone.setPhone(phoneNumber);
-        ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
-        clientProfileModel.setProfilePresenter(this);
-        clientProfileModel.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
+        ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
+        clientProfileApiCall.setProfilePresenter(this);
+        clientProfileApiCall.migrate(UserUtils.getEmail(), UserUtils.getAuth(), migratePhone);
     }
 
     @Override

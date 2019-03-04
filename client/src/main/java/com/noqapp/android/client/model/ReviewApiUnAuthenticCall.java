@@ -23,7 +23,7 @@ import retrofit2.Response;
  */
 
 public class ReviewApiUnAuthenticCall {
-    private final String TAG = RegisterModel.class.getSimpleName();
+    private final String TAG = RegisterApiCall.class.getSimpleName();
     private static final ReviewApiUrls reviewService;
     private ReviewPresenter reviewPresenter;
     private AllReviewPresenter allReviewPresenter;

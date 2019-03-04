@@ -45,9 +45,7 @@ public class CategoryPagerActivity extends BaseActivity implements CategoryHeade
         final RecyclerView rcv_header = findViewById(R.id.rcv_header);
         viewPager = findViewById(R.id.pager);
         rcv_header.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rcv_header.setLayoutManager(horizontalLayoutManagaer);
+        rcv_header.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcv_header.setItemAnimator(new DefaultItemAnimator());
 
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());

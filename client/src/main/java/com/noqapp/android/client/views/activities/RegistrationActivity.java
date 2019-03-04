@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.RegisterModel;
+import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -294,7 +294,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         registration.setTimeZoneId(tz.getID());
         registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
         registration.setInviteCode("");
-        new RegisterModel(this).register(UserUtils.getDeviceId(), registration);
+        new RegisterApiCall(this).register(UserUtils.getDeviceId(), registration);
     }
 
 }

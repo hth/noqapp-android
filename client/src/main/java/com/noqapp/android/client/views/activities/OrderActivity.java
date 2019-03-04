@@ -73,8 +73,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private Button btn_add_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private ClientProfileApiCall clientProfileModel;
-    private PurchaseOrderApiCall purchaseOrderApiModel;
+    private ClientProfileApiCall clientProfileApiCall;
+    private PurchaseOrderApiCall purchaseOrderApiCall;
     private long mLastClickTime = 0;
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
@@ -112,7 +112,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Adding address in progress..");
-                        clientProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
+                        clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                     }
                 }
             }
@@ -135,7 +135,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(true);
-        purchaseOrderApiModel = new PurchaseOrderApiCall(this);
+        purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
         currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
@@ -143,9 +143,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        clientProfileModel = new ClientProfileApiCall();
-        clientProfileModel.setProfilePresenter(this);
-        clientProfileModel.setProfileAddressPresenter(this);
+        clientProfileApiCall = new ClientProfileApiCall();
+        clientProfileApiCall.setProfilePresenter(this);
+        clientProfileApiCall.setProfileAddressPresenter(this);
         tv_tax_amt.setText(currencySymbol + "" + "0.0");
         tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
@@ -178,7 +178,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
                         jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
 
-                        purchaseOrderApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         tv_place_order.setEnabled(false);
                         tv_place_order.setClickable(false);
                     } else {
@@ -243,7 +243,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 jsonPurchaseOrderServer = jsonPurchaseOrder;
                 triggerPayment();
-                clientProfileModel.setProfilePresenter(this);
+                clientProfileApiCall.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
@@ -253,7 +253,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setGender(NoQueueBaseActivity.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                    clientProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
@@ -359,7 +359,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         progressDialog.show();
                                         progressDialog.setMessage("Deleting address..");
-                                        clientProfileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
+                                        clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                                     }
@@ -415,7 +415,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        purchaseOrderApiModel.setCashFreeNotifyPresenter(this);
+        purchaseOrderApiCall.setCashFreeNotifyPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setxTime(map.get("txTime"));
@@ -425,7 +425,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
         jsonCashfreeNotification.setOrderId(map.get("orderId"));
-        purchaseOrderApiModel.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        purchaseOrderApiCall.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override
@@ -445,7 +445,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         String stage = Constants.stage;
         String appId = Constants.appId;
         String orderId = jsonPurchaseOrderServer.getTransactionId();
-        String orderAmount = jsonPurchaseOrderServer.getOrderPrice();
+        String orderAmount = String .valueOf(Double.parseDouble(jsonPurchaseOrderServer.getOrderPrice())/100);
         String orderNote = "Test Order";
         String customerName = LaunchActivity.getUserName();
         String customerPhone = LaunchActivity.getPhoneNo();

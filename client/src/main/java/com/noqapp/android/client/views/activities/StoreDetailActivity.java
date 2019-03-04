@@ -97,15 +97,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_thumb_images = findViewById(R.id.rv_thumb_images);
         rv_thumb_images.setHasFixedSize(true);
-        rv_thumb_images.setLayoutManager(horizontalLayoutManager);
+        rv_thumb_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rv_photos = findViewById(R.id.rv_photos);
         rv_photos.setHasFixedSize(true);
-        rv_photos.setLayoutManager(horizontalLayoutManager1);
+        rv_photos.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tv_rating_review.setOnClickListener(new View.OnClickListener() {

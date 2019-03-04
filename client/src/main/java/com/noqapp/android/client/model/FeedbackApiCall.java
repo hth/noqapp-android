@@ -15,7 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FeedbackApiCall {
-    private final String TAG = RegisterModel.class.getSimpleName();
+    private final String TAG = RegisterApiCall.class.getSimpleName();
     private static final FeedbackApiUrls feedbackApiService;
     private FeedbackPresenter feedbackPresenter;
 

@@ -42,9 +42,7 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
 
         CategoryListAdapter categoryListAdapter = new CategoryListAdapter(jsonQueues, this, listener);
         rv_category_list.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_category_list.setLayoutManager(horizontalLayoutManagaer);
+        rv_category_list.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_category_list.setItemAnimator(new DefaultItemAnimator());
         rv_category_list.setAdapter(categoryListAdapter);
     }
