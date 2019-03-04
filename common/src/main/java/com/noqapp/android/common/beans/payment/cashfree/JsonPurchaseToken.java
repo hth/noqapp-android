@@ -38,6 +38,9 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
     @JsonProperty("cftoken")
     private String cftoken;
 
+    @JsonProperty("orderAmount")
+    private String orderAmount;
+
     public String getStatus() {
         return status;
     }
@@ -62,6 +65,15 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
 
     public JsonPurchaseToken setCftoken(String cftoken) {
         this.cftoken = cftoken;
+        return this;
+    }
+
+    public String getOrderAmount() {
+        return orderAmount;
+    }
+
+    public JsonPurchaseToken setOrderAmount(String orderAmount) {
+        this.orderAmount = orderAmount;
         return this;
     }
 }

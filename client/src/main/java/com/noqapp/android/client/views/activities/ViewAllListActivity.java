@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.NearMeModel;
-import com.noqapp.android.client.presenter.NearMePresenter;
+import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
+import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -29,7 +29,7 @@ import java.util.Collections;
 /**
  * Created by chandra on 5/7/17.
  */
-public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, NearMePresenter {
+public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener, SearchBusinessStorePresenter {
 
     private ArrayList<BizStoreElastic> listData;
     private StoreInfoViewAllAdapter storeInfoViewAllAdapter;
@@ -53,7 +53,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_view_all));
-        NearMeModel nearMeModel = new NearMeModel(this);
+        SearchBusinessStoreApiCall searchBusinessStoreModel = new SearchBusinessStoreApiCall(this);
         listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         if (null == listData)
             listData = new ArrayList<>();
@@ -63,7 +63,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         scrollId = getIntent().getStringExtra("scrollId");
         rv_merchant_around_you.setHasFixedSize(true);
         LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_merchant_around_you.setLayoutManager(horizontalLayoutManagaer);
         rv_merchant_around_you.setItemAnimator(new DefaultItemAnimator());
         // rv_merchant_around_you.addItemDecoration(new VerticalSpaceItemDecoration(2));
@@ -77,6 +77,7 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
         switch (item.getBusinessType()) {
             case DO:
             case BK:
+            case HS:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();
                 b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());

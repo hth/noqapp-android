@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfileModel;
+import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MigrateMail;
@@ -64,9 +64,9 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
                     changeMailOTP.setUserId(edt_email.getText().toString());
                     changeMailOTP.setMailOTP(edt_otp.getText().toString());
-                    ProfileModel profileModel = new ProfileModel();
-                    profileModel.setProfilePresenter(this);
-                    profileModel.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
+                    ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
+                    clientProfileModel.setProfilePresenter(this);
+                    clientProfileModel.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
                 }
                 break;
             case R.id.btn_verify_email:
@@ -78,9 +78,9 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();
                     migrateMail.setMail(edt_email.getText().toString());
-                    ProfileModel profileModel = new ProfileModel();
-                    profileModel.setMigrateEmailPresenter(this);
-                    profileModel.changeMail(UserUtils.getEmail(), UserUtils.getAuth(), migrateMail);
+                    ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
+                    clientProfileModel.setMigrateEmailPresenter(this);
+                    clientProfileModel.changeMail(UserUtils.getEmail(), UserUtils.getAuth(), migrateMail);
                 } else {
                     edt_email.setError(getString(R.string.error_invalid_email));
                 }

@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import com.noqapp.android.client.model.response.open.RegisterService;
+import com.noqapp.android.client.model.response.open.RegisterApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Login;
@@ -19,9 +19,9 @@ import retrofit2.Response;
  * Date: 4/8/17 8:38 PM
  */
 
-public final class RegisterModel {
+public class RegisterModel {
     private final String TAG = RegisterModel.class.getSimpleName();
-    private static final RegisterService registerService;
+    private static final RegisterApiUrls registerService;
     private ProfilePresenter profilePresenter;
 
     public RegisterModel(ProfilePresenter profilePresenter) {
@@ -29,7 +29,7 @@ public final class RegisterModel {
     }
 
     static {
-        registerService = RetrofitClient.getClient().create(RegisterService.class);
+        registerService = RetrofitClient.getClient().create(RegisterApiUrls.class);
     }
 
     /**

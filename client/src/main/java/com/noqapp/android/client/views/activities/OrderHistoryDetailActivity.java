@@ -7,8 +7,10 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistori
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -124,7 +126,11 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         }
         tv_store_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(jsonPurchaseOrder.getStoreAddress());
-        tv_payment_mode.setText("Paid via " + jsonPurchaseOrder.getPaymentMode().getDescription());
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            tv_payment_mode.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+        } else {
+            tv_payment_mode.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+        }
         tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));

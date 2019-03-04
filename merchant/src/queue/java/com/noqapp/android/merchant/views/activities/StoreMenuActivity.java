@@ -377,7 +377,6 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.setMessage("Placing order....");
                         progressDialog.show();
-                        //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
                         HashMap<String, ChildData> getOrder = getOrders();
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
@@ -394,16 +393,12 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                                 .setQueueUserId(jsonProfile.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-
-
                         jsonPurchaseOrder.setDeliveryAddress("");
-                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
+                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
                         jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
-                        jsonPurchaseOrder.setCustomerPhone("");
+                        jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                         jsonPurchaseOrder.setAdditionalNote("");
                         purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-
-
                     } else {
                         ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
                     }

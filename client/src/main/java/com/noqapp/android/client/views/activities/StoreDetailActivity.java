@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.StoreModel;
+import com.noqapp.android.client.model.StoreApiCall;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -126,7 +126,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             progressDialog.show();
-            new StoreModel(this).getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+            new StoreApiCall(this).getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }

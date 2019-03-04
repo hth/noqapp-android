@@ -75,6 +75,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private final int MILLI_SECONDS = 1000;
     private final int SECONDS = 60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
+    private boolean isPPCall = true;
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -141,7 +142,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                     break;
                 case PP:
-                    buffer_size = 1;
+                    if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+                        buffer_size = 1;
+                    }
                     break;
                 default:
             }
@@ -255,12 +258,14 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         }
                         break;
                         case PP:
-                            ll_profile.setVisibility(View.VISIBLE);
-                            Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
-                            tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
-                            tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
-                            tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
-                            tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
+                            if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+                                ll_profile.setVisibility(View.VISIBLE);
+                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
+                                tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
+                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
+                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
+                                tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
+                            }
                             break;
                         default:
                     }
@@ -281,32 +286,34 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             }
                             break;
                             case PP:
-                                ll_profile.setVisibility(View.VISIBLE);
-                                String imageName = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
-                                if (StringUtils.isNotBlank(imageName)) {
-                                    if (imageName.contains(".")) {
-                                        String[] file = imageName.split("\\.");
-                                        imageName = file[0] + "_o." + file[1];
+                                if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+                                    ll_profile.setVisibility(View.VISIBLE);
+                                    String imageName = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
+                                    if (StringUtils.isNotBlank(imageName)) {
+                                        if (imageName.contains(".")) {
+                                            String[] file = imageName.split("\\.");
+                                            imageName = file[0] + "_o." + file[1];
+                                        }
+                                    } else {
+                                        imageName = "";
                                     }
-                                } else {
-                                    imageName = "";
+
+                                    Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Picasso.with(context).load(R.drawable.profile_tv).into(iv_profile);
+                                        }
+                                    });
+                                    tv_doctor_name.setText("Dr. " + jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
+                                    tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
+                                    tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
+                                    tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
                                 }
-
-                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        Picasso.with(context).load(R.drawable.profile_tv).into(iv_profile);
-                                    }
-                                });
-                                tv_doctor_name.setText("Dr. " + jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
-                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
-                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
-                                tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
                                 break;
                             default:
                         }
@@ -476,6 +483,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         protected String doInBackground(String... params) {
             try {
                 int timeInMinutes = Integer.parseInt(params[0]) * MINUTE;
+                timeInMinutes = 2000;
                 Thread.sleep(timeInMinutes);
                 resp = "Slept for " + timeInMinutes + " minutes";
             } catch (InterruptedException e) {
@@ -501,9 +509,17 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
             VigyaapanModel vigyaapanModel = new VigyaapanModel();
             vigyaapanModel.setVigyaapanPresenter(PresentationService.this);
-            vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.PP);
+//            if(isPPCall){
+//                vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
+//                        LaunchActivity.getLaunchActivity().getEmail(),
+//                        LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.PP);
+//                isPPCall = false;
+//            }else {
+                vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.MV);
+                isPPCall = true;
+           // }
         }
 
         private QueueDetail getQueueDetails(ArrayList<JsonTopic> jsonTopics) {

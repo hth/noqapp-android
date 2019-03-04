@@ -1,30 +1,45 @@
 package com.noqapp.android.client.views.activities;
 
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ProfileModel;
-import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,10 +60,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter {
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter, CFClientInterface, CashFreeNotifyPresenter {
     private RadioGroup rg_address;
     private TextView tv_address;
     private RelativeLayout rl_address;
@@ -56,10 +73,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private Button btn_add_address;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private ProfileModel profileModel;
-    private PurchaseApiModel purchaseApiModel;
+    private ClientProfileApiCall clientProfileModel;
+    private PurchaseOrderApiCall purchaseOrderApiModel;
     private long mLastClickTime = 0;
     private String currencySymbol;
+    private JsonPurchaseOrder jsonPurchaseOrderServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +112,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Adding address in progress..");
-                        profileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
+                        clientProfileModel.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                     }
                 }
             }
@@ -117,7 +135,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         final Button tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(true);
-        purchaseApiModel = new PurchaseApiModel(this);
+        purchaseOrderApiModel = new PurchaseOrderApiCall(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
         currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
@@ -125,9 +143,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
         tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        profileModel = new ProfileModel();
-        profileModel.setProfilePresenter(this);
-        profileModel.setProfileAddressPresenter(this);
+        clientProfileModel = new ClientProfileApiCall();
+        clientProfileModel.setProfilePresenter(this);
+        clientProfileModel.setProfileAddressPresenter(this);
         tv_tax_amt.setText(currencySymbol + "" + "0.0");
         tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
@@ -160,7 +178,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
                         jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
 
-                        purchaseApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         tv_place_order.setEnabled(false);
                         tv_place_order.setClickable(false);
                     } else {
@@ -222,20 +240,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (null != jsonPurchaseOrder) {
-            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
-                Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
-                Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("data", jsonPurchaseOrder);
-                bundle.putSerializable("oldData", this.jsonPurchaseOrder);
-                bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
-                bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
-                bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
-                bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
-                in.putExtras(bundle);
-                startActivity(in);
-                NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
-                profileModel.setProfilePresenter(this);
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+                jsonPurchaseOrderServer = jsonPurchaseOrder;
+                triggerPayment();
+                clientProfileModel.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
@@ -245,7 +253,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     updateProfile.setGender(NoQueueBaseActivity.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                    profileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    clientProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
@@ -351,7 +359,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         progressDialog.show();
                                         progressDialog.setMessage("Deleting address..");
-                                        profileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
+                                        clientProfileModel.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                                     }
@@ -399,5 +407,88 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onSuccess(Map<String, String> map) {
+        Log.d("CFSDKSample", "Payment Success");
+        for (Map.Entry entry : map.entrySet()) {
+            Log.e("Payment success", entry.getKey() + " " + entry.getValue());
+        }
+        purchaseOrderApiModel.setCashFreeNotifyPresenter(this);
+        JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+        jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
+        jsonCashfreeNotification.setxTime(map.get("txTime"));
+        jsonCashfreeNotification.setReferenceId(map.get("referenceId"));
+        jsonCashfreeNotification.setPaymentMode(map.get("paymentMode"));
+        jsonCashfreeNotification.setSignature(map.get("signature"));
+        jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
+        jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
+        jsonCashfreeNotification.setOrderId(map.get("orderId"));
+        purchaseOrderApiModel.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+    }
+
+    @Override
+    public void onFailure(Map<String, String> map) {
+        Log.d("CFSDKSample", "Payment Failure");
+        Toast.makeText(this, "Transaction Failed", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNavigateBack() {
+        Log.e("User Navigate Back", "Back without payment");
+        Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
+    }
+
+    private void triggerPayment() {
+        String token = jsonPurchaseOrderServer.getJsonPurchaseToken().getCftoken();
+        String stage = Constants.stage;
+        String appId = Constants.appId;
+        String orderId = jsonPurchaseOrderServer.getTransactionId();
+        String orderAmount = jsonPurchaseOrderServer.getOrderPrice();
+        String orderNote = "Test Order";
+        String customerName = LaunchActivity.getUserName();
+        String customerPhone = LaunchActivity.getPhoneNo();
+        String customerEmail = "chandra.sharma@noqapp.com";//LaunchActivity.getActualMail();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_APP_ID, appId);
+        params.put(PARAM_ORDER_ID, orderId);
+        params.put(PARAM_ORDER_AMOUNT, orderAmount);
+        params.put(PARAM_ORDER_NOTE, orderNote);
+        params.put(PARAM_CUSTOMER_NAME, customerName);
+        params.put(PARAM_CUSTOMER_PHONE, customerPhone);
+        params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
+//        for (Map.Entry entry : params.entrySet()) {
+////            Log.d("CFSKDSample", entry.getKey() + " " + entry.getValue());
+////        }
+
+        CFPaymentService cfPaymentService = CFPaymentService.getCFPaymentServiceInstance();
+        cfPaymentService.setOrientation(0);
+        cfPaymentService.setConfirmOnExit(true);
+        cfPaymentService.doPayment(this, params, token, this, stage);
+
+    }
+
+
+    @Override
+    public void cashFreeNotifyResponse(JsonResponse jsonResponse) {
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
+            Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", jsonPurchaseOrderServer);
+            bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
+            bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+            bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
+            bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
+            in.putExtras(bundle);
+            startActivity(in);
+            NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+        } else {
+            Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
+        }
+
     }
 }

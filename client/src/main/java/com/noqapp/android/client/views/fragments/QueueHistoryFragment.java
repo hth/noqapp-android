@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.OrderQueueHistoryModel;
+import com.noqapp.android.client.model.OrderQueueHistoryApiCall;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistoricalList;
@@ -38,7 +38,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             if (UserUtils.isLogin()) {
-                OrderQueueHistoryModel orderQueueHistoryModel = new OrderQueueHistoryModel();
+                OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
                 orderQueueHistoryModel.setQueueHistoryPresenter(this);
                 orderQueueHistoryModel.queues(UserUtils.getEmail(), UserUtils.getAuth());
             } else {

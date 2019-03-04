@@ -6,7 +6,7 @@ package com.noqapp.android.client.views.activities;
 
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.MedicalRecordApiModel;
+import com.noqapp.android.client.model.MedicalRecordApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -66,7 +66,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
             if (UserUtils.isLogin()) {
                 if (jsonMedicalRecords.size() == 0) {
-                    new MedicalRecordApiModel(this).history(UserUtils.getEmail(), UserUtils.getAuth());
+                    new MedicalRecordApiCall(this).history(UserUtils.getEmail(), UserUtils.getAuth());
                     progressDialog.show();
                 }
             } else {

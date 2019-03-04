@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.PurchaseApiModel;
+import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter, ActivityCommunicator {
 
-    private PurchaseApiModel purchaseApiModel;
+    private PurchaseOrderApiCall purchaseOrderApiModel;
     private TextView tv_total_order_amt;
     private TextView tv_tax_amt;
     private TextView tv_due_amt;
@@ -59,7 +59,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_cancel_order = findViewById(R.id.btn_cancel_order);
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         initActionsViews(true);
-        purchaseApiModel = new PurchaseApiModel(this);
+        purchaseOrderApiModel = new PurchaseOrderApiCall(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
@@ -71,7 +71,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 progressDialog.show();
                 progressDialog.setMessage("Fetching order details in progress..");
                 int token = getIntent().getExtras().getInt("token");
-                purchaseApiModel.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
+                purchaseOrderApiModel.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
             } else {
                 ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
             }
@@ -94,7 +94,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Order cancel in progress..");
-                        purchaseApiModel.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiModel.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
                     }
