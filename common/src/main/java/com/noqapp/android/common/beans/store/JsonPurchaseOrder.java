@@ -98,6 +98,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("an")
     private String additionalNote;
 
+    @JsonProperty("tm")
+    private String transactionMessage;
+
     @JsonProperty("purt")
     private JsonPurchaseToken jsonPurchaseToken;
 
@@ -289,6 +292,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setAdditionalNote(String additionalNote) {
         this.additionalNote = additionalNote;
+        return this;
+    }
+
+    public String getTransactionMessage() {
+        return transactionMessage;
+    }
+
+    public JsonPurchaseOrder setTransactionMessage(String transactionMessage) {
+        this.transactionMessage = transactionMessage;
         return this;
     }
 

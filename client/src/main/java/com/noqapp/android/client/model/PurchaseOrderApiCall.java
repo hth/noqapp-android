@@ -148,9 +148,9 @@ public class PurchaseOrderApiCall {
     }
 
     public void cashFreeNotify(String did, String mail, String auth, JsonCashfreeNotification jsonCashfreeNotification) {
-        PURCHASE_ORDER_API_SERVICE.cashFreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonResponse>() {
+        PURCHASE_ORDER_API_SERVICE.cashFreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
-            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response cashFreeNotify", String.valueOf(response.body()));

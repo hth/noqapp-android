@@ -7,7 +7,9 @@ package com.noqapp.android.common.model.types.order;
 public enum PaymentStatusEnum {
     PP("PP", "Pending Payment"),
     PA("PA", "Paid"),
-    PF("PF", "Payment Fail");
+    PF("PF", "Payment Fail"),
+    FP("FP", "Flagged Payment"),
+    PC("PC", "Payment Cancelled");
 
     private final String description;
     private final String name;

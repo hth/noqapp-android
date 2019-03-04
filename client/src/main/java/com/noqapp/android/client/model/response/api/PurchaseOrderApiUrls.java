@@ -114,7 +114,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      */
     @POST("api/c/purchaseOrder/cf/notify.json")
-    Call<JsonResponse> cashFreeNotify(
+    Call<JsonPurchaseOrder> cashFreeNotify(
             @Header("X-R-DID")
             String did,
 
