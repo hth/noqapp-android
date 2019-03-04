@@ -232,8 +232,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             callCurrentAndHistoryQueue();
-            FeedApiCall feedModel = new FeedApiCall(this);
-            feedModel.activeFeed(UserUtils.getDeviceId());
+            FeedApiCall feedApiCall = new FeedApiCall(this);
+            feedApiCall.activeFeed(UserUtils.getDeviceId());
             pb_feed.setVisibility(View.VISIBLE);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -331,9 +331,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 pb_near.setVisibility(View.VISIBLE);
                 pb_health_care.setVisibility(View.VISIBLE);
             }
-            SearchBusinessStoreApiCall searchBusinessStoreModel = new SearchBusinessStoreApiCall(this);
-            searchBusinessStoreModel.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
-            // searchBusinessStoreModel.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
+            SearchBusinessStoreApiCall searchBusinessStoreApiCall = new SearchBusinessStoreApiCall(this);
+            searchBusinessStoreApiCall.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
+            // searchBusinessStoreApiCall.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

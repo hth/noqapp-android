@@ -201,9 +201,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                             }
                         } else {
-                            ReviewApiUnAuthenticCall reviewModel = new ReviewApiUnAuthenticCall();
-                            reviewModel.setReviewPresenter(ReviewActivity.this);
-                            reviewModel.queue(UserUtils.getDeviceId(), rr);
+                            ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
+                            reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
+                            reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
                         }
                     } else {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);

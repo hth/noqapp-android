@@ -64,9 +64,9 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
                     changeMailOTP.setUserId(edt_email.getText().toString());
                     changeMailOTP.setMailOTP(edt_otp.getText().toString());
-                    ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
-                    clientProfileModel.setProfilePresenter(this);
-                    clientProfileModel.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
+                    ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
+                    clientProfileApiCall.setProfilePresenter(this);
+                    clientProfileApiCall.migrateMail(UserUtils.getEmail(), UserUtils.getAuth(), changeMailOTP);
                 }
                 break;
             case R.id.btn_verify_email:

@@ -73,8 +73,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private int profile_pos;
     private List<JsonProfile> profileList;
     private String queueUserId = "";
-    private QueueApiUnAuthenticCall queueModel;
-    private QueueApiAuthenticCall queueApiModel;
+    private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
+    private QueueApiAuthenticCall queueApiAuthenticCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +105,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         });
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
-        queueModel = new QueueApiUnAuthenticCall();
-        queueApiModel = new QueueApiAuthenticCall();
+        queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+        queueApiAuthenticCall = new QueueApiAuthenticCall();
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
@@ -276,11 +276,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             if (UserUtils.isLogin()) {
-                queueApiModel.setResponsePresenter(this);
-                queueApiModel.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                queueApiAuthenticCall.setResponsePresenter(this);
+                queueApiAuthenticCall.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             } else {
-                queueModel.setResponsePresenter(this);
-                queueModel.abortQueue(UserUtils.getDeviceId(), codeQR);
+                queueApiUnAuthenticCall.setResponsePresenter(this);
+                queueApiUnAuthenticCall.abortQueue(UserUtils.getDeviceId(), codeQR);
             }
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -302,11 +302,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     queueUserId = jsonProfile.getQueueUserId();
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
-                queueApiModel.setTokenPresenter(this);
-                queueApiModel.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                queueApiAuthenticCall.setTokenPresenter(this);
+                queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
             } else {
-                queueModel.setTokenPresenter(this);
-                queueModel.joinQueue(UserUtils.getDeviceId(), codeQR);
+                queueApiUnAuthenticCall.setTokenPresenter(this);
+                queueApiUnAuthenticCall.joinQueue(UserUtils.getDeviceId(), codeQR);
             }
         }
     }

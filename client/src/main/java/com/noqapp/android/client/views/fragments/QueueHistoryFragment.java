@@ -49,9 +49,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         }
         listData = new ArrayList<>();
         rcv_order_history.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rcv_order_history.setLayoutManager(horizontalLayoutManagaer);
+        rcv_order_history.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_order_history.setItemAnimator(new DefaultItemAnimator());
         // rcv_order_history.addItemDecoration(new VerticalSpaceItemDecoration(2));
 

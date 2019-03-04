@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter, ActivityCommunicator {
 
-    private PurchaseOrderApiCall purchaseOrderApiModel;
+    private PurchaseOrderApiCall purchaseOrderApiCall;
     private TextView tv_total_order_amt;
     private TextView tv_tax_amt;
     private TextView tv_due_amt;
@@ -59,7 +59,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_cancel_order = findViewById(R.id.btn_cancel_order);
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         initActionsViews(true);
-        purchaseOrderApiModel = new PurchaseOrderApiCall(this);
+        purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
@@ -71,7 +71,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 progressDialog.show();
                 progressDialog.setMessage("Fetching order details in progress..");
                 int token = getIntent().getExtras().getInt("token");
-                purchaseOrderApiModel.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
+                purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
             } else {
                 ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
             }
@@ -94,7 +94,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Order cancel in progress..");
-                        purchaseOrderApiModel.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
                     }
@@ -127,7 +127,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             ll_order_details.addView(inflatedLayout);
         }
         int currentTemp = currentServing == -1 ? jsonPurchaseOrder.getServingNumber() : currentServing;
-        tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0? String.valueOf(jsonPurchaseOrder.getToken()):String.valueOf(currentTemp));
+        tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getToken()) : String.valueOf(currentTemp));
         switch (jsonPurchaseOrder.getPresentOrderState()) {
             case OP:
                 tv_status.setText("Order being prepared");
@@ -231,7 +231,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 }
             }
             int currentTemp = currentServing == -1 ? jq.getServingNumber() : currentServing;
-            tv_serving_no.setText(jq.getToken() - currentTemp <= 0? String.valueOf(jsonPurchaseOrder.getToken()):String.valueOf(currentTemp));
+            tv_serving_no.setText(jq.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getToken()) : String.valueOf(currentTemp));
         }
         return false;
     }

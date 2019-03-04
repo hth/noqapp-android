@@ -5,7 +5,7 @@ package com.noqapp.android.client.views.activities;
  */
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.RegisterModel;
+import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.presenter.beans.body.Login;
@@ -39,7 +39,7 @@ public class LoginActivity extends OTPActivity {
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
-        new RegisterModel(this).login(UserUtils.getDeviceId(), login);
+        new RegisterApiCall(this).login(UserUtils.getDeviceId(), login);
     }
 
     @Override

@@ -73,7 +73,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
-    private ClientProfileApiCall clientProfileModel;
+    private ClientProfileApiCall clientProfileApiCall;
     private List<String> nameList = new ArrayList<>();
     private String imageUrl = "";
     private String qUserId = "";
@@ -97,7 +97,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_edit_profile));
         iv_profile = findViewById(R.id.iv_profile);
-        clientProfileModel = new ClientProfileApiCall();
+        clientProfileApiCall = new ClientProfileApiCall();
         iv_profile.setOnClickListener(this);
         progressDialog.setMessage("Updating profile....");
         isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
@@ -195,8 +195,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             case R.id.tv_remove_image: {
                 progressDialog.show();
                 progressDialog.setMessage("Removing profile image");
-                clientProfileModel.setImageUploadPresenter(this);
-                clientProfileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(qUserId));
+                clientProfileApiCall.setImageUploadPresenter(this);
+                clientProfileApiCall.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(qUserId));
             }
             break;
             case R.id.iv_profile:
@@ -267,8 +267,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), qUserId);
-                        clientProfileModel.setImageUploadPresenter(this);
-                        clientProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        clientProfileApiCall.setImageUploadPresenter(this);
+                        clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -285,7 +285,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                clientProfileModel.setProfilePresenter(this);
+                clientProfileApiCall.setProfilePresenter(this);
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_Name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
@@ -300,7 +300,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         updateProfile.setGender(gender);
                         updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                         updateProfile.setQueueUserId(dependentProfile.getQueueUserId());
-                        clientProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                        clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                     } else {
                         Registration registration = new Registration();
                         registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()));
@@ -323,7 +323,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                     updateProfile.setQueueUserId(NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                    clientProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                    clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

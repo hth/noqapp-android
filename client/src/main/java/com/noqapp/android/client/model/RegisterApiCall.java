@@ -19,12 +19,12 @@ import retrofit2.Response;
  * Date: 4/8/17 8:38 PM
  */
 
-public class RegisterModel {
-    private final String TAG = RegisterModel.class.getSimpleName();
+public class RegisterApiCall {
+    private final String TAG = RegisterApiCall.class.getSimpleName();
     private static final RegisterApiUrls registerService;
     private ProfilePresenter profilePresenter;
 
-    public RegisterModel(ProfilePresenter profilePresenter) {
+    public RegisterApiCall(ProfilePresenter profilePresenter) {
         this.profilePresenter = profilePresenter;
     }
 

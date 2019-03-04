@@ -26,7 +26,7 @@ public class AllFeedsActivity extends AppCompatActivity implements FeedAdapter.O
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         RecyclerView rv_feed = findViewById(R.id.rv_merchant_around_you);
         rv_feed.setHasFixedSize(true);
-        rv_feed.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rv_feed.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_feed.setItemAnimator(new DefaultItemAnimator());
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override

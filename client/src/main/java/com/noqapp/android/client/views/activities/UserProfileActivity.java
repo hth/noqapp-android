@@ -111,9 +111,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
-            clientProfileModel.setProfilePresenter(this);
-            clientProfileModel.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
+            ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
+            clientProfileApiCall.setProfilePresenter(this);
+            clientProfileApiCall.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -211,9 +211,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), NoQueueBaseActivity.getUserProfile().getQueueUserId());
-                        ClientProfileApiCall clientProfileModel = new ClientProfileApiCall();
-                        clientProfileModel.setImageUploadPresenter(this);
-                        clientProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
+                        clientProfileApiCall.setImageUploadPresenter(this);
+                        clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

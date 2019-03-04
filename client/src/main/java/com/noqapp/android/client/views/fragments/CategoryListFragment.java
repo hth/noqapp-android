@@ -53,9 +53,7 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
         CategoryListAdapter categoryListAdapter = new CategoryListAdapter(tempList, getActivity(), listener);
         RecyclerView rv_category_list = view.findViewById(R.id.rv_category_list);
         rv_category_list.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rv_category_list.setLayoutManager(horizontalLayoutManagaer);
+        rv_category_list.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rv_category_list.setItemAnimator(new DefaultItemAnimator());
         rv_category_list.setAdapter(categoryListAdapter);
         return view;

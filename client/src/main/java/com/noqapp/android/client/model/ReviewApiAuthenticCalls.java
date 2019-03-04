@@ -15,7 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReviewApiAuthenticCalls {
-    private final String TAG = RegisterModel.class.getSimpleName();
+    private final String TAG = RegisterApiCall.class.getSimpleName();
     private static final ReviewApiUrls reviewApiService;
     private ReviewPresenter reviewPresenter;
 

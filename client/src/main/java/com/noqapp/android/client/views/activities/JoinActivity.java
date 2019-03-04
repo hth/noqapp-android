@@ -145,14 +145,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     progressDialog.setMessage("Loading queue details...");
                     progressDialog.show();
                     if (UserUtils.isLogin()) {
-                        QueueApiAuthenticCall queueApiModel = new QueueApiAuthenticCall();
-                        queueApiModel.setQueuePresenter(this);
-                        queueApiModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                        QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
+                        queueApiAuthenticCall.setQueuePresenter(this);
+                        queueApiAuthenticCall.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
 
                     } else {
-                        QueueApiUnAuthenticCall queueModel = new QueueApiUnAuthenticCall();
-                        queueModel.setQueuePresenter(this);
-                        queueModel.getQueueState(UserUtils.getDeviceId(), codeQR);
+                        QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+                        queueApiUnAuthenticCall.setQueuePresenter(this);
+                        queueApiUnAuthenticCall.getQueueState(UserUtils.getDeviceId(), codeQR);
                     }
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);

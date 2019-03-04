@@ -51,7 +51,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
             tv_empty.setVisibility(View.GONE);
         }
         LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_all_review.setLayoutManager(horizontalLayoutManagaer);
         rv_all_review.setItemAnimator(new DefaultItemAnimator());
         Intent bundle = getIntent();
@@ -70,12 +70,12 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 jsonReviews = new ArrayList<>();
                 String codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
                 if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
-                    ReviewApiUnAuthenticCall reviewModel = new ReviewApiUnAuthenticCall();
-                    reviewModel.setAllReviewPresenter(this);
+                    ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
+                    reviewApiUnAuthenticCall.setAllReviewPresenter(this);
                     if (bundle.getBooleanExtra("isLevelUp", false)) {
-                        reviewModel.reviewsLevelUp(UserUtils.getDeviceId(), codeQR);
+                        reviewApiUnAuthenticCall.reviewsLevelUp(UserUtils.getDeviceId(), codeQR);
                     } else {
-                        reviewModel.review(UserUtils.getDeviceId(), codeQR);
+                        reviewApiUnAuthenticCall.review(UserUtils.getDeviceId(), codeQR);
                     }
                     progressDialog.setMessage("Getting Reviews...");
                     progressDialog.show();

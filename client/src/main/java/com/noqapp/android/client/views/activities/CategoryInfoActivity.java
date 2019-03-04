@@ -138,12 +138,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             if (NetworkUtils.isConnectingToInternet(this)) {
                 progressDialog.show();
-                QueueApiUnAuthenticCall queueModel = new QueueApiUnAuthenticCall();
-                queueModel.setQueuePresenter(this);
+                QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
+                queueApiUnAuthenticCall.setQueuePresenter(this);
                 if (bundle.getBoolean("CallCategory", false)) {
-                    queueModel.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
+                    queueApiUnAuthenticCall.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
                 } else {
-                    queueModel.getAllQueueState(UserUtils.getDeviceId(), codeQR);
+                    queueApiUnAuthenticCall.getAllQueueState(UserUtils.getDeviceId(), codeQR);
                 }
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
