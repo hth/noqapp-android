@@ -16,6 +16,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private Button btn_cancel_order;
     private String codeQR;
     private int currentServing = -1;
+    private TextView tv_payment_due;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_token = findViewById(R.id.tv_token);
         tv_status = findViewById(R.id.tv_status);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
+        tv_payment_due = findViewById(R.id.tv_payment_due);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
         btn_cancel_order = findViewById(R.id.btn_cancel_order);
@@ -111,6 +114,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            tv_payment_due.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+        } else {
+            tv_payment_due.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+        }
         for (int i = 0; i < oldjsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
