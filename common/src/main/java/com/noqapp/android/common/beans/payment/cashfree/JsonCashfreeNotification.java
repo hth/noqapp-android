@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonCashfreeNotification extends AbstractDomain {
-    @JsonProperty("xTime")
-    private String xTime;
+    @JsonProperty("txTime")
+    private String txTime;
 
     @JsonProperty("txMsg")
     private String txMsg;
@@ -50,12 +50,12 @@ public class JsonCashfreeNotification extends AbstractDomain {
     @JsonProperty("orderId")
     private String orderId;
 
-    public String getxTime() {
-        return xTime;
+    public String getTxTime() {
+        return txTime;
     }
 
-    public JsonCashfreeNotification setxTime(String xTime) {
-        this.xTime = xTime;
+    public JsonCashfreeNotification setTxTime(String txTime) {
+        this.txTime = txTime;
         return this;
     }
 
