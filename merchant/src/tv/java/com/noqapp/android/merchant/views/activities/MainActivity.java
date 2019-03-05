@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapanList(jsonVigyaapanTVList, topicAndQueueTVList.size());
-                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList,currentPage,true);
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList,true);
                 }
                 final Handler handler = new Handler();
                 final Runnable Update = new Runnable() {
