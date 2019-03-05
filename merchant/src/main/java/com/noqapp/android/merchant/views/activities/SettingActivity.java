@@ -334,6 +334,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.stay, R.anim.slide_down);
+        if (null != BaseLaunchActivity.merchantListFragment) {
+            BaseLaunchActivity.merchantListFragment.onRefresh();
+        }
     }
 
     @Override

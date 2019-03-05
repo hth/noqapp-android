@@ -454,6 +454,9 @@ public class AppUtilities extends CommonHelper {
                     if (1 == jsonHour.getStartHour() && 2359 == jsonHour.getEndHour()) {
                         key = context.getString(R.string.whole_day);
                     }
+                    if (jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0) {
+                        key = "Closed";
+                    }
                 }
                 if (null == temp.get(key)) {
                     temp.put(key, getDayName(jsonHour.getDayOfWeek()));
@@ -519,7 +522,9 @@ public class AppUtilities extends CommonHelper {
         if (1 == startHour && 2359 == endHour) {
             key = context.getString(R.string.whole_day);
             return key;
-        } else {
+        } else if (startHour == 0 && endHour == 0) {
+            return  "Closed";
+        }else {
             return context.getString(R.string.store_today_hour) + " " + key;
         }
     }
