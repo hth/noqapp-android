@@ -61,6 +61,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -105,7 +106,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private LinearLayout rl_current_activity;
     private TextView tv_no_thanks;
     private TextView tv_update;
-    private ImageView iv_event;
+    private AppCompatImageView iv_event;
 
     private boolean fromList = false;
     private ArrayList<BizStoreElastic> nearMeData;
