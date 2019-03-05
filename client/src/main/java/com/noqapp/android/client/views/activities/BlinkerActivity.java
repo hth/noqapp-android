@@ -1,7 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,6 +54,10 @@ public class BlinkerActivity extends Activity {
         animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the layout will fade back in
         rl_blinker.startAnimation(animation);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (BuildConfig.BUILD_TYPE.equals("release")) {
+            Answers.getInstance().logCustom(new CustomEvent("Buzzer Screen"));
+        }
 
         if (null != vibrator && vibrator.hasVibrator()) {
             final long[] pattern = {0, 1000, 1000, 1000, 1000};
