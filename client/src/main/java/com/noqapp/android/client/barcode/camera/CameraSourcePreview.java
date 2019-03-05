@@ -177,6 +177,8 @@ public class CameraSourcePreview extends ViewGroup {
             getChildAt(i).layout(
                     -1 * childXOffset, -1 * childYOffset,
                     childWidth - childXOffset, childHeight - childYOffset);
+
+           // getChildAt(i).layout(0, 0, childWidth, childHeight);
         }
 
 
