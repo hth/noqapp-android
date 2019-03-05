@@ -5,6 +5,7 @@ import com.noqapp.android.merchant.model.api.VigyaapanService;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
+import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTVList;
 import com.noqapp.android.merchant.utils.Constants;
 
 import androidx.annotation.NonNull;
@@ -27,14 +28,40 @@ public class VigyaapanModel {
         vigyaapanService = RetrofitClient.getClient().create(VigyaapanService.class);
     }
 
-    /**
-     * @param mail
-     * @param auth
-     */
-    public void getVigyaapan(String did, String mail, String auth, VigyaapanTypeEnum vigyaapanType) {
-        vigyaapanService.getVigyaapan(did, Constants.DEVICE_TYPE, mail, auth, vigyaapanType.getName()).enqueue(new Callback<JsonVigyaapanTV>() {
+
+//    public void getVigyaapan(String did, String mail, String auth, VigyaapanTypeEnum vigyaapanType) {
+//        vigyaapanService.getVigyaapan(did, Constants.DEVICE_TYPE, mail, auth, vigyaapanType.getName()).enqueue(new Callback<JsonVigyaapanTV>() {
+//            @Override
+//            public void onResponse(@NonNull Call<JsonVigyaapanTV> call, @NonNull Response<JsonVigyaapanTV> response) {
+//                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+//                    if (null != response.body() && null == response.body().getError()) {
+//                        vigyaapanPresenter.vigyaapanResponse(response.body());
+//                        Log.d("getVigyaapan", String.valueOf(response.body()));
+//                    } else {
+//                        Log.e(TAG, "Empty getVigyaapan");
+//                        vigyaapanPresenter.responseErrorPresenter(response.body().getError());
+//                    }
+//                } else {
+//                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+//                        vigyaapanPresenter.authenticationFailure();
+//                    } else {
+//                        vigyaapanPresenter.responseErrorPresenter(response.code());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<JsonVigyaapanTV> call, @NonNull Throwable t) {
+//                Log.e("onFailure getVigyaapan", t.getLocalizedMessage(), t);
+//                vigyaapanPresenter.responseErrorPresenter(null);
+//            }
+//        });
+//    }
+
+    public void getAllVigyaapan(String did, String mail, String auth) {
+        vigyaapanService.getAllVigyaapan(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonVigyaapanTVList>() {
             @Override
-            public void onResponse(@NonNull Call<JsonVigyaapanTV> call, @NonNull Response<JsonVigyaapanTV> response) {
+            public void onResponse(@NonNull Call<JsonVigyaapanTVList> call, @NonNull Response<JsonVigyaapanTVList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         vigyaapanPresenter.vigyaapanResponse(response.body());
@@ -48,12 +75,13 @@ public class VigyaapanModel {
                         vigyaapanPresenter.authenticationFailure();
                     } else {
                         vigyaapanPresenter.responseErrorPresenter(response.code());
+                        Log.e(TAG, ""+response.code());
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonVigyaapanTV> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonVigyaapanTVList> call, @NonNull Throwable t) {
                 Log.e("onFailure getVigyaapan", t.getLocalizedMessage(), t);
                 vigyaapanPresenter.responseErrorPresenter(null);
             }

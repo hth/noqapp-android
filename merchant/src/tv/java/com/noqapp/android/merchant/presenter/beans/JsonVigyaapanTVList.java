@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,7 +15,7 @@ import java.util.List;
  * hitender
  * 2019-03-01 15:17
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -32,6 +33,17 @@ public class JsonVigyaapanTVList extends AbstractDomain {
 
     @JsonProperty("vts")
     private List<JsonVigyaapanTV> jsonVigyaapanTVs = new ArrayList<>();
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
 
     public List<JsonVigyaapanTV> getJsonVigyaapanTVs() {
         return jsonVigyaapanTVs;
@@ -45,5 +57,13 @@ public class JsonVigyaapanTVList extends AbstractDomain {
     public JsonVigyaapanTVList addJsonVigyaapanTV(JsonVigyaapanTV jsonVigyaapanTV) {
         this.jsonVigyaapanTVs.add(jsonVigyaapanTV);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonVigyaapanTVList{" +
+                "jsonVigyaapanTVs=" + jsonVigyaapanTVs +
+                ", error=" + error +
+                '}';
     }
 }

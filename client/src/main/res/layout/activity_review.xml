@@ -217,14 +217,14 @@
 
                         <Button
                                 android:id="@+id/btn_submit"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="45dp"
                                 android:layout_gravity="center"
                                 android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
                                 android:layout_marginTop="10dp"
-                                android:background="@color/button_color"
+                                android:background="@drawable/btn_bg_enable"
                                 android:gravity="center"
                                 android:paddingLeft="100dp"
                                 android:paddingRight="100dp"

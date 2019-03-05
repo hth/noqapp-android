@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -15,6 +14,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
+import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTVList;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -56,16 +56,15 @@ import java.util.Locale;
 
 public class PresentationService extends CastRemoteDisplayLocalService implements ClientInQueuePresenter, VigyaapanPresenter {
     private DetailPresentation castPresentation;
-    private TopicAndQueueTV topicAndQueueTV;
-    private int pos = 0;
+    private int image_list_size = 0;
+    private int profile_size = 0;
     private int url_pos = 0;
     private int no_of_q = 0;
-    private int sequence = 1;
-    private int buffer_size = 0;
+    private int sequence = -1;
     private int text_list_pos = 0;
     private List<String> urlList = new ArrayList<>();
     private List<String> textList = new ArrayList<>();
-    private JsonVigyaapanTV jsonVigyaapanTV;
+    private JsonVigyaapanTV jsonVigyaapanTV_profile, jsonVigyaapanTV_images;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
     private FetchLatestData fetchLatestData;
@@ -75,7 +74,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private final int MILLI_SECONDS = 1000;
     private final int SECONDS = 60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
-    private boolean isPPCall = true;
+    private boolean callVigyapan = true;
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -91,7 +90,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     @Override
     public void onDismissPresentation() {
         dismissPresentation();
-        topicAndQueueTV = null;
     }
 
     private void dismissPresentation() {
@@ -101,23 +99,22 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         }
     }
 
-    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, int position, boolean notificationUpdate) {
+    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, boolean notificationUpdate) {
         if (notificationUpdate) {
             if (null != fetchLatestData) {
                 fetchLatestData.cancel(true);
                 fetchLatestData = null;
             }
         }
-        setTopicAndQueueTV(topicAndQueueTVListTemp, position);
+        setTopicAndQueueTV(topicAndQueueTVListTemp);
 
     }
 
-    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp, int position) {
-        pos = position;
+    public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp) {
         this.topicAndQueueTVList = topicAndQueueTVListTemp;
-        topicAndQueueTV = topicAndQueueTVList.get(pos);
         if (castPresentation != null) {
-            castPresentation.updateDetail(topicAndQueueTVList.get(pos));
+            no_of_q = topicAndQueueTVList.size();
+            castPresentation.updateDetail();
         }
         if (null == fetchLatestData) {
             fetchLatestData = new FetchLatestData();
@@ -130,25 +127,38 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     }
 
-    public void setVigyaapan(JsonVigyaapanTV jsonVigyaapanTV, int no_of_q) {
-        this.jsonVigyaapanTV = jsonVigyaapanTV;
-        this.no_of_q = no_of_q;
-        if (null != jsonVigyaapanTV) {
-            switch (jsonVigyaapanTV.getVigyaapanType()) {
-                case MV:
-                    if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
-                        urlList = jsonVigyaapanTV.getImageUrls();
-                        buffer_size = urlList.size();
+    public void setVigyaapanList(JsonVigyaapanTVList jsonVigyaapanTVList, int no_of_q) {
+
+        Log.e("setVigyaapanList", "called");
+        if (jsonVigyaapanTVList.getJsonVigyaapanTVs().size() > 0) {
+            for (int i = 0; i < jsonVigyaapanTVList.getJsonVigyaapanTVs().size(); i++) {
+                JsonVigyaapanTV jsonVigyaapanTV = jsonVigyaapanTVList.getJsonVigyaapanTVs().get(i);
+                if (null != jsonVigyaapanTV) {
+                    switch (jsonVigyaapanTV.getVigyaapanType()) {
+                        case MV:
+                            if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
+                                urlList = jsonVigyaapanTV.getImageUrls();
+                                urlList.add("https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg");
+                                urlList.add("https://cdn.pixabay.com/photo/2017/05/09/21/49/gecko-2299365_960_720.jpg");
+
+                                image_list_size = urlList.size();
+                                jsonVigyaapanTV_images = jsonVigyaapanTV;
+                                Log.e("Vigyapan: ", "Image URL called");
+                            }
+                            break;
+                        case PP:
+                            if (null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+                                profile_size = 1;
+                                jsonVigyaapanTV_profile = jsonVigyaapanTV;
+                                Log.e("Vigyapan: ", "Profile called");
+                            }
+                            break;
+                        default:
                     }
-                    break;
-                case PP:
-                    if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
-                        buffer_size = 1;
-                    }
-                    break;
-                default:
+                }
             }
         }
+        this.no_of_q = no_of_q;
 
     }
 
@@ -165,19 +175,15 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 if (topicAndQueueTVListTemp.size() == 0) {
                     topicAndQueueTVListTemp.add(new TopicAndQueueTV().setJsonTopic(null).setJsonQueueTV(null));
                 }
-
-                // setTopicAndQueueTV(topicAndQueueTVListTemp, 0);
                 topicAndQueueTVList = topicAndQueueTVListTemp;
             }
-
         }
         fetchLatestData = null;
     }
 
     @Override
-    public void vigyaapanResponse(JsonVigyaapanTV jsonVigyaapanTV) {
-        this.jsonVigyaapanTV = jsonVigyaapanTV;
-        setVigyaapan(jsonVigyaapanTV, topicAndQueueTVList.size());
+    public void vigyaapanResponse(JsonVigyaapanTVList JsonVigyaapanTVList) {
+        setVigyaapanList(JsonVigyaapanTVList, topicAndQueueTVList.size());
         fetchLatestData = null;
     }
 
@@ -237,102 +243,125 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             textList.add("Get real time appointment updates on <font color='#8c1515'><b>NoQApp</b></font>.");
             textList.add("Front desk can book your appointment just by your phone number.");
             textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
-            updateDetail(topicAndQueueTV);
+            no_of_q = topicAndQueueTVList.size();
+            updateDetail();
         }
 
-        public void updateDetail(TopicAndQueueTV topicAndQueueTV) {
-            if (null == topicAndQueueTV || null == topicAndQueueTV.getJsonQueueTV()) {
-                if (null != jsonVigyaapanTV)
-                    switch (jsonVigyaapanTV.getVigyaapanType()) {
-                        case MV: {
-                            ll_profile.setVisibility(View.GONE);
-                            if (url_pos < urlList.size()) {
-                                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
-                                iv_advertisement.setVisibility(View.VISIBLE);
-                                ++url_pos;
-                            } else {
-                                url_pos = 0;
-                                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
-                                iv_advertisement.setVisibility(View.VISIBLE);
-                            }
-                        }
-                        break;
-                        case PP:
-                            if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
-                                ll_profile.setVisibility(View.VISIBLE);
-                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
-                                tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
-                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
-                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
-                                tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
-                            }
-                            break;
-                        default:
-                    }
-            } else {
-                if (sequence > no_of_q) {
-                    if (null != jsonVigyaapanTV)
-                        switch (jsonVigyaapanTV.getVigyaapanType()) {
-                            case MV: {
-                                ll_profile.setVisibility(View.GONE);
-                                if (url_pos < urlList.size()) {
-                                    Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
-                                    iv_advertisement.setVisibility(View.VISIBLE);
-                                    ++url_pos;
-                                } else {
-                                    iv_advertisement.setVisibility(View.GONE);
-                                    url_pos = 0;
-                                }
-                            }
-                            break;
-                            case PP:
-                                if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
-                                    ll_profile.setVisibility(View.VISIBLE);
-                                    String imageName = jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage();
-                                    if (StringUtils.isNotBlank(imageName)) {
-                                        if (imageName.contains(".")) {
-                                            String[] file = imageName.split("\\.");
-                                            imageName = file[0] + "_o." + file[1];
-                                        }
-                                    } else {
-                                        imageName = "";
-                                    }
+        public void updateDetail() {
 
-                                    Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
-                                        @Override
-                                        public void onSuccess() {
+            TopicAndQueueTV topicAndQueueTV = null;
+            try {
 
-                                        }
+                ++sequence;
+                if (sequence >= no_of_q + image_list_size + profile_size) {
 
-                                        @Override
-                                        public void onError() {
-                                            Picasso.with(context).load(R.drawable.profile_tv).into(iv_profile);
-                                        }
-                                    });
-                                    tv_doctor_name.setText("Dr. " + jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
-                                    tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
-                                    tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
-                                    tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
-                                }
-                                break;
-                            default:
-                        }
+                    Log.e("sequence", "sequence " + sequence + " no_of_q: " + no_of_q + " image_list_size: " + image_list_size + " profile_size: " + profile_size);
+                    sequence = 0;
+                    Log.e("sequence reset", "" + sequence);
+                }
+                Log.e("sequence", "" + sequence);
+                if (sequence < no_of_q)
+                    topicAndQueueTV = topicAndQueueTVList.get(sequence);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                } else {
+
+//            if (null == topicAndQueueTV || null == topicAndQueueTV.getJsonQueueTV()) {
+//                if (null != jsonVigyaapanTV)
+//                    switch (jsonVigyaapanTV.getVigyaapanType()) {
+//                        case MV: {
+//                            ll_profile.setVisibility(View.GONE);
+//                            if (url_pos < urlList.size()) {
+//                                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+//                                iv_advertisement.setVisibility(View.VISIBLE);
+//                                ++url_pos;
+//                            } else {
+//                                url_pos = 0;
+//                                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+//                                iv_advertisement.setVisibility(View.VISIBLE);
+//                            }
+//                        }
+//                        break;
+//                        case PP:
+//                            if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+//                                ll_profile.setVisibility(View.VISIBLE);
+//                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
+//                                tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
+//                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
+//                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
+//                                tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
+//                            }
+//                            break;
+//                        default:
+//                    }
+//            }
+
+            if (sequence >= no_of_q) {
+                if (null != jsonVigyaapanTV_profile && no_of_q + profile_size == sequence + 1) {
+                    Log.e("Inside Profile", "profile :" + sequence);
+                    ll_profile.setVisibility(View.VISIBLE);
                     iv_advertisement.setVisibility(View.GONE);
+                    ll_no_list.setVisibility(View.GONE);
+                    String imageName = jsonVigyaapanTV_profile.getJsonProfessionalProfileTV().getProfileImage();
+                    if (StringUtils.isNotBlank(imageName)) {
+                        if (imageName.contains(".")) {
+                            String[] file = imageName.split("\\.");
+                            imageName = file[0] + "_o." + file[1];
+                        }
+                    } else {
+                        imageName = "";
+                    }
+
+                    Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(DetailPresentation.this.context).load(R.drawable.profile_tv).into(iv_profile);
+                        }
+                    });
+                    tv_doctor_name.setText("Dr. " + jsonVigyaapanTV_profile.getJsonProfessionalProfileTV().getName());
+                    tv_doctor_category.setText(jsonVigyaapanTV_profile.getJsonProfessionalProfileTV().getProfessionType());
+                    tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV_profile.getJsonProfessionalProfileTV().getEducation()));
+                    tv_about_doctor.setText(jsonVigyaapanTV_profile.getJsonProfessionalProfileTV().getAboutMe());
+                } else {
                     ll_profile.setVisibility(View.GONE);
                 }
 
-                if (sequence >= no_of_q + buffer_size) {
-                    sequence = 0;
-                }
-                sequence++;
-                if (null != topicAndQueueTV.getJsonQueueTV()) {
-                    if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
-                        Picasso.with(context).load(R.drawable.profile_tv).into(image);
-                        Picasso.with(context).load(R.drawable.profile_tv).into(image1);
+                if (null != jsonVigyaapanTV_images && sequence + 1 > no_of_q + profile_size) {
+                    ll_profile.setVisibility(View.GONE);
+                    ll_no_list.setVisibility(View.GONE);
+                    Log.e("Inside Images", "Images: " + sequence);
+                    if (url_pos < urlList.size()) {
+                        Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+                        iv_advertisement.setVisibility(View.VISIBLE);
+                        ++url_pos;
                     } else {
-                        Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
+                        iv_advertisement.setVisibility(View.GONE);
+                        url_pos = 0;
+                    }
+                } else {
+                    iv_advertisement.setVisibility(View.GONE);
+
+                }
+
+
+            } else {
+                Log.e("Check error", "Inside List: " + sequence);
+                url_pos = 0;
+                ll_profile.setVisibility(View.GONE);
+                iv_advertisement.setVisibility(View.GONE);
+                ll_no_list.setVisibility(View.GONE);
+                if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
+                    if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
+                        Picasso.with(this.context).load(R.drawable.profile_tv).into(image);
+                        Picasso.with(this.context).load(R.drawable.profile_tv).into(image1);
+                    } else {
+                        Picasso.with(this.context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                             @Override
                             public void onSuccess() {
 
@@ -340,10 +369,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
                             @Override
                             public void onError() {
-                                Picasso.with(context).load(R.drawable.profile_tv).into(image);
+                                Picasso.with(DetailPresentation.this.context).load(R.drawable.profile_tv).into(image);
                             }
                         });
-                        Picasso.with(context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
+                        Picasso.with(this.context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
                             @Override
                             public void onSuccess() {
 
@@ -351,7 +380,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
                             @Override
                             public void onError() {
-                                Picasso.with(context).load(R.drawable.profile_tv).into(image1);
+                                Picasso.with(DetailPresentation.this.context).load(R.drawable.profile_tv).into(image1);
                             }
                         });
                     }
@@ -373,13 +402,13 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
                     ++text_list_pos;
 
-                    if (pos % 2 == 0) {
-                        ll_list.setBackground(ContextCompat.getDrawable(context, R.mipmap.temp_2));//"#85b8cb"));
+                    if (sequence % 2 == 0) {
+                        ll_list.setBackground(ContextCompat.getDrawable(this.context, R.mipmap.temp_2));
                     } else {
-                        ll_list.setBackground(ContextCompat.getDrawable(context, R.mipmap.pp_bg));   //Color.parseColor("#4a87ab"));
+                        ll_list.setBackground(ContextCompat.getDrawable(this.context, R.mipmap.pp_bg));
                     }
                     ll_list.removeAllViews();
-                    LayoutInflater inflater = LayoutInflater.from(context);
+                    LayoutInflater inflater = LayoutInflater.from(this.context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
                         List<JsonQueuedPersonTV> data = topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList();
                         Collections.sort(
@@ -424,6 +453,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                 }
             }
+
         }
 
         @Override
@@ -466,12 +496,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         @Override
         protected void onPostExecute(String result) {
             Log.e("TV loop", "done");
-            if (pos + 1 < topicAndQueueTVList.size()) {
-                setTopicAndQueueTV(topicAndQueueTVList, pos + 1);
-            } else {
-                setTopicAndQueueTV(topicAndQueueTVList, 0);
-            }
-
+            setTopicAndQueueTV(topicAndQueueTVList);
             new AsyncTaskRunner().execute(LOOP_TIME);
         }
     }
@@ -506,20 +531,14 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
-
-            VigyaapanModel vigyaapanModel = new VigyaapanModel();
-            vigyaapanModel.setVigyaapanPresenter(PresentationService.this);
-//            if(isPPCall){
-//                vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
-//                        LaunchActivity.getLaunchActivity().getEmail(),
-//                        LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.PP);
-//                isPPCall = false;
-//            }else {
-                vigyaapanModel.getVigyaapan(UserUtils.getDeviceId(),
+            if (callVigyapan) {
+                VigyaapanModel vigyaapanModel = new VigyaapanModel();
+                vigyaapanModel.setVigyaapanPresenter(PresentationService.this);
+                vigyaapanModel.getAllVigyaapan(UserUtils.getDeviceId(),
                         LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), VigyaapanTypeEnum.MV);
-                isPPCall = true;
-           // }
+                        LaunchActivity.getLaunchActivity().getAuth());
+                callVigyapan = false;
+            }
         }
 
         private QueueDetail getQueueDetails(ArrayList<JsonTopic> jsonTopics) {

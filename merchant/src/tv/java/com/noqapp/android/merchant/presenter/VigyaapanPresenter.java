@@ -1,10 +1,9 @@
 package com.noqapp.android.merchant.presenter;
 
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
-import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTV;
+import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTVList;
 
 public interface VigyaapanPresenter extends ResponseErrorPresenter {
-
-    void vigyaapanResponse(JsonVigyaapanTV jsonVigyaapanTV);
+    void vigyaapanResponse(JsonVigyaapanTVList jsonVigyaapanTVList);
 }
 

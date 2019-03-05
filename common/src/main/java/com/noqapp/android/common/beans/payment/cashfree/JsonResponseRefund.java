@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * hitender
- * 2019-02-28 14:09
+ * 2019-03-05 06:44
  */
 @SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
@@ -27,26 +27,32 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseToken extends AbstractDomain implements Serializable {
+public class JsonResponseRefund extends AbstractDomain implements Serializable {
 
     @JsonProperty("status")
     private String status;
 
+    @JsonProperty("reason")
+    private String reason;
+
     @JsonProperty("message")
     private String message;
-
-    @JsonProperty("cftoken")
-    private String cftoken;
-
-    @JsonProperty("orderAmount")
-    private String orderAmount;
 
     public String getStatus() {
         return status;
     }
 
-    public JsonPurchaseToken setStatus(String status) {
+    public JsonResponseRefund setStatus(String status) {
         this.status = status;
+        return this;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public JsonResponseRefund setReason(String reason) {
+        this.reason = reason;
         return this;
     }
 
@@ -54,26 +60,8 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
         return message;
     }
 
-    public JsonPurchaseToken setMessage(String message) {
+    public JsonResponseRefund setMessage(String message) {
         this.message = message;
-        return this;
-    }
-
-    public String getCftoken() {
-        return cftoken;
-    }
-
-    public JsonPurchaseToken setCftoken(String cftoken) {
-        this.cftoken = cftoken;
-        return this;
-    }
-
-    public String getOrderAmount() {
-        return orderAmount;
-    }
-
-    public JsonPurchaseToken setOrderAmount(String orderAmount) {
-        this.orderAmount = orderAmount;
         return this;
     }
 }
