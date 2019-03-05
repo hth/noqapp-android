@@ -20,12 +20,12 @@ import com.google.android.gms.common.images.Size;
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
-import androidx.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
+import androidx.annotation.RequiresPermission;
 
 import java.io.IOException;
 
@@ -112,7 +112,7 @@ public class CameraSourcePreview extends ViewGroup {
             try {
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG, "Do not have permission to start the camera", se);
+                Log.e(TAG,"Do not have permission to start the camera", se);
             } catch (IOException e) {
                 Log.e(TAG, "Could not start camera source.", e);
             }
@@ -177,12 +177,19 @@ public class CameraSourcePreview extends ViewGroup {
             getChildAt(i).layout(
                     -1 * childXOffset, -1 * childYOffset,
                     childWidth - childXOffset, childHeight - childYOffset);
+
+           // getChildAt(i).layout(0, 0, childWidth, childHeight);
         }
+
 
         try {
             startIfReady();
-        } catch (IOException e) {
-            Log.e(TAG, "Could not start camera source.", e);
+        } catch (SecurityException se) {
+            Log.e(TAG,"Do not have permission to start the camera", se);
+        } catch (IOException ioe) {
+            Log.e(TAG, "Could not start camera source.", ioe);
+        } catch (Exception e){
+            Log.e(TAG, "Camera exception.", e);
         }
     }
 

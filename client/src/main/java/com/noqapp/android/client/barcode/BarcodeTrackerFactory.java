@@ -15,6 +15,7 @@
  */
 package com.noqapp.android.client.barcode;
 
+
 import com.noqapp.android.client.barcode.camera.GraphicOverlay;
 
 import com.google.android.gms.vision.MultiProcessor;
@@ -22,6 +23,7 @@ import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import android.app.Activity;
+import android.content.Context;
 
 /**
  * Factory for creating a tracker and associated graphic to be associated with a new barcode.  The
@@ -29,17 +31,17 @@ import android.app.Activity;
  */
 public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
-    private Activity mContext;
+    private Context mContext;
 
     public BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> mGraphicOverlay,
-                                 Activity mContext) {
+                                 Context mContext) {
         this.mGraphicOverlay = mGraphicOverlay;
         this.mContext = mContext;
     }
 
     @Override
     public Tracker<Barcode> create(Barcode barcode) {
-        BarcodeGraphic graphic = new BarcodeGraphic(mGraphicOverlay, mContext);
+        BarcodeGraphic graphic = new BarcodeGraphic(mGraphicOverlay,(Activity) mContext);
         return new BarcodeGraphicTracker(mGraphicOverlay, graphic, mContext);
     }
 

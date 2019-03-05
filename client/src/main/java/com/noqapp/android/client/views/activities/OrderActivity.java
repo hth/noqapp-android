@@ -418,7 +418,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         purchaseOrderApiCall.setCashFreeNotifyPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
-        jsonCashfreeNotification.setxTime(map.get("txTime"));
+        jsonCashfreeNotification.setTxTime(map.get("txTime"));
         jsonCashfreeNotification.setReferenceId(map.get("referenceId"));
         jsonCashfreeNotification.setPaymentMode(map.get("paymentMode"));
         jsonCashfreeNotification.setSignature(map.get("signature"));

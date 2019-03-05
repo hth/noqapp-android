@@ -90,7 +90,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         //add all items
         QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(queueHistoryAdapter);
-        if (null != listData && listData.size() == 0)
+        if (null != listData && listData.size() == 0 && null != getActivity())
             Toast.makeText(getActivity(), "You havn't join any Queue yet :(", Toast.LENGTH_LONG).show();
     }
 
