@@ -30,6 +30,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -227,8 +228,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading data...");
 
-        progressDialogImage = new ProgressDialog(this, R.style.progressbar_center_theme);
-        progressDialogImage.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        progressDialogImage = new ProgressDialog(this);
+        progressDialogImage.getWindow().setBackgroundDrawable(new
+                ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progressDialogImage.setIndeterminate(true);
+        progressDialogImage.setCancelable(true);
+        // progressDialogImage.show();
+        progressDialogImage.setContentView(R.layout.progress_lay);
     }
 
     protected void dismissProgress() {
@@ -434,6 +440,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     public void imageEnlargeClick(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
             progressDialogImage.show();
+            progressDialogImage.setContentView(R.layout.progress_lay);
             Picasso.with(DocumentUploadActivity.this)
                     .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + labFileTemp.getRecordReferenceId() + "/" + imageUrl)
                     .into(iv_large,new Callback() {
