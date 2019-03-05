@@ -2,8 +2,10 @@ package com.noqapp.android.client.views.activities;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import android.Manifest;
 import android.content.Context;
@@ -54,6 +56,8 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
         return "Mumbai";
     }
 
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
     // TODO @Chandra
     // Please check this link too ->https://stackoverflow.com/a/3145655/3912847
     @Override
@@ -64,6 +68,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         //check whether location service is enable or not
         checkLocation();
@@ -82,8 +87,6 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
         }
 
         startLocationUpdates();
-
-        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (mLocation == null) {
             startLocationUpdates();
@@ -143,8 +146,16 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
                     REQUEST_CODE_PERMISSION);
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
-                mLocationRequest, this);
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations, this can be null.
+                        if (location != null) {
+                            mLocation = location;
+                        }
+                    }
+                });
     }
 
     @Override
