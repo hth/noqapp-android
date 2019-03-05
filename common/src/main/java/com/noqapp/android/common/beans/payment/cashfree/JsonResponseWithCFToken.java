@@ -27,7 +27,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonPurchaseToken extends AbstractDomain implements Serializable {
+public class JsonResponseWithCFToken extends AbstractDomain implements Serializable {
 
     @JsonProperty("status")
     private String status;
@@ -45,7 +45,7 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
         return status;
     }
 
-    public JsonPurchaseToken setStatus(String status) {
+    public JsonResponseWithCFToken setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -54,7 +54,7 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
         return message;
     }
 
-    public JsonPurchaseToken setMessage(String message) {
+    public JsonResponseWithCFToken setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -63,7 +63,7 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
         return cftoken;
     }
 
-    public JsonPurchaseToken setCftoken(String cftoken) {
+    public JsonResponseWithCFToken setCftoken(String cftoken) {
         this.cftoken = cftoken;
         return this;
     }
@@ -72,7 +72,7 @@ public class JsonPurchaseToken extends AbstractDomain implements Serializable {
         return orderAmount;
     }
 
-    public JsonPurchaseToken setOrderAmount(String orderAmount) {
+    public JsonResponseWithCFToken setOrderAmount(String orderAmount) {
         this.orderAmount = orderAmount;
         return this;
     }

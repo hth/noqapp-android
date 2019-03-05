@@ -2,7 +2,7 @@ package com.noqapp.android.common.beans.store;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.payment.cashfree.JsonPurchaseToken;
+import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
@@ -101,8 +101,8 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("tm")
     private String transactionMessage;
 
-    @JsonProperty("purt")
-    private JsonPurchaseToken jsonPurchaseToken;
+    @JsonProperty("cft")
+    private JsonResponseWithCFToken jsonResponseWithCFToken;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -304,12 +304,12 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public JsonPurchaseToken getJsonPurchaseToken() {
-        return jsonPurchaseToken;
+    public JsonResponseWithCFToken getJsonResponseWithCFToken() {
+        return jsonResponseWithCFToken;
     }
 
-    public JsonPurchaseOrder setJsonPurchaseToken(JsonPurchaseToken jsonPurchaseToken) {
-        this.jsonPurchaseToken = jsonPurchaseToken;
+    public JsonPurchaseOrder setJsonResponseWithCFToken(JsonResponseWithCFToken jsonResponseWithCFToken) {
+        this.jsonResponseWithCFToken = jsonResponseWithCFToken;
         return this;
     }
 

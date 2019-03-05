@@ -448,11 +448,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private void triggerPayment() {
-        String token = jsonPurchaseOrderServer.getJsonPurchaseToken().getCftoken();
+        String token = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getCftoken();
         String stage = Constants.stage;
         String appId = Constants.appId;
         String orderId = jsonPurchaseOrderServer.getTransactionId();
-        String orderAmount = jsonPurchaseOrderServer.getJsonPurchaseToken().getOrderAmount();
+        String orderAmount = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
         String customerName = LaunchActivity.getUserName();
         String customerPhone = LaunchActivity.getPhoneNo();
