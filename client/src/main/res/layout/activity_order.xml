@@ -112,35 +112,20 @@
                             android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
+                                android:id="@+id/acrb_cash"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:checked="true"
                                 android:text="@string/payment_mode_cash"
                                 android:textSize="@dimen/text_size_twelve"
                                 app:buttonTint="@color/colorAccent"/>
 
                         <androidx.appcompat.widget.AppCompatRadioButton
+                                android:id="@+id/acrb_online"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:enabled="false"
-                                android:text="@string/payment_mode_wallet"
-                                android:textSize="@dimen/text_size_twelve"
-                                app:buttonTint="@color/colorAccent"/>
-
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:enabled="false"
-                                android:text="@string/payment_mode_cards"
-                                android:textSize="@dimen/text_size_twelve"
-                                app:buttonTint="@color/colorAccent"/>
-
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:enabled="false"
                                 android:text="@string/payment_mode_online"
                                 android:textSize="@dimen/text_size_twelve"
+                                android:checked="true"
                                 app:buttonTint="@color/colorAccent"/>
 
                     </RadioGroup>
