@@ -130,4 +130,22 @@ public interface PurchaseOrderApiUrls {
             @Body
             JsonCashfreeNotification jsonCashfreeNotification
     );
+    
+    @POST("api/c/purchaseOrder/payCash.json")
+    Call<JsonPurchaseOrder> payCash(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonPurchaseOrder jsonPurchaseOrder
+    );
 }
