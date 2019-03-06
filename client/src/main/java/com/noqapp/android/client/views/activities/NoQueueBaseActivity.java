@@ -117,8 +117,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? "" : getMail();
     }
 
-    public static boolean showEmailVerificationField(boolean isAccountValidated) {
-        if (isAccountValidated) {
+    public static boolean showEmailVerificationField() {
+        if (getUserProfile().isAccountValidated()) {
             return false;
         } else {
             return !getMail().endsWith(Constants.MAIL_NOQAPP_COM);

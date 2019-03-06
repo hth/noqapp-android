@@ -1,6 +1,10 @@
 package com.noqapp.android.client.utils;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -49,7 +53,11 @@ public class RateTheAppManager {
         editor.apply();
     }
 
-    public void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
+    private void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
+
+        if (BuildConfig.BUILD_TYPE.equals("release")) {
+            Answers.getInstance().logCustom(new CustomEvent("Rate The App"));
+        }
         final Dialog dialog = new Dialog(mContext);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();

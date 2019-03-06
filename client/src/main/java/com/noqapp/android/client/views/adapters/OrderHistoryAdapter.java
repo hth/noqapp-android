@@ -148,6 +148,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     }
 
     @Override
+    public void payCashResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // implementation not required here
+        progressDialog.dismiss();
+    }
+
+    @Override
     public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
         if (null != jsonPurchaseOrderHistorical) {
             Toast.makeText(context, "Order activated successfully.", Toast.LENGTH_LONG).show();

@@ -79,6 +79,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
     private Button tv_place_order;
+    private AppCompatRadioButton acrb_cash,acrb_online;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         rg_address = findViewById(R.id.rg_address);
         rl_address = findViewById(R.id.rl_address);
         tv_address = findViewById(R.id.tv_address);
+
+        acrb_cash = findViewById(R.id.acrb_cash);
+        acrb_online = findViewById(R.id.acrb_online);
 
         edt_add_address = findViewById(R.id.edt_add_address);
         btn_add_address = findViewById(R.id.btn_add_address);
@@ -163,30 +167,34 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                progressDialog.show();
-                progressDialog.setMessage("Order placing in progress..");
-                if (validateForm()) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Order placing in progress..");
-                        jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
-                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
-                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
-                        jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
-                        jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
+                if (NoQueueBaseActivity.getUserProfile().isAccountValidated()) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    progressDialog.show();
+                    progressDialog.setMessage("Order placing in progress..");
+                    if (validateForm()) {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Order placing in progress..");
 
-                        purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                        enableDisableOrderButton(false);
+                            jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
+                            jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
+                            jsonPurchaseOrder.setPaymentMode(null); //not required here
+                            jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
+                            jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
+                            purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            enableDisableOrderButton(false);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderActivity.this);
+                            dismissProgress();
+                        }
                     } else {
-                        ShowAlertInformation.showNetworkDialog(OrderActivity.this);
                         dismissProgress();
                     }
                 } else {
-                    dismissProgress();
+                    Toast.makeText(OrderActivity.this, "Please add email id to your profile, if not added & verify it", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -242,7 +250,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 jsonPurchaseOrderServer = jsonPurchaseOrder;
-                triggerPayment();
+                if(acrb_online.isChecked()) {
+                    triggerOnlinePayment();
+                }else{
+                    triggerCashPayment();
+                }
                 clientProfileApiCall.setProfilePresenter(this);
                 if (TextUtils.isEmpty(NoQueueBaseActivity.getAddress())) {
                     String address = tv_address.getText().toString();
@@ -263,6 +275,28 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
         dismissProgress();
     }
+
+    @Override
+    public void payCashResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
+            Toast.makeText(this, "Order placed successfully. Pay the amount in cash at counter", Toast.LENGTH_LONG).show();
+            Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", jsonPurchaseOrder);
+            bundle.putSerializable("oldData", this.jsonPurchaseOrder);
+            bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
+            bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+            bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
+            bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
+            in.putExtras(bundle);
+            startActivity(in);
+            NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
+        } else {
+            Toast.makeText(this, jsonPurchaseOrder.getTransactionMessage(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
@@ -447,7 +481,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_place_order.setClickable(enable);
     }
 
-    private void triggerPayment() {
+    private void triggerOnlinePayment() {
         String token = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getCftoken();
         String stage = Constants.stage;
         String appId = Constants.appId;
@@ -456,7 +490,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         String orderNote = "Test Order";
         String customerName = LaunchActivity.getUserName();
         String customerPhone = LaunchActivity.getPhoneNo();
-        String customerEmail = "chandra.sharma@noqapp.com";//LaunchActivity.getActualMail();
+        String customerEmail = LaunchActivity.getActualMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);
@@ -476,7 +510,11 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         cfPaymentService.doPayment(this, params, token, this, stage);
 
     }
-
+    private void triggerCashPayment() {
+        //Toast.makeText(this, "Call Cash API", Toast.LENGTH_LONG).show();
+        jsonPurchaseOrderServer.setPaymentMode(PaymentModeEnum.CA);
+        purchaseOrderApiCall.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
+    }
 
     @Override
     public void cashFreeNotifyResponse(JsonPurchaseOrder jsonPurchaseOrder) {

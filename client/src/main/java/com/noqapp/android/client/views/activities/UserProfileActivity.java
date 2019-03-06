@@ -275,7 +275,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_name.setText(NoQueueBaseActivity.getUserName());
         edt_phoneNo.setText(NoQueueBaseActivity.getPhoneNo());
         edt_Mail.setText(NoQueueBaseActivity.getActualMail());
-        tv_email_verification.setVisibility(NoQueueBaseActivity.showEmailVerificationField(NoQueueBaseActivity.getUserProfile().isAccountValidated()) ? View.VISIBLE : View.GONE);
+        tv_email_verification.setVisibility(NoQueueBaseActivity.showEmailVerificationField() ? View.VISIBLE : View.GONE);
         tv_modify_email.setVisibility(NoQueueBaseActivity.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
         if (NoQueueBaseActivity.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
             tv_email_verification.setVisibility(View.VISIBLE);

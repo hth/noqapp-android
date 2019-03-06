@@ -175,6 +175,12 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     @Override
+    public void payCashResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        // implementation not required here
+        dismissProgress();
+    }
+
+    @Override
     public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {

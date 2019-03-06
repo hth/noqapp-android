@@ -69,12 +69,13 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
     private FetchLatestData fetchLatestData;
     private AsyncTaskRunner asyncTaskRunner;
-    private final String LOOP_TIME = "1";
+    private final String LOOP_TIME = "3";
     private final String SERVER_LOOP_TIME = "5";
     private final int MILLI_SECONDS = 1000;
     private final int SECONDS = 60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
     private boolean callVigyapan = true;
+    private boolean callFirstTime = true;
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -507,8 +508,13 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         @Override
         protected String doInBackground(String... params) {
             try {
-                int timeInMinutes = Integer.parseInt(params[0]) * MINUTE;
-                timeInMinutes = 2000;
+                int timeInMinutes;
+                if(callFirstTime) {
+                    timeInMinutes = 2000;
+                    callFirstTime = false;
+                }else{
+                    timeInMinutes = 6000;//Integer.parseInt(params[0]) * MINUTE;
+                }
                 Thread.sleep(timeInMinutes);
                 resp = "Slept for " + timeInMinutes + " minutes";
             } catch (InterruptedException e) {
