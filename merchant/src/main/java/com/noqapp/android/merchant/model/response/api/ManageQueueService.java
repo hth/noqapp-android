@@ -198,6 +198,7 @@ public interface ManageQueueService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_ALREADY_IN_QUEUE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CHANGE_USER_IN_QUEUE}
      */
     @POST("api/m/mq/changeUserInQueue.json")
     Call<JsonQueuePersonList> changeUserInQueue(
