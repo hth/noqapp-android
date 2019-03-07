@@ -69,13 +69,14 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
     private FetchLatestData fetchLatestData;
     private AsyncTaskRunner asyncTaskRunner;
-    private final String LOOP_TIME = "3";
+    private final String LOOP_TIME = "9";
     private final String SERVER_LOOP_TIME = "5";
     private final int MILLI_SECONDS = 1000;
     private final int SECONDS = 60;
     private final int MINUTE = SECONDS * MILLI_SECONDS;
     private boolean callVigyapan = true;
     private boolean callFirstTime = true;
+    private int timercount = 0;
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -139,9 +140,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         case MV:
                             if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
                                 urlList = jsonVigyaapanTV.getImageUrls();
-                                urlList.add("https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg");
-                                urlList.add("https://cdn.pixabay.com/photo/2017/05/09/21/49/gecko-2299365_960_720.jpg");
-
                                 image_list_size = urlList.size();
                                 jsonVigyaapanTV_images = jsonVigyaapanTV;
                                 Log.e("Vigyapan: ", "Image URL called");
@@ -514,6 +512,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     callFirstTime = false;
                 }else{
                     timeInMinutes = 6000;//Integer.parseInt(params[0]) * MINUTE;
+                    timercount = timercount+timeInMinutes;
                 }
                 Thread.sleep(timeInMinutes);
                 resp = "Slept for " + timeInMinutes + " minutes";
@@ -531,12 +530,16 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         protected void onPostExecute(String result) {
             Log.e("datafetching", "done");
             // execution of result of Long time consuming operation
-            QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
-            ClientInQueueModel clientInQueueModel = new ClientInQueueModel(PresentationService.this);
-            clientInQueueModel.toBeServedClients(
-                    UserUtils.getDeviceId(),
-                    LaunchActivity.getLaunchActivity().getEmail(),
-                    LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+            if(timercount <= 2000 || timercount == 6000*10) {
+                QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
+                ClientInQueueModel clientInQueueModel = new ClientInQueueModel(PresentationService.this);
+                clientInQueueModel.toBeServedClients(
+                        UserUtils.getDeviceId(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+            }else{
+               // do nothing
+            }
             if (callVigyapan) {
                 VigyaapanModel vigyaapanModel = new VigyaapanModel();
                 vigyaapanModel.setVigyaapanPresenter(PresentationService.this);
