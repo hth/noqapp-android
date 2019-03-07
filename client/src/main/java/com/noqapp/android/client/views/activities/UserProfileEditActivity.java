@@ -22,6 +22,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.ImagePathReader;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
 
 import android.app.DatePickerDialog;
@@ -55,6 +56,7 @@ import java.util.TimeZone;
 
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
+    private static final String TAG = UserProfileEditActivity.class.getSimpleName();
 
     private ImageView iv_profile;
     private String gender = "";
@@ -276,7 +278,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     }
                 } catch (Exception e) {
                     Log.e("Failed getting image ", e.getLocalizedMessage(), e);
-                    throw new RuntimeException(e.getMessage());
+                    Crashlytics.log(1, TAG, "Failed to find and upload profile image");
                 }
             }
         }
