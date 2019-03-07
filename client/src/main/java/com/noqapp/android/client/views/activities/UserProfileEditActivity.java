@@ -2,8 +2,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DependentApiCall;
 import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.model.DependentApiCall;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
@@ -19,10 +19,13 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.ImagePathReader;
+import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -31,7 +34,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.core.content.ContextCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -55,6 +58,7 @@ import java.util.TimeZone;
 
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
+    private static final String TAG = UserProfileEditActivity.class.getSimpleName();
 
     private ImageView iv_profile;
     private String gender = "";
@@ -252,8 +256,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
-
-                    String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    // String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    String convertedPath = new FileUtils().getFilePath(this, data.getData());
+                    if (StringUtils.isBlank(convertedPath)) {
+                        throw new RuntimeException("Failed to find path for image");
+                    }
                     if (isDependent) {
                         setDependentProfileImageUrl(convertedPath);
                     } else {
@@ -271,7 +278,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Failed getting image ", e.getLocalizedMessage(), e);
+                    Crashlytics.log(1, TAG, "Failed to find and upload profile image");
                 }
             }
         }
