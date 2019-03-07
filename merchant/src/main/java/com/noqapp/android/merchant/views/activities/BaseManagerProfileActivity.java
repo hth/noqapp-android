@@ -9,7 +9,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.common.utils.ImagePathReader;
+import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileModel;
@@ -221,8 +221,8 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
             try {
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_PICTURE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -240,10 +240,9 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
-
-                    String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                  //  String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
                     // NoQueueBaseActivity.setUserProfileUri(convertedPath);
-
+                    String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     if (!TextUtils.isEmpty(convertedPath)) {
                         progressDialog.show();
                         progressDialog.setMessage("Updating profile image");

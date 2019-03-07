@@ -17,7 +17,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.ImagePathReader;
+import com.noqapp.android.common.utils.FileUtils;
 
 import com.squareup.picasso.Picasso;
 
@@ -201,7 +201,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
 
-                    String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                   // String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {

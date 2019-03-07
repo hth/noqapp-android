@@ -19,7 +19,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.ImagePathReader;
+import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.crashlytics.android.Crashlytics;
@@ -256,12 +256,11 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
-
-                    String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    // String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     if (StringUtils.isBlank(convertedPath)) {
                         throw new RuntimeException("Failed to find path for image");
                     }
-
                     if (isDependent) {
                         setDependentProfileImageUrl(convertedPath);
                     } else {

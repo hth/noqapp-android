@@ -79,7 +79,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private String currencySymbol;
     private JsonPurchaseOrder jsonPurchaseOrderServer;
     private Button tv_place_order;
-    private AppCompatRadioButton acrb_cash,acrb_online;
+    private AppCompatRadioButton acrb_cash, acrb_online;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,9 +250,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 jsonPurchaseOrderServer = jsonPurchaseOrder;
-                if(acrb_online.isChecked()) {
+                if (acrb_online.isChecked()) {
                     triggerOnlinePayment();
-                }else{
+                } else {
                     triggerCashPayment();
                 }
                 clientProfileApiCall.setProfilePresenter(this);
@@ -476,7 +476,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         enableDisableOrderButton(false);
     }
 
-    private void enableDisableOrderButton(boolean enable){
+    private void enableDisableOrderButton(boolean enable) {
         tv_place_order.setEnabled(enable);
         tv_place_order.setClickable(enable);
     }
@@ -500,6 +500,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         params.put(PARAM_CUSTOMER_NAME, customerName);
         params.put(PARAM_CUSTOMER_PHONE, customerPhone);
         params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
+        // params.put(PARAM_PAYMENT_MODES,"CC");
 //        for (Map.Entry entry : params.entrySet()) {
 ////            Log.d("CFSKDSample", entry.getKey() + " " + entry.getValue());
 ////        }
@@ -510,6 +511,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         cfPaymentService.doPayment(this, params, token, this, stage);
 
     }
+
     private void triggerCashPayment() {
         //Toast.makeText(this, "Call Cash API", Toast.LENGTH_LONG).show();
         jsonPurchaseOrderServer.setPaymentMode(PaymentModeEnum.CA);
