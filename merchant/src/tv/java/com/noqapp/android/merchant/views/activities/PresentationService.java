@@ -31,8 +31,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,6 +41,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -247,7 +247,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         }
 
         public void updateDetail() {
-
             TopicAndQueueTV topicAndQueueTV = null;
             try {
 
@@ -506,16 +505,16 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         @Override
         protected String doInBackground(String... params) {
             try {
-                int timeInMinutes;
-                if(callFirstTime) {
-                    timeInMinutes = 2000;
+                int timeInMilliSeconds;
+                if (callFirstTime) {
+                    timeInMilliSeconds = 2000;
                     callFirstTime = false;
-                }else{
-                    timeInMinutes = 6000;//Integer.parseInt(params[0]) * MINUTE;
-                    timercount = timercount+timeInMinutes;
+                } else {
+                    timeInMilliSeconds = 6000;//Integer.parseInt(params[0]) * MINUTE;
+                    timercount = timercount + timeInMilliSeconds;
                 }
-                Thread.sleep(timeInMinutes);
-                resp = "Slept for " + timeInMinutes + " minutes";
+                Thread.sleep(timeInMilliSeconds);
+                resp = "Slept for " + timeInMilliSeconds + " milli seconds";
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 resp = e.getMessage();
@@ -530,17 +529,17 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         protected void onPostExecute(String result) {
             Log.e("datafetching", "done");
             // execution of result of Long time consuming operation
-            if(timercount <= 2000 || timercount == 6000*10) {
+            if (timercount <= 2000 || timercount >= MINUTE) {
                 QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
                 ClientInQueueModel clientInQueueModel = new ClientInQueueModel(PresentationService.this);
                 clientInQueueModel.toBeServedClients(
                         UserUtils.getDeviceId(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
-                if(timercount == 6000*10)
+                if (timercount == MINUTE)
                     timercount = 0;
-            }else{
-               // do nothing
+            } else {
+                // do nothing
             }
             if (callVigyapan) {
                 VigyaapanModel vigyaapanModel = new VigyaapanModel();
@@ -597,13 +596,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             }
 
             java.util.Date actualTime = calendar3.getTime();
-            if ((actualTime.after(calendar1.getTime()) ||
-                    actualTime.compareTo(calendar1.getTime()) == 0) &&
-                    actualTime.before(calendar2.getTime())) {
-                return true;
-            } else {
-                return false;
-            }
+            return (actualTime.after(calendar1.getTime()) || actualTime.compareTo(calendar1.getTime()) == 0) && actualTime.before(calendar2.getTime());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
