@@ -2,8 +2,8 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.DependentApiCall;
 import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.model.DependentApiCall;
 import com.noqapp.android.client.presenter.DependencyPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.Registration;
@@ -31,7 +31,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.core.content.ContextCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,6 +41,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -254,6 +254,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     iv_profile.setImageBitmap(bitmap);
 
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    if (null == convertedPath) {
+                        throw new RuntimeException("Failed to find path for image");
+                    }
+
                     if (isDependent) {
                         setDependentProfileImageUrl(convertedPath);
                     } else {
@@ -271,7 +275,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         clientProfileApiCall.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Failed getting image ", e.getLocalizedMessage(), e);
+                    throw new RuntimeException(e.getMessage());
                 }
             }
         }

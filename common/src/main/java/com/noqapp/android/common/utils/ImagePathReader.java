@@ -8,8 +8,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 
 public class ImagePathReader {
+    private static final String TAG = ImagePathReader.class.getSimpleName();
 
     public String getPathFromUri(final Context context, final Uri uri) {
 
@@ -31,11 +33,8 @@ public class ImagePathReader {
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
                 return getDataColumn(context, contentUri, null, null);
             }
             // MediaProvider
@@ -78,15 +77,13 @@ public class ImagePathReader {
         return null;
     }
 
-    private String getDataColumn(Context context, Uri uri, String selection,
-                                 String[] selectionArgs) {
-
-        Cursor cursor = null;
+    private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         final String column = "_data";
         final String[] projection = {
                 column
         };
 
+        Cursor cursor = null;
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
@@ -94,6 +91,8 @@ public class ImagePathReader {
                 final int index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(index);
             }
+        } catch (IllegalArgumentException e) {
+            Log.e("Failed getting image ", e.getLocalizedMessage(), e);
         } finally {
             if (cursor != null)
                 cursor.close();
