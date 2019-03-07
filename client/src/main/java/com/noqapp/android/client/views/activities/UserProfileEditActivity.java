@@ -25,6 +25,8 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -256,7 +258,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     iv_profile.setImageBitmap(bitmap);
 
                     String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
-                    if (null == convertedPath) {
+                    if (StringUtils.isBlank(convertedPath)) {
                         throw new RuntimeException("Failed to find path for image");
                     }
 
