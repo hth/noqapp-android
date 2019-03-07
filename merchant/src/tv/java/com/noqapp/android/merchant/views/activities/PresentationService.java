@@ -537,6 +537,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         UserUtils.getDeviceId(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+                if(timercount == 6000*10)
+                    timercount = 0;
             }else{
                // do nothing
             }
