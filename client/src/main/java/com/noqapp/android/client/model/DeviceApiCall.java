@@ -25,6 +25,9 @@ public class DeviceApiCall {
     private static final DeviceApiUrls deviceService;
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
+    private boolean responseReceived = false;
+    private DeviceRegistered deviceRegistered;
+    private JsonLatestAppVersion jsonLatestAppVersion;
 
     public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
         this.deviceRegisterPresenter = deviceRegisterPresenter;
@@ -89,6 +92,7 @@ public class DeviceApiCall {
                     } else {
                         appBlacklistPresenter.appBlacklistError(response.body().getError());
                     }
+                    jsonLatestAppVersion = response.body();
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         appBlacklistPresenter.authenticationFailure();
@@ -96,14 +100,28 @@ public class DeviceApiCall {
                         appBlacklistPresenter.responseErrorPresenter(response.code());
                     }
                 }
+
+                responseReceived = true;
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
                 appBlacklistPresenter.appBlacklistError(null);
+                responseReceived = true;
             }
         });
     }
 
+    public boolean isResponseReceived() {
+        return responseReceived;
+    }
+
+    public DeviceRegistered getDeviceRegistered() {
+        return deviceRegistered;
+    }
+
+    public JsonLatestAppVersion getJsonLatestAppVersion() {
+        return jsonLatestAppVersion;
+    }
 }

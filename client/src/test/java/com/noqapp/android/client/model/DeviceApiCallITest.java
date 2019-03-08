@@ -17,8 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import android.util.Log;
+import retrofit2.Call;
 
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DeviceApiCallITest extends ITest {
@@ -102,7 +104,11 @@ class DeviceApiCallITest extends ITest {
     void isSupportedAppVersion() {
         String did = UUID.randomUUID().toString();
         this.deviceApiCall.isSupportedAppVersion(did);
-        await().atMost(1, MINUTES).atLeast(60, SECONDS);
-        Log.i("DID ", did);
+        await().atMost(1, MINUTES).pollInterval(5, SECONDS).until(awaitUntilPurchaseOrderIsPlaced());
+        assertEquals("1.2.230", deviceApiCall.getJsonLatestAppVersion().getLatestAppVersion());
+    }
+
+    private Callable<Boolean> awaitUntilPurchaseOrderIsPlaced() {
+        return () -> this.deviceApiCall.isResponseReceived();
     }
 }
