@@ -34,6 +34,16 @@ public class QueueApiAuthenticCall {
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
+    private boolean responseReceived = false;
+    public JsonQueue jsonQueue;
+    public JsonToken jsonToken;
+    public boolean isResponseReceived() {
+        return responseReceived;
+    }
+
+    public void setResponseReceived(boolean responseReceived) {
+        this.responseReceived = responseReceived;
+    }
 
     public void setQueuePresenter(QueuePresenter queuePresenter) {
         this.queuePresenter = queuePresenter;
@@ -63,6 +73,7 @@ public class QueueApiAuthenticCall {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response getQueueState", String.valueOf(response.body()));
                         queuePresenter.queueResponse(response.body());
+                        jsonQueue = response.body();
                     } else {
                         Log.e(TAG, "Error getQueueState");
                         queuePresenter.responseErrorPresenter(response.body().getError());
@@ -74,12 +85,14 @@ public class QueueApiAuthenticCall {
                         queuePresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonQueue> call, @NonNull Throwable t) {
                 Log.e("getQueueState failure", t.getLocalizedMessage(), t);
                 queuePresenter.queueError();
+                responseReceived = true;
             }
         });
     }
@@ -152,6 +165,7 @@ public class QueueApiAuthenticCall {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response joinQueue", response.body().toString());
                         tokenPresenter.tokenPresenterResponse(response.body());
+                        jsonToken = response.body();
                     } else {
                         Log.e(TAG, "Failed to join queue" + response.body().getError());
                         tokenPresenter.responseErrorPresenter(response.body().getError());
@@ -163,12 +177,14 @@ public class QueueApiAuthenticCall {
                         tokenPresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
                 Log.e("Failure joinQueue", t.getLocalizedMessage(), t);
                 tokenPresenter.responseErrorPresenter(null);
+                responseReceived = true;
             }
         });
     }

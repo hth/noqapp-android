@@ -1,16 +1,17 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedApiCall;
-import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
+import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
+import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -60,22 +61,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -355,7 +355,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         isProgressFirstTime = false;
         if (isAdded()) {
             if (NoQueueBaseActivity.getShowHelper()) {
-                presentShowcaseSequence();
+                if (!BuildConfig.BUILD_TYPE.equals("debug")) {
+                    presentShowcaseSequence();
+                }
                 NoQueueBaseActivity.setShowHelper(false);
             } else {
                 if (isRateUsFirstTime && null != getActivity()) {
@@ -674,7 +676,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 allFeedsClick();
                 break;
             case R.id.iv_event:
-                Intent in = new Intent(getActivity(),ImageViewerActivity.class);
+                Intent in = new Intent(getActivity(), ImageViewerActivity.class);
                 startActivity(in);
                 break;
 
