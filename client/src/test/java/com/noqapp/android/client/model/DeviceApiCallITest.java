@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model;
 
+import static com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum.MOBILE_JSON;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
@@ -13,6 +14,7 @@ import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +49,7 @@ class DeviceApiCallITest extends ITest {
         DeviceToken deviceToken = new DeviceToken(did, Constants.appVersion());
         this.deviceApiCall.register(did, deviceToken);
         await().atMost(1, MINUTES).pollInterval(10, SECONDS).until(awaitUntilResponseFromServer());
-        assertEquals(0, deviceApiCall.getDeviceRegistered().getRegistered());
+        assertEquals(MOBILE_JSON, MobileSystemErrorCodeEnum.valueOf(deviceApiCall.getErrorEncounteredJson().getSystemError()));
     }
 
     @Test
