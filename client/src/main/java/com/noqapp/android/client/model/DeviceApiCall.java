@@ -6,6 +6,7 @@ import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
@@ -25,6 +26,11 @@ public class DeviceApiCall {
     private static final DeviceApiUrls deviceService;
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
+
+    private boolean responseReceived = false;
+    private DeviceRegistered deviceRegistered;
+    private JsonLatestAppVersion jsonLatestAppVersion;
+    private ErrorEncounteredJson errorEncounteredJson;
 
     public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
         this.deviceRegisterPresenter = deviceRegisterPresenter;
@@ -52,9 +58,11 @@ public class DeviceApiCall {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "Registered device " + String.valueOf(response.body()));
                         deviceRegisterPresenter.deviceRegisterResponse(response.body());
+                        deviceRegistered = response.body();
                     } else {
                         Log.e(TAG, "Empty body");
                         deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                        errorEncounteredJson = response.body().getError();
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
@@ -63,12 +71,14 @@ public class DeviceApiCall {
                         deviceRegisterPresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override
             public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure device register" + t.getLocalizedMessage(), t);
                 deviceRegisterPresenter.deviceRegisterError();
+                responseReceived = true;
             }
         });
     }
@@ -86,8 +96,10 @@ public class DeviceApiCall {
                     Log.d("response body issupport", response.body().toString());
                     if (null != response.body() && null == response.body().getError()) {
                         appBlacklistPresenter.appBlacklistResponse(response.body());
+                        jsonLatestAppVersion = response.body();
                     } else {
                         appBlacklistPresenter.appBlacklistError(response.body().getError());
+                        errorEncounteredJson = response.body().getError();
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
@@ -96,14 +108,31 @@ public class DeviceApiCall {
                         appBlacklistPresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonLatestAppVersion> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure Response " + t.getLocalizedMessage(), t);
                 appBlacklistPresenter.appBlacklistError(null);
+                responseReceived = true;
             }
         });
     }
 
+    boolean isResponseReceived() {
+        return responseReceived;
+    }
+
+    DeviceRegistered getDeviceRegistered() {
+        return deviceRegistered;
+    }
+
+    JsonLatestAppVersion getJsonLatestAppVersion() {
+        return jsonLatestAppVersion;
+    }
+
+    ErrorEncounteredJson getErrorEncounteredJson() {
+        return errorEncounteredJson;
+    }
 }

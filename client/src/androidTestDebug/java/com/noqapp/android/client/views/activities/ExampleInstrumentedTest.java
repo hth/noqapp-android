@@ -1,4 +1,4 @@
-package com.noqapp.client;
+package com.noqapp.android.client.views.activities;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
