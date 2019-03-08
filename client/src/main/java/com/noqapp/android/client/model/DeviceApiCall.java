@@ -65,13 +65,17 @@ public class DeviceApiCall {
                     } else {
                         deviceRegisterPresenter.responseErrorPresenter(response.code());
                     }
+                    deviceRegistered = response.body();
                 }
+                deviceRegistered = response.body();
+                responseReceived = true;
             }
 
             @Override
             public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure device register" + t.getLocalizedMessage(), t);
                 deviceRegisterPresenter.deviceRegisterError();
+                responseReceived = true;
             }
         });
     }
@@ -92,7 +96,6 @@ public class DeviceApiCall {
                     } else {
                         appBlacklistPresenter.appBlacklistError(response.body().getError());
                     }
-                    jsonLatestAppVersion = response.body();
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
                         appBlacklistPresenter.authenticationFailure();
@@ -101,6 +104,7 @@ public class DeviceApiCall {
                     }
                 }
 
+                jsonLatestAppVersion = response.body();
                 responseReceived = true;
             }
 

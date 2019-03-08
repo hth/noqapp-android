@@ -5,11 +5,14 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.ITest;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
+import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,15 +42,12 @@ class DeviceApiCallITest extends ITest {
     }
 
     @Test
-    void setDeviceRegisterPresenter() {
-    }
-
-    @Test
-    void setAppBlacklistPresenter() {
-    }
-
-    @Test
-    void register() {
+    void register_Fail() {
+        String did = UUID.randomUUID().toString();
+        DeviceToken deviceToken = new DeviceToken(did, Constants.appVersion());
+        this.deviceApiCall.register(did, deviceToken);
+        await().atMost(1, MINUTES).pollInterval(10, SECONDS).until(awaitUntilResponseFromServer());
+        assertEquals(0, deviceApiCall.getDeviceRegistered().getRegistered());
     }
 
     @Test
