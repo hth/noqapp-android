@@ -23,8 +23,6 @@ import java.util.UUID;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DeviceApiCallITest extends ITest {
 
-    protected DeviceApiCall deviceApiCall;
-
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -84,7 +82,6 @@ class DeviceApiCallITest extends ITest {
             }
         };
 
-        this.deviceApiCall = new DeviceApiCall();
         this.deviceApiCall.setAppBlacklistPresenter(appBlacklistPresenter);
         this.deviceApiCall.setDeviceRegisterPresenter(deviceRegisterPresenter);
     }
@@ -104,8 +101,8 @@ class DeviceApiCallITest extends ITest {
     @Test
     void isSupportedAppVersion() {
         String did = UUID.randomUUID().toString();
-        Log.i("DID ", did);
         this.deviceApiCall.isSupportedAppVersion(did);
-        await().atMost(1, MINUTES);
+        await().atMost(1, MINUTES).atLeast(60, SECONDS);
+        Log.i("DID ", did);
     }
 }
