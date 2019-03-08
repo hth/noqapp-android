@@ -1,26 +1,16 @@
 package com.noqapp.android.client.model;
 
-<<<<<<< Updated upstream
 import static com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum.MOBILE_JSON;
 import static java.util.concurrent.TimeUnit.MINUTES;
-=======
->>>>>>> Stashed changes
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.ITest;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
-<<<<<<< Updated upstream
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-=======
->>>>>>> Stashed changes
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +19,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
