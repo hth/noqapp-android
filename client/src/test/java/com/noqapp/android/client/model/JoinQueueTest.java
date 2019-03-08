@@ -22,7 +22,6 @@ import java.util.concurrent.Callable;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class JoinQueueTest extends ITest {
 
-
     private QueueApiAuthenticCall queueApiAuthenticCall;
     private JsonQueue jsonQueueTemp;
     private JsonToken jsonToken;
@@ -44,8 +43,6 @@ public class JoinQueueTest extends ITest {
         await().atMost(TIME_OUT, SECONDS).pollInterval(POLL_INTERVAL, SECONDS).until(awaitUntilResponseFromServer());
         Assert.assertTrue("Store not found", null != queueApiAuthenticCall.jsonQueue);
         jsonQueueTemp = queueApiAuthenticCall.jsonQueue;
-
-
     }
 
     @Test
