@@ -296,7 +296,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 String guardianId = null;
                 Log.v("dependent size: ", "" + jsonProfile.getDependents().size());
                 if (profile_pos > 1) {
-                    queueUserId = ((JsonProfile) profileList.get(profile_pos)).getQueueUserId();
+                    queueUserId =  profileList.get(profile_pos).getQueueUserId();
                     guardianId = jsonProfile.getQueueUserId();
                 } else {
                     queueUserId = jsonProfile.getQueueUserId();

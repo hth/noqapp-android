@@ -1,20 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.25.4'
-    }
-}
 import groovy.xml.Namespace
-
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
 
 apply from: '../config/quality.gradle'
 
@@ -29,6 +13,32 @@ def manifestVersionName() {
     def ns = new Namespace("http://schemas.android.com/apk/res/android", "android")
     def xml = new XmlParser().parse(manifestFile)
     return xml.attributes()[ns.versionName].toString()
+}
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.25.4'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'jacoco'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+jacoco {
+    toolVersion = '0.8.0'
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
 }
 
 android {
@@ -174,6 +184,8 @@ android {
             //when minifyEnabled is true gets exception com.android.dx.cf.code.SimException:
             minifyEnabled false
 
+            testCoverageEnabled true
+
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
             proguardFile '../library-proguard/proguard-facebook.pro'
@@ -209,6 +221,8 @@ android {
             minifyEnabled true
             zipAlignEnabled true
             matchingFallbacks = ['debug', 'release']
+
+            testCoverageEnabled true
 
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
@@ -246,6 +260,8 @@ android {
             debuggable false
             minifyEnabled true
             zipAlignEnabled true
+
+            testCoverageEnabled true
 
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
@@ -342,6 +358,10 @@ android {
         unitTests.all {
             // All the usual Gradle options.
             jvmArgs '-XX:MaxPermSize=256m'
+
+            jacoco {
+                includeNoLocationClasses = true
+            }
         }
 
         unitTests.includeAndroidResources = true
@@ -380,6 +400,24 @@ android {
             buildConfigField "String", "APP_FLAVOR", "\"NQMT\""
         }
     }
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
 }
 
 dependencies {
