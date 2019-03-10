@@ -1,5 +1,6 @@
 import groovy.xml.Namespace
 
+apply plugin: 'com.android.application'
 apply from: '../config/quality.gradle'
 
 if (!hasProperty('env')) {
@@ -24,6 +25,7 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
+
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'jacoco'

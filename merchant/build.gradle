@@ -1,5 +1,6 @@
 import groovy.xml.Namespace
 
+apply plugin: 'com.android.application'
 apply from: '../config/quality.gradle'
 
 if (!hasProperty('env')) {
