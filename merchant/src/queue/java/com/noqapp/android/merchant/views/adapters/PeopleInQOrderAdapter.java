@@ -255,7 +255,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
-        tv_payment_mode.setText(Html.fromHtml(jsonPurchaseOrder.getPaymentMode().getDescription()));
+       // tv_payment_mode.setText(Html.fromHtml(jsonPurchaseOrder.getPaymentMode().getDescription()));
         try {
             tv_cost.setText(Html.fromHtml(String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100)));
         } catch (Exception e) {

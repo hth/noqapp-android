@@ -36,7 +36,7 @@
 
     </RelativeLayout>
 
-    <androidx.appcompat.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="25dp"
@@ -71,9 +71,9 @@
                     android:fadeScrollbars="false"/>
         </LinearLayout>
 
-    </androidx.appcompat.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cv_notes"
@@ -90,9 +90,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:paddingLeft="5dp"/>
-    </androidx.appcompat.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cv_footer"
@@ -193,6 +193,6 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </androidx.appcompat.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

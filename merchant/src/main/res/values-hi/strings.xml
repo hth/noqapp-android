@@ -141,4 +141,5 @@
     <string name="upload_document">Upload Document</string>
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
+    <string name="empty_price">Please enter product price</string>
 </resources>

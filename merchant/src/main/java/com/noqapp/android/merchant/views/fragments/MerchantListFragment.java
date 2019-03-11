@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,10 +33,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -47,6 +44,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -489,7 +489,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     public void clearData() {
         topics.clear();
-        adapter.notifyDataSetChanged();
+        if (null != adapter)
+            adapter.notifyDataSetChanged();
     }
 
     public class CustomComparator implements Comparator<JsonTopic> {
