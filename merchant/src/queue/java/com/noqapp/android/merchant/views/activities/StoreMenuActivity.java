@@ -33,12 +33,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +47,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -297,7 +297,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         });
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
-        btn_create_token.setText("Search patient");
+        btn_create_token.setText("Search Customer");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -364,11 +364,14 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     public void findCustomerResponse(final JsonProfile jsonProfile) {
         dismissProgress();
         if (null != jsonProfile && jsonProfile.getDependents().size() > 0) {
-            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfile.getDependents());
+            List<JsonProfile> jsonProfileList = new ArrayList<>();
+            jsonProfileList.add(jsonProfile);
+            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfileList);
             sp_patient_list.setAdapter(adapter);
+            sp_patient_list.setEnabled(false);
             sp_patient_list.setVisibility(View.VISIBLE);
             edt_mobile.setEnabled(false);
-            tv_select_patient.setVisibility(View.VISIBLE);
+            //tv_select_patient.setVisibility(View.VISIBLE);
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
             btn_create_order.setOnClickListener(new View.OnClickListener() {
@@ -390,7 +393,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                         }
                         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                                 .setCodeQR(codeQR)
-                                .setQueueUserId(jsonProfile.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
+                                .setQueueUserId(jsonProfile.getQueueUserId())
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
                         jsonPurchaseOrder.setDeliveryAddress("");

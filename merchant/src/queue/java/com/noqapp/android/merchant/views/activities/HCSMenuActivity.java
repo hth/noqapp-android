@@ -534,7 +534,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         });
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
-        btn_create_token.setText("Search patient");
+        btn_create_token.setText("Search Patient");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -601,7 +601,10 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     public void findCustomerResponse(final JsonProfile jsonProfile) {
         dismissProgress();
         if (null != jsonProfile && jsonProfile.getDependents().size() > 0) {
-            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfile.getDependents());
+            List<JsonProfile> jsonProfileList = new ArrayList<>();
+            jsonProfileList.add(jsonProfile);
+            jsonProfileList.addAll(jsonProfile.getDependents());
+            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfileList);
             sp_patient_list.setAdapter(adapter);
             sp_patient_list.setVisibility(View.VISIBLE);
             edt_mobile.setEnabled(false);
@@ -617,7 +620,6 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         progressDialog.setMessage("Placing order....");
                         progressDialog.show();
                         btn_create_order.setEnabled(false);
-
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
                         for (HCSMenuObject value : menuSelectData) {
@@ -630,7 +632,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         }
                         JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                                 .setCodeQR(codeQR)
-                                .setQueueUserId(jsonProfile.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
+                                .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 
