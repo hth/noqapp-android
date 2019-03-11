@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="#99ffffff"
               android:orientation="vertical">
 
@@ -244,6 +244,7 @@
                                     android:textSize="@dimen/store_info"/>
                         </RelativeLayout>
 
+
                         <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -270,6 +271,19 @@
                                     android:visibility="invisible"
                                     android:textSize="@dimen/text_size_fourteen"/>
                         </RelativeLayout>
+
+                        <Button
+                                android:id="@+id/btn_pay_now"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/btn_standard_height"
+                                android:layout_margin="10dp"
+                                android:paddingRight="10dp"
+                                android:background="@drawable/btn_bg_enable"
+                                android:drawableRight="@drawable/order_arrow"
+                                android:text="Pay Now"
+                                android:visibility="gone"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_fourteen"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -297,7 +311,6 @@
                     android:textSize="@dimen/text_size_fourteen"/>
 
 
-
             <Button
                     android:id="@+id/btn_cancel_order"
                     android:layout_width="match_parent"
@@ -311,60 +324,6 @@
                     android:textSize="@dimen/text_size_sixteen"
                     android:background="@drawable/btn_bg_inactive"/>
 
-
-            <TextView
-                    android:id="@+id/tv_payment_mode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:gravity="left"
-                    android:text="@string/payment_mode"
-                    android:textSize="@dimen/store_info"
-                    android:visibility="gone"/>
-
-            <RadioGroup
-                    android:id="@+id/rg_payment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/acrb_cash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/payment_mode_cash"
-                        android:textSize="@dimen/text_size_twelve"
-                        app:buttonTint="@color/colorAccent"/>
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/acrb_online"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/payment_mode_online"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:checked="true"
-                        app:buttonTint="@color/colorAccent"/>
-
-            </RadioGroup>
-
-            <Button
-                    android:id="@+id/btn_pay_now"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_standard_height"
-                    android:layout_margin="10dp"
-                    android:paddingRight="10dp"
-                    android:background="@drawable/btn_bg_enable"
-                    android:drawableRight="@drawable/order_arrow"
-                    android:text="Pay Now"
-                    android:visibility="gone"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_size_fourteen"/>
 
         </LinearLayout>
     </ScrollView>

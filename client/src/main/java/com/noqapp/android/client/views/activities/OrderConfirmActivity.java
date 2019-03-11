@@ -27,7 +27,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
@@ -41,10 +40,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.AppCompatRadioButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,9 +64,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private TextView tv_payment_due;
     private Button btn_pay_now;
     private boolean isPayClick = false;
-    private TextView tv_payment_mode;
-    private AppCompatRadioButton acrb_cash, acrb_online;
-    private RadioGroup rg_payment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +79,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_status = findViewById(R.id.tv_status);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         tv_payment_due = findViewById(R.id.tv_payment_due);
-        tv_payment_mode = findViewById(R.id.tv_payment_mode);
-        acrb_cash = findViewById(R.id.acrb_cash);
-        acrb_online = findViewById(R.id.acrb_online);
-        rg_payment = findViewById(R.id.rg_payment);
+
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
         btn_cancel_order = findViewById(R.id.btn_cancel_order);
@@ -182,8 +174,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         int currentTemp = currentServing == -1 ? jsonPurchaseOrder.getServingNumber() : currentServing;
         tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getToken()) : String.valueOf(currentTemp));
         btn_pay_now.setVisibility(View.GONE);
-        tv_payment_mode.setVisibility(View.GONE);
-        rg_payment.setVisibility(View.GONE);
         switch (jsonPurchaseOrder.getPresentOrderState()) {
             case OP:
                 tv_status.setText("Order being prepared");
@@ -196,8 +186,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             case VB: {
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
                 btn_pay_now.setVisibility(View.VISIBLE);
-                tv_payment_mode.setVisibility(View.VISIBLE);
-                rg_payment.setVisibility(View.VISIBLE);
             }
             break;
             default:
@@ -224,11 +212,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             oldjsonPurchaseOrder = jsonPurchaseOrder;
             updateUI();
             if (isPayClick) {
-                if (acrb_online.isChecked()) {
-                    triggerOnlinePayment();
-                } else {
-                    triggerCashPayment();
-                }
+                triggerOnlinePayment();
                 isPayClick = false;
             }
         } else {
@@ -346,12 +330,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         cfPaymentService.setConfirmOnExit(true);
         cfPaymentService.doPayment(this, params, token, this, stage);
 
-    }
-
-    private void triggerCashPayment() {
-        //Toast.makeText(this, "Call Cash API", Toast.LENGTH_LONG).show();
-        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
-        purchaseOrderApiCall.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
     }
 
     @Override
