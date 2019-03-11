@@ -59,7 +59,6 @@ public interface PurchaseOrderApiUrls {
             JsonPurchaseOrder jsonPurchaseOrder
     );
 
-
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
@@ -106,6 +105,30 @@ public interface PurchaseOrderApiUrls {
 
             @Body
             OrderDetail orderDetail
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     */
+    @POST("api/c/purchaseOrder/payNow.json")
+    Call<JsonPurchaseOrder> payNow(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonPurchaseOrder jsonPurchaseOrder
     );
 
     /**
