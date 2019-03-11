@@ -102,6 +102,9 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
             @Override
             public void onClick(View v) {
                 finish();
+                if (null != BaseLaunchActivity.merchantListFragment) {
+                    BaseLaunchActivity.merchantListFragment.onRefresh();
+                }
             }
         });
         ExpandableListView expandableListView = findViewById(R.id.expandableListView);
@@ -416,6 +419,9 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             finish();
+            if (null != BaseLaunchActivity.merchantListFragment) {
+                BaseLaunchActivity.merchantListFragment.onRefresh();
+            }
         }
     }
 

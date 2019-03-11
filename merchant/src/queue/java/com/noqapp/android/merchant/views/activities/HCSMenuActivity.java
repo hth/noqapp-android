@@ -57,6 +57,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -106,7 +107,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private PurchaseOrderModel purchaseOrderModel;
     private LinearLayout ll_order_list;
     private TextView tv_order_list;
-
+    private RelativeLayout rl_total;
+    private int price = 0;
+    private String currencySymbol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -126,6 +129,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             @Override
             public void onClick(View v) {
                 finish();
+                if (null != BaseLaunchActivity.merchantListFragment) {
+                    BaseLaunchActivity.merchantListFragment.onRefresh();
+                }
             }
         });
         view_test = findViewById(R.id.view_test);
@@ -141,8 +147,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
         });
 
-
+        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         jsonTopic = (JsonTopic) getIntent().getSerializableExtra("jsonTopic");
+
         codeQR = jsonTopic.getCodeQR();
         actv_search = findViewById(R.id.actv_search);
         actv_search.setThreshold(1);
@@ -192,6 +199,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
             //super.onBackPressed();
             finish();
+            if (null != BaseLaunchActivity.merchantListFragment) {
+                BaseLaunchActivity.merchantListFragment.onRefresh();
+            }
         }
     }
 
@@ -443,6 +453,13 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         return false;
     }
 
+    private double calculateTotalPrice( ) {
+        int amount = 0;
+        for (int i = 0; i < menuSelectData.size(); i++) {
+            amount += 1 * menuSelectData.get(i).getPrice();
+        }
+        return amount;
+    }
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -450,13 +467,16 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         View view = inflater.inflate(R.layout.dialog_create_order_with_mobile, null, false);
         ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
         TextView tv_create_token = view.findViewById(R.id.tvtitle);
+        TextView tv_cost = view.findViewById(R.id.tv_cost);
         TextView tv_toolbar_title = view.findViewById(R.id.tv_toolbar_title);
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
         tv_order_list = view.findViewById(R.id.tv_order_list);
         ll_order_list = view.findViewById(R.id.ll_order_list);
+        rl_total = view.findViewById(R.id.rl_total);
         ll_order_list.removeAllViews();
         if(menuSelectData.size() > 0) {
+            price = 0;
             for (int i = 0; i < menuSelectData.size(); i++) {
                 final int pos = i;
                 LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -464,7 +484,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 TextView tv_title = v.findViewById(R.id.tv_title);
                 TextView tv_amount = v.findViewById(R.id.tv_amount);
                 tv_title.setText(menuSelectData.get(i).getJsonMasterLab().getProductShortName());
-                tv_amount.setText(String.valueOf(menuSelectData.get(i).getPrice()));
+                tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(i).getPrice()));
                 tv_amount.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -498,7 +518,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                                     InputMethodManager imm = (InputMethodManager)getSystemService(mContext.INPUT_METHOD_SERVICE);
                                     imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
                                     menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
-                                    tv_amount.setText(String.valueOf(menuSelectData.get(pos).getPrice()));
+                                    tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(pos).getPrice()));
+
+                                    tv_cost.setText(currencySymbol + " "+ String.valueOf(calculateTotalPrice()));
                                     mAlertDialog.dismiss();
                                 }
                             }
@@ -507,7 +529,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     }
                 });
                 ll_order_list.addView(v);
+                price += 1 * menuSelectData.get(pos).getPrice() ;
             }
+            tv_cost.setText(currencySymbol + " "+String.valueOf(price));
         }
 
         tv_toolbar_title.setText("Create order");
@@ -611,6 +635,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             tv_select_patient.setVisibility(View.VISIBLE);
             tv_order_list.setVisibility(View.VISIBLE);
             ll_order_list.setVisibility(View.VISIBLE);
+            rl_total.setVisibility(View.VISIBLE);
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
             btn_create_order.setOnClickListener(new View.OnClickListener() {
@@ -660,6 +685,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             finish();
+            if (null != BaseLaunchActivity.merchantListFragment) {
+                BaseLaunchActivity.merchantListFragment.onRefresh();
+            }
         }
     }
 

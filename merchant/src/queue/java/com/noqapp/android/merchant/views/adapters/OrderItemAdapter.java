@@ -15,10 +15,12 @@ import java.util.List;
 public class OrderItemAdapter extends BaseAdapter {
     private Context context;
     private List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList;
+    private String currencySymbol;
 
-    public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> notificationsList) {
+    public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> notificationsList, String currencySymbol) {
         this.context = context;
         this.jsonPurchaseOrderProductList = notificationsList;
+        this.currencySymbol = currencySymbol;
     }
 
     public int getCount() {
@@ -46,7 +48,7 @@ public class OrderItemAdapter extends BaseAdapter {
             recordHolder = (RecordHolder) view.getTag();
         }
         recordHolder.tv_title.setText(jsonPurchaseOrderProductList.get(position).getProductName() + " x " + jsonPurchaseOrderProductList.get(position).getProductQuantity());
-        recordHolder.tv_amount.setText(String.valueOf(jsonPurchaseOrderProductList.get(position).getProductPrice()*1.0 / 100));
+        recordHolder.tv_amount.setText(currencySymbol + " " + String.valueOf(jsonPurchaseOrderProductList.get(position).getProductPrice() * 1.0 / 100));
         return view;
     }
 

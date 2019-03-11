@@ -49,20 +49,10 @@
                 android:layout_marginTop="10dp"
                 android:padding="20dp">
 
-            <ImageView
-                    android:id="@+id/iv_banner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/token_banner_image_height"
-                    android:layout_marginLeft="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginRight="100dp"
-                    android:background="@drawable/before_token_generated"/>
-
             <LinearLayout
                     android:id="@+id/ll_center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_banner"
                     android:layout_marginBottom="25dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
@@ -77,17 +67,6 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_size_twelve"/>
 
-                <TextView
-                        android:id="@+id/tvcount"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/button_drawable_red"
-                        android:gravity="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="30sp"
-                        android:visibility="invisible"/>
 
                 <RadioGroup
                         android:id="@+id/rg_user_id"
@@ -185,6 +164,36 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"/>
+
+                <RelativeLayout
+                        android:id="@+id/rl_total"
+                        android:layout_width="match_parent"
+                        android:padding="5dp"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+
+
+                    <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@+id/tv_cost"
+                            android:text="Total Cost: "
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
+                            android:layout_height="wrap_content"/>
+
+                    <TextView
+                            android:id="@+id/tv_cost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:paddingRight="5dp"
+                            android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
             </LinearLayout>
 
             <FrameLayout

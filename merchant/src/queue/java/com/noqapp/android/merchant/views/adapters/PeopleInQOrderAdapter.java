@@ -2,18 +2,17 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,10 +25,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAdapter.MyViewHolder> {
+ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAdapter.MyViewHolder> {
 
     private final Context context;
     private List<JsonPurchaseOrder> dataSet;
@@ -110,8 +112,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonPurchaseOrder.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonPurchaseOrder.getCustomerName());
-        recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        if(null != LaunchActivity.getLaunchActivity()) {
+            recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
+                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        }
         recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,6 +252,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         ListView listview = customDialogView.findViewById(R.id.listview);
         TextView tv_item_count = customDialogView.findViewById(R.id.tv_item_count);
         TextView tv_payment_mode = customDialogView.findViewById(R.id.tv_payment_mode);
+        TextView tv_payment_status = customDialogView.findViewById(R.id.tv_payment_status);
         TextView tv_address = customDialogView.findViewById(R.id.tv_address);
         TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
         TextView tv_notes = customDialogView.findViewById(R.id.tv_notes);
@@ -255,15 +260,23 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
+
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
+        } else {
+            tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
+        }
        // tv_payment_mode.setText(Html.fromHtml(jsonPurchaseOrder.getPaymentMode().getDescription()));
+
+        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         try {
-            tv_cost.setText(Html.fromHtml(String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100)));
+            tv_cost.setText(currencySymbol + " "+String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
         } catch (Exception e) {
-            tv_cost.setText(Html.fromHtml(String.valueOf(0 / 100)));
+            tv_cost.setText(currencySymbol + " "+String.valueOf(0 / 100));
         }
         builder.setView(customDialogView);
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrderProductList.size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(mContext, jsonPurchaseOrderProductList);
+        OrderItemAdapter adapter = new OrderItemAdapter(mContext, jsonPurchaseOrderProductList,currencySymbol);
         listview.setAdapter(adapter);
         final AlertDialog mAlertDialog = builder.create();
         //mAlertDialog.setCanceledOnTouchOutside(false);
