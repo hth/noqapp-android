@@ -6,19 +6,17 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PurchaseOrderApiCall {
-    private final String TAG = PurchaseOrderApiCall.class.getSimpleName();
     private final static PurchaseOrderApiUrls purchaseOrderApiUrls;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private CashFreeNotifyPresenter cashFreeNotifyPresenter;
@@ -58,6 +56,34 @@ public class PurchaseOrderApiCall {
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("onFailure purchase", t.getLocalizedMessage(), t);
+                purchaseOrderPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void payNow(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderApiUrls.payNow(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response payNow", String.valueOf(response.body()));
+                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        purchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("onFailure payNow", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.responseErrorPresenter(null);
             }
         });
