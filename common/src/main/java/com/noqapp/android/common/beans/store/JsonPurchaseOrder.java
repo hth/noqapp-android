@@ -107,6 +107,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("cft")
     private JsonResponseWithCFToken jsonResponseWithCFToken;
 
+    @JsonProperty("cp")
+    private boolean customized;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -322,6 +325,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setJsonResponseWithCFToken(JsonResponseWithCFToken jsonResponseWithCFToken) {
         this.jsonResponseWithCFToken = jsonResponseWithCFToken;
+        return this;
+    }
+
+    public boolean isCustomized() {
+        return customized;
+    }
+
+    public JsonPurchaseOrder setCustomized(boolean customized) {
+        this.customized = customized;
         return this;
     }
 
