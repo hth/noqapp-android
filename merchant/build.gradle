@@ -262,8 +262,6 @@ android {
             minifyEnabled true
             zipAlignEnabled true
 
-            testCoverageEnabled true
-
             proguardFile '../library-proguard/proguard-butterknife-7.pro'
             proguardFile '../library-proguard/proguard-crashlytics.pro'
             proguardFile '../library-proguard/proguard-facebook.pro'
