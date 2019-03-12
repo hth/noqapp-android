@@ -248,6 +248,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             OrderServed orderServed = new OrderServed();
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+            orderServed.setTransactionId(purchaseOrders.get(position).getTransactionId());
             orderServed.setGoTo(tv_counter_name.getText().toString());
             orderServed.setQueueStatus(QueueStatusEnum.N);
             orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
