@@ -1,58 +1,217 @@
-package com.noqapp.android.merchant.model.response.api;
+package com.noqapp.android.merchant.model.response.api.health;
 
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
-import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
  * User: hitender
- * Date: 4/16/17 5:40 PM
+ * Date: 6/13/18 11:00 AM
  */
-
-public interface ManageQueueService {
+public interface MedicalRecordApiUrls {
 
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_POPULATED_WITH_LAB}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/mq/queues.json")
-    Call<JsonTopicList> getQueues(
+    @POST("api/m/h/medicalRecord/update.json")
+    Call<JsonResponse> update(
             @Header("X-R-DID")
             String did,
 
             @Header("X-R-DT")
             String dt,
 
-            @Header("X-R-VR")
-            String versionRelease,
-
             @Header("X-R-MAIL")
             String mail,
 
             @Header("X-R-AUTH")
-            String auth
+            String auth,
+
+            @Body
+            JsonMedicalRecord jsonMedicalRecord
     );
 
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ACCESS_DENIED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/h/medicalRecord/retrieve.json")
+    Call<JsonMedicalRecord> retrieve(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonMedicalRecord jsonMedicalRecord
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ENTRY_DENIED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/h/medicalRecord/historical.json")
+    Call<JsonMedicalRecordList> historical(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            FindMedicalProfile findMedicalProfile
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/h/medicalRecord/updateObservation.json")
+    Call<JsonResponse> updateObservation(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            LabFile labFile
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/h/medicalRecord/{codeQR}/followup.json")
+    Call<JsonQueuePersonList> followUp(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_ACCESS_DENIED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_RECORD_DOES_NOT_EXISTS}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#BUSINESS_NOT_AUTHORIZED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/h/medicalRecord/exists/{codeQR}/{recordReferenceId}.json")
+    Call<JsonMedicalRecord> exists(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR,
+
+            @Path("recordReferenceId")
+            String recordReferenceId
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD_NO_SIZE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD_UNSUPPORTED_FORMAT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD_EXCEED_SIZE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_UPLOAD}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @Multipart
+    @POST("api/m/h/medicalRecord/appendImage.json")
+    Call<JsonResponse> appendImage(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Part
+            MultipartBody.Part imageFile,
+
+            @Part("recordReferenceId")
+            RequestBody recordReferenceId
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/mq/served.json")
-    Call<JsonToken> served(
+    @POST("api/m/h/medicalRecord/removeImage.json")
+    Call<JsonResponse> removeImage(
             @Header("X-R-DID")
             String did,
 
@@ -66,155 +225,6 @@ public interface ManageQueueService {
             String auth,
 
             @Body
-            Served served
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @POST("api/m/mq/showClients/{codeQR}.json")
-    Call<JsonQueuePersonList> showClients(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @POST("api/m/mq/showClients/{codeQR}/historical.json")
-    Call<JsonQueuePersonList> showClientsHistorical(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MERCHANT_COULD_NOT_ACQUIRE}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @POST("api/m/mq/acquire.json")
-    Call<JsonToken> acquire(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            Served served
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @POST("api/m/mq/dispenseToken/{codeQR}.json")
-    Call<JsonToken> dispenseTokenWithoutClientInfo(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @POST("api/m/mq/dispenseToken.json")
-    Call<JsonToken> dispenseTokenWithClientInfo(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            JsonBusinessCustomerLookup jsonBusinessCustomerLookup
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_ALREADY_IN_QUEUE}
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CHANGE_USER_IN_QUEUE}
-     */
-    @POST("api/m/mq/changeUserInQueue.json")
-    Call<JsonQueuePersonList> changeUserInQueue(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            ChangeUserInQueue changeUserInQueue
+            JsonMedicalRecord jsonMedicalRecord
     );
 }

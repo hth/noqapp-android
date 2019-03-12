@@ -12,7 +12,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 8/13/18 3:55 PM
  */
-public interface PreferredStoreService {
+public interface PreferredStoreApiUrls {
 
 
     /**

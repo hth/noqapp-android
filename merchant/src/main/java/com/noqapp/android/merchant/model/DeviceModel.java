@@ -7,7 +7,7 @@ import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.model.response.api.DeviceService;
+import com.noqapp.android.merchant.model.response.api.DeviceApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
@@ -25,7 +25,7 @@ import retrofit2.Response;
 public class DeviceModel {
     private final String TAG = DeviceModel.class.getSimpleName();
 
-    private static final DeviceService deviceService;
+    private static final DeviceApiUrls deviceApiUrls;
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -38,7 +38,7 @@ public class DeviceModel {
     }
 
     static {
-        deviceService = RetrofitClient.getClient().create(DeviceService.class);
+        deviceApiUrls = RetrofitClient.getClient().create(DeviceApiUrls.class);
     }
 
     /**
@@ -48,7 +48,7 @@ public class DeviceModel {
      * @param deviceToken
      */
     public void register(String did, DeviceToken deviceToken) {
-        deviceService.register(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        deviceApiUrls.register(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -81,7 +81,7 @@ public class DeviceModel {
      * @param did
      */
     public void isSupportedAppVersion(String did) {
-        deviceService.isSupportedAppVersion(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
+        deviceApiUrls.isSupportedAppVersion(did, DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 /**
  * Created by chandra on 7/15/17.
  */
-public interface QueueSettingService {
+public interface QueueSettingApiUrls {
 
     /**
      * Errors

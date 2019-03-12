@@ -3,7 +3,7 @@ package com.noqapp.android.merchant.views.model;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.merchant.model.response.api.store.StoreProductService;
+import com.noqapp.android.merchant.model.response.api.store.StoreProductApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.Constants;
@@ -19,7 +19,7 @@ import retrofit2.Response;
 public class StoreProductModel {
 
     private static final String TAG = StoreProductModel.class.getSimpleName();
-    private static final StoreProductService storeProductService;
+    private static final StoreProductApiUrls storeProductService;
     private StoreProductPresenter storeProductPresenter;
     private ActionOnProductPresenter actionOnProductPresenter;
 
@@ -32,7 +32,7 @@ public class StoreProductModel {
     }
 
     static {
-        storeProductService = RetrofitClient.getClient().create(StoreProductService.class);
+        storeProductService = RetrofitClient.getClient().create(StoreProductApiUrls.class);
     }
 
     public void storeProduct(String did, String mail, String auth, String codeQR) {

@@ -2,13 +2,13 @@ package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
-import com.noqapp.android.merchant.model.response.api.health.MedicalUserProfileService;
+import com.noqapp.android.merchant.model.response.api.health.MedicalUserProfileApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.Constants;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,7 +16,7 @@ import retrofit2.Response;
 public class PatientProfileModel {
     private static final String TAG = PatientProfileModel.class.getSimpleName();
 
-    private static final MedicalUserProfileService medicalUserProfileService;
+    private static final MedicalUserProfileApiUrls medicalUserProfileApiUrls;
     private PatientProfilePresenter patientProfilePresenter;
 
     public PatientProfileModel(PatientProfilePresenter patientProfilePresenter) {
@@ -24,7 +24,7 @@ public class PatientProfileModel {
     }
 
     static {
-        medicalUserProfileService = RetrofitClient.getClient().create(MedicalUserProfileService.class);
+        medicalUserProfileApiUrls = RetrofitClient.getClient().create(MedicalUserProfileApiUrls.class);
     }
 
     /**
@@ -33,7 +33,7 @@ public class PatientProfileModel {
      * @param auth
      */
     public void fetch(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
-        medicalUserProfileService.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonProfile>() {
+        medicalUserProfileApiUrls.fetch(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

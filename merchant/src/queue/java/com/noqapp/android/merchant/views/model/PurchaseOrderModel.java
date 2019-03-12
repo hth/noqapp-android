@@ -5,7 +5,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderService;
+import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -16,10 +16,11 @@ import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
+import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -29,14 +30,18 @@ import retrofit2.Response;
 public class PurchaseOrderModel {
 
     private static final String TAG = PurchaseOrderModel.class.getSimpleName();
-    private static final PurchaseOrderService purchaseOrderService;
+    private static final PurchaseOrderApiUrls purchaseOrderService;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private OrderProcessedPresenter orderProcessedPresenter;
     private AcquireOrderPresenter acquireOrderPresenter;
     private ImageUploadPresenter imageUploadPresenter;
     private LabFilePresenter labFilePresenter;
     private FindCustomerPresenter findCustomerPresenter;
+    private PaymentProcessPresenter paymentProcessPresenter;
 
+    public void setPaymentProcessPresenter(PaymentProcessPresenter paymentProcessPresenter) {
+        this.paymentProcessPresenter = paymentProcessPresenter;
+    }
 
     public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
         this.imageUploadPresenter = imageUploadPresenter;
@@ -61,10 +66,10 @@ public class PurchaseOrderModel {
     public void setFindCustomerPresenter(FindCustomerPresenter findCustomerPresenter) {
         this.findCustomerPresenter = findCustomerPresenter;
     }
-    
+
 
     static {
-        purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderService.class);
+        purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderApiUrls.class);
     }
 
     public void fetch(String did, String mail, String auth, String codeQR) {
@@ -241,7 +246,7 @@ public class PurchaseOrderModel {
         });
     }
 
-    public void purchase(String did, String mail, String auth,  JsonPurchaseOrder jsonPurchaseOrder) {
+    public void purchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
         purchaseOrderService.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
@@ -266,6 +271,64 @@ public class PurchaseOrderModel {
             public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
                 Log.e("purchase fail", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void partialPayment(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.partialPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("partialPayment", String.valueOf(response.body()));
+                        paymentProcessPresenter.paymentProcessResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while partialPayment");
+                        paymentProcessPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        paymentProcessPresenter.authenticationFailure();
+                    } else {
+                        paymentProcessPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("partialPayment fail", t.getLocalizedMessage(), t);
+                paymentProcessPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void cashPayment(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.cashPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("partialPayment", String.valueOf(response.body()));
+                        paymentProcessPresenter.paymentProcessResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while partialPayment");
+                        paymentProcessPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        paymentProcessPresenter.authenticationFailure();
+                    } else {
+                        paymentProcessPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("partialPayment fail", t.getLocalizedMessage(), t);
+                paymentProcessPresenter.responseErrorPresenter(null);
             }
         });
     }

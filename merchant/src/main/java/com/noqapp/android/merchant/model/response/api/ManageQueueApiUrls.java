@@ -1,33 +1,82 @@
-package com.noqapp.android.merchant.model.response.api.store;
+package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
-import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
+import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
+import com.noqapp.android.merchant.presenter.beans.body.Served;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 
-public interface PurchaseOrderService {
+/**
+ * User: hitender
+ * Date: 4/16/17 5:40 PM
+ */
+
+public interface ManageQueueApiUrls {
 
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/s/purchaseOrder/showOrders/{codeQR}.json")
-    Call<JsonPurchaseOrderList> fetch(
+    @GET("api/m/mq/queues.json")
+    Call<JsonTopicList> getQueues(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-VR")
+            String versionRelease,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/mq/served.json")
+    Call<JsonToken> served(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            Served served
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/mq/showClients/{codeQR}.json")
+    Call<JsonQueuePersonList> showClients(
             @Header("X-R-DID")
             String did,
 
@@ -50,8 +99,8 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/s/purchaseOrder/served.json")
-    Call<JsonToken> served(
+    @POST("api/m/mq/showClients/{codeQR}/historical.json")
+    Call<JsonQueuePersonList> showClientsHistorical(
             @Header("X-R-DID")
             String did,
 
@@ -64,8 +113,8 @@ public interface PurchaseOrderService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Body
-            OrderServed OrderServed
+            @Path("codeQR")
+            String codeQR
     );
 
     /**
@@ -75,7 +124,7 @@ public interface PurchaseOrderService {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MERCHANT_COULD_NOT_ACQUIRE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/s/purchaseOrder/acquire.json")
+    @POST("api/m/mq/acquire.json")
     Call<JsonToken> acquire(
             @Header("X-R-DID")
             String did,
@@ -90,17 +139,17 @@ public interface PurchaseOrderService {
             String auth,
 
             @Body
-            OrderServed OrderServed
+            Served served
     );
 
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/s/purchaseOrder/actionOnOrder.json")
-    Call<JsonPurchaseOrderList> actionOnOrder(
+    @POST("api/m/mq/dispenseToken/{codeQR}.json")
+    Call<JsonToken> dispenseTokenWithoutClientInfo(
             @Header("X-R-DID")
             String did,
 
@@ -113,12 +162,20 @@ public interface PurchaseOrderService {
             @Header("X-R-AUTH")
             String auth,
 
-            @Body
-            OrderServed OrderServed
+            @Path("codeQR")
+            String codeQR
     );
 
-    @POST("api/m/s/purchaseOrder/findCustomer.json")
-    Call<JsonProfile> findCustomer(
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/mq/dispenseToken.json")
+    Call<JsonToken> dispenseTokenWithClientInfo(
             @Header("X-R-DID")
             String did,
 
@@ -135,78 +192,16 @@ public interface PurchaseOrderService {
             JsonBusinessCustomerLookup jsonBusinessCustomerLookup
     );
 
-    @POST("api/m/s/purchaseOrder/purchase.json")
-    Call<JsonPurchaseOrderList> purchase(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            JsonPurchaseOrder jsonPurchaseOrder
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ORDER_PAYMENT_UPDATE_FAILED}
-     */
-    @POST("api/m/s/purchaseOrder/partialPayment.json")
-    Call<JsonPurchaseOrderList> partialPayment(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            JsonPurchaseOrder jsonPurchaseOrder
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ORDER_PAYMENT_UPDATE_FAILED}\
-     */
-    @POST("api/m/s/purchaseOrder/cashPayment.json")
-    Call<JsonPurchaseOrderList> cashPayment(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            JsonPurchaseOrder jsonPurchaseOrder
-    );
-
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_ALREADY_IN_QUEUE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CHANGE_USER_IN_QUEUE}
      */
-    @POST("api/m/s/purchaseOrder/cancel.json")
-    Call<JsonPurchaseOrderList> cancel(
+    @POST("api/m/mq/changeUserInQueue.json")
+    Call<JsonQueuePersonList> changeUserInQueue(
             @Header("X-R-DID")
             String did,
 
@@ -220,79 +215,6 @@ public interface PurchaseOrderService {
             String auth,
 
             @Body
-            OrderServed OrderServed
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
-     */
-    @Multipart
-    @POST("api/m/s/purchaseOrder/addAttachment.json")
-    Call<JsonResponse> addAttachment(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Part
-            MultipartBody.Part imageFile,
-
-            @Part("ti")
-            RequestBody transactionId
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
-     */
-    @POST("api/m/s/purchaseOrder/removeAttachment.json")
-    Call<JsonResponse> removeAttachment(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            LabFile labFile
-    );
-
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
-     */
-    @POST("api/m/s/purchaseOrder/showAttachment.json")
-    Call<LabFile> showAttachment(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            LabFile labFile
+            ChangeUserInQueue changeUserInQueue
     );
 }

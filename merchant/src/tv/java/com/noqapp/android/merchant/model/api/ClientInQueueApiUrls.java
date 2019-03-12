@@ -8,7 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-public interface ClientInQueueService {
+public interface ClientInQueueApiUrls {
 
     @POST("api/tv/queue/toBeServedClients.json")
     Call<JsonQueueTVList> toBeServedClients(

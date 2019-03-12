@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.merchant.model.response.api.RegisterService;
+import com.noqapp.android.merchant.model.response.api.RegisterApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.body.Login;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
@@ -22,7 +22,7 @@ import retrofit2.Response;
 public final class RegisterModel {
     private static final String TAG = RegisterModel.class.getSimpleName();
 
-    private static final RegisterService registerService;
+    private static final RegisterApiUrls registerApiUrls;
     private ProfilePresenter profilePresenter;
 
     public RegisterModel(ProfilePresenter profilePresenter) {
@@ -30,14 +30,14 @@ public final class RegisterModel {
     }
 
     static {
-        registerService = RetrofitClient.getClient().create(RegisterService.class);
+        registerApiUrls = RetrofitClient.getClient().create(RegisterApiUrls.class);
     }
 
     /**
      * @param registration
      */
     public void register(String did, Registration registration) {
-        registerService.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
+        registerApiUrls.register(did, Constants.DEVICE_TYPE, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -70,7 +70,7 @@ public final class RegisterModel {
      * @param login
      */
     public void login(String did, Login login) {
-        registerService.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
+        registerApiUrls.login(did, Constants.DEVICE_TYPE, login).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

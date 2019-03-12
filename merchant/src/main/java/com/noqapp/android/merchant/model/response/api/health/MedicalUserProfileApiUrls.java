@@ -12,7 +12,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 7/25/18 5:55 PM
  */
-public interface MedicalUserProfileService {
+public interface MedicalUserProfileApiUrls {
 
     /**
      * Errors

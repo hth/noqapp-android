@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model;
 
-import com.noqapp.android.merchant.model.response.api.LoginService;
+import com.noqapp.android.merchant.model.response.api.LoginApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
@@ -16,9 +16,8 @@ import retrofit2.Response;
  * Date: 4/22/17 1:09 PM
  */
 public class LoginModel {
-    private static final String TAG = LoginModel.class.getSimpleName();
 
-    private static final LoginService loginService;
+    private static final LoginApiUrls loginApiUrls;
     private LoginPresenter loginPresenter;
 
     public LoginModel(LoginPresenter loginPresenter) {
@@ -26,7 +25,7 @@ public class LoginModel {
     }
 
     static {
-        loginService = RetrofitClient.getClient().create(LoginService.class);
+        loginApiUrls = RetrofitClient.getClient().create(LoginApiUrls.class);
     }
 
     /**
@@ -34,7 +33,7 @@ public class LoginModel {
      * @param password
      */
     public void login(String mail, String password) {
-        loginService.login(mail, password).enqueue(new Callback<Void>() {
+        loginApiUrls.login(mail, password).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

@@ -12,7 +12,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 6/17/18 6:23 PM
  */
-public interface BusinessCustomerService {
+public interface BusinessCustomerApiUrls {
 
     /**
      * Errors

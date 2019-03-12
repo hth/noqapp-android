@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model;
 
-import com.noqapp.android.merchant.model.response.api.MerchantStatsService;
+import com.noqapp.android.merchant.model.response.api.MerchantStatsApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
 import com.noqapp.android.merchant.utils.Constants;
@@ -18,7 +18,7 @@ import retrofit2.Response;
 public class MerchantStatsModel {
     private static final String TAG = MerchantStatsModel.class.getSimpleName();
 
-    private static final MerchantStatsService merchantStatsService;
+    private static final MerchantStatsApiUrls merchantStatsApiUrls;
     private ChartPresenter chartPresenter;
 
     public MerchantStatsModel(ChartPresenter chartPresenter) {
@@ -26,11 +26,11 @@ public class MerchantStatsModel {
     }
 
     static {
-        merchantStatsService = RetrofitClient.getClient().create(MerchantStatsService.class);
+        merchantStatsApiUrls = RetrofitClient.getClient().create(MerchantStatsApiUrls.class);
     }
 
     public void healthCare(String did, String mail, String auth) {
-        merchantStatsService.healthCare(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
+        merchantStatsApiUrls.healthCare(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<HealthCareStatList>() {
             @Override
             public void onResponse(Call<HealthCareStatList> call, Response<HealthCareStatList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

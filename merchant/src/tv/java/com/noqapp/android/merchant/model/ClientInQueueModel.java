@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model;
 
-import com.noqapp.android.merchant.model.api.ClientInQueueService;
+import com.noqapp.android.merchant.model.api.ClientInQueueApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
@@ -16,7 +16,7 @@ import retrofit2.Response;
 public class ClientInQueueModel {
     private static final String TAG = ClientInQueueModel.class.getSimpleName();
 
-    protected static final ClientInQueueService clientInQueueService;
+    protected static final ClientInQueueApiUrls clientInQueueApiUrls;
     private ClientInQueuePresenter clientInQueuePresenter;
 
     public ClientInQueueModel(ClientInQueuePresenter clientInQueuePresenter) {
@@ -24,7 +24,7 @@ public class ClientInQueueModel {
     }
 
     static {
-        clientInQueueService = RetrofitClient.getClient().create(ClientInQueueService.class);
+        clientInQueueApiUrls = RetrofitClient.getClient().create(ClientInQueueApiUrls.class);
     }
 
     /**
@@ -32,7 +32,7 @@ public class ClientInQueueModel {
      * @param auth
      */
     public void toBeServedClients(String did, String mail, String auth, QueueDetail queueDetail) {
-        clientInQueueService.toBeServedClients(did, Constants.DEVICE_TYPE, mail, auth, queueDetail).enqueue(new Callback<JsonQueueTVList>() {
+        clientInQueueApiUrls.toBeServedClients(did, Constants.DEVICE_TYPE, mail, auth, queueDetail).enqueue(new Callback<JsonQueueTVList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueueTVList> call, @NonNull Response<JsonQueueTVList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

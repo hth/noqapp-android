@@ -6,7 +6,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
-import com.noqapp.android.merchant.model.response.api.health.MedicalRecordService;
+import com.noqapp.android.merchant.model.response.api.health.MedicalRecordApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordListPresenter;
@@ -16,8 +16,8 @@ import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class MedicalHistoryModel {
     private static final String TAG = MedicalHistoryModel.class.getSimpleName();
 
-    private static final MedicalRecordService medicalRecordService;
+    private static final MedicalRecordApiUrls medicalRecordApiUrls;
     private MedicalRecordPresenter medicalRecordPresenter;
     private MedicalRecordListPresenter medicalRecordListPresenter;
     private QueuePersonListPresenter queuePersonListPresenter;
@@ -61,7 +61,7 @@ public class MedicalHistoryModel {
     }
 
     static {
-        medicalRecordService = RetrofitClient.getClient().create(MedicalRecordService.class);
+        medicalRecordApiUrls = RetrofitClient.getClient().create(MedicalRecordApiUrls.class);
     }
 
     /**
@@ -70,7 +70,7 @@ public class MedicalHistoryModel {
      * @param auth
      */
     public void update(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
-        medicalRecordService.update(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
+        medicalRecordApiUrls.update(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -100,7 +100,7 @@ public class MedicalHistoryModel {
 
 
     public void historical(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
-        medicalRecordService.historical(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
+        medicalRecordApiUrls.historical(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -129,7 +129,7 @@ public class MedicalHistoryModel {
     }
 
     public void getFollowUpList(String mail, String auth, String codeQR) {
-        medicalRecordService.followUp(mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
+        medicalRecordApiUrls.followUp(mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -158,7 +158,7 @@ public class MedicalHistoryModel {
     }
 
     public void retrieveMedicalRecord(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
-        medicalRecordService.retrieve(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonMedicalRecord>() {
+        medicalRecordApiUrls.retrieve(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonMedicalRecord>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecord> call, @NonNull Response<JsonMedicalRecord> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -187,7 +187,7 @@ public class MedicalHistoryModel {
     }
 
     public void existsMedicalRecord(String did, String mail, String auth, String codeQR, String recordReferenceId) {
-        medicalRecordService.exists(did, Constants.DEVICE_TYPE, mail, auth, codeQR, recordReferenceId).enqueue(new Callback<JsonMedicalRecord>() {
+        medicalRecordApiUrls.exists(did, Constants.DEVICE_TYPE, mail, auth, codeQR, recordReferenceId).enqueue(new Callback<JsonMedicalRecord>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecord> call, @NonNull Response<JsonMedicalRecord> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -216,7 +216,7 @@ public class MedicalHistoryModel {
     }
 
     public void appendImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody recordReferenceId) {
-        medicalRecordService.appendImage(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, recordReferenceId).enqueue(new Callback<JsonResponse>() {
+        medicalRecordApiUrls.appendImage(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, recordReferenceId).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -245,7 +245,7 @@ public class MedicalHistoryModel {
     }
 
     public void updateObservation(String did, String mail, String auth, LabFile labFile) {
-        medicalRecordService.updateObservation(did, Constants.DEVICE_TYPE, mail, auth, labFile).enqueue(new Callback<JsonResponse>() {
+        medicalRecordApiUrls.updateObservation(did, Constants.DEVICE_TYPE, mail, auth, labFile).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -275,7 +275,7 @@ public class MedicalHistoryModel {
 
 
     public void removeImage(String did, String mail, String auth, JsonMedicalRecord jsonMedicalRecord) {
-        medicalRecordService.removeImage(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
+        medicalRecordApiUrls.removeImage(did, Constants.DEVICE_TYPE, mail, auth, jsonMedicalRecord).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

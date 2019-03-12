@@ -14,7 +14,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 4/8/17 8:29 PM
  */
-public interface RegisterService {
+public interface RegisterApiUrls {
 
     /**
      * Errors

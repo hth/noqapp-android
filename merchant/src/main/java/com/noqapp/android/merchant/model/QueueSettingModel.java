@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.merchant.model.response.api.QueueSettingService;
+import com.noqapp.android.merchant.model.response.api.QueueSettingApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.Constants;
@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class QueueSettingModel {
 
     private static final String TAG = QueueSettingModel.class.getSimpleName();
-    private static final QueueSettingService queueSettingService;
+    private static final QueueSettingApiUrls queueSettingApiUrls;
     private QueueSettingPresenter queueSettingPresenter;
 
     public QueueSettingModel(QueueSettingPresenter queueSettingPresenter) {
@@ -30,7 +30,7 @@ public class QueueSettingModel {
     }
 
     static {
-        queueSettingService = RetrofitClient.getClient().create(QueueSettingService.class);
+        queueSettingApiUrls = RetrofitClient.getClient().create(QueueSettingApiUrls.class);
     }
 
     /**
@@ -41,7 +41,7 @@ public class QueueSettingModel {
      * @param auth
      */
     public void getQueueState(String did, String mail, String auth, String codeQR) {
-        queueSettingService.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
+        queueSettingApiUrls.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -70,7 +70,7 @@ public class QueueSettingModel {
     }
 
     public void removeSchedule(String did, String mail, String auth, String codeQR) {
-        queueSettingService.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
+        queueSettingApiUrls.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -104,7 +104,7 @@ public class QueueSettingModel {
      * @param auth
      */
     public void modify(String did, String mail, String auth, QueueSetting queueSetting) {
-        queueSettingService.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
+        queueSettingApiUrls.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
             public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

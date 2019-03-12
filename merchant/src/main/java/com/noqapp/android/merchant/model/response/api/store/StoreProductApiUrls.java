@@ -12,7 +12,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface StoreProductService {
+public interface StoreProductApiUrls {
 
 
     @GET("api/m/s/product/store/{codeQR}.json")

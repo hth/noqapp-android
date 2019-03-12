@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model;
 
-import com.noqapp.android.merchant.model.response.api.health.MasterLabService;
+import com.noqapp.android.merchant.model.response.api.health.MasterLabApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
@@ -20,18 +20,18 @@ import java.io.InputStream;
 
 public class BaseMasterLabModel {
     protected static final String TAG = BaseMasterLabModel.class.getSimpleName();
-    protected static final MasterLabService masterLabService;
+    protected static final MasterLabApiUrls masterLabApiUrls;
     protected FilePresenter filePresenter;
 
     static {
-        masterLabService = RetrofitClient.getClient().create(MasterLabService.class);
+        masterLabApiUrls = RetrofitClient.getClient().create(MasterLabApiUrls.class);
     }
     public void setFilePresenter(FilePresenter filePresenter) {
         this.filePresenter = filePresenter;
     }
 
     public void fetchFile(String did, String mail, String auth) {
-        masterLabService.file(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<ResponseBody>() {
+        masterLabApiUrls.file(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

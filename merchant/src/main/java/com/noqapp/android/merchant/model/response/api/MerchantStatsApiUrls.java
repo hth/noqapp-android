@@ -10,7 +10,7 @@ import retrofit2.http.Header;
  * User: hitender
  * Date: 5/15/18 3:59 PM
  */
-public interface MerchantStatsService {
+public interface MerchantStatsApiUrls {
 
     /**
      * Errors

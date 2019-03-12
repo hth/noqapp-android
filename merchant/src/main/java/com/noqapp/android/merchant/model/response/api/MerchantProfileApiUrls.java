@@ -21,7 +21,7 @@ import retrofit2.http.Part;
  * Date: 4/22/17 11:54 AM
  */
 
-public interface MerchantProfileService {
+public interface MerchantProfileApiUrls {
 
     /**
      * Errors

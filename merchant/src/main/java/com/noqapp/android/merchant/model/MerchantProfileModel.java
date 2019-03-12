@@ -6,7 +6,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.model.response.api.MerchantProfileService;
+import com.noqapp.android.merchant.model.response.api.MerchantProfileApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.Constants;
@@ -29,7 +29,7 @@ import retrofit2.Response;
 public class MerchantProfileModel {
     private static final String TAG = MerchantProfileModel.class.getSimpleName();
 
-    protected static final MerchantProfileService merchantProfileService;
+    protected static final MerchantProfileApiUrls merchantProfileApiUrls;
     private ImageUploadPresenter imageUploadPresenter;
     private MerchantPresenter merchantPresenter;
     private ProfilePresenter profilePresenter;
@@ -52,7 +52,7 @@ public class MerchantProfileModel {
     }
 
     static {
-        merchantProfileService = RetrofitClient.getClient().create(MerchantProfileService.class);
+        merchantProfileApiUrls = RetrofitClient.getClient().create(MerchantProfileApiUrls.class);
     }
 
     /**
@@ -60,7 +60,7 @@ public class MerchantProfileModel {
      * @param auth
      */
     public void fetch(String did, String mail, String auth) {
-        merchantProfileService.fetch(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth).enqueue(new Callback<JsonMerchant>() {
+        merchantProfileApiUrls.fetch(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth).enqueue(new Callback<JsonMerchant>() {
             @Override
             public void onResponse(@NonNull Call<JsonMerchant> call, @NonNull Response<JsonMerchant> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -89,7 +89,7 @@ public class MerchantProfileModel {
     }
 
     public void updateProfile(final String mail, final String auth, UpdateProfile updateProfile) {
-        merchantProfileService.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
+        merchantProfileApiUrls.update(mail, auth, updateProfile).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -118,7 +118,7 @@ public class MerchantProfileModel {
     }
 
     public void updateProfessionalProfile(final String mail, final String auth, JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
-        merchantProfileService.update(mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonProfessionalProfilePersonal>() {
+        merchantProfileApiUrls.update(mail, auth, jsonProfessionalProfilePersonal).enqueue(new Callback<JsonProfessionalProfilePersonal>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfilePersonal> call, @NonNull Response<JsonProfessionalProfilePersonal> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -147,7 +147,7 @@ public class MerchantProfileModel {
     }
 
     public void uploadImage(String did, String mail, String auth, MultipartBody.Part profileImageFile, RequestBody profileImageOfQid) {
-        merchantProfileService.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
+        merchantProfileApiUrls.upload(did, Constants.DEVICE_TYPE, mail, auth, profileImageFile, profileImageOfQid).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -176,7 +176,7 @@ public class MerchantProfileModel {
     }
 
     public void removeImage(String did, String mail, String auth, UpdateProfile updateProfile) {
-        merchantProfileService.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
+        merchantProfileApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, updateProfile).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

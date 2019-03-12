@@ -3,7 +3,7 @@ package com.noqapp.android.merchant.model;
 
 
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
-import com.noqapp.android.merchant.model.response.api.health.PreferredStoreService;
+import com.noqapp.android.merchant.model.response.api.health.PreferredStoreApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.utils.Constants;
@@ -25,7 +25,7 @@ import java.io.InputStream;
 public class PreferredBusinessModel {
     private static final String TAG = PreferredBusinessModel.class.getSimpleName();
 
-    private static final PreferredStoreService preferredStoreService;
+    private static final PreferredStoreApiUrls preferredStoreApiUrls;
     private PreferredBusinessPresenter preferredBusinessPresenter;
 
     public void setFilePresenter(FilePresenter filePresenter) {
@@ -39,12 +39,12 @@ public class PreferredBusinessModel {
     }
 
     static {
-        preferredStoreService = RetrofitClient.getClient().create(PreferredStoreService.class);
+        preferredStoreApiUrls = RetrofitClient.getClient().create(PreferredStoreApiUrls.class);
     }
 
 
     public void getAllPreferredStores(String did, String mail, String auth) {
-        preferredStoreService.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonPreferredBusinessBucket>() {
+        preferredStoreApiUrls.getAllPreferredStores(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonPreferredBusinessBucket>() {
             @Override
             public void onResponse(@NonNull Call<JsonPreferredBusinessBucket> call, @NonNull Response<JsonPreferredBusinessBucket> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -73,7 +73,7 @@ public class PreferredBusinessModel {
     }
 
     public void fetchFile(String did, String mail, String auth, String codeQR, String bizStoreId) {
-        preferredStoreService.file(did, Constants.DEVICE_TYPE, mail, auth, codeQR, bizStoreId).enqueue(new Callback<ResponseBody>() {
+        preferredStoreApiUrls.file(did, Constants.DEVICE_TYPE, mail, auth, codeQR, bizStoreId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

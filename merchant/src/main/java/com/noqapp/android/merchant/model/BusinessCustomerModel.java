@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model;
 
-import com.noqapp.android.merchant.model.response.api.BusinessCustomerService;
+import com.noqapp.android.merchant.model.response.api.BusinessCustomerApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -20,7 +20,7 @@ import retrofit2.Response;
 public class BusinessCustomerModel {
     private static final String TAG = BusinessCustomerModel.class.getSimpleName();
 
-    private static final BusinessCustomerService businessCustomerService;
+    private static final BusinessCustomerApiUrls businessCustomerApiUrls;
     private QueuePersonListPresenter queuePersonListPresenter;
 
     public BusinessCustomerModel(QueuePersonListPresenter queuePersonListPresenter) {
@@ -28,11 +28,11 @@ public class BusinessCustomerModel {
     }
 
     static {
-        businessCustomerService = RetrofitClient.getClient().create(BusinessCustomerService.class);
+        businessCustomerApiUrls = RetrofitClient.getClient().create(BusinessCustomerApiUrls.class);
     }
 
     public void addId(String did, String mail, String auth, JsonBusinessCustomer jsonBusinessCustomer) {
-        businessCustomerService.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
+        businessCustomerApiUrls.addId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -62,7 +62,7 @@ public class BusinessCustomerModel {
 
 
     public void editId(String did, String mail, String auth, JsonBusinessCustomer jsonBusinessCustomer) {
-        businessCustomerService.editId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
+        businessCustomerApiUrls.editId(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

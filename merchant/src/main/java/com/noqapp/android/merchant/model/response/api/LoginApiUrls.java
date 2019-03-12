@@ -10,7 +10,7 @@ import retrofit2.http.POST;
  * Date: 4/22/17 1:02 PM
  */
 
-public interface LoginService {
+public interface LoginApiUrls {
 
     /**
      * Errors
