@@ -6,7 +6,7 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.QueueSettingModel;
+import com.noqapp.android.merchant.model.QueueSettingApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -64,7 +64,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private CheckBox cb_limit;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
-    private QueueSettingModel queueSettingModel;
+    private QueueSettingApiCalls queueSettingApiCalls;
     private QueueSetting queueSettingTemp;
     private TextView togglePreventJoinLabel, toggleTodayClosedLabel, toggleDayClosedLabel, toggleStoreOfflineLabel;
     private String YES = "Yes";
@@ -80,7 +80,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             }
         }
         super.onCreate(savedInstanceState);
-        queueSettingModel = new QueueSettingModel(this);
+        queueSettingApiCalls = new QueueSettingApiCalls(this);
         setContentView(R.layout.activity_setting);
         if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -147,7 +147,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                         @Override
                         public void onClick(View v) {
                             progressDialog.show();
-                            queueSettingModel.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                            queueSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                             mAlertDialog.dismiss();
                         }
                     });
@@ -300,7 +300,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            queueSettingModel.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            queueSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
@@ -500,7 +500,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         } else {
             queueSetting.setDelayedInMinutes(0);
         }
-        queueSettingModel.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+        queueSettingApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
     }
 
     private class TextViewClick implements View.OnClickListener {

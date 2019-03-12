@@ -13,7 +13,7 @@ import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
-import com.noqapp.android.merchant.model.DeviceModel;
+import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -26,14 +26,13 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-
-import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -46,16 +45,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +58,16 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -84,7 +83,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         BaseLaunchActivity.merchantListFragment = merchantListFragment;
     }
 
-    protected DeviceModel deviceModel;
+    protected DeviceApiCalls deviceApiCalls;
     public static MerchantListFragment merchantListFragment;
     protected final String IS_LOGIN = "IsLoggedIn";
     protected final String KEY_USER_EMAIL = "userEmail";
@@ -151,8 +150,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             // Toast.makeText(this,"Device ID: "+getDeviceID(),Toast.LENGTH_LONG).show();
         }
 
-        deviceModel = new DeviceModel();
-        deviceModel.setAppBlacklistPresenter(this);
+        deviceApiCalls = new DeviceApiCalls();
+        deviceApiCalls.setAppBlacklistPresenter(this);
 
         if (!language.equals("")) {
             if (language.equals("hi")) {

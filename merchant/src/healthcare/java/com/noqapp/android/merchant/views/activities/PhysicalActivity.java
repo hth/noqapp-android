@@ -7,7 +7,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -45,7 +45,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
-    private MedicalHistoryModel medicalHistoryModel;
+    private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private JsonQueuedPerson jsonQueuedPerson;
     protected boolean isDialog = false;
     protected ImageView actionbarBack;
@@ -72,7 +72,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             getWindow().setLayout(screenWidth, height);
         }
 
-        medicalHistoryModel = new MedicalHistoryModel(this);
+        medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setBackgroundResource(R.drawable.cross);
@@ -317,7 +317,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
                 }
-                medicalHistoryModel.update(
+                medicalHistoryApiCalls.update(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(),
@@ -329,8 +329,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
-            medicalHistoryModel.setJsonMedicalRecordPresenter(this);
-            medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
+            medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
+            medicalHistoryApiCalls.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 

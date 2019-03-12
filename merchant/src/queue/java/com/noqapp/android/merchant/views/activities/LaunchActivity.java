@@ -71,7 +71,7 @@ public class LaunchActivity extends BaseLaunchActivity {
 
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+            deviceApiCalls.isSupportedAppVersion(UserUtils.getDeviceId());
         }
     }
 

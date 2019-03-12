@@ -13,13 +13,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PatientProfileModel {
-    private static final String TAG = PatientProfileModel.class.getSimpleName();
+public class PatientProfileApiCalls {
+    private static final String TAG = PatientProfileApiCalls.class.getSimpleName();
 
     private static final MedicalUserProfileApiUrls medicalUserProfileApiUrls;
     private PatientProfilePresenter patientProfilePresenter;
 
-    public PatientProfileModel(PatientProfilePresenter patientProfilePresenter) {
+    public PatientProfileApiCalls(PatientProfilePresenter patientProfilePresenter) {
         this.patientProfilePresenter = patientProfilePresenter;
     }
 

@@ -5,7 +5,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -48,7 +48,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     private String gender = "";
     private DatePickerDialog fromDatePickerDialog;
-    private MerchantProfileModel merchantProfileModel;
+    private MerchantProfileApiCalls merchantProfileApiCalls;
     private ProgressDialog progressDialog;
     private String qUserId = "";
     private SegmentedControl sc_gender;
@@ -58,7 +58,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
 
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
-        merchantProfileModel = new MerchantProfileModel();
+        merchantProfileApiCalls = new MerchantProfileApiCalls();
         initProgress();
         edt_email = view.findViewById(R.id.edt_email);
         edt_name = view.findViewById(R.id.edt_name);
@@ -152,8 +152,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 updateProfile.setGender(gender);
                 updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
                 updateProfile.setQueueUserId(qUserId);
-                merchantProfileModel.setProfilePresenter(this);
-                merchantProfileModel.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
+                merchantProfileApiCalls.setProfilePresenter(this);
+                merchantProfileApiCalls.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }

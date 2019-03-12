@@ -9,8 +9,8 @@ import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
-import com.noqapp.android.merchant.model.PatientProfileModel;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.model.PatientProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
@@ -57,7 +57,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private JsonProfile jsonProfile;
     private TextView tv_empty_list;
-    private MedicalHistoryModel medicalHistoryModel;
+    private MedicalHistoryApiCalls medicalHistoryApiCalls;
     public static PatientProfileActivity patientProfileActivity;
 
 
@@ -113,7 +113,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
         });
 
         Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
-        medicalHistoryModel = new MedicalHistoryModel(this);
+        medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             new AsyncTaskTemp().execute();
         } else {
@@ -131,17 +131,17 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
 
         @Override
         protected Void doInBackground(Void... voids) {
-            PatientProfileModel profileModel = new PatientProfileModel(PatientProfileActivity.this);
+            PatientProfileApiCalls profileModel = new PatientProfileApiCalls(PatientProfileActivity.this);
             profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-            medicalHistoryModel.historical(BaseLaunchActivity.getDeviceID(),
+            medicalHistoryApiCalls.historical(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
 
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
-            medicalHistoryModel.setJsonMedicalRecordPresenter(PatientProfileActivity.this);
-            medicalHistoryModel.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
+            medicalHistoryApiCalls.setJsonMedicalRecordPresenter(PatientProfileActivity.this);
+            medicalHistoryApiCalls.retrieveMedicalRecord(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
@@ -313,9 +313,9 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
 
     public void updateList(){
         pb_history.setVisibility(View.VISIBLE);
-        PatientProfileModel profileModel = new PatientProfileModel(PatientProfileActivity.this);
+        PatientProfileApiCalls profileModel = new PatientProfileApiCalls(PatientProfileActivity.this);
         profileModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
-        medicalHistoryModel.historical(BaseLaunchActivity.getDeviceID(),
+        medicalHistoryApiCalls.historical(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), new FindMedicalProfile().setCodeQR(codeQR).setQueueUserId(jsonQueuedPerson.getQueueUserId()));
 

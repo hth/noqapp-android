@@ -8,7 +8,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -69,9 +69,9 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
         initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            ManageQueueModel manageQueueModel = new ManageQueueModel();
-            manageQueueModel.setQueuePersonListPresenter(this);
-            manageQueueModel.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
+            ManageQueueApiCalls manageQueueApiCalls = new ManageQueueApiCalls();
+            manageQueueApiCalls.setQueuePersonListPresenter(this);
+            manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }

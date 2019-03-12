@@ -13,13 +13,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClientInQueueModel {
-    private static final String TAG = ClientInQueueModel.class.getSimpleName();
+public class ClientInQueueApiCalls {
+    private static final String TAG = ClientInQueueApiCalls.class.getSimpleName();
 
     protected static final ClientInQueueApiUrls clientInQueueApiUrls;
     private ClientInQueuePresenter clientInQueuePresenter;
 
-    public ClientInQueueModel(ClientInQueuePresenter clientInQueuePresenter) {
+    public ClientInQueueApiCalls(ClientInQueuePresenter clientInQueuePresenter) {
         this.clientInQueuePresenter = clientInQueuePresenter;
     }
 

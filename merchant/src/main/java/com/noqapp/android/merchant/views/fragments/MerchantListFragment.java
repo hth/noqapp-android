@@ -4,7 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -77,7 +77,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
     private AutoCompleteTextView auto_complete_search;
-    private ManageQueueModel manageQueueModel;
+    private ManageQueueApiCalls manageQueueApiCalls;
 
     public MerchantListFragment() {
 
@@ -93,8 +93,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
-        manageQueueModel = new ManageQueueModel();
-        manageQueueModel.setTopicPresenter(this);
+        manageQueueApiCalls = new ManageQueueApiCalls();
+        manageQueueApiCalls.setTopicPresenter(this);
         String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
         Type type = new TypeToken<HashMap<String, String>>() {
         }.getType();
@@ -199,7 +199,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 if (null != LaunchActivity.getLaunchActivity()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
-                    manageQueueModel.getQueues(
+                    manageQueueApiCalls.getQueues(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth());
@@ -462,7 +462,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         //Refresh the ListView after pull
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             swipeRefreshLayout.setRefreshing(true);
-            manageQueueModel.getQueues(
+            manageQueueApiCalls.getQueues(
                     BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());

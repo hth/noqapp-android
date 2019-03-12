@@ -12,7 +12,7 @@ import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -21,6 +21,8 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
+
+import com.google.android.material.tabs.TabLayout;
 
 import com.squareup.picasso.Picasso;
 
@@ -36,11 +38,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import com.google.android.material.tabs.TabLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +46,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -72,7 +73,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     private UserProfileFragment userProfileFragment;
 
     private ImageView actionbarBack;
-    private MerchantProfileModel merchantProfileModel;
+    private MerchantProfileApiCalls merchantProfileApiCalls;
     private ProgressDialog progressDialog;
     protected  TabViewPagerAdapter adapter;
 
@@ -94,7 +95,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
             }
         });
         tv_profile_name = findViewById(R.id.tv_profile_name);
-        merchantProfileModel = new MerchantProfileModel();
+        merchantProfileApiCalls = new MerchantProfileApiCalls();
         iv_profile = findViewById(R.id.iv_profile);
         tv_remove_image = findViewById(R.id.tv_remove_image);
         iv_profile.setOnClickListener(this);
@@ -105,8 +106,8 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
         loadTabs.execute();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            merchantProfileModel.setMerchantPresenter(this);
-            merchantProfileModel.fetch(
+            merchantProfileApiCalls.setMerchantPresenter(this);
+            merchantProfileApiCalls.fetch(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
@@ -206,8 +207,8 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
             case R.id.tv_remove_image: {
                 progressDialog.show();
                 progressDialog.setMessage("Removing profile image");
-                merchantProfileModel.setImageUploadPresenter(this);
-                merchantProfileModel.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
+                merchantProfileApiCalls.setImageUploadPresenter(this);
+                merchantProfileApiCalls.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
             }
             break;
             case R.id.iv_edit:
@@ -250,8 +251,8 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody profileImageOfQid = RequestBody.create(MediaType.parse("text/plain"), LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId());
-                        merchantProfileModel.setImageUploadPresenter(this);
-                        merchantProfileModel.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
+                        merchantProfileApiCalls.setImageUploadPresenter(this);
+                        merchantProfileApiCalls.uploadImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, profileImageOfQid);
                     }
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block

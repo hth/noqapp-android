@@ -27,8 +27,8 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/16/17 5:59 PM
  */
-public class ManageQueueModel {
-    private static final String TAG = ManageQueueModel.class.getSimpleName();
+public class ManageQueueApiCalls {
+    private static final String TAG = ManageQueueApiCalls.class.getSimpleName();
 
     private static final ManageQueueApiUrls manageQueueApiUrls;
     private ManageQueuePresenter manageQueuePresenter;

@@ -22,8 +22,8 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/2/17 6:40 PM
  */
-public class DeviceModel {
-    private final String TAG = DeviceModel.class.getSimpleName();
+public class DeviceApiCalls {
+    private final String TAG = DeviceApiCalls.class.getSimpleName();
 
     private static final DeviceApiUrls deviceApiUrls;
     private AppBlacklistPresenter appBlacklistPresenter;

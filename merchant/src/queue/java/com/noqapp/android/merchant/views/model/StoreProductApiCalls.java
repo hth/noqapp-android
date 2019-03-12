@@ -16,9 +16,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoreProductModel {
+public class StoreProductApiCalls {
 
-    private static final String TAG = StoreProductModel.class.getSimpleName();
+    private static final String TAG = StoreProductApiCalls.class.getSimpleName();
     private static final StoreProductApiUrls storeProductService;
     private StoreProductPresenter storeProductPresenter;
     private ActionOnProductPresenter actionOnProductPresenter;

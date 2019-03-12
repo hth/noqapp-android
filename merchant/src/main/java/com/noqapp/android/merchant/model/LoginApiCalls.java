@@ -15,12 +15,12 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/22/17 1:09 PM
  */
-public class LoginModel {
+public class LoginApiCalls {
 
     private static final LoginApiUrls loginApiUrls;
     private LoginPresenter loginPresenter;
 
-    public LoginModel(LoginPresenter loginPresenter) {
+    public LoginApiCalls(LoginPresenter loginPresenter) {
         this.loginPresenter = loginPresenter;
     }
 

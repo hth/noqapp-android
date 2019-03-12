@@ -12,8 +12,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VigyaapanModel {
-    private static final String TAG = ClientInQueueModel.class.getSimpleName();
+public class VigyaapanApiCalls {
+    private static final String TAG = ClientInQueueApiCalls.class.getSimpleName();
 
     protected static final VigyaapanApiUrls vigyaapanApiUrls;
     private VigyaapanPresenter vigyaapanPresenter;

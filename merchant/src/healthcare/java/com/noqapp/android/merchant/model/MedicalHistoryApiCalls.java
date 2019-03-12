@@ -24,8 +24,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MedicalHistoryModel {
-    private static final String TAG = MedicalHistoryModel.class.getSimpleName();
+public class MedicalHistoryApiCalls {
+    private static final String TAG = MedicalHistoryApiCalls.class.getSimpleName();
 
     private static final MedicalRecordApiUrls medicalRecordApiUrls;
     private MedicalRecordPresenter medicalRecordPresenter;
@@ -36,7 +36,7 @@ public class MedicalHistoryModel {
     private ImageUploadPresenter imageUploadPresenter;
 
 
-    public MedicalHistoryModel(UpdateObservationPresenter updateObservationPresenter) {
+    public MedicalHistoryApiCalls(UpdateObservationPresenter updateObservationPresenter) {
         this.updateObservationPresenter = updateObservationPresenter;
     }
 
@@ -44,19 +44,19 @@ public class MedicalHistoryModel {
         this.jsonMedicalRecordPresenter = jsonMedicalRecordPresenter;
     }
 
-    public MedicalHistoryModel(MedicalRecordListPresenter medicalRecordListPresenter) {
+    public MedicalHistoryApiCalls(MedicalRecordListPresenter medicalRecordListPresenter) {
         this.medicalRecordListPresenter = medicalRecordListPresenter;
     }
 
-    public MedicalHistoryModel(QueuePersonListPresenter queuePersonListPresenter) {
+    public MedicalHistoryApiCalls(QueuePersonListPresenter queuePersonListPresenter) {
         this.queuePersonListPresenter = queuePersonListPresenter;
     }
 
-    public MedicalHistoryModel(ImageUploadPresenter imageUploadPresenter) {
+    public MedicalHistoryApiCalls(ImageUploadPresenter imageUploadPresenter) {
         this.imageUploadPresenter = imageUploadPresenter;
     }
 
-    public MedicalHistoryModel(MedicalRecordPresenter medicalRecordPresenter) {
+    public MedicalHistoryApiCalls(MedicalRecordPresenter medicalRecordPresenter) {
         this.medicalRecordPresenter = medicalRecordPresenter;
     }
 

@@ -2,7 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantStatsModel;
+import com.noqapp.android.merchant.model.MerchantStatsApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
 import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
@@ -50,7 +50,7 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
         initProgress();
-        MerchantStatsModel merchantStatsModel = new MerchantStatsModel(this);
+        MerchantStatsApiCalls merchantStatsApiCalls = new MerchantStatsApiCalls(this);
         Bundle bundle = getArguments();
         run = new Runnable() {
             public void run() {
@@ -68,7 +68,7 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
         if (isFirstTime) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                merchantStatsModel.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+                merchantStatsApiCalls.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
                 isFirstTime = false;
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());

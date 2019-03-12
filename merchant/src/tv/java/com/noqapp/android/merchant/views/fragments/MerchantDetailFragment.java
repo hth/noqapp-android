@@ -6,7 +6,7 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -59,7 +59,7 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
     protected int currrentpos = 0;
     protected static AdapterCallback mAdapterCallback;
     protected boolean queueStatusOuter = false;
-    protected ManageQueueModel manageQueueModel;
+    protected ManageQueueApiCalls manageQueueApiCalls;
     protected ArrayList<JsonTopic> topicsList;
 
 
@@ -77,7 +77,7 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
 
         View itemView = inflater.inflate(R.layout.merchant_detail_page, container, false);
         context = getActivity();
-        manageQueueModel = new ManageQueueModel();
+        manageQueueApiCalls = new ManageQueueApiCalls();
         jsonTopic = topicsList.get(currrentpos);
         progressDialog = itemView.findViewById(R.id.progress_bar);
         tv_current_value = itemView.findViewById(R.id.tv_current_value);
@@ -203,8 +203,8 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
     }
 
     public void getAllPeopleInQ(JsonTopic jsonTopic) {
-        manageQueueModel.setQueuePersonListPresenter(this);
-        manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+        manageQueueApiCalls.setQueuePersonListPresenter(this);
+        manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
     }
 
 

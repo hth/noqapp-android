@@ -12,7 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MasterLabModel extends BaseMasterLabModel {
+public class MasterLabApiCalls extends BaseMasterLabApiCalls {
 
 
     private MasterLabPresenter masterLabPresenter;
@@ -25,7 +25,7 @@ public class MasterLabModel extends BaseMasterLabModel {
 
 
     public void add(String did, String mail, String auth, JsonMasterLab jsonMasterLab) {
-        masterLabService.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
+        masterLabApiUrls.add(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -54,7 +54,7 @@ public class MasterLabModel extends BaseMasterLabModel {
     }
 
     public void flag(String did, String mail, String auth, JsonMasterLab jsonMasterLab) {
-        masterLabService.flag(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
+        masterLabApiUrls.flag(did, Constants.DEVICE_TYPE, mail, auth, jsonMasterLab).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

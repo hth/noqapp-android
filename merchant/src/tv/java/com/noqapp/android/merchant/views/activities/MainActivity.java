@@ -5,8 +5,8 @@ import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ClientInQueueModel;
-import com.noqapp.android.merchant.model.VigyaapanModel;
+import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
+import com.noqapp.android.merchant.model.VigyaapanApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
 import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
@@ -123,15 +123,15 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
             QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
-            ClientInQueueModel clientInQueueModel = new ClientInQueueModel(this);
-            clientInQueueModel.toBeServedClients(
+            ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
+            clientInQueueApiCalls.toBeServedClients(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
 
-            VigyaapanModel vigyaapanModel = new VigyaapanModel();
-            vigyaapanModel.setVigyaapanPresenter(this);
-            vigyaapanModel.getAllVigyaapan(UserUtils.getDeviceId(),
+            VigyaapanApiCalls vigyaapanApiCalls = new VigyaapanApiCalls();
+            vigyaapanApiCalls.setVigyaapanPresenter(this);
+            vigyaapanApiCalls.getAllVigyaapan(UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
 
@@ -368,8 +368,8 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             isNotification = true;
             progressDialog.show();
             QueueDetail queueDetail = getQueueDetails(topics);
-            ClientInQueueModel clientInQueueModel = new ClientInQueueModel(this);
-            clientInQueueModel.toBeServedClients(
+            ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
+            clientInQueueApiCalls.toBeServedClients(
                     UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);

@@ -27,9 +27,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PurchaseOrderModel {
+public class PurchaseOrderApiCalls {
 
-    private static final String TAG = PurchaseOrderModel.class.getSimpleName();
+    private static final String TAG = PurchaseOrderApiCalls.class.getSimpleName();
     private static final PurchaseOrderApiUrls purchaseOrderService;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private OrderProcessedPresenter orderProcessedPresenter;

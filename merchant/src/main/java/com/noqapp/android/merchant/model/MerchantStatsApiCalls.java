@@ -15,13 +15,13 @@ import retrofit2.Response;
  * User: hitender
  * Date: 5/15/18 3:59 PM
  */
-public class MerchantStatsModel {
-    private static final String TAG = MerchantStatsModel.class.getSimpleName();
+public class MerchantStatsApiCalls {
+    private static final String TAG = MerchantStatsApiCalls.class.getSimpleName();
 
     private static final MerchantStatsApiUrls merchantStatsApiUrls;
     private ChartPresenter chartPresenter;
 
-    public MerchantStatsModel(ChartPresenter chartPresenter) {
+    public MerchantStatsApiCalls(ChartPresenter chartPresenter) {
         this.chartPresenter = chartPresenter;
     }
 

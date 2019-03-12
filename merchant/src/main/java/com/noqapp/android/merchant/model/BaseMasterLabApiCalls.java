@@ -18,8 +18,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class BaseMasterLabModel {
-    protected static final String TAG = BaseMasterLabModel.class.getSimpleName();
+public class BaseMasterLabApiCalls {
+    protected static final String TAG = BaseMasterLabApiCalls.class.getSimpleName();
     protected static final MasterLabApiUrls masterLabApiUrls;
     protected FilePresenter filePresenter;
 

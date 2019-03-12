@@ -15,7 +15,9 @@ import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
 import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -34,13 +36,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +46,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -66,7 +67,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private final int PICK_IMAGE_GALLERY = 102;
     private final int PERMISSION_REQUEST_CAMERA = 103;
     private String transactionId;
-    private PurchaseOrderModel purchaseOrderModel;
+    private PurchaseOrderApiCalls purchaseOrderApiCalls;
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialogImage;
     private LabFile labFileTemp;
@@ -100,8 +101,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 finish();
             }
         });
-        purchaseOrderModel = new PurchaseOrderModel();
-        purchaseOrderModel.setImageUploadPresenter(this);
+        purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+        purchaseOrderApiCalls.setImageUploadPresenter(this);
         transactionId = getIntent().getStringExtra("transactionId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
 
@@ -128,8 +129,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
         progressDialog.show();
         progressDialog.setMessage("Fetching documents...");
-        purchaseOrderModel.setLabFilePresenter(this);
-        purchaseOrderModel.showAttachment(BaseLaunchActivity.getDeviceID(),
+        purchaseOrderApiCalls.setLabFilePresenter(this);
+        purchaseOrderApiCalls.showAttachment(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), new LabFile().setTransactionId(transactionId));
 
@@ -276,7 +277,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         .setDeleteAttachment(imageName);
                 progressDialog.show();
                 progressDialog.setMessage("Deleting image...");
-                purchaseOrderModel.removeAttachment(BaseLaunchActivity.getDeviceID(),
+                purchaseOrderApiCalls.removeAttachment(BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), labFile);
 
@@ -400,7 +401,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 File file = new File(path);
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), transactionId);
-                purchaseOrderModel.addAttachment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                purchaseOrderApiCalls.addAttachment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -424,7 +425,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), transactionId);
-                        purchaseOrderModel.addAttachment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                        purchaseOrderApiCalls.addAttachment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     }
 
                 } catch (Exception e) {

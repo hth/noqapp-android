@@ -5,8 +5,8 @@ import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ClientInQueueModel;
-import com.noqapp.android.merchant.model.VigyaapanModel;
+import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
+import com.noqapp.android.merchant.model.VigyaapanApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
 import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
@@ -531,8 +531,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             // execution of result of Long time consuming operation
             if (timercount <= 2000 || timercount >= MINUTE) {
                 QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
-                ClientInQueueModel clientInQueueModel = new ClientInQueueModel(PresentationService.this);
-                clientInQueueModel.toBeServedClients(
+                ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(PresentationService.this);
+                clientInQueueApiCalls.toBeServedClients(
                         UserUtils.getDeviceId(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
@@ -542,9 +542,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 // do nothing
             }
             if (callVigyapan) {
-                VigyaapanModel vigyaapanModel = new VigyaapanModel();
-                vigyaapanModel.setVigyaapanPresenter(PresentationService.this);
-                vigyaapanModel.getAllVigyaapan(UserUtils.getDeviceId(),
+                VigyaapanApiCalls vigyaapanApiCalls = new VigyaapanApiCalls();
+                vigyaapanApiCalls.setVigyaapanPresenter(PresentationService.this);
+                vigyaapanApiCalls.getAllVigyaapan(UserUtils.getDeviceId(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth());
                 callVigyapan = false;

@@ -6,8 +6,8 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.LoginModel;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.model.LoginApiCalls;
+import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -49,8 +49,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     private AutoCompleteTextView actv_email;
     private String email, pwd;
     private ArrayList<String> userList = new ArrayList<>();
-    private LoginModel loginModel;
-    private MerchantProfileModel merchantProfileModel;
+    private LoginApiCalls loginApiCalls;
+    private MerchantProfileApiCalls merchantProfileModel;
 
     public LoginFragment() {
         super();
@@ -63,8 +63,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         actv_email = view.findViewById(R.id.actv_email);
         edt_pwd = view.findViewById(R.id.edt_pwd);
         userList = LaunchActivity.getLaunchActivity().getUserList();
-        loginModel = new LoginModel(this);
-        merchantProfileModel = new MerchantProfileModel();
+        loginApiCalls = new LoginApiCalls(this);
+        merchantProfileModel = new MerchantProfileApiCalls();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         LaunchActivity.getLaunchActivity().progressDialog.setMessage("Login in progress..");
-                        loginModel.login(email.toLowerCase(), pwd);
+                        loginApiCalls.login(email.toLowerCase(), pwd);
 
                         Answers.getInstance().logLogin(new LoginEvent()
                                 .putMethod("Email_Password_Login")

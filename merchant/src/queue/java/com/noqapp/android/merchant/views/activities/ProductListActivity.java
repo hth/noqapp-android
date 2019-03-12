@@ -22,19 +22,14 @@ import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummy;
 import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
-import com.noqapp.android.merchant.views.model.StoreProductModel;
+import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
-import com.google.android.material.textfield.TextInputEditText;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -45,6 +40,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,9 +86,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         tv_toolbar_title.setText(getString(R.string.screen_product_list));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            StoreProductModel storeProductModel = new StoreProductModel();
-            storeProductModel.setStoreProductPresenter(this);
-            storeProductModel.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
+            storeProductApiCalls.setStoreProductPresenter(this);
+            storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -221,9 +222,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Updating data...");
             progressDialog.show();
-            StoreProductModel storeProductModel = new StoreProductModel();
-            storeProductModel.setActionOnProductPresenter(this);
-            storeProductModel.actionOnProduct(UserUtils.getEmail(), UserUtils.getAuth(), codeQR, actionTypeEnum, jsonStoreProduct);
+            StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
+            storeProductApiCalls.setActionOnProductPresenter(this);
+            storeProductApiCalls.actionOnProduct(UserUtils.getEmail(), UserUtils.getAuth(), codeQR, actionTypeEnum, jsonStoreProduct);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -376,9 +377,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             Toast.makeText(this, "Action perform successfully", Toast.LENGTH_LONG).show();
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                StoreProductModel storeProductModel = new StoreProductModel();
-                storeProductModel.setStoreProductPresenter(this);
-                storeProductModel.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
+                storeProductApiCalls.setStoreProductPresenter(this);
+                storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }

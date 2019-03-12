@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class PreferredBusinessModel {
-    private static final String TAG = PreferredBusinessModel.class.getSimpleName();
+public class PreferredBusinessApiCalls {
+    private static final String TAG = PreferredBusinessApiCalls.class.getSimpleName();
 
     private static final PreferredStoreApiUrls preferredStoreApiUrls;
     private PreferredBusinessPresenter preferredBusinessPresenter;
@@ -34,7 +34,7 @@ public class PreferredBusinessModel {
 
     private FilePresenter filePresenter;
 
-    public PreferredBusinessModel(PreferredBusinessPresenter preferredBusinessPresenter) {
+    public PreferredBusinessApiCalls(PreferredBusinessPresenter preferredBusinessPresenter) {
         this.preferredBusinessPresenter = preferredBusinessPresenter;
     }
 

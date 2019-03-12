@@ -17,13 +17,13 @@ import retrofit2.Response;
  * User: hitender
  * Date: 4/16/17 5:59 PM
  */
-public class BusinessCustomerModel {
-    private static final String TAG = BusinessCustomerModel.class.getSimpleName();
+public class BusinessCustomerApiCalls {
+    private static final String TAG = BusinessCustomerApiCalls.class.getSimpleName();
 
     private static final BusinessCustomerApiUrls businessCustomerApiUrls;
     private QueuePersonListPresenter queuePersonListPresenter;
 
-    public BusinessCustomerModel(QueuePersonListPresenter queuePersonListPresenter) {
+    public BusinessCustomerApiCalls(QueuePersonListPresenter queuePersonListPresenter) {
         this.queuePersonListPresenter = queuePersonListPresenter;
     }
 

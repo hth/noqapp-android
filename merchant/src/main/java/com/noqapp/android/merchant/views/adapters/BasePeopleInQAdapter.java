@@ -9,8 +9,8 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.BusinessCustomerModel;
-import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -47,8 +47,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     private int glowPosition = -1;
     protected String qCodeQR;
     protected String bizCategoryId;
-    protected ManageQueueModel manageQueueModel;
-    protected BusinessCustomerModel businessCustomerModel;
+    protected ManageQueueApiCalls manageQueueApiCalls;
+    protected BusinessCustomerApiCalls businessCustomerApiCalls;
     private QueueStatusEnum queueStatusEnum;
     private JsonDataVisibility jsonDataVisibility;
 
@@ -152,9 +152,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
-        manageQueueModel = new ManageQueueModel();
-        manageQueueModel.setQueuePersonListPresenter(this);
-        businessCustomerModel = new BusinessCustomerModel(this);
+        manageQueueApiCalls = new ManageQueueApiCalls();
+        manageQueueApiCalls.setQueuePersonListPresenter(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls(this);
         this.jsonDataVisibility = jsonDataVisibility;
     }
 
@@ -164,9 +164,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.peopleInQAdapterClick = peopleInQAdapterClick;
         this.qCodeQR = qCodeQR;
         this.glowPosition = glowPosition;
-        manageQueueModel = new ManageQueueModel();
-        manageQueueModel.setQueuePersonListPresenter(this);
-        businessCustomerModel = new BusinessCustomerModel(this);
+        manageQueueApiCalls = new ManageQueueApiCalls();
+        manageQueueApiCalls.setQueuePersonListPresenter(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls(this);
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
         this.bizCategoryId = bizCategoryId;

@@ -56,7 +56,7 @@ public class LaunchActivity extends BaseLaunchActivity {
         getSupportActionBar().hide();
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            deviceModel.isSupportedAppVersion(UserUtils.getDeviceId());
+            deviceApiCalls.isSupportedAppVersion(UserUtils.getDeviceId());
         }
         tv_name.setCompoundDrawablesWithIntrinsicBounds( 0,0,R.drawable.tv,  0);
         tv_name.setOnClickListener(new View.OnClickListener() {

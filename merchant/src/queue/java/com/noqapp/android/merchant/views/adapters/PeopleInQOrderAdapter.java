@@ -14,7 +14,7 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -356,9 +356,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                         progressDialog.setMessage("Starting payment..");
                         //jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
                         jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
-                        PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                        purchaseOrderModel.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);
-                        purchaseOrderModel.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                        purchaseOrderApiCalls.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);
+                        purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     }
                 }
 
@@ -372,9 +372,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 progressDialog.setMessage("Starting payment..");
                // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
                 jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
-                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                purchaseOrderModel.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);
-                purchaseOrderModel.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                purchaseOrderApiCalls.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);
+                purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
 
             }
         });

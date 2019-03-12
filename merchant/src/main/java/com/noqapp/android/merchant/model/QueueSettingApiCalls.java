@@ -19,13 +19,13 @@ import retrofit2.Response;
  * User: chandra
  * Date: 7/15/17 10:27 AM
  */
-public class QueueSettingModel {
+public class QueueSettingApiCalls {
 
-    private static final String TAG = QueueSettingModel.class.getSimpleName();
+    private static final String TAG = QueueSettingApiCalls.class.getSimpleName();
     private static final QueueSettingApiUrls queueSettingApiUrls;
     private QueueSettingPresenter queueSettingPresenter;
 
-    public QueueSettingModel(QueueSettingPresenter queueSettingPresenter) {
+    public QueueSettingApiCalls(QueueSettingPresenter queueSettingPresenter) {
         this.queueSettingPresenter = queueSettingPresenter;
     }
 

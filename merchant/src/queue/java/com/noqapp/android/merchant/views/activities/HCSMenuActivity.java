@@ -10,7 +10,7 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.BaseMasterLabModel;
+import com.noqapp.android.merchant.model.BaseMasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -24,7 +24,7 @@ import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
 
 import com.google.android.flexbox.AlignItems;
@@ -104,7 +104,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private TextView tv_select_patient;
     private Button btn_create_order, btn_create_token;
     private String codeQR = "";
-    private PurchaseOrderModel purchaseOrderModel;
+    private PurchaseOrderApiCalls purchaseOrderApiCalls;
     private LinearLayout ll_order_list;
     private TextView tv_order_list;
     private RelativeLayout rl_total;
@@ -166,9 +166,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         } else {
             requestStoragePermission();
         }
-        purchaseOrderModel = new PurchaseOrderModel();
-        purchaseOrderModel.setFindCustomerPresenter(this);
-        purchaseOrderModel.setPurchaseOrderPresenter(this);
+        purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+        purchaseOrderApiCalls.setFindCustomerPresenter(this);
+        purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
     }
 
     public FlexboxLayoutManager getFlexBoxLayoutManager(Context context) {
@@ -181,9 +181,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
 
     private void callFileApi() {
         progressDialog.show();
-        BaseMasterLabModel masterLabModel = new BaseMasterLabModel();
-        masterLabModel.setFilePresenter(this);
-        masterLabModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        BaseMasterLabApiCalls baseMasterLabApiCalls = new BaseMasterLabApiCalls();
+        baseMasterLabApiCalls.setFilePresenter(this);
+        baseMasterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
     }
 
     @Override
@@ -593,7 +593,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     progressDialog.show();
 
 
-                    purchaseOrderModel.findCustomer(
+                    purchaseOrderApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -668,7 +668,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                         jsonPurchaseOrder.setAdditionalNote("");
                         jsonPurchaseOrder.setCustomized(true);
-                        purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                        // Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
                     } else {
                         ShowAlertInformation.showNetworkDialog(HCSMenuActivity.this);

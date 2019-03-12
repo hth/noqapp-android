@@ -26,8 +26,8 @@ import com.noqapp.android.merchant.views.fragments.FragmentDummyMenu;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
-import com.noqapp.android.merchant.views.model.StoreProductModel;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
+import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -69,7 +69,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     private HashMap<String, ChildData> orders = new HashMap<>();
     private ProgressDialog progressDialog;
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
-    private PurchaseOrderModel purchaseOrderModel;
+    private PurchaseOrderApiCalls purchaseOrderApiCalls;
     private EditText edt_mobile;
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
@@ -115,15 +115,15 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            StoreProductModel storeProductModel = new StoreProductModel();
-            storeProductModel.setStoreProductPresenter(this);
-            storeProductModel.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
+            storeProductApiCalls.setStoreProductPresenter(this);
+            storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-        purchaseOrderModel = new PurchaseOrderModel();
-        purchaseOrderModel.setFindCustomerPresenter(this);
-        purchaseOrderModel.setPurchaseOrderPresenter(this);
+        purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+        purchaseOrderApiCalls.setFindCustomerPresenter(this);
+        purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
 
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -335,7 +335,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                     progressDialog.show();
 
 
-                    purchaseOrderModel.findCustomer(
+                    purchaseOrderApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -404,7 +404,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                         jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                         jsonPurchaseOrder.setAdditionalNote("");
-                        purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                     } else {
                         ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
                     }
