@@ -311,9 +311,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
-        tv_paid_amount_value.setText(jsonPurchaseOrder.getPartialPayment());
+        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         try {
-            tv_remaining_amount_value.setText(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
+            tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+            tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -329,13 +330,19 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         } else {
             rl_payment.setVisibility(View.GONE);
         }
-        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
+                PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
+            if(PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()){
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " 0");
+
+            }
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
-        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+
         try {
             tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
         } catch (Exception e) {
@@ -349,7 +356,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 if (TextUtils.isEmpty(edt_amount.getText().toString())) {
                     Toast.makeText(context, "Please enter amount to pay.", Toast.LENGTH_LONG).show();
                 } else {
-                    if (Double.parseDouble(edt_amount.getText().toString()) *100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
+                    if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
                         Toast.makeText(context, "Please enter amount less or equal to order ampunt.", Toast.LENGTH_LONG).show();
                     } else {
                         progressDialog.show();
@@ -370,7 +377,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             public void onClick(View v) {
                 progressDialog.show();
                 progressDialog.setMessage("Starting payment..");
-               // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
+                // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
                 jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                 purchaseOrderApiCalls.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);

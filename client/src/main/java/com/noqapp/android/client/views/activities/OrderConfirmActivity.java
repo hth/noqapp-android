@@ -87,7 +87,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != jsonPurchaseOrder && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+                if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.show();
                         progressDialog.setMessage("Starting payment process..");
@@ -177,6 +177,14 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         switch (jsonPurchaseOrder.getPresentOrderState()) {
             case OP:
                 tv_status.setText("Order being prepared");
+                break;
+            case PO:
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PH) {
+                    btn_pay_now.setVisibility(View.VISIBLE);
+                } else {
+                    btn_pay_now.setVisibility(View.GONE);
+                }
                 break;
             case RD:
             case RP:
