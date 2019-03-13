@@ -22,20 +22,20 @@ public interface QueueSettingApiUrls {
      */
     @GET("api/m/mq/state/{codeQR}.json")
     Call<QueueSetting> getQueueState(
-            @Header("X-R-DID")
-            String did,
+        @Header("X-R-DID")
+        String did,
 
-            @Header("X-R-DT")
-            String dt,
+        @Header("X-R-DT")
+        String dt,
 
-            @Header("X-R-MAIL")
-            String mail,
+        @Header("X-R-MAIL")
+        String mail,
 
-            @Header("X-R-AUTH")
-            String auth,
+        @Header("X-R-AUTH")
+        String auth,
 
-            @Path("codeQR")
-            String codeQR
+        @Path("codeQR")
+        String codeQR
     );
 
     /**
@@ -46,20 +46,20 @@ public interface QueueSettingApiUrls {
      */
     @POST("api/m/mq/removeSchedule/{codeQR}.json")
     Call<QueueSetting> removeSchedule(
-            @Header("X-R-DID")
-            String did,
+        @Header("X-R-DID")
+        String did,
 
-            @Header("X-R-DT")
-            String dt,
+        @Header("X-R-DT")
+        String dt,
 
-            @Header("X-R-MAIL")
-            String mail,
+        @Header("X-R-MAIL")
+        String mail,
 
-            @Header("X-R-AUTH")
-            String auth,
+        @Header("X-R-AUTH")
+        String auth,
 
-            @Path("codeQR")
-            String codeQR
+        @Path("codeQR")
+        String codeQR
     );
 
     /**
@@ -71,19 +71,42 @@ public interface QueueSettingApiUrls {
      */
     @POST("api/m/mq/modify.json")
     Call<QueueSetting> modify(
-            @Header("X-R-DID")
-            String did,
+        @Header("X-R-DID")
+        String did,
 
-            @Header("X-R-DT")
-            String dt,
+        @Header("X-R-DT")
+        String dt,
 
-            @Header("X-R-MAIL")
-            String mail,
+        @Header("X-R-MAIL")
+        String mail,
 
-            @Header("X-R-AUTH")
-            String auth,
+        @Header("X-R-AUTH")
+        String auth,
 
-            @Body
-            QueueSetting queueSetting
+        @Body
+        QueueSetting queueSetting
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/mq/serviceCost.json")
+    Call<QueueSetting> serviceCost(
+        @Header("X-R-DID")
+        String did,
+
+        @Header("X-R-DT")
+        String dt,
+
+        @Header("X-R-MAIL")
+        String mail,
+
+        @Header("X-R-AUTH")
+        String auth,
+
+        @Body
+        QueueSetting queueSetting
     );
 }

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.presenter.beans.body;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.ServicePaymentEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -70,6 +71,15 @@ public class QueueSetting {
 
     @JsonProperty ("scUn")
     private String scheduledUntilDay;
+
+    @JsonProperty("pp")
+    private int productPrice;
+
+    @JsonProperty("cp")
+    private int cancellationPrice;
+
+    @JsonProperty("sp")
+    private ServicePaymentEnum servicePayment;
 
     @JsonProperty("sa")
     private ActionTypeEnum storeActionType;
@@ -200,6 +210,33 @@ public class QueueSetting {
 
     public QueueSetting setScheduledUntilDay(String scheduledUntilDay) {
         this.scheduledUntilDay = scheduledUntilDay;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public QueueSetting setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
+    public int getCancellationPrice() {
+        return cancellationPrice;
+    }
+
+    public QueueSetting setCancellationPrice(int cancellationPrice) {
+        this.cancellationPrice = cancellationPrice;
+        return this;
+    }
+
+    public ServicePaymentEnum getServicePayment() {
+        return servicePayment;
+    }
+
+    public QueueSetting setServicePayment(ServicePaymentEnum servicePayment) {
+        this.servicePayment = servicePayment;
         return this;
     }
 
