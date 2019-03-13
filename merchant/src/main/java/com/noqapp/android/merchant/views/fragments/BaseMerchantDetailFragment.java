@@ -27,7 +27,6 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
-import com.noqapp.android.merchant.views.activities.SettingDialogActivity;
 import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
@@ -43,11 +42,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +57,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -151,7 +150,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             @Override
             public void onClick(View v) {
                 if (new AppUtils().isTablet(context)) {
-                    Intent in = new Intent(context, SettingDialogActivity.class);
+                    Intent in = new Intent(context, SettingActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
                     ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
                 } else {

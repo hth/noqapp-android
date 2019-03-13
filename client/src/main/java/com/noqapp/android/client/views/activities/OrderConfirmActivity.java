@@ -167,7 +167,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
             tv_total_amt_remain.setText(currencySymbol + "0.0");
             tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
-        } else if(PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()){
+        } else if(PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()){
             rl_amount_remaining.setVisibility(View.VISIBLE);
             tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100);
             tv_total_amt_remain.setText(currencySymbol + (Double.parseDouble(jsonPurchaseOrder.getOrderPrice())-Double.parseDouble(jsonPurchaseOrder.getPartialPayment()))/100);
@@ -200,7 +200,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 break;
             case PO:
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
-                if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PH) {
+                if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
                     btn_pay_now.setVisibility(View.VISIBLE);
                 } else {
                     btn_pay_now.setVisibility(View.GONE);

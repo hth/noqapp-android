@@ -73,7 +73,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         dismissProgress();
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA ||
-                    jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PH) {
+                    jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
                 Toast.makeText(context, "Payment updated successfully", Toast.LENGTH_LONG).show();
                 if (null != mAlertDialog && mAlertDialog.isShowing()) {
                     mAlertDialog.dismiss();
@@ -321,9 +321,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         Button btn_pay_now = customDialogView.findViewById(R.id.btn_pay_now);
         Button btn_pay_partial = customDialogView.findViewById(R.id.btn_pay_partial);
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()) {
+                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
-            if (PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()) {
+            if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
                 btn_pay_partial.setVisibility(View.INVISIBLE);
                 edt_amount.setVisibility(View.INVISIBLE);
             }
@@ -331,7 +331,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             rl_payment.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()) {
+                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {

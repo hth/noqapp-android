@@ -28,11 +28,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,6 +44,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -56,9 +55,8 @@ import java.util.Locale;
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack, iv_delete_scheduling;
-    private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline;
+    private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline, togglePaidUser;
     private String codeQR;
-    protected boolean isDialog = false;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
     private CheckBox cb_limit;
@@ -66,28 +64,22 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private boolean arrivalTextChange = false;
     private QueueSettingApiCalls queueSettingApiCalls;
     private QueueSetting queueSettingTemp;
-    private TextView togglePreventJoinLabel, toggleTodayClosedLabel, toggleDayClosedLabel, toggleStoreOfflineLabel;
+    private TextView togglePreventJoinLabel, toggleTodayClosedLabel, toggleDayClosedLabel, toggleStoreOfflineLabel, togglePaidUserLabel;
     private String YES = "Yes";
     private String NO = "No";
+    private EditText edt_deduction_amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!isDialog) {
-            if (new AppUtils().isTablet(getApplicationContext())) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            } else {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
         queueSettingApiCalls = new QueueSettingApiCalls(this);
         setContentView(R.layout.activity_setting);
-        if (isDialog) {
-            DisplayMetrics metrics = getResources().getDisplayMetrics();
-            int screenWidth = (int) (metrics.widthPixels * 0.60);
-            int height = (int) (metrics.heightPixels * 0.70);
-            getWindow().setLayout(screenWidth, height);
-        }
+
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         iv_delete_scheduling = findViewById(R.id.iv_delete_scheduling);
@@ -95,24 +87,24 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
         initProgress();
-        TextView tv_title = findViewById(R.id.tv_title);
+
         toggleDayClosed = findViewById(R.id.toggleDayClosed);
         toggleTodayClosed = findViewById(R.id.toggleTodayClosed);
         togglePreventJoin = findViewById(R.id.togglePreventJoin);
         toggleStoreOffline = findViewById(R.id.toggleStoreOffline);
+        togglePaidUser = findViewById(R.id.togglePaidUser);
         togglePreventJoinLabel = findViewById(R.id.togglePreventJoinLabel);
         toggleTodayClosedLabel = findViewById(R.id.toggleTodayClosedLabel);
         toggleDayClosedLabel = findViewById(R.id.toggleDayClosedLabel);
         toggleStoreOfflineLabel = findViewById(R.id.toggleStoreOfflineLabel);
-        String title = getIntent().getStringExtra("title");
+        togglePaidUserLabel = findViewById(R.id.togglePaidUserLabel);
+        edt_deduction_amount = findViewById(R.id.edt_deduction_amount);
         codeQR = getIntent().getStringExtra("codeQR");
-        if (null != title) {
-            tv_title.setText(title);
-        }
         toggleDayClosed.setOnClickListener(this);
         toggleTodayClosed.setOnClickListener(this);
         togglePreventJoin.setOnClickListener(this);
         toggleStoreOffline.setOnClickListener(this);
+        togglePaidUser.setOnClickListener(this);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,6 +245,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             });
         }
 
+        Button btn_update_deduction = findViewById(R.id.btn_update_deduction);
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
         Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
@@ -295,6 +288,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             @Override
             public void onClick(View view) {
                 callUpdate();
+            }
+        });
+        btn_update_deduction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // update payment settings;
             }
         });
 
@@ -351,6 +350,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             toggleTodayClosedLabel.setText(queueSetting.isTempDayClosed() ? YES : NO);
             toggleStoreOffline.setChecked(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
             toggleStoreOfflineLabel.setText(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? YES : NO);
+
+            togglePaidUser.setChecked(true);
+            togglePaidUserLabel.setText(YES);
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
@@ -441,9 +443,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             } else if (v.getId() == R.id.toggleTodayClosed) {
                 toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
                 toggleTodayClosedLabel.setText(toggleTodayClosed.isChecked() ? YES : NO);
-            } else {
+            } else if (v.getId() == R.id.toggleStoreOffline) {
                 toggleStoreOffline.setChecked(!toggleStoreOffline.isChecked());
                 toggleStoreOfflineLabel.setText(toggleStoreOffline.isChecked() ? YES : NO);
+            } else if (v.getId() == R.id.togglePaidUser) {
+                togglePaidUser.setChecked(!togglePaidUser.isChecked());
+                togglePaidUserLabel.setText(togglePaidUser.isChecked() ? YES : NO);
             }
         }
     }
