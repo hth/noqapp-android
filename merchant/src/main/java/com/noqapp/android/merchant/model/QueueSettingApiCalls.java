@@ -33,13 +33,6 @@ public class QueueSettingApiCalls {
         queueSettingApiUrls = RetrofitClient.getClient().create(QueueSettingApiUrls.class);
     }
 
-    /**
-     * Get setting for a specific queue.
-     *
-     * @param did
-     * @param mail
-     * @param auth
-     */
     public void getQueueState(String did, String mail, String auth, String codeQR) {
         queueSettingApiUrls.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
             @Override
@@ -98,11 +91,7 @@ public class QueueSettingApiCalls {
         });
     }
 
-    /**
-     * @param did
-     * @param mail
-     * @param auth
-     */
+
     public void modify(String did, String mail, String auth, QueueSetting queueSetting) {
         queueSettingApiUrls.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
             @Override
@@ -133,6 +122,41 @@ public class QueueSettingApiCalls {
             @Override
             public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
                 Log.e("fail modify", t.getLocalizedMessage(), t);
+                queueSettingPresenter.queueSettingError();
+            }
+        });
+    }
+
+    public void serviceCost(String did, String mail, String auth, QueueSetting queueSetting) {
+        queueSettingApiUrls.serviceCost(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
+            @Override
+            public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "serviceCost setting, response jsonToken" + response.body().toString());
+                            queueSettingPresenter.queueSettingResponse(response.body());
+                        } else {
+                            Log.e(TAG, "Failed to serviceCost setting");
+                            queueSettingPresenter.queueSettingError();
+                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got errorserviceCost" + errorEncounteredJson.getReason());
+                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueSettingPresenter.authenticationFailure();
+                    } else {
+                        queueSettingPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
+                Log.e("fail serviceCost", t.getLocalizedMessage(), t);
                 queueSettingPresenter.queueSettingError();
             }
         });

@@ -1,13 +1,16 @@
 package com.noqapp.android.common.model.types;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * hitender
  * 2019-03-13 11:45
  */
 public enum ServicePaymentEnum {
-    N("N", "Payment Not Required"),
-    R("R", "Payment Required"),
-    O("O", "Payment Optional");
+    R("R", "Required"),
+    N("N", "Not Required"),
+    O("O", "Optional");
 
     private final String name;
     private final String description;
@@ -28,5 +31,24 @@ public enum ServicePaymentEnum {
     @Override
     public String toString() {
         return description;
+    }
+
+    public static List<String> asListOfDescription() {
+        List<String> a = new LinkedList<>();
+        for (ServicePaymentEnum servicePaymentEnum : ServicePaymentEnum.values()) {
+            a.add(servicePaymentEnum.description);
+        }
+        return a;
+    }
+
+
+    public static ServicePaymentEnum getEnum(String description){
+        ServicePaymentEnum temp = null;
+        for (ServicePaymentEnum servicePaymentEnum : ServicePaymentEnum.values()) {
+            if(servicePaymentEnum.description.equals(description)){
+                return servicePaymentEnum;
+            }
+        }
+        return temp;
     }
 }

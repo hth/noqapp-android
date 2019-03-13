@@ -52,7 +52,7 @@
     <string name="empty_counter">कृपया काउंटर नाम दर्ज करें</string>
     <string name="dayclosed">दिन बंद  %1$s of the week</string>
     <string name="preventjoining">शामिल होने से रोकें</string>
-    <string name="screen_settings">आज का सेटिंग्स</string>
+    <string name="screen_settings">दुकान सेटिंग्स</string>
     <string name="name_unavailable">नाम अनुपलब्ध</string>
     <string name="cancel">रद्द करना</string>
     <string name="update">नवीनतम</string>
@@ -142,9 +142,10 @@
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
     <string name="empty_price">Please enter product price</string>
-    <string name="paid_user">Only Paid User</string>
+    <string name="payment_service">Payment before service</string>
     <string name="payment_setting">Payment Settings</string>
-    <string name="text_deduction">Cancellation Charges</string>
+    <string name="text_deduction">Cancellation Charge</string>
     <string name="today_setting">Today\'s Setting</string>
     <string name="permanent_setting">Permanent Settings</string>
+    <string name="text_fees">Fee/Service Charge</string>
 </resources>
