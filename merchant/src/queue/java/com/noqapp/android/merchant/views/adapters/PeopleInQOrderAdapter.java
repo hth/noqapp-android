@@ -334,10 +334,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-            if(PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()){
+            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
                 tv_remaining_amount_value.setText(currencySymbol + " 0");
-
             }
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());

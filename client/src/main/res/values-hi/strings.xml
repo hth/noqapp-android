@@ -276,5 +276,7 @@
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
     <string name="screen_all_feeds">All Feeds</string>
+    <string name="total_amount_paid">Total Amount Paid:</string>
+    <string name="total_amount_remaing">Total Amount Remaining:</string>
 
 </resources>

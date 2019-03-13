@@ -244,6 +244,61 @@
                                     android:textSize="@dimen/store_info"/>
                         </RelativeLayout>
 
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
+
+                            <TextView
+                                    android:id="@+id/tv_total_amt_paid_label"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:gravity="left"
+                                    android:text="@string/total_amount_paid"
+                                    android:textSize="@dimen/store_info"/>
+
+                            <TextView
+                                    android:id="@+id/tv_total_amt_paid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:id="@+id/rl_amount_remaining"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:gravity="left"
+                                    android:text="@string/total_amount_remaing"
+                                    android:textSize="@dimen/store_info"/>
+
+                            <TextView
+                                    android:id="@+id/tv_total_amt_remain"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info"/>
+                        </RelativeLayout>
 
                         <RelativeLayout
                                 android:layout_width="match_parent"
@@ -254,7 +309,7 @@
                                 android:orientation="horizontal">
 
                             <TextView
-                                    android:id="@+id/tv_payment_due"
+                                    android:id="@+id/tv_payment_status"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"

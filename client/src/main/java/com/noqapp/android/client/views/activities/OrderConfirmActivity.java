@@ -40,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,10 +62,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private Button btn_cancel_order;
     private String codeQR;
     private int currentServing = -1;
-    private TextView tv_payment_due;
+    private TextView tv_payment_status,tv_total_amt_paid,tv_total_amt_paid_label,tv_total_amt_remain;
     private Button btn_pay_now;
     private boolean isPayClick = false;
-
+    private RelativeLayout rl_amount_remaining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_token = findViewById(R.id.tv_token);
         tv_status = findViewById(R.id.tv_status);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
-        tv_payment_due = findViewById(R.id.tv_payment_due);
+        tv_payment_status = findViewById(R.id.tv_payment_status);
+        tv_total_amt_paid = findViewById(R.id.tv_total_amt_paid);
+        tv_total_amt_paid_label = findViewById(R.id.tv_total_amt_paid_label);
+        tv_total_amt_remain = findViewById(R.id.tv_total_amt_remain);
+        rl_amount_remaining = findViewById(R.id.rl_amount_remaining);
 
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
@@ -152,9 +157,24 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-            tv_payment_due.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+            tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
         } else {
-            tv_payment_due.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+            tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+        }
+
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            rl_amount_remaining.setVisibility(View.GONE);
+            tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+            tv_total_amt_remain.setText(currencySymbol + "0.0");
+            tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
+        } else if(PaymentStatusEnum.PH == jsonPurchaseOrder.getPaymentStatus()){
+            rl_amount_remaining.setVisibility(View.VISIBLE);
+            tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100);
+            tv_total_amt_remain.setText(currencySymbol + (Double.parseDouble(jsonPurchaseOrder.getOrderPrice())-Double.parseDouble(jsonPurchaseOrder.getPartialPayment()))/100);
+            tv_total_amt_paid_label.setText("Total Amount Paid (In Cash):");
+        }else{
+            tv_total_amt_paid.setText(currencySymbol + "0.0");
+            rl_amount_remaining.setVisibility(View.VISIBLE);
         }
         for (int i = 0; i < oldjsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
