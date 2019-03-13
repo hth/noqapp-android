@@ -9,13 +9,15 @@ import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -34,13 +36,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +46,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -69,7 +70,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private String recordReferenceId;
-    private MedicalHistoryModel medicalHistoryModel;
+    private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialogImage;
     private JsonMedicalRecord jsonMedicalRecordTemp;
@@ -105,7 +106,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 finish();
             }
         });
-        medicalHistoryModel = new MedicalHistoryModel(this);
+        medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         recordReferenceId = getIntent().getStringExtra("recordReferenceId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
         rcv_photo = findViewById(R.id.rcv_photo);
@@ -131,8 +132,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
         progressDialog.show();
         progressDialog.setMessage("Fetching documents...");
-        medicalHistoryModel.setJsonMedicalRecordPresenter(this);
-        medicalHistoryModel.existsMedicalRecord(BaseLaunchActivity.getDeviceID(),
+        medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
+        medicalHistoryApiCalls.existsMedicalRecord(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), codeQR, recordReferenceId);
 
@@ -222,7 +223,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 //                        File file = new File(convertedPath);
 //                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
 //                        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-//                        medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+//                        medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
 //                    }
 //                } catch (FileNotFoundException e) {
 //                    e.printStackTrace();
@@ -256,7 +257,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 ////                    File file = new File(imgPath);
 ////                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
 ////                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-////                    medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+////                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
 ////                }
 //            } catch (Exception e) {
 //                e.printStackTrace();
@@ -398,7 +399,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 });
                 progressDialog.show();
                 progressDialog.setMessage("Deleting image...");
-                medicalHistoryModel.removeImage(BaseLaunchActivity.getDeviceID(),
+                medicalHistoryApiCalls.removeImage(BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
@@ -538,7 +539,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 File file = new File(path);
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-                medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
             }
 //            if (!TextUtils.isEmpty(destination.getAbsolutePath())) {
 //                progressDialog.show();
@@ -547,7 +548,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 //                File file = new File(destination.getAbsolutePath());
 //                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
 //                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-//                medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+//                medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
 //            }
         } catch (Exception e) {
             e.printStackTrace();
@@ -571,7 +572,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-                        medicalHistoryModel.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                        medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     }
 
                 } catch (Exception e) {

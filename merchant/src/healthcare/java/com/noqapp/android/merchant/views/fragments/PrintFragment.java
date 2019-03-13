@@ -14,7 +14,7 @@ import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -57,7 +57,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
     private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_radio_special, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
-    private MedicalHistoryModel medicalHistoryModel;
+    private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private SegmentedControl sc_follow_up;
     private Button btn_submit, btn_print_pdf;
     private ListView lv_medicine;
@@ -76,7 +76,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_print, container, false);
         initProgress();
-        medicalHistoryModel = new MedicalHistoryModel(this);
+        medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         tv_patient_name = v.findViewById(R.id.tv_patient_name);
         tv_address = v.findViewById(R.id.tv_address);
         tv_symptoms = v.findViewById(R.id.tv_symptoms);
@@ -331,7 +331,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
                 }
-                medicalHistoryModel.update(
+                medicalHistoryApiCalls.update(
                         BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(),

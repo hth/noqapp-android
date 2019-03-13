@@ -26,7 +26,7 @@ import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -89,12 +89,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void getAllPeopleInQ(JsonTopic jsonTopic) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-            purchaseOrderModel.setPurchaseOrderPresenter(this);
-            purchaseOrderModel.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+            purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
+            purchaseOrderApiCalls.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         } else {
-            manageQueueModel.setQueuePersonListPresenter(this);
-            manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+            manageQueueApiCalls.setQueuePersonListPresenter(this);
+            manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         }
     }
 
@@ -114,9 +114,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
 
 
-                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                purchaseOrderModel.setAcquireOrderPresenter(this);
-                purchaseOrderModel.acquire(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                purchaseOrderApiCalls.setAcquireOrderPresenter(this);
+                purchaseOrderApiCalls.acquire(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
@@ -182,7 +182,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     setDispensePresenter();
-                    manageQueueModel.dispenseToken(
+                    manageQueueApiCalls.dispenseToken(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -230,9 +230,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
 
 
-                PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                purchaseOrderModel.setOrderProcessedPresenter(this);
-                purchaseOrderModel.actionOnOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                purchaseOrderApiCalls.setOrderProcessedPresenter(this);
+                purchaseOrderApiCalls.actionOnOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
@@ -248,12 +248,13 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             OrderServed orderServed = new OrderServed();
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+            orderServed.setTransactionId(purchaseOrders.get(position).getTransactionId());
             orderServed.setGoTo(tv_counter_name.getText().toString());
             orderServed.setQueueStatus(QueueStatusEnum.N);
             orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-            PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-            purchaseOrderModel.setOrderProcessedPresenter(this);
-            purchaseOrderModel.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+            purchaseOrderApiCalls.setOrderProcessedPresenter(this);
+            purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -295,8 +296,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     protected void updateUI() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             {
-                final PurchaseOrderModel purchaseOrderModel = new PurchaseOrderModel();
-                purchaseOrderModel.setAcquireOrderPresenter(this);
+                final PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                purchaseOrderApiCalls.setAcquireOrderPresenter(this);
                 final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
                 queueStatusOuter = queueStatus == QueueStatusEnum.N;
                 String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
@@ -394,7 +395,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                 orderServed.setGoTo(tv_counter_name.getText().toString());
                                 orderServed.setQueueStatus(QueueStatusEnum.N);
                                 orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                purchaseOrderModel.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                                purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
                             } else {
                                 ShowAlertInformation.showNetworkDialog(context);
                             }
@@ -430,7 +431,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                                 orderServed.setGoTo(tv_counter_name.getText().toString());
                                                 orderServed.setQueueStatus(QueueStatusEnum.N);
                                                 orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                                purchaseOrderModel.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                                                purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
                                             } else {
                                                 ShowAlertInformation.showNetworkDialog(context);
                                             }
@@ -456,7 +457,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                         orderServed.setGoTo(tv_counter_name.getText().toString());
                                         orderServed.setQueueStatus(QueueStatusEnum.N);
                                         orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                        purchaseOrderModel.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                                        purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(context);
                                     }

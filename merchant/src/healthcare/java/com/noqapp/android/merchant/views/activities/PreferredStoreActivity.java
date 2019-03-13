@@ -6,8 +6,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
-import com.noqapp.android.merchant.model.M_MerchantProfileModel;
-import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.model.M_MerchantProfileApiCalls;
+import com.noqapp.android.merchant.model.PreferredBusinessApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessList;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -105,7 +105,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
-                new PreferredBusinessModel(this)
+                new PreferredBusinessApiCalls(this)
                         .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
             }
         }
@@ -248,8 +248,8 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     @Override
     protected void onStop() {
         super.onStop();
-        M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
-        m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+        M_MerchantProfileApiCalls m_merchantProfileApiCalls = new M_MerchantProfileApiCalls(this);
+        m_merchantProfileApiCalls.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                 new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestionsPrefs()));
     }
 

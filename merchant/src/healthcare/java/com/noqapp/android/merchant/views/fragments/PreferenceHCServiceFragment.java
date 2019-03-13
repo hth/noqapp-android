@@ -6,7 +6,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.model.MasterLabModel;
+import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -264,9 +264,9 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
         Toast.makeText(getActivity(), "Record flagged", Toast.LENGTH_LONG).show();
         initProgress();
         progressDialog.show();
-        MasterLabModel masterLabModel = new MasterLabModel();
-        masterLabModel.setMasterLabPresenter(this);
-        masterLabModel.flag(BaseLaunchActivity.getDeviceID(),
+        MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
+        masterLabApiCalls.setMasterLabPresenter(this);
+        masterLabApiCalls.flag(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), masterLabArrayList.get(pos));
     }

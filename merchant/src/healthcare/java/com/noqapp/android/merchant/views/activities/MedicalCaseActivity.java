@@ -6,7 +6,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
-import com.noqapp.android.merchant.model.PreferredBusinessModel;
+import com.noqapp.android.merchant.model.PreferredBusinessApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -176,7 +176,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
             }
         });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            PreferredBusinessModel preferredBusinessModel = new PreferredBusinessModel(MedicalCaseActivity.this);
+            PreferredBusinessApiCalls preferredBusinessModel = new PreferredBusinessApiCalls(MedicalCaseActivity.this);
             preferredBusinessModel.getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         }
         final Handler handler = new Handler();

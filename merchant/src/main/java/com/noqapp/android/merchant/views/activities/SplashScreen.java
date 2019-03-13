@@ -7,7 +7,7 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
-import com.noqapp.android.merchant.model.DeviceModel;
+import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -107,9 +107,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             Log.d(TAG, "Created deviceId=" + deviceId);
             sharedpreferences.edit().putString(APIConstant.Key.XR_DID, deviceId).apply();
             //Call this api only once in life time
-            DeviceModel deviceModel = new DeviceModel();
-            deviceModel.setDeviceRegisterPresenter(this);
-            deviceModel.register(deviceId, deviceToken);
+            DeviceApiCalls deviceApiCalls = new DeviceApiCalls();
+            deviceApiCalls.setDeviceRegisterPresenter(this);
+            deviceApiCalls.register(deviceId, deviceToken);
         } else {
             Log.e("Launch", "launching from sendRegistrationToServer");
             Log.d(TAG, "Exist deviceId=" + deviceId);

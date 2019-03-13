@@ -206,4 +206,10 @@
     <string name="upload_document">Upload \nDocument</string>
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
+    <string name="empty_price">Please enter product price</string>
+    <string name="paid_user">Only Paid User</string>
+    <string name="payment_setting">Payment Settings</string>
+    <string name="text_deduction">Cancellation Charges</string>
+    <string name="today_setting">Today\'s Setting</string>
+    <string name="permanent_setting">Permanent Settings</string>
 </resources>

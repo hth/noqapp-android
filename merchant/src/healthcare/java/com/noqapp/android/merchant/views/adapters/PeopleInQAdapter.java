@@ -79,7 +79,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                                 changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                                 changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
 
-                                manageQueueModel.changeUserInQueue(
+                                manageQueueApiCalls.changeUserInQueue(
                                         BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
@@ -158,12 +158,12 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
                             jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
                             if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
-                                businessCustomerModel.addId(
+                                businessCustomerApiCalls.addId(
                                         BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
                             } else {
-                                businessCustomerModel.editId(
+                                businessCustomerApiCalls.editId(
                                         BaseLaunchActivity.getDeviceID(),
                                         LaunchActivity.getLaunchActivity().getEmail(),
                                         LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);

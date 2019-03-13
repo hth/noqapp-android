@@ -9,7 +9,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.RegisterModel;
+import com.noqapp.android.merchant.model.RegisterApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.Login;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -202,8 +202,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");
-        RegisterModel registerModel = new RegisterModel(this);
-        registerModel.login(UserUtils.getDeviceId(), login);
+        RegisterApiCalls registerApiCalls = new RegisterApiCalls(this);
+        registerApiCalls.login(UserUtils.getDeviceId(), login);
     }
 
     private boolean validate() {

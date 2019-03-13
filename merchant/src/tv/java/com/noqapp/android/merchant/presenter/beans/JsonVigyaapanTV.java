@@ -45,17 +45,14 @@ public class JsonVigyaapanTV extends AbstractDomain {
     @JsonProperty("vt")
     private VigyaapanTypeEnum vigyaapanType;
 
+    @JsonProperty("ed")
+    private String endDate;
+
+    @JsonProperty("ei")
+    private boolean endDateInitialized;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
-
-    public ErrorEncounteredJson getError() {
-        return error;
-    }
-
-    public void setError(ErrorEncounteredJson error) {
-        this.error = error;
-    }
-
 
     public String getVigyaapanId() {
         return vigyaapanId;
@@ -90,6 +87,33 @@ public class JsonVigyaapanTV extends AbstractDomain {
 
     public JsonVigyaapanTV setVigyaapanType(VigyaapanTypeEnum vigyaapanType) {
         this.vigyaapanType = vigyaapanType;
+        return this;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public JsonVigyaapanTV setEndDate(String endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+    public boolean isEndDateInitialized() {
+        return endDateInitialized;
+    }
+
+    public JsonVigyaapanTV setEndDateInitialized(boolean endDateInitialized) {
+        this.endDateInitialized = endDateInitialized;
+        return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonVigyaapanTV setError(ErrorEncounteredJson error) {
+        this.error = error;
         return this;
     }
 

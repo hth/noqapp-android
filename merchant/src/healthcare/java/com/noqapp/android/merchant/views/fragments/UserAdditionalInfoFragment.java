@@ -5,7 +5,7 @@ import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileModel;
+import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -322,15 +322,15 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     }
 
     public void updateProfessionalInfo() {
-        MerchantProfileModel merchantProfileModel = new MerchantProfileModel();
-        merchantProfileModel.setMerchantProfessionalPresenter(this);
+        MerchantProfileApiCalls merchantProfileApiCalls = new MerchantProfileApiCalls();
+        merchantProfileApiCalls.setMerchantProfessionalPresenter(this);
         if (jsonProfessionalProfilePersonal.getLicenses().size() == 0 && jsonProfessionalProfilePersonal.getEducation().size() == 0) {
             Toast.makeText(getActivity(), "Please add one record in education or License", Toast.LENGTH_LONG).show();
         } else {
             progressDialog.show();
             jsonProfessionalProfilePersonal.setAboutMe(edt_about_me.getText().toString());
             jsonProfessionalProfilePersonal.setPracticeStart(edt_practice_start.getText().toString());
-            merchantProfileModel.updateProfessionalProfile(UserUtils.getEmail(), UserUtils.getAuth(), jsonProfessionalProfilePersonal);
+            merchantProfileApiCalls.updateProfessionalProfile(UserUtils.getEmail(), UserUtils.getAuth(), jsonProfessionalProfilePersonal);
         }
     }
 

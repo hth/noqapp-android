@@ -8,7 +8,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -69,8 +69,8 @@ public class FollowUpListActivity extends AppCompatActivity implements QueuePers
         initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            MedicalHistoryModel medicalHistoryModel = new MedicalHistoryModel(FollowUpListActivity.this);
-            medicalHistoryModel.getFollowUpList(UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
+            MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(FollowUpListActivity.this);
+            medicalHistoryApiCalls.getFollowUpList(UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }

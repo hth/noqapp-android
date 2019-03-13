@@ -5,6 +5,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 public class HCSMenuObject implements Comparable<HCSMenuObject> {
     private boolean isSelect = false;
     private JsonMasterLab jsonMasterLab;
+    private double price = 0.0;
 
     public boolean isSelect() {
         return isSelect;
@@ -24,11 +25,20 @@ public class HCSMenuObject implements Comparable<HCSMenuObject> {
         return this;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public HCSMenuObject setPrice(double price) {
+        this.price = price;
+        return this;
+    }
+
     public int compareTo(HCSMenuObject other) {
         return jsonMasterLab.getProductShortName().compareTo(other.getJsonMasterLab().getProductShortName());
     }
 
-    public String getSortName(){
+    public String getSortName() {
         return toCamelCase(jsonMasterLab.getProductShortName());
     }
 

@@ -10,7 +10,7 @@ import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryModel;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -459,8 +459,8 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                     labFile.setRecordReferenceId(recordReferenceId);
                     labFile.setObservation(edt_observation.getText().toString());
                     labFile.setLabCategory(labCategoryEnum);
-                    MedicalHistoryModel medicalHistoryModel = new MedicalHistoryModel(updateObservationPresenter);
-                    medicalHistoryModel.updateObservation(BaseLaunchActivity.getDeviceID(),
+                    MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(updateObservationPresenter);
+                    medicalHistoryApiCalls.updateObservation(BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(), labFile);
                     btn_update.setClickable(false);

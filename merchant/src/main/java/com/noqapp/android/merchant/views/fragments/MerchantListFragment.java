@@ -4,7 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueModel;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,10 +33,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -47,6 +44,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private Snackbar snackbar;
     private boolean isFragmentVisible = false;
     private AutoCompleteTextView auto_complete_search;
-    private ManageQueueModel manageQueueModel;
+    private ManageQueueApiCalls manageQueueApiCalls;
 
     public MerchantListFragment() {
 
@@ -93,8 +93,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
-        manageQueueModel = new ManageQueueModel();
-        manageQueueModel.setTopicPresenter(this);
+        manageQueueApiCalls = new ManageQueueApiCalls();
+        manageQueueApiCalls.setTopicPresenter(this);
         String strOutput = LaunchActivity.getLaunchActivity().getCounterName();
         Type type = new TypeToken<HashMap<String, String>>() {
         }.getType();
@@ -199,7 +199,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 if (null != LaunchActivity.getLaunchActivity()) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
-                    manageQueueModel.getQueues(
+                    manageQueueApiCalls.getQueues(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth());
@@ -462,7 +462,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         //Refresh the ListView after pull
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             swipeRefreshLayout.setRefreshing(true);
-            manageQueueModel.getQueues(
+            manageQueueApiCalls.getQueues(
                     BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
@@ -489,7 +489,8 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
 
     public void clearData() {
         topics.clear();
-        adapter.notifyDataSetChanged();
+        if (null != adapter)
+            adapter.notifyDataSetChanged();
     }
 
     public class CustomComparator implements Comparator<JsonTopic> {

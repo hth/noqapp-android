@@ -6,8 +6,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
-import com.noqapp.android.merchant.model.M_MerchantProfileModel;
-import com.noqapp.android.merchant.model.MasterLabModel;
+import com.noqapp.android.merchant.model.M_MerchantProfileApiCalls;
+import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -171,9 +171,9 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
 
     private void callFileApi() {
         progressDialog.show();
-        MasterLabModel masterLabModel = new MasterLabModel();
-        masterLabModel.setFilePresenter(this);
-        masterLabModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
+        masterLabApiCalls.setFilePresenter(this);
+        masterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
     }
 
     @Override
@@ -207,8 +207,8 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     @Override
     protected void onStop() {
         super.onStop();
-        M_MerchantProfileModel m_merchantProfileModel = new M_MerchantProfileModel(this);
-        m_merchantProfileModel.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+        M_MerchantProfileApiCalls m_merchantProfileApiCalls = new M_MerchantProfileApiCalls(this);
+        m_merchantProfileApiCalls.uploadIntellisense(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                 new JsonProfessionalProfilePersonal().setDataDictionary(LaunchActivity.getLaunchActivity().getSuggestionsPrefs()));
     }
 

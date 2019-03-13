@@ -5,6 +5,7 @@ import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.ServicePaymentEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -144,6 +145,21 @@ public class JsonQueue implements Serializable {
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
+
+    //*********************************/
+    //*  Queue Price Setting Starts.  */
+    //*********************************/
+    @JsonProperty("pp")
+    private int productPrice;
+
+    @JsonProperty("cp")
+    private int cancellationPrice;
+
+    @JsonProperty("sp")
+    private ServicePaymentEnum servicePayment;
+    //*********************************/
+    //*  Queue Price Settings Ends.   */
+    //*********************************/
 
     @JsonProperty("bc")
     private String bizCategoryId;

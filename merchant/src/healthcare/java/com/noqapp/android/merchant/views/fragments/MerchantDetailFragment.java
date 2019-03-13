@@ -56,8 +56,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
 
     @Override
     public void getAllPeopleInQ(JsonTopic jsonTopic) {
-        manageQueueModel.setQueuePersonListPresenter(this);
-        manageQueueModel.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+        manageQueueApiCalls.setQueuePersonListPresenter(this);
+        manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
     }
 
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
@@ -127,7 +127,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                             cid = edt_id.getText().toString();
                             edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                         }
-                        manageQueueModel.dispenseTokenWithClientInfo(
+                        manageQueueApiCalls.dispenseTokenWithClientInfo(
                                 BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),

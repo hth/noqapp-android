@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -11,7 +10,7 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.BaseMasterLabModel;
+import com.noqapp.android.merchant.model.BaseMasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -25,7 +24,7 @@ import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderModel;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
 
 import com.google.android.flexbox.AlignItems;
@@ -44,32 +43,35 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 // Health Care Service Menu Screen
@@ -102,8 +104,12 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private TextView tv_select_patient;
     private Button btn_create_order, btn_create_token;
     private String codeQR = "";
-    private PurchaseOrderModel purchaseOrderModel;
-
+    private PurchaseOrderApiCalls purchaseOrderApiCalls;
+    private LinearLayout ll_order_list;
+    private TextView tv_order_list;
+    private RelativeLayout rl_total;
+    private int price = 0;
+    private String currencySymbol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -123,6 +129,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             @Override
             public void onClick(View v) {
                 finish();
+                if (null != BaseLaunchActivity.merchantListFragment) {
+                    BaseLaunchActivity.merchantListFragment.onRefresh();
+                }
             }
         });
         view_test = findViewById(R.id.view_test);
@@ -138,8 +147,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
         });
 
-
+        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         jsonTopic = (JsonTopic) getIntent().getSerializableExtra("jsonTopic");
+
         codeQR = jsonTopic.getCodeQR();
         actv_search = findViewById(R.id.actv_search);
         actv_search.setThreshold(1);
@@ -156,9 +166,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         } else {
             requestStoragePermission();
         }
-        purchaseOrderModel = new PurchaseOrderModel();
-        purchaseOrderModel.setFindCustomerPresenter(this);
-        purchaseOrderModel.setPurchaseOrderPresenter(this);
+        purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+        purchaseOrderApiCalls.setFindCustomerPresenter(this);
+        purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
     }
 
     public FlexboxLayoutManager getFlexBoxLayoutManager(Context context) {
@@ -171,9 +181,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
 
     private void callFileApi() {
         progressDialog.show();
-        BaseMasterLabModel masterLabModel = new BaseMasterLabModel();
-        masterLabModel.setFilePresenter(this);
-        masterLabModel.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        BaseMasterLabApiCalls baseMasterLabApiCalls = new BaseMasterLabApiCalls();
+        baseMasterLabApiCalls.setFilePresenter(this);
+        baseMasterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
     }
 
     @Override
@@ -189,6 +199,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
             //super.onBackPressed();
             finish();
+            if (null != BaseLaunchActivity.merchantListFragment) {
+                BaseLaunchActivity.merchantListFragment.onRefresh();
+            }
         }
     }
 
@@ -440,6 +453,13 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         return false;
     }
 
+    private double calculateTotalPrice( ) {
+        int amount = 0;
+        for (int i = 0; i < menuSelectData.size(); i++) {
+            amount += 1 * menuSelectData.get(i).getPrice();
+        }
+        return amount;
+    }
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -447,9 +467,73 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         View view = inflater.inflate(R.layout.dialog_create_order_with_mobile, null, false);
         ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
         TextView tv_create_token = view.findViewById(R.id.tvtitle);
+        TextView tv_cost = view.findViewById(R.id.tv_cost);
         TextView tv_toolbar_title = view.findViewById(R.id.tv_toolbar_title);
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
+        tv_order_list = view.findViewById(R.id.tv_order_list);
+        ll_order_list = view.findViewById(R.id.ll_order_list);
+        rl_total = view.findViewById(R.id.rl_total);
+        ll_order_list.removeAllViews();
+        if(menuSelectData.size() > 0) {
+            price = 0;
+            for (int i = 0; i < menuSelectData.size(); i++) {
+                final int pos = i;
+                LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                View v = layoutInflater.inflate(R.layout.list_item_order_add, null);
+                TextView tv_title = v.findViewById(R.id.tv_title);
+                TextView tv_amount = v.findViewById(R.id.tv_amount);
+                tv_title.setText(menuSelectData.get(i).getJsonMasterLab().getProductShortName());
+                tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(i).getPrice()));
+                tv_amount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        LayoutInflater inflater = LayoutInflater.from(mContext);
+                        builder.setTitle(null);
+                        View prideDialog = inflater.inflate(R.layout.dialog_modify_price, null, false);
+                        final EditText edt_prod_price = prideDialog.findViewById(R.id.edt_prod_price);
+                        builder.setView(prideDialog);
+                        final AlertDialog mAlertDialog = builder.create();
+                        mAlertDialog.setCanceledOnTouchOutside(false);
+                        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                        Button btn_update = prideDialog.findViewById(R.id.btn_update);
+                        Button btn_cancel = prideDialog.findViewById(R.id.btn_cancel);
+                        btn_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        });
+                        btn_update.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                edt_prod_price.setError(null);
+                                if (edt_prod_price.getText().toString().equals("")) {
+                                    edt_prod_price.setError(mContext.getString(R.string.empty_price));
+                                } else {
+//                                    new AppUtils().hideKeyBoard(HCSMenuActivity.this);
+//                                    mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                                    InputMethodManager imm = (InputMethodManager)getSystemService(mContext.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
+                                    menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
+                                    tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(pos).getPrice()));
+
+                                    tv_cost.setText(currencySymbol + " "+ String.valueOf(calculateTotalPrice()));
+                                    mAlertDialog.dismiss();
+                                }
+                            }
+                        });
+                        mAlertDialog.show();
+                    }
+                });
+                ll_order_list.addView(v);
+                price += 1 * menuSelectData.get(pos).getPrice() ;
+            }
+            tv_cost.setText(currencySymbol + " "+String.valueOf(price));
+        }
+
         tv_toolbar_title.setText("Create order");
         tv_create_token.setText("Click button to create order");
         edt_mobile = view.findViewById(R.id.edt_mobile);
@@ -474,7 +558,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         });
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
-        btn_create_token.setText("Search patient");
+        btn_create_token.setText("Search Patient");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -509,7 +593,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     progressDialog.show();
 
 
-                    purchaseOrderModel.findCustomer(
+                    purchaseOrderApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -541,45 +625,51 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     public void findCustomerResponse(final JsonProfile jsonProfile) {
         dismissProgress();
         if (null != jsonProfile && jsonProfile.getDependents().size() > 0) {
-            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfile.getDependents());
+            List<JsonProfile> jsonProfileList = new ArrayList<>();
+            jsonProfileList.add(jsonProfile);
+            jsonProfileList.addAll(jsonProfile.getDependents());
+            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfileList);
             sp_patient_list.setAdapter(adapter);
             sp_patient_list.setVisibility(View.VISIBLE);
             edt_mobile.setEnabled(false);
             tv_select_patient.setVisibility(View.VISIBLE);
+            tv_order_list.setVisibility(View.VISIBLE);
+            ll_order_list.setVisibility(View.VISIBLE);
+            rl_total.setVisibility(View.VISIBLE);
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
             btn_create_order.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-//                        progressDialog.setMessage("Placing order....");
-//                        progressDialog.show();
-//                        //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
-//                        HashMap<String, ChildData> getOrder = null;//= getOrders();
-//                        List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-//                        int price = 0;
-//                        for (ChildData value : getOrder.values()) {
-//                            ll.add(new JsonPurchaseOrderProduct()
-//                                    .setProductId(value.getJsonStoreProduct().getProductId())
-//                                    .setProductPrice(value.getFinalDiscountedPrice() * 100)
-//                                    .setProductQuantity(value.getChildInput())
-//                                    .setProductName(value.getJsonStoreProduct().getProductName()));
-//                            price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
-//                        }
-//                        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-//                                .setCodeQR(codeQR)
-//                                .setQueueUserId(jsonProfile.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
-//                                .setOrderPrice(String.valueOf(price));
-//                        jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-//
-//
-//                        jsonPurchaseOrder.setDeliveryAddress("");
-//                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
-//                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
-//                        jsonPurchaseOrder.setCustomerPhone("");
-//                        jsonPurchaseOrder.setAdditionalNote("");
-//                        purchaseOrderModel.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                        Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
+                        progressDialog.setMessage("Placing order....");
+                        progressDialog.show();
+                        btn_create_order.setEnabled(false);
+                        List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
+                        int price = 0;
+                        for (HCSMenuObject value : menuSelectData) {
+                            ll.add(new JsonPurchaseOrderProduct()
+                                    .setProductId("")
+                                    .setProductPrice((int)value.getPrice()  * 100)
+                                    .setProductQuantity(1)
+                                    .setProductName(value.getJsonMasterLab().getProductName()));
+                            price += 1 * value.getPrice() * 100;
+                        }
+                        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                                .setCodeQR(codeQR)
+                                .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId())
+                                .setOrderPrice(String.valueOf(price));
+                        jsonPurchaseOrder.setPurchaseOrderProducts(ll);
+
+
+                        jsonPurchaseOrder.setDeliveryAddress("");
+                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
+                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
+                        jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
+                        jsonPurchaseOrder.setAdditionalNote("");
+                        jsonPurchaseOrder.setCustomized(true);
+                        purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                       // Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
                     } else {
                         ShowAlertInformation.showNetworkDialog(HCSMenuActivity.this);
                     }
@@ -595,6 +685,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             finish();
+            if (null != BaseLaunchActivity.merchantListFragment) {
+                BaseLaunchActivity.merchantListFragment.onRefresh();
+            }
         }
     }
 

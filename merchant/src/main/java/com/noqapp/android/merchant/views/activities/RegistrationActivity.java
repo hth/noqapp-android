@@ -9,7 +9,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.RegisterModel;
+import com.noqapp.android.merchant.model.RegisterApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -309,8 +309,8 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
         registration.setInviteCode("");
 
-        RegisterModel registerModel = new RegisterModel(this);
-        registerModel.register(UserUtils.getDeviceId(), registration);
+        RegisterApiCalls registerApiCalls = new RegisterApiCalls(this);
+        registerApiCalls.register(UserUtils.getDeviceId(), registration);
 
     }
 
