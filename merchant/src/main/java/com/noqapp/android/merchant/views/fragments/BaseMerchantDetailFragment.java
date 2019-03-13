@@ -149,17 +149,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new AppUtils().isTablet(context)) {
-                    Intent in = new Intent(context, SettingActivity.class);
-                    in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
-                } else {
-                    Intent in = new Intent(context, SettingActivity.class);
-                    in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
-                    ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
-
-                }
+                Intent in = new Intent(context, SettingActivity.class);
+                in.putExtra("codeQR", jsonTopic.getCodeQR());
+                ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+                ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
             }
         });
         iv_generate_token = itemView.findViewById(R.id.iv_generate_token);

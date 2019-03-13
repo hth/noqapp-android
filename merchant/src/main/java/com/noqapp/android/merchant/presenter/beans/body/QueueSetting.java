@@ -275,6 +275,9 @@ public class QueueSetting {
                 ", untilDay='" + untilDay + '\'' +
                 ", scheduledFromDay='" + scheduledFromDay + '\'' +
                 ", scheduledUntilDay='" + scheduledUntilDay + '\'' +
+                ", productPrice=" + productPrice +
+                ", cancellationPrice=" + cancellationPrice +
+                ", servicePayment=" + servicePayment +
                 ", storeActionType=" + storeActionType +
                 ", error=" + error +
                 '}';
