@@ -130,29 +130,78 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     }
 
     public void setVigyaapanList(JsonVigyaapanTVList jsonVigyaapanTVList, int no_of_q) {
-
         Log.e("setVigyaapanList", "called");
         if (jsonVigyaapanTVList.getJsonVigyaapanTVs().size() > 0) {
+            jsonVigyaapanTV_images = null;
+            image_list_size = 0;
             for (int i = 0; i < jsonVigyaapanTVList.getJsonVigyaapanTVs().size(); i++) {
                 JsonVigyaapanTV jsonVigyaapanTV = jsonVigyaapanTVList.getJsonVigyaapanTVs().get(i);
                 if (null != jsonVigyaapanTV) {
-                    switch (jsonVigyaapanTV.getVigyaapanType()) {
-                        case MV:
-                            if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
-                                urlList = jsonVigyaapanTV.getImageUrls();
-                                image_list_size = urlList.size();
-                                jsonVigyaapanTV_images = jsonVigyaapanTV;
-                                Log.e("Vigyapan: ", "Image URL called");
+                    Log.e("data",jsonVigyaapanTV.toString());
+                    if (jsonVigyaapanTV.isEndDateInitialized()) { // check expire Ad's
+                        try {
+                            Date current = new SimpleDateFormat(AppUtils.ISO8601_FMT, Locale.getDefault()).parse(jsonVigyaapanTV.getEndDate());
+                            int date_diff = new Date().compareTo(current);
+
+                            if (date_diff < 0) {
+                                // do process
+                                Log.e("Date validate - true",jsonVigyaapanTV.getEndDate());
+                                switch (jsonVigyaapanTV.getVigyaapanType()) {
+                                    case MV:
+                                        if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
+                                            image_list_size = image_list_size +jsonVigyaapanTV.getImageUrls().size();
+                                            if(null == jsonVigyaapanTV_images) {
+                                                jsonVigyaapanTV_images = jsonVigyaapanTV;
+                                                urlList = jsonVigyaapanTV.getImageUrls();
+                                            }else {
+                                                jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
+                                                urlList.addAll(jsonVigyaapanTV.getImageUrls());
+                                            }
+                                            Log.e("Vigyapan: ", "Image URL called");
+                                        }
+                                        break;
+                                    case PP:
+                                        if (null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+                                            profile_size = 1;
+                                            jsonVigyaapanTV_profile = jsonVigyaapanTV;
+                                            Log.e("Vigyapan: ", "Profile called");
+                                        }
+                                        break;
+                                    default:
+                                }
+                            } else {
+                                // error
+                                Log.e("Date validate - false",jsonVigyaapanTV.getEndDate());
+                                //break;
                             }
-                            break;
-                        case PP:
-                            if (null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
-                                profile_size = 1;
-                                jsonVigyaapanTV_profile = jsonVigyaapanTV;
-                                Log.e("Vigyapan: ", "Profile called");
-                            }
-                            break;
-                        default:
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        switch (jsonVigyaapanTV.getVigyaapanType()) {
+                            case MV:
+                                if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
+
+                                    image_list_size = image_list_size +jsonVigyaapanTV.getImageUrls().size();
+                                    if(null == jsonVigyaapanTV_images) {
+                                        jsonVigyaapanTV_images = jsonVigyaapanTV;
+                                        urlList = jsonVigyaapanTV.getImageUrls();
+                                    }else {
+                                        jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
+                                        urlList.addAll(jsonVigyaapanTV.getImageUrls());
+                                    }
+                                    Log.e("Vigyapan: ", "Image URL called");
+                                }
+                                break;
+                            case PP:
+                                if (null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
+                                    profile_size = 1;
+                                    jsonVigyaapanTV_profile = jsonVigyaapanTV;
+                                    Log.e("Vigyapan: ", "Profile called");
+                                }
+                                break;
+                            default:
+                        }
                     }
                 }
             }
@@ -165,7 +214,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public void clientInResponse(JsonQueueTVList jsonQueueTVList) {
         {
             if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
-                Log.v("TV Data", jsonQueueTVList.getQueues().toString());
+                Log.v("Presentation TV Data", jsonQueueTVList.getQueues().toString());
                 List<TopicAndQueueTV> topicAndQueueTVListTemp = new ArrayList<>();
                 for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
                     JsonQueueTV jsonQueueTV = jsonQueueTVList.getQueues().get(i);
@@ -536,10 +585,12 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         UserUtils.getDeviceId(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
+                Log.e("SERVER Called for data", "done");
                 if (timercount == MINUTE)
                     timercount = 0;
             } else {
                 // do nothing
+                fetchLatestData = null;
             }
             if (callVigyapan) {
                 VigyaapanApiCalls vigyaapanApiCalls = new VigyaapanApiCalls();
