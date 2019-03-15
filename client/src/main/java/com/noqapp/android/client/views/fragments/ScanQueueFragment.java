@@ -54,8 +54,6 @@ import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import com.squareup.picasso.Picasso;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -191,9 +189,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
         iv_event = view.findViewById(R.id.iv_event);
-        Picasso.with(getActivity())
-                .load("https://noqapp.com/imgs/appmages/garbhasanskar-ssd-march-2019.png")
-                .into(iv_event);
+//        Picasso.with(getActivity())
+//                .load("https://noqapp.com/imgs/appmages/garbhasanskar-ssd-march-2019.png")
+//                .into(iv_event);
         iv_event.setOnClickListener(this);
         rl_scan.setOnClickListener(this);
         tv_health_care_view_all.setOnClickListener(this);

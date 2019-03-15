@@ -19,9 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +27,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -55,31 +56,31 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        final BizStoreElastic jsonQueue = dataSet.get(listPosition);
-        holder.tv_name.setText(jsonQueue.getDisplayName());
-        holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getPhone()));
-        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(jsonQueue.getRating())));
-        holder.tv_address.setText(jsonQueue.getAddress());
+        final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
+        holder.tv_name.setText(bizStoreElastic.getDisplayName());
+        holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
+        holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
+        holder.tv_address.setText(bizStoreElastic.getAddress());
         holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        if (jsonQueue.getReviewCount() == 0) {
+        if (bizStoreElastic.getReviewCount() == 0) {
             holder.tv_store_review.setText("No Review");
             holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-        } else if (jsonQueue.getReviewCount() == 1) {
+        } else if (bizStoreElastic.getReviewCount() == 1) {
             holder.tv_store_review.setText("1 Review");
         } else {
-            holder.tv_store_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
+            holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
         }
 
         holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (jsonQueue.getReviewCount() > 0) {
+                if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, ShowAllReviewsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                    bundle.putString("storeName", jsonQueue.getDisplayName());
-                    bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
+                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                    bundle.putString("storeName", bizStoreElastic.getDisplayName());
+                    bundle.putString("storeAddress", AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
                     in.putExtras(bundle);
                     context.startActivity(in);
                 }
@@ -91,20 +92,22 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 AppUtilities.makeCall((Activity) context, holder.tv_phoneno.getText().toString());
             }
         });
-        holder.tv_specialization.setText(jsonQueue.getCompleteEducation());
-        StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(jsonQueue.getStoreHourElasticList());
+        holder.tv_specialization.setText(bizStoreElastic.getCompleteEducation());
+        StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
         holder.tv_join.setEnabled(!storeHourElastic.isDayClosed());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
             holder.tv_store_timing.setVisibility(View.GONE);
-            holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.grey_background));
+            holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
+            holder.tv_join.setTextColor(context.getResources().getColor(R.color.button_color));
             holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
             holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
-            holder.tv_join.setBackgroundColor(ContextCompat.getColor(context, R.color.button_color));
+            holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
+            holder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
             holder.tv_join.setText("Walk-in");
-            if (jsonQueue.getBusinessType() == BusinessTypeEnum.HS) {
+            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.HS) {
                 holder.tv_join.setText("Visit Store");
             }
         }
@@ -114,8 +117,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         if (!storeHourElastic.isDayClosed()) {
             // Before Token Available Time
             if (timeIn24HourFormat < storeHourElastic.getTokenAvailableFrom()) {
-                if (jsonQueue.getBusinessType() != null) {
-                    switch (jsonQueue.getBusinessType()) {
+                if (bizStoreElastic.getBusinessType() != null) {
+                    switch (bizStoreElastic.getBusinessType()) {
                         case DO:
                             holder.tv_status.setText("Closed Now. Appointment booking starts at "
                                     + Formatter.convertMilitaryTo12HourFormat(storeHourElastic.getTokenAvailableFrom()));
@@ -133,8 +136,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
             // Between Token Available and Start Hour
             if (timeIn24HourFormat >= storeHourElastic.getTokenAvailableFrom() && timeIn24HourFormat < storeHourElastic.getStartHour()) {
-                if (jsonQueue.getBusinessType() != null) {
-                    switch (jsonQueue.getBusinessType()) {
+                if (bizStoreElastic.getBusinessType() != null) {
+                    switch (bizStoreElastic.getBusinessType()) {
                         case DO:
                             holder.tv_status.setText("Now accepting appointments for today");
                             break;
@@ -152,8 +155,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
             // After Start Hour and Before Token Not Available From
             if (timeIn24HourFormat >= storeHourElastic.getStartHour() && timeIn24HourFormat < storeHourElastic.getTokenNotAvailableFrom()) {
-                if (jsonQueue.getBusinessType() != null) {
-                    switch (jsonQueue.getBusinessType()) {
+                if (bizStoreElastic.getBusinessType() != null) {
+                    switch (bizStoreElastic.getBusinessType()) {
                         case DO:
                             holder.tv_status.setText("Open now. Book your appointment for today.");
                             break;
@@ -183,9 +186,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed Today");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
         }
-        if (!TextUtils.isEmpty(jsonQueue.getDisplayImage())) {
+        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
             Picasso.with(context).load(
-                    AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonQueue.getDisplayImage()))
+                    AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(context.getResources().getDrawable(R.drawable.profile_theme))
                     .error(context.getResources().getDrawable(R.drawable.profile_theme))
                     .into(holder.iv_main);
@@ -193,12 +196,16 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             Picasso.with(context).load(R.drawable.profile_theme).into(holder.iv_main);
         }
 
-        holder.tv_store_special.setText(jsonQueue.getFamousFor());
+        holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE:View.VISIBLE);
+       // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
+        String feeString = "<b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b>  Consultation fee";
+        holder.tv_consult_fees.setText(Html.fromHtml(feeString));
+        holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (jsonQueue.getBusinessType() != BusinessTypeEnum.HS) {
-                    listener.onCategoryItemClick(jsonQueue, v, listPosition);
+                if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
+                    listener.onCategoryItemClick(bizStoreElastic, v, listPosition);
                 } else {
                     //Do nothing
                     Toast.makeText(context, "Please visit store to avail the service.", Toast.LENGTH_LONG).show();
@@ -208,12 +215,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (jsonQueue.getBusinessType() == BusinessTypeEnum.DO) {
+                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                     Intent intent = new Intent(context, ManagerProfileActivity.class);
-                    intent.putExtra("webProfileId", jsonQueue.getWebProfileId());
-                    intent.putExtra("managerName", jsonQueue.getDisplayName());
-                    intent.putExtra("managerImage", jsonQueue.getDisplayImage());
-                    intent.putExtra("bizCategoryId", jsonQueue.getBizCategoryId());
+                    intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
+                    intent.putExtra("managerName", bizStoreElastic.getDisplayName());
+                    intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
+                    intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
                     context.startActivity(intent);
                 }
             }
@@ -241,6 +248,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_store_timing;
         private TextView tv_status;
         private TextView tv_join;
+        private TextView tv_consult_fees;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -257,11 +265,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.tv_join = itemView.findViewById(R.id.tv_join);
+            this.tv_consult_fees = itemView.findViewById(R.id.tv_consult_fees);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
-
 }
-
-
-

@@ -30,8 +30,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_main"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_alignParentStart="true"
                         android:layout_marginTop="5dp"
                         android:elevation="5dp"
@@ -132,16 +132,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:layout_marginTop="6dp"
                     android:layout_gravity="center_vertical"
                     android:layout_below="@+id/rl_top">
+
+
+
+                <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center_vertical"
+                        android:paddingRight="10dp"
+                        android:layout_marginBottom="3dp"
+                        android:text=""
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/text_size_twelve"/>
 
                 <TextView
                         android:id="@+id/tv_store_timing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginTop="3dp"
+                        android:layout_below="@+id/tv_status"
                         android:layout_toLeftOf="@+id/tv_join"
                         android:text=""
                         android:textSize="@dimen/text_size_twelve"
@@ -149,7 +163,7 @@
                         android:textColor="@android:color/black"/>
 
                 <TextView
-                        android:id="@+id/tv_status"
+                        android:id="@+id/tv_consult_fees"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -167,13 +181,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="2dp"
-                        android:background="#CF5C3F"
+                        android:background="@drawable/btn_bg_enable"
                         android:paddingBottom="10dp"
                         android:paddingLeft="25dp"
                         android:paddingRight="25dp"
                         android:paddingTop="10dp"
                         android:text="Walk-in"
+                        android:layout_below="@+id/tv_status"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_twelve"
                         android:textStyle="bold"/>
