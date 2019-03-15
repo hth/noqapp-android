@@ -273,6 +273,22 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity
+                android:name="com.noqapp.android.merchant.views.activities.OrderDetailActivity"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name="com.noqapp.android.merchant.views.activities.OrderDetailDialog"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:excludeFromRecents="true"
+                android:theme="@style/myDialog"
+                android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+
 
         <!-- File Provider -->
         <provider
