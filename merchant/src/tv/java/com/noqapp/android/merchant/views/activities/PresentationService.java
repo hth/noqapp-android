@@ -134,6 +134,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         if (jsonVigyaapanTVList.getJsonVigyaapanTVs().size() > 0) {
             jsonVigyaapanTV_images = null;
             image_list_size = 0;
+            urlList = new ArrayList<>();
             for (int i = 0; i < jsonVigyaapanTVList.getJsonVigyaapanTVs().size(); i++) {
                 JsonVigyaapanTV jsonVigyaapanTV = jsonVigyaapanTVList.getJsonVigyaapanTVs().get(i);
                 if (null != jsonVigyaapanTV) {
@@ -153,8 +154,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                         if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
                                             image_list_size = image_list_size + jsonVigyaapanTV.getImageUrls().size();
                                             if (null == jsonVigyaapanTV_images) {
-                                                jsonVigyaapanTV_images = jsonVigyaapanTV;
-                                                urlList = jsonVigyaapanTV.getImageUrls();
+                                                jsonVigyaapanTV_images = new JsonVigyaapanTV();
+                                                jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
+                                                urlList.addAll(jsonVigyaapanTV.getImageUrls());
                                             } else {
                                                 jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
                                                 urlList.addAll(jsonVigyaapanTV.getImageUrls());
@@ -185,11 +187,11 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             case DV:
                             case GI:
                                 if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
-
                                     image_list_size = image_list_size + jsonVigyaapanTV.getImageUrls().size();
                                     if (null == jsonVigyaapanTV_images) {
-                                        jsonVigyaapanTV_images = jsonVigyaapanTV;
-                                        urlList = jsonVigyaapanTV.getImageUrls();
+                                        jsonVigyaapanTV_images = new JsonVigyaapanTV();
+                                        jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
+                                        urlList.addAll(jsonVigyaapanTV.getImageUrls());
                                     } else {
                                         jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
                                         urlList.addAll(jsonVigyaapanTV.getImageUrls());
