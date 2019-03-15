@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -34,6 +35,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     protected ImageView actionbarBack;
     protected boolean isDialog = false;
     private JsonPurchaseOrder jsonPurchaseOrder;
+    private boolean isProductWithoutPrice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         actionbarBack = findViewById(R.id.actionbarBack);
         initProgress();
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getSerializableExtra("jsonPurchaseOrder");
+        checkProductWithZeroPrice();
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,41 +125,61 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_pay_partial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(edt_amount.getText().toString())) {
-                    Toast.makeText(OrderDetailActivity.this, "Please enter amount to pay.", Toast.LENGTH_LONG).show();
+                if (isProductWithoutPrice) {
+                    Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
                 } else {
-                    if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
-                        Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order ampunt.", Toast.LENGTH_LONG).show();
+                    if (TextUtils.isEmpty(edt_amount.getText().toString())) {
+                        Toast.makeText(OrderDetailActivity.this, "Please enter amount to pay.", Toast.LENGTH_LONG).show();
                     } else {
-                        progressDialog.show();
-                        progressDialog.setMessage("Starting payment..");
-                        //jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
-                        jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
-                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                        purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                        purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
+                            Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order ampunt.", Toast.LENGTH_LONG).show();
+                        } else {
+                            progressDialog.show();
+                            progressDialog.setMessage("Starting payment..");
+                            //jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
+                            jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
+                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                            purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
+                            purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                        }
                     }
                 }
-
             }
         });
 
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                progressDialog.setMessage("Starting payment..");
-                // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
-                jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
-                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                if (isProductWithoutPrice) {
+                    Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
+                } else {
+                    progressDialog.show();
+                    progressDialog.setMessage("Starting payment..");
+                    // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
+                    jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
+                    PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                    purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
+                    purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                }
 
             }
         });
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol);
+        OrderItemAdapter adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol,this);
         listview.setAdapter(adapter);
+    }
+
+    public void checkProductWithZeroPrice() {
+        isProductWithoutPrice = false;
+        if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getPurchaseOrderProducts() && jsonPurchaseOrder.getPurchaseOrderProducts().size() > 0) {
+            for (JsonPurchaseOrderProduct jpop :
+                    jsonPurchaseOrder.getPurchaseOrderProducts()) {
+                if (jpop.getProductPrice() == 0) {
+                    isProductWithoutPrice = true;
+                    break;
+                }
+            }
+        }
     }
 
 
