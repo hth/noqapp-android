@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.VigyaapanTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -124,6 +123,8 @@ public class JsonVigyaapanTV extends AbstractDomain {
                 ", jsonProfessionalProfileTV=" + jsonProfessionalProfileTV +
                 ", imageUrls=" + imageUrls +
                 ", vigyaapanType=" + vigyaapanType +
+                ", endDate='" + endDate + '\'' +
+                ", endDateInitialized=" + endDateInitialized +
                 ", error=" + error +
                 '}';
     }
