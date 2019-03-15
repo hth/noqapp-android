@@ -137,7 +137,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             for (int i = 0; i < jsonVigyaapanTVList.getJsonVigyaapanTVs().size(); i++) {
                 JsonVigyaapanTV jsonVigyaapanTV = jsonVigyaapanTVList.getJsonVigyaapanTVs().get(i);
                 if (null != jsonVigyaapanTV) {
-                    Log.e("data",jsonVigyaapanTV.toString());
+                    Log.e("data", jsonVigyaapanTV.toString());
                     if (jsonVigyaapanTV.isEndDateInitialized()) { // check expire Ad's
                         try {
                             Date current = new SimpleDateFormat(AppUtils.ISO8601_FMT, Locale.getDefault()).parse(jsonVigyaapanTV.getEndDate());
@@ -145,15 +145,17 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
                             if (date_diff < 0) {
                                 // do process
-                                Log.e("Date validate - true",jsonVigyaapanTV.getEndDate());
+                                Log.e("Date validate - true", jsonVigyaapanTV.getEndDate());
                                 switch (jsonVigyaapanTV.getVigyaapanType()) {
                                     case MV:
+                                    case DV:
+                                    case GI:
                                         if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
-                                            image_list_size = image_list_size +jsonVigyaapanTV.getImageUrls().size();
-                                            if(null == jsonVigyaapanTV_images) {
+                                            image_list_size = image_list_size + jsonVigyaapanTV.getImageUrls().size();
+                                            if (null == jsonVigyaapanTV_images) {
                                                 jsonVigyaapanTV_images = jsonVigyaapanTV;
                                                 urlList = jsonVigyaapanTV.getImageUrls();
-                                            }else {
+                                            } else {
                                                 jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
                                                 urlList.addAll(jsonVigyaapanTV.getImageUrls());
                                             }
@@ -171,7 +173,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                 }
                             } else {
                                 // error
-                                Log.e("Date validate - false",jsonVigyaapanTV.getEndDate());
+                                Log.e("Date validate - false", jsonVigyaapanTV.getEndDate());
                                 //break;
                             }
                         } catch (Exception e) {
@@ -180,13 +182,15 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     } else {
                         switch (jsonVigyaapanTV.getVigyaapanType()) {
                             case MV:
+                            case DV:
+                            case GI:
                                 if (null != jsonVigyaapanTV.getImageUrls() && jsonVigyaapanTV.getImageUrls().size() > 0) {
 
-                                    image_list_size = image_list_size +jsonVigyaapanTV.getImageUrls().size();
-                                    if(null == jsonVigyaapanTV_images) {
+                                    image_list_size = image_list_size + jsonVigyaapanTV.getImageUrls().size();
+                                    if (null == jsonVigyaapanTV_images) {
                                         jsonVigyaapanTV_images = jsonVigyaapanTV;
                                         urlList = jsonVigyaapanTV.getImageUrls();
-                                    }else {
+                                    } else {
                                         jsonVigyaapanTV_images.getImageUrls().addAll(jsonVigyaapanTV.getImageUrls());
                                         urlList.addAll(jsonVigyaapanTV.getImageUrls());
                                     }
