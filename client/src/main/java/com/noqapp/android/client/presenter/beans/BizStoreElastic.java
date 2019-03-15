@@ -134,6 +134,9 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
 
+    @JsonProperty("PP")
+    private int productPrice;
+
     @JsonProperty("BI")
     private List<String> bizServiceImages = new LinkedList<>();
 
@@ -430,6 +433,15 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
         this.storeHourElasticList = storeHourElasticList;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public BizStoreElastic setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
         return this;
     }
 
