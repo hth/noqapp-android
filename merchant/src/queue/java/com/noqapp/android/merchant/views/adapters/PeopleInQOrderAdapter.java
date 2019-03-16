@@ -1,25 +1,19 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailDialog;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,63 +22,20 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAdapter.MyViewHolder> implements PaymentProcessPresenter {
+public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAdapter.MyViewHolder> {
 
     private final Context context;
     private List<JsonPurchaseOrder> dataSet;
     protected String qCodeQR = "";
     private int glowPosition = -1;
-    private ProgressDialog progressDialog;
-    private AlertDialog mAlertDialog;
 
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(context, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    @Override
-    public void paymentProcessResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-        dismissProgress();
-        if (null != jsonPurchaseOrder) {
-            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA ||
-                    jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
-                Toast.makeText(context, "Payment updated successfully", Toast.LENGTH_LONG).show();
-                if (null != mAlertDialog && mAlertDialog.isShowing()) {
-                    mAlertDialog.dismiss();
-                    mAlertDialog = null;
-                }
-                if (null != BaseLaunchActivity.merchantListFragment) {
-                    BaseLaunchActivity.merchantListFragment.onRefresh();
-                }
-            }
-        }
-    }
 
     public interface PeopleInQOrderAdapterClick {
 
@@ -166,7 +117,23 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOrderDetailDialog(context, jsonPurchaseOrder, jsonPurchaseOrder.getPurchaseOrderProducts());
+                //showOrderDetailDialog(context, jsonPurchaseOrder, jsonPurchaseOrder.getPurchaseOrderProducts());
+                //Intent in = new Intent(context, OrderDetailActivity.class);
+                //context.startActivity(in);
+                if (new AppUtils().isTablet(context)) {
+                    Intent in = new Intent(context, OrderDetailDialog.class);
+                    in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+                    //in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+                } else {
+                    Intent in = new Intent(context, OrderDetailActivity.class);
+                    // in.putExtra("codeQR", jsonTopic.getCodeQR());
+                    in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+                    ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+
+                }
+
             }
         });
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP ||
@@ -289,124 +256,4 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         return dataSet.size();
     }
 
-
-    private void showOrderDetailDialog(final Context mContext, JsonPurchaseOrder jsonPurchaseOrder, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_order_detail, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        ListView listview = customDialogView.findViewById(R.id.listview);
-        TextView tv_item_count = customDialogView.findViewById(R.id.tv_item_count);
-        TextView tv_payment_mode = customDialogView.findViewById(R.id.tv_payment_mode);
-        TextView tv_payment_status = customDialogView.findViewById(R.id.tv_payment_status);
-        TextView tv_address = customDialogView.findViewById(R.id.tv_address);
-        TextView tv_cost = customDialogView.findViewById(R.id.tv_cost);
-        TextView tv_notes = customDialogView.findViewById(R.id.tv_notes);
-        TextView tv_remaining_amount_value = customDialogView.findViewById(R.id.tv_remaining_amount_value);
-        TextView tv_paid_amount_value = customDialogView.findViewById(R.id.tv_paid_amount_value);
-        CardView cv_notes = customDialogView.findViewById(R.id.cv_notes);
-        EditText edt_amount = customDialogView.findViewById(R.id.edt_amount);
-        RelativeLayout rl_payment = customDialogView.findViewById(R.id.rl_payment);
-        tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
-        cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
-        tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
-        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
-        try {
-            tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-            tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Button btn_pay_now = customDialogView.findViewById(R.id.btn_pay_now);
-        Button btn_pay_partial = customDialogView.findViewById(R.id.btn_pay_partial);
-        if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-            rl_payment.setVisibility(View.VISIBLE);
-            if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-                btn_pay_partial.setVisibility(View.INVISIBLE);
-                edt_amount.setVisibility(View.INVISIBLE);
-            }
-        } else {
-            rl_payment.setVisibility(View.GONE);
-        }
-        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-            tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
-            tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-                tv_remaining_amount_value.setText(currencySymbol + " 0");
-            }
-        } else {
-            tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-        }
-
-        try {
-            tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
-        } catch (Exception e) {
-            tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
-        }
-        initProgress();
-
-        btn_pay_partial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(edt_amount.getText().toString())) {
-                    Toast.makeText(context, "Please enter amount to pay.", Toast.LENGTH_LONG).show();
-                } else {
-                    if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
-                        Toast.makeText(context, "Please enter amount less or equal to order ampunt.", Toast.LENGTH_LONG).show();
-                    } else {
-                        progressDialog.show();
-                        progressDialog.setMessage("Starting payment..");
-                        //jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
-                        jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
-                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                        purchaseOrderApiCalls.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);
-                        purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                    }
-                }
-
-            }
-        });
-
-        btn_pay_now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.show();
-                progressDialog.setMessage("Starting payment..");
-                // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
-                jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
-                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                purchaseOrderApiCalls.setPaymentProcessPresenter(PeopleInQOrderAdapter.this);
-                purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-
-            }
-        });
-        builder.setView(customDialogView);
-        tv_item_count.setText("Total Items: (" + jsonPurchaseOrderProductList.size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(mContext, jsonPurchaseOrderProductList, currencySymbol);
-        listview.setAdapter(adapter);
-        mAlertDialog = builder.create();
-        //mAlertDialog.setCanceledOnTouchOutside(false);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 }

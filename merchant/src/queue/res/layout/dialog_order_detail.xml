@@ -45,18 +45,17 @@
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="vertical"
-                      android:paddingBottom="25dp"
-                >
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginRight="10dp"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginBottom="20dp"
+                      android:paddingBottom="25dp">
 
 
             <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_below="@+id/ll_top"
-                    android:layout_above="@+id/cv_notes"
+
                     card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="4dp">
 
@@ -91,9 +90,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/cv_notes"
                     android:layout_marginTop="3dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_above="@+id/cv_footer"
+
                     card_view:cardBackgroundColor="@color/colorAccent"
                     card_view:cardCornerRadius="4dp">
 
@@ -110,9 +107,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/cv_footer"
                     android:layout_marginTop="3dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginBottom="10dp"
                     card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="4dp">
 
