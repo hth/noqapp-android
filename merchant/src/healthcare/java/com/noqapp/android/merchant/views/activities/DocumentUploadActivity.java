@@ -237,7 +237,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             if (null != jsonMedicalRecord.getImages()) {
-                jsonMedicalRecord.getImages().add("http://www.africau.edu/images/default/sample.pdf");
+                //jsonMedicalRecord.getImages().add("http://www.africau.edu/images/default/sample.pdf");
                 ImageUploadAdapter imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
                 rcv_photo.setAdapter(imageUploadAdapter);
             }
