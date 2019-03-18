@@ -22,6 +22,7 @@ public class WebViewActivity extends BaseActivity {
     private WebView webView;
     private String url = "";
     private ProgressDialog progressDialog;
+    private boolean isPdf = false;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
@@ -43,6 +44,7 @@ public class WebViewActivity extends BaseActivity {
         if (null != getIntent().getStringExtra("url")) {
             url = getIntent().getStringExtra("url");
         }
+        isPdf = getIntent().getBooleanExtra("isPdf",false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -54,7 +56,11 @@ public class WebViewActivity extends BaseActivity {
         webView.getSettings().setRenderPriority(RenderPriority.HIGH);
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl(url);
+        if(isPdf){
+            webView.loadUrl("http://docs.google.com/viewer?url="+url);
+        }else {
+            webView.loadUrl(url);
+        }
         webView.setOnKeyListener(new OnKeyListener() {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -123,6 +129,8 @@ public class WebViewActivity extends BaseActivity {
                     progressDialog.dismiss();
                     progressDialog = null;
                 }
+                webView.loadUrl("javascript:(function() { " +
+                        "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

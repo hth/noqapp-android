@@ -5,17 +5,18 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.SliderActivity;
+import com.noqapp.android.client.views.activities.WebViewActivity;
 
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,8 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
         this.context = context;
         this.imageUrls = imageUrls;
     }
-    public ThumbnailGalleryAdapter(Context context, List<String> imageUrls,boolean isDocument, String recordReferenceId ) {
+
+    public ThumbnailGalleryAdapter(Context context, List<String> imageUrls, boolean isDocument, String recordReferenceId) {
         this.context = context;
         this.imageUrls = imageUrls;
         this.isDocument = isDocument;
@@ -52,11 +54,17 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
     @Override
     public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
-        if(isDocument){
-            Picasso.with(context)
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(position))
-                    .into(holder.iv_photo);
-        }else {
+        if (isDocument) {
+            if (imageUrls.get(position).endsWith(".pdf")) {
+                Picasso.with(context)
+                        .load(R.drawable.pdf_thumb)
+                        .into(holder.iv_photo);
+            } else {
+                Picasso.with(context)
+                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(position))
+                        .into(holder.iv_photo);
+            }
+        } else {
             Picasso.with(context)
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
@@ -89,12 +97,20 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(context, SliderActivity.class);
-            intent.putExtra("pos", getAdapterPosition());
-            intent.putExtra("imageurls", (ArrayList<String>) imageUrls);
-            intent.putExtra("isDocument",isDocument);
-            intent.putExtra("recordReferenceId",recordReferenceId);
-            context.startActivity(intent);
+            if (imageUrls.get(getAdapterPosition()).endsWith(".pdf")) {
+                Intent in = new Intent(context, WebViewActivity.class);
+                in.putExtra("url", imageUrls.get(getAdapterPosition()));
+                in.putExtra("title", "Pdf Document");
+                in.putExtra("isPdf", true);
+                context.startActivity(in);
+            } else {
+                Intent intent = new Intent(context, SliderActivity.class);
+                intent.putExtra("pos", getAdapterPosition());
+                intent.putExtra("imageurls", (ArrayList<String>) imageUrls);
+                intent.putExtra("isDocument", isDocument);
+                intent.putExtra("recordReferenceId", recordReferenceId);
+                context.startActivity(intent);
+            }
         }
     }
 }
