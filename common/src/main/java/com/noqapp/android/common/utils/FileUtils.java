@@ -23,6 +23,10 @@ public class FileUtils {
                 final String[] split = docId.split(":");
                 return Environment.getExternalStorageDirectory() + "/" + split[1];
             } else if (isDownloadsDocument(uri)) {
+                String fileName = getFilePathFromDownload(context, uri);
+                if (fileName != null) {
+                    return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
+                }
                 final String id = DocumentsContract.getDocumentId(uri);
                 uri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
@@ -83,6 +87,27 @@ public class FileUtils {
 
     private static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public static String getFilePathFromDownload(Context context, Uri uri) {
+
+        Cursor cursor = null;
+        final String[] projection = {
+                MediaStore.MediaColumns.DISPLAY_NAME
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, null, null,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
     }
 
 }
