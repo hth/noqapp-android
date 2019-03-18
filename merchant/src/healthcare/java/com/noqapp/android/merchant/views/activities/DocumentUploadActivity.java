@@ -237,6 +237,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             if (null != jsonMedicalRecord.getImages()) {
+                jsonMedicalRecord.getImages().add("http://www.africau.edu/images/default/sample.pdf");
                 ImageUploadAdapter imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
                 rcv_photo.setAdapter(imageUploadAdapter);
             }
@@ -503,25 +504,33 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @Override
     public void imageEnlargeClick(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
-            progressDialogImage.show();
-            progressDialogImage.setContentView(R.layout.progress_lay);
-            Picasso.with(DocumentUploadActivity.this)
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
-                    .into(iv_large, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            progressDialogImage.dismiss();
-                        }
+            if(imageUrl.endsWith(".pdf")){
+                Intent in = new Intent(DocumentUploadActivity.this, WebViewActivity.class);
+                in.putExtra("url", imageUrl);
+                in.putExtra("title","Pdf Document");
+                in.putExtra("isPdf",true);
+                startActivity(in);
+            }else {
+                progressDialogImage.show();
+                progressDialogImage.setContentView(R.layout.progress_lay);
+                Picasso.with(DocumentUploadActivity.this)
+                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
+                        .into(iv_large, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                progressDialogImage.dismiss();
+                            }
 
-                        @Override
-                        public void onError() {
-                            progressDialogImage.dismiss();
-                        }
-                    });
-            frame_image.setVisibility(View.VISIBLE);
-            isExpandScreenOpen = true;
+                            @Override
+                            public void onError() {
+                                progressDialogImage.dismiss();
+                            }
+                        });
+                frame_image.setVisibility(View.VISIBLE);
+                isExpandScreenOpen = true;
+            }
         } else {
-            Toast.makeText(this, "Image not available", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Document not available", Toast.LENGTH_LONG).show();
             frame_image.setVisibility(View.GONE);
             isExpandScreenOpen = false;
         }

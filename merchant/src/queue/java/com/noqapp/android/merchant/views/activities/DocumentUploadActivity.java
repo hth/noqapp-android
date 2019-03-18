@@ -78,10 +78,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private RecyclerView rcv_photo;
     private int selectPos;
     private FloatingActionButton fab_add_image;
-    private int columnCount = 2;
     private boolean isExpandScreenOpen = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int columnCount = 1;
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             columnCount = 3;

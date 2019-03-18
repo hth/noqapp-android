@@ -28,6 +28,7 @@ public class WebViewActivity extends AppCompatActivity {
     private WebView webView;
     private String url = "";
     private ProgressDialog progressDialog;
+    private boolean isPdf = false;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
@@ -58,6 +59,7 @@ public class WebViewActivity extends AppCompatActivity {
         if (null != getIntent().getStringExtra("title")) {
             tv_toolbar_title.setText(getIntent().getStringExtra("title"));
         }
+        isPdf = getIntent().getBooleanExtra("isPdf",false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -69,7 +71,11 @@ public class WebViewActivity extends AppCompatActivity {
         webView.getSettings().setRenderPriority(RenderPriority.HIGH);
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl(url);
+        if(isPdf){
+            webView.loadUrl("http://docs.google.com/viewer?url="+url);
+        }else {
+            webView.loadUrl(url);
+        }
         webView.setOnKeyListener(new OnKeyListener() {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -118,6 +124,7 @@ public class WebViewActivity extends AppCompatActivity {
             }
             if (progressDialog == null) {
                 progressDialog = new ProgressDialog(WebViewActivity.this);
+                progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
             }
@@ -137,6 +144,8 @@ public class WebViewActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     progressDialog = null;
                 }
+                webView.loadUrl("javascript:(function() { " +
+                        "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
