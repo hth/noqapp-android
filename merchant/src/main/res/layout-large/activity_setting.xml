@@ -99,12 +99,12 @@
 
                                 </LinearLayout>
 
+
                                 <androidx.appcompat.widget.SwitchCompat
                                         android:id="@+id/togglePreventJoin"
                                         android:layout_width="0dp"
                                         android:layout_weight=".2"
-                                        card_view:thumbTint="@color/colorPrimaryDark"
-                                        card_view:trackTint="@color/switch_tack_color"
+                                        android:theme="@style/SettingSeekbarStyle"
                                         android:layout_gravity="center_vertical"
                                         android:scaleX="1.25"
                                         android:scaleY="1.25"
@@ -155,8 +155,7 @@
                                         android:id="@+id/toggleTodayClosed"
                                         android:layout_width="0dp"
                                         android:layout_weight=".2"
-                                        card_view:thumbTint="@color/colorPrimaryDark"
-                                        card_view:trackTint="@color/switch_tack_color"
+                                        android:theme="@style/SettingSeekbarStyle"
                                         android:layout_gravity="center"
                                         android:gravity="center"
                                         android:scaleX="1.25"
@@ -334,8 +333,7 @@
                                         android:id="@+id/toggleDayClosed"
                                         android:layout_width="0dp"
                                         android:layout_weight=".2"
-                                        card_view:thumbTint="@color/colorPrimaryDark"
-                                        card_view:trackTint="@color/switch_tack_color"
+                                        android:theme="@style/SettingSeekbarStyle"
                                         android:layout_gravity="center_vertical"
                                         android:scaleX="1.25"
                                         android:scaleY="1.25"
@@ -386,8 +384,7 @@
                                         android:id="@+id/toggleStoreOffline"
                                         android:layout_width="0dp"
                                         android:layout_weight=".2"
-                                        card_view:thumbTint="@color/colorPrimaryDark"
-                                        card_view:trackTint="@color/switch_tack_color"
+                                        android:theme="@style/SettingSeekbarStyle"
                                         android:layout_gravity="center_vertical"
                                         android:scaleX="1.25"
                                         android:scaleY="1.25"
