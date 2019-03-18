@@ -7,27 +7,25 @@ import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
-import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
-import com.noqapp.android.common.model.types.medical.PhysicalGeneralExamEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,6 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         TextView tv_provisional = findViewById(R.id.tv_provisional);
         TextView tv_instruction = findViewById(R.id.tv_instruction);
         TextView tv_followup = findViewById(R.id.tv_followup);
-        LinearLayout ll_physical = findViewById(R.id.ll_physical);
         LinearLayout ll_medication = findViewById(R.id.ll_medication);
         LinearLayout ll_investigation_pathology = findViewById(R.id.ll_investigation_pathology);
         LinearLayout ll_investigation_radiology = findViewById(R.id.ll_investigation_radiology);
@@ -68,6 +65,12 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         LinearLayout ll_followup = findViewById(R.id.ll_followup);
         LinearLayout ll_radiology = findViewById(R.id.ll_radiology);
         LinearLayout ll_pathology = findViewById(R.id.ll_pathology);
+        TextView tv_weight = findViewById(R.id.tv_weight);
+        TextView tv_pulse = findViewById(R.id.tv_pulse);
+        TextView tv_temperature = findViewById(R.id.tv_temperature);
+        TextView tv_height = findViewById(R.id.tv_height);
+        TextView tv_bp = findViewById(R.id.tv_bp);
+        TextView tv_respiration = findViewById(R.id.tv_respiration);
         RecyclerView rv_thumb_images = findViewById(R.id.rv_thumb_images);
         rv_thumb_images.setHasFixedSize(true);
         rv_thumb_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -86,7 +89,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         tv_clinical_finding.setText(jsonMedicalRecord.getClinicalFinding());
         tv_provisional.setText(jsonMedicalRecord.getProvisionalDifferentialDiagnosis());
         tv_instruction.setText(jsonMedicalRecord.getPlanToPatient());
-        tv_followup.setText(jsonMedicalRecord.getFollowUpInDays());
+        tv_followup.setText(jsonMedicalRecord.getFollowUpInDays() + " Days");
 
         if (jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.DO) {
             tv_diagnosed_by.setText("Dr. " + jsonMedicalRecord.getDiagnosedByDisplayName());
@@ -126,7 +129,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         if (StringUtils.isBlank(tv_followup.getText())) {
             ll_followup.setVisibility(View.GONE);
         }
-        JsonMedicalPhysical jsonMedicalPhysicalExaminations = jsonMedicalRecord.getMedicalPhysical();
+
         ListView listview = findViewById(R.id.listview);
         List<JsonMedicalMedicine> medicalRecordList = jsonMedicalRecord.getMedicalMedicines();
         MedicalRecordAdapter adapter = new MedicalRecordAdapter(this, medicalRecordList);
@@ -135,62 +138,48 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             ll_medication.setVisibility(View.GONE);
         }
         String notAvailable = "N/A";
-        if (null != jsonMedicalPhysicalExaminations)
-            for (PhysicalGeneralExamEnum physicalExam : PhysicalGeneralExamEnum.values()) {
-                String label = "";
-                switch (physicalExam) {
-                    case TE:
-                        if (null != jsonMedicalPhysicalExaminations.getTemperature()) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getTemperature();
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                    case BP:
-                        if (null != jsonMedicalPhysicalExaminations.getBloodPressure() && jsonMedicalPhysicalExaminations.getBloodPressure().length > 0) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getBloodPressure()[0] + "/" + jsonMedicalPhysicalExaminations.getBloodPressure()[1];
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                    case PL:
-                        if (null != jsonMedicalPhysicalExaminations.getPulse()) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getPulse();
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                    case OX:
-                        if (null != jsonMedicalPhysicalExaminations.getOxygen()) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getOxygen();
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                    case WT:
-                        if (null != jsonMedicalPhysicalExaminations.getWeight()) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getWeight();
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                    case HT:
-                        if (null != jsonMedicalPhysicalExaminations.getHeight()) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getHeight();
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                    case RP:
-                        if (null != jsonMedicalPhysicalExaminations.getRespiratory()) {
-                            label = physicalExam.getDescription() + ": " + jsonMedicalPhysicalExaminations.getRespiratory();
-                        } else {
-                            label = physicalExam.getDescription() + ": " + notAvailable;
-                        }
-                        break;
-                }
-                ll_physical.addView(getView(label));
+
+
+        if (null != jsonMedicalRecord.getMedicalPhysical()) {
+            if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
+                tv_respiration.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
+            } else {
+                tv_respiration.setText(notAvailable);
             }
+            if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
+                tv_height.setText(jsonMedicalRecord.getMedicalPhysical().getHeight());
+            } else {
+                tv_height.setText(notAvailable);
+            }
+            if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+                tv_pulse.setText(jsonMedicalRecord.getMedicalPhysical().getPulse());
+            } else {
+                tv_pulse.setText(notAvailable);
+            }
+            if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
+                tv_bp.setText(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]);
+            } else {
+                tv_bp.setText(notAvailable);
+            }
+            if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
+                tv_weight.setText(jsonMedicalRecord.getMedicalPhysical().getWeight());
+            } else {
+                tv_weight.setText(notAvailable);
+            }
+            if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
+                tv_temperature.setText(jsonMedicalRecord.getMedicalPhysical().getTemperature());
+            } else {
+                tv_temperature.setText(notAvailable);
+            }
+        } else {
+            tv_pulse.setText(notAvailable);
+            tv_bp.setText(notAvailable);
+            tv_weight.setText(notAvailable);
+            tv_temperature.setText(notAvailable);
+            tv_respiration.setText(notAvailable);
+            tv_height.setText(notAvailable);
+        }
+
         if (null == jsonMedicalRecord.getMedicalPathologiesLists() || jsonMedicalRecord.getMedicalPathologiesLists().size() == 0
                 || jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies().isEmpty()) {
             ll_pathology.setVisibility(View.GONE);
