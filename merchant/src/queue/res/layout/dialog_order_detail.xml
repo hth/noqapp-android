@@ -307,6 +307,7 @@
                                 android:layout_alignBaseline="@+id/btn_pay_partial"
                                 android:background="@drawable/edt_roun_rect"
                                 android:layout_toLeftOf="@+id/btn_pay_partial"
+                                android:textColorHint="@android:color/darker_gray"
                                 android:minLines="1"
                                 android:maxLines="1"/>
 

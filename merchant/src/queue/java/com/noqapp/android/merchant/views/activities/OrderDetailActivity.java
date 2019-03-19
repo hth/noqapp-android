@@ -36,6 +36,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     protected boolean isDialog = false;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private boolean isProductWithoutPrice = false;
+    private TextView tv_cost;
+    private String currencySymbol;
+    private TextView tv_paid_amount_value, tv_remaining_amount_value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
             int screenWidth = (int) (metrics.widthPixels * 0.60);
-            int height = (int) (metrics.heightPixels * 0.70);
+            int height = (int) (metrics.heightPixels * 0.80);
             getWindow().setLayout(screenWidth, height);
         }
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -74,20 +77,25 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         TextView tv_payment_mode = findViewById(R.id.tv_payment_mode);
         TextView tv_payment_status = findViewById(R.id.tv_payment_status);
         TextView tv_address = findViewById(R.id.tv_address);
-        TextView tv_cost = findViewById(R.id.tv_cost);
+        tv_cost = findViewById(R.id.tv_cost);
         TextView tv_notes = findViewById(R.id.tv_notes);
-        TextView tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
-        TextView tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
+        tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
+        tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
         CardView cv_notes = findViewById(R.id.cv_notes);
         EditText edt_amount = findViewById(R.id.edt_amount);
         RelativeLayout rl_payment = findViewById(R.id.rl_payment);
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
-        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         try {
-            tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-            tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/ 100));
+            } else {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,7 +140,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                         Toast.makeText(OrderDetailActivity.this, "Please enter amount to pay.", Toast.LENGTH_LONG).show();
                     } else {
                         if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
-                            Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order ampunt.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order amount.", Toast.LENGTH_LONG).show();
                         } else {
                             progressDialog.show();
                             progressDialog.setMessage("Starting payment..");
@@ -165,8 +173,34 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             }
         });
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol,this);
+        OrderItemAdapter adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol, this);
         listview.setAdapter(adapter);
+    }
+
+    public void updateProductPriceList(JsonPurchaseOrderProduct jpop, int pos) {
+        jsonPurchaseOrder.getPurchaseOrderProducts().set(pos, jpop);
+        checkProductWithZeroPrice();
+        jsonPurchaseOrder.setOrderPrice(String.valueOf(calculateTotalPrice()));
+        tv_cost.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+        try {
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/ 100));
+            } else {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private double calculateTotalPrice() {
+        int amount = 0;
+        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
+            amount += 1 * jsonPurchaseOrder.getPurchaseOrderProducts().get(i).getProductPrice();
+        }
+        return amount;
     }
 
     public void checkProductWithZeroPrice() {
