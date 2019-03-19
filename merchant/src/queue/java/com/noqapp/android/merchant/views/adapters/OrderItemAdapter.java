@@ -98,7 +98,7 @@ public class OrderItemAdapter extends BaseAdapter {
                                 //recordHolder.tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(pos).getPrice()));
                                 //tv_cost.setText(currencySymbol + " "+ String.valueOf(calculateTotalPrice()));
                                 notifyDataSetChanged();
-                                orderDetailActivity.checkProductWithZeroPrice();
+                                orderDetailActivity.updateProductPriceList(jsonPurchaseOrderProductList.get(position),position);
                                 mAlertDialog.dismiss();
                             }
                         }

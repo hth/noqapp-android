@@ -28,6 +28,7 @@ public class WebViewActivity extends AppCompatActivity {
     private WebView webView;
     private String url = "";
     private ProgressDialog progressDialog;
+    private boolean isPdf = false;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message message) {
@@ -39,6 +40,7 @@ public class WebViewActivity extends AppCompatActivity {
             }
         }
     };
+    private boolean active = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +60,24 @@ public class WebViewActivity extends AppCompatActivity {
         if (null != getIntent().getStringExtra("title")) {
             tv_toolbar_title.setText(getIntent().getStringExtra("title"));
         }
+        isPdf = getIntent().getBooleanExtra("isPdf",false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setVerticalScrollBarEnabled(true);
         webView.setHorizontalScrollBarEnabled(true);
-        webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setRenderPriority(RenderPriority.HIGH);
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webView.loadUrl(url);
+        if(isPdf){
+            webView.loadUrl("http://docs.google.com/viewer?url="+url);
+        }else {
+            webView.loadUrl(url);
+        }
         webView.setOnKeyListener(new OnKeyListener() {
 
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -91,22 +99,22 @@ public class WebViewActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        int notify_count = NotificationDB.getNotificationCount();
-//        tv_badge.setText(String.valueOf(notify_count));
-//        if (notify_count > 0) {
-//            tv_badge.setVisibility(View.VISIBLE);
-//        } else {
-//            tv_badge.setVisibility(View.INVISIBLE);
-//        }
-    }
-
     private void webViewGoBack() {
         if (webView.canGoBack()) {
             webView.goBack();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
     private class myWebClient extends WebViewClient {
@@ -116,8 +124,9 @@ public class WebViewActivity extends AppCompatActivity {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if (progressDialog == null) {
+            if (progressDialog == null && active) {
                 progressDialog = new ProgressDialog(WebViewActivity.this);
+                progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
             }
@@ -137,6 +146,8 @@ public class WebViewActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     progressDialog = null;
                 }
+                webView.loadUrl("javascript:(function() { " +
+                        "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

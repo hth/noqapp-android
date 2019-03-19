@@ -72,8 +72,8 @@ public class PurchaseOrderApiCalls {
         purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderApiUrls.class);
     }
 
-    public void fetch(String did, String mail, String auth, String codeQR) {
-        purchaseOrderService.fetch(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPurchaseOrderList>() {
+    public void showOrders(String did, String mail, String auth, String codeQR) {
+        purchaseOrderService.showOrders(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPurchaseOrderList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

@@ -141,7 +141,12 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     followup = follow_up_data.get(segmentViewHolder.getAbsolutePosition());
                     tv_followup.setText("in " + followup + " days");
                     MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup(tv_followup.getText().toString());
-
+                }
+                if(isReselected){
+                    followup = "";
+                    tv_followup.setText("");
+                    MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup("");
+                    sc_follow_up.clearSelection();;
                 }
             }
         });
@@ -330,6 +335,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                 jsonMedicalRecord.setPlanToPatient(caseHistory.getInstructions());
                 if (!TextUtils.isEmpty(followup)) {
                     jsonMedicalRecord.setFollowUpInDays(followup);
+                }else{
+                    jsonMedicalRecord.setFollowUpInDays(null);
                 }
                 medicalHistoryApiCalls.update(
                         BaseLaunchActivity.getDeviceID(),

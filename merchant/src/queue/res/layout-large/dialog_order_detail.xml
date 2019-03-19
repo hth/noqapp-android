@@ -150,6 +150,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/text_size_twelve"
                                 android:paddingRight="5dp"
+                                android:textColor="@android:color/black"
                                 android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
@@ -178,6 +179,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/text_size_twelve"
                                 android:paddingRight="5dp"
+                                android:textColor="@android:color/black"
                                 android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
@@ -206,6 +208,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/text_size_twelve"
                                 android:paddingRight="5dp"
+                                android:textColor="@android:color/black"
                                 android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
@@ -233,6 +236,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingRight="5dp"
                                 android:textSize="@dimen/text_size_twelve"
+                                android:textColor="@android:color/black"
                                 android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
@@ -260,6 +264,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingRight="5dp"
                                 android:textSize="@dimen/text_size_twelve"
+                                android:textColor="@android:color/black"
                                 android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
@@ -303,11 +308,13 @@
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:hint="amount"
+                                android:textColorHint="@android:color/darker_gray"
                                 android:inputType="numberDecimal"
                                 android:padding="10dp"
                                 android:layout_centerVertical="true"
                                 android:background="@drawable/edt_roun_rect"
                                 android:layout_toLeftOf="@+id/btn_pay_partial"
+                                android:textColor="@android:color/black"
                                 android:minLines="1"
                                 android:maxLines="1"/>
 

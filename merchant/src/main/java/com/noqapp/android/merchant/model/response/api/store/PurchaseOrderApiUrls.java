@@ -27,7 +27,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/m/s/purchaseOrder/showOrders/{codeQR}.json")
-    Call<JsonPurchaseOrderList> fetch(
+    Call<JsonPurchaseOrderList> showOrders(
             @Header("X-R-DID")
             String did,
 
@@ -117,6 +117,15 @@ public interface PurchaseOrderApiUrls {
             OrderServed OrderServed
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SC_NOT_FOUND
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#USER_NOT_FOUND
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
+     */
     @POST("api/m/s/purchaseOrder/findCustomer.json")
     Call<JsonProfile> findCustomer(
             @Header("X-R-DID")
@@ -135,8 +144,42 @@ public interface PurchaseOrderApiUrls {
             JsonBusinessCustomerLookup jsonBusinessCustomerLookup
     );
 
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#STORE_OFFLINE
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#STORE_DAY_CLOSED
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#STORE_TEMP_DAY_CLOSED
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#STORE_PREVENT_JOIN
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_PRICE_MISMATCH
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
+     */
     @POST("api/m/s/purchaseOrder/purchase.json")
     Call<JsonPurchaseOrderList> purchase(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonPurchaseOrder jsonPurchaseOrder
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_PRODUCT_NOT_FOUND
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
+     */
+    @POST("api/m/s/purchaseOrder/modify.json")
+    Call<JsonPurchaseOrderList> modify(
             @Header("X-R-DID")
             String did,
 

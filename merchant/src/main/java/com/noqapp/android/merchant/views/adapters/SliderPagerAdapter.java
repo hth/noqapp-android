@@ -4,6 +4,7 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.WebViewActivity;
 import com.noqapp.android.merchant.views.customviews.TouchImageView;
 
 import com.squareup.picasso.Callback;
@@ -11,12 +12,13 @@ import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.viewpager.widget.PagerAdapter;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 
@@ -51,22 +53,40 @@ public class SliderPagerAdapter extends PagerAdapter {
         if (isDocument) {
             view = layoutInflater.inflate(R.layout.layout_slider_document, container, false);
             final ProgressBar progress_bar = view.findViewById(R.id.progress_bar);
-            progress_bar.setVisibility(View.VISIBLE);
             TouchImageView im_slider = view.findViewById(R.id.im_slider);
-            Picasso.with(activity.getApplicationContext())
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
-                    .into(im_slider, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            progress_bar.setVisibility(View.GONE);
-                        }
 
-                        @Override
-                        public void onError() {
-                            progress_bar.setVisibility(View.GONE);
+            if (image_arraylist.get(position).endsWith(".pdf")) {
+                Picasso.with(activity.getApplicationContext())
+                        .load(R.drawable.view_pdf)
+                        .into(im_slider);
+                im_slider.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (image_arraylist.get(position).endsWith(".pdf")) {
+                            Intent in = new Intent(activity, WebViewActivity.class);
+                            in.putExtra("url", BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
+                            in.putExtra("title", "Pdf Document");
+                            in.putExtra("isPdf", true);
+                            activity.startActivity(in);
                         }
-                    });
+                    }
+                });
+            } else {
+                progress_bar.setVisibility(View.VISIBLE);
+                Picasso.with(activity.getApplicationContext())
+                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
+                        .into(im_slider, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                progress_bar.setVisibility(View.GONE);
+                            }
 
+                            @Override
+                            public void onError() {
+                                progress_bar.setVisibility(View.GONE);
+                            }
+                        });
+            }
           //  Glide.with(activity.getApplicationContext()).load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position)).into(im_slider);
         } else {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);

@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.FileUtilsPdf;
 import com.noqapp.android.merchant.utils.PermissionUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
@@ -25,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,11 +66,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
     private static final int PICK_IMAGE_CAMERA = 101;
     private static final int PICK_IMAGE_GALLERY = 102;
+    private static final int PICK_PDF = 103;
     private static final int PERMISSION_REQUEST_CAMERA = 103;
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
     private String recordReferenceId;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     private ProgressDialog progressDialog;
@@ -79,14 +78,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private FrameLayout frame_image;
     private ImageView iv_large;
     private RecyclerView rcv_photo;
-    private ImageUploadAdapter imageUploadAdapter;
     private int selectPos;
     private FloatingActionButton fab_add_image;
-    private int columnCount = 2;
     private boolean isExpandScreenOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int columnCount = 1;
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             columnCount = 3;
@@ -182,113 +180,19 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void selectImage1() {
-        if (isExternalStoragePermissionAllowed()) {
-            try {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_GALLERY);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public String getMimeType(Uri uri) {
+        String mimeType = null;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = this.getContentResolver();
+            mimeType = cr.getType(uri);
         } else {
-            requestStoragePermission();
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+                    .toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    fileExtension.toLowerCase());
         }
+        return mimeType;
     }
-
-
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        File destination;
-//        if (requestCode == PICK_IMAGE_GALLERY) {
-//            if (resultCode == RESULT_OK) {
-//
-//                Uri picUri = data.getData();
-//                Bitmap bitmap;
-//                try {
-//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
-//                    bitmap = rotateImageIfRequired(bitmap, picUri);
-//                    bitmap = getResizedBitmap(bitmap, 500);
-//                    if (-1 != selectPos) {
-//                        imageViews[selectPos].setImageBitmap(bitmap);
-//                        imageViewsDelete[selectPos].setVisibility(View.VISIBLE);
-//                    }
-//
-//                    String convertedPath = new ImagePathReader().getPathFromUri(this, picUri);
-//                    if (!TextUtils.isEmpty(convertedPath)) {
-//                        progressDialog.show();
-//                        progressDialog.setMessage("Uploading document");
-//                        String type = getMimeType(this, picUri);
-//                        File file = new File(convertedPath);
-//                        MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-//                        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-//                        medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-//                    }
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }else if (requestCode == PICK_IMAGE_CAMERA) {
-//            try {
-//                if (getPickImageResultUri(data) != null) {
-//                    Uri picUri = getPickImageResultUri(data);
-//
-//
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), picUri);
-////                    Uri selectedImage = data.getData();
-////                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-////                    bitmap = rotateImageIfRequired(bitmap, selectedImage);
-////                    bitmap = getResizedBitmap(bitmap, 500);
-//
-//
-//                    //  String imgPath = photoFile.getAbsolutePath();
-//                    if (-1 != selectPos) {
-//                        imageViews[selectPos].setImageBitmap(bitmap);
-//                        imageViewsDelete[selectPos].setVisibility(View.VISIBLE);
-//                    }
-//                }
-////                if (!TextUtils.isEmpty(imgPath)) {
-////                    progressDialog.show();
-////                    progressDialog.setMessage("Uploading document");
-////                    String type = getMimeType(this, selectedImage);
-////                    File file = new File(imgPath);
-////                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-////                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-////                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-////                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-
-    private String getMimeType(String filePath) {
-        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(filePath);
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
-    }
-
-    private boolean isExternalStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
-    }
-
 
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
@@ -333,7 +237,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             if (null != jsonMedicalRecord.getImages()) {
-                imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
+                //jsonMedicalRecord.getImages().add("http://www.africau.edu/images/default/sample.pdf");
+                ImageUploadAdapter imageUploadAdapter = new ImageUploadAdapter(jsonMedicalRecord.getImages(), this, recordReferenceId, this);
                 rcv_photo.setAdapter(imageUploadAdapter);
             }
         }
@@ -351,7 +256,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDialogImage.setIndeterminate(true);
         progressDialogImage.setCancelable(true);
-       // progressDialogImage.show();
+        // progressDialogImage.show();
         progressDialogImage.setContentView(R.layout.progress_lay);
 
     }
@@ -437,9 +342,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Camera", "Choose from Library",
+        final CharSequence[] items = {"Camera", "Choose from Library", //"Select Pdf",
                 "Cancel"};
-
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("Add Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -457,6 +361,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     if (result)
                         galleryIntent();
 
+                } else if (items[item].equals("Select Pdf")) {
+                    userChoosenTask = "Select Pdf";
+                    if (result)
+                        selectPdfIntent();
+
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -470,6 +379,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_IMAGE_GALLERY);
+    }
+
+    private void selectPdfIntent() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/pdf");
+        startActivityForResult(intent, PICK_PDF);
     }
 
     private void cameraIntent() {
@@ -496,6 +412,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 onSelectFromGalleryResult(data);
             } else if (requestCode == PICK_IMAGE_CAMERA) {
                 onCaptureImageResult(data);
+            } else if (requestCode == PICK_PDF) {
+                onCapturePdfResult(data);
             }
         }
     }
@@ -509,6 +427,29 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         return cursor.getString(column_index);
     }
 
+    private void onCapturePdfResult(Intent data) {
+        try {
+            Uri uri = data.getData();
+            String path = FileUtilsPdf.getRealPath(this, uri);
+            if (!TextUtils.isEmpty(path)) {
+                File file = new File(path);
+                String type = getMimeType(uri);
+                String displayName = file.getName();
+                //Toast.makeText(this, "Pdf Name is : " + displayName, Toast.LENGTH_LONG).show();
+                progressDialog.show();
+                progressDialog.setMessage("Uploading document");
+                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", displayName, RequestBody.create(MediaType.parse(type), file));
+                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
+                medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            progressDialog.dismiss();
+            Log.e("pdf file upload failed",e.getMessage());
+        }
+    }
+
     private void onCaptureImageResult(Intent data) {
         try {
             // Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
@@ -517,39 +458,15 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = getRealPathFromURI(imageUri);
-//            File destination = new File(Environment.getExternalStorageDirectory(),
-//                    System.currentTimeMillis() + ".jpeg");
-//            Log.e("File path:",path);
-//            FileOutputStream fo;
-//            try {
-//                destination.createNewFile();
-//                fo = new FileOutputStream(destination);
-//                fo.write(bytes.toByteArray());
-//                fo.close();
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
             if (!TextUtils.isEmpty(path)) {
                 progressDialog.show();
                 progressDialog.setMessage("Uploading document");
-                String type = getMimeType(path);
+                String type = getMimeType(imageUri);
                 File file = new File(path);
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
                 medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
             }
-//            if (!TextUtils.isEmpty(destination.getAbsolutePath())) {
-//                progressDialog.show();
-//                progressDialog.setMessage("Uploading document");
-//                String type = getMimeType(destination.getAbsolutePath());
-//                File file = new File(destination.getAbsolutePath());
-//                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-//                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
-//                medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -567,7 +484,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     if (!TextUtils.isEmpty(convertedPath)) {
                         progressDialog.show();
                         progressDialog.setMessage("Uploading document");
-                        String type = getMimeType(convertedPath);
+                        String type = getMimeType(data.getData());
                         //  Log.e("File type :", type);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -587,25 +504,33 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @Override
     public void imageEnlargeClick(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
-            progressDialogImage.show();
-            progressDialogImage.setContentView(R.layout.progress_lay);
-            Picasso.with(DocumentUploadActivity.this)
-                    .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
-                    .into(iv_large ,new Callback() {
-                @Override
-                public void onSuccess() {
-                    progressDialogImage.dismiss();
-                }
+            if(imageUrl.endsWith(".pdf")){
+                Intent in = new Intent(DocumentUploadActivity.this, WebViewActivity.class);
+                in.putExtra("url", imageUrl);
+                in.putExtra("title","Pdf Document");
+                in.putExtra("isPdf",true);
+                startActivity(in);
+            }else {
+                progressDialogImage.show();
+                progressDialogImage.setContentView(R.layout.progress_lay);
+                Picasso.with(DocumentUploadActivity.this)
+                        .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
+                        .into(iv_large, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                progressDialogImage.dismiss();
+                            }
 
-                @Override
-                public void onError() {
-                    progressDialogImage.dismiss();
-                }
-            });
-            frame_image.setVisibility(View.VISIBLE);
-            isExpandScreenOpen = true;
+                            @Override
+                            public void onError() {
+                                progressDialogImage.dismiss();
+                            }
+                        });
+                frame_image.setVisibility(View.VISIBLE);
+                isExpandScreenOpen = true;
+            }
         } else {
-            Toast.makeText(this, "Image not available", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Document not available", Toast.LENGTH_LONG).show();
             frame_image.setVisibility(View.GONE);
             isExpandScreenOpen = false;
         }
