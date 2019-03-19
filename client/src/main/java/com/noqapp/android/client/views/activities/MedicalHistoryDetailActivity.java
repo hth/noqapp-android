@@ -126,7 +126,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         if (StringUtils.isBlank(tv_instruction.getText())) {
             ll_instruction.setVisibility(View.GONE);
         }
-        if (StringUtils.isBlank(tv_followup.getText())) {
+        if (TextUtils.isEmpty(jsonMedicalRecord.getFollowUpInDays())) {
             ll_followup.setVisibility(View.GONE);
         }
 

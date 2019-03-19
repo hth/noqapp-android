@@ -519,7 +519,6 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                                     imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
                                     menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
                                     tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(pos).getPrice()));
-
                                     tv_cost.setText(currencySymbol + " "+ String.valueOf(calculateTotalPrice()));
                                     mAlertDialog.dismiss();
                                 }

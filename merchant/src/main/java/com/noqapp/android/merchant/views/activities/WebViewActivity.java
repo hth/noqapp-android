@@ -99,18 +99,6 @@ public class WebViewActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        int notify_count = NotificationDB.getNotificationCount();
-//        tv_badge.setText(String.valueOf(notify_count));
-//        if (notify_count > 0) {
-//            tv_badge.setVisibility(View.VISIBLE);
-//        } else {
-//            tv_badge.setVisibility(View.INVISIBLE);
-//        }
-    }
-
     private void webViewGoBack() {
         if (webView.canGoBack()) {
             webView.goBack();
