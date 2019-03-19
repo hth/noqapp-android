@@ -91,7 +91,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
             purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
-            purchaseOrderApiCalls.fetch(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
+            purchaseOrderApiCalls.showOrders(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
         } else {
             manageQueueApiCalls.setQueuePersonListPresenter(this);
             manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
