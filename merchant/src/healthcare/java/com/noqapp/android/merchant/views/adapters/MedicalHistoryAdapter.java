@@ -149,6 +149,12 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
             recordHolder.tv_observation_pathology_label.setText("N/A");
             recordHolder.ll_pathology.setVisibility(View.GONE);
         }
+        recordHolder.ll_scan.setVisibility(View.GONE);
+        recordHolder.ll_spec.setVisibility(View.GONE);
+        recordHolder.ll_xray.setVisibility(View.GONE);
+        recordHolder.ll_pathology.setVisibility(View.GONE);
+        recordHolder.ll_mri.setVisibility(View.GONE);
+        recordHolder.ll_sono.setVisibility(View.GONE);
         if (null != jsonMedicalRecord.getMedicalRadiologyLists() && jsonMedicalRecord.getMedicalRadiologyLists().size() > 0) {
             for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
                 final JsonMedicalRadiologyList jsonMedicalRadiologyList = jsonMedicalRecord.getMedicalRadiologyLists().get(i);
@@ -167,12 +173,6 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                 } else {
                     observation = jsonMedicalRadiologyList.getObservation();
                 }
-                recordHolder.ll_scan.setVisibility(View.GONE);
-                recordHolder.ll_spec.setVisibility(View.GONE);
-                recordHolder.ll_xray.setVisibility(View.GONE);
-                recordHolder.ll_pathology.setVisibility(View.GONE);
-                recordHolder.ll_mri.setVisibility(View.GONE);
-                recordHolder.ll_sono.setVisibility(View.GONE);
                 switch (labCategory) {
                     case SPEC:
                         recordHolder.tv_attachment_spec.setText(value);
