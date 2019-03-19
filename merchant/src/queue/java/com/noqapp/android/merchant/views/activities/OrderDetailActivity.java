@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.merchant.R;
@@ -11,6 +12,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
+import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import android.app.ProgressDialog;
@@ -19,18 +21,21 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     protected boolean isDialog = false;
@@ -39,6 +44,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private TextView tv_cost;
     private String currencySymbol;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
+    private Spinner sp_payment_mode;
+    private String[] payment_modes = {"Cash", "Debit Card", "Credit Card", "Internet Banking", "Paytm"};
+    private Button btn_update_price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         setContentView(R.layout.dialog_order_detail);
         if (isDialog) {
             DisplayMetrics metrics = getResources().getDisplayMetrics();
-            int screenWidth = (int) (metrics.widthPixels * 0.60);
+            int screenWidth = (int) (metrics.widthPixels * 0.70);
             int height = (int) (metrics.heightPixels * 0.80);
             getWindow().setLayout(screenWidth, height);
         }
@@ -78,6 +86,16 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         TextView tv_payment_status = findViewById(R.id.tv_payment_status);
         TextView tv_address = findViewById(R.id.tv_address);
         tv_cost = findViewById(R.id.tv_cost);
+        sp_payment_mode = findViewById(R.id.sp_payment_mode);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_payment_mode.setAdapter(aa);
+//        sp_payment_mode.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                ((TextView) sp_payment_mode.getSelectedView()).setTextColor(Color.BLACK);
+//            }
+//        });
         TextView tv_notes = findViewById(R.id.tv_notes);
         tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
         tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
@@ -91,7 +109,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         try {
             if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/ 100));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
             } else {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
                 tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
@@ -103,7 +121,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         Button btn_pay_partial = findViewById(R.id.btn_pay_partial);
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-            rl_payment.setVisibility(View.VISIBLE);
+            if(isProductWithoutPrice){
+                rl_payment.setVisibility(View.GONE);
+            }else {
+                rl_payment.setVisibility(View.VISIBLE);
+            }
             if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
                 btn_pay_partial.setVisibility(View.INVISIBLE);
                 edt_amount.setVisibility(View.INVISIBLE);
@@ -148,7 +170,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
                             PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                             purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                            purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
+                            purchaseOrderApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         }
                     }
                 }
@@ -163,11 +186,12 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 } else {
                     progressDialog.show();
                     progressDialog.setMessage("Starting payment..");
-                    // jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
+                    //jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA); //not required here
                     jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
                     PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                     purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                    purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                    purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
+                    purchaseOrderApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                 }
 
             }
@@ -185,7 +209,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         try {
             if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice())/ 100));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
             } else {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
                 tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
@@ -268,5 +292,22 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 }
             }
         }
+    }
+
+    @Override
+    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+        dismissProgress();
+        if (null != jsonPurchaseOrderList) {
+            Log.v("order data:", jsonPurchaseOrderList.toString());
+            finish();
+            if (null != BaseLaunchActivity.merchantListFragment) {
+                BaseLaunchActivity.merchantListFragment.onRefresh();
+            }
+        }
+    }
+
+    @Override
+    public void purchaseOrderError() {
+        dismissProgress();
     }
 }
