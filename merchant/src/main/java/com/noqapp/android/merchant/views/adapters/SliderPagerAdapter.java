@@ -57,7 +57,7 @@ public class SliderPagerAdapter extends PagerAdapter {
 
             if (image_arraylist.get(position).endsWith(".pdf")) {
                 Picasso.with(activity.getApplicationContext())
-                        .load(R.drawable.pdf_thumb)
+                        .load(R.drawable.view_pdf)
                         .into(im_slider);
                 im_slider.setOnClickListener(new View.OnClickListener() {
                     @Override

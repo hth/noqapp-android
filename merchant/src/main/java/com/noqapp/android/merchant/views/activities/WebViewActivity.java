@@ -40,6 +40,7 @@ public class WebViewActivity extends AppCompatActivity {
             }
         }
     };
+    private boolean active = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,18 @@ public class WebViewActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
+
     private class myWebClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -123,7 +136,7 @@ public class WebViewActivity extends AppCompatActivity {
             if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if (progressDialog == null) {
+            if (progressDialog == null && active) {
                 progressDialog = new ProgressDialog(WebViewActivity.this);
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setMessage("Loading...");
