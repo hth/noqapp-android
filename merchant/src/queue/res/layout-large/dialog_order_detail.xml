@@ -268,6 +268,7 @@
                                 android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
+
                     <RelativeLayout
                             android:layout_width="match_parent"
                             android:padding="5dp"
@@ -297,15 +298,17 @@
 
                     <Button
                             android:id="@+id/btn_update_price"
-                            android:layout_width="200dp"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_margin="10dp"
+                            android:layout_marginLeft="150dp"
+                            android:layout_marginRight="150dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
                             android:paddingRight="10dp"
                             android:paddingLeft="10dp"
                             android:background="@drawable/bg_nogradient_round"
                             android:text="Update Price"
                             android:visibility="gone"
-                            android:layout_gravity="center_vertical"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"/>
 
@@ -384,9 +387,6 @@
                                 android:textSize="@dimen/text_size_fourteen"/>
 
                     </RelativeLayout>
-
-
-
 
 
                 </LinearLayout>
