@@ -179,7 +179,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
      */
     @POST("api/m/s/purchaseOrder/modify.json")
-    Call<JsonPurchaseOrderList> modify(
+    Call<JsonPurchaseOrder> modify(
             @Header("X-R-DID")
             String did,
 

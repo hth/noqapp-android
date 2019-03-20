@@ -269,9 +269,7 @@
 
                     </RelativeLayout>
 
-
                     <RelativeLayout
-                            android:id="@+id/rl_payment"
                             android:layout_width="match_parent"
                             android:padding="5dp"
                             android:layout_height="match_parent">
@@ -281,13 +279,69 @@
                                 android:layout_width="wrap_content"
                                 android:paddingLeft="5dp"
                                 android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/btn_pay_now"
+                                android:layout_toLeftOf="@+id/tv_address"
+                                android:textSize="@dimen/text_size_twelve"
+                                android:textStyle="bold"
+                                android:text="Delivery Address:"
+                                android:textColor="@android:color/black"
+                                android:layout_height="wrap_content"/>
+
+                        <TextView
+                                android:id="@+id/tv_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="5dp"
+                                android:textSize="@dimen/text_size_twelve"
+                                android:layout_alignParentRight="true"/>
+
+                    </RelativeLayout>
+
+                    <Button
+                            android:id="@+id/btn_update_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="150dp"
+                            android:layout_marginRight="150dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:background="@drawable/bg_nogradient_round"
+                            android:text="Update Price"
+                            android:visibility="gone"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/text_size_fourteen"/>
+
+                    <RelativeLayout
+                            android:id="@+id/rl_payment"
+                            android:layout_width="match_parent"
+                            android:padding="5dp"
+                            android:layout_height="wrap_content">
+
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:paddingLeft="5dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_toLeftOf="@+id/sp_payment_mode"
                                 android:textSize="@dimen/text_size_twelve"
                                 android:text="Accept Payment:"
                                 android:layout_centerVertical="true"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/black"
                                 android:layout_height="wrap_content"/>
+
+
+                        <Spinner
+                                android:id="@+id/sp_payment_mode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="10dp"
+                                android:minWidth="100dp"
+                                android:layout_toLeftOf="@+id/btn_pay_now"
+                                android:layout_gravity="center_vertical"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/sp_background"/>
 
                         <Button
                                 android:id="@+id/btn_pay_now"
@@ -334,32 +388,6 @@
 
                     </RelativeLayout>
 
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:padding="5dp"
-                            android:layout_height="match_parent">
-
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:paddingLeft="5dp"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/tv_address"
-                                android:textSize="@dimen/text_size_twelve"
-                                android:textStyle="bold"
-                                android:text="Delivery Address:"
-                                android:textColor="@android:color/black"
-                                android:layout_height="wrap_content"/>
-
-                        <TextView
-                                android:id="@+id/tv_address"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="5dp"
-                                android:textSize="@dimen/text_size_twelve"
-                                android:layout_alignParentRight="true"/>
-
-                    </RelativeLayout>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

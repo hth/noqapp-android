@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
+import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
@@ -38,6 +39,7 @@ public class PurchaseOrderApiCalls {
     private LabFilePresenter labFilePresenter;
     private FindCustomerPresenter findCustomerPresenter;
     private PaymentProcessPresenter paymentProcessPresenter;
+    private ModifyOrderPresenter modifyOrderPresenter;
 
     public void setPaymentProcessPresenter(PaymentProcessPresenter paymentProcessPresenter) {
         this.paymentProcessPresenter = paymentProcessPresenter;
@@ -67,6 +69,9 @@ public class PurchaseOrderApiCalls {
         this.findCustomerPresenter = findCustomerPresenter;
     }
 
+    public void setModifyOrderPresenter(ModifyOrderPresenter modifyOrderPresenter) {
+        this.modifyOrderPresenter = modifyOrderPresenter;
+    }
 
     static {
         purchaseOrderService = RetrofitClient.getClient().create(PurchaseOrderApiUrls.class);
@@ -271,6 +276,35 @@ public class PurchaseOrderApiCalls {
             public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
                 Log.e("purchase fail", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void modify(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.modify(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("modify", String.valueOf(response.body()));
+                        modifyOrderPresenter.modifyOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while modify");
+                        modifyOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        modifyOrderPresenter.authenticationFailure();
+                    } else {
+                        modifyOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("modify fail", t.getLocalizedMessage(), t);
+                modifyOrderPresenter.responseErrorPresenter(null);
             }
         });
     }
