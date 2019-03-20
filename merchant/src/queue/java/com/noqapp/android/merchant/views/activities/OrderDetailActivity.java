@@ -57,6 +57,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private RelativeLayout rl_payment;
     private TextView tv_payment_mode, tv_payment_status, tv_address;
     private Button btn_pay_partial;
+    public static UpdateWholeList updateWholeList;
+
+    public interface UpdateWholeList{
+        void updateWholeList();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             @Override
             public void onClick(View v) {
                 //onBackPressed();
+               // updateWholeList = null;
                 finish();
             }
         });
@@ -146,7 +152,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
                             PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                             purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                            purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         }
                     }
                 }
@@ -180,7 +186,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                     PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                     purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
                     purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
-                    purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                    purchaseOrderApiCalls.counterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                 }
 
             }
@@ -299,8 +305,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.stay, R.anim.slide_down);
-        if (null != BaseLaunchActivity.merchantListFragment) {
-            BaseLaunchActivity.merchantListFragment.onRefresh();
+        if (null != updateWholeList) {
+            //updateWholeList = null;
         }
     }
 
@@ -330,8 +336,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 this.jsonPurchaseOrder = jsonPurchaseOrder;
                 updateUI();
                 Toast.makeText(OrderDetailActivity.this, "Payment updated successfully", Toast.LENGTH_LONG).show();
-                if (null != BaseLaunchActivity.merchantListFragment) {
-                    BaseLaunchActivity.merchantListFragment.onRefresh();
+                if (null != updateWholeList) {
+                    updateWholeList.updateWholeList();
                 }
             }
         }
@@ -343,8 +349,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             finish();
-            if (null != BaseLaunchActivity.merchantListFragment) {
-                BaseLaunchActivity.merchantListFragment.onRefresh();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         }
     }
@@ -361,8 +367,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             this.jsonPurchaseOrder = jsonPurchaseOrder;
             updateUI();
             Log.v("modify order data:", jsonPurchaseOrder.toString());
-            if (null != BaseLaunchActivity.merchantListFragment) {
-                BaseLaunchActivity.merchantListFragment.onRefresh();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         }
     }

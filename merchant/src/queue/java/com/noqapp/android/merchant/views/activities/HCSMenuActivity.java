@@ -110,6 +110,11 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private RelativeLayout rl_total;
     private int price = 0;
     private String currencySymbol;
+    public static UpdateWholeList updateWholeList;
+
+    public interface UpdateWholeList{
+        void updateWholeList();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -129,8 +134,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             @Override
             public void onClick(View v) {
                 finish();
-                if (null != BaseLaunchActivity.merchantListFragment) {
-                    BaseLaunchActivity.merchantListFragment.onRefresh();
+                if (null != updateWholeList) {
+                    updateWholeList.updateWholeList();
                 }
             }
         });
@@ -199,8 +204,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
             //super.onBackPressed();
             finish();
-            if (null != BaseLaunchActivity.merchantListFragment) {
-                BaseLaunchActivity.merchantListFragment.onRefresh();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         }
     }
@@ -684,8 +689,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             finish();
-            if (null != BaseLaunchActivity.merchantListFragment) {
-                BaseLaunchActivity.merchantListFragment.onRefresh();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         }
     }
