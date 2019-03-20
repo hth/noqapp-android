@@ -14,12 +14,15 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailDialog;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
@@ -35,7 +38,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,13 +45,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
+        PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList ,HCSMenuActivity.UpdateWholeList{
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -73,6 +77,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     protected void createToken(Context context, String codeQR) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             if(jsonTopic.getBusinessType() == BusinessTypeEnum.HS) {
+                HCSMenuActivity.updateWholeList = this;
                 Intent intent = new Intent(getActivity(), HCSMenuActivity.class);
                 intent.putExtra("jsonTopic", jsonTopic);
                 ((Activity) context).startActivity(intent);
@@ -259,6 +264,24 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
 
+    }
+
+    @Override
+    public void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder) {
+        OrderDetailActivity.updateWholeList = this;
+        if (new AppUtils().isTablet(context)) {
+            Intent in = new Intent(context, OrderDetailDialog.class);
+            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+            //in.putExtra("codeQR", jsonTopic.getCodeQR());
+            ((Activity) context).startActivity(in);
+        } else {
+            Intent in = new Intent(context, OrderDetailActivity.class);
+            // in.putExtra("codeQR", jsonTopic.getCodeQR());
+            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+            ((Activity) context).startActivity(in);
+            ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+
+        }
     }
 
     @Override
@@ -509,4 +532,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
+    @Override
+    public void updateWholeList() {
+        getAllPeopleInQ(jsonTopic);
+    }
 }

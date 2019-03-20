@@ -5,13 +5,9 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailDialog;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -44,6 +40,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         void orderDoneClick(int position);
 
         void orderCancelClick(int position);
+
+        void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder);
 
     }
 
@@ -117,23 +115,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //showOrderDetailDialog(context, jsonPurchaseOrder, jsonPurchaseOrder.getPurchaseOrderProducts());
-                //Intent in = new Intent(context, OrderDetailActivity.class);
-                //context.startActivity(in);
-                if (new AppUtils().isTablet(context)) {
-                    Intent in = new Intent(context, OrderDetailDialog.class);
-                    in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-                    //in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
-                } else {
-                    Intent in = new Intent(context, OrderDetailActivity.class);
-                    // in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-                    ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
-                    ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
-
-                }
-
+                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder);
             }
         });
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.RP ||
