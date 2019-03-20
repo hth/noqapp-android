@@ -53,28 +53,22 @@
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.LaunchActivity"
-                android:theme="@style/BaseTheme">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+                android:launchMode="singleTask"
+                android:windowSoftInputMode="stateAlwaysHidden"
+                android:theme="@style/BaseTheme"/>
+
+
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.SettingActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PhysicalActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PhysicalDialogActivity"
@@ -85,106 +79,67 @@
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.NotificationActivity"
                 android:theme="@style/BaseTheme">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PreferenceActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.MedicalCaseActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PatientProfileActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
 
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.ManagerProfileActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.RegistrationActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.LoginActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.ChartListActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.ProductListActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.ScribbleActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
             android:name="com.noqapp.android.merchant.views.activities.SliderActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden">
-        <intent-filter>
-            <category android:name="android.intent.category.DEFAULT"/>
-        </intent-filter>
     </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PrivacyActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.WebViewActivity"
@@ -196,17 +151,11 @@
                 android:name="com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.FollowUpListActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
 
         <service
@@ -245,41 +194,26 @@
                 android:name="com.noqapp.android.merchant.views.activities.DocumentUploadActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PreferredStoreActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.StoreMenuActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.HCSMenuActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.OrderDetailActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </activity>
 
         <activity
