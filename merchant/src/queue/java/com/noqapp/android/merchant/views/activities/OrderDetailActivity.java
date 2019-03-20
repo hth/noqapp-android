@@ -25,7 +25,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,10 +95,15 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_payment_mode.setAdapter(aa);
         try {
-            sp_payment_mode.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            sp_payment_mode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onGlobalLayout() {
-                    ((TextView) sp_payment_mode.getSelectedView()).setTextColor(Color.BLACK);
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ((TextView) view).setTextColor(Color.BLACK); //Change selected text color
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
             });
         } catch (Exception e) {
@@ -338,10 +343,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     }
 
     @Override
-    public void modifyOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+    public void modifyOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         dismissProgress();
-        if (null != jsonPurchaseOrderList) {
-            Log.v("modify order data:", jsonPurchaseOrderList.toString());
+        if (null != jsonPurchaseOrder) {
+            Log.v("modify order data:", jsonPurchaseOrder.toString());
             if (null != BaseLaunchActivity.merchantListFragment) {
                 BaseLaunchActivity.merchantListFragment.onRefresh();
             }

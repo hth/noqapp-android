@@ -281,9 +281,9 @@ public class PurchaseOrderApiCalls {
     }
 
     public void modify(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.modify(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrderList>() {
+        purchaseOrderService.modify(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
-            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("modify", String.valueOf(response.body()));
@@ -302,7 +302,7 @@ public class PurchaseOrderApiCalls {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("modify fail", t.getLocalizedMessage(), t);
                 modifyOrderPresenter.responseErrorPresenter(null);
             }
