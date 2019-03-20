@@ -201,8 +201,8 @@ public interface PurchaseOrderApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ORDER_PAYMENT_UPDATE_FAILED}
      */
-    @POST("api/m/s/purchaseOrder/partialPayment.json")
-    Call<JsonPurchaseOrder> partialPayment(
+    @POST("api/m/s/purchaseOrder/partialCounterPayment.json")
+    Call<JsonPurchaseOrder> partialCounterPayment(
             @Header("X-R-DID")
             String did,
 
@@ -224,8 +224,8 @@ public interface PurchaseOrderApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ORDER_PAYMENT_UPDATE_FAILED}\
      */
-    @POST("api/m/s/purchaseOrder/cashPayment.json")
-    Call<JsonPurchaseOrder> cashPayment(
+    @POST("api/m/s/purchaseOrder/counterPayment.json")
+    Call<JsonPurchaseOrder> counterPayment(
             @Header("X-R-DID")
             String did,
 

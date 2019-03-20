@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.TransactionViaEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -104,10 +105,13 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("tm")
     private String transactionMessage;
 
+    @JsonProperty("tv")
+    private TransactionViaEnum transactionVia;
+
     @JsonProperty("cft")
     private JsonResponseWithCFToken jsonResponseWithCFToken;
 
-    @JsonProperty("cp")
+    @JsonProperty("cz")
     private boolean customized;
 
     @JsonProperty("error")
@@ -316,6 +320,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setTransactionMessage(String transactionMessage) {
         this.transactionMessage = transactionMessage;
+        return this;
+    }
+
+    public TransactionViaEnum getTransactionVia() {
+        return transactionVia;
+    }
+
+    public JsonPurchaseOrder setTransactionVia(TransactionViaEnum transactionVia) {
+        this.transactionVia = transactionVia;
         return this;
     }
 

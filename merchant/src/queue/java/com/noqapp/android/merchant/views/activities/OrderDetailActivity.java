@@ -152,7 +152,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
                             PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                             purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                            purchaseOrderApiCalls.partialPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         }
                     }
                 }
@@ -186,7 +186,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                     PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                     purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
                     purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
-                    purchaseOrderApiCalls.cashPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                    purchaseOrderApiCalls.counterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                 }
 
             }

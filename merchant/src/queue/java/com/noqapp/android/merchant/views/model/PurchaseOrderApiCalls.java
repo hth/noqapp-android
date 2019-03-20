@@ -309,16 +309,16 @@ public class PurchaseOrderApiCalls {
         });
     }
 
-    public void partialPayment(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.partialPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+    public void partialCounterPayment(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.partialCounterPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("partialPayment", String.valueOf(response.body()));
+                        Log.d("partialCounterPayment", String.valueOf(response.body()));
                         paymentProcessPresenter.paymentProcessResponse(response.body());
                     } else {
-                        Log.e(TAG, "Found error while partialPayment");
+                        Log.e(TAG, "Found error while partialCounterPayment");
                         paymentProcessPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -332,22 +332,22 @@ public class PurchaseOrderApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
-                Log.e("partialPayment fail", t.getLocalizedMessage(), t);
+                Log.e("partialCPayment fail", t.getLocalizedMessage(), t);
                 paymentProcessPresenter.responseErrorPresenter(null);
             }
         });
     }
 
-    public void cashPayment(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.cashPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+    public void counterPayment(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.counterPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("partialPayment", String.valueOf(response.body()));
+                        Log.d("counterPayment", String.valueOf(response.body()));
                         paymentProcessPresenter.paymentProcessResponse(response.body());
                     } else {
-                        Log.e(TAG, "Found error while partialPayment");
+                        Log.e(TAG, "Found error while counterPayment");
                         paymentProcessPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -361,7 +361,7 @@ public class PurchaseOrderApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
-                Log.e("partialPayment fail", t.getLocalizedMessage(), t);
+                Log.e("counterPayment fail", t.getLocalizedMessage(), t);
                 paymentProcessPresenter.responseErrorPresenter(null);
             }
         });
