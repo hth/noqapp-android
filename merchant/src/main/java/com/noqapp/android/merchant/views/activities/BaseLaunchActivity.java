@@ -143,11 +143,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
                 setFCMToken(getIntent().getStringExtra("fcmToken"));
             }
-
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
                 setDeviceID(getIntent().getStringExtra("deviceId"));
             }
-            // Toast.makeText(this,"Device ID: "+getDeviceID(),Toast.LENGTH_LONG).show();
         }
 
         deviceApiCalls = new DeviceApiCalls();
@@ -249,8 +247,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 if (new AppUtils().isTablet(getApplicationContext())) {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.7f);
+                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
+                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
                     list_fragment.setLayoutParams(lp1);
                     list_detail_fragment.setLayoutParams(lp2);
                     merchantListFragment = new MerchantListFragment();
