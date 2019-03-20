@@ -362,12 +362,16 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     public String toString() {
         final StringBuffer sb = new StringBuffer("JsonPurchaseOrder{");
         sb.append("bizStoreId='").append(bizStoreId).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
         sb.append(", customerPhone='").append(customerPhone).append('\'');
         sb.append(", deliveryAddress='").append(deliveryAddress).append('\'');
         sb.append(", storeDiscount=").append(storeDiscount);
+        sb.append(", partialPayment='").append(partialPayment).append('\'');
         sb.append(", orderPrice='").append(orderPrice).append('\'');
         sb.append(", deliveryMode=").append(deliveryMode);
         sb.append(", paymentMode=").append(paymentMode);
+        sb.append(", paymentStatus=").append(paymentStatus);
         sb.append(", businessType=").append(businessType);
         sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);
         sb.append(", servingNumber=").append(servingNumber);
@@ -377,6 +381,11 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
         sb.append(", transactionId='").append(transactionId).append('\'');
         sb.append(", presentOrderState=").append(presentOrderState);
         sb.append(", created='").append(created).append('\'');
+        sb.append(", additionalNote='").append(additionalNote).append('\'');
+        sb.append(", transactionMessage='").append(transactionMessage).append('\'');
+        sb.append(", transactionVia=").append(transactionVia);
+        sb.append(", jsonResponseWithCFToken=").append(jsonResponseWithCFToken);
+        sb.append(", customized=").append(customized);
         sb.append(", error=").append(error);
         sb.append('}');
         return sb.toString();

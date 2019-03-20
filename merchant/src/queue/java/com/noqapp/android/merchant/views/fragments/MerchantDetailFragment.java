@@ -14,7 +14,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -22,7 +21,6 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.HCSMenuActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailDialog;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
@@ -269,19 +267,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder) {
         OrderDetailActivity.updateWholeList = this;
-        if (new AppUtils().isTablet(context)) {
-            Intent in = new Intent(context, OrderDetailDialog.class);
-            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-            //in.putExtra("codeQR", jsonTopic.getCodeQR());
-            ((Activity) context).startActivity(in);
-        } else {
-            Intent in = new Intent(context, OrderDetailActivity.class);
-            // in.putExtra("codeQR", jsonTopic.getCodeQR());
-            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-            ((Activity) context).startActivity(in);
-            ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
+        Intent in = new Intent(context, OrderDetailActivity.class);
+        in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+        ((Activity) context).startActivity(in);
 
-        }
     }
 
     @Override

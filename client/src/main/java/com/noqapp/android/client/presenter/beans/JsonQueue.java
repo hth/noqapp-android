@@ -573,6 +573,33 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public JsonQueue setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
+    public int getCancellationPrice() {
+        return cancellationPrice;
+    }
+
+    public JsonQueue setCancellationPrice(int cancellationPrice) {
+        this.cancellationPrice = cancellationPrice;
+        return this;
+    }
+
+    public ServicePaymentEnum getServicePayment() {
+        return servicePayment;
+    }
+
+    public JsonQueue setServicePayment(ServicePaymentEnum servicePayment) {
+        this.servicePayment = servicePayment;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -655,6 +682,9 @@ public class JsonQueue implements Serializable {
         sb.append(", remoteJoinAvailable=").append(remoteJoinAvailable);
         sb.append(", allowLoggedInUser=").append(allowLoggedInUser);
         sb.append(", availableTokenCount=").append(availableTokenCount);
+        sb.append(", productPrice=").append(productPrice);
+        sb.append(", cancellationPrice=").append(cancellationPrice);
+        sb.append(", servicePayment=").append(servicePayment);
         sb.append(", bizCategoryId='").append(bizCategoryId).append('\'');
         sb.append(", famousFor='").append(famousFor).append('\'');
         sb.append(", discount=").append(discount);
