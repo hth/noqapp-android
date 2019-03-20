@@ -6,12 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
     <uses-permission android:name="android.permission.BILLING"/>
-
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature
@@ -132,10 +129,10 @@
                 android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.SliderActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden">
-    </activity>
+                android:name="com.noqapp.android.merchant.views.activities.SliderActivity"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
         <activity
                 android:name="com.noqapp.android.merchant.views.activities.PrivacyActivity"
                 android:theme="@style/BaseTheme"

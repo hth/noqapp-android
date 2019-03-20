@@ -2,20 +2,16 @@ package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.merchant.R;
 
-import android.app.Activity;
-
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 public class ShowAlertInformation {
 
@@ -142,21 +138,21 @@ public class ShowAlertInformation {
 
     public static void resizeAlert(AlertDialog dialog, Context context){
         try {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int displayWidth = displayMetrics.widthPixels;
-            int displayHeight = displayMetrics.heightPixels;
-
-            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-            layoutParams.copyFrom(dialog.getWindow().getAttributes());
-            int dialogWindowWidth = (int) (displayWidth * 0.75f);
-            // Set alert dialog height equal to screen height 70%
-            int dialogWindowHeight = (int) (displayHeight * 0.5f);
-            layoutParams.width = dialogWindowWidth;
-            layoutParams.height = dialogWindowHeight;
-
-            // Apply the newly created layout parameters to the alert dialog window
-            dialog.getWindow().setAttributes(layoutParams);
+//            DisplayMetrics displayMetrics = new DisplayMetrics();
+//            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//            int displayWidth = displayMetrics.widthPixels;
+//            int displayHeight = displayMetrics.heightPixels;
+//
+//            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+//            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+//            int dialogWindowWidth = (int) (displayWidth * 0.75f);
+//            // Set alert dialog height equal to screen height 70%
+//            int dialogWindowHeight = (int) (displayHeight * 0.5f);
+//            layoutParams.width = dialogWindowWidth;
+//            layoutParams.height = dialogWindowHeight;
+//
+//            // Apply the newly created layout parameters to the alert dialog window
+//            dialog.getWindow().setAttributes(layoutParams);
         }catch (Exception e){
             e.printStackTrace();
         }
