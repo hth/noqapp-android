@@ -79,6 +79,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     private AutoCompleteTextView auto_complete_search;
     private ManageQueueApiCalls manageQueueApiCalls;
 
+
     public MerchantListFragment() {
 
     }
@@ -224,6 +225,9 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
         isFragmentVisible = true;
         updateSnackbarTxt();
+        if (null != adapter) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
