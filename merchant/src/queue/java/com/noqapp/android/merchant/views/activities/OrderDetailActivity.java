@@ -23,7 +23,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +31,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +40,6 @@ import androidx.cardview.widget.CardView;
 public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
-    protected boolean isDialog = false;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private boolean isProductWithoutPrice = false;
     private TextView tv_cost;
@@ -54,32 +51,26 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private Button btn_update_price;
     private CardView cv_notes;
     private EditText edt_amount;
-    private RelativeLayout rl_payment;
+    private View rl_payment;
     private TextView tv_payment_mode, tv_payment_status, tv_address;
     private Button btn_pay_partial;
     public static UpdateWholeList updateWholeList;
 
-    public interface UpdateWholeList{
+    public interface UpdateWholeList {
         void updateWholeList();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!isDialog) {
-            if (new AppUtils().isTablet(getApplicationContext())) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            } else {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
+
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_order_detail);
-        if (isDialog) {
-            DisplayMetrics metrics = getResources().getDisplayMetrics();
-            int screenWidth = (int) (metrics.widthPixels * 0.70);
-            int height = (int) (metrics.heightPixels * 0.80);
-            getWindow().setLayout(screenWidth, height);
-        }
+
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         initProgress();
@@ -89,7 +80,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             @Override
             public void onClick(View v) {
                 //onBackPressed();
-               // updateWholeList = null;
+                // updateWholeList = null;
                 finish();
             }
         });

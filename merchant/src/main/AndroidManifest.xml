@@ -213,13 +213,6 @@
                 android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
-        <activity
-                android:name="com.noqapp.android.merchant.views.activities.OrderDetailDialog"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:excludeFromRecents="true"
-                android:theme="@style/myDialog"
-                android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
-
 
         <!-- File Provider -->
         <provider
