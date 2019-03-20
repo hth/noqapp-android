@@ -50,7 +50,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private TextView tv_paid_amount_value, tv_remaining_amount_value, tv_notes;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
-    private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.UPI, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
+    private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
     private Button btn_update_price;
     private CardView cv_notes;
     private EditText edt_amount;
