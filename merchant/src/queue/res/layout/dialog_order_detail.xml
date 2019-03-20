@@ -270,7 +270,7 @@
                                 android:layout_width="wrap_content"
                                 android:paddingLeft="5dp"
                                 android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/btn_pay_now"
+                                android:layout_toLeftOf="@+id/sp_payment_mode"
                                 android:textSize="@dimen/text_size_twelve"
                                 android:layout_alignBaseline="@+id/btn_pay_now"
                                 android:paddingTop="10dp"
@@ -279,6 +279,17 @@
                                 android:textStyle="bold"
                                 android:textColor="@android:color/black"
                                 android:layout_height="wrap_content"/>
+
+                        <Spinner
+                                android:id="@+id/sp_payment_mode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:minWidth="100dp"
+                                android:layout_toLeftOf="@+id/btn_pay_now"
+                                android:layout_gravity="center_vertical"
+                                android:background="@drawable/sp_background"/>
 
                         <Button
                                 android:id="@+id/btn_pay_now"
@@ -327,6 +338,22 @@
                                 android:textSize="@dimen/text_size_fourteen"/>
 
                     </RelativeLayout>
+
+                    <Button
+                            android:id="@+id/btn_update_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
+                            android:background="@drawable/bg_nogradient_round"
+                            android:text="Update Price"
+                            android:visibility="gone"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/text_size_fourteen"/>
 
                     <RelativeLayout
                             android:layout_width="match_parent"
