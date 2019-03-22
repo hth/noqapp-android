@@ -683,138 +683,162 @@
                         android:paddingRight="10dp"
                         android:orientation="vertical">
 
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/payment_setting"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_sixteen"
-                            android:textStyle="bold"/>
-
-
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-                            android:gravity="center_vertical"
-                            android:text="@string/payment_service"
-                            android:padding="5dp"
-                            android:textColor="@color/color_total_val"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
-                            xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/sc_paid_user"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            segmentedcontrol:distributeEvenly="true"
-                            segmentedcontrol:radius="6dp"
-                            segmentedcontrol:columnCount="3"
-                            segmentedcontrol:radiusForEverySegment="false"
-                            segmentedcontrol:segmentHorizontalMargin="0dp"
-                            segmentedcontrol:segmentVerticalMargin="0dp"
-                            segmentedcontrol:strokeWidth="1dp"
-                            segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                            segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                            segmentedcontrol:textVerticalPadding="7dp"
-                            segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                            segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                            segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
-
-
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="10dp"
-                            android:weightSum="1">
+                            android:orientation="horizontal">
 
                         <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight=".8"
-                                android:padding="5dp"
-                                android:text="@string/text_fees"
-                                android:textColor="@color/color_total_val"
-                                android:textSize="@dimen/text_size_fourteen"/>
-
-                        <EditText
-                                android:id="@+id/edt_fees"
-                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".2"
-                                android:maxLength="4"
-                                android:background="@drawable/square_white_bg_drawable"
                                 android:padding="5dp"
-                                android:gravity="center"
-                                android:inputType="number"
-                                android:digits="0123456789"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:singleLine="true"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/payment_setting"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_fourteen"/>
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold"/>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/togglePaymentSetting"
+                                android:layout_width="0dp"
+                                android:layout_weight=".2"
+                                android:theme="@style/SettingSeekbarStyle"
+                                android:layout_gravity="center_vertical"
+                                android:scaleX="1.0"
+                                android:scaleY="1.0"
+                                android:paddingEnd="@dimen/swith_padding"
+                                android:layout_height="wrap_content"/>
 
                     </LinearLayout>
+
 
                     <LinearLayout
+                            android:id="@+id/ll_payment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_vertical"
-                            android:weightSum="1">
+                            android:orientation="vertical">
 
                         <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".8"
+                                android:gravity="center_vertical"
+                                android:text="@string/payment_service"
                                 android:padding="5dp"
-                                android:text="@string/text_deduction"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="@dimen/text_size_fourteen"/>
 
-                        <EditText
-                                android:id="@+id/edt_deduction_amount"
-                                android:layout_width="0dp"
+
+                        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                                xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/sc_paid_user"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight=".2"
-                                android:maxLength="4"
-                                android:background="@drawable/square_white_bg_drawable"
+                                segmentedcontrol:distributeEvenly="true"
+                                segmentedcontrol:radius="6dp"
+                                segmentedcontrol:columnCount="3"
+                                segmentedcontrol:radiusForEverySegment="false"
+                                segmentedcontrol:segmentHorizontalMargin="0dp"
+                                segmentedcontrol:segmentVerticalMargin="0dp"
+                                segmentedcontrol:strokeWidth="1dp"
+                                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                segmentedcontrol:textVerticalPadding="7dp"
+                                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:weightSum="1">
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/text_fees"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                            <EditText
+                                    android:id="@+id/edt_fees"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:maxLength="4"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:gravity="center"
+                                    android:inputType="number"
+                                    android:digits="0123456789"
+                                    android:maxLines="1"
+                                    android:minLines="1"
+                                    android:singleLine="true"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:weightSum="1">
+
+                            <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".8"
+                                    android:padding="5dp"
+                                    android:text="@string/text_deduction"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                            <EditText
+                                    android:id="@+id/edt_deduction_amount"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".2"
+                                    android:maxLength="4"
+                                    android:background="@drawable/square_white_bg_drawable"
+                                    android:padding="5dp"
+                                    android:gravity="center"
+                                    android:inputType="number"
+                                    android:digits="0123456789"
+                                    android:maxLines="1"
+                                    android:minLines="1"
+                                    android:singleLine="true"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+                        </LinearLayout>
+
+                        <Button
+                                android:id="@+id/btn_update_deduction"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/btn_height"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="20dp"
+                                android:background="@drawable/bg_nogradient_round"
                                 android:padding="5dp"
-                                android:gravity="center"
-                                android:inputType="number"
-                                android:digits="0123456789"
-                                android:maxLines="1"
-                                android:minLines="1"
-                                android:singleLine="true"
-                                android:textColor="@android:color/black"
+                                android:text="  Update  "
+                                android:layout_gravity="right"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white"
                                 android:textSize="@dimen/text_size_fourteen"/>
 
                     </LinearLayout>
-
-                    <Button
-                            android:id="@+id/btn_update_deduction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/btn_height"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:background="@drawable/bg_nogradient_round"
-                            android:padding="5dp"
-                            android:text="  Update  "
-                            android:layout_gravity="right"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
