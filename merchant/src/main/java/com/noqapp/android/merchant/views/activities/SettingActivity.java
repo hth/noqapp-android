@@ -41,6 +41,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -61,7 +62,7 @@ import java.util.Locale;
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack, iv_delete_scheduling;
-    private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline;
+    private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline,togglePaymentSetting;
     private String codeQR;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
@@ -77,6 +78,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private SegmentedControl sc_paid_user;
     private List<String> pay_list = new ArrayList<>();
     private ServicePaymentEnum servicePaymentEnum;
+    private LinearLayout ll_payment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleTodayClosed = findViewById(R.id.toggleTodayClosed);
         togglePreventJoin = findViewById(R.id.togglePreventJoin);
         toggleStoreOffline = findViewById(R.id.toggleStoreOffline);
+        togglePaymentSetting = findViewById(R.id.togglePaymentSetting);
         sc_paid_user = findViewById(R.id.sc_paid_user);
         togglePreventJoinLabel = findViewById(R.id.togglePreventJoinLabel);
         toggleTodayClosedLabel = findViewById(R.id.toggleTodayClosedLabel);
@@ -108,11 +111,13 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleStoreOfflineLabel = findViewById(R.id.toggleStoreOfflineLabel);
         edt_deduction_amount = findViewById(R.id.edt_deduction_amount);
         edt_fees = findViewById(R.id.edt_fees);
+        ll_payment = findViewById(R.id.ll_payment);
         codeQR = getIntent().getStringExtra("codeQR");
         toggleDayClosed.setOnClickListener(this);
         toggleTodayClosed.setOnClickListener(this);
         togglePreventJoin.setOnClickListener(this);
         toggleStoreOffline.setOnClickListener(this);
+        togglePaymentSetting.setOnClickListener(this);
 
         pay_list.clear();
         pay_list.addAll(ServicePaymentEnum.asListOfDescription());
@@ -333,6 +338,18 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
             }
         });
+        togglePaymentSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.show();
+                    updatePaymentSettings();
+                } else {
+                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+                    togglePaymentSetting.setChecked(!togglePaymentSetting.isChecked());
+                }
+            }
+        });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
@@ -357,6 +374,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 queueSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
             }
             queueSetting.setServicePayment(servicePaymentEnum);
+            queueSetting.setEnabledPayment(togglePaymentSetting.isChecked());
             queueSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
@@ -408,7 +426,8 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             toggleTodayClosedLabel.setText(queueSetting.isTempDayClosed() ? YES : NO);
             toggleStoreOffline.setChecked(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
             toggleStoreOfflineLabel.setText(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? YES : NO);
-
+            togglePaymentSetting.setChecked(queueSetting.isEnabledPayment());
+            ll_payment.setVisibility(queueSetting.isEnabledPayment()?View.VISIBLE:View.GONE);
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
             tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
@@ -518,6 +537,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         queueSetting.setPreventJoining(togglePreventJoin.isChecked());
         queueSetting.setTempDayClosed(toggleTodayClosed.isChecked());
         queueSetting.setStoreActionType(toggleStoreOffline.isChecked() ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
+        queueSetting.setEnabledPayment(togglePaymentSetting.isChecked());
         if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
             queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
         }

@@ -42,7 +42,7 @@ public class JsonMasterLab extends AbstractDomain {
     private HealthCareServiceEnum healthCareService;
 
     @JsonProperty("md")
-    private List<MedicalDepartmentEnum> medicalDepartments  = new ArrayList<>();
+    private List<MedicalDepartmentEnum> medicalDepartments = new ArrayList<>();
 
     public String getProductName() {
         return productName;
@@ -78,5 +78,16 @@ public class JsonMasterLab extends AbstractDomain {
     public JsonMasterLab setMedicalDepartments(List<MedicalDepartmentEnum> medicalDepartments) {
         this.medicalDepartments = medicalDepartments;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("JsonMasterLab{");
+        sb.append("productName='").append(productName).append('\'');
+        sb.append(", productShortName='").append(productShortName).append('\'');
+        sb.append(", healthCareService=").append(healthCareService);
+        sb.append(", medicalDepartments=").append(medicalDepartments);
+        sb.append('}');
+        return sb.toString();
     }
 }

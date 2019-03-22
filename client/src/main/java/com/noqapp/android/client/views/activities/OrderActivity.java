@@ -80,6 +80,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private JsonPurchaseOrder jsonPurchaseOrderServer;
     private Button tv_place_order;
     private AppCompatRadioButton acrb_cash, acrb_online;
+    private boolean isProductWithoutPrice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +165,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             tv_total_price.setText(currencySymbol + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
             ll_order_details.addView(inflatedLayout);
         }
+        checkProductWithZeroPrice();
         tv_place_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,20 +177,24 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     progressDialog.show();
                     progressDialog.setMessage("Order placing in progress..");
                     if (validateForm()) {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Order placing in progress..");
+                        if (isProductWithoutPrice) {
+                            Toast.makeText(OrderActivity.this, "Merchant have not set the price of the product.Hence payment cann't be proceed ", Toast.LENGTH_LONG).show();
+                        }else {
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                progressDialog.show();
+                                progressDialog.setMessage("Order placing in progress..");
 
-                            jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
-                            jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
-                            jsonPurchaseOrder.setPaymentMode(null); //not required here
-                            jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
-                            jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
-                            purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                            enableDisableOrderButton(false);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(OrderActivity.this);
-                            dismissProgress();
+                                jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
+                                jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
+                                jsonPurchaseOrder.setPaymentMode(null); //not required here
+                                jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
+                                jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
+                                purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                                enableDisableOrderButton(false);
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(OrderActivity.this);
+                                dismissProgress();
+                            }
                         }
                     } else {
                         dismissProgress();
@@ -203,6 +209,20 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         profileAddressResponse(jsonUserAddressList);
         rl_address.setVisibility(View.GONE);
     }
+
+    public void checkProductWithZeroPrice() {
+        isProductWithoutPrice = false;
+        if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getPurchaseOrderProducts() && jsonPurchaseOrder.getPurchaseOrderProducts().size() > 0) {
+            for (JsonPurchaseOrderProduct jpop :
+                    jsonPurchaseOrder.getPurchaseOrderProducts()) {
+                if (jpop.getProductPrice() == 0) {
+                    isProductWithoutPrice = true;
+                    break;
+                }
+            }
+        }
+    }
+
 
     private boolean validateForm() {
         boolean isValid = true;

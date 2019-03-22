@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,9 +53,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private CardView cv_notes;
     private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment;
     private Button btn_pay_partial;
     public static UpdateWholeList updateWholeList;
+    private RelativeLayout rl_multiple;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -94,6 +96,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_address = findViewById(R.id.tv_address);
         btn_update_price = findViewById(R.id.btn_update_price);
         tv_cost = findViewById(R.id.tv_cost);
+        tv_multiple_payment = findViewById(R.id.tv_multiple_payment);
+        rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -216,6 +220,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
                 btn_pay_partial.setVisibility(View.INVISIBLE);
                 edt_amount.setVisibility(View.INVISIBLE);
+                rl_multiple.setVisibility(View.VISIBLE);
+                tv_multiple_payment.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+            } else {
+                rl_multiple.setVisibility(View.GONE);
+                tv_multiple_payment.setText("");
             }
         } else {
             rl_payment.setVisibility(View.GONE);

@@ -149,6 +149,9 @@ public class JsonQueue implements Serializable {
     //*********************************/
     //*  Queue Price Setting Starts.  */
     //*********************************/
+    @JsonProperty("ep")
+    private boolean enabledPayment;
+
     @JsonProperty("pp")
     private int productPrice;
 
@@ -570,6 +573,15 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public boolean isEnabledPayment() {
+        return enabledPayment;
+    }
+
+    public JsonQueue setEnabledPayment(boolean enabledPayment) {
+        this.enabledPayment = enabledPayment;
         return this;
     }
 
