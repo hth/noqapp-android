@@ -303,7 +303,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
                 queueApiAuthenticCall.setTokenPresenter(this);
-                queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                if(getIntent().getBooleanExtra("isPaymentCall",false)){
+                    queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                }else {
+                    queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                }
             } else {
                 queueApiUnAuthenticCall.setTokenPresenter(this);
                 queueApiUnAuthenticCall.joinQueue(UserUtils.getDeviceId(), codeQR);

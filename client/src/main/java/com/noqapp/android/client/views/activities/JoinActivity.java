@@ -348,6 +348,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+        in.putExtra("isPaymentCall",jsonQueue.isEnabledPayment());
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
         in.putExtra("imageUrl", getIntent().getStringExtra("imageUrl"));
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
