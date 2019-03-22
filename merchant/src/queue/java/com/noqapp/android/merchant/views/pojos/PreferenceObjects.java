@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -107,6 +108,8 @@ public class PreferenceObjects {
 
 
     public boolean isLastUpdateTimeExceed(){
+        Calendar now = Calendar.getInstance();
+        boolean monday = now.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY;
         Date startDate = null;
         try {
             startDate = CommonHelper.SDF_YYYY_MM_DD.parse(lastUpdateDate);
@@ -118,7 +121,7 @@ public class PreferenceObjects {
         System.out.println(endDate);
         long duration = endDate.getTime() - startDate.getTime();
         long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
-        return diffInDays > 7;
+        return diffInDays > 7 || monday;
     }
 
     @Override
