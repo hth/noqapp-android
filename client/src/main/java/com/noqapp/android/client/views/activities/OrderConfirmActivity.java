@@ -62,10 +62,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private Button btn_cancel_order;
     private String codeQR;
     private int currentServing = -1;
-    private TextView tv_payment_status,tv_total_amt_paid,tv_total_amt_paid_label,tv_total_amt_remain;
+    private TextView tv_payment_status, tv_total_amt_paid, tv_total_amt_paid_label, tv_total_amt_remain;
     private Button btn_pay_now;
     private boolean isPayClick = false;
     private RelativeLayout rl_amount_remaining;
+    private boolean isProductWithoutPrice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +94,15 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             @Override
             public void onClick(View v) {
                 if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Starting payment process..");
-                        purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                        isPayClick = true;
+                    if (isProductWithoutPrice) {
+                        Toast.makeText(OrderConfirmActivity.this, "Merchant have not set the price of the product.Hence payment cann't be proceed", Toast.LENGTH_LONG).show();
+                    } else {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Starting payment process..");
+                            purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            isPayClick = true;
+                        }
                     }
                 }
             }
@@ -148,6 +153,19 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         });
     }
 
+    public void checkProductWithZeroPrice() {
+        isProductWithoutPrice = false;
+        if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getPurchaseOrderProducts() && jsonPurchaseOrder.getPurchaseOrderProducts().size() > 0) {
+            for (JsonPurchaseOrderProduct jpop :
+                    jsonPurchaseOrder.getPurchaseOrderProducts()) {
+                if (jpop.getProductPrice() == 0) {
+                    isProductWithoutPrice = true;
+                    break;
+                }
+            }
+        }
+    }
+
     private void updateUI() {
         String currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_tax_amt.setText(currencySymbol + "" + "0.0");
@@ -167,12 +185,12 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
             tv_total_amt_remain.setText(currencySymbol + "0.0");
             tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
-        } else if(PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()){
+        } else if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_amount_remaining.setVisibility(View.VISIBLE);
             tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100);
-            tv_total_amt_remain.setText(currencySymbol + (Double.parseDouble(jsonPurchaseOrder.getOrderPrice())-Double.parseDouble(jsonPurchaseOrder.getPartialPayment()))/100);
+            tv_total_amt_remain.setText(currencySymbol + (Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100);
             tv_total_amt_paid_label.setText("Total Amount Paid (In Cash):");
-        }else{
+        } else {
             tv_total_amt_paid.setText(currencySymbol + "0.0");
             rl_amount_remaining.setVisibility(View.VISIBLE);
         }
@@ -224,6 +242,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
             btn_cancel_order.setVisibility(View.GONE);
         }
+        checkProductWithZeroPrice();
     }
 
     @Override
