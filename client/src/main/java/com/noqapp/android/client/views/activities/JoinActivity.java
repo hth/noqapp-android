@@ -41,7 +41,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_store_name;
     private TextView tv_queue_name;
     private TextView tv_address;
-    private TextView tv_mobile;
+    private TextView tv_mobile, tv_consult_fees, tv_cancelation_fees;
     private TextView tv_serving_no;
     private TextView tv_people_in_q;
     private TextView tv_hour_saved;
@@ -49,11 +49,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_add, add_person;
     private TextView tv_rating;
     private Spinner sp_name_list;
-
     private String codeQR;
     private JsonQueue jsonQueue;
     private boolean isJoinNotPossible = false;
     private String joinErrorMsg = "";
+    private Button btn_pay_and_joinQueue, btn_joinQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +64,24 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
         tv_mobile = findViewById(R.id.tv_mobile);
+        tv_consult_fees = findViewById(R.id.tv_consult_fees);
+        tv_cancelation_fees = findViewById(R.id.tv_cancelation_fees);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_people_in_q = findViewById(R.id.tv_people_in_q);
         tv_hour_saved = findViewById(R.id.tv_hour_saved);
         ImageView iv_profile = findViewById(R.id.iv_profile);
         TextView tv_skip_msg = findViewById(R.id.tv_skip_msg);
         tv_rating_review = findViewById(R.id.tv_rating_review);
-        Button btn_joinQueue = findViewById(R.id.btn_joinQueue);
+        btn_pay_and_joinQueue = findViewById(R.id.btn_pay_and_joinQueue);
+        btn_joinQueue = findViewById(R.id.btn_joinQueue);
         btn_joinQueue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != jsonQueue)
+                    joinQueue();
+            }
+        });
+        btn_pay_and_joinQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
@@ -201,7 +211,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-            String time = new AppUtilities().formatTodayStoreTiming(this,jsonQueue.getStartHour(),jsonQueue.getEndHour());
+            String time = new AppUtilities().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;
@@ -220,7 +230,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                         Bundle bundle = new Bundle();
                         bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
                         bundle.putString("storeName", jsonQueue.getDisplayName());
-                        bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(),jsonQueue.getArea()));
+                        bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
                         in.putExtras(bundle);
                         startActivity(in);
                     }
@@ -235,7 +245,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             String reviewText;
             if (jsonQueue.getReviewCount() == 0) {
                 reviewText = "No Review";
-                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+                tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             } else if (jsonQueue.getReviewCount() == 1) {
                 reviewText = "1 Review";
             } else {
@@ -249,19 +259,41 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 isJoinNotPossible = joinQueueState.isJoinNotPossible();
                 joinErrorMsg = joinQueueState.getJoinErrorMsg();
             }
-
             switch (jsonQueue.getBusinessType()) {
                 case DO:
                 case PH:
                 case HS:
+                    String feeString = "<b>" + AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getProductPrice() / 100) + "</b>  Consultation fee";
+                    tv_consult_fees.setText(Html.fromHtml(feeString));
+                    String cancelFeeString = "<b>" + AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName()) + String.valueOf(jsonQueue.getCancellationPrice() / 100) + "</b>  Cancellation fee";
+                    tv_cancelation_fees.setText(Html.fromHtml(cancelFeeString));
+                    tv_consult_fees.setVisibility(View.VISIBLE);
+                    tv_cancelation_fees.setVisibility(View.VISIBLE);
                     tv_add.setVisibility(View.VISIBLE);
                     add_person.setVisibility(View.VISIBLE);
                     sp_name_list.setVisibility(View.VISIBLE);
                     break;
                 default:
+                    tv_consult_fees.setVisibility(View.GONE);
+                    tv_cancelation_fees.setVisibility(View.GONE);
                     tv_add.setVisibility(View.GONE);
                     add_person.setVisibility(View.GONE);
                     sp_name_list.setVisibility(View.GONE);
+            }
+
+            switch (jsonQueue.getServicePayment()) {
+                case R:
+                    btn_joinQueue.setVisibility(View.GONE);
+                    btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
+                    break;
+                case N:
+                    btn_joinQueue.setVisibility(View.VISIBLE);
+                    btn_pay_and_joinQueue.setVisibility(View.GONE);
+                    break;
+                case O:
+                    btn_joinQueue.setVisibility(View.VISIBLE);
+                    btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
+                    break;
             }
         }
         dismissProgress();
