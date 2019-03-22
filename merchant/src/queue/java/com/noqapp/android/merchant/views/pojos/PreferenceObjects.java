@@ -117,8 +117,6 @@ public class PreferenceObjects {
             e.printStackTrace();
         }
         Date endDate = new Date();
-        System.out.println(startDate);
-        System.out.println(endDate);
         long duration = endDate.getTime() - startDate.getTime();
         long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
         return diffInDays > 7 || monday;
