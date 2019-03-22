@@ -9,6 +9,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BaseMasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
@@ -26,11 +27,13 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.gson.Gson;
 
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
@@ -72,11 +75,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // Health Care Service Menu Screen
 public class HCSMenuActivity extends AppCompatActivity implements FilePresenter, AutoCompleteHCSMenuAdapter.SearchByPos, HCSMenuAdapter.StaggeredClick,
-        FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack{
+        FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -111,10 +115,12 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private int price = 0;
     private String currencySymbol;
     public static UpdateWholeList updateWholeList;
+    private PreferenceObjects preferenceObjects;
 
-    public interface UpdateWholeList{
+    public interface UpdateWholeList {
         void updateWholeList();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -166,10 +172,29 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 new AppUtils().hideKeyBoard(HCSMenuActivity.this);
             }
         });
-        if (isStoragePermissionAllowed()) {
+        if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs())) {
             callFileApi();
         } else {
-            requestStoragePermission();
+            try {
+                preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs(), PreferenceObjects.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (null == preferenceObjects) {
+                callFileApi();
+            } else {
+                if (preferenceObjects.isLastUpdateTimeExceed()) {
+                    callFileApi();
+                } else {
+                    masterDataMri = preferenceObjects.getMriList();
+                    masterDataPath = preferenceObjects.getPathologyList();
+                    masterDataScan = preferenceObjects.getScanList();
+                    masterDataSono = preferenceObjects.getSonoList();
+                    masterDataXray = preferenceObjects.getXrayList();
+                    masterDataSpec = preferenceObjects.getSpecList();
+                    bindAdapterData();
+                }
+            }
         }
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
         purchaseOrderApiCalls.setFindCustomerPresenter(this);
@@ -185,10 +210,14 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     }
 
     private void callFileApi() {
-        progressDialog.show();
-        BaseMasterLabApiCalls baseMasterLabApiCalls = new BaseMasterLabApiCalls();
-        baseMasterLabApiCalls.setFilePresenter(this);
-        baseMasterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        if (isStoragePermissionAllowed()) {
+            progressDialog.show();
+            BaseMasterLabApiCalls baseMasterLabApiCalls = new BaseMasterLabApiCalls();
+            baseMasterLabApiCalls.setFilePresenter(this);
+            baseMasterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+        } else {
+            requestStoragePermission();
+        }
     }
 
     @Override
@@ -301,50 +330,17 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                                     }
                                     Log.e("data is :", line);
                                 }
-                                HealthCareServiceEnum hcse = HealthCareServiceEnum.valueOf(jsonTopic.getBizCategoryId());
 
-                                AutoCompleteHCSMenuAdapter adapterSearch;
-                                switch (hcse) {
-                                    case SPEC:
-                                        hcsMenuAdapter = new HCSMenuAdapter(this, masterDataSpec, this, false);
-                                        rcv_menu.setAdapter(hcsMenuAdapter);
-                                        adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataSpec, null, this);
-                                        actv_search.setAdapter(adapterSearch);
-                                        break;
-                                    case SONO:
-                                        hcsMenuAdapter = new HCSMenuAdapter(this, masterDataSono, this, false);
-                                        rcv_menu.setAdapter(hcsMenuAdapter);
-                                        adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataSono, null, this);
-                                        actv_search.setAdapter(adapterSearch);
-                                        break;
-                                    case MRI:
-                                        hcsMenuAdapter = new HCSMenuAdapter(this, masterDataMri, this, false);
-                                        rcv_menu.setAdapter(hcsMenuAdapter);
-                                        adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataMri, null, this);
-                                        actv_search.setAdapter(adapterSearch);
-                                        break;
-                                    case XRAY:
-                                        hcsMenuAdapter = new HCSMenuAdapter(this, masterDataXray, this, false);
-                                        rcv_menu.setAdapter(hcsMenuAdapter);
-                                        adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataXray, null, this);
-                                        actv_search.setAdapter(adapterSearch);
-                                        break;
-                                    case PATH:
-                                        hcsMenuAdapter = new HCSMenuAdapter(this, masterDataPath, this, false);
-                                        rcv_menu.setAdapter(hcsMenuAdapter);
-                                        adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataPath, null, this);
-                                        actv_search.setAdapter(adapterSearch);
-                                        break;
-                                    case SCAN:
-                                        hcsMenuAdapter = new HCSMenuAdapter(this, masterDataScan, this, false);
-                                        rcv_menu.setAdapter(hcsMenuAdapter);
-                                        adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataScan, null, this);
-                                        actv_search.setAdapter(adapterSearch);
-                                        break;
-                                    default:
-                                }
-                                hcsMenuSelectAdapter = new HCSMenuAdapter(this, menuSelectData, this, true);
-                                rcv_menu_select.setAdapter(hcsMenuSelectAdapter);
+                                bindAdapterData();
+                                PreferenceObjects preferenceObjects = new PreferenceObjects();
+                                preferenceObjects.setMriList(preferenceObjects.clearListSelection(masterDataMri));
+                                preferenceObjects.setScanList(preferenceObjects.clearListSelection(masterDataScan));
+                                preferenceObjects.setSonoList(preferenceObjects.clearListSelection(masterDataSono));
+                                preferenceObjects.setXrayList(preferenceObjects.clearListSelection(masterDataXray));
+                                preferenceObjects.setPathologyList(preferenceObjects.clearListSelection(masterDataPath));
+                                preferenceObjects.setSpecList(preferenceObjects.clearListSelection(masterDataSpec));
+                                preferenceObjects.setLastUpdateDate(CommonHelper.SDF_YYYY_MM_DD.format(new Date()));
+                                LaunchActivity.getLaunchActivity().setSuggestionsProductsPrefs(preferenceObjects);
                             } catch (Exception e) {
                                 Log.e("Loading file=" + fileName + " line=" + lineCount + " reason={}", e.getLocalizedMessage(), e);
                                 throw new RuntimeException("Loading file=" + fileName + " line=" + lineCount);
@@ -362,6 +358,53 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 }
             }
         }
+    }
+
+    private void bindAdapterData() {
+
+        HealthCareServiceEnum hcse = HealthCareServiceEnum.valueOf(jsonTopic.getBizCategoryId());
+        AutoCompleteHCSMenuAdapter adapterSearch;
+        switch (hcse) {
+            case SPEC:
+                hcsMenuAdapter = new HCSMenuAdapter(this, masterDataSpec, this, false);
+                rcv_menu.setAdapter(hcsMenuAdapter);
+                adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataSpec, null, this);
+                actv_search.setAdapter(adapterSearch);
+                break;
+            case SONO:
+                hcsMenuAdapter = new HCSMenuAdapter(this, masterDataSono, this, false);
+                rcv_menu.setAdapter(hcsMenuAdapter);
+                adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataSono, null, this);
+                actv_search.setAdapter(adapterSearch);
+                break;
+            case MRI:
+                hcsMenuAdapter = new HCSMenuAdapter(this, masterDataMri, this, false);
+                rcv_menu.setAdapter(hcsMenuAdapter);
+                adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataMri, null, this);
+                actv_search.setAdapter(adapterSearch);
+                break;
+            case XRAY:
+                hcsMenuAdapter = new HCSMenuAdapter(this, masterDataXray, this, false);
+                rcv_menu.setAdapter(hcsMenuAdapter);
+                adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataXray, null, this);
+                actv_search.setAdapter(adapterSearch);
+                break;
+            case PATH:
+                hcsMenuAdapter = new HCSMenuAdapter(this, masterDataPath, this, false);
+                rcv_menu.setAdapter(hcsMenuAdapter);
+                adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataPath, null, this);
+                actv_search.setAdapter(adapterSearch);
+                break;
+            case SCAN:
+                hcsMenuAdapter = new HCSMenuAdapter(this, masterDataScan, this, false);
+                rcv_menu.setAdapter(hcsMenuAdapter);
+                adapterSearch = new AutoCompleteHCSMenuAdapter(this, masterDataScan, null, this);
+                actv_search.setAdapter(adapterSearch);
+                break;
+            default:
+        }
+        hcsMenuSelectAdapter = new HCSMenuAdapter(this, menuSelectData, this, true);
+        rcv_menu_select.setAdapter(hcsMenuSelectAdapter);
     }
 
     @Override
@@ -417,7 +460,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     public void searchByPos(HCSMenuObject menuObject) {
         new AppUtils().hideKeyBoard(this);
         actv_search.setText("");
-        staggeredClick(false,  menuObject, 0);
+        staggeredClick(false, menuObject, 0);
 
 
     }
@@ -426,12 +469,12 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     public void staggeredClick(boolean isRemove, HCSMenuObject hcsMenuObject, int pos) {
         {
             new AppUtils().hideKeyBoard(this);
-            if(isRemove){
+            if (isRemove) {
                 menuSelectData.remove(pos);
                 view_test.setVisibility(menuSelectData.size() > 0 ? View.VISIBLE : View.GONE);
                 hcsMenuSelectAdapter = new HCSMenuAdapter(this, menuSelectData, this, true);
                 rcv_menu_select.setAdapter(hcsMenuSelectAdapter);
-            }else {
+            } else {
                 if (isItemExist(hcsMenuObject.getSortName())) {
                     Toast.makeText(this, "Test Already added in list", Toast.LENGTH_LONG).show();
                 } else {
@@ -458,13 +501,14 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         return false;
     }
 
-    private double calculateTotalPrice( ) {
+    private double calculateTotalPrice() {
         int amount = 0;
         for (int i = 0; i < menuSelectData.size(); i++) {
             amount += 1 * menuSelectData.get(i).getPrice();
         }
         return amount;
     }
+
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -480,7 +524,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         ll_order_list = view.findViewById(R.id.ll_order_list);
         rl_total = view.findViewById(R.id.rl_total);
         ll_order_list.removeAllViews();
-        if(menuSelectData.size() > 0) {
+        if (menuSelectData.size() > 0) {
             price = 0;
             for (int i = 0; i < menuSelectData.size(); i++) {
                 final int pos = i;
@@ -489,7 +533,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 TextView tv_title = v.findViewById(R.id.tv_title);
                 TextView tv_amount = v.findViewById(R.id.tv_amount);
                 tv_title.setText(menuSelectData.get(i).getJsonMasterLab().getProductShortName());
-                tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(i).getPrice()));
+                tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(i).getPrice()));
                 tv_amount.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -520,11 +564,11 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                                 } else {
 //                                    new AppUtils().hideKeyBoard(HCSMenuActivity.this);
 //                                    mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                                    InputMethodManager imm = (InputMethodManager)getSystemService(mContext.INPUT_METHOD_SERVICE);
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(mContext.INPUT_METHOD_SERVICE);
                                     imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
                                     menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
-                                    tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(pos).getPrice()));
-                                    tv_cost.setText(currencySymbol + " "+ String.valueOf(calculateTotalPrice()));
+                                    tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(pos).getPrice()));
+                                    tv_cost.setText(currencySymbol + " " + String.valueOf(calculateTotalPrice()));
                                     mAlertDialog.dismiss();
                                 }
                             }
@@ -533,9 +577,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     }
                 });
                 ll_order_list.addView(v);
-                price += 1 * menuSelectData.get(pos).getPrice() ;
+                price += 1 * menuSelectData.get(pos).getPrice();
             }
-            tv_cost.setText(currencySymbol + " "+String.valueOf(price));
+            tv_cost.setText(currencySymbol + " " + String.valueOf(price));
         }
 
         tv_toolbar_title.setText("Create order");
@@ -654,7 +698,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         for (HCSMenuObject value : menuSelectData) {
                             ll.add(new JsonPurchaseOrderProduct()
                                     .setProductId("")
-                                    .setProductPrice((int)value.getPrice()  * 100)
+                                    .setProductPrice((int) value.getPrice() * 100)
                                     .setProductQuantity(1)
                                     .setProductName(value.getJsonMasterLab().getProductName()));
                             price += 1 * value.getPrice() * 100;
@@ -673,7 +717,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         jsonPurchaseOrder.setAdditionalNote("");
                         jsonPurchaseOrder.setCustomized(true);
                         purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                       // Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
+                        // Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
                     } else {
                         ShowAlertInformation.showNetworkDialog(HCSMenuActivity.this);
                     }

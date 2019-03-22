@@ -96,6 +96,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_USER_AUTH = "auth";
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION_PREF = "suggestionsPrefs";
+    protected final String KEY_SUGGESTION_PRODUCT_PREF = "suggestionsProductsPrefs";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
@@ -329,10 +330,19 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         return sharedpreferences.getString(KEY_SUGGESTION_PREF, null);
     }
 
+    public String getSuggestionsProductPrefs() {
+        return sharedpreferences.getString(KEY_SUGGESTION_PRODUCT_PREF, null);
+    }
+
 
     public void setSuggestionsPrefs(PreferenceObjects testCaseObjects) {
         String strInput = new Gson().toJson(testCaseObjects);
         sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
+    }
+
+    public void setSuggestionsProductsPrefs(PreferenceObjects testCaseObjects) {
+        String strInput = new Gson().toJson(testCaseObjects);
+        sharedpreferences.edit().putString(KEY_SUGGESTION_PRODUCT_PREF, strInput).apply();
     }
 
     public ArrayList<String> getCounterNames() {
@@ -649,7 +659,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             }
         });
         mAlertDialog.show();
-        ShowAlertInformation.resizeAlert(mAlertDialog,this);
+        ShowAlertInformation.resizeAlert(mAlertDialog, this);
     }
 
     public void setActionBarTitle(String title) {
@@ -758,6 +768,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void callPreference() {
 
     }
+
     public void callPreferredStore() {
 
     }

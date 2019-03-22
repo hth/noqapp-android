@@ -65,4 +65,13 @@ public class HCSMenuObject implements Comparable<HCSMenuObject> {
         return ret.toString();
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("HCSMenuObject{");
+        sb.append("isSelect=").append(isSelect);
+        sb.append(", jsonMasterLab=").append(jsonMasterLab);
+        sb.append(", price=").append(price);
+        sb.append('}');
+        return sb.toString();
+    }
 }
