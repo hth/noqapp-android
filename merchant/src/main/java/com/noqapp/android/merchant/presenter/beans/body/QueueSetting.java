@@ -72,6 +72,9 @@ public class QueueSetting {
     @JsonProperty ("scUn")
     private String scheduledUntilDay;
 
+    @JsonProperty("ep")
+    private boolean enabledPayment;
+
     @JsonProperty("pp")
     private int productPrice;
 
@@ -210,6 +213,15 @@ public class QueueSetting {
 
     public QueueSetting setScheduledUntilDay(String scheduledUntilDay) {
         this.scheduledUntilDay = scheduledUntilDay;
+        return this;
+    }
+
+    public boolean isEnabledPayment() {
+        return enabledPayment;
+    }
+
+    public QueueSetting setEnabledPayment(boolean enabledPayment) {
+        this.enabledPayment = enabledPayment;
         return this;
     }
 
