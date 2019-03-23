@@ -39,43 +39,60 @@ public class QueueReview {
     @JsonProperty("rv")
     private String review;
 
+    @JsonProperty("qid")
+    private String queueUserId;
+
     public String getCodeQR() {
         return codeQR;
     }
 
-    public void setCodeQR(String codeQR) {
+    public QueueReview setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
     }
 
     public int getToken() {
         return token;
     }
 
-    public void setToken(int token) {
+    public QueueReview setToken(int token) {
         this.token = token;
+        return this;
     }
 
     public int getRatingCount() {
         return ratingCount;
     }
 
-    public void setRatingCount(int ratingCount) {
+    public QueueReview setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
     }
 
     public int getHoursSaved() {
         return hoursSaved;
     }
 
-    public void setHoursSaved(int hoursSaved) {
+    public QueueReview setHoursSaved(int hoursSaved) {
         this.hoursSaved = hoursSaved;
+        return this;
     }
 
     public String getReview() {
         return review;
     }
 
-    public void setReview(String review) {
+    public QueueReview setReview(String review) {
         this.review = review;
+        return this;
+    }
+
+    public String getQueueUserId() {
+        return queueUserId;
+    }
+
+    public QueueReview setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
     }
 }

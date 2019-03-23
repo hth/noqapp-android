@@ -397,7 +397,7 @@ task jacocoTestReport(type: JacocoReport) {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -408,9 +408,9 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.8.1'
     implementation 'net.danlew:android.joda:2.9.9.3'
     api 'com.google.guava:guava:27.0.1-android'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
-    implementation 'com.google.firebase:firebase-messaging:17.4.0'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
+    implementation 'com.google.firebase:firebase-messaging:17.5.0'
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
@@ -427,8 +427,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
-    //Don't update the com.google.android:flexbox:1.0.0 it will cause build issue
-    implementation 'com.google.android:flexbox:1.0.0'
+    implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation project(':common')
     implementation project(':cashfreeSDK')
