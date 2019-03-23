@@ -29,8 +29,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +40,8 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -153,17 +153,15 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onBackPressed();
             }
         });
         ratingBar.setRating(4.0f);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating,
-                                        boolean fromUser) {
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 tv_rating_value.setText(rating + "");
-
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_review));
@@ -178,12 +176,6 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 //                }
                 else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        QueueReview rr = new QueueReview();
-                        rr.setCodeQR(jtk.getCodeQR());
-                        rr.setToken(jtk.getToken());
-                        rr.setHoursSaved(selectedRadio); // update according select radio
-                        rr.setRatingCount(Math.round(ratingBar.getRating()));
-                        rr.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
                         /* New instance of progressbar because it is a new activity. */
                         progressDialog = new ProgressDialog(ReviewActivity.this);
                         progressDialog.setIndeterminate(true);
@@ -198,9 +190,23 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                                 orderReview.setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderReview);
                             } else {
+                                QueueReview rr = new QueueReview()
+                                    .setCodeQR(jtk.getCodeQR())
+                                    .setToken(jtk.getToken())
+                                    .setHoursSaved(selectedRadio) // update according select radio
+                                    .setRatingCount(Math.round(ratingBar.getRating()))
+                                    .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString())
+                                    .setQueueUserId(jtk.getQueueUserId());
                                 new ReviewApiAuthenticCalls(ReviewActivity.this).queue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), rr);
                             }
                         } else {
+                            QueueReview rr = new QueueReview()
+                                .setCodeQR(jtk.getCodeQR())
+                                .setToken(jtk.getToken())
+                                .setHoursSaved(selectedRadio) // update according select radio
+                                .setRatingCount(Math.round(ratingBar.getRating()))
+                                .setReview(TextUtils.isEmpty(edt_review.getText().toString()) ? null : edt_review.getText().toString());
+
                             ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
                             reviewApiUnAuthenticCall.setReviewPresenter(ReviewActivity.this);
                             reviewApiUnAuthenticCall.queue(UserUtils.getDeviceId(), rr);
