@@ -426,16 +426,129 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
             acsp_pathology.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListPath()));
             acsp_pharmacy.setAdapter(new CustomSpinnerAdapter(getActivity(), preferredStoreList.getListMedicine()));
 
+            if(!TextUtils.isEmpty(MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getStoreIdPathology())){
+                acsp_pathology.setSelection(getSelectionPos(preferredStoreList.getListPath(), HealthCareServiceEnum.PATH,MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getStoreIdPathology()));
+            }else{
+                acsp_pathology.setSelection(getSelectionPos(preferredStoreList.getListPath(), HealthCareServiceEnum.PATH));
+            }
+            if(!TextUtils.isEmpty(MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getStoreIdPharmacy())){
+                acsp_pharmacy.setSelection(getSelectionPos(preferredStoreList.getListMedicine(), null,MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord.getStoreIdPharmacy()));
+            }else{
+                acsp_pharmacy.setSelection(getSelectionPos(preferredStoreList.getListMedicine(), null));
+            }
             acsp_mri.setSelection(getSelectionPos(preferredStoreList.getListMri(), HealthCareServiceEnum.MRI));
             acsp_scan.setSelection(getSelectionPos(preferredStoreList.getListScan(), HealthCareServiceEnum.SCAN));
             acsp_sono.setSelection(getSelectionPos(preferredStoreList.getListSono(), HealthCareServiceEnum.SONO));
             acsp_xray.setSelection(getSelectionPos(preferredStoreList.getListXray(), HealthCareServiceEnum.XRAY));
             acsp_special.setSelection(getSelectionPos(preferredStoreList.getListSpec(), HealthCareServiceEnum.SPEC));
-            acsp_pathology.setSelection(getSelectionPos(preferredStoreList.getListPath(), HealthCareServiceEnum.PATH));
-            acsp_pharmacy.setSelection(getSelectionPos(preferredStoreList.getListMedicine(), null));
+            JsonMedicalRecord jmr = MedicalCaseActivity.getMedicalCaseActivity().jsonMedicalRecord;
+            for (int i = 0; i < jmr.getMedicalRadiologyLists().size(); i++) {
+               LabCategoryEnum lce = jmr.getMedicalRadiologyLists().get(i).getLabCategory();
 
+                    switch (lce){
+                        case MRI:
+                            acsp_mri.setSelection(getSelectionPos(preferredStoreList.getListMri(), HealthCareServiceEnum.MRI,jmr.getMedicalRadiologyLists().get(i).getBizStoreId()));
+                            break;
+                        case SCAN:
+                            acsp_scan.setSelection(getSelectionPos(preferredStoreList.getListScan(), HealthCareServiceEnum.SCAN,jmr.getMedicalRadiologyLists().get(i).getBizStoreId()));
+                            break;
+                        case SONO:
+                            acsp_sono.setSelection(getSelectionPos(preferredStoreList.getListSono(), HealthCareServiceEnum.SONO,jmr.getMedicalRadiologyLists().get(i).getBizStoreId()));
+                            break;
+                        case XRAY:
+                            acsp_xray.setSelection(getSelectionPos(preferredStoreList.getListXray(), HealthCareServiceEnum.XRAY,jmr.getMedicalRadiologyLists().get(i).getBizStoreId()));
+                            break;
+                        case PATH: // Do nothing
+                            break;
+                        case SPEC:
+                            acsp_special.setSelection(getSelectionPos(preferredStoreList.getListSpec(), HealthCareServiceEnum.SPEC,jmr.getMedicalRadiologyLists().get(i).getBizStoreId()));
+                            break;
+                    }
+            }
         }
     }
+
+    private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse,String storeId) {
+
+        if (null == storeId) {
+            return 0;
+        }
+        if (null == hcse) {
+            for (int i = 0; i < temp.size(); i++) {
+                if (temp.get(i).getBizStoreId().equals(storeId)) {
+                    return i;
+                }
+            }
+            return 0;
+        }
+        switch (hcse) {
+            case SONO: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case SCAN: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case MRI: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case PATH: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case XRAY: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case SPEC: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            case PHYS: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+            default: {
+                for (int i = 0; i < temp.size(); i++) {
+                    if (temp.get(i).getBizStoreId().equals(storeId)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
+        }
+    }
+
 
     private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse) {
         PreferredStoreInfo preferredStoreInfo = MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPreferredStoreInfoHashMap().
@@ -519,7 +632,6 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
 
         }
     }
-
     private void hideInvestigationViews(CaseHistory caseHistory) {
         ll_mri.setVisibility(caseHistory.getMriList().size() == 0 ? View.GONE : View.VISIBLE);
         ll_scan.setVisibility(caseHistory.getScanList().size() == 0 ? View.GONE : View.VISIBLE);
