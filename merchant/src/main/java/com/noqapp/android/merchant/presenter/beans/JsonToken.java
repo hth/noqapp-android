@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 
@@ -56,6 +57,9 @@ public class JsonToken implements Serializable {
 
     @JsonProperty("e")
     private String expectedServiceBegin;
+
+    @JsonProperty("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -132,6 +136,15 @@ public class JsonToken implements Serializable {
 
     public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 
