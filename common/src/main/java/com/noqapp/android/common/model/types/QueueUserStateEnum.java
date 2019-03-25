@@ -5,6 +5,7 @@ package com.noqapp.android.common.model.types;
  * Date: 4/16/17 5:39 PM
  */
 public enum QueueUserStateEnum {
+    I("I", "Initial"),
     Q("Q", "In Queue"),
     N("N", "No Show"),
     A("A", "Abort"),
