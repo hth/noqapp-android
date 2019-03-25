@@ -1,12 +1,10 @@
 package com.noqapp.android.merchant.utils;
 
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.DecimalFormat;
 
-public class MyAxisValueFormatter implements IAxisValueFormatter
-{
+public class MyAxisValueFormatter extends ValueFormatter {
 
     private DecimalFormat mFormat;
 
@@ -15,7 +13,7 @@ public class MyAxisValueFormatter implements IAxisValueFormatter
     }
 
     @Override
-    public String getFormattedValue(float value, AxisBase axis) {
+    public String getFormattedValue(float value) {
         return mFormat.format(value);
     }
 }

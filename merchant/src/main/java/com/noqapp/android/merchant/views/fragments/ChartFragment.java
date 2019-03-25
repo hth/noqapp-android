@@ -9,7 +9,6 @@ import com.noqapp.android.merchant.utils.MyValueFormatter;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -19,17 +18,17 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.fragment.app.Fragment;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -90,14 +89,14 @@ public class ChartFragment extends Fragment {
         // To hide the small color cubes at bottom of screen
         mChart.getLegend().setEnabled(false);
 
-        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter();
+        ValueFormatter xAxisFormatter = new DayAxisValueFormatter();
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(12);
         xAxis.setValueFormatter(xAxisFormatter);
-        IAxisValueFormatter custom = new MyAxisValueFormatter();
+        ValueFormatter custom = new MyAxisValueFormatter();
         leftAxis = mChart.getAxisLeft();
         // leftAxis.setLabelCount(5, false);
         leftAxis.setValueFormatter(custom);
@@ -245,13 +244,13 @@ public class ChartFragment extends Fragment {
         }
     }
 
-    public class DayAxisValueFormatter implements IAxisValueFormatter {
+    public class DayAxisValueFormatter extends ValueFormatter {
 
         public DayAxisValueFormatter() {
         }
 
         @Override
-        public String getFormattedValue(float value, AxisBase axis) {
+        public String getFormattedValue(float value) {
             try {
                 int index = (int) value - 1;
                 return mMonths.get(index); // minus 1 because array start with 0
