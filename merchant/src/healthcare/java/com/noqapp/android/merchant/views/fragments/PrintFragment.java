@@ -32,9 +32,6 @@ import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.AppCompatSpinner;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -45,6 +42,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.fragment.app.Fragment;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -147,7 +147,6 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
                     tv_followup.setText("");
                     MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setFollowup("");
                     sc_follow_up.clearSelection();
-                    ;
                 }
             }
         });
