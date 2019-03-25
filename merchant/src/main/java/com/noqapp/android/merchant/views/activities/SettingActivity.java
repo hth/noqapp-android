@@ -64,7 +64,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     protected ImageView actionbarBack, iv_delete_scheduling;
     private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline,togglePaymentSetting;
     private String codeQR;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute, tv_close_day_of_week;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
     private CheckBox cb_limit;
     private EditText edt_token_no;
@@ -117,7 +117,6 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleTodayClosed.setOnClickListener(this);
         togglePreventJoin.setOnClickListener(this);
         toggleStoreOffline.setOnClickListener(this);
-        togglePaymentSetting.setOnClickListener(this);
 
         pay_list.clear();
         pay_list.addAll(ServicePaymentEnum.asListOfDescription());
@@ -226,7 +225,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         tv_store_close.setOnClickListener(new TextViewClick(tv_store_close));
         tv_limited_label = findViewById(R.id.tv_limited_label);
         tv_delay_in_minute = findViewById(R.id.tv_delay_in_minute);
-        tv_close_day_of_week = findViewById(R.id.tv_close_day_of_week);
+        TextView tv_close_day_of_week = findViewById(R.id.tv_close_day_of_week);
         tv_scheduling_from = findViewById(R.id.tv_scheduleing_from);
         tv_scheduling_ending = findViewById(R.id.tv_scheduleing_ending);
         tv_scheduling_status = findViewById(R.id.tv_scheduling_status);
