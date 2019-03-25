@@ -60,16 +60,16 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
 
         if (!TextUtils.isEmpty(imageUrls.get(listPosition))) {
             if(imageUrls.get(listPosition).endsWith(".pdf")){
-                Picasso.with(context)
+                Picasso.get()
                         .load(R.drawable.pdf_thumb)
                         .into(holder.iv_thumb);
             }else {
-                Picasso.with(context)
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(listPosition))
                         .into(holder.iv_thumb);
             }
         } else {
-            Picasso.with(context).load(R.drawable.profile_blue).into(holder.iv_thumb);
+            Picasso.get().load(R.drawable.profile_blue).into(holder.iv_thumb);
         }
     }
 

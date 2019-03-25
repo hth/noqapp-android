@@ -84,7 +84,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerView rcv_facility;
     private String codeQR;
     private BizStoreElastic bizStoreElastic;
-    private boolean isFuture = false;
     private float rating = 0;
     private int reviewCount = 0;
     private RecyclerViewGridAdapter.OnItemClickListener listener;
@@ -252,7 +251,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             rcv_facility.setLayoutManager(getFlexBoxLayoutManager());
             rcv_facility.setAdapter(new StaggeredGridAdapter(facilities));
-            Picasso.with(this)
+            Picasso.get()
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
@@ -264,7 +263,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             if (bizStoreElastic.getBizServiceImages().size() > 0) {
                 storeServiceImages = (ArrayList<String>) bizStoreElastic.getBizServiceImages();
                 // load first image default
-                Picasso.with(this)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getBizServiceImages().get(0)))
                         .placeholder(ImageUtils.getBannerPlaceholder(this))
                         .error(ImageUtils.getBannerErrorPlaceholder(this))
@@ -274,7 +273,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
 
-            if(null != storeServiceImages && storeServiceImages.size()>0){
+            if (null != storeServiceImages && storeServiceImages.size() > 0) {
                 iv_category_banner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -286,7 +285,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 });
             }
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-
+            boolean isFuture = false; // for future
             if (isFuture) {
                 RecyclerViewGridAdapter recyclerView_Adapter
                         = new RecyclerViewGridAdapter(this,

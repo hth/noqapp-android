@@ -122,11 +122,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             String imageUrl = bundle.getStringExtra("imageUrl");
             if (!TextUtils.isEmpty(imageUrl)) {
 
-                Picasso.with(this).load(imageUrl).
+                Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
                         error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
-                Picasso.with(this).load(R.drawable.profile_theme).into(iv_profile);
+                Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
             actionbarBack.setOnClickListener(new View.OnClickListener() {
                 @Override

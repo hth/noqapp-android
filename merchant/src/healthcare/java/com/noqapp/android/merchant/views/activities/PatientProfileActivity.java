@@ -112,7 +112,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             }
         });
 
-        Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+        Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             new AsyncTaskTemp().execute();
@@ -282,10 +282,10 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     }
 
     private void loadProfilePic(String imageUrl) {
-        Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+        Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
                         .into(iv_profile);
             }

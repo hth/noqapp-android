@@ -136,11 +136,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
             if (!TextUtils.isEmpty(imageUrl)) {
 
-                Picasso.with(this).load(imageUrl).
+                Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
                         error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
-                Picasso.with(this).load(R.drawable.profile_theme).into(iv_profile);
+                Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
             if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));

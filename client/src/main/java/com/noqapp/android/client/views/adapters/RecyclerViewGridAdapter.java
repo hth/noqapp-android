@@ -65,7 +65,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         }
         Vholder.tv_title.setText(jsonCategory.getCategoryName());
         if (!TextUtils.isEmpty(jsonCategory.getDisplayImage())) {
-            Picasso.with(context)
+            Picasso.get()
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, jsonCategory.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
