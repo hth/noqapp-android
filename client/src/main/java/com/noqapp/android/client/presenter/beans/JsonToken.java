@@ -1,6 +1,7 @@
 package com.noqapp.android.client.presenter.beans;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -8,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * User: hitender
@@ -56,6 +55,9 @@ public class JsonToken {
 
     @JsonProperty("v")
     private boolean clientVisitedThisStore;
+
+    @JsonProperty("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -112,6 +114,19 @@ public class JsonToken {
         return expectedServiceBegin;
     }
 
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
+        return this;
+    }
+
     public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
         return this;
@@ -153,16 +168,18 @@ public class JsonToken {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("codeQR", codeQR)
-                .append("displayName", displayName)
-                .append("queueStatus", queueStatus)
-                .append("servingNumber", servingNumber)
-                .append("token", token)
-                .append("customerName", customerName)
-                .append("expectedServiceBegin", expectedServiceBegin)
-                .append("clientVisitedThisStore", clientVisitedThisStore)
-                .append("error", error)
-                .toString();
+        final StringBuffer sb = new StringBuffer("JsonToken{");
+        sb.append("codeQR='").append(codeQR).append('\'');
+        sb.append(", displayName='").append(displayName).append('\'');
+        sb.append(", queueStatus=").append(queueStatus);
+        sb.append(", servingNumber=").append(servingNumber);
+        sb.append(", token=").append(token);
+        sb.append(", customerName='").append(customerName).append('\'');
+        sb.append(", expectedServiceBegin='").append(expectedServiceBegin).append('\'');
+        sb.append(", clientVisitedThisStore=").append(clientVisitedThisStore);
+        sb.append(", jsonPurchaseOrder=").append(jsonPurchaseOrder);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

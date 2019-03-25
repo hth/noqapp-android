@@ -78,14 +78,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
-                    joinQueue();
+                    joinQueue(false);
             }
         });
         btn_pay_and_joinQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
-                    joinQueue();
+                    joinQueue(false);
             }
         });
         tv_rating = findViewById(R.id.tv_rating);
@@ -135,7 +135,6 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             String imageUrl = bundle.getStringExtra("imageUrl");
             JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
             if (!TextUtils.isEmpty(imageUrl)) {
-
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
                         error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
@@ -305,7 +304,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
 
-    private void joinQueue() {
+    private void joinQueue(boolean isPayment) {
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
@@ -322,7 +321,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                             Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
                             sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
                         } else {
-                            callAfterJoin();
+                            callAfterJoin(isPayment);
                         }
                     } else {
                         // please login to avail this feature
@@ -333,7 +332,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     }
                 } else {
                     // any user can join
-                    callAfterJoin();
+                    callAfterJoin(isPayment);
                 }
             } else {
                 ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
@@ -341,7 +340,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         }
     }
 
-    private void callAfterJoin() {
+    private void callAfterJoin(boolean isPayment) {
         Intent in = new Intent(this, AfterJoinActivity.class);
         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
