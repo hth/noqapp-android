@@ -56,16 +56,16 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
     public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
         if (isDocument) {
             if (imageUrls.get(position).endsWith(".pdf")) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(R.drawable.pdf_thumb)
                         .into(holder.iv_photo);
             } else {
-                Picasso.with(context)
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrls.get(position))
                         .into(holder.iv_photo);
             }
         } else {
-            Picasso.with(context)
+            Picasso.get()
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, imageUrls.get(position)))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))

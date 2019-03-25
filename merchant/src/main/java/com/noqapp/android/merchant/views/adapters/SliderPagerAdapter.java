@@ -56,7 +56,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             TouchImageView im_slider = view.findViewById(R.id.im_slider);
 
             if (image_arraylist.get(position).endsWith(".pdf")) {
-                Picasso.with(activity.getApplicationContext())
+                Picasso.get()
                         .load(R.drawable.view_pdf)
                         .into(im_slider);
                 im_slider.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,7 @@ public class SliderPagerAdapter extends PagerAdapter {
                 });
             } else {
                 progress_bar.setVisibility(View.VISIBLE);
-                Picasso.with(activity.getApplicationContext())
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
                         .into(im_slider, new Callback() {
                             @Override
@@ -82,7 +82,7 @@ public class SliderPagerAdapter extends PagerAdapter {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 progress_bar.setVisibility(View.GONE);
                             }
                         });
@@ -92,7 +92,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
-            Picasso.with(activity.getApplicationContext())
+            Picasso.get()
                     .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
                    // .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
                    // .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional

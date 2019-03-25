@@ -513,7 +513,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             }else {
                 progressDialogImage.show();
                 progressDialogImage.setContentView(R.layout.progress_lay);
-                Picasso.with(DocumentUploadActivity.this)
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + imageUrl)
                         .into(iv_large, new Callback() {
                             @Override
@@ -522,7 +522,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 progressDialogImage.dismiss();
                             }
                         });

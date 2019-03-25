@@ -77,29 +77,29 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
             if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
-                Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
-                Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image1);
+                Picasso.get().load(R.drawable.profile_tv).into(image);
+                Picasso.get().load(R.drawable.profile_tv).into(image1);
             } else {
-                Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
+                Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                     @Override
                     public void onSuccess() {
 
                     }
 
                     @Override
-                    public void onError() {
-                        Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image);
+                    public void onError(Exception e) {
+                        Picasso.get().load(R.drawable.profile_tv).into(image);
                     }
                 });
-                Picasso.with(getActivity()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
+                Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
                     @Override
                     public void onSuccess() {
 
                     }
 
                     @Override
-                    public void onError() {
-                        Picasso.with(getActivity()).load(R.drawable.profile_tv).into(image1);
+                    public void onError(Exception e) {
+                        Picasso.get().load(R.drawable.profile_tv).into(image1);
                     }
                 });
             }

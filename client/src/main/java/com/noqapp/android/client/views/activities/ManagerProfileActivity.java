@@ -22,6 +22,8 @@ import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.google.android.material.tabs.TabLayout;
+
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -31,13 +33,12 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -73,10 +74,10 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         tv_total_review = findViewById(R.id.tv_total_review);
         tv_total_rating = findViewById(R.id.tv_total_rating);
         tv_name.setText(managerName);
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(managerImageUrl)) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, managerImageUrl))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))

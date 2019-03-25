@@ -105,13 +105,13 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 }
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
-                Picasso.with(context)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                         .placeholder(ImageUtils.getThumbPlaceholder(context))
                         .error(ImageUtils.getThumbErrorPlaceholder(context))
                         .into(holder.iv_main);
             else {
-                Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
+                Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
             holder.card_view.setOnClickListener(new View.OnClickListener() {
                 @Override

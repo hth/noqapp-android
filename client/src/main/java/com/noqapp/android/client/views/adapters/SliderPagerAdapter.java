@@ -52,7 +52,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             TouchImageView im_slider = view.findViewById(R.id.im_slider);
 
             if (image_arraylist.get(position).endsWith(".pdf")) {
-                Picasso.with(activity.getApplicationContext())
+                Picasso.get()
                         .load(R.drawable.pdf_thumb)
                         .into(im_slider);
                 im_slider.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +68,7 @@ public class SliderPagerAdapter extends PagerAdapter {
                     }
                 });
             } else {
-                Picasso.with(activity.getApplicationContext())
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position))
                         .into(im_slider);
             }
@@ -76,7 +76,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
-            Picasso.with(activity.getApplicationContext())
+            Picasso.get()
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
                     .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional

@@ -457,10 +457,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             tv_email.setText("Please login");
             tv_name.setText("Guest User");
         }
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))

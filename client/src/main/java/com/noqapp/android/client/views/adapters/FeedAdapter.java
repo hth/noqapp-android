@@ -53,7 +53,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> 
             params.rightMargin = 20;
         }
         JsonFeed item = dataSet.get(listPosition);
-        Picasso.with(context).load(item.getImageUrl()).into(holder.iv_bg);
+        Picasso.get().load(item.getImageUrl()).into(holder.iv_bg);
         holder.tv_title.setText(item.getTitle());
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

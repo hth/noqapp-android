@@ -26,7 +26,7 @@ public class ImageViewerActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_image_viewer);
         TouchImageView im_slider = findViewById(R.id.im_slider);
-        Picasso.with(this)
+        Picasso.get()
                 .load("https://noqapp.com/imgs/appmages/garbhasanskar-ssd-march-2019.png")
                 .into(im_slider);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);

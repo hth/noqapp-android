@@ -120,10 +120,10 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
@@ -150,7 +150,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         dismissProgress();
         Log.v("Image removed", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+            Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
             NoQueueBaseActivity.setUserProfileUri("");
             Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
         } else {

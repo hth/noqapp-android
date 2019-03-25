@@ -64,14 +64,14 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
                 holder.tv_detail.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
-            Picasso.with(context)
+            Picasso.get()
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, item.getDisplayImage()))
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
         }
         else {
-            Picasso.with(context).load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
+            Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
         holder.tv_address.setText(AppUtilities.getStoreAddress(item.getTown(),item.getArea()));
         holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(

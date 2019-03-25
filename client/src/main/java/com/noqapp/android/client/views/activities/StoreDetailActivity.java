@@ -222,13 +222,13 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             tv_rating_review.setText(String.valueOf(jsonQueue.getReviewCount()) + " Reviews");
         }
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
-            Picasso.with(this)
+            Picasso.get()
                     .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, bizStoreElastic.getDisplayImage()))
                     .placeholder(ImageUtils.getBannerPlaceholder(this))
                     .error(ImageUtils.getBannerErrorPlaceholder(this))
                     .into(iv_category_banner);
         else {
-            Picasso.with(this).load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
+            Picasso.get().load(ImageUtils.getBannerPlaceholder()).into(iv_category_banner);
         }
         //
         List<AmenityEnum> amenities = jsonQueue.getAmenities();

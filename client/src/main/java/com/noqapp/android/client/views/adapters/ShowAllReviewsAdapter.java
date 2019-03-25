@@ -43,10 +43,10 @@ public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAd
         holder.tv_name.setText(jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());
         holder.tv_rating.setText(String.valueOf(jsonReview.getRatingCount()));
-        Picasso.with(context).load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {
-                Picasso.with(context)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonReview.getProfileImage()))
                         .placeholder(ImageUtils.getProfilePlaceholder(context))
                         .error(ImageUtils.getProfileErrorPlaceholder(context))

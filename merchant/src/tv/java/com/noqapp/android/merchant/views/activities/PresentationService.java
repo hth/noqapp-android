@@ -326,12 +326,12 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 //                        case MV: {
 //                            ll_profile.setVisibility(View.GONE);
 //                            if (url_pos < urlList.size()) {
-//                                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+//                                Picasso.get().load(urlList.get(url_pos)).into(iv_advertisement);
 //                                iv_advertisement.setVisibility(View.VISIBLE);
 //                                ++url_pos;
 //                            } else {
 //                                url_pos = 0;
-//                                Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+//                                Picasso.get().load(urlList.get(url_pos)).into(iv_advertisement);
 //                                iv_advertisement.setVisibility(View.VISIBLE);
 //                            }
 //                        }
@@ -339,7 +339,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 //                        case PP:
 //                            if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
 //                                ll_profile.setVisibility(View.VISIBLE);
-//                                Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
+//                                Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
 //                                tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
 //                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
 //                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
@@ -366,15 +366,15 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         imageName = "";
                     }
 
-                    Picasso.with(getContext()).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
+                    Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
                         @Override
                         public void onSuccess() {
 
                         }
 
                         @Override
-                        public void onError() {
-                            Picasso.with(DetailPresentation.this.context).load(R.drawable.profile_tv).into(iv_profile);
+                        public void onError(Exception e) {
+                            Picasso.get().load(R.drawable.profile_tv).into(iv_profile);
                         }
                     });
                     tv_doctor_name.setText("Dr. " + jsonVigyaapanTV_profile.getJsonProfessionalProfileTV().getName());
@@ -390,7 +390,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     ll_no_list.setVisibility(View.GONE);
                     Log.e("Inside Images", "Images: " + sequence);
                     if (url_pos < urlList.size()) {
-                        Picasso.with(getContext()).load(urlList.get(url_pos)).into(iv_advertisement);
+                        Picasso.get().load(urlList.get(url_pos)).into(iv_advertisement);
                         iv_advertisement.setVisibility(View.VISIBLE);
                         ++url_pos;
                     } else {
@@ -411,29 +411,29 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 ll_no_list.setVisibility(View.GONE);
                 if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
                     if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
-                        Picasso.with(this.context).load(R.drawable.profile_tv).into(image);
-                        Picasso.with(this.context).load(R.drawable.profile_tv).into(image1);
+                        Picasso.get().load(R.drawable.profile_tv).into(image);
+                        Picasso.get().load(R.drawable.profile_tv).into(image1);
                     } else {
-                        Picasso.with(this.context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
+                        Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                             @Override
                             public void onSuccess() {
 
                             }
 
                             @Override
-                            public void onError() {
-                                Picasso.with(DetailPresentation.this.context).load(R.drawable.profile_tv).into(image);
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.profile_tv).into(image);
                             }
                         });
-                        Picasso.with(this.context).load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
+                        Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
                             @Override
                             public void onSuccess() {
 
                             }
 
                             @Override
-                            public void onError() {
-                                Picasso.with(DetailPresentation.this.context).load(R.drawable.profile_tv).into(image1);
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.profile_tv).into(image1);
                             }
                         });
                     }

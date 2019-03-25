@@ -196,7 +196,7 @@ public class QueueApiAuthenticCall {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Resp payBeforeJoinQueue", response.body().toString());
-                        tokenPresenter.tokenPresenterResponse(response.body());
+                        tokenPresenter.paidTokenPresenterResponse(response.body());
                         jsonToken = response.body();
                     } else {
                         Log.e(TAG, "Failed to payBeforeJoinQueue" + response.body().getError());

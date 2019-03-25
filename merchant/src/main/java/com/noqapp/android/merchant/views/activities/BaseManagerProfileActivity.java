@@ -123,7 +123,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
             LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
             userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
-            Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+            Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
         }
         dismissProgress();
@@ -180,10 +180,10 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     }
 
     private void loadProfilePic(String imageUrl) {
-        Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+        Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
                         .into(iv_profile);
                 tv_remove_image.setVisibility(View.VISIBLE);
@@ -333,7 +333,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
         dismissProgress();
         Log.v("Image removed", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Picasso.with(this).load(R.drawable.profile_avatar).into(iv_profile);
+            Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             tv_remove_image.setVisibility(View.GONE);
             LaunchActivity.getLaunchActivity().setUserProfile( LaunchActivity.getLaunchActivity().getUserProfile().setProfileImage(""));
             Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();

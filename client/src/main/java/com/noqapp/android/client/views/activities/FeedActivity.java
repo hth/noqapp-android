@@ -4,15 +4,14 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.squareup.picasso.Picasso;
 
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -21,6 +20,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class FeedActivity extends AppCompatActivity {
 
@@ -57,13 +58,13 @@ public class FeedActivity extends AppCompatActivity {
             ImageView iv_main = findViewById(R.id.iv_main);
             TextView tv_author_name = findViewById(R.id.tv_author_name);
             TextView tv_author_profession = findViewById(R.id.tv_author_profession);
-            Picasso.with(this).load(jsonFeed.getAuthorThumbnail()).into(iv_main);
+            Picasso.get().load(jsonFeed.getAuthorThumbnail()).into(iv_main);
             tv_author_name.setText(jsonFeed.getAuthor());
             tv_author_profession.setText(jsonFeed.getProfession());
 
         }
 
-        Picasso.with(this).load(jsonFeed.getImageUrl()).into(iv_bg);
+        Picasso.get().load(jsonFeed.getImageUrl()).into(iv_bg);
         String data = jsonFeed.getContent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             tv_details.setText(Html.fromHtml(data, Html.FROM_HTML_MODE_COMPACT));

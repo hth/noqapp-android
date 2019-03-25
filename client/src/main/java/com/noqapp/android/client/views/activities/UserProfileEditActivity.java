@@ -139,10 +139,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     private void loadProfilePic() {
-        Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
                         .placeholder(ImageUtils.getProfilePlaceholder(this))
                         .error(ImageUtils.getProfileErrorPlaceholder(this))
@@ -174,7 +174,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         dismissProgress();
         Log.v("Image removed", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Picasso.with(this).load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+            Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
             tv_remove_image.setVisibility(View.GONE);
             if (isDependent) {
                 setDependentProfileImageUrl("");
