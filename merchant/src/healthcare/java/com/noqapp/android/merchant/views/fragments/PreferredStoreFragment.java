@@ -47,8 +47,8 @@ public class PreferredStoreFragment extends Fragment {
         tv_label_two = v.findViewById(R.id.tv_label_two);
         tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
         tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
-        rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         pos = getArguments().getInt("type");
 
         if (pos == 0) {
