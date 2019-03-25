@@ -6,7 +6,8 @@ package com.noqapp.android.common.model.types.order;
 
 public enum DeliveryModeEnum {
     HD("HD", "Home Delivery"),
-    TO("TO", "Takeaway");
+    TO("TO", "Takeaway"),
+    QS("QS", "Service");
 
     private final String description;
     private final String name;
