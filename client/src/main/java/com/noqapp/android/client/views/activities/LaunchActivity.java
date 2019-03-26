@@ -209,7 +209,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.merchant_account:
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
-                            in.putExtra("url", UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
+                            in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
                             startActivity(in);
                         } else {
                             ShowAlertInformation.showNetworkDialog(LaunchActivity.this);

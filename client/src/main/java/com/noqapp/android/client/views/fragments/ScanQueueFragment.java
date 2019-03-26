@@ -451,7 +451,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void onFeedItemClick(JsonFeed item, View view, int pos) {
         Intent in = new Intent(getActivity(), FeedActivity.class);
-        in.putExtra("object", item);
+        in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);
     }
 

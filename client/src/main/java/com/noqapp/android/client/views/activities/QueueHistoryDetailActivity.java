@@ -38,7 +38,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         TextView tv_name = findViewById(R.id.tv_name);
         TextView tv_patient_label = findViewById(R.id.tv_patient_label);
         Button btn_rejoin = findViewById(R.id.btn_rejoin);
-        final JsonQueueHistorical jsonQueueHistorical = (JsonQueueHistorical) getIntent().getExtras().getSerializable("data");
+        final JsonQueueHistorical jsonQueueHistorical = (JsonQueueHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         tv_support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +111,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                 jsonTokenAndQueue.setToken(jsonQueueHistorical.getTokenNumber());
                 Intent in = new Intent(QueueHistoryDetailActivity.this, ReviewActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("object", jsonTokenAndQueue);
+                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jsonTokenAndQueue);
                 in.putExtras(bundle);
                 startActivity(in);
             }

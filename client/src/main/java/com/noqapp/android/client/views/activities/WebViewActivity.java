@@ -45,7 +45,7 @@ public class WebViewActivity extends BaseActivity {
         if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
             url = getIntent().getStringExtra(IBConstant.KEY_URL);
         }
-        isPdf = getIntent().getBooleanExtra("isPdf",false);
+        isPdf = getIntent().getBooleanExtra(IBConstant.KEY_IS_PDF,false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);

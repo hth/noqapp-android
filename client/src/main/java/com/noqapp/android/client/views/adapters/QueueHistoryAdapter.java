@@ -66,7 +66,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                         Intent in = new Intent(context, JoinActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                         in.putExtra(IBConstant.KEY_FROM_LIST, true);
-                        in.putExtra("isCategoryData", false);
+                        in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                         context.startActivity(in);
                         break;
                     default:

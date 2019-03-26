@@ -102,7 +102,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
                 Intent in = new Intent(context, WebViewActivity.class);
                 in.putExtra(IBConstant.KEY_URL, imageUrls.get(getAdapterPosition()));
                 in.putExtra("title", "Pdf Document");
-                in.putExtra("isPdf", true);
+                in.putExtra(IBConstant.KEY_IS_PDF, true);
                 context.startActivity(in);
             } else {
                 Intent intent = new Intent(context, SliderActivity.class);

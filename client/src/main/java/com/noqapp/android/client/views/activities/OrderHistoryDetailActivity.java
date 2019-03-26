@@ -48,7 +48,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         TextView tv_add_review = findViewById(R.id.tv_add_review);
         TextView tv_additional_info = findViewById(R.id.tv_additional_info);
         Button btn_reorder = findViewById(R.id.btn_reorder);
-        final JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable("data");
+        final JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }

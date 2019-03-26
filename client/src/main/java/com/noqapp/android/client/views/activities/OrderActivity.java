@@ -143,7 +143,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(true);
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
-        jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
+        jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());

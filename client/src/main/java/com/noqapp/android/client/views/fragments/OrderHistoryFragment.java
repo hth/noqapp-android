@@ -7,6 +7,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -62,7 +63,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         // open order screen
         Intent intent = new Intent(getActivity(), OrderHistoryDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("data", item);
+        bundle.putSerializable(IBConstant.KEY_DATA, item);
         intent.putExtras(bundle);
         startActivity(intent);
     }

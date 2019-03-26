@@ -63,7 +63,7 @@ public class SliderPagerAdapter extends PagerAdapter {
                             Intent in = new Intent(activity, WebViewActivity.class);
                             in.putExtra(IBConstant.KEY_URL, BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
                             in.putExtra("title", "Pdf Document");
-                            in.putExtra("isPdf", true);
+                            in.putExtra(IBConstant.KEY_IS_PDF, true);
                             activity.startActivity(in);
                         }
                     }

@@ -57,7 +57,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         rv_all_review.setItemAnimator(new DefaultItemAnimator());
         Intent bundle = getIntent();
         if (null != bundle) {
-            jsonReviews = (List<JsonReview>) getIntent().getExtras().getSerializable("data");
+            jsonReviews = (List<JsonReview>) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
             String storeName = bundle.getStringExtra(IBConstant.KEY_STORE_NAME);
             String storeAddress = bundle.getStringExtra(IBConstant.KEY_STORE_ADDRESS);
             TextView tv_store_name = findViewById(R.id.tv_store_name);
