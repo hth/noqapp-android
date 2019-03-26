@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -55,7 +55,7 @@ public class BlinkerActivity extends Activity {
         rl_blinker.startAnimation(animation);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (BuildConfig.BUILD_TYPE.equals("release")) {
+        if (AppUtilities.isRelease()) {
             Answers.getInstance().logCustom(new CustomEvent("Buzzer Screen"));
         }
 

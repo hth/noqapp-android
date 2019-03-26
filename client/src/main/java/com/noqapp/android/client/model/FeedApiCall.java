@@ -4,7 +4,7 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 import com.noqapp.android.client.model.response.open.FeedApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.beans.FeedPresenter;
+import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.utils.Constants;
 

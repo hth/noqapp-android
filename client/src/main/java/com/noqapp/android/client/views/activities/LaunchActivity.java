@@ -235,8 +235,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.medical_history: {
                         Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
                         startActivity(in);
-                        if (BuildConfig.BUILD_TYPE.equals("debug"))
-                            AppUtilities.exportDatabase(LaunchActivity.this);
                         break;
                     }
                     case R.id.nav_app_setting: {
@@ -288,7 +286,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-                BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+                AppUtilities.isRelease()
                         ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                         : getString(R.string.version_no, "Not for release"));
         updateMenuList(UserUtils.isLogin());
@@ -610,7 +608,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
-            if (!BUILD_TYPE.equals("debug")) {
+            if (AppUtilities.isRelease()) {
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {

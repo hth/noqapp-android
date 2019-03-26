@@ -560,4 +560,9 @@ public class AppUtilities extends CommonHelper {
             }
         }
     }
+
+
+    public static boolean isRelease(){
+        return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
+    }
 }

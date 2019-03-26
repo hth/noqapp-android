@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
@@ -10,12 +9,12 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.FeedPresenter;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -354,7 +353,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         isProgressFirstTime = false;
         if (isAdded()) {
             if (NoQueueBaseActivity.getShowHelper()) {
-                if (!BuildConfig.BUILD_TYPE.equals("debug")) {
+                if (AppUtilities.isRelease()) {
                     presentShowcaseSequence();
                 }
                 NoQueueBaseActivity.setShowHelper(false);

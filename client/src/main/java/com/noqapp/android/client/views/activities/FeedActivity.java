@@ -1,8 +1,8 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -73,7 +73,7 @@ public class FeedActivity extends AppCompatActivity {
             tv_details.setText(Html.fromHtml(data));
         }
 
-        if (BuildConfig.BUILD_TYPE.equals("release")) {
+        if (AppUtilities.isRelease()) {
             Answers.getInstance().logContentView(new ContentViewEvent()
                     .putContentName(jsonFeed.getTitle())
                     .putContentType(jsonFeed.getContentType())

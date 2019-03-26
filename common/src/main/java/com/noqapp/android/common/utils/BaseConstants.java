@@ -18,4 +18,10 @@ public class BaseConstants {
     public static int SUCCESS = 1;
     public static  String appId = "38372d97a8cbc2540136211a7383";
     public static  String stage = "TEST";;
+
+
+    public static  String RELEASE = "release";;
+    public static  String DEBUG = "debug";;
+
+
 }
