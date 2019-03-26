@@ -14,16 +14,14 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -41,10 +39,8 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -73,7 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator, CFClientInterface, PurchaseOrderPresenter, CashFreeNotifyPresenter {
+public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator, CFClientInterface,  CashFreeNotifyQPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
@@ -98,7 +94,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String queueUserId = "";
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
-    private PurchaseOrderApiCall purchaseOrderApiCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +115,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         ll_change_bg = findViewById(R.id.ll_change_bg);
         TextView tv_name = findViewById(R.id.tv_name);
         ImageView iv_profile = findViewById(R.id.iv_profile);
-        purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -532,7 +526,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         for (Map.Entry entry : map.entrySet()) {
             Log.e("Payment success", entry.getKey() + " " + entry.getValue());
         }
-        purchaseOrderApiCall.setCashFreeNotifyPresenter(this);
+        queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
         JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
@@ -542,7 +536,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
         jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
         jsonCashfreeNotification.setOrderId(map.get("orderId"));
-        purchaseOrderApiCall.cashFreeNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+        queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
     @Override
@@ -559,31 +553,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
         //enableDisableOrderButton(false);
         finish();
-    }
-
-
-    @Override
-    public void purchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-
-    }
-
-    @Override
-    public void payCashResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-        // implementation not required here
-        dismissProgress();
-    }
-
-
-    @Override
-    public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-        // implementation not required here
-        dismissProgress();
-    }
-
-    @Override
-    public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
-        // implementation not required here
-        dismissProgress();
     }
 
     private void triggerOnlinePayment() {
@@ -613,12 +582,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
 
     @Override
-    public void cashFreeNotifyResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+    public void cashFreeNotifyQResponse(JsonToken jsonToken) {
+        if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
             Toast.makeText(this, "Token generated successfully.", Toast.LENGTH_LONG).show();
             tokenPresenterResponse(jsonToken);
         } else {
-            Toast.makeText(this, jsonPurchaseOrder.getTransactionMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage(), Toast.LENGTH_LONG).show();
             //Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
         }
     }

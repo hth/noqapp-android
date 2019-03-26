@@ -3,6 +3,7 @@ package com.noqapp.android.client.model;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
@@ -15,9 +16,10 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.beans.body.JoinQueue;
+import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +36,7 @@ public class QueueApiAuthenticCall {
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
+    private CashFreeNotifyQPresenter cashFreeNotifyQPresenter;
     private boolean responseReceived = false;
     public JsonQueue jsonQueue;
     public JsonToken jsonToken;
@@ -59,6 +62,10 @@ public class QueueApiAuthenticCall {
 
     public void setTokenAndQueuePresenter(TokenAndQueuePresenter tokenAndQueuePresenter) {
         this.tokenAndQueuePresenter = tokenAndQueuePresenter;
+    }
+
+    public void setCashFreeNotifyQPresenter(CashFreeNotifyQPresenter cashFreeNotifyQPresenter) {
+        this.cashFreeNotifyQPresenter = cashFreeNotifyQPresenter;
     }
 
     static {
@@ -185,6 +192,33 @@ public class QueueApiAuthenticCall {
                 Log.e("Failure joinQueue", t.getLocalizedMessage(), t);
                 tokenPresenter.responseErrorPresenter(null);
                 responseReceived = true;
+            }
+        });
+    }
+    public void cashFreeQNotify(String did, String mail, String auth, JsonCashfreeNotification jsonCashfreeNotification) {
+        TOKEN_QUEUE_API_SERVICE.cashfreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonToken>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Res cashFreeQNotify", String.valueOf(response.body()));
+                        cashFreeNotifyQPresenter.cashFreeNotifyQResponse(response.body());
+                    } else {
+                        cashFreeNotifyQPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        cashFreeNotifyQPresenter.authenticationFailure();
+                    } else {
+                        cashFreeNotifyQPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+                Log.e("onFail CashFreeQNotify", t.getLocalizedMessage(), t);
+                cashFreeNotifyQPresenter.responseErrorPresenter(null);
             }
         });
     }
