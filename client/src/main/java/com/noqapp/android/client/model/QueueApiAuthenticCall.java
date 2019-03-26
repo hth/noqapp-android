@@ -283,4 +283,33 @@ public class QueueApiAuthenticCall {
             }
         });
     }
+
+    public void cancelPayBeforeQueue(String did, String mail, String auth, JsonToken jsonToken) {
+        TOKEN_QUEUE_API_SERVICE.cancelPayBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, jsonToken).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Res: cancelPayBeforeQ", String.valueOf(response.body()));
+                        responsePresenter.responsePresenterResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Fail cancelPayBeforeQueue");
+                        responsePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        responsePresenter.authenticationFailure();
+                    } else {
+                        responsePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
+                responsePresenter.responsePresenterError();
+            }
+        });
+    }
 }

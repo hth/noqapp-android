@@ -552,7 +552,15 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         Log.e("User Navigate Back", "Back without payment");
         Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
         //enableDisableOrderButton(false);
-        finish();
+       // finish();
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            queueApiAuthenticCall.setResponsePresenter(this);
+            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
     }
 
     private void triggerOnlinePayment() {
