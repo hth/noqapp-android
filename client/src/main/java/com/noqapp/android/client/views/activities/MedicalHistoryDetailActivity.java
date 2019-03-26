@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -77,7 +78,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
 
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.medical_history_details));
-        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable("data");
+        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
             ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(), true, jsonMedicalRecord.getRecordReferenceId());
             rv_thumb_images.setAdapter(thumbnailGalleryAdapter);

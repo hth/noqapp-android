@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.WebViewActivity;
 import com.noqapp.android.client.views.customviews.TouchImageView;
@@ -60,7 +61,7 @@ public class SliderPagerAdapter extends PagerAdapter {
                     public void onClick(View v) {
                         if (image_arraylist.get(position).endsWith(".pdf")) {
                             Intent in = new Intent(activity, WebViewActivity.class);
-                            in.putExtra("url", BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
+                            in.putExtra(IBConstant.KEY_URL, BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
                             in.putExtra("title", "Pdf Document");
                             in.putExtra("isPdf", true);
                             activity.startActivity(in);

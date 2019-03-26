@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.SliderActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
@@ -99,7 +100,7 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
         public void onClick(View view) {
             if (imageUrls.get(getAdapterPosition()).endsWith(".pdf")) {
                 Intent in = new Intent(context, WebViewActivity.class);
-                in.putExtra("url", imageUrls.get(getAdapterPosition()));
+                in.putExtra(IBConstant.KEY_URL, imageUrls.get(getAdapterPosition()));
                 in.putExtra("title", "Pdf Document");
                 in.putExtra("isPdf", true);
                 context.startActivity(in);

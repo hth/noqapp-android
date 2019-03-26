@@ -305,8 +305,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
-            bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
-            bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+            bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
+            bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
@@ -547,8 +547,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
-            bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
-            bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+            bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
+            bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
             bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);

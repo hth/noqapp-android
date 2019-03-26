@@ -14,6 +14,7 @@ import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -107,7 +108,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         final Bundle extras = getIntent().getExtras();
 
         if (null != extras) {
-            jtk = (JsonTokenAndQueue) extras.getSerializable("object");
+            jtk = (JsonTokenAndQueue) extras.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (null != jtk) {
                 tv_store_name.setText(jtk.getBusinessName());
                 tv_queue_name.setText(jtk.getDisplayName());

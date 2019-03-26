@@ -7,7 +7,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistori
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -62,7 +62,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
                 feedback.setToken(jsonPurchaseOrder.getTokenNumber());
                 Intent in = new Intent(OrderHistoryDetailActivity.this, ContactUsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("object", feedback);
+                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
                 in.putExtras(bundle);
                 startActivity(in);
             }

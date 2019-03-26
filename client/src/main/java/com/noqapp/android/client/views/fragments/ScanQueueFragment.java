@@ -406,8 +406,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 Bundle b = new Bundle();
                 b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
-                b.putBoolean("CallCategory", true);
-                b.putBoolean("isCategoryData", false);
+                b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
+                b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
                 b.putSerializable("BizStoreElastic", item);
                 Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);

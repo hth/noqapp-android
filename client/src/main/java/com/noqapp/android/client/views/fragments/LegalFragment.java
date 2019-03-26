@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.fragments;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
@@ -61,7 +62,7 @@ public class LegalFragment extends NoQueueBaseFragment implements View.OnClickLi
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
-            in.putExtra("url", url);
+            in.putExtra(IBConstant.KEY_URL, url);
             getActivity().startActivity(in);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

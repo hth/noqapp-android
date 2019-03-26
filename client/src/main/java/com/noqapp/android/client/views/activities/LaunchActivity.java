@@ -553,7 +553,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (null != jtk) {
             Intent in = new Intent(launchActivity, ReviewActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("object", jtk);
+            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jtk);
             in.putExtras(bundle);
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
             Log.v("Review screen call: ", jtk.toString());
@@ -591,7 +591,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
         in.putExtra(IBConstant.KEY_IS_REJOIN, true);
-        in.putExtra("isCategoryData", false);
+        in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
         startActivity(in);
     }
 

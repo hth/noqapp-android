@@ -125,9 +125,9 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
 
                             Intent intent = new Intent(StoreMenuActivity.this, OrderActivity.class);
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable("data", jsonPurchaseOrder);
-                            bundle.putString("storeName", jsonQueue.getDisplayName());
-                            bundle.putString("storeAddress", jsonQueue.getStoreAddress());
+                            bundle.putSerializable(IBConstant.KEY_DATA, jsonPurchaseOrder);
+                            bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
+                            bundle.putString(IBConstant.KEY_STORE_ADDRESS, jsonQueue.getStoreAddress());
                             bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
                             bundle.putString("topic", jsonQueue.getTopic());
                             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);

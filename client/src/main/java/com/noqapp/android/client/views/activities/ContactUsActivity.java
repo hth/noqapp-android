@@ -6,6 +6,7 @@ import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -34,7 +35,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
         final EditText edt_body = findViewById(R.id.edt_body);
         Bundle extras = getIntent().getExtras();
         if (null != extras) {
-            Feedback fb = (Feedback) extras.getSerializable("object");
+            Feedback fb = (Feedback) extras.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (null != fb) {
                 feedback = fb;
             }

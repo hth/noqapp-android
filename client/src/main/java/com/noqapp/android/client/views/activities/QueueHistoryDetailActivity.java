@@ -48,7 +48,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                 feedback.setToken(jsonQueueHistorical.getTokenNumber());
                 Intent in = new Intent(QueueHistoryDetailActivity.this, ContactUsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("object", feedback);
+                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
                 in.putExtras(bundle);
                 startActivity(in);
             }
@@ -63,7 +63,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                         Intent in = new Intent(QueueHistoryDetailActivity.this, JoinActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                         in.putExtra(IBConstant.KEY_FROM_LIST, true);
-                        in.putExtra("isCategoryData", false);
+                        in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
                         startActivity(in);
                         break;
                     default:

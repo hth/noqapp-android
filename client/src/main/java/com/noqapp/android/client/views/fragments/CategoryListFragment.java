@@ -71,8 +71,8 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
                 Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra("isCategoryData", false);
-                in.putExtra("imageUrl", AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
+                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
                 startActivity(in);
                 break;
             default:

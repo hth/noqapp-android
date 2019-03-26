@@ -63,8 +63,8 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
                 Bundle b = new Bundle();
                 b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 b.putBoolean(IBConstant.KEY_FROM_LIST, false);
-                b.putBoolean("CallCategory", true);
-                b.putBoolean("isCategoryData", false);
+                b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
+                b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
                 b.putSerializable("BizStoreElastic", item);
                 Intent in = new Intent(this, CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
