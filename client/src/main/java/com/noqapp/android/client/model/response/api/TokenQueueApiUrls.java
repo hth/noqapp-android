@@ -225,7 +225,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/cf/cancelPayBeforeQueue.json")
+    @POST("api/c/token/cancelPayBeforeQueue.json")
     Call<JsonResponse> cancelPayBeforeQueue(
             @Header("X-R-DID")
             String did,

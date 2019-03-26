@@ -255,6 +255,38 @@ public class QueueApiAuthenticCall {
         });
     }
 
+    public void skipPayBeforeQueue(String did, String mail, String auth, JoinQueue joinQueue) {
+        TOKEN_QUEUE_API_SERVICE.skipPayBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp skipPayBeforeQueue", response.body().toString());
+                        tokenPresenter.unPaidTokenPresenterResponse(response.body());
+                        jsonToken = response.body();
+                    } else {
+                        Log.e(TAG, "Failed to skipPayBeforeQueue" + response.body().getError());
+                        tokenPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        tokenPresenter.authenticationFailure();
+                    } else {
+                        tokenPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+                responseReceived = true;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonToken> call, @NonNull Throwable t) {
+                Log.e("Fail skipPayBeforeQueue", t.getLocalizedMessage(), t);
+                tokenPresenter.responseErrorPresenter(null);
+                responseReceived = true;
+            }
+        });
+    }
+
     public void abortQueue(String did, String mail, String auth, String codeQR) {
         TOKEN_QUEUE_API_SERVICE.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override

@@ -14,4 +14,6 @@ public interface TokenPresenter extends ResponseErrorPresenter {
 
     void paidTokenPresenterResponse(JsonToken token);
 
+    void unPaidTokenPresenterResponse(JsonToken token);
+
 }

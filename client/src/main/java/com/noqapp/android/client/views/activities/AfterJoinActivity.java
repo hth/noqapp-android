@@ -69,7 +69,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator, CFClientInterface,  CashFreeNotifyQPresenter {
+public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator, CFClientInterface, CashFreeNotifyQPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
@@ -180,7 +180,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     tv_add.setVisibility(View.GONE);
                     tv_name.setVisibility(View.GONE);
             }
-            String time = new AppUtilities().formatTodayStoreTiming(this,jsonTokenAndQueue.getStartHour(),jsonTokenAndQueue.getEndHour());;
+            String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
+            ;
             if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
                 String red = "<font color='#e92270'><b>Late " + jsonTokenAndQueue.getDelayedInMinutes() + " minutes.</b></font>";
                 time = time + " " + red;
@@ -250,12 +251,23 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-                if(getIntent().getBooleanExtra("isPayBeforeJoin", false)){
-                    triggerOnlinePayment();
-                }else{
-                    tokenPresenterResponse(jsonToken);
-                }
+                triggerOnlinePayment();
+            } else {
+                Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            //Show error
+        }
+        dismissProgress();
+    }
 
+    @Override
+    public void unPaidTokenPresenterResponse(JsonToken token) {
+        this.jsonToken = token;
+        if (null != token) {
+            Log.d(TAG, token.toString());
+            if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+                tokenPresenterResponse(jsonToken);
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
@@ -342,7 +354,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
                 queueApiAuthenticCall.setTokenPresenter(this);
                 if (jsonQueue.isEnabledPayment()) {
-                    queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                    if (getIntent().getBooleanExtra("isPayBeforeJoin", false)) {
+                        queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                    } else {
+                        queueApiAuthenticCall.skipPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+                    }
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 }
@@ -552,7 +568,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         Log.e("User Navigate Back", "Back without payment");
         Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
         //enableDisableOrderButton(false);
-       // finish();
+        // finish();
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
