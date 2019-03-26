@@ -5,6 +5,7 @@ import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.AllReviewPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -16,13 +17,13 @@ import com.noqapp.android.common.beans.JsonReviewList;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +58,8 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonReviews = (List<JsonReview>) getIntent().getExtras().getSerializable("data");
-            String storeName = bundle.getStringExtra("storeName");
-            String storeAddress = bundle.getStringExtra("storeAddress");
+            String storeName = bundle.getStringExtra(IBConstant.KEY_STORE_NAME);
+            String storeAddress = bundle.getStringExtra(IBConstant.KEY_STORE_ADDRESS);
             TextView tv_store_name = findViewById(R.id.tv_store_name);
             TextView tv_address = findViewById(R.id.tv_address);
             tv_store_name.setText(storeName);
@@ -68,7 +69,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 tv_address.setVisibility(View.GONE);
             } else {
                 jsonReviews = new ArrayList<>();
-                String codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
+                String codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
                 if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
                     ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
                     reviewApiUnAuthenticCall.setAllReviewPresenter(this);

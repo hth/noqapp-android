@@ -6,8 +6,8 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -17,8 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -96,9 +96,9 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     if (bizStoreElastic.getReviewCount() > 0) {
                         Intent in = new Intent(context, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                        bundle.putString("storeName", bizStoreElastic.getDisplayName());
-                        bundle.putString("storeAddress", holder.tv_address.getText().toString());
+                        bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                        bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
+                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, holder.tv_address.getText().toString());
                         in.putExtras(bundle);
                         context.startActivity(in);
                     }

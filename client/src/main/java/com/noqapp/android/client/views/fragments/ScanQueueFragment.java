@@ -24,6 +24,7 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
@@ -300,14 +301,14 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         if (isCategoryData) {
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
             Bundle b = new Bundle();
-            b.putString(KEY_CODE_QR, codeQR);
-            b.putBoolean(KEY_FROM_LIST, fromList);
+            b.putString(IBConstant.KEY_CODE_QR, codeQR);
+            b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
         } else {
             Intent in = new Intent(getActivity(), JoinActivity.class);
-            in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
-            in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+            in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+            in.putExtra(IBConstant.KEY_FROM_LIST, false);
             in.putExtra("isCategoryData", false);
             startActivity(in);
         }
@@ -403,8 +404,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             case HS:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();
-                b.putString(KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(KEY_FROM_LIST, fromList);
+                b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
                 b.putSerializable("BizStoreElastic", item);
@@ -427,15 +428,15 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         if (null != item) {
             if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
                 Intent in = new Intent(getActivity(), AfterJoinActivity.class);
-                in.putExtra(KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(KEY_FROM_LIST, true);
-                in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
+                in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, true);
+                in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, item);
                 startActivity(in);
             } else {
                 Intent in = new Intent(getActivity(), OrderConfirmActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(KEY_FROM_LIST, true);
-                bundle.putString(KEY_CODE_QR, item.getCodeQR());
+                bundle.putBoolean(IBConstant.KEY_FROM_LIST, true);
+                bundle.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 bundle.putInt("token", item.getToken());
                 bundle.putInt("currentServing", item.getServingNumber());
                 bundle.putString("storeName", item.getDisplayName());

@@ -2,18 +2,18 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.StoreInfoViewAllAdapter;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -61,8 +61,8 @@ public class ViewAllListActivity extends AppCompatActivity implements StoreInfoV
             case HS:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();
-                b.putString(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                b.putBoolean(IBConstant.KEY_FROM_LIST, false);
                 b.putBoolean("CallCategory", true);
                 b.putBoolean("isCategoryData", false);
                 b.putSerializable("BizStoreElastic", item);

@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
@@ -17,14 +18,14 @@ import com.noqapp.android.common.beans.store.JsonStoreCategory;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,7 +131,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                             bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
                             bundle.putString("topic", jsonQueue.getTopic());
                             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
-                            bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+                            bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {

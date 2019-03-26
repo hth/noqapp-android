@@ -17,6 +17,7 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -587,9 +588,9 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         Intent in = new Intent(this, JoinActivity.class);
-        in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
-        in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-        in.putExtra(NoQueueBaseActivity.KEY_IS_REJOIN, true);
+        in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+        in.putExtra(IBConstant.KEY_FROM_LIST, false);
+        in.putExtra(IBConstant.KEY_IS_REJOIN, true);
         in.putExtra("isCategoryData", false);
         startActivity(in);
     }

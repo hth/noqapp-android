@@ -8,11 +8,11 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -21,9 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +30,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -172,8 +172,8 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             case BK:
             case HS:
                 Intent in = new Intent(this, JoinActivity.class);
-                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;

@@ -5,8 +5,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -78,9 +78,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, ShowAllReviewsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                    bundle.putString("storeName", bizStoreElastic.getDisplayName());
-                    bundle.putString("storeAddress", AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+                    bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
                     in.putExtras(bundle);
                     context.startActivity(in);
                 }

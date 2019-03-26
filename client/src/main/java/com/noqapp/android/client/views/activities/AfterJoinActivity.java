@@ -31,6 +31,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
@@ -133,10 +134,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
-            jsonQueue = (JsonQueue) bundle.getSerializableExtra(NoQueueBaseActivity.KEY_JSON_QUEUE);
-            jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE);
+            jsonQueue = (JsonQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_QUEUE);
+            jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
-            codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
+            codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
             tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
             tv_store_name.setText(jsonTokenAndQueue.getBusinessName());
@@ -205,7 +206,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 }
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-            if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_FROM_LIST, false)) {
+            if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
@@ -493,7 +494,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     }
 
     private void returnResultBack() {
-        if (getIntent().getBooleanExtra(Constants.FROM_JOIN_SCREEN, false)) {
+        if (getIntent().getBooleanExtra(Constants.ACTIVITY_TO_CLOSE, false)) {
             Intent intent = new Intent();
             intent.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             if (getParent() == null) {

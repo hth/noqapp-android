@@ -10,6 +10,7 @@ import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -104,8 +105,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         clientProfileApiCall = new ClientProfileApiCall();
         iv_profile.setOnClickListener(this);
         progressDialog.setMessage("Updating profile....");
-        isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
-        dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
+        isDependent = getIntent().getBooleanExtra(IBConstant.IS_DEPENDENT, false);
+        dependentProfile = (JsonProfile) getIntent().getSerializableExtra(IBConstant.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
         nameList = getIntent().getStringArrayListExtra("nameList");
 

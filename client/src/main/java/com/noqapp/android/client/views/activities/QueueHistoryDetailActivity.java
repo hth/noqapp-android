@@ -5,7 +5,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -61,8 +61,8 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                     case BK:
                         // open hospital/Bank profile
                         Intent in = new Intent(QueueHistoryDetailActivity.this, JoinActivity.class);
-                        in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
-                        in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, true);
+                        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
+                        in.putExtra(IBConstant.KEY_FROM_LIST, true);
                         in.putExtra("isCategoryData", false);
                         startActivity(in);
                         break;

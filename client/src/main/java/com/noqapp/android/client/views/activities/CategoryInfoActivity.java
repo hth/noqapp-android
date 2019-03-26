@@ -15,6 +15,7 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -22,7 +23,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -38,13 +38,13 @@ import com.squareup.picasso.Picasso;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         });
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
-            codeQR = bundle.getString(NoQueueBaseFragment.KEY_CODE_QR);
+            codeQR = bundle.getString(IBConstant.KEY_CODE_QR);
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
@@ -226,9 +226,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     if (null != bizStoreElastic && reviewCount > 0) {
                         Intent in = new Intent(CategoryInfoActivity.this, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, codeQR);
-                        bundle.putString("storeName", bizStoreElastic.getBusinessName());
-                        bundle.putString("storeAddress", tv_address.getText().toString());
+                        bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
+                        bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getBusinessName());
+                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, tv_address.getText().toString());
                         bundle.putBoolean("isLevelUp", true);
                         in.putExtras(bundle);
                         startActivity(in);
@@ -390,8 +390,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         switch (bizStoreElastic.getBusinessType()) {
             case BK:
                 Intent in = new Intent(this, JoinActivity.class);
-                in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
-                in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
+                in.putExtra(IBConstant.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra("isCategoryData", false);
                 startActivity(in);
                 break;

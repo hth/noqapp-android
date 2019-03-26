@@ -11,6 +11,7 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -35,8 +36,6 @@ import com.squareup.picasso.Picasso;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -46,6 +45,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -113,9 +114,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
                     Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                    bundle.putString("storeName", jsonQueue.getDisplayName());
-                    bundle.putString("storeAddress", tv_store_address.getText().toString());
+                    bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+                    bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, tv_store_address.getText().toString());
                     in.putExtras(bundle);
                     startActivity(in);
                 }

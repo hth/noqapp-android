@@ -10,6 +10,7 @@ import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -23,7 +24,6 @@ import com.squareup.picasso.Picasso;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -130,7 +131,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
         Intent bundle = getIntent();
         if (null != bundle) {
-            codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
+            codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             boolean isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
             String imageUrl = bundle.getStringExtra("imageUrl");
             JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
@@ -141,7 +142,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_IS_REJOIN, false)) {
+            if (bundle.getBooleanExtra(IBConstant.KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));
                 tv_skip_msg.setVisibility(View.VISIBLE);
                 btn_no.setVisibility(View.VISIBLE);
@@ -227,9 +228,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
                         Intent in = new Intent(JoinActivity.this, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                        bundle.putString("storeName", jsonQueue.getDisplayName());
-                        bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
+                        bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+                        bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
+                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
                         in.putExtras(bundle);
                         startActivity(in);
                     }
@@ -342,12 +343,12 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
     private void callAfterJoin(boolean isPayBeforeJoin) {
         Intent in = new Intent(this, AfterJoinActivity.class);
-        in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
+        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
-        in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        in.putExtra(NoQueueBaseActivity.KEY_JSON_QUEUE, jsonQueue);
-        in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-        in.putExtra(Constants.FROM_JOIN_SCREEN, true);
+        in.putExtra(IBConstant.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+        in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+        in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+        in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
         in.putExtra("imageUrl", getIntent().getStringExtra("imageUrl"));
         in.putExtra("isPayBeforeJoin",isPayBeforeJoin);

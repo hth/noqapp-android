@@ -18,9 +18,9 @@ import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
@@ -113,9 +113,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
         tv_store_name.setText(getIntent().getExtras().getString("storeName"));
         tv_address.setText(getIntent().getExtras().getString("storeAddress"));
-        codeQR = getIntent().getExtras().getString(NoQueueBaseFragment.KEY_CODE_QR);
+        codeQR = getIntent().getExtras().getString(IBConstant.KEY_CODE_QR);
         currentServing = getIntent().getExtras().getInt("currentServing");
-        if (getIntent().getBooleanExtra(NoQueueBaseFragment.KEY_FROM_LIST, false)) {
+        if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
