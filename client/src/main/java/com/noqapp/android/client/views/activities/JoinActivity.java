@@ -132,9 +132,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         Intent bundle = getIntent();
         if (null != bundle) {
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
-            boolean isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
-            String imageUrl = bundle.getStringExtra("imageUrl");
-            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
+            boolean isCategoryData = bundle.getBooleanExtra(IBConstant.KEY_IS_CATEGORY, true);
+            String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
+            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
@@ -350,7 +350,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
-        in.putExtra("imageUrl", getIntent().getStringExtra("imageUrl"));
+        in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
         in.putExtra("isPayBeforeJoin",isPayBeforeJoin);
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }

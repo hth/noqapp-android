@@ -13,9 +13,12 @@ public class IBConstant {
     public static final String KEY_STORE_ADDRESS = "storeAddress";
     public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
     public static final String KEY_JSON_QUEUE = "jsonQueue";
-    public static final String KEY_DATA_OBJECT = "dataObject";
+    public static final String KEY_DATA_OBJECT = "object";
 
     public static final String IS_DEPENDENT = "isDependent";
     public static final String DEPENDENT_PROFILE = "dependentProfile";
+    public static final String KEY_IMAGE_URL = "imageUrl";
+    public static final String KEY_CALL_CATEGORY = "CallCategory";
+    public static final String KEY_IS_CATEGORY = "isCategoryData";
 
 }

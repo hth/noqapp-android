@@ -139,7 +139,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 progressDialog.show();
                 QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                 queueApiUnAuthenticCall.setQueuePresenter(this);
-                if (bundle.getBoolean("CallCategory", false)) {
+                if (bundle.getBoolean(IBConstant.KEY_CALL_CATEGORY, false)) {
                     queueApiUnAuthenticCall.getAllQueueStateLevelUp(UserUtils.getDeviceId(), codeQR);
                 } else {
                     queueApiUnAuthenticCall.getAllQueueState(UserUtils.getDeviceId(), codeQR);

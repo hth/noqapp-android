@@ -144,7 +144,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_queue_name.setText(jsonTokenAndQueue.getDisplayName());
             tv_address.setText(jsonTokenAndQueue.getStoreAddress());
             profile_pos = bundle.getIntExtra("profile_pos", 1);
-            String imageUrl = bundle.getStringExtra("imageUrl");
+            String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
 
                 Picasso.get().load(imageUrl).

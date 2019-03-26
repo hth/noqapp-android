@@ -111,8 +111,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         initActionsViews(true);
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         tv_toolbar_title.setText(getString(R.string.screen_order_confirm));
-        tv_store_name.setText(getIntent().getExtras().getString("storeName"));
-        tv_address.setText(getIntent().getExtras().getString("storeAddress"));
+        tv_store_name.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
+        tv_address.setText(getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
         codeQR = getIntent().getExtras().getString(IBConstant.KEY_CODE_QR);
         currentServing = getIntent().getExtras().getInt("currentServing");
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
