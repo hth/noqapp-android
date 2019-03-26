@@ -24,6 +24,7 @@ import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -85,6 +86,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private LinearLayout ll_change_bg;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
+    private JsonQueue jsonQueue;
     private String codeQR;
     private String tokenValue;
     private String topic;
@@ -131,6 +133,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
+            jsonQueue = (JsonQueue) bundle.getSerializableExtra(NoQueueBaseActivity.KEY_JSON_QUEUE);
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
@@ -252,7 +255,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-                triggerOnlinePayment();
+                if(getIntent().getBooleanExtra("isPayBeforeJoin", false)){
+                    triggerOnlinePayment();
+                }else{
+                    tokenPresenterResponse(jsonToken);
+                }
+
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
@@ -338,7 +346,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
                 queueApiAuthenticCall.setTokenPresenter(this);
-                if (getIntent().getBooleanExtra("isPaymentCall", false)) {
+                if (jsonQueue.isEnabledPayment()) {
                     queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);

@@ -85,7 +85,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
-                    joinQueue(false);
+                    joinQueue(true);
             }
         });
         tv_rating = findViewById(R.id.tv_rating);
@@ -304,7 +304,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
 
-    private void joinQueue(boolean isPayment) {
+    private void joinQueue(boolean isPayBeforeJoin) {
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
@@ -321,7 +321,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                             Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
                             sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
                         } else {
-                            callAfterJoin(isPayment);
+                            callAfterJoin(isPayBeforeJoin);
                         }
                     } else {
                         // please login to avail this feature
@@ -332,7 +332,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     }
                 } else {
                     // any user can join
-                    callAfterJoin(isPayment);
+                    callAfterJoin(isPayBeforeJoin);
                 }
             } else {
                 ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
@@ -340,16 +340,17 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         }
     }
 
-    private void callAfterJoin(boolean isPayment) {
+    private void callAfterJoin(boolean isPayBeforeJoin) {
         Intent in = new Intent(this, AfterJoinActivity.class);
         in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
         //TODO // previously KEY_FROM_LIST  was false need to verify
         in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+        in.putExtra(NoQueueBaseActivity.KEY_JSON_QUEUE, jsonQueue);
         in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
         in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-        in.putExtra("isPaymentCall",jsonQueue.isEnabledPayment());
         in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
         in.putExtra("imageUrl", getIntent().getStringExtra("imageUrl"));
+        in.putExtra("isPayBeforeJoin",isPayBeforeJoin);
         startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
