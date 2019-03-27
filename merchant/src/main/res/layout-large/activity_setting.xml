@@ -758,8 +758,8 @@
                                 android:layout_weight=".2"
                                 android:theme="@style/SettingSeekbarStyle"
                                 android:layout_gravity="center_vertical"
-                                android:scaleX="1.0"
-                                android:scaleY="1.0"
+                                android:scaleX="1.25"
+                                android:scaleY="1.25"
                                 android:paddingEnd="@dimen/swith_padding"
                                 android:layout_height="wrap_content"/>
 

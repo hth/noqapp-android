@@ -45,7 +45,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     private Button btn_create_order;
     private FindCustomerApiCalls findCustomerApiCalls;
     private String countryCode = "";
-    private String countryShortName = "";
     private CountryCodePicker ccp;
 
     @Override
@@ -153,7 +152,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     if (rb_mobile.isChecked()) {
                         edt_id.setText("");
                         countryCode = ccp.getSelectedCountryCode();
-                        countryShortName = ccp.getDefaultCountryName().toUpperCase();
                         phone = countryCode + edt_mobile.getText().toString();
                     } else {
                         cid = edt_id.getText().toString();
