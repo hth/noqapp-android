@@ -77,7 +77,7 @@ public interface BusinessCustomerApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
      */
-    @POST("api/m/s/purchaseOrder/findCustomer.json")
+    @POST("api/m/bc/findCustomer.json")
     Call<JsonProfile> findCustomer(
             @Header("X-R-DID")
             String did,
