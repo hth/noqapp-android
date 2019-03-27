@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.FindCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -14,6 +15,9 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
+import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
+
+import com.hbb20.CountryCodePicker;
 
 import android.app.Activity;
 import android.content.Context;
@@ -35,10 +39,14 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter {
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
+    private FindCustomerApiCalls findCustomerApiCalls;
+    private String countryCode = "";
+    private String countryShortName = "";
+    private CountryCodePicker ccp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +88,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
         tv_create_token = customDialogView.findViewById(R.id.tvtitle);
         iv_banner = customDialogView.findViewById(R.id.iv_banner);
         tvcount = customDialogView.findViewById(R.id.tvcount);
+        ll_main_section = customDialogView.findViewById(R.id.ll_main_section);
         ll_mobile = customDialogView.findViewById(R.id.ll_mobile);
         edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
         sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
@@ -137,26 +146,28 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
 
 
                 if (isValid) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        setDispensePresenter();
-                        String phone = "";
-                        String cid = "";
-                        if (rb_mobile.isChecked()) {
-                            edt_id.setText("");
-                            countryCode = ccp.getSelectedCountryCode();
-                            countryShortName = ccp.getDefaultCountryName().toUpperCase();
-                            phone = countryCode + edt_mobile.getText().toString();
-                        } else {
-                            cid = edt_id.getText().toString();
-                            edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
-                        }
-                        manageQueueApiCalls.dispenseTokenWithClientInfo(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                        btn_create_token.setClickable(false);
-                        //  mAlertDialog.dismiss();
+                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    setDispensePresenter();
+                    String phone = "";
+                    String cid = "";
+                    if (rb_mobile.isChecked()) {
+                        edt_id.setText("");
+                        countryCode = ccp.getSelectedCountryCode();
+                        countryShortName = ccp.getDefaultCountryName().toUpperCase();
+                        phone = countryCode + edt_mobile.getText().toString();
+                    } else {
+                        cid = edt_id.getText().toString();
+                        edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
+                    }
+                    findCustomerApiCalls = new FindCustomerApiCalls();
+                    findCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
+                    findCustomerApiCalls.findCustomer(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                    btn_create_token.setClickable(false);
+                    //  mAlertDialog.dismiss();
                 }
             }
         });
@@ -172,7 +183,13 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
 
     @Override
     public void passPhoneNo(JsonProfile jsonProfile) {
+        findCustomerResponse(jsonProfile);
+    }
+
+    @Override
+    public void findCustomerResponse(JsonProfile jsonProfile) {
         dismissProgress();
+        LaunchActivity.getLaunchActivity().progressDialog.dismiss();
         if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);
@@ -199,6 +216,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));
+
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
                     }

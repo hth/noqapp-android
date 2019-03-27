@@ -35,8 +35,6 @@ import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
-import com.hbb20.CountryCodePicker;
-
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
@@ -103,9 +101,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     // variable to track event time
     private long mLastClickTime = 0;
     protected LinearLayout ll_mobile;
-    protected CountryCodePicker ccp;
-    protected String countryCode = "";
-    protected String countryShortName = "";
+    protected LinearLayout ll_main_section;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -314,6 +310,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         if (null != token && null != tv_create_token) {
             if (null != edt_mobile)
                 edt_mobile.setText("");
+            if (null != ll_main_section)
+                ll_main_section.setVisibility(View.GONE);
+
             switch (token.getQueueStatus()) {
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
