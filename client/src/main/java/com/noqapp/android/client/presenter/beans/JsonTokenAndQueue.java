@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -118,6 +119,9 @@ public class JsonTokenAndQueue implements Serializable {
 
     @JsonProperty("u")
     private String createDate;
+
+    @JsonProperty ("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @JsonProperty("bc")
     private String bizCategoryId;
@@ -345,12 +349,13 @@ public class JsonTokenAndQueue implements Serializable {
         this.createDate = createDate;
     }
 
-    public String getBizCategoryId() {
-        return bizCategoryId;
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
     }
 
-    public void setBizCategoryId(String bizCategoryId) {
-        this.bizCategoryId = bizCategoryId;
+    public JsonTokenAndQueue setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
+        return this;
     }
 
     @JsonIgnoreProperties
