@@ -5,7 +5,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.FindCustomerApiCalls;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -43,7 +43,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
-    private FindCustomerApiCalls findCustomerApiCalls;
+    private BusinessCustomerApiCalls businessCustomerApiCalls;
     private String countryCode = "";
     private CountryCodePicker ccp;
 
@@ -157,9 +157,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                     }
-                    findCustomerApiCalls = new FindCustomerApiCalls();
-                    findCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
-                    findCustomerApiCalls.findCustomer(
+                    businessCustomerApiCalls = new BusinessCustomerApiCalls();
+                    businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
+                    businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),

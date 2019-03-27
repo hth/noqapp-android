@@ -12,7 +12,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.FindCustomerApiCalls;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -71,7 +71,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     private ProgressDialog progressDialog;
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
-    private FindCustomerApiCalls findCustomerApiCalls;
+    private BusinessCustomerApiCalls businessCustomerApiCalls;
     private EditText edt_mobile;
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
@@ -124,8 +124,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
             ShowAlertInformation.showNetworkDialog(this);
         }
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-        findCustomerApiCalls = new FindCustomerApiCalls();
-        findCustomerApiCalls.setFindCustomerPresenter(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setFindCustomerPresenter(this);
         purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
 
         tv_place_order.setOnClickListener(new View.OnClickListener() {
@@ -338,7 +338,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                     progressDialog.show();
 
 
-                    findCustomerApiCalls.findCustomer(
+                    businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),

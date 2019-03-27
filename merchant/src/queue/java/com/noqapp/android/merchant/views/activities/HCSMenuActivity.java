@@ -13,7 +13,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BaseMasterLabApiCalls;
-import com.noqapp.android.merchant.model.FindCustomerApiCalls;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -113,7 +113,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private Button btn_create_order, btn_create_token;
     private String codeQR = "";
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
-    private FindCustomerApiCalls findCustomerApiCalls;
+    private BusinessCustomerApiCalls businessCustomerApiCalls;
     private LinearLayout ll_order_list;
     private TextView tv_order_list;
     private RelativeLayout rl_total;
@@ -205,8 +205,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
         }
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-        findCustomerApiCalls = new FindCustomerApiCalls();
-        findCustomerApiCalls.setFindCustomerPresenter(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setFindCustomerPresenter(this);
         purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
     }
 
@@ -659,7 +659,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     progressDialog.show();
 
 
-                    findCustomerApiCalls.findCustomer(
+                    businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),

@@ -154,7 +154,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.qCodeQR = qCodeQR;
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
-        businessCustomerApiCalls = new BusinessCustomerApiCalls(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.jsonDataVisibility = jsonDataVisibility;
     }
 
@@ -166,7 +167,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.glowPosition = glowPosition;
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
-        businessCustomerApiCalls = new BusinessCustomerApiCalls(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
         this.bizCategoryId = bizCategoryId;
