@@ -273,7 +273,6 @@ public class ManageQueueApiCalls {
                         dispenseTokenPresenter.dispenseTokenResponse(response.body());
                     } else {
                         Log.e(TAG, "Found error dispenseTokenWithClientInfo");
-                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                         dispenseTokenPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {

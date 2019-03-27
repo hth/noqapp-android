@@ -1,7 +1,9 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -11,23 +13,32 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MerchantDetailFragment extends BaseMerchantDetailFragment {
-
+    private Spinner sp_patient_list;
+    private TextView tv_select_patient;
+    private Button btn_create_order;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +80,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
         tv_create_token = customDialogView.findViewById(R.id.tvtitle);
         iv_banner = customDialogView.findViewById(R.id.iv_banner);
         tvcount = customDialogView.findViewById(R.id.tvcount);
+        ll_mobile = customDialogView.findViewById(R.id.ll_mobile);
         edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
+        sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
+        tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
+
+
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
         final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
         final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
@@ -79,17 +95,23 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
         rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_mobile) {
-                    edt_mobile.setVisibility(View.VISIBLE);
+                    ll_mobile.setVisibility(View.VISIBLE);
                     edt_id.setVisibility(View.GONE);
                     edt_id.setText("");
                 } else {
                     edt_id.setVisibility(View.VISIBLE);
-                    edt_mobile.setVisibility(View.GONE);
+                    ll_mobile.setVisibility(View.GONE);
                     edt_mobile.setText("");
                 }
             }
         });
+        ccp = customDialogView.findViewById(R.id.ccp);
+        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
+        btn_create_order = customDialogView.findViewById(R.id.btn_create_order);
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token.setText("Search Patient");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,14 +137,15 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
 
 
                 if (isValid) {
-                    if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         setDispensePresenter();
                         String phone = "";
                         String cid = "";
                         if (rb_mobile.isChecked()) {
                             edt_id.setText("");
-                            phone = "91" + edt_mobile.getText().toString();
+                            countryCode = ccp.getSelectedCountryCode();
+                            countryShortName = ccp.getDefaultCountryName().toUpperCase();
+                            phone = countryCode + edt_mobile.getText().toString();
                         } else {
                             cid = edt_id.getText().toString();
                             edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
@@ -133,10 +156,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
                                 LaunchActivity.getLaunchActivity().getAuth(),
                                 new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
                         btn_create_token.setClickable(false);
-                        mAlertDialog.dismiss();
-                    } else {
-                        mAlertDialog.dismiss();
-                    }
+                        //  mAlertDialog.dismiss();
                 }
             }
         });
@@ -150,4 +170,40 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment {
         mAlertDialog.show();
     }
 
+    @Override
+    public void passPhoneNo(JsonProfile jsonProfile) {
+        dismissProgress();
+        if (null != jsonProfile) {
+            List<JsonProfile> jsonProfileList = new ArrayList<>();
+            jsonProfileList.add(jsonProfile);
+            if (jsonProfile.getDependents().size() > 0) {
+                jsonProfileList.addAll(jsonProfile.getDependents());
+            }
+            JsonProfileAdapter adapter = new JsonProfileAdapter(getActivity(), jsonProfileList);
+            sp_patient_list.setAdapter(adapter);
+            sp_patient_list.setVisibility(View.VISIBLE);
+            edt_mobile.setEnabled(false);
+            tv_select_patient.setVisibility(View.VISIBLE);
+            btn_create_order.setVisibility(View.VISIBLE);
+            btn_create_token.setVisibility(View.GONE);
+            btn_create_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        btn_create_order.setEnabled(false);
+                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+                        setDispensePresenter();
+                        manageQueueApiCalls.dispenseTokenWithClientInfo(
+                                BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(getActivity());
+                    }
+                }
+            });
+        }
+    }
 }

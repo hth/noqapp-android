@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -34,6 +35,8 @@ import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
+import com.hbb20.CountryCodePicker;
+
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
@@ -54,6 +57,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +102,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected ImageView iv_generate_token, iv_queue_history, iv_view_followup;
     // variable to track event time
     private long mLastClickTime = 0;
+    protected LinearLayout ll_mobile;
+    protected CountryCodePicker ccp;
+    protected String countryCode = "";
+    protected String countryShortName = "";
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -717,9 +725,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     @Override
-    public void passPhoneNo(String phoneNo, String countryShortName) {
+    public void passPhoneNo(JsonProfile jsonProfile) {
         LaunchActivity.getLaunchActivity().progressDialog.show();
-        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo, countryShortName);
+        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
         setDispensePresenter();
         manageQueueApiCalls.dispenseTokenWithClientInfo(
                 BaseLaunchActivity.getDeviceID(),

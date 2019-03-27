@@ -115,18 +115,40 @@
                         app:buttonTint="@color/radio_button_color"/>
             </RadioGroup>
 
-            <EditText
-                    android:id="@+id/edt_mobile"
+            <LinearLayout
+                    android:id="@+id/ll_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:inputType="phone"
-                    android:textSize="@dimen/text_size_twelve"
-                    android:padding="10dp"/>
+                    android:orientation="horizontal">
+
+                <com.hbb20.CountryCodePicker
+                        android:id="@+id/ccp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="#e2e2e2"
+                        android:paddingStart="5dp"
+                        android:layout_marginRight="5dp"
+                        app:ccp_textSize="14sp"
+                        app:ccp_defaultNameCode="IN"
+                        app:ccp_countryPreference="US,IN"
+                        android:layout_marginBottom="10dp"
+                        app:ccp_defaultLanguage="ENGLISH"
+                        app:ccp_rememberLastSelection="true"
+                        app:ccp_autoDetectCountry="true"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:inputType="phone"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:padding="10dp"/>
+            </LinearLayout>
 
             <EditText
                     android:id="@+id/edt_id"
@@ -141,22 +163,64 @@
                     android:visibility="gone"
                     android:textSize="@dimen/text_size_twelve"
                     android:padding="10dp"/>
+
+            <TextView
+                    android:id="@+id/tv_select_patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select patient name for test"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    android:textSize="@dimen/text_size_twelve"/>
+
+
+            <Spinner
+                    android:id="@+id/sp_patient_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/sp_background"
+                    android:visibility="gone"/>
         </LinearLayout>
 
-        <Button
-                android:id="@+id/btn_create_token"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height"
+        <FrameLayout
                 android:layout_below="@+id/ll_center"
-                android:layout_marginBottom="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/bg_gradient_round"
-                android:text="@string/create_token"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_twelve"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+
+            <Button
+                    android:id="@+id/btn_create_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bg_gradient_round"
+                    android:text="@string/create_token"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve"
+                    android:visibility="gone"/>
+
+            <Button
+                    android:id="@+id/btn_create_token"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/bg_gradient_round"
+                    android:text="@string/create_token"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve"/>
+
+
+        </FrameLayout>
 
     </RelativeLayout>
 

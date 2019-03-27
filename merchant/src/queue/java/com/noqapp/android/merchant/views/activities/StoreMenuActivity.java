@@ -12,6 +12,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.FindCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -70,6 +71,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     private ProgressDialog progressDialog;
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
+    private FindCustomerApiCalls findCustomerApiCalls;
     private EditText edt_mobile;
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
@@ -122,7 +124,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
             ShowAlertInformation.showNetworkDialog(this);
         }
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-        purchaseOrderApiCalls.setFindCustomerPresenter(this);
+        findCustomerApiCalls = new FindCustomerApiCalls();
+        findCustomerApiCalls.setFindCustomerPresenter(this);
         purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
 
         tv_place_order.setOnClickListener(new View.OnClickListener() {
@@ -335,7 +338,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                     progressDialog.show();
 
 
-                    purchaseOrderApiCalls.findCustomer(
+                    findCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -357,18 +360,21 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     }
 
     @Override
-    public void passPhoneNo(String phoneNo, String countryShortName) {
+    public void passPhoneNo(JsonProfile jsonProfile) {
         // coming from login or registration activity
-        dismissProgress();
+        findCustomerResponse(jsonProfile);
     }
 
 
     @Override
     public void findCustomerResponse(final JsonProfile jsonProfile) {
         dismissProgress();
-        if (null != jsonProfile && jsonProfile.getDependents().size() > 0) {
+        if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);
+            if (jsonProfile.getDependents().size() > 0) {
+                jsonProfileList.addAll(jsonProfile.getDependents());
+            }
             JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfileList);
             sp_patient_list.setAdapter(adapter);
             sp_patient_list.setEnabled(false);
