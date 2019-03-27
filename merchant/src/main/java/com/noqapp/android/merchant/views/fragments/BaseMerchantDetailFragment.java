@@ -9,7 +9,6 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
@@ -140,9 +139,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         btn_skip = itemView.findViewById(R.id.btn_skip);
         btn_next = itemView.findViewById(R.id.btn_next);
         btn_start = itemView.findViewById(R.id.btn_start);
-        TextView tv_deviceId = itemView.findViewById(R.id.tv_deviceId);
-        tv_deviceId.setText(UserUtils.getDeviceId());
-        tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
 
         tv_next = itemView.findViewById(R.id.tv_next);
         tv_start = itemView.findViewById(R.id.tv_start);
