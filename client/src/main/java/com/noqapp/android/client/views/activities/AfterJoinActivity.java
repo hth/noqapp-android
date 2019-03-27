@@ -80,6 +80,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private TextView tv_after;
     private TextView tv_estimated_time;
     private TextView tv_vibrator_off;
+    private TextView tv_delay_in_time;
     private LinearLayout ll_change_bg;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
@@ -102,6 +103,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
+        tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_mobile = findViewById(R.id.tv_mobile);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
@@ -180,13 +182,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     tv_add.setVisibility(View.GONE);
                     tv_name.setVisibility(View.GONE);
             }
-            String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
-            ;
             if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
-                String red = "<font color='#e92270'><b>Late " + jsonTokenAndQueue.getDelayedInMinutes() + " minutes.</b></font>";
-                time = time + " " + red;
+                int hours = jsonTokenAndQueue.getDelayedInMinutes() / 60;
+                int minutes = jsonTokenAndQueue.getDelayedInMinutes() % 60;
+                String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
+                tv_delay_in_time.setText(Html.fromHtml(red));
+            }else{
+                tv_delay_in_time.setVisibility(View.GONE);
             }
-            tv_hour_saved.setText(Html.fromHtml(time));
+            String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
+            tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
             tv_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override

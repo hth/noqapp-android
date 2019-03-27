@@ -167,6 +167,15 @@
 
             </FrameLayout>
 
+            <TextView
+                    android:id="@+id/tv_delay_in_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/theme_color_red"
+                    android:textSize="@dimen/text_size_twelve"/>
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

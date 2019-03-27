@@ -49,6 +49,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_rating_review;
     private TextView tv_add, add_person;
     private TextView tv_rating;
+    private TextView tv_delay_in_time;
     private Spinner sp_name_list;
     private String codeQR;
     private JsonQueue jsonQueue;
@@ -60,7 +61,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
-
+        tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
@@ -211,15 +212,16 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-            String time = new AppUtilities().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;
-                System.out.printf("%d:%02d", hours, minutes);
-                String red = "<font color='#e92270'><b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b></font>";
-                time = time + " " + red;
+                String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
+                tv_delay_in_time.setText(Html.fromHtml(red));
+            }else{
+                tv_delay_in_time.setVisibility(View.GONE);
             }
-            tv_hour_saved.setText(Html.fromHtml(time));
+            String time = new AppUtilities().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
+            tv_hour_saved.setText(time);
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener(new View.OnClickListener() {
                 @Override
