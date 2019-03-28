@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.model;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.model.response.api.ManageQueueApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -263,8 +264,8 @@ public class ManageQueueApiCalls {
     }
 
 
-    public void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
-        manageQueueApiUrls.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonToken>() {
+    public void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomer jsonBusinessCustomer) {
+        manageQueueApiUrls.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

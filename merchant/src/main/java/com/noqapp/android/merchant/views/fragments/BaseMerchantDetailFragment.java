@@ -11,6 +11,7 @@ import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -724,10 +725,16 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         LaunchActivity.getLaunchActivity().progressDialog.show();
         String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
         setDispensePresenter();
+
+        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonProfile.getQueueUserId());
+        jsonBusinessCustomer
+                .setCodeQR(topicsList.get(currrentpos).getCodeQR())
+                .setCustomerPhone(phoneNoWithCode);
+
         manageQueueApiCalls.dispenseTokenWithClientInfo(
                 BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),
-                new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));
+                jsonBusinessCustomer);
     }
 }
