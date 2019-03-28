@@ -237,6 +237,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             edt_phone.setError("Please enter valid mobile no.");
             isValid = false;
         }
+        if(!NoQueueBaseActivity.isEmailVerified()){
+            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
         if (tv_address.getText().toString().equals("")) {
             tv_address.setError("Please enter delivery address.");
             isValid = false;

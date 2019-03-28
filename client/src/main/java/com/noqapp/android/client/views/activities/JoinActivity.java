@@ -345,7 +345,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
     private void callAfterJoin(boolean isPayBeforeJoin) {
         if(isPayBeforeJoin && !NoQueueBaseActivity.isEmailVerified()){
-            Toast.makeText(this, "Email is mandatory. Please add ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
         }else {
             Intent in = new Intent(this, AfterJoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
