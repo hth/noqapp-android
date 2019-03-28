@@ -117,7 +117,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
             return !getMail().endsWith(Constants.MAIL_NOQAPP_COM);
         }
     }
+    public static boolean isEmailVerified() {
+        return getUserProfile().isAccountValidated();
 
+
+    }
     public static String getAuth() {
         return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }

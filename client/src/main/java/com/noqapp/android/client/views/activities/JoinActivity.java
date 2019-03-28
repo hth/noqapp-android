@@ -344,17 +344,21 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
     private void callAfterJoin(boolean isPayBeforeJoin) {
-        Intent in = new Intent(this, AfterJoinActivity.class);
-        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
-        //TODO // previously KEY_FROM_LIST  was false need to verify
-        in.putExtra(IBConstant.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
-        in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-        in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-        in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
-        in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
-        in.putExtra("isPayBeforeJoin",isPayBeforeJoin);
-        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+        if(isPayBeforeJoin && !NoQueueBaseActivity.isEmailVerified()){
+            Toast.makeText(this, "Email is mandatory. Please add ", Toast.LENGTH_SHORT).show();
+        }else {
+            Intent in = new Intent(this, AfterJoinActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+            //TODO // previously KEY_FROM_LIST  was false need to verify
+            in.putExtra(IBConstant.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+            in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+            in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+            in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+            in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
+            in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+            in.putExtra("isPayBeforeJoin", isPayBeforeJoin);
+            startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+        }
     }
 
 
