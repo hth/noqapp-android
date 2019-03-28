@@ -6,6 +6,7 @@ import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -209,11 +210,16 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
                         setDispensePresenter();
+
+                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                        jsonBusinessCustomer
+                                .setCodeQR(topicsList.get(currrentpos).getCodeQR())
+                                .setCustomerPhone(phoneNoWithCode);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
                                 BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(),
-                                new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));
+                                jsonBusinessCustomer);
 
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
