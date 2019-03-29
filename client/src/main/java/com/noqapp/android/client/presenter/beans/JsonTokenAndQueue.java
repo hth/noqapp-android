@@ -126,6 +126,8 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("bc")
     private String bizCategoryId;
 
+    private String transactionID;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -388,12 +390,29 @@ public class JsonTokenAndQueue implements Serializable {
         return afterHowLong() <= 0;
     }
 
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public void setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
+    }
+
+    public String getTransactionID() {
+        return transactionID;
+    }
+
+    public void setTransactionID(String transactionID) {
+        this.transactionID = transactionID;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("codeQR", codeQR)
                 .append("geoHash", geoHash)
                 .append("businessName", businessName)
+                .append("displayImage", displayImage)
                 .append("displayName", displayName)
                 .append("storeAddress", storeAddress)
                 .append("area", area)
@@ -409,13 +428,17 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("lastNumber", lastNumber)
                 .append("token", token)
+                .append("queueUserId", queueUserId)
                 .append("queueStatus", queueStatus)
+                .append("purchaseOrderState", purchaseOrderState)
                 .append("serviceEndTime", serviceEndTime)
                 .append("ratingCount", ratingCount)
                 .append("averageServiceTime", averageServiceTime)
                 .append("hoursSaved", hoursSaved)
                 .append("createDate", createDate)
+                .append("jsonPurchaseOrder", jsonPurchaseOrder)
                 .append("bizCategoryId", bizCategoryId)
+                .append("transactionID", transactionID)
                 .toString();
     }
 }
