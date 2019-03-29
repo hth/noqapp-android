@@ -7,6 +7,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -243,7 +244,26 @@ public interface TokenQueueApiUrls {
             JsonToken jsonToken
     );
 
+    @GET("api/c/token/purchaseOrder/{token}/{codeQR}.json")
+    Call<JsonPurchaseOrder> purchaseOrder(
+            @Header("X-R-DID")
+            String did,
 
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("token")
+            String token,
+
+            @Path("codeQR")
+            String codeQR
+    );
 
     /**
      * Errors
