@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.presenter.beans;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -72,6 +73,12 @@ public class JsonQueuedPerson implements Serializable {
     /** This record reference has to be used when submitting a form. */
     @JsonProperty ("rr")
     private String recordReferenceId;
+
+    @JsonProperty("ti")
+    private String transactionId;
+
+    @JsonProperty("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @JsonProperty("c")
     private String created;
@@ -193,6 +200,24 @@ public class JsonQueuedPerson implements Serializable {
         return this;
     }
 
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonQueuedPerson setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonQueuedPerson setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
+        return this;
+    }
+
     public String getCreated() {
         return created;
     }
@@ -218,6 +243,8 @@ public class JsonQueuedPerson implements Serializable {
                 ", clientVisitedThisStoreDate='" + clientVisitedThisStoreDate + '\'' +
                 ", clientVisitedThisBusiness=" + clientVisitedThisBusiness +
                 ", recordReferenceId='" + recordReferenceId + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", jsonPurchaseOrder=" + jsonPurchaseOrder +
                 ", created='" + created + '\'' +
                 '}';
     }
