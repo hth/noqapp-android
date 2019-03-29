@@ -230,9 +230,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 if (isVibratorOff())
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
 
-
-                queueApiAuthenticCall.purchaseOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                        String.valueOf(jsonTokenAndQueue.getToken()), codeQR);
+                if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionID())) {
+                    queueApiAuthenticCall.purchaseOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                            String.valueOf(jsonTokenAndQueue.getToken()), codeQR);
+                }
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
