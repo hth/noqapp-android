@@ -50,6 +50,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
+import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -99,7 +100,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
     private Button btn_pay;
-    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,6 +231,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
 
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionID())) {
+                    progressDialog.show();
                     queueApiAuthenticCall.purchaseOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                             String.valueOf(jsonTokenAndQueue.getToken()), codeQR);
                 }
@@ -644,11 +645,29 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void queueJsonPurchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         Log.e("respo: ", jsonPurchaseOrder.toString());
         btn_pay.setVisibility(View.VISIBLE);
-        this.jsonPurchaseOrder = jsonPurchaseOrder;
+        this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
+        if(null == jsonToken){
+            jsonToken = new JsonToken();
+        }
+        jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
+        dismissProgress();
+    }
+
+    @Override
+    public void paymentInitiateResponse(JsonResponseWithCFToken jsonResponseWithCFToken) {
+        if(null != jsonResponseWithCFToken){
+            jsonToken.getJsonPurchaseOrder().setJsonResponseWithCFToken(jsonResponseWithCFToken);
+            triggerOnlinePayment();
+        }
+        dismissProgress();
     }
 
     private void pay() {
-        JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(jsonTokenAndQueue.getQueueUserId()).setGuardianQid("");
-        queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
+        if (null != jsonTokenAndQueue.getJsonPurchaseOrder()) {
+            progressDialog.show();
+            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder().setCodeQR(codeQR).
+                    setQueueUserId(jsonTokenAndQueue.getQueueUserId()).setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
+            queueApiAuthenticCall.paymentInitiate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+        }
     }
 }

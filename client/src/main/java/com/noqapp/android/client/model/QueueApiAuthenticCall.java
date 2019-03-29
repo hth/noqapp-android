@@ -18,6 +18,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
+import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
 import android.util.Log;
@@ -375,6 +376,35 @@ public class QueueApiAuthenticCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
+                responsePresenter.responsePresenterError();
+            }
+        });
+    }
+
+    public void paymentInitiate(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        TOKEN_QUEUE_API_SERVICE.paymentInitiate(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponseWithCFToken>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Response<JsonResponseWithCFToken> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Res: cancelPayBeforeQ", String.valueOf(response.body()));
+                        queueJsonPurchaseOrderPresenter.paymentInitiateResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Fail cancelPayBeforeQueue");
+                        queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueJsonPurchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Throwable t) {
                 Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }
