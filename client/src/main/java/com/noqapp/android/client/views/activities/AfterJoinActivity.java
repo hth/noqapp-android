@@ -5,14 +5,24 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -20,6 +30,7 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
+import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -39,37 +50,29 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator, CFClientInterface, CashFreeNotifyQPresenter {
+import androidx.core.content.ContextCompat;
+
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+
+public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator,
+        CFClientInterface, CashFreeNotifyQPresenter, QueueJsonPurchaseOrderPresenter {
     private static final String TAG = AfterJoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
@@ -95,6 +98,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String queueUserId = "";
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
+    private Button btn_pay;
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +114,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         tv_token = findViewById(R.id.tv_token);
         tv_how_long = findViewById(R.id.tv_how_long);
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
+        btn_pay = findViewById(R.id.btn_pay);
         tv_after = findViewById(R.id.tv_after);
         TextView tv_hour_saved = findViewById(R.id.tv_hour_saved);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
@@ -123,10 +129,18 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 cancelQueue();
             }
         });
+        btn_pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pay();
+            }
+        });
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
         queueApiAuthenticCall = new QueueApiAuthenticCall();
+        queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
+        queueApiAuthenticCall.setTokenPresenter(this);
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
@@ -187,7 +201,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 int minutes = jsonTokenAndQueue.getDelayedInMinutes() % 60;
                 String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
                 tv_delay_in_time.setText(Html.fromHtml(red));
-            }else{
+            } else {
                 tv_delay_in_time.setVisibility(View.GONE);
             }
             String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
@@ -215,6 +229,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
                 if (isVibratorOff())
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
+
+
+                queueApiAuthenticCall.purchaseOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                        String.valueOf(jsonTokenAndQueue.getToken()), codeQR);
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
@@ -357,7 +375,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     queueUserId = jsonProfile.getQueueUserId();
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
-                queueApiAuthenticCall.setTokenPresenter(this);
+
                 if (jsonQueue.isEnabledPayment()) {
                     if (getIntent().getBooleanExtra("isPayBeforeJoin", false)) {
                         queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
@@ -619,5 +637,17 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Toast.makeText(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage(), Toast.LENGTH_LONG).show();
             //Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void queueJsonPurchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        Log.e("respo: ", jsonPurchaseOrder.toString());
+        btn_pay.setVisibility(View.VISIBLE);
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
+    }
+
+    private void pay() {
+        JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(jsonTokenAndQueue.getQueueUserId()).setGuardianQid("");
+        queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
     }
 }

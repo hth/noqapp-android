@@ -4,6 +4,7 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
+import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.QueuePresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
@@ -17,6 +18,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -37,6 +39,7 @@ public class QueueApiAuthenticCall {
     private ResponsePresenter responsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
     private CashFreeNotifyQPresenter cashFreeNotifyQPresenter;
+    private QueueJsonPurchaseOrderPresenter queueJsonPurchaseOrderPresenter;
     private boolean responseReceived = false;
     public JsonQueue jsonQueue;
     public JsonToken jsonToken;
@@ -66,6 +69,10 @@ public class QueueApiAuthenticCall {
 
     public void setCashFreeNotifyQPresenter(CashFreeNotifyQPresenter cashFreeNotifyQPresenter) {
         this.cashFreeNotifyQPresenter = cashFreeNotifyQPresenter;
+    }
+
+    public void setQueueJsonPurchaseOrderPresenter(QueueJsonPurchaseOrderPresenter queueJsonPurchaseOrderPresenter) {
+        this.queueJsonPurchaseOrderPresenter = queueJsonPurchaseOrderPresenter;
     }
 
     static {
@@ -339,6 +346,35 @@ public class QueueApiAuthenticCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
+                responsePresenter.responsePresenterError();
+            }
+        });
+    }
+
+    public void purchaseOrder(String did, String mail, String auth, String token,String codeQr) {
+        TOKEN_QUEUE_API_SERVICE.purchaseOrder(did, Constants.DEVICE_TYPE, mail, auth, token,codeQr).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Res: cancelPayBeforeQ", String.valueOf(response.body()));
+                        queueJsonPurchaseOrderPresenter.queueJsonPurchaseOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Fail cancelPayBeforeQueue");
+                        queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueJsonPurchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }
