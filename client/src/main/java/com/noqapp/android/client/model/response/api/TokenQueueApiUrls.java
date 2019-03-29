@@ -7,6 +7,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
+import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
 import retrofit2.Call;
@@ -228,7 +229,7 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/token/paymentInitiate.json")
-    Call<JsonToken> paymentInitiate(
+    Call<JsonResponseWithCFToken> paymentInitiate(
             @Header("X-R-DID")
             String did,
 
