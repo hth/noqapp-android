@@ -9,7 +9,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.MedicalRecordPresenter;
+import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;

@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans;
+package com.noqapp.android.merchant.views.interfaces;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
