@@ -9,6 +9,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Intent;
@@ -137,6 +138,15 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         }
         tv_order_number.setText("TOKEN NO.  " + String.valueOf(jsonQueueHistorical.getTokenNumber()));
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
+        if(null != jsonQueueHistorical.getJsonPurchaseOrder()){
+            String currencySymbol = AppUtilities.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());;
+            tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()) / 100);
+            if (PaymentStatusEnum.PA == jsonQueueHistorical.getJsonPurchaseOrder().getPaymentStatus()) {
+                tv_payment_status.setText("Paid via: " + jsonQueueHistorical.getJsonPurchaseOrder().getPaymentMode().getDescription());
+            } else {
+                tv_payment_status.setText("Payment status: " + jsonQueueHistorical.getJsonPurchaseOrder().getPaymentStatus().getDescription());
+            }
+        }
     }
 
 }
