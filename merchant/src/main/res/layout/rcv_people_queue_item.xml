@@ -3,7 +3,7 @@
                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                    android:id="@+id/cardview"
                                    android:layout_width="200dp"
-                                   android:layout_height="300dp"
+                                   android:layout_height="wrap_content"
                                    android:padding="10dp"
                                    card_view:cardBackgroundColor="@android:color/white"
                                    card_view:cardCornerRadius="10dp"
@@ -167,7 +167,7 @@
         <TextView
             android:id="@+id/tv_payment_stat"
             android:layout_width="match_parent"
-            android:padding="3dp"
+            android:padding="10dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:background="@drawable/bg_nogradient_round"
