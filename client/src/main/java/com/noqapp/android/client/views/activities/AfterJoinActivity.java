@@ -639,6 +639,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     @Override
     public void cashFreeNotifyQResponse(JsonToken jsonToken) {
+        btn_pay.setVisibility(View.GONE);
         if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
             Toast.makeText(this, "Token generated successfully.", Toast.LENGTH_LONG).show();
             tokenPresenterResponse(jsonToken);
