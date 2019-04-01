@@ -6,11 +6,11 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
