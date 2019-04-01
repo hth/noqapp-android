@@ -299,7 +299,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                 tokenPresenterResponse(jsonToken);
+                btn_pay.setVisibility(View.GONE);
             } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
@@ -642,6 +644,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         btn_pay.setVisibility(View.GONE);
         if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
             Toast.makeText(this, "Token generated successfully.", Toast.LENGTH_LONG).show();
+            queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
             tokenPresenterResponse(jsonToken);
         } else {
             Toast.makeText(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage(), Toast.LENGTH_LONG).show();

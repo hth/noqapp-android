@@ -386,25 +386,12 @@
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="10dp"
                                     android:layout_marginTop="10dp"
                                     android:paddingLeft="10dp"
                                     android:gravity="left"
                                     android:text="@string/order_details"
                                     android:textSize="@dimen/store_info"/>
 
-                            <LinearLayout
-                                    android:id="@+id/ll_order_details"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="5dp"
-                                    android:orientation="vertical"
-                                    android:paddingBottom="5dp"
-                                    android:paddingLeft="15dp"
-                                    android:paddingRight="15dp">
-
-
-                            </LinearLayout>
 
                             <LinearLayout
                                     android:id="@+id/ll_amount"
