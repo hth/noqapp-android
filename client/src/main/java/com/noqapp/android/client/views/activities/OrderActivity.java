@@ -248,21 +248,26 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             String storeGeoHash = getIntent().getExtras().getString("GeoHash");
             if (!TextUtils.isEmpty(storeGeoHash)) {
-                float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
-                float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
-                float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
-                float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
-                float distance = (float) AppUtilities.calculateDistance(
-                        lat_s, long_s, lat_d, long_d);
-                if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.RS) {
-                    if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                        tv_address.setError("Please change the address. This address is very far from the store");
-                        isValid = false;
-                    }
-                } else {
-                    if (distance > 150) { // Set for washing car stores
-                        tv_address.setError("Please change the address. This address is very far from the store");
-                        isValid = false;
+                if(TextUtils.isEmpty(jsonUserAddress.getGeoHash())){
+                    tv_address.setError("Please select a valid address");
+                    isValid = false;
+                }else {
+                    float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
+                    float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
+                    float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
+                    float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
+                    float distance = (float) AppUtilities.calculateDistance(
+                            lat_s, long_s, lat_d, long_d);
+                    if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.RS) {
+                        if (distance > getIntent().getExtras().getInt("deliveryRange")) {
+                            tv_address.setError("Please change the address. This address is very far from the store");
+                            isValid = false;
+                        }
+                    } else {
+                        if (distance > 150) { // Set for washing car stores
+                            tv_address.setError("Please change the address. This address is very far from the store");
+                            isValid = false;
+                        }
                     }
                 }
             }
