@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -32,6 +33,11 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     @Override
     public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
+        // No implementation needed here
+    }
+
+    @Override
+    void viewOrderClick(Context context, JsonPurchaseOrder jsonPurchaseOrder) {
         // No implementation needed here
     }
 

@@ -39,5 +39,9 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     }
 
+    @Override
+    void viewOrderClick(Context context, JsonPurchaseOrder jsonPurchaseOrder) {
+        // No implementation needed here
+    }
 
 }

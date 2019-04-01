@@ -29,7 +29,6 @@ public class OrderDetailActivity extends AppCompatActivity {
     private JsonPurchaseOrder jsonPurchaseOrder;
     private boolean isProductWithoutPrice = false;
     private TextView tv_cost;
-    private String currencySymbol;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -124,7 +123,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void updateUI() {
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
-        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             if (isProductWithoutPrice) {
