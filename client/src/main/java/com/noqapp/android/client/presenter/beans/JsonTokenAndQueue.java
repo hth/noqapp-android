@@ -126,7 +126,8 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("bc")
     private String bizCategoryId;
 
-    private String transactionID;
+    @JsonProperty("ti")
+    private String transactionId;
 
     public String getCodeQR() {
         return codeQR;
@@ -394,16 +395,18 @@ public class JsonTokenAndQueue implements Serializable {
         return bizCategoryId;
     }
 
-    public void setBizCategoryId(String bizCategoryId) {
+    public JsonTokenAndQueue setBizCategoryId(String bizCategoryId) {
         this.bizCategoryId = bizCategoryId;
+        return this;
     }
 
-    public String getTransactionID() {
-        return transactionID;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public void setTransactionID(String transactionID) {
-        this.transactionID = transactionID;
+    public JsonTokenAndQueue setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
     }
 
     @Override
@@ -438,7 +441,7 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("createDate", createDate)
                 .append("jsonPurchaseOrder", jsonPurchaseOrder)
                 .append("bizCategoryId", bizCategoryId)
-                .append("transactionID", transactionID)
+                .append("transactionId", transactionId)
                 .toString();
     }
 }

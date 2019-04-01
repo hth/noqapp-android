@@ -5,24 +5,14 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -56,21 +46,32 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.core.content.ContextCompat;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator,
         CFClientInterface, CashFreeNotifyQPresenter, QueueJsonPurchaseOrderPresenter {
@@ -100,7 +101,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
     private Button btn_pay;
-
+    private TextView tv_payment_status,tv_due_amt;
+    private CardView card_amount;
+    private TextView tv_total_order_amt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,11 +119,15 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
         btn_pay = findViewById(R.id.btn_pay);
         tv_after = findViewById(R.id.tv_after);
+        tv_payment_status = findViewById(R.id.tv_payment_status);
+        tv_due_amt = findViewById(R.id.tv_due_amt);
+        tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_hour_saved = findViewById(R.id.tv_hour_saved);
         tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_add = findViewById(R.id.add_person);
         tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
         ll_change_bg = findViewById(R.id.ll_change_bg);
+        card_amount = findViewById(R.id.card_amount);
         TextView tv_name = findViewById(R.id.tv_name);
         ImageView iv_profile = findViewById(R.id.iv_profile);
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +237,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 if (isVibratorOff())
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
 
-                if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionID())) {
+                if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     progressDialog.show();
                     queueApiAuthenticCall.purchaseOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                             String.valueOf(jsonTokenAndQueue.getToken()), codeQR);
@@ -650,6 +657,17 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             jsonToken = new JsonToken();
         }
         jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
+        String currencySymbol = "Rs.";//AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());;
+        card_amount.setVisibility(View.VISIBLE);
+       // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+            tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+            btn_pay.setVisibility(View.GONE);
+        } else {
+            tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+            btn_pay.setVisibility(View.VISIBLE);
+        }
         dismissProgress();
     }
 

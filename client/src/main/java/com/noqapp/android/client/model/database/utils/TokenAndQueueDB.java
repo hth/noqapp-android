@@ -62,7 +62,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setDisplayImage(cursor.getString(22));
                     tokenAndQueue.setQueueUserId(cursor.getString(23));
                     tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                    tokenAndQueue.setTransactionID(cursor.getString(25));
+                    tokenAndQueue.setTransactionId(cursor.getString(25));
                     listJsonQueue.add(tokenAndQueue);
                 }
             } catch (Exception e) {
@@ -109,7 +109,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
                         tokenAndQueue.setQueueUserId(cursor.getString(23));
                         tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                        tokenAndQueue.setTransactionID(cursor.getString(25));
+                        tokenAndQueue.setTransactionId(cursor.getString(25));
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -158,7 +158,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
                         tokenAndQueue.setQueueUserId(cursor.getString(23));
                         tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                        tokenAndQueue.setTransactionID(cursor.getString(25));
+                        tokenAndQueue.setTransactionId(cursor.getString(25));
                         tokenAndQueueList.add(tokenAndQueue);
                     }
                 } catch (Exception e) {
@@ -207,7 +207,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setDisplayImage(cursor.getString(22));
                     tokenAndQueue.setQueueUserId(cursor.getString(23));
                     tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                    tokenAndQueue.setTransactionID(cursor.getString(25));
+                    tokenAndQueue.setTransactionId(cursor.getString(25));
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error getCurrentQueueObject reason=" + e.getLocalizedMessage(), e);
@@ -257,7 +257,7 @@ public class TokenAndQueueDB {
                         tokenAndQueue.setDisplayImage(cursor.getString(22));
                         tokenAndQueue.setQueueUserId(cursor.getString(23));
                         tokenAndQueue.setPurchaseOrderState(PurchaseOrderStateEnum.valueOf(cursor.getString(24)));
-                        tokenAndQueue.setTransactionID(cursor.getString(25));
+                        tokenAndQueue.setTransactionId(cursor.getString(25));
                         listJsonQueue.add(tokenAndQueue);
                     }
                 } finally {
