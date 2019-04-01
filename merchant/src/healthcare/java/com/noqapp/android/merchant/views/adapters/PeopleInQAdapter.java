@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -18,6 +19,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
@@ -25,7 +27,6 @@ import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 import java.util.Random;
@@ -234,6 +236,13 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    void viewOrderClick(Context context,JsonPurchaseOrder jsonPurchaseOrder) {
+        Intent in = new Intent(context, OrderDetailActivity.class);
+        in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+        ((Activity) context).startActivity(in);
     }
 
 }

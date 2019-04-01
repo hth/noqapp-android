@@ -393,11 +393,7 @@
                                     android:textSize="@dimen/store_info"/>
 
 
-                            <LinearLayout
-                                    android:id="@+id/ll_amount"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+
 
                                 <RelativeLayout
                                         android:layout_width="match_parent"
@@ -454,8 +450,6 @@
                                             android:textSize="@dimen/text_size_fourteen"/>
                                 </RelativeLayout>
 
-
-                            </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 

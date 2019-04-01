@@ -1,10 +1,12 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -22,9 +24,6 @@ import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +35,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -63,6 +65,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
     // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
+
+    abstract void viewOrderClick(Context context,JsonPurchaseOrder jsonPurchaseOrder);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -260,12 +264,22 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-        if(!TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())){
+        if (!TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
             recordHolder.tv_payment_stat.setVisibility(View.VISIBLE);
-            recordHolder.tv_payment_stat.setText("Accept Payment");
-        }else{
+            if (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus() == PaymentStatusEnum.PA) {
+                recordHolder.tv_payment_stat.setText("Paid");
+            }else{
+                recordHolder.tv_payment_stat.setText("Accept Payment");
+            }
+        } else {
             recordHolder.tv_payment_stat.setVisibility(View.GONE);
         }
+        recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewOrderClick(context,jsonQueuedPerson.getJsonPurchaseOrder());
+            }
+        });
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,7 +306,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         });
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q|| jsonQueuedPerson.getQueueUserState() ==QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
+                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
                 } else {

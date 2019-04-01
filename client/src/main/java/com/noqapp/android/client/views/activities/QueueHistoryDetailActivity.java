@@ -38,6 +38,10 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         TextView tv_name = findViewById(R.id.tv_name);
         TextView tv_patient_label = findViewById(R.id.tv_patient_label);
         Button btn_rejoin = findViewById(R.id.btn_rejoin);
+        TextView tv_payment_status = findViewById(R.id.tv_payment_status);
+        TextView tv_due_amt = findViewById(R.id.tv_due_amt);
+        TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
+
         final JsonQueueHistorical jsonQueueHistorical = (JsonQueueHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         tv_support.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +93,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
         tv_name.setText(AppUtilities.getNameFromQueueUserID(jsonQueueHistorical.getQueueUserId(), profileList));
-        if(tv_name.getText().toString().equals("")){
+        if (tv_name.getText().toString().equals("")) {
             tv_name.setText("Guest User");
         }
         switch (jsonQueueHistorical.getBusinessType()) {
