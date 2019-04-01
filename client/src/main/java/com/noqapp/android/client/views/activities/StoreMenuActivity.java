@@ -128,6 +128,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                             bundle.putSerializable(IBConstant.KEY_DATA, jsonPurchaseOrder);
                             bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
                             bundle.putString(IBConstant.KEY_STORE_ADDRESS, jsonQueue.getStoreAddress());
+                            bundle.putString("GeoHash", jsonQueue.getGeoHash());
                             bundle.putInt("deliveryRange", jsonQueue.getDeliveryRange());
                             bundle.putString("topic", jsonQueue.getTopic());
                             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);

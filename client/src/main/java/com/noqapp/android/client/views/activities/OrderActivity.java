@@ -19,6 +19,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -36,8 +37,6 @@ import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -82,6 +81,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private Button tv_place_order;
     private AppCompatRadioButton acrb_cash, acrb_online;
     private boolean isProductWithoutPrice = false;
+    private JsonUserAddress jsonUserAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +208,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
         jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
         profileAddressResponse(jsonUserAddressList);
+        jsonUserAddress = jsonUserAddressList.getJsonUserAddresses().get(0);
         rl_address.setVisibility(View.GONE);
     }
 
@@ -245,14 +246,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             tv_address.setError("Please enter delivery address.");
             isValid = false;
         } else {
-            LatLng latLng_d = AppUtilities.getLocationFromAddress(this, tv_address.getText().toString());
-            LatLng latLng_s = AppUtilities.getLocationFromAddress(this, getIntent().getExtras().getString("storeAddress"));
-            if (null != latLng_d && null != latLng_s) {
+            String storeGeoHash = getIntent().getExtras().getString("GeoHash");
+            if (!TextUtils.isEmpty(storeGeoHash)) {
+                float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
+                float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
+                float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
+                float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
                 float distance = (float) AppUtilities.calculateDistance(
-                        (float) latLng_s.latitude,
-                        (float) latLng_s.longitude,
-                        (float) latLng_d.latitude,
-                        (float) latLng_d.longitude);
+                        lat_s, long_s, lat_d, long_d);
                 if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.RS) {
                     if (distance > getIntent().getExtras().getInt("deliveryRange")) {
                         tv_address.setError("Please change the address. This address is very far from the store");
@@ -379,7 +380,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             LayoutInflater inflater = LayoutInflater.from(this);
             View radio_view = inflater.inflate(R.layout.list_item_radio, null, false);
             final AppCompatRadioButton rdbtn = radio_view.findViewById(R.id.acrb);
-            rdbtn.setId((i * 2) + i);
+            rdbtn.setId(i);
             rdbtn.setTag(addressList.get(i).getId());
             rdbtn.setText(addressList.get(i).getAddress());
             rdbtn.setPadding(10, 20, 10, 20);
@@ -448,6 +449,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 AppCompatRadioButton radioButtonChosen = group.findViewById(checkedId);
                 tv_address.setText(radioButtonChosen.getText());
                 rl_address.setVisibility(View.GONE);
+                jsonUserAddress = addressList.get(checkedId);
 
             }
         });
