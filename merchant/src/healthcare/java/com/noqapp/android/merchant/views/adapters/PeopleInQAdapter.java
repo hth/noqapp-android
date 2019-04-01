@@ -215,7 +215,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             }
 
         } else {
-            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q||jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
                     if (null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()) {
                         // temporary crash fix
@@ -239,7 +239,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void viewOrderClick(Context context,JsonPurchaseOrder jsonPurchaseOrder) {
+    void viewOrderClick(Context context, JsonPurchaseOrder jsonPurchaseOrder) {
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
         ((Activity) context).startActivity(in);
