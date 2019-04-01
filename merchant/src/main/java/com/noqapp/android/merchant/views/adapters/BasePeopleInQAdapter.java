@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -66,7 +65,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
 
-    abstract void viewOrderClick(Context context,JsonPurchaseOrder jsonPurchaseOrder);
+    abstract void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -277,7 +276,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewOrderClick(context,jsonQueuedPerson.getJsonPurchaseOrder());
+                viewOrderClick(context,jsonQueuedPerson);
             }
         });
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {

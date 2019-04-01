@@ -1,11 +1,12 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.merchant.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.model.response.api.ManageQueueApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
@@ -18,8 +19,8 @@ import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +37,7 @@ public class ManageQueueApiCalls {
     private DispenseTokenPresenter dispenseTokenPresenter;
     private TopicPresenter topicPresenter;
     private QueuePersonListPresenter queuePersonListPresenter;
+    private QueuePaymentPresenter queuePaymentPresenter;
 
 
     public void setManageQueuePresenter(ManageQueuePresenter manageQueuePresenter) {
@@ -52,6 +54,10 @@ public class ManageQueueApiCalls {
 
     public void setQueuePersonListPresenter(QueuePersonListPresenter queuePersonListPresenter) {
         this.queuePersonListPresenter = queuePersonListPresenter;
+    }
+
+    public void setQueuePaymentPresenter(QueuePaymentPresenter queuePaymentPresenter) {
+        this.queuePaymentPresenter = queuePaymentPresenter;
     }
 
     static {
@@ -320,6 +326,35 @@ public class ManageQueueApiCalls {
             public void onFailure(@NonNull Call<JsonQueuePersonList> call, @NonNull Throwable t) {
                 Log.e("changeUserInQueue", t.getLocalizedMessage(), t);
                 queuePersonListPresenter.queuePersonListError();
+            }
+        });
+    }
+
+    public void counterPayment(String did, String mail, String auth, JsonQueuedPerson jsonQueuedPerson) {
+        manageQueueApiUrls.counterPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonQueuedPerson).enqueue(new Callback<JsonQueuedPerson>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueuedPerson> call, @NonNull Response<JsonQueuedPerson> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("changeUserInQueue", String.valueOf(response.body()));
+                        queuePaymentPresenter.queuePaymentResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while changeUserInQueue");
+                        queuePaymentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queuePaymentPresenter.authenticationFailure();
+                    } else {
+                        queuePaymentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueuedPerson> call, @NonNull Throwable t) {
+                Log.e("changeUserInQueue", t.getLocalizedMessage(), t);
+                queuePaymentPresenter.responseErrorPresenter(null);
             }
         });
     }

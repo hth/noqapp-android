@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.adapters;
 
 
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -239,9 +238,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    void viewOrderClick(Context context, JsonPurchaseOrder jsonPurchaseOrder) {
+    void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson) {
         Intent in = new Intent(context, OrderDetailActivity.class);
-        in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+        in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
+        in.putExtra("qCodeQR", qCodeQR);
         ((Activity) context).startActivity(in);
     }
 

@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.presenter.beans;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
@@ -82,6 +83,9 @@ public class JsonQueuedPerson implements Serializable {
 
     @JsonProperty("c")
     private String created;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public int getToken() {
         return token;
@@ -227,25 +231,36 @@ public class JsonQueuedPerson implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public JsonQueuedPerson setError(ErrorEncounteredJson error) {
+        this.error = error;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "JsonQueuedPerson{" +
-                "token=" + token +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", queueUserState=" + queueUserState +
-                ", serverDeviceId='" + serverDeviceId + '\'' +
-                ", dependents=" + dependents +
-                ", businessCustomerId='" + businessCustomerId + '\'' +
-                ", businessCustomerIdChangeCount=" + businessCustomerIdChangeCount +
-                ", clientVisitedThisStore=" + clientVisitedThisStore +
-                ", clientVisitedThisStoreDate='" + clientVisitedThisStoreDate + '\'' +
-                ", clientVisitedThisBusiness=" + clientVisitedThisBusiness +
-                ", recordReferenceId='" + recordReferenceId + '\'' +
-                ", transactionId='" + transactionId + '\'' +
-                ", jsonPurchaseOrder=" + jsonPurchaseOrder +
-                ", created='" + created + '\'' +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonQueuedPerson{");
+        sb.append("token=").append(token);
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", customerName='").append(customerName).append('\'');
+        sb.append(", customerPhone='").append(customerPhone).append('\'');
+        sb.append(", queueUserState=").append(queueUserState);
+        sb.append(", serverDeviceId='").append(serverDeviceId).append('\'');
+        sb.append(", dependents=").append(dependents);
+        sb.append(", businessCustomerId='").append(businessCustomerId).append('\'');
+        sb.append(", businessCustomerIdChangeCount=").append(businessCustomerIdChangeCount);
+        sb.append(", clientVisitedThisStore=").append(clientVisitedThisStore);
+        sb.append(", clientVisitedThisStoreDate='").append(clientVisitedThisStoreDate).append('\'');
+        sb.append(", clientVisitedThisBusiness=").append(clientVisitedThisBusiness);
+        sb.append(", recordReferenceId='").append(recordReferenceId).append('\'');
+        sb.append(", transactionId='").append(transactionId).append('\'');
+        sb.append(", jsonPurchaseOrder=").append(jsonPurchaseOrder);
+        sb.append(", created='").append(created).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,11 +1,16 @@
 package com.noqapp.android.merchant.views.activities;
 
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.QueuePaymentPresenter;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
@@ -17,26 +22,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class OrderDetailActivity extends AppCompatActivity {
+public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private boolean isProductWithoutPrice = false;
     private TextView tv_cost;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
-    private Button btn_update_price;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment;
+    private TextView tv_payment_mode, tv_payment_status, tv_address;
     public static UpdateWholeList updateWholeList;
-    private RelativeLayout rl_multiple;
+    private JsonQueuedPerson jsonQueuedPerson;
+    private ManageQueueApiCalls manageQueueApiCalls;
+    private String qCodeQR;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -56,7 +60,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
         initProgress();
-        jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getSerializableExtra("jsonPurchaseOrder");
+        jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("jsonQueuedPerson");
+        jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,14 +72,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
 
         tv_toolbar_title.setText(getString(R.string.order_details));
-
+        manageQueueApiCalls = new ManageQueueApiCalls();
+        manageQueueApiCalls.setQueuePaymentPresenter(this);
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_address = findViewById(R.id.tv_address);
-        btn_update_price = findViewById(R.id.btn_update_price);
         tv_cost = findViewById(R.id.tv_cost);
-        tv_multiple_payment = findViewById(R.id.tv_multiple_payment);
-        rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -94,52 +97,39 @@ public class OrderDetailActivity extends AppCompatActivity {
 
             }
         });
-
+        qCodeQR = getIntent().getStringExtra("qCodeQR");
         rl_payment = findViewById(R.id.rl_payment);
-
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
         initProgress();
         updateUI();
-
-
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isProductWithoutPrice) {
-                    Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
-                } else {
                     progressDialog.show();
                     progressDialog.setMessage("Starting payment..");
-                    jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                    jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
+                    JsonQueuedPerson jqp = new JsonQueuedPerson();
+                    jqp.setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                    jqp.setToken(jsonQueuedPerson.getToken());
+                    JsonPurchaseOrder jpo = new JsonPurchaseOrder();
+                    jpo.setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId());
+                    jpo.setCodeQR(qCodeQR);
+                    jpo.setTransactionId(jsonQueuedPerson.getTransactionId());
+                    jpo.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                    jqp.setJsonPurchaseOrder(jpo);
+                    manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(), jqp);
 
                 }
-
-            }
         });
 
     }
 
-
     private void updateUI() {
         tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
-        if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-            if (isProductWithoutPrice) {
-                rl_payment.setVisibility(View.GONE);
-                btn_update_price.setVisibility(View.VISIBLE);
-            } else {
-                rl_payment.setVisibility(View.VISIBLE);
-                btn_update_price.setVisibility(View.GONE);
-            }
-            if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-                rl_multiple.setVisibility(View.VISIBLE);
-                tv_multiple_payment.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-            } else {
-                rl_multiple.setVisibility(View.GONE);
-                tv_multiple_payment.setText("");
-            }
+        if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
+            rl_payment.setVisibility(View.VISIBLE);
         } else {
             rl_payment.setVisibility(View.GONE);
         }
@@ -153,7 +143,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
-
         try {
             tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
         } catch (Exception e) {
@@ -183,48 +172,35 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-//        dismissProgress();
-//        new ErrorResponseHandler().processError(OrderDetailActivity.this, eej);
-//    }
-//
-//    @Override
-//    public void responseErrorPresenter(int errorCode) {
-//        dismissProgress();
-//    }
-//
-//    @Override
-//    public void authenticationFailure() {
-//        dismissProgress();
-//        AppUtils.authenticationProcessing();
-//    }
-//
-//    @Override
-//    public void paymentProcessResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-//        dismissProgress();
-//        if (null != jsonPurchaseOrder) {
-//            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA ||
-//                    jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
-//                this.jsonPurchaseOrder = jsonPurchaseOrder;
-//                updateUI();
-//                Toast.makeText(OrderDetailActivity.this, "Payment updated successfully", Toast.LENGTH_LONG).show();
-//                if (null != updateWholeList) {
-//                    updateWholeList.updateWholeList();
-//                }
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
-//        dismissProgress();
-//        if (null != jsonPurchaseOrderList) {
-//            Log.v("order data:", jsonPurchaseOrderList.toString());
-//            finish();
-//            if (null != updateWholeList) {
-//                updateWholeList.updateWholeList();
-//            }
-//        }
-//    }
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(OrderDetailActivity.this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtils.authenticationProcessing();
+    }
+
+    @Override
+    public void queuePaymentResponse(JsonQueuedPerson jsonQueuedPerson) {
+        dismissProgress();
+        if (null != jsonQueuedPerson) {
+            jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
+            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA) {
+                updateUI();
+                Toast.makeText(OrderDetailActivity.this, "Payment updated successfully", Toast.LENGTH_LONG).show();
+                if (null != updateWholeList) {
+                    updateWholeList.updateWholeList();
+                }
+            }
+        }
+    }
 }
