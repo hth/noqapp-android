@@ -107,19 +107,21 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             public void onClick(View v) {
                     progressDialog.show();
                     progressDialog.setMessage("Starting payment..");
-                    JsonQueuedPerson jqp = new JsonQueuedPerson();
-                    jqp.setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                    jqp.setToken(jsonQueuedPerson.getToken());
-                    JsonPurchaseOrder jpo = new JsonPurchaseOrder();
-                    jpo.setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId());
-                    jpo.setCodeQR(qCodeQR);
-                    jpo.setTransactionId(jsonQueuedPerson.getTransactionId());
-                    jpo.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                    JsonQueuedPerson jqp = new JsonQueuedPerson()
+                            .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                            .setToken(jsonQueuedPerson.getToken());
+
+                    JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                            .setCodeQR(qCodeQR)
+                            .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                            .setTransactionId(jsonQueuedPerson.getTransactionId())
+                            .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                     jqp.setJsonPurchaseOrder(jpo);
                     manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), jqp);
-
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            jqp);
                 }
         });
 
