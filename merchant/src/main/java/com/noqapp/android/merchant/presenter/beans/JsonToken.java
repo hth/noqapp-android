@@ -62,6 +62,7 @@ public class JsonToken implements Serializable {
     /* Do not use it. Its not being used or sent across the line. */
     @JsonProperty("ti")
     @JsonIgnore
+    @SuppressWarnings("unused")
     private String transactionId;
 
     @JsonProperty("po")
