@@ -101,9 +101,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
     private Button btn_pay;
-    private TextView tv_payment_status,tv_due_amt;
+    private TextView tv_payment_status, tv_due_amt;
     private CardView card_amount;
     private TextView tv_total_order_amt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -284,7 +285,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 triggerOnlinePayment();
-            } else {
+            } else  if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+                Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
+                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+                tokenPresenterResponse(jsonToken);
+                btn_pay.setVisibility(View.GONE);
+            }else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -657,13 +663,13 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         Log.e("respo: ", jsonPurchaseOrder.toString());
         btn_pay.setVisibility(View.VISIBLE);
         this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
-        if(null == jsonToken){
+        if (null == jsonToken) {
             jsonToken = new JsonToken();
         }
         jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
         String currencySymbol = "Rs.";//AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());;
         card_amount.setVisibility(View.VISIBLE);
-       // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
@@ -677,7 +683,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     @Override
     public void paymentInitiateResponse(JsonResponseWithCFToken jsonResponseWithCFToken) {
-        if(null != jsonResponseWithCFToken){
+        if (null != jsonResponseWithCFToken) {
             jsonToken.getJsonPurchaseOrder().setJsonResponseWithCFToken(jsonResponseWithCFToken);
             triggerOnlinePayment();
         }
