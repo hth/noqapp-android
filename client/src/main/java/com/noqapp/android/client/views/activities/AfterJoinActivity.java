@@ -42,6 +42,7 @@ import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -85,7 +86,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private TextView tv_after;
     private TextView tv_estimated_time;
     private TextView tv_vibrator_off;
-    private TextView tv_delay_in_time;
     private LinearLayout ll_change_bg;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
@@ -112,7 +112,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
-        tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
+        TextView tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_mobile = findViewById(R.id.tv_mobile);
         tv_serving_no = findViewById(R.id.tv_serving_no);
         tv_token = findViewById(R.id.tv_token);
@@ -284,7 +284,13 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-                triggerOnlinePayment();
+                if(SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()){
+                    Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
+                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+                    tokenPresenterResponse(jsonToken);
+                }else {
+                    triggerOnlinePayment();
+                }
             } else  if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
@@ -304,7 +310,8 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         this.jsonToken = token;
         if (null != token) {
             Log.d(TAG, token.toString());
-            if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+            if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB||
+                    token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                 tokenPresenterResponse(jsonToken);
                 btn_pay.setVisibility(View.GONE);
