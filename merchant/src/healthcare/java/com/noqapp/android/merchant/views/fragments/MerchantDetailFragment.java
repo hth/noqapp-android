@@ -8,6 +8,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -15,6 +16,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 
@@ -40,7 +42,7 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter,OrderDetailActivity.UpdateWholeList {
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
@@ -227,5 +229,19 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 }
             });
         }
+    }
+
+    @Override
+   public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR) {
+        OrderDetailActivity.updateWholeList = this;
+        Intent in = new Intent(context, OrderDetailActivity.class);
+        in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
+        in.putExtra("qCodeQR", qCodeQR);
+        ((Activity) context).startActivity(in);
+    }
+
+    @Override
+    public void updateWholeList() {
+        getAllPeopleInQ(jsonTopic);
     }
 }

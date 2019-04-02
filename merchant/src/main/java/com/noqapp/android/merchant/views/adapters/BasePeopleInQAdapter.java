@@ -65,7 +65,6 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
 
-    abstract void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson);
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -113,6 +112,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public interface PeopleInQAdapterClick {
 
         void PeopleInQClick(int position);
+
+        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -276,7 +277,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewOrderClick(context,jsonQueuedPerson);
+                peopleInQAdapterClick.viewOrderClick(context,jsonQueuedPerson,qCodeQR);
             }
         });
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {

@@ -18,7 +18,6 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
@@ -235,14 +234,6 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
             }
         }
-    }
-
-    @Override
-    void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson) {
-        Intent in = new Intent(context, OrderDetailActivity.class);
-        in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-        in.putExtra("qCodeQR", qCodeQR);
-        ((Activity) context).startActivity(in);
     }
 
 }
