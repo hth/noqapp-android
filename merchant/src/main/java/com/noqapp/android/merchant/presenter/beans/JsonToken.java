@@ -58,9 +58,6 @@ public class JsonToken implements Serializable {
     @JsonProperty("e")
     private String expectedServiceBegin;
 
-    @JsonProperty("ti")
-    private String transactionId;
-
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
@@ -139,15 +136,6 @@ public class JsonToken implements Serializable {
 
     public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
-        return this;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public JsonToken setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
         return this;
     }
 

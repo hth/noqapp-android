@@ -56,9 +56,6 @@ public class JsonToken {
     @JsonProperty("v")
     private boolean clientVisitedThisStore;
 
-    @JsonProperty("ti")
-    private String transactionId;
-
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
@@ -132,15 +129,6 @@ public class JsonToken {
 
     public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
-        return this;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public JsonToken setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
         return this;
     }
 
