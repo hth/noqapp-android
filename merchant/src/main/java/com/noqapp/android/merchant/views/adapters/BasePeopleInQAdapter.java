@@ -268,8 +268,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             recordHolder.tv_payment_stat.setVisibility(View.VISIBLE);
             if (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus() == PaymentStatusEnum.PA) {
                 recordHolder.tv_payment_stat.setText("Paid");
+                recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_nogradient_round);
             }else{
                 recordHolder.tv_payment_stat.setText("Accept Payment");
+                recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
             }
         } else {
             recordHolder.tv_payment_stat.setVisibility(View.GONE);
