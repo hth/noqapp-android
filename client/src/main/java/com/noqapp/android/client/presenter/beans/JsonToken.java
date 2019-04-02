@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -52,6 +53,11 @@ public class JsonToken {
 
     @JsonProperty("e")
     private String expectedServiceBegin;
+
+    /* Do not use it. Its not being used or sent across the line. */
+    @JsonProperty("ti")
+    @JsonIgnore
+    private String transactionId;
 
     @JsonProperty("v")
     private boolean clientVisitedThisStore;
