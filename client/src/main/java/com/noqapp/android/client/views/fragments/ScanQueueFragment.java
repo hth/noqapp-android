@@ -129,7 +129,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
-        if (latitude != 0.0 && latitude != LaunchActivity.getLaunchActivity().getDefaultLatitude() && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
+        if (latitude != 0.0 && latitude != Constants.DEFAULT_LATITUDE && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
             if (isFirstTimeUpdate) {
                 getNearMeInfo(cityName, "" + latitude, "" + longitude);
                 lat = latitude;
@@ -239,9 +239,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         }
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-            lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-            log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-            city = LaunchActivity.getLaunchActivity().getDefaultCity();
+            lat = Constants.DEFAULT_LATITUDE;
+            log = Constants.DEFAULT_LONGITUDE;
+            city = Constants.DEFAULT_CITY;
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         } else {
             lat = LaunchActivity.getLaunchActivity().latitute;

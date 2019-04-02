@@ -1,7 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -23,7 +21,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -64,17 +61,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -88,13 +79,27 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import io.fabric.sdk.android.Fabric;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
+import io.nlopez.smartlocation.location.config.LocationParams;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private TextView tv_badge;
@@ -122,6 +127,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    private static final int LOCATION_PERMISSION_CODE = 99;
+    private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    public double latitute = 0;
+    public double longitute = 0;
+    public String cityName = "";
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -173,6 +183,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             locale = Locale.ENGLISH;
             language = "en_US";
         }
+        callLocationManager();
 
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
@@ -300,7 +311,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    @Override
     public void updateLocationUI() {
         if (null != scanFragment) {
             scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
@@ -318,6 +328,63 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         updateLocationUI();
     }
 
+    private void callLocationManager() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{mPermission},
+                    LOCATION_PERMISSION_CODE);
+            return;
+        }
+
+        long mLocTrackingInterval = 1000 * 60 * 2; // 5 sec
+        float trackingDistance = 1;
+        LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
+
+        LocationParams.Builder builder = new LocationParams.Builder()
+                .setAccuracy(trackingAccuracy)
+                .setDistance(trackingDistance)
+                .setInterval(mLocTrackingInterval);
+
+        SmartLocation.with(this)
+                .location()
+                .continuous()
+                .config(builder.build())
+                .start(new OnLocationUpdatedListener() {
+                    @Override
+                    public void onLocationUpdated(Location location) {
+                        if (null != location) {
+                            latitute = location.getLatitude();
+                            longitute = location.getLongitude();
+                            Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
+                            getAddress(latitute, longitute);
+                            updateLocationUI();
+                        }
+                    }
+                });
+    }
+
+    public void getAddress(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            cityName = addresses.get(0).getAddressLine(0);
+            if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
+                cityName = obj.getSubLocality() + ", " + obj.getLocality();
+            } else {
+                if (!TextUtils.isEmpty(obj.getSubLocality())) {
+                    cityName = obj.getSubLocality();
+                } else if (!TextUtils.isEmpty(obj.getLocality())) {
+                    cityName = obj.getLocality();
+                } else {
+                    cityName = addresses.get(0).getAddressLine(0);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -421,6 +488,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 e.printStackTrace();
             }
         }
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted.
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    callLocationManager();
+                }
+            } else {
+                // Permission denied, Disable the functionality that depends on this permission.
+                Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
     }
 
     private void initProgress() {
@@ -473,7 +555,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    public void updateDrawerUI(){
+    public void updateDrawerUI() {
         if (UserUtils.isLogin()) {
             tv_email.setText(NoQueueBaseActivity.getActualMail());
             tv_name.setText(NoQueueBaseActivity.getUserName());

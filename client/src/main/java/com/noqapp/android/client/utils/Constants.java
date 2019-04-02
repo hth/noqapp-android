@@ -43,6 +43,10 @@ public class Constants extends BaseConstants{
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
     private static String VERSION_RELEASE;
 
+    public static final double DEFAULT_LATITUDE = 19.0760;
+    public static final double DEFAULT_LONGITUDE = 72.8777;
+    public static final String DEFAULT_CITY = "Mumbai";
+
 
     /**
      * Computes App version.
