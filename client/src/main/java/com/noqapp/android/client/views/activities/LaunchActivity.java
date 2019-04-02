@@ -140,7 +140,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
-//        NoQueueBaseActivity.saveMailAuth("","");
+        //NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
                 NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
@@ -449,25 +449,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         languagepref.registerOnSharedPreferenceChangeListener(this);
         updateNotificationBadgeCount();
         updateMenuList(UserUtils.isLogin());
-        if (UserUtils.isLogin()) {
-            tv_email.setText(NoQueueBaseActivity.getActualMail());
-            tv_name.setText(NoQueueBaseActivity.getUserName());
-        } else {
-            tv_email.setText("Please login");
-            tv_name.setText("Guest User");
-        }
-        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-        try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        updateDrawerUI();
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
@@ -488,6 +470,28 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
             ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
             Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void updateDrawerUI(){
+        if (UserUtils.isLogin()) {
+            tv_email.setText(NoQueueBaseActivity.getActualMail());
+            tv_name.setText(NoQueueBaseActivity.getUserName());
+        } else {
+            tv_email.setText("Please login");
+            tv_name.setText("Guest User");
+        }
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        try {
+            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+                Picasso.get()
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(iv_profile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

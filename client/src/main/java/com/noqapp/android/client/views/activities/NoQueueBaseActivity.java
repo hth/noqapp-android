@@ -184,6 +184,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();
+        if(null != LaunchActivity.getLaunchActivity()){
+            LaunchActivity.getLaunchActivity().updateDrawerUI();
+        }
     }
 
     public static JsonProfile getUserProfile() {
