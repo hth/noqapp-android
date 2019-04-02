@@ -56,6 +56,9 @@ public class JsonToken {
     @JsonProperty("v")
     private boolean clientVisitedThisStore;
 
+    @JsonProperty("ti")
+    private String transactionId;
+
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
@@ -118,15 +121,6 @@ public class JsonToken {
         return clientVisitedThisStore;
     }
 
-    public JsonPurchaseOrder getJsonPurchaseOrder() {
-        return jsonPurchaseOrder;
-    }
-
-    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
-        this.jsonPurchaseOrder = jsonPurchaseOrder;
-        return this;
-    }
-
     public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
         return this;
@@ -138,6 +132,24 @@ public class JsonToken {
 
     public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonToken setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 
