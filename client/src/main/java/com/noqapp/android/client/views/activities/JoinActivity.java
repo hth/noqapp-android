@@ -291,14 +291,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     btn_joinQueue.setVisibility(View.GONE);
                     btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
                     break;
-                case N:
-                    btn_joinQueue.setVisibility(View.VISIBLE);
-                    btn_pay_and_joinQueue.setVisibility(View.GONE);
-                    break;
                 case O:
                     btn_joinQueue.setVisibility(View.VISIBLE);
                     btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
                     break;
+            }
+            if(!jsonQueue.isEnabledPayment()){
+                    btn_joinQueue.setVisibility(View.VISIBLE);
+                    btn_pay_and_joinQueue.setVisibility(View.GONE);
             }
         }
         dismissProgress();

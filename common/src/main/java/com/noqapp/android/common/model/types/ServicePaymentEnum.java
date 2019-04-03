@@ -9,7 +9,6 @@ import java.util.List;
  */
 public enum ServicePaymentEnum {
     R("R", "Required"),
-    N("N", "Not Required"),
     O("O", "Optional");
 
     private final String name;
