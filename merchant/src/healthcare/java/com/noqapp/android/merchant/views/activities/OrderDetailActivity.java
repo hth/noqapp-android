@@ -128,7 +128,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     }
 
     private void updateUI() {
-        tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
+        //tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
