@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -31,12 +32,14 @@ import java.util.ArrayList;
 public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
     private RecyclerView rcv_order_history;
     private ArrayList<JsonQueueHistorical> listData;
+    private RelativeLayout rl_empty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        View view = inflater.inflate(R.layout.fragment_queue, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
+        rl_empty = view.findViewById(R.id.rl_empty);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             if (UserUtils.isLogin()) {
                 OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
@@ -91,8 +94,12 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         //add all items
         QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(queueHistoryAdapter);
-        if (null != listData && listData.size() == 0 && null != getActivity())
-            Toast.makeText(getActivity(), "You havn't join any Queue yet :(", Toast.LENGTH_LONG).show();
+        if (null != listData && listData.size() == 0 && null != getActivity()) {
+            // Toast.makeText(getActivity(), "You havn't order yet :(", Toast.LENGTH_LONG).show();
+            rl_empty.setVisibility(View.VISIBLE);
+        }else{
+            rl_empty.setVisibility(View.GONE);
+        }
     }
 
 

@@ -158,7 +158,7 @@
 
 
     <string name="msg_default_status">Place NoQueue QR Code inside the viewfinder rectangle to scan it.</string>
-    <string name="notification_alert">You don\'t have any notifications.</string>
+    <string name="notification_alert">You haven\'t receive any notification yet :(.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="home">Home</string>
@@ -308,6 +308,14 @@
     <string name="total_amount_paid">Total Amount Paid:</string>
     <string name="total_amount_remaing">Total Amount Remaining:</string>
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>
-    <!-- Category Info Screen -->
+
+
+    <!-- Empty Screens labels -->
+    <string name="empty_order_title">Your bag is empty</string>
+    <string name="empty_order_subtitle">Looks like you haven\'t \n made your choice yet.</string>
+    <string name="empty_noti_title">Empty notification</string>
+    <string name="empty_noti_subtitle">You haven\'t receive any notification yet :(.</string>
+    <string name="empty_queue_title">Empty Queue</string>
+    <string name="empty_queue_subtitle">Looks like you haven\'t \n join any queue yet.</string>
 
 </resources>

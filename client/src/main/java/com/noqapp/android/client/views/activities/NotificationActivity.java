@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class NotificationActivity extends AppCompatActivity {
         ListView listview = findViewById(R.id.listview);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        TextView tv_empty = findViewById(R.id.tv_empty);
+        RelativeLayout rl_empty = findViewById(R.id.rl_empty);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,10 +37,10 @@ public class NotificationActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
         if (notificationsList.size() <= 0) {
             listview.setVisibility(View.GONE);
-            tv_empty.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.VISIBLE);
         } else {
             listview.setVisibility(View.VISIBLE);
-            tv_empty.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.GONE);
         }
     }
 
