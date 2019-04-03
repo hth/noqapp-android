@@ -144,8 +144,6 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 e.printStackTrace();
             }
         }
-
-
         ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, this);
         rv_all_review.setAdapter(showAllReviewsAdapter);
     }

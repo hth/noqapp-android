@@ -6,6 +6,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.JsonReview;
 
+import com.noqapp.android.common.utils.CommonHelper;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -42,9 +43,9 @@ public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAd
         final JsonReview jsonReview = dataSet.get(listPosition);
         holder.tv_name.setText(jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());
-        //holder.tv_review_detail.setVisibility(jsonReview.isReviewShow()? View.VISIBLE: View.GONE);
+        holder.tv_review_detail.setVisibility(jsonReview.isReviewShow()? View.VISIBLE: View.GONE);
         holder.tv_rating.setText(String.valueOf(jsonReview.getRatingCount()));
-        holder.tv_date.setText("02 April 19");
+        holder.tv_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,jsonReview.getCreated()));
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {
