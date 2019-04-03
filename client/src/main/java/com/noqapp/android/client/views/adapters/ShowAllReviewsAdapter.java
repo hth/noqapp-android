@@ -42,7 +42,9 @@ public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAd
         final JsonReview jsonReview = dataSet.get(listPosition);
         holder.tv_name.setText(jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());
+        //holder.tv_review_detail.setVisibility(jsonReview.isReviewShow()? View.VISIBLE: View.GONE);
         holder.tv_rating.setText(String.valueOf(jsonReview.getRatingCount()));
+        holder.tv_date.setText("02 April 19");
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {
@@ -68,6 +70,7 @@ public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAd
         private TextView tv_name;
         private TextView tv_review_detail;
         private TextView tv_rating;
+        private TextView tv_date;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -77,6 +80,7 @@ public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAd
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_review_detail = itemView.findViewById(R.id.tv_review_detail);
             this.tv_rating = itemView.findViewById(R.id.tv_rating);
+            this.tv_date = itemView.findViewById(R.id.tv_date);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

@@ -101,11 +101,14 @@ public class JsonReview extends AbstractDomain implements Serializable{
 
     @Override
     public String toString() {
-        return "JsonReview{" +
-                "ratingCount=" + ratingCount +
-                ", review='" + review + '\'' +
-                ", profileImage='" + profileImage + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonReview{");
+        sb.append("ratingCount=").append(ratingCount);
+        sb.append(", review='").append(review).append('\'');
+        sb.append(", profileImage='").append(profileImage).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", reviewShow=").append(reviewShow);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -45,13 +45,6 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         rv_all_review = findViewById(R.id.rv_all_review);
         rl_empty = findViewById(R.id.rl_empty);
         tv_review_label = findViewById(R.id.tv_review_label);
-        if (jsonReviews.size() <= 0) {
-            rv_all_review.setVisibility(View.GONE);
-            rl_empty.setVisibility(View.VISIBLE);
-        } else {
-            rv_all_review.setVisibility(View.VISIBLE);
-            rl_empty.setVisibility(View.GONE);
-        }
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_all_review.setLayoutManager(horizontalLayoutManagaer);
@@ -132,7 +125,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 if (!TextUtils.isEmpty(jsonReviews.get(i).getReview()))
                     temp.add(jsonReviews.get(i));
             }
-            jsonReviews = temp;
+           // jsonReviews = temp;
         }
         if (null == jsonReviews || jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
@@ -140,7 +133,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         } else {
             rv_all_review.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
-            tv_review_label.setText("" + jsonReviews.size() + " Ratings with reviews");
+            tv_review_label.setText("" + jsonReviews.size() + " Ratings");
             try {
                 float f = ratingCount * 1.0f /
                         listSize;
