@@ -148,4 +148,5 @@
     <string name="today_setting">Today\'s Setting</string>
     <string name="permanent_setting">Permanent Settings</string>
     <string name="text_fees">Fee/Service Charge</string>
+    <string name="enable_payment">Enable Payment Service</string>
 </resources>
