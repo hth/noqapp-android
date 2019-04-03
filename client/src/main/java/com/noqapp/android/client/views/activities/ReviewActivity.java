@@ -13,6 +13,7 @@ import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -142,7 +143,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
 
                 }
                 if (AppUtilities.isRelease()) {
-                    Answers.getInstance().logCustom(new CustomEvent("Review Screen")
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_REVIEW_SCREEN)
                             .putCustomAttribute("Business Type", jtk.getBusinessType().getName()));
                 }
             }

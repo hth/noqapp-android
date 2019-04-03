@@ -1,7 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
 import com.noqapp.android.common.beans.NotificationBeans;
 
@@ -41,6 +45,9 @@ public class NotificationActivity extends AppCompatActivity {
         } else {
             listview.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
+        }
+        if (AppUtilities.isRelease()) {
+            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_NOTIFICATION_SCREEN));
         }
     }
 

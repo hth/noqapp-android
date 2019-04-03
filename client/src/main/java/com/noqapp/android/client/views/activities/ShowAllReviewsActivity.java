@@ -141,7 +141,6 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 TextView tv_rating = findViewById(R.id.tv_rating);
                 tv_rating.setText(String.valueOf(AppUtilities.round(f)));
             } catch (Exception e) {
-                
                 e.printStackTrace();
             }
         }

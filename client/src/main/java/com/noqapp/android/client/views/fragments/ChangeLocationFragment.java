@@ -1,8 +1,11 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
@@ -123,6 +126,9 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 return false;
             }
         });
+        if (AppUtilities.isRelease()) {
+            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LOCATION));
+        }
         return view;
     }
 

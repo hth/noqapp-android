@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
@@ -22,6 +24,7 @@ import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -125,6 +128,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 progressDialog.setMessage("Fetching order details in progress..");
                 int token = getIntent().getExtras().getInt("token");
                 purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
+                if (AppUtilities.isRelease()) {
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_PLACE_ORDER)
+                            .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
+                }
             } else {
                 ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
             }
@@ -148,6 +155,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         progressDialog.show();
                         progressDialog.setMessage("Order cancel in progress..");
                         purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                        if (AppUtilities.isRelease()) {
+                            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_ORDER)
+                                    .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
+                        }
                     } else {
                         ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
                     }

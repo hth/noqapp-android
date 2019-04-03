@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -10,6 +12,7 @@ import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -358,6 +361,11 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             in.putExtra("isPayBeforeJoin", isPayBeforeJoin);
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+
+            if (AppUtilities.isRelease()) {
+                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_JOIN_SCREEN)
+                        .putCustomAttribute("Queue Name", jsonQueue.getDisplayName()));
+            }
         }
     }
 

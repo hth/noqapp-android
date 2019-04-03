@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -15,6 +16,7 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -745,6 +747,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             public void onClick(View v) {
                 AppUtilities.changeLanguage("hi");
                 b.dismiss();
+                if (AppUtilities.isRelease()) {
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                            .putCustomAttribute("Language", "HINDI"));
+                }
             }
         });
         ll_english.setOnClickListener(new OnClickListener() {
@@ -752,6 +758,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             public void onClick(View v) {
                 AppUtilities.changeLanguage("en");
                 b.dismiss();
+                if (AppUtilities.isRelease()) {
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                            .putCustomAttribute("Language", "ENGLISH"));
+                }
             }
         });
         dialogBuilder.setTitle("");

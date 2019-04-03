@@ -13,6 +13,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -29,6 +31,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
@@ -380,6 +383,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             } else {
                 queueApiUnAuthenticCall.setResponsePresenter(this);
                 queueApiUnAuthenticCall.abortQueue(UserUtils.getDeviceId(), codeQR);
+            }
+            if (AppUtilities.isRelease()) {
+                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE)
+                        .putCustomAttribute("Queue Name", jsonQueue.getDisplayName()));
             }
         } else {
             ShowAlertInformation.showNetworkDialog(this);
