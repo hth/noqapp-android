@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,9 +33,9 @@ import java.util.List;
 public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPresenter {
 
     private RecyclerView rv_all_review;
-    private TextView tv_empty,tv_review_label;
+    private TextView tv_review_label;
     private List<JsonReview> jsonReviews = new ArrayList<>();
-
+    private RelativeLayout rl_empty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +43,14 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         initActionsViews(true);
         tv_toolbar_title.setText("");
         rv_all_review = findViewById(R.id.rv_all_review);
-        tv_empty = findViewById(R.id.tv_empty);
+        rl_empty = findViewById(R.id.rl_empty);
         tv_review_label = findViewById(R.id.tv_review_label);
         if (jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
-            tv_empty.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.VISIBLE);
         } else {
             rv_all_review.setVisibility(View.VISIBLE);
-            tv_empty.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.GONE);
         }
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -135,10 +136,10 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         }
         if (null == jsonReviews || jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
-            tv_empty.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.VISIBLE);
         } else {
             rv_all_review.setVisibility(View.VISIBLE);
-            tv_empty.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.GONE);
             tv_review_label.setText("" + jsonReviews.size() + " Ratings with reviews");
             try {
                 float f = ratingCount * 1.0f /
