@@ -317,5 +317,7 @@
     <string name="empty_noti_subtitle">You haven\'t receive any notification yet :(.</string>
     <string name="empty_queue_title">Empty Queue</string>
     <string name="empty_queue_subtitle">Looks like you haven\'t \n join any queue yet.</string>
+    <string name="empty_medical_h_title">Empty Medical History</string>
+    <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
 
 </resources>
