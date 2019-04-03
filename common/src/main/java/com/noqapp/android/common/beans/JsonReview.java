@@ -45,6 +45,9 @@ public class JsonReview extends AbstractDomain implements Serializable{
     @JsonProperty("rs")
     private boolean reviewShow;
 
+    @JsonProperty("c")
+    private String created;
+
     public int getRatingCount() {
         return ratingCount;
     }
@@ -99,16 +102,25 @@ public class JsonReview extends AbstractDomain implements Serializable{
         return this;
     }
 
+    public String getCreated() {
+        return created;
+    }
+
+    public JsonReview setCreated(String created) {
+        this.created = created;
+        return this;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonReview{");
-        sb.append("ratingCount=").append(ratingCount);
-        sb.append(", review='").append(review).append('\'');
-        sb.append(", profileImage='").append(profileImage).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", queueUserId='").append(queueUserId).append('\'');
-        sb.append(", reviewShow=").append(reviewShow);
-        sb.append('}');
-        return sb.toString();
+        return "JsonReview{" +
+                "ratingCount=" + ratingCount +
+                ", review='" + review + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                ", name='" + name + '\'' +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", reviewShow=" + reviewShow +
+                ", created='" + created + '\'' +
+                '}';
     }
 }
