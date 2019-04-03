@@ -14,6 +14,8 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -131,7 +133,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         } else {
             tv_payment_mode.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
-        tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
+        tv_delivery_address.setText(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrder.getCreated()));
