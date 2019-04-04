@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.beans.JsonReviewBucket;
 import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
@@ -171,8 +172,8 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/profile/reviews/{codeQR}.json")
-    Call<JsonReviewList> reviews(
+    @GET("api/m/profile/reviews.json")
+    Call<JsonReviewBucket> reviews(
             @Header("X-R-DID")
             String did,
 
@@ -183,10 +184,7 @@ public interface MerchantProfileApiUrls {
             String mail,
 
             @Header("X-R-AUTH")
-            String auth,
-
-            @Path("codeQR")
-            String codeQR
+            String auth
     );
 
     /**
