@@ -19,6 +19,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.MerchantReviewQListFragment;
 import com.noqapp.android.merchant.views.fragments.UserProfileFragment;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 
@@ -71,6 +72,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     private ViewPager viewPager;
     private LoadTabs loadTabs;
     private UserProfileFragment userProfileFragment;
+    protected MerchantReviewQListFragment merchantReviewQListFragment;
 
     private ImageView actionbarBack;
     private MerchantProfileApiCalls merchantProfileApiCalls;

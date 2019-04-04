@@ -68,6 +68,12 @@
                 android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
         </activity>
         <activity
+                android:name="com.noqapp.android.merchant.views.activities.QReviewListActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+        </activity>
+        <activity
                 android:name="com.noqapp.android.merchant.views.activities.PhysicalDialogActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:excludeFromRecents="true"

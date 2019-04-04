@@ -58,7 +58,7 @@
 
                 <TextView
                     android:id="@+id/tv_store_rating"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="right|top"
@@ -109,8 +109,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/tv_specialization"
                     android:layout_alignParentRight="true"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="Consultation fees"
+                    android:text="Consultation \n fees"
                     android:textSize="@dimen/text_size_twelve" />
             </RelativeLayout>
 
@@ -139,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingRight="5dp"
+                    android:paddingRight="25dp"
                     android:text="200"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_twelve" />

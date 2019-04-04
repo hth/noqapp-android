@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * hitender
- * 10/10/18 10:18 PM
- */
+
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -79,10 +76,12 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonReviewList{" +
-                "jsonReviews=" + jsonReviews +
-                ", aggregateRatingCount=" + aggregateRatingCount +
-                ", error=" + error +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonReviewList{");
+        sb.append("displayName='").append(displayName).append('\'');
+        sb.append(", jsonReviews=").append(jsonReviews);
+        sb.append(", aggregateRatingCount=").append(aggregateRatingCount);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }
