@@ -29,6 +29,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonReviewList extends AbstractDomain implements Serializable {
 
+    @JsonProperty("d")
+    private String displayName;
+
     @JsonProperty("rs")
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
@@ -37,6 +40,15 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public JsonReviewList setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;

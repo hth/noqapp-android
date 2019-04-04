@@ -25,7 +25,10 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonReview extends AbstractDomain implements Serializable{
+public class JsonReview extends AbstractDomain implements Serializable {
+
+    @JsonProperty("id")
+    private String id;
 
     @JsonProperty("ra")
     private int ratingCount;
@@ -47,6 +50,15 @@ public class JsonReview extends AbstractDomain implements Serializable{
 
     @JsonProperty("c")
     private String created;
+
+    public String getId() {
+        return id;
+    }
+
+    public JsonReview setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public int getRatingCount() {
         return ratingCount;
