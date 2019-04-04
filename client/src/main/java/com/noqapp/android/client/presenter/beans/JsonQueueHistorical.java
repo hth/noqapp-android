@@ -1,6 +1,7 @@
 package com.noqapp.android.client.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
@@ -98,6 +99,9 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     @JsonProperty("bc")
     private String bizCategoryName;
+
+    @JsonProperty ("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
     public String getCodeQR() {
         return codeQR;
@@ -294,6 +298,15 @@ public class JsonQueueHistorical extends AbstractDomain implements Serializable{
 
     public JsonQueueHistorical setBizCategoryName(String bizCategoryName) {
         this.bizCategoryName = bizCategoryName;
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonQueueHistorical setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 

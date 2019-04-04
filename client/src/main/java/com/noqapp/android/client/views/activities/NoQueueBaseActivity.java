@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 
@@ -11,10 +10,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * This Class is created to store the information which data need to be final(Consistent)
@@ -34,15 +33,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
 
 
-    public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
-    public static final String KEY_FROM_LIST = "fromList";
-    public static final String KEY_IS_REJOIN = "isRejoin";
-    public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
-    public static final String KEY_USER_PROFILE = "userProfile";
-    public static final String IS_DEPENDENT = "isDependent";
-    public static final String DEPENDENT_PROFILE = "dependentProfile";
     private static final String KEY_SHOW_HELPER = "showHelper";
     private static final String KEY_PREVIOUS_USER_QID = "previousUserQID";
+    private static final String KEY_USER_PROFILE = "userProfile";
     /* Secured Shared Preference. */
     private static final String FCM_TOKEN = "fcmToken";
     public static NoQueueBaseActivity noQueueBaseActivity;
@@ -124,7 +117,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
             return !getMail().endsWith(Constants.MAIL_NOQAPP_COM);
         }
     }
+    public static boolean isEmailVerified() {
+        return getUserProfile().isAccountValidated();
 
+
+    }
     public static String getAuth() {
         return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
@@ -187,6 +184,9 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();
+        if(null != LaunchActivity.getLaunchActivity()){
+            LaunchActivity.getLaunchActivity().updateDrawerUI();
+        }
     }
 
     public static JsonProfile getUserProfile() {

@@ -5,6 +5,7 @@ import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -22,9 +23,6 @@ import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +34,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -63,6 +64,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
     // for medical Only
     abstract void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId);
+
 
     @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
@@ -110,6 +112,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public interface PeopleInQAdapterClick {
 
         void PeopleInQClick(int position);
+
+        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -125,6 +129,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         TextView tv_business_customer_id;
         TextView tv_join_timing;
         TextView tv_last_visit;
+        TextView tv_payment_stat;
         RelativeLayout rl_sequence_new_time;
         ImageView iv_new;
         CardView cardview;
@@ -141,6 +146,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.tv_last_visit = itemView.findViewById(R.id.tv_last_visit);
+            this.tv_payment_stat = itemView.findViewById(R.id.tv_payment_stat);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
@@ -154,7 +160,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.qCodeQR = qCodeQR;
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
-        businessCustomerApiCalls = new BusinessCustomerApiCalls(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.jsonDataVisibility = jsonDataVisibility;
     }
 
@@ -166,7 +173,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         this.glowPosition = glowPosition;
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePersonListPresenter(this);
-        businessCustomerApiCalls = new BusinessCustomerApiCalls(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
         this.bizCategoryId = bizCategoryId;
@@ -256,7 +264,24 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 Log.e(TAG, "Reached unsupported condition state=" + jsonQueuedPerson.getQueueUserState());
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-
+        if (!TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
+            recordHolder.tv_payment_stat.setVisibility(View.VISIBLE);
+            if (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus() == PaymentStatusEnum.PA) {
+                recordHolder.tv_payment_stat.setText("Paid");
+                recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_nogradient_round);
+            }else{
+                recordHolder.tv_payment_stat.setText("Accept Payment");
+                recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
+            }
+        } else {
+            recordHolder.tv_payment_stat.setVisibility(View.GONE);
+        }
+        recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                peopleInQAdapterClick.viewOrderClick(context,jsonQueuedPerson,qCodeQR);
+            }
+        });
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,7 +308,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         });
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q|| jsonQueuedPerson.getQueueUserState() ==QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
+                if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {
                     recordHolder.tv_create_case.setClickable(true);
                     recordHolder.tv_create_case.setBackgroundResource(R.drawable.bg_nogradient_round);
                 } else {

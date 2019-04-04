@@ -5,8 +5,8 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -49,7 +49,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_item_category, parent, false);
+                .inflate(R.layout.rcv_item_category1, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -58,9 +58,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         holder.tv_name.setText(bizStoreElastic.getDisplayName());
-        holder.tv_phoneno.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-        holder.tv_address.setText(bizStoreElastic.getAddress());
+        holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(),bizStoreElastic.getArea()));
         holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         if (bizStoreElastic.getReviewCount() == 0) {
             holder.tv_store_review.setText("No Review");
@@ -78,18 +77,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 if (bizStoreElastic.getReviewCount() > 0) {
                     Intent in = new Intent(context, ShowAllReviewsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                    bundle.putString("storeName", bizStoreElastic.getDisplayName());
-                    bundle.putString("storeAddress", AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+                    bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
                     in.putExtras(bundle);
                     context.startActivity(in);
                 }
-            }
-        });
-        holder.tv_phoneno.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.makeCall((Activity) context, holder.tv_phoneno.getText().toString());
             }
         });
         holder.tv_specialization.setText(bizStoreElastic.getCompleteEducation());
@@ -97,12 +90,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.tv_join.setEnabled(!storeHourElastic.isDayClosed());
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
-            holder.tv_store_timing.setVisibility(View.GONE);
+            holder.tv_store_timing.setVisibility(View.VISIBLE);
+            holder.tv_store_timing.setText("");
+            holder.tv_time_label.setText("");
             holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
             holder.tv_join.setTextColor(context.getResources().getColor(R.color.button_color));
             holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
+            holder.tv_time_label.setText("Store timing");
             holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
             holder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
@@ -198,7 +194,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE:View.VISIBLE);
        // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
-        String feeString = "<b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b>  Consultation fee";
+        String feeString = "<b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b>";
         holder.tv_consult_fees.setText(Html.fromHtml(feeString));
         holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
@@ -240,12 +236,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         private TextView tv_name;
         private TextView tv_address;
-        private TextView tv_phoneno;
         private TextView tv_store_rating;
         private TextView tv_specialization;
         private TextView tv_store_special;
         private TextView tv_store_review;
         private TextView tv_store_timing;
+        private TextView tv_time_label;
         private TextView tv_status;
         private TextView tv_join;
         private TextView tv_consult_fees;
@@ -256,12 +252,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.tv_address = itemView.findViewById(R.id.tv_address);
-            this.tv_phoneno = itemView.findViewById(R.id.tv_phoneno);
             this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             this.tv_specialization = itemView.findViewById(R.id.tv_specialization);
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_store_review = itemView.findViewById(R.id.tv_store_review);
             this.tv_store_timing = itemView.findViewById(R.id.tv_store_timing);
+            this.tv_time_label = itemView.findViewById(R.id.tv_time_label);
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.tv_join = itemView.findViewById(R.id.tv_join);

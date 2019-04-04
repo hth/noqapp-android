@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.noqapp.android.client.BuildConfig.BUILD_TYPE;
-
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -17,12 +16,13 @@ import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
-import com.noqapp.android.client.views.fragments.NoQueueBaseFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.DeviceRegistered;
@@ -63,17 +63,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,13 +81,27 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import io.fabric.sdk.android.Fabric;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
+import io.nlopez.smartlocation.location.config.LocationParams;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class LaunchActivity extends LocationActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private TextView tv_badge;
@@ -121,6 +129,11 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    private static final int LOCATION_PERMISSION_CODE = 99;
+    private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    public double latitute = 0;
+    public double longitute = 0;
+    public String cityName = "";
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -139,7 +152,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
-//        NoQueueBaseActivity.saveMailAuth("","");
+        //NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
                 NoQueueBaseActivity.setFCMToken(getIntent().getStringExtra("fcmToken"));
@@ -172,6 +185,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             locale = Locale.ENGLISH;
             language = "en_US";
         }
+        callLocationManager();
 
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
@@ -208,7 +222,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.merchant_account:
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
-                            in.putExtra("url", UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
+                            in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
                             startActivity(in);
                         } else {
                             ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
@@ -234,8 +248,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                     case R.drawable.medical_history: {
                         Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
                         startActivity(in);
-                        if (BuildConfig.BUILD_TYPE.equals("debug"))
-                            AppUtilities.exportDatabase(LaunchActivity.this);
                         break;
                     }
                     case R.id.nav_app_setting: {
@@ -287,7 +299,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         tv_version.setOnClickListener(this);
 
         ((TextView) findViewById(R.id.tv_version)).setText(
-                BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+                AppUtilities.isRelease()
                         ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                         : getString(R.string.version_no, "Not for release"));
         updateMenuList(UserUtils.isLogin());
@@ -301,7 +313,6 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
     }
 
-    @Override
     public void updateLocationUI() {
         if (null != scanFragment) {
             scanFragment.updateUIWithNewLocation(latitute, longitute, cityName);
@@ -319,6 +330,63 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         updateLocationUI();
     }
 
+    private void callLocationManager() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{mPermission},
+                    LOCATION_PERMISSION_CODE);
+            return;
+        }
+
+        long mLocTrackingInterval = 1000 * 60 * 2; // 5 sec
+        float trackingDistance = 1;
+        LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
+
+        LocationParams.Builder builder = new LocationParams.Builder()
+                .setAccuracy(trackingAccuracy)
+                .setDistance(trackingDistance)
+                .setInterval(mLocTrackingInterval);
+
+        SmartLocation.with(this)
+                .location()
+                .continuous()
+                .config(builder.build())
+                .start(new OnLocationUpdatedListener() {
+                    @Override
+                    public void onLocationUpdated(Location location) {
+                        if (null != location) {
+                            latitute = location.getLatitude();
+                            longitute = location.getLongitude();
+                            Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
+                            getAddress(latitute, longitute);
+                            updateLocationUI();
+                        }
+                    }
+                });
+    }
+
+    public void getAddress(double lat, double lng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            cityName = addresses.get(0).getAddressLine(0);
+            if (!TextUtils.isEmpty(obj.getLocality()) && !TextUtils.isEmpty(obj.getSubLocality())) {
+                cityName = obj.getSubLocality() + ", " + obj.getLocality();
+            } else {
+                if (!TextUtils.isEmpty(obj.getSubLocality())) {
+                    cityName = obj.getSubLocality();
+                } else if (!TextUtils.isEmpty(obj.getLocality())) {
+                    cityName = obj.getLocality();
+                } else {
+                    cityName = addresses.get(0).getAddressLine(0);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -422,6 +490,21 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
                 e.printStackTrace();
             }
         }
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted.
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    callLocationManager();
+                }
+            } else {
+                // Permission denied, Disable the functionality that depends on this permission.
+                Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
     }
 
     private void initProgress() {
@@ -450,25 +533,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         languagepref.registerOnSharedPreferenceChangeListener(this);
         updateNotificationBadgeCount();
         updateMenuList(UserUtils.isLogin());
-        if (UserUtils.isLogin()) {
-            tv_email.setText(NoQueueBaseActivity.getActualMail());
-            tv_name.setText(NoQueueBaseActivity.getUserName());
-        } else {
-            tv_email.setText("Please login");
-            tv_name.setText("Guest User");
-        }
-        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-        try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        updateDrawerUI();
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
@@ -489,6 +554,28 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
             ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
             Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void updateDrawerUI() {
+        if (UserUtils.isLogin()) {
+            tv_email.setText(NoQueueBaseActivity.getActualMail());
+            tv_name.setText(NoQueueBaseActivity.getUserName());
+        } else {
+            tv_email.setText("Please login");
+            tv_name.setText("Guest User");
+        }
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        try {
+            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
+                Picasso.get()
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
+                        .placeholder(ImageUtils.getProfilePlaceholder(this))
+                        .error(ImageUtils.getProfileErrorPlaceholder(this))
+                        .into(iv_profile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -552,7 +639,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         if (null != jtk) {
             Intent in = new Intent(launchActivity, ReviewActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("object", jtk);
+            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jtk);
             in.putExtras(bundle);
             startActivityForResult(in, Constants.requestCodeJoinQActivity);
             Log.v("Review screen call: ", jtk.toString());
@@ -587,10 +674,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
         }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
         Intent in = new Intent(this, JoinActivity.class);
-        in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
-        in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-        in.putExtra(NoQueueBaseActivity.KEY_IS_REJOIN, true);
-        in.putExtra("isCategoryData", false);
+        in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+        in.putExtra(IBConstant.KEY_FROM_LIST, false);
+        in.putExtra(IBConstant.KEY_IS_REJOIN, true);
+        in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
         startActivity(in);
     }
 
@@ -609,7 +696,7 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
-            if (!BUILD_TYPE.equals("debug")) {
+            if (AppUtilities.isRelease()) {
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
@@ -660,6 +747,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             public void onClick(View v) {
                 AppUtilities.changeLanguage("hi");
                 b.dismiss();
+                if (AppUtilities.isRelease()) {
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                            .putCustomAttribute("Language", "HINDI"));
+                }
             }
         });
         ll_english.setOnClickListener(new OnClickListener() {
@@ -667,6 +758,10 @@ public class LaunchActivity extends LocationActivity implements OnClickListener,
             public void onClick(View v) {
                 AppUtilities.changeLanguage("en");
                 b.dismiss();
+                if (AppUtilities.isRelease()) {
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                            .putCustomAttribute("Language", "ENGLISH"));
+                }
             }
         });
         dialogBuilder.setTitle("");

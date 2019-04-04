@@ -1,19 +1,16 @@
 package com.noqapp.android.merchant.views.model;
 
-import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
-import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
 import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
@@ -37,7 +34,6 @@ public class PurchaseOrderApiCalls {
     private AcquireOrderPresenter acquireOrderPresenter;
     private ImageUploadPresenter imageUploadPresenter;
     private LabFilePresenter labFilePresenter;
-    private FindCustomerPresenter findCustomerPresenter;
     private PaymentProcessPresenter paymentProcessPresenter;
     private ModifyOrderPresenter modifyOrderPresenter;
 
@@ -63,10 +59,6 @@ public class PurchaseOrderApiCalls {
 
     public void setLabFilePresenter(LabFilePresenter labFilePresenter) {
         this.labFilePresenter = labFilePresenter;
-    }
-
-    public void setFindCustomerPresenter(FindCustomerPresenter findCustomerPresenter) {
-        this.findCustomerPresenter = findCustomerPresenter;
     }
 
     public void setModifyOrderPresenter(ModifyOrderPresenter modifyOrderPresenter) {
@@ -222,34 +214,6 @@ public class PurchaseOrderApiCalls {
         });
     }
 
-    public void findCustomer(String did, String mail, String auth, JsonBusinessCustomerLookup jsonBusinessCustomerLookup) {
-        purchaseOrderService.findCustomer(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomerLookup).enqueue(new Callback<JsonProfile>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
-                    if (null != response.body() && null == response.body().getError()) {
-                        Log.d("findCustomer", String.valueOf(response.body()));
-                        findCustomerPresenter.findCustomerResponse(response.body());
-                    } else {
-                        Log.e(TAG, "Found error while findCustomer");
-                        findCustomerPresenter.responseErrorPresenter(response.body().getError());
-                    }
-                } else {
-                    if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        findCustomerPresenter.authenticationFailure();
-                    } else {
-                        findCustomerPresenter.responseErrorPresenter(response.code());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<JsonProfile> call, @NonNull Throwable t) {
-                Log.e("findCustomer fail", t.getLocalizedMessage(), t);
-                findCustomerPresenter.responseErrorPresenter(null);
-            }
-        });
-    }
 
     public void purchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
         purchaseOrderService.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrderList>() {

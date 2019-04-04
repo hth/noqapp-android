@@ -50,6 +50,7 @@ public class CreateTable {
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                     + TokenQueue.QID + " TEXT , "
                     + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
+                    + TokenQueue.TRANSACTION_ID + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
@@ -89,6 +90,7 @@ public class CreateTable {
                     + TokenQueue.DISPLAY_IMAGE + " TEXT , "
                     + TokenQueue.QID + " TEXT , "
                     + TokenQueue.PURCHASE_ORDER_STATE + " TEXT , "
+                    + TokenQueue.TRANSACTION_ID + " TEXT , "
                     + "PRIMARY KEY(`" + TokenQueue.CODE_QR + "`,`" + TokenQueue.TOKEN + "`,`" + TokenQueue.CREATE_DATE + "`)" +
 
                     ");");
@@ -137,7 +139,15 @@ public class CreateTable {
         createAllTable(db);
         LaunchActivity.getLaunchActivity().reCreateDeviceID();
     }
-
+    static void alterTable(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TRANSACTION_ID + " TEXT;");
+            db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TRANSACTION_ID + " TEXT;");
+            Log.e("Table ","Created");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     static void createAllTable(SQLiteDatabase db) {
         createTableTokenQueue(db);
         createTableTokenQueueHistory(db);

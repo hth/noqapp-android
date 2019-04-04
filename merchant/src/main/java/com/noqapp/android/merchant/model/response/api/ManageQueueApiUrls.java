@@ -1,7 +1,9 @@
 package com.noqapp.android.merchant.model.response.api;
 
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
@@ -189,7 +191,7 @@ public interface ManageQueueApiUrls {
             String auth,
 
             @Body
-            JsonBusinessCustomerLookup jsonBusinessCustomerLookup
+            JsonBusinessCustomer jsonBusinessCustomer
     );
 
     /**
@@ -216,5 +218,28 @@ public interface ManageQueueApiUrls {
 
             @Body
             ChangeUserInQueue changeUserInQueue
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ORDER_PAYMENT_UPDATE_FAILED}
+     */
+    @POST("api/m/mq/counterPayment.json")
+    Call<JsonQueuedPerson> counterPayment(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonQueuedPerson jsonQueuedPerson
     );
 }

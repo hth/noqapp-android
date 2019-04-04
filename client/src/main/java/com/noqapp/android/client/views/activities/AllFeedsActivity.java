@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.FeedAdapter;
 
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class AllFeedsActivity extends AppCompatActivity implements FeedAdapter.O
     @Override
     public void onFeedItemClick(JsonFeed item, View view, int pos) {
         Intent in = new Intent(this, FeedActivity.class);
-        in.putExtra("object", item);
+        in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);
     }
 }

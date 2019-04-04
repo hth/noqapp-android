@@ -55,5 +55,8 @@
 
     <dimen name="join_section_small_text">10sp</dimen>
     <dimen name="bottom_view_height">3dp</dimen>
+    <dimen name="empty_title_size">20sp</dimen>
+    <dimen name="empty_subtitle_size">16sp</dimen>
+    <dimen name="empty_icons">150dp</dimen>
 
 </resources>

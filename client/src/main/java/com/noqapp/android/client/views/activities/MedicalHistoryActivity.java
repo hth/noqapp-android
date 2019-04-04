@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
 
     private ListView listview;
-    private TextView tv_empty;
+    private RelativeLayout rl_empty;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
     private Context context;
 
@@ -49,7 +50,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         setContentView(R.layout.activity_medical_history);
         listview = findViewById(R.id.listview);
         FrameLayout frame_layout = findViewById(R.id.frame_layout);
-        tv_empty = findViewById(R.id.tv_empty);
+        rl_empty = findViewById(R.id.rl_empty);
         initActionsViews(false);
         context = this;
 
@@ -57,10 +58,10 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
         if (jsonMedicalRecords.size() <= 0) {
             listview.setVisibility(View.GONE);
-            tv_empty.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.VISIBLE);
         } else {
             listview.setVisibility(View.VISIBLE);
-            tv_empty.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.GONE);
         }
         if (NetworkUtils.isConnectingToInternet(context)) {
 
@@ -99,10 +100,10 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         listview.setAdapter(adapter);
         if (jsonMedicalRecords.size() <= 0) {
             listview.setVisibility(View.GONE);
-            tv_empty.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.VISIBLE);
         } else {
             listview.setVisibility(View.VISIBLE);
-            tv_empty.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.GONE);
         }
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

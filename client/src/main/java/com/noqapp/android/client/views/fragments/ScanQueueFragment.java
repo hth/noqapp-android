@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
@@ -10,12 +9,12 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
+import com.noqapp.android.client.presenter.FeedPresenter;
 import com.noqapp.android.client.presenter.NoQueueDBPresenter;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.FeedPresenter;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -24,6 +23,7 @@ import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.RateTheAppManager;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
@@ -129,7 +129,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     }
 
     public void updateUIWithNewLocation(final double latitude, final double longitude, final String cityName) {
-        if (latitude != 0.0 && latitude != LaunchActivity.getLaunchActivity().getDefaultLatitude() && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
+        if (latitude != 0.0 && latitude != Constants.DEFAULT_LATITUDE && Double.compare(lat, latitude) != 0 && !cityName.equals(city)) {
             if (isFirstTimeUpdate) {
                 getNearMeInfo(cityName, "" + latitude, "" + longitude);
                 lat = latitude;
@@ -239,9 +239,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         }
 
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-            lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-            log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-            city = LaunchActivity.getLaunchActivity().getDefaultCity();
+            lat = Constants.DEFAULT_LATITUDE;
+            log = Constants.DEFAULT_LONGITUDE;
+            city = Constants.DEFAULT_CITY;
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         } else {
             lat = LaunchActivity.getLaunchActivity().latitute;
@@ -300,15 +300,15 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         if (isCategoryData) {
             Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
             Bundle b = new Bundle();
-            b.putString(KEY_CODE_QR, codeQR);
-            b.putBoolean(KEY_FROM_LIST, fromList);
+            b.putString(IBConstant.KEY_CODE_QR, codeQR);
+            b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
         } else {
             Intent in = new Intent(getActivity(), JoinActivity.class);
-            in.putExtra(NoQueueBaseFragment.KEY_CODE_QR, codeQR);
-            in.putExtra(NoQueueBaseFragment.KEY_FROM_LIST, false);
-            in.putExtra("isCategoryData", false);
+            in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+            in.putExtra(IBConstant.KEY_FROM_LIST, false);
+            in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
             startActivity(in);
         }
     }
@@ -353,7 +353,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         isProgressFirstTime = false;
         if (isAdded()) {
             if (NoQueueBaseActivity.getShowHelper()) {
-                if (!BuildConfig.BUILD_TYPE.equals("debug")) {
+                if (AppUtilities.isRelease()) {
                     presentShowcaseSequence();
                 }
                 NoQueueBaseActivity.setShowHelper(false);
@@ -403,10 +403,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             case HS:
                 // open hospital/Bank profile
                 Bundle b = new Bundle();
-                b.putString(KEY_CODE_QR, item.getCodeQR());
-                b.putBoolean(KEY_FROM_LIST, fromList);
-                b.putBoolean("CallCategory", true);
-                b.putBoolean("isCategoryData", false);
+                b.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                b.putBoolean(IBConstant.KEY_FROM_LIST, fromList);
+                b.putBoolean(IBConstant.KEY_CALL_CATEGORY, true);
+                b.putBoolean(IBConstant.KEY_IS_CATEGORY, false);
                 b.putSerializable("BizStoreElastic", item);
                 Intent in = new Intent(getActivity(), CategoryInfoActivity.class);
                 in.putExtra("bundle", b);
@@ -427,19 +427,19 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         if (null != item) {
             if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
                 Intent in = new Intent(getActivity(), AfterJoinActivity.class);
-                in.putExtra(KEY_CODE_QR, item.getCodeQR());
-                in.putExtra(KEY_FROM_LIST, true);
-                in.putExtra(KEY_JSON_TOKEN_QUEUE, item);
+                in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, true);
+                in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, item);
                 startActivity(in);
             } else {
                 Intent in = new Intent(getActivity(), OrderConfirmActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(KEY_FROM_LIST, true);
-                bundle.putString(KEY_CODE_QR, item.getCodeQR());
+                bundle.putBoolean(IBConstant.KEY_FROM_LIST, true);
+                bundle.putString(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 bundle.putInt("token", item.getToken());
                 bundle.putInt("currentServing", item.getServingNumber());
-                bundle.putString("storeName", item.getDisplayName());
-                bundle.putString("storeAddress", item.getStoreAddress());
+                bundle.putString(IBConstant.KEY_STORE_NAME, item.getDisplayName());
+                bundle.putString(IBConstant.KEY_STORE_ADDRESS, item.getStoreAddress());
                 bundle.putString(AppUtilities.CURRENCY_SYMBOL, AppUtilities.getCurrencySymbol(item.getCountryShortName()));
                 in.putExtras(bundle);
                 startActivity(in);
@@ -450,7 +450,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     @Override
     public void onFeedItemClick(JsonFeed item, View view, int pos) {
         Intent in = new Intent(getActivity(), FeedActivity.class);
-        in.putExtra("object", item);
+        in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);
     }
 

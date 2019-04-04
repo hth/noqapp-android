@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -10,6 +12,8 @@ import com.noqapp.android.client.presenter.beans.body.Registration;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -104,8 +108,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         clientProfileApiCall = new ClientProfileApiCall();
         iv_profile.setOnClickListener(this);
         progressDialog.setMessage("Updating profile....");
-        isDependent = getIntent().getBooleanExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
-        dependentProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.DEPENDENT_PROFILE);
+        isDependent = getIntent().getBooleanExtra(IBConstant.IS_DEPENDENT, false);
+        dependentProfile = (JsonProfile) getIntent().getSerializableExtra(IBConstant.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
         nameList = getIntent().getStringArrayListExtra("nameList");
 
@@ -322,6 +326,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         registration.setInviteCode("");
                         DependentApiCall dependentModel = new DependentApiCall(this);
                         dependentModel.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
+                        if (AppUtilities.isRelease()) {
+                            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_DEPENDENT_ADDED));
+                        }
                     }
                 } else {
                     UpdateProfile updateProfile = new UpdateProfile();

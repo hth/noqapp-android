@@ -25,7 +25,6 @@ import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 import java.util.Random;
@@ -213,7 +213,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             }
 
         } else {
-            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q||jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
                     if (null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()) {
                         // temporary crash fix

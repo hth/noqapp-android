@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -119,15 +120,22 @@ public class JsonTokenAndQueue implements Serializable {
     @JsonProperty("u")
     private String createDate;
 
+    @JsonProperty ("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
+
     @JsonProperty("bc")
     private String bizCategoryId;
+
+    @JsonProperty("ti")
+    private String transactionId;
 
     public String getCodeQR() {
         return codeQR;
     }
 
-    public void setCodeQR(String codeQR) {
+    public JsonTokenAndQueue setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
     }
 
     public String getGeoHash() {
@@ -143,8 +151,9 @@ public class JsonTokenAndQueue implements Serializable {
         return businessName;
     }
 
-    public void setBusinessName(String businessName) {
+    public JsonTokenAndQueue setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
     }
 
     public String getDisplayImage() {
@@ -160,16 +169,18 @@ public class JsonTokenAndQueue implements Serializable {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public JsonTokenAndQueue setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public String getStoreAddress() {
         return storeAddress;
     }
 
-    public void setStoreAddress(String storeAddress) {
+    public JsonTokenAndQueue setStoreAddress(String storeAddress) {
         this.storeAddress = storeAddress;
+        return this;
     }
 
     public String getArea() {
@@ -194,48 +205,54 @@ public class JsonTokenAndQueue implements Serializable {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
+    public JsonTokenAndQueue setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
     }
 
     public String getStorePhone() {
         return storePhone;
     }
 
-    public void setStorePhone(String storePhone) {
+    public JsonTokenAndQueue setStorePhone(String storePhone) {
         this.storePhone = storePhone;
+        return this;
     }
 
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(BusinessTypeEnum businessType) {
+    public JsonTokenAndQueue setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
     }
 
     public int getTokenAvailableFrom() {
         return tokenAvailableFrom;
     }
 
-    public void setTokenAvailableFrom(int tokenAvailableFrom) {
+    public JsonTokenAndQueue setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
+        return this;
     }
 
     public int getStartHour() {
         return startHour;
     }
 
-    public void setStartHour(int startHour) {
+    public JsonTokenAndQueue setStartHour(int startHour) {
         this.startHour = startHour;
+        return this;
     }
 
     public int getEndHour() {
         return endHour;
     }
 
-    public void setEndHour(int endHour) {
+    public JsonTokenAndQueue setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
     }
 
     public int getDelayedInMinutes() {
@@ -251,32 +268,36 @@ public class JsonTokenAndQueue implements Serializable {
         return topic;
     }
 
-    public void setTopic(String topic) {
+    public JsonTokenAndQueue setTopic(String topic) {
         this.topic = topic;
+        return this;
     }
 
     public int getServingNumber() {
         return servingNumber;
     }
 
-    public void setServingNumber(int servingNumber) {
+    public JsonTokenAndQueue setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+        return this;
     }
 
     public int getLastNumber() {
         return lastNumber;
     }
 
-    public void setLastNumber(int lastNumber) {
+    public JsonTokenAndQueue setLastNumber(int lastNumber) {
         this.lastNumber = lastNumber;
+        return this;
     }
 
     public int getToken() {
         return token;
     }
 
-    public void setToken(int token) {
+    public JsonTokenAndQueue setToken(int token) {
         this.token = token;
+        return this;
     }
 
     public String getQueueUserId() {
@@ -292,8 +313,9 @@ public class JsonTokenAndQueue implements Serializable {
         return queueStatus;
     }
 
-    public void setQueueStatus(QueueStatusEnum queueStatus) {
+    public JsonTokenAndQueue setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
     }
 
     public PurchaseOrderStateEnum getPurchaseOrderState() {
@@ -309,48 +331,54 @@ public class JsonTokenAndQueue implements Serializable {
         return serviceEndTime;
     }
 
-    public void setServiceEndTime(String serviceEndTime) {
+    public JsonTokenAndQueue setServiceEndTime(String serviceEndTime) {
         this.serviceEndTime = serviceEndTime;
+        return this;
     }
 
     public int getRatingCount() {
         return ratingCount;
     }
 
-    public void setRatingCount(int ratingCount) {
+    public JsonTokenAndQueue setRatingCount(int ratingCount) {
         this.ratingCount = ratingCount;
+        return this;
     }
 
     public long getAverageServiceTime() {
         return averageServiceTime;
     }
 
-    public void setAverageServiceTime(long averageServiceTime) {
+    public JsonTokenAndQueue setAverageServiceTime(long averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
+        return this;
     }
 
     public int getHoursSaved() {
         return hoursSaved;
     }
 
-    public void setHoursSaved(int hoursSaved) {
+    public JsonTokenAndQueue setHoursSaved(int hoursSaved) {
         this.hoursSaved = hoursSaved;
+        return this;
     }
 
     public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public JsonTokenAndQueue setCreateDate(String createDate) {
         this.createDate = createDate;
+        return this;
     }
 
-    public String getBizCategoryId() {
-        return bizCategoryId;
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
     }
 
-    public void setBizCategoryId(String bizCategoryId) {
-        this.bizCategoryId = bizCategoryId;
+    public JsonTokenAndQueue setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
+        return this;
     }
 
     @JsonIgnoreProperties
@@ -363,12 +391,31 @@ public class JsonTokenAndQueue implements Serializable {
         return afterHowLong() <= 0;
     }
 
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonTokenAndQueue setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public JsonTokenAndQueue setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+        return this;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("codeQR", codeQR)
                 .append("geoHash", geoHash)
                 .append("businessName", businessName)
+                .append("displayImage", displayImage)
                 .append("displayName", displayName)
                 .append("storeAddress", storeAddress)
                 .append("area", area)
@@ -384,13 +431,17 @@ public class JsonTokenAndQueue implements Serializable {
                 .append("servingNumber", servingNumber)
                 .append("lastNumber", lastNumber)
                 .append("token", token)
+                .append("queueUserId", queueUserId)
                 .append("queueStatus", queueStatus)
+                .append("purchaseOrderState", purchaseOrderState)
                 .append("serviceEndTime", serviceEndTime)
                 .append("ratingCount", ratingCount)
                 .append("averageServiceTime", averageServiceTime)
                 .append("hoursSaved", hoursSaved)
                 .append("createDate", createDate)
+                .append("jsonPurchaseOrder", jsonPurchaseOrder)
                 .append("bizCategoryId", bizCategoryId)
+                .append("transactionId", transactionId)
                 .toString();
     }
 }

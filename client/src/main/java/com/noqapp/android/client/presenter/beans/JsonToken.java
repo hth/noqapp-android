@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -52,6 +53,12 @@ public class JsonToken {
 
     @JsonProperty("e")
     private String expectedServiceBegin;
+
+    /* Do not use it. Its not being used or sent across the line. */
+    @JsonProperty("ti")
+    @JsonIgnore
+    @SuppressWarnings("unused")
+    private String transactionId;
 
     @JsonProperty("v")
     private boolean clientVisitedThisStore;
@@ -118,15 +125,6 @@ public class JsonToken {
         return clientVisitedThisStore;
     }
 
-    public JsonPurchaseOrder getJsonPurchaseOrder() {
-        return jsonPurchaseOrder;
-    }
-
-    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
-        this.jsonPurchaseOrder = jsonPurchaseOrder;
-        return this;
-    }
-
     public JsonToken setExpectedServiceBegin(String expectedServiceBegin) {
         this.expectedServiceBegin = expectedServiceBegin;
         return this;
@@ -138,6 +136,15 @@ public class JsonToken {
 
     public JsonToken setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
+    }
+
+    public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 

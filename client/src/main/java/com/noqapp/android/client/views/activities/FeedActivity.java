@@ -1,8 +1,10 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -48,7 +50,7 @@ public class FeedActivity extends AppCompatActivity {
         ImageView iv_bg = findViewById(R.id.expandedImage);
         TextView tv_details = findViewById(R.id.tv_details);
         TextView tv_title = findViewById(R.id.tv_title);
-        final JsonFeed jsonFeed = (JsonFeed) getIntent().getSerializableExtra("object");
+        final JsonFeed jsonFeed = (JsonFeed) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         tv_title.setText(jsonFeed.getTitle());
         RelativeLayout rl_author = findViewById(R.id.rl_author);
         if (TextUtils.isEmpty(jsonFeed.getAuthor())) {
@@ -72,11 +74,11 @@ public class FeedActivity extends AppCompatActivity {
             tv_details.setText(Html.fromHtml(data));
         }
 
-        if (BuildConfig.BUILD_TYPE.equals("release")) {
+        if (AppUtilities.isRelease()) {
             Answers.getInstance().logContentView(new ContentViewEvent()
                     .putContentName(jsonFeed.getTitle())
                     .putContentType(jsonFeed.getContentType())
-                    .putContentId("feed-dec-18"));
+                    .putContentId(FabricEvents.EVENT_FEED));
         }
     }
 

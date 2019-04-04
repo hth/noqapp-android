@@ -7,6 +7,7 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,12 +33,14 @@ import java.util.ArrayList;
 public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapter.OnItemClickListener, OrderHistoryPresenter {
     private RecyclerView rcv_order_history;
     private ArrayList<JsonPurchaseOrderHistorical> listData;
+    private RelativeLayout rl_empty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         rcv_order_history = view.findViewById(R.id.rcv_order_history);
+        rl_empty = view.findViewById(R.id.rl_empty);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             if (UserUtils.isLogin()) {
                 OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
@@ -62,7 +66,7 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         // open order screen
         Intent intent = new Intent(getActivity(), OrderHistoryDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("data", item);
+        bundle.putSerializable(IBConstant.KEY_DATA, item);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -90,7 +94,11 @@ public class OrderHistoryFragment extends Fragment implements OrderHistoryAdapte
         listData = new ArrayList<>(jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals());
         OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(orderHistoryAdapter);
-        if (null != listData && listData.size() == 0 && null != getActivity())
-            Toast.makeText(getActivity(), "You havn't order yet :(", Toast.LENGTH_LONG).show();
+        if (null != listData && listData.size() == 0 && null != getActivity()) {
+            // Toast.makeText(getActivity(), "You havn't order yet :(", Toast.LENGTH_LONG).show();
+            rl_empty.setVisibility(View.VISIBLE);
+        }else{
+            rl_empty.setVisibility(View.GONE);
+        }
     }
 }

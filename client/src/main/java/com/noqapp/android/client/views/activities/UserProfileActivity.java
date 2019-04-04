@@ -7,6 +7,7 @@ import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -27,7 +28,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -103,7 +104,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
-                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
+                in.putExtra(IBConstant.IS_DEPENDENT, true);
                 in.putStringArrayListExtra("nameList", nameList);
                 startActivity(in);
             }
@@ -172,7 +173,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 // break;
             case R.id.iv_edit:
                 Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
-                in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, false);
+                in.putExtra(IBConstant.IS_DEPENDENT, false);
                 in.putStringArrayListExtra("nameList", nameList);
                 startActivity(in);
                 break;
@@ -350,8 +351,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                     @Override
                     public void onClick(View v) {
                         Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
-                        in.putExtra(NoQueueBaseActivity.IS_DEPENDENT, true);
-                        in.putExtra(NoQueueBaseActivity.DEPENDENT_PROFILE, jsonProfile);
+                        in.putExtra(IBConstant.IS_DEPENDENT, true);
+                        in.putExtra(IBConstant.DEPENDENT_PROFILE, jsonProfile);
                         in.putStringArrayListExtra("nameList", nameList);
                         startActivity(in);
                     }

@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -10,6 +12,8 @@ import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -23,7 +27,6 @@ import com.squareup.picasso.Picasso;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -48,6 +52,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private TextView tv_rating_review;
     private TextView tv_add, add_person;
     private TextView tv_rating;
+    private TextView tv_delay_in_time;
     private Spinner sp_name_list;
     private String codeQR;
     private JsonQueue jsonQueue;
@@ -59,7 +64,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
-
+        tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_store_name = findViewById(R.id.tv_store_name);
         tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
@@ -85,7 +90,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
-                    joinQueue(false);
+                    joinQueue(true);
             }
         });
         tv_rating = findViewById(R.id.tv_rating);
@@ -130,10 +135,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
         Intent bundle = getIntent();
         if (null != bundle) {
-            codeQR = bundle.getStringExtra(NoQueueBaseActivity.KEY_CODE_QR);
-            boolean isCategoryData = bundle.getBooleanExtra("isCategoryData", true);
-            String imageUrl = bundle.getStringExtra("imageUrl");
-            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable("object");
+            codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
+            boolean isCategoryData = bundle.getBooleanExtra(IBConstant.KEY_IS_CATEGORY, true);
+            String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
+            JsonQueue jsonQueue = (JsonQueue) bundle.getExtras().getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (!TextUtils.isEmpty(imageUrl)) {
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
@@ -141,7 +146,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            if (bundle.getBooleanExtra(NoQueueBaseActivity.KEY_IS_REJOIN, false)) {
+            if (bundle.getBooleanExtra(IBConstant.KEY_IS_REJOIN, false)) {
                 btn_joinQueue.setText(getString(R.string.yes));
                 tv_skip_msg.setVisibility(View.VISIBLE);
                 btn_no.setVisibility(View.VISIBLE);
@@ -210,15 +215,16 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonQueue.getCountryShortName(), jsonQueue.getStorePhone()));
             tv_serving_no.setText(String.valueOf(jsonQueue.getServingNumber()));
             tv_people_in_q.setText(String.valueOf(jsonQueue.getPeopleInQueue()));
-            String time = new AppUtilities().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
             if (jsonQueue.getDelayedInMinutes() > 0) {
                 int hours = jsonQueue.getDelayedInMinutes() / 60;
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;
-                System.out.printf("%d:%02d", hours, minutes);
-                String red = "<font color='#e92270'><b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b></font>";
-                time = time + " " + red;
+                String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
+                tv_delay_in_time.setText(Html.fromHtml(red));
+            }else{
+                tv_delay_in_time.setVisibility(View.GONE);
             }
-            tv_hour_saved.setText(Html.fromHtml(time));
+            String time = new AppUtilities().formatTodayStoreTiming(this, jsonQueue.getStartHour(), jsonQueue.getEndHour());
+            tv_hour_saved.setText(time);
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -227,9 +233,9 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
                         Intent in = new Intent(JoinActivity.this, ShowAllReviewsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-                        bundle.putString("storeName", jsonQueue.getDisplayName());
-                        bundle.putString("storeAddress", AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
+                        bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+                        bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
+                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
                         in.putExtras(bundle);
                         startActivity(in);
                     }
@@ -285,14 +291,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     btn_joinQueue.setVisibility(View.GONE);
                     btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
                     break;
-                case N:
-                    btn_joinQueue.setVisibility(View.VISIBLE);
-                    btn_pay_and_joinQueue.setVisibility(View.GONE);
-                    break;
                 case O:
                     btn_joinQueue.setVisibility(View.VISIBLE);
                     btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
                     break;
+            }
+            if(!jsonQueue.isEnabledPayment()){
+                    btn_joinQueue.setVisibility(View.VISIBLE);
+                    btn_pay_and_joinQueue.setVisibility(View.GONE);
             }
         }
         dismissProgress();
@@ -304,7 +310,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     }
 
 
-    private void joinQueue(boolean isPayment) {
+    private void joinQueue(boolean isPayBeforeJoin) {
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
             Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
@@ -321,7 +327,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                             Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
                             sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
                         } else {
-                            callAfterJoin(isPayment);
+                            callAfterJoin(isPayBeforeJoin);
                         }
                     } else {
                         // please login to avail this feature
@@ -332,7 +338,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     }
                 } else {
                     // any user can join
-                    callAfterJoin(isPayment);
+                    callAfterJoin(isPayBeforeJoin);
                 }
             } else {
                 ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
@@ -340,17 +346,27 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         }
     }
 
-    private void callAfterJoin(boolean isPayment) {
-        Intent in = new Intent(this, AfterJoinActivity.class);
-        in.putExtra(NoQueueBaseActivity.KEY_CODE_QR, jsonQueue.getCodeQR());
-        //TODO // previously KEY_FROM_LIST  was false need to verify
-        in.putExtra(NoQueueBaseActivity.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
-        in.putExtra(NoQueueBaseActivity.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
-        in.putExtra(Constants.FROM_JOIN_SCREEN, true);
-        in.putExtra("isPaymentCall",jsonQueue.isEnabledPayment());
-        in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
-        in.putExtra("imageUrl", getIntent().getStringExtra("imageUrl"));
-        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+    private void callAfterJoin(boolean isPayBeforeJoin) {
+        if(isPayBeforeJoin && !NoQueueBaseActivity.isEmailVerified()){
+            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+        }else {
+            Intent in = new Intent(this, AfterJoinActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+            //TODO // previously KEY_FROM_LIST  was false need to verify
+            in.putExtra(IBConstant.KEY_FROM_LIST, false);//getArguments().getBoolean(KEY_FROM_LIST, false));
+            in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+            in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
+            in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+            in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
+            in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+            in.putExtra("isPayBeforeJoin", isPayBeforeJoin);
+            startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+
+            if (AppUtilities.isRelease()) {
+                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_JOIN_SCREEN)
+                        .putCustomAttribute("Queue Name", jsonQueue.getDisplayName()));
+            }
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 
 import android.content.Intent;
@@ -40,7 +41,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
             case R.id.btn_privacy:
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
-                    in.putExtra("url", Constants.URL_PRIVACY_POLICY);
+                    in.putExtra(IBConstant.KEY_URL, Constants.URL_PRIVACY_POLICY);
                     in.putExtra("title","Privacy In Detail");
                     startActivity(in);
                 } else {
@@ -50,7 +51,7 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
             case R.id.btn_term_condition:
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(PrivacyActivity.this, WebViewActivity.class);
-                    in.putExtra("url", Constants.URL_TERM_CONDITION);
+                    in.putExtra(IBConstant.KEY_URL, Constants.URL_TERM_CONDITION);
                     in.putExtra("title","Terms & Conditions");
                     startActivity(in);
                 } else {

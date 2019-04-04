@@ -1,7 +1,18 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -15,20 +26,11 @@ import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
 
@@ -77,7 +79,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
 
         initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.medical_history_details));
-        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable("data");
+        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
             ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(), true, jsonMedicalRecord.getRecordReferenceId());
             rv_thumb_images.setAdapter(thumbnailGalleryAdapter);
@@ -231,6 +233,13 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             tv_observation_pathology_label.setText("N/A");
             ll_path.setVisibility(View.GONE);
         }
+
+        ll_scan.setVisibility(View.GONE);
+        ll_spec.setVisibility(View.GONE);
+        ll_xray.setVisibility(View.GONE);
+        ll_path.setVisibility(View.GONE);
+        ll_mri.setVisibility(View.GONE);
+        ll_sono.setVisibility(View.GONE);
         if (null != jsonMedicalRecord.getMedicalRadiologyLists() && jsonMedicalRecord.getMedicalRadiologyLists().size() > 0) {
             for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
                 final JsonMedicalRadiologyList jsonMedicalRadiologyList = jsonMedicalRecord.getMedicalRadiologyLists().get(i);
@@ -249,12 +258,6 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 } else {
                     observation = jsonMedicalRadiologyList.getObservation();
                 }
-//                ll_scan.setVisibility(View.GONE);
-//                ll_spec.setVisibility(View.GONE);
-//                ll_xray.setVisibility(View.GONE);
-//                ll_path.setVisibility(View.GONE);
-//                ll_mri.setVisibility(View.GONE);
-//                ll_sono.setVisibility(View.GONE);
                 switch (labCategory) {
                     case SPEC:
                         tv_attachment_spec.setText(value);

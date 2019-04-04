@@ -7,12 +7,14 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistori
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+
+import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,7 +50,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         TextView tv_add_review = findViewById(R.id.tv_add_review);
         TextView tv_additional_info = findViewById(R.id.tv_additional_info);
         Button btn_reorder = findViewById(R.id.btn_reorder);
-        final JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable("data");
+        final JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
@@ -62,7 +64,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
                 feedback.setToken(jsonPurchaseOrder.getTokenNumber());
                 Intent in = new Intent(OrderHistoryDetailActivity.this, ContactUsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("object", feedback);
+                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
                 in.putExtras(bundle);
                 startActivity(in);
             }
@@ -131,7 +133,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         } else {
             tv_payment_mode.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
-        tv_delivery_address.setText(jsonPurchaseOrder.getDeliveryAddress());
+        tv_delivery_address.setText(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress());
         tv_order_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         tv_order_number.setText("ORDER NO.  " + String.valueOf(jsonPurchaseOrder.getTokenNumber()));
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonPurchaseOrder.getCreated()));

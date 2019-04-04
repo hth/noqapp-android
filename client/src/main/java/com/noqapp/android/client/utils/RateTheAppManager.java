@@ -55,8 +55,8 @@ public class RateTheAppManager {
 
     private void showRateDialog(final Context mContext, final SharedPreferences.Editor editor) {
 
-        if (BuildConfig.BUILD_TYPE.equals("release")) {
-            Answers.getInstance().logCustom(new CustomEvent("Rate The App"));
+        if (AppUtilities.isRelease()) {
+            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_RATE_APP));
         }
         final Dialog dialog = new Dialog(mContext);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

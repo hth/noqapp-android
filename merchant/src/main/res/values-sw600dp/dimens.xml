@@ -8,6 +8,7 @@
     <dimen name="edit_field_width">300dp</dimen>
     <dimen name="text_size_medication">12sp</dimen>
     <dimen name="swith_padding">20dp</dimen>
+    <dimen name="value_text_size">28sp</dimen>
 
     <dimen name="documnet_width">350dp</dimen>
     <dimen name="documnet_height">300dp</dimen>
@@ -17,4 +18,5 @@
     <dimen name="close_image_margin">50dp</dimen>
     <dimen name="close_image_size">60dp</dimen>
     <dimen name="image_item_margin">20dp</dimen>
+    <dimen name="play_btn_size">50dp</dimen>
 </resources>

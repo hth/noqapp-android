@@ -17,6 +17,8 @@ import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -195,7 +197,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private void updateUI() {
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
-        tv_address.setText(Html.fromHtml(jsonPurchaseOrder.getDeliveryAddress()));
+        tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         try {
             if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {

@@ -46,8 +46,10 @@ public class LoginActivity extends OTPActivity {
     protected boolean validate() {
         new AppUtilities().hideKeyBoard(this);
         boolean isValid = true;
+        Log.e("country code: ", ccp.getSelectedCountryCodeWithPlus());
         edt_phoneNo.setError(null);
-        countryCode = edt_phone_code.getText().toString();
+        //countryCode = edt_phone_code.getText().toString();
+        countryCode = ccp.getSelectedCountryCodeWithPlus();
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
@@ -82,7 +84,7 @@ public class LoginActivity extends OTPActivity {
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if(null != eej) {
+        if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
                 Intent in = new Intent(LoginActivity.this, RegistrationActivity.class);
                 in.putExtra("mobile_no", verifiedMobileNo);

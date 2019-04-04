@@ -1,7 +1,11 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
@@ -23,8 +27,6 @@ import android.widget.TextView;
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, log;
     private String city = "";
-    private GPSTracker gpsTracker;
-    private AutoCompleteTextView autoCompleteTextView;
     public ChangeLocationFragment() {
 
     }
@@ -33,7 +35,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_change_location, container, false);
-        gpsTracker = new GPSTracker(getActivity(), this);
+        GPSTracker gpsTracker = new GPSTracker(getActivity(), this);
         if (gpsTracker.isLocationEnabled()) {
             gpsTracker.getLocation();
         } else {
@@ -41,30 +43,30 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
         }
 
         TextView tv_auto = view.findViewById(R.id.tv_auto);
-        ImageView  actionbarBack = view.findViewById(R.id.actionbarBack);
+        ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                    lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                    log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-                    city = LaunchActivity.getLaunchActivity().getDefaultCity();
+                    lat = Constants.DEFAULT_LATITUDE;
+                    log = Constants.DEFAULT_LONGITUDE;
+                    city = Constants.DEFAULT_CITY;
                 } else {
                     lat = LaunchActivity.getLaunchActivity().latitute;
                     log = LaunchActivity.getLaunchActivity().longitute;
                     city = LaunchActivity.getLaunchActivity().cityName;
                     new AppUtilities().hideKeyBoard(getActivity());
                 }
-                LaunchActivity.getLaunchActivity().updateLocationInfo(lat,log,city);
+                LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city);
             }
         });
         tv_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                    lat = LaunchActivity.getLaunchActivity().getDefaultLatitude();
-                    log = LaunchActivity.getLaunchActivity().getDefaultLongitude();
-                    city = LaunchActivity.getLaunchActivity().getDefaultCity();
+                    lat = Constants.DEFAULT_LATITUDE;
+                    log = Constants.DEFAULT_LONGITUDE;
+                    city = Constants.DEFAULT_CITY;
                 } else {
                     lat = LaunchActivity.getLaunchActivity().latitute;
                     log = LaunchActivity.getLaunchActivity().longitute;
@@ -73,7 +75,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 }
             }
         });
-        autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
+        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(getActivity(), R.layout.list_item));
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,7 +86,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                     if (null != latLng) {
                         lat = latLng.latitude;
                         log = latLng.longitude;
-                        LaunchActivity.getLaunchActivity().updateLocationInfo(lat,log,city_name);
+                        LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city_name);
                         //finish();
 
                     } else {
@@ -124,9 +126,12 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
                 return false;
             }
         });
+        if (AppUtilities.isRelease()) {
+            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LOCATION));
+        }
         return view;
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
@@ -135,7 +140,7 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
 
     @Override
     public void updateLocationUI() {
-       // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Long: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
+        // Log.e("Location update", "Lat: " + String.valueOf(gpsTracker.getLatitude()) + " Long: " + String.valueOf(gpsTracker.getLongitude()) + " City: " + gpsTracker.getCityName());
 
     }
 }

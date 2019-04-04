@@ -1,22 +1,17 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.noqapp.android.client.model.database.DatabaseTable;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 
 public class NoQueueBaseFragment extends Fragment {
-    public static final String KEY_CODE_QR = DatabaseTable.TokenQueue.CODE_QR;
-    public static final String KEY_FROM_LIST = "fromList";
-    public static final String KEY_JSON_TOKEN_QUEUE = "jsonTokenQueue";
 
     public static void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();

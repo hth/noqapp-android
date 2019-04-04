@@ -1,13 +1,24 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
@@ -19,6 +30,8 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.GeoHashUtils;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -36,34 +49,21 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatRadioButton;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatRadioButton;
+
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter, CFClientInterface, CashFreeNotifyPresenter {
     private RadioGroup rg_address;
@@ -81,6 +81,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private Button tv_place_order;
     private AppCompatRadioButton acrb_cash, acrb_online;
     private boolean isProductWithoutPrice = false;
+    private JsonUserAddress jsonUserAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +143,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
         initActionsViews(true);
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
-        jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("data");
+        jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
@@ -179,7 +180,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     if (validateForm()) {
                         if (isProductWithoutPrice) {
                             Toast.makeText(OrderActivity.this, "Merchant have not set the price of the product.Hence payment cann't be proceed ", Toast.LENGTH_LONG).show();
-                        }else {
+                        } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
                                 progressDialog.setMessage("Order placing in progress..");
@@ -207,6 +208,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
         jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
         profileAddressResponse(jsonUserAddressList);
+        if (jsonUserAddressList.getJsonUserAddresses().size() > 0)
+            jsonUserAddress = jsonUserAddressList.getJsonUserAddresses().get(0);
         rl_address.setVisibility(View.GONE);
     }
 
@@ -236,27 +239,36 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             edt_phone.setError("Please enter valid mobile no.");
             isValid = false;
         }
+        if (!NoQueueBaseActivity.isEmailVerified()) {
+            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
         if (tv_address.getText().toString().equals("")) {
             tv_address.setError("Please enter delivery address.");
             isValid = false;
         } else {
-            LatLng latLng_d = AppUtilities.getLocationFromAddress(this, tv_address.getText().toString());
-            LatLng latLng_s = AppUtilities.getLocationFromAddress(this, getIntent().getExtras().getString("storeAddress"));
-            if (null != latLng_d && null != latLng_s) {
-                float distance = (float) AppUtilities.calculateDistance(
-                        (float) latLng_s.latitude,
-                        (float) latLng_s.longitude,
-                        (float) latLng_d.latitude,
-                        (float) latLng_d.longitude);
-                if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.RS) {
-                    if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                        tv_address.setError("Please change the address. This address is very far from the store");
-                        isValid = false;
-                    }
+            String storeGeoHash = getIntent().getExtras().getString("GeoHash");
+            if (!TextUtils.isEmpty(storeGeoHash)) {
+                if (TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
+                    tv_address.setError("Please select a valid address");
+                    isValid = false;
                 } else {
-                    if (distance > 150) { // Set for washing car stores
-                        tv_address.setError("Please change the address. This address is very far from the store");
-                        isValid = false;
+                    float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
+                    float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
+                    float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
+                    float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
+                    float distance = (float) AppUtilities.calculateDistance(
+                            lat_s, long_s, lat_d, long_d);
+                    if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.RS) {
+                        if (distance > getIntent().getExtras().getInt("deliveryRange")) {
+                            tv_address.setError("Please change the address. This address is very far from the store");
+                            isValid = false;
+                        }
+                    } else {
+                        if (distance > 150) { // Set for washing car stores
+                            tv_address.setError("Please change the address. This address is very far from the store");
+                            isValid = false;
+                        }
                     }
                 }
             }
@@ -304,10 +316,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
-            bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
-            bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+            bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
+            bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
-            bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
+            bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
@@ -374,7 +386,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             LayoutInflater inflater = LayoutInflater.from(this);
             View radio_view = inflater.inflate(R.layout.list_item_radio, null, false);
             final AppCompatRadioButton rdbtn = radio_view.findViewById(R.id.acrb);
-            rdbtn.setId((i * 2) + i);
+            rdbtn.setId(i);
             rdbtn.setTag(addressList.get(i).getId());
             rdbtn.setText(addressList.get(i).getAddress());
             rdbtn.setPadding(10, 20, 10, 20);
@@ -443,6 +455,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 AppCompatRadioButton radioButtonChosen = group.findViewById(checkedId);
                 tv_address.setText(radioButtonChosen.getText());
                 rl_address.setVisibility(View.GONE);
+                jsonUserAddress = addressList.get(checkedId);
 
             }
         });
@@ -546,10 +559,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
             bundle.putSerializable("oldData", this.jsonPurchaseOrder);
-            bundle.putString("storeName", getIntent().getExtras().getString("storeName"));
-            bundle.putString("storeAddress", getIntent().getExtras().getString("storeAddress"));
+            bundle.putString(IBConstant.KEY_STORE_NAME, getIntent().getExtras().getString(IBConstant.KEY_STORE_NAME));
+            bundle.putString(IBConstant.KEY_STORE_ADDRESS, getIntent().getExtras().getString(IBConstant.KEY_STORE_ADDRESS));
             bundle.putString(AppUtilities.CURRENCY_SYMBOL, currencySymbol);
-            bundle.putString(NoQueueBaseActivity.KEY_CODE_QR, getIntent().getExtras().getString(NoQueueBaseActivity.KEY_CODE_QR));
+            bundle.putString(IBConstant.KEY_CODE_QR, getIntent().getExtras().getString(IBConstant.KEY_CODE_QR));
             in.putExtras(bundle);
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));

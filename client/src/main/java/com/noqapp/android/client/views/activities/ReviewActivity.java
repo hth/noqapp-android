@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
@@ -14,6 +13,8 @@ import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -107,7 +108,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         final Bundle extras = getIntent().getExtras();
 
         if (null != extras) {
-            jtk = (JsonTokenAndQueue) extras.getSerializable("object");
+            jtk = (JsonTokenAndQueue) extras.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (null != jtk) {
                 tv_store_name.setText(jtk.getBusinessName());
                 tv_queue_name.setText(jtk.getDisplayName());
@@ -121,10 +122,10 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         profileList = NoQueueBaseActivity.getUserProfile().getDependents();
                     }
                     profileList.add(0, NoQueueBaseActivity.getUserProfile());
-                    if (BuildConfig.BUILD_TYPE.equals("debug")) {
-                        tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
-                    } else {
+                    if (AppUtilities.isRelease()) {
                         tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                    } else {
+                        tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
                     }
                 } else {
                     tv_details.setText("Token: " + jtk.getToken() + " : Guest user");
@@ -141,8 +142,8 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         tv_review_msg.setText(getString(R.string.review_msg_queue_done));
 
                 }
-                if (BuildConfig.BUILD_TYPE.equals("release")) {
-                    Answers.getInstance().logCustom(new CustomEvent("Review Screen")
+                if (AppUtilities.isRelease()) {
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_REVIEW_SCREEN)
                             .putCustomAttribute("Business Type", jtk.getBusinessType().getName()));
                 }
             }

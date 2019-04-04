@@ -30,6 +30,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
+import com.hbb20.CountryCodePicker;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -50,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginActivity extends AppCompatActivity implements ProfilePresenter {
 
     public interface LoginCallBack {
-        void passPhoneNo(String phoneNo, String countryShortName);
+        void passPhoneNo(JsonProfile jsonProfile);
     }
 
     public static LoginCallBack loginCallBack;
@@ -67,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     private Button btn_login;
     private Button btn_verify_phone;
     private EditText edt_verification_code;
-    private EditText edt_phone_code;
+    private CountryCodePicker ccp;
     private TextView tv_detail;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -95,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         btn_login = findViewById(R.id.btn_login);
         btn_verify_phone = findViewById(R.id.btn_verify_phone);
         edt_verification_code = findViewById(R.id.edt_verification_code);
-        edt_phone_code = findViewById(R.id.edt_phone_code);
+        ccp = findViewById(R.id.ccp);
         tv_detail = findViewById(R.id.tv_detail);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +119,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         Log.v("country code", "" + c_code);
         countryCode = "+" + c_code;
         countryShortName = c_codeValue.toUpperCase();
-        edt_phone_code.setText(countryCode);
+        ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
+        countryCode = ccp.getSelectedCountryCodeWithPlus();
         edt_phoneNo.setText(getIntent().getStringExtra("phone_no"));
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -184,8 +186,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 progressDialog.setMessage("Generating OTP");
-                countryCode = edt_phone_code.getText().toString();
-                //@TODO @Chandra update the country code dynamic
+                countryCode = ccp.getSelectedCountryCodeWithPlus();
+                countryShortName = ccp.getSelectedCountryName().toUpperCase();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
                 Answers.getInstance().logLogin(new LoginEvent()
@@ -265,7 +267,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        loginCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
+        loginCallBack.passPhoneNo(profile);
         finish();//close the current activity
         dismissProgress();
     }

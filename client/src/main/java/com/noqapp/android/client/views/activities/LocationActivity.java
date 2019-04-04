@@ -44,18 +44,6 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
     private LocationManager locationManager;
     private final int GPS_ENABLE_REQUEST = 0x1001;
 
-    public double getDefaultLatitude() {
-        return 19.0760;
-    }
-
-    public double getDefaultLongitude() {
-        return 72.8777;
-    }
-
-    public String getDefaultCity() {
-        return "Mumbai";
-    }
-
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     // TODO @Chandra
@@ -100,7 +88,7 @@ public abstract class LocationActivity extends NoQueueBaseActivity implements Go
             getAddress(latitute, longitute);
             updateLocationUI();
         } else {
-            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Location not detected", Toast.LENGTH_SHORT).show();
         }
     }
 

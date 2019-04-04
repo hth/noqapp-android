@@ -1,11 +1,15 @@
 package com.noqapp.android.client.views.activities;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedbackApiCall;
 import com.noqapp.android.client.presenter.beans.body.Feedback;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -34,7 +38,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
         final EditText edt_body = findViewById(R.id.edt_body);
         Bundle extras = getIntent().getExtras();
         if (null != extras) {
-            Feedback fb = (Feedback) extras.getSerializable("object");
+            Feedback fb = (Feedback) extras.getSerializable(IBConstant.KEY_DATA_OBJECT);
             if (null != fb) {
                 feedback = fb;
             }
@@ -67,6 +71,10 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
                 }
             }
         });
+
+        if (AppUtilities.isRelease()) {
+            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CONTACT_US_SCREEN));
+        }
     }
 
     @Override

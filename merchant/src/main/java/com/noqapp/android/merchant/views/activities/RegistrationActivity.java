@@ -43,7 +43,7 @@ import java.util.TimeZone;
 public class RegistrationActivity extends AppCompatActivity implements ProfilePresenter, View.OnClickListener {
 
     public interface RegisterCallBack {
-        void passPhoneNo(String phoneNo, String countryShortName);
+        void passPhoneNo(JsonProfile jsonProfile);
     }
 
     public static RegisterCallBack registerCallBack;
@@ -172,7 +172,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            registerCallBack.passPhoneNo(profile.getPhoneRaw(), profile.getCountryShortName());
+            registerCallBack.passPhoneNo(profile);
             finish();
 
         } else {

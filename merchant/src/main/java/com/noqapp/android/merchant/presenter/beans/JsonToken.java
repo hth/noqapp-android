@@ -6,6 +6,7 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,6 +58,12 @@ public class JsonToken implements Serializable {
 
     @JsonProperty("e")
     private String expectedServiceBegin;
+
+    /* Do not use it. Its not being used or sent across the line. */
+    @JsonProperty("ti")
+    @JsonIgnore
+    @SuppressWarnings("unused")
+    private String transactionId;
 
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;

@@ -2,7 +2,9 @@ package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
@@ -22,7 +24,7 @@ public class LegalFragment extends NoQueueBaseFragment implements View.OnClickLi
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_legal, container, false);
         TextView tv_version = (TextView) view.findViewById(R.id.tv_version);
-        tv_version.setText(BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+        tv_version.setText(AppUtilities.isRelease()
                 ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                 : getString(R.string.version_no, "Not for release"));
         LinearLayout ll_term_condition = view.findViewById(R.id.ll_term_condition);
@@ -61,7 +63,7 @@ public class LegalFragment extends NoQueueBaseFragment implements View.OnClickLi
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
-            in.putExtra("url", url);
+            in.putExtra(IBConstant.KEY_URL, url);
             getActivity().startActivity(in);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

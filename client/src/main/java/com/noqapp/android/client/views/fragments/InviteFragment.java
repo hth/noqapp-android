@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.fragments;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
@@ -99,7 +100,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
     public void howItWorks() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             Intent in = new Intent(getActivity(), WebViewActivity.class);
-            in.putExtra("url", Constants.URL_HOW_IT_WORKS);
+            in.putExtra(IBConstant.KEY_URL, Constants.URL_HOW_IT_WORKS);
             getActivity().startActivity(in);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

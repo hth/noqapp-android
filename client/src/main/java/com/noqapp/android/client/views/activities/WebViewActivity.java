@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -41,10 +42,10 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_webview);
         initActionsViews(true);
         webView = findViewById(R.id.webView);
-        if (null != getIntent().getStringExtra("url")) {
-            url = getIntent().getStringExtra("url");
+        if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
+            url = getIntent().getStringExtra(IBConstant.KEY_URL);
         }
-        isPdf = getIntent().getBooleanExtra("isPdf",false);
+        isPdf = getIntent().getBooleanExtra(IBConstant.KEY_IS_PDF,false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);

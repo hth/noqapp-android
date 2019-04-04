@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -8,9 +9,9 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -54,6 +55,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +100,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected ImageView iv_generate_token, iv_queue_history, iv_view_followup;
     // variable to track event time
     private long mLastClickTime = 0;
+    protected LinearLayout ll_mobile;
+    protected LinearLayout ll_main_section;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -136,9 +140,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         btn_skip = itemView.findViewById(R.id.btn_skip);
         btn_next = itemView.findViewById(R.id.btn_next);
         btn_start = itemView.findViewById(R.id.btn_start);
-        TextView tv_deviceId = itemView.findViewById(R.id.tv_deviceId);
-        tv_deviceId.setText(UserUtils.getDeviceId());
-        tv_deviceId.setVisibility(BuildConfig.BUILD_TYPE.equals("debug") ? View.VISIBLE : View.GONE);
 
         tv_next = itemView.findViewById(R.id.tv_next);
         tv_start = itemView.findViewById(R.id.tv_start);
@@ -306,6 +307,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         if (null != token && null != tv_create_token) {
             if (null != edt_mobile)
                 edt_mobile.setText("");
+            if (null != ll_main_section)
+                ll_main_section.setVisibility(View.GONE);
+
             switch (token.getQueueStatus()) {
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
@@ -717,14 +721,20 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     @Override
-    public void passPhoneNo(String phoneNo, String countryShortName) {
+    public void passPhoneNo(JsonProfile jsonProfile) {
         LaunchActivity.getLaunchActivity().progressDialog.show();
-        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(phoneNo, countryShortName);
+        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
         setDispensePresenter();
+
+        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonProfile.getQueueUserId());
+        jsonBusinessCustomer
+                .setCodeQR(topicsList.get(currrentpos).getCodeQR())
+                .setCustomerPhone(phoneNoWithCode);
+
         manageQueueApiCalls.dispenseTokenWithClientInfo(
                 BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(),
-                new JsonBusinessCustomerLookup().setCodeQR(topicsList.get(currrentpos).getCodeQR()).setCustomerPhone(phoneNoWithCode));
+                jsonBusinessCustomer);
     }
 }

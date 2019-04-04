@@ -10,8 +10,10 @@ import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BaseMasterLabApiCalls;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -34,6 +36,8 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.gson.Gson;
+
+import com.hbb20.CountryCodePicker;
 
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
@@ -109,14 +113,18 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private Button btn_create_order, btn_create_token;
     private String codeQR = "";
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
+    private BusinessCustomerApiCalls businessCustomerApiCalls;
     private LinearLayout ll_order_list;
     private TextView tv_order_list;
     private RelativeLayout rl_total;
+    private LinearLayout ll_mobile;
     private int price = 0;
     private String currencySymbol;
     public static UpdateWholeList updateWholeList;
     private PreferenceObjects preferenceObjects;
-
+    private CountryCodePicker ccp;
+    private String countryCode = "";
+    private String countryShortName = "";
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -197,7 +205,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             }
         }
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-        purchaseOrderApiCalls.setFindCustomerPresenter(this);
+        businessCustomerApiCalls = new BusinessCustomerApiCalls();
+        businessCustomerApiCalls.setFindCustomerPresenter(this);
         purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
     }
 
@@ -415,6 +424,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             Toast.makeText(this, eej.getReason(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(this, LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
+            in.putExtra("countryCode",countryCode);
+            in.putExtra("countryShortName",countryShortName);
             startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
@@ -522,6 +533,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
         tv_order_list = view.findViewById(R.id.tv_order_list);
         ll_order_list = view.findViewById(R.id.ll_order_list);
+        ll_mobile = view.findViewById(R.id.ll_mobile);
         rl_total = view.findViewById(R.id.rl_total);
         ll_order_list.removeAllViews();
         if (menuSelectData.size() > 0) {
@@ -594,16 +606,20 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_mobile) {
-                    edt_mobile.setVisibility(View.VISIBLE);
+                    ll_mobile.setVisibility(View.VISIBLE);
                     edt_id.setVisibility(View.GONE);
                     edt_id.setText("");
                 } else {
                     edt_id.setVisibility(View.VISIBLE);
-                    edt_mobile.setVisibility(View.GONE);
+                    ll_mobile.setVisibility(View.GONE);
                     edt_mobile.setText("");
                 }
             }
         });
+        ccp = view.findViewById(R.id.ccp);
+        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
         btn_create_token.setText("Search Patient");
@@ -633,7 +649,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     String cid = "";
                     if (rb_mobile.isChecked()) {
                         edt_id.setText("");
-                        phone = "91" + edt_mobile.getText().toString();
+                        countryCode = ccp.getSelectedCountryCode();
+                        countryShortName = ccp.getDefaultCountryName().toUpperCase();
+                        phone = countryCode+ edt_mobile.getText().toString();
                     } else {
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
@@ -641,7 +659,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     progressDialog.show();
 
 
-                    purchaseOrderApiCalls.findCustomer(
+                    businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
@@ -663,19 +681,21 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     }
 
     @Override
-    public void passPhoneNo(String phoneNo, String countryShortName) {
+    public void passPhoneNo(JsonProfile jsonProfile) {
         // coming from login or registration activity
-        dismissProgress();
+        findCustomerResponse(jsonProfile);
     }
 
 
     @Override
     public void findCustomerResponse(final JsonProfile jsonProfile) {
         dismissProgress();
-        if (null != jsonProfile && jsonProfile.getDependents().size() > 0) {
+        if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);
-            jsonProfileList.addAll(jsonProfile.getDependents());
+            if (jsonProfile.getDependents().size() > 0) {
+                jsonProfileList.addAll(jsonProfile.getDependents());
+            }
             JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfileList);
             sp_patient_list.setAdapter(adapter);
             sp_patient_list.setVisibility(View.VISIBLE);

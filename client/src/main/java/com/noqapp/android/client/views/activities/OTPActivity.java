@@ -21,12 +21,12 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
+import com.hbb20.CountryCodePicker;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -63,7 +64,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     protected EditText edt_phoneNo;
     protected Button btn_login;
     protected Button btn_verify_phone;
-    protected EditText edt_phone_code;
+   // protected EditText edt_phone_code;
     protected EditText edt_one;
     protected EditText edt_two;
     protected EditText edt_three;
@@ -72,6 +73,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     protected EditText edt_six;
     protected LinearLayout ll_otp;
     protected TextView tv_detail;
+    protected CountryCodePicker ccp;
+    protected String selected_country_code = "";
 
     protected abstract void callApi(String phoneNumber);
 
@@ -86,7 +89,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         edt_phoneNo = findViewById(R.id.edt_phone);
         btn_login = findViewById(R.id.btn_login);
         btn_verify_phone = findViewById(R.id.btn_verify_phone);
-        edt_phone_code = findViewById(R.id.edt_phone_code);
+        //edt_phone_code = findViewById(R.id.edt_phone_code);
         edt_one = findViewById(R.id.edt_one);
         edt_two = findViewById(R.id.edt_two);
         edt_three = findViewById(R.id.edt_three);
@@ -95,6 +98,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         edt_six = findViewById(R.id.edt_six);
         ll_otp = findViewById(R.id.ll_otp);
         tv_detail = findViewById(R.id.tv_detail);
+        ccp = findViewById(R.id.ccp);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +125,9 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         Log.v("country code", "" + c_code);
         countryCode = "+" + c_code;
         countryShortName = c_codeValue.toUpperCase();
-        edt_phone_code.setText(countryCode);
+        countryCode = ccp.getSelectedCountryCodeWithPlus();
+        countryShortName = ccp.getDefaultCountryName().toUpperCase();
+       // edt_phone_code.setText(countryCode);
         addTextWatcher(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -181,7 +187,16 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             }
         };
     }
-
+    public void onCountryPickerClick(View view) {
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                //Alert.showMessage(RegistrationActivity.this, ccp.getSelectedCountryCodeWithPlus());
+                selected_country_code = ccp.getSelectedCountryCodeWithPlus();
+                Toast.makeText(OTPActivity.this,selected_country_code,Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     protected void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         progressDialog.setMessage("Validating OTP");
         progressDialog.show();
@@ -411,7 +426,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 progressDialog.setMessage("Generating OTP");
-                countryCode = edt_phone_code.getText().toString();
+                //countryCode = edt_phone_code.getText().toString();
+                countryCode = ccp.getSelectedCountryCodeWithPlus();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
                 Answers.getInstance().logLogin(new LoginEvent()
