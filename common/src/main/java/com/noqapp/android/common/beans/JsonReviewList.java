@@ -31,6 +31,9 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
     @JsonProperty("ar")
     private int aggregateRatingCount;
 
+    @JsonProperty ("qr")
+    private String codeQR;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -49,6 +52,15 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
 
     public JsonReviewList setAggregateRatingCount(int aggregateRatingCount) {
         this.aggregateRatingCount = aggregateRatingCount;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonReviewList setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 
