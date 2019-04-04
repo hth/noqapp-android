@@ -104,6 +104,7 @@
                     android:textSize="@dimen/text_size_twelve" />
 
                 <TextView
+                    android:id="@+id/tv_consult_fees_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/tv_specialization"
@@ -131,7 +132,7 @@
                     android:maxLines="1"
                     android:minLines="1"
                     android:text="SSD Hospital Kopairkhairane"
-                    android:textSize="@dimen/text_size_ten" />
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/tv_consult_fees"
@@ -171,7 +172,7 @@
                         android:id="@+id/tv_time_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Store timing"
+                        android:text="Today's timing"
                         android:textSize="@dimen/text_size_twelve" />
 
                     <TextView

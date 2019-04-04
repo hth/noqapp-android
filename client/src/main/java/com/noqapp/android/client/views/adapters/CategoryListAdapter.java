@@ -91,14 +91,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         if (storeHourElastic.isDayClosed()) {
             holder.tv_status.setText(context.getString(R.string.store_closed));
             holder.tv_store_timing.setVisibility(View.VISIBLE);
-            holder.tv_store_timing.setText("");
-            holder.tv_time_label.setText("");
+            holder.tv_status.setVisibility(View.GONE);
+            holder.tv_store_timing.setText("Closed");
             holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_inactive));
             holder.tv_join.setTextColor(context.getResources().getColor(R.color.button_color));
             holder.tv_join.setText("Closed");
         } else {
             holder.tv_store_timing.setVisibility(View.VISIBLE);
-            holder.tv_time_label.setText("Store timing");
+            holder.tv_status.setVisibility(View.VISIBLE);
             holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
             holder.tv_join.setBackground(ContextCompat.getDrawable(context, R.drawable.btn_bg_enable));
             holder.tv_join.setTextColor(context.getResources().getColor(R.color.white));
@@ -179,7 +179,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         } else {
             //TODO(hth) Show when will this be open next. For now hide it.
-            holder.tv_status.setText("Closed Today");
+            holder.tv_status.setText("Closed");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
         }
         if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
@@ -193,9 +193,16 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         }
 
         holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE:View.VISIBLE);
-       // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
-        String feeString = "<b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b>";
-        holder.tv_consult_fees.setText(Html.fromHtml(feeString));
+          if(bizStoreElastic.getProductPrice()==0){
+              holder.tv_consult_fees.setVisibility(View.GONE);
+              holder.tv_consult_fees_header.setVisibility(View.GONE);
+        }else{
+              // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
+              String feeString = "<b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b>";
+              holder.tv_consult_fees.setText(Html.fromHtml(feeString));
+              holder.tv_consult_fees.setVisibility(View.VISIBLE);
+              holder.tv_consult_fees_header.setVisibility(View.VISIBLE);
+          }
         holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,6 +252,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_status;
         private TextView tv_join;
         private TextView tv_consult_fees;
+        private TextView tv_consult_fees_header;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -262,6 +270,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.tv_join = itemView.findViewById(R.id.tv_join);
             this.tv_consult_fees = itemView.findViewById(R.id.tv_consult_fees);
+            this.tv_consult_fees_header = itemView.findViewById(R.id.tv_consult_fees_header);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
