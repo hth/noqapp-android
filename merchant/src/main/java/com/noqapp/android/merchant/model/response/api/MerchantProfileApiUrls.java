@@ -3,6 +3,8 @@ package com.noqapp.android.merchant.model.response.api;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 
@@ -15,6 +17,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 /**
  * User: hitender
@@ -161,5 +164,54 @@ public interface MerchantProfileApiUrls {
 
             @Body
             JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/profile/reviews/{codeQR}.json")
+    Call<JsonReviewList> reviews(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/profile/flagReview/{codeQR}.json")
+    Call<JsonReview> flagReview(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR,
+
+            @Body
+            JsonReview jsonReview
     );
 }
