@@ -512,7 +512,7 @@ public class AppUtilities extends CommonHelper {
 
     public String formatTodayStoreTiming(Context context, StoreHourElastic storeHourElastic) {
         if (storeHourElastic.isDayClosed())
-            return context.getString(R.string.store_closed);
+            return  "Closed";
         else
             return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
     }
@@ -525,7 +525,7 @@ public class AppUtilities extends CommonHelper {
         } else if (startHour == 0 && endHour == 0) {
             return  "Closed";
         }else {
-            return context.getString(R.string.store_today_hour) + " " + key;
+            return  key;
         }
     }
 
