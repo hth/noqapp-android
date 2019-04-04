@@ -8,6 +8,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ public class QReviewListActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_review_list);
+        TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         rcv_review = findViewById(R.id.rcv_review);
         rcv_review.setHasFixedSize(true);
         rcv_review.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -63,6 +65,7 @@ public class QReviewListActivity extends AppCompatActivity {
         initProgress();
 
         JsonReviewList jsonReviewList = (JsonReviewList) getIntent().getSerializableExtra("data");
+        tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getDisplayName())?"Guest User Null":jsonReviewList.getDisplayName());
         QueueReviewListAdapter queueReviewCardAdapter = new QueueReviewListAdapter(jsonReviewList, this, null);
         rcv_review.setAdapter(queueReviewCardAdapter);
     }

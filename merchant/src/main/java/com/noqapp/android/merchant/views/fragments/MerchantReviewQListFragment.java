@@ -20,6 +20,7 @@ import java.util.Map;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MerchantReviewQListFragment extends Fragment implements QueueReviewCardAdapter.OnItemClickListener{
@@ -36,7 +37,7 @@ public class MerchantReviewQListFragment extends Fragment implements QueueReview
         View view = inflater.inflate(R.layout.fragment_merchant_qreview, container, false);
         rcv_review = view.findViewById(R.id.rcv_review);
         initProgress();
-        rcv_review.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        rcv_review.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_review.setItemAnimator(new DefaultItemAnimator());
 
 //        if (isFirstTime) {

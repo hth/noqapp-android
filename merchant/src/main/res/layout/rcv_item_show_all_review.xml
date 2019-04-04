@@ -92,6 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/flag"
+                            android:tint="@color/colorAccent"
                             android:backgroundTint="@color/colorAccent"
                             android:backgroundTintMode="@color/colorAccent" />
 
