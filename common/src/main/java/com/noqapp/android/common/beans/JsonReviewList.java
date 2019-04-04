@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -26,9 +25,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonReviewList extends AbstractDomain implements Serializable {
 
-    @JsonProperty("d")
-    private String displayName;
-
     @JsonProperty("rs")
     private List<JsonReview> jsonReviews = new ArrayList<>();
 
@@ -37,15 +33,6 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public JsonReviewList setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;
@@ -76,12 +63,10 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonReviewList{");
-        sb.append("displayName='").append(displayName).append('\'');
-        sb.append(", jsonReviews=").append(jsonReviews);
-        sb.append(", aggregateRatingCount=").append(aggregateRatingCount);
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return "JsonReviewList{" +
+                "jsonReviews=" + jsonReviews +
+                ", aggregateRatingCount=" + aggregateRatingCount +
+                ", error=" + error +
+                '}';
     }
 }
