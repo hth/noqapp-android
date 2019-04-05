@@ -41,7 +41,7 @@ public class QueueReviewCardAdapter extends RecyclerView.Adapter<QueueReviewCard
                 TextUtils.isEmpty(reviews.get(listPosition).getqName())?"Guest User Null":reviews.get(listPosition).getqName());
         float f = reviews.get(listPosition).getAggregateRatingCount() * 1.0f /
                 reviews.get(listPosition).getJsonReviews().size();
-        holder.tv_business_customer_id.setText("Rating "+ f);
+        holder.tv_business_customer_id.setText("Rating "+ String.format("%.01f", f));
 
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
