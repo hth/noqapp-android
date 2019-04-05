@@ -57,6 +57,15 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
         } catch (Exception e) {
             e.printStackTrace();
         }
+        holder.iv_flag.setVisibility(jsonReview.isReviewShow()?View.VISIBLE:View.INVISIBLE);
+        holder.iv_flag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(null != listener){
+                    listener.reviewItemListClick(jsonReviewList.getCodeQR(),jsonReview);
+                }
+            }
+        });
     }
 
     @Override
@@ -65,7 +74,7 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
     }
 
     public interface OnItemClickListener {
-        void currentItemClick(int pos);
+        void reviewItemListClick(String codeQR, JsonReview jsonReview);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -74,6 +83,7 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
         private TextView tv_rating;
         private TextView tv_date;
         private ImageView iv_main;
+        private ImageView iv_flag;
         private CardView card_view;
 
 
@@ -84,6 +94,7 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
             this.tv_rating = itemView.findViewById(R.id.tv_rating);
             this.tv_date = itemView.findViewById(R.id.tv_date);
             this.iv_main = itemView.findViewById(R.id.iv_main);
+            this.iv_flag = itemView.findViewById(R.id.iv_flag);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

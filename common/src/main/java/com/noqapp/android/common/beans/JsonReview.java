@@ -11,7 +11,7 @@ import java.io.Serializable;
  * hitender
  * 10/10/18 10:14 PM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -36,10 +36,10 @@ public class JsonReview extends AbstractDomain implements Serializable {
     @JsonProperty("rv")
     private String review;
 
-    @JsonProperty ("pi")
+    @JsonProperty("pi")
     private String profileImage;
 
-    @JsonProperty ("nm")
+    @JsonProperty("nm")
     private String name;
 
     @JsonProperty("qid")
@@ -50,6 +50,9 @@ public class JsonReview extends AbstractDomain implements Serializable {
 
     @JsonProperty("c")
     private String created;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getId() {
         return id;
@@ -123,16 +126,27 @@ public class JsonReview extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonReview{" +
-                "ratingCount=" + ratingCount +
-                ", review='" + review + '\'' +
-                ", profileImage='" + profileImage + '\'' +
-                ", name='" + name + '\'' +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", reviewShow=" + reviewShow +
-                ", created='" + created + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonReview{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", ratingCount=").append(ratingCount);
+        sb.append(", review='").append(review).append('\'');
+        sb.append(", profileImage='").append(profileImage).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", reviewShow=").append(reviewShow);
+        sb.append(", created='").append(created).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

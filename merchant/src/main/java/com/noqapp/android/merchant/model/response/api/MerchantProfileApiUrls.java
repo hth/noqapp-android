@@ -192,7 +192,7 @@ public interface MerchantProfileApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/profile/flagReview/{codeQR}.json")
+    @POST("api/m/profile/flagReview/{codeQR}.json")
     Call<JsonReview> flagReview(
             @Header("X-R-DID")
             String did,

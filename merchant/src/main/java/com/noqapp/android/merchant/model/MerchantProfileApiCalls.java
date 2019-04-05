@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.model;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.BuildConfig;
@@ -13,6 +14,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
+import com.noqapp.android.merchant.views.interfaces.ReviewPresenter;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -34,6 +36,7 @@ public class MerchantProfileApiCalls {
     private MerchantPresenter merchantPresenter;
     private ProfilePresenter profilePresenter;
     private MerchantProfessionalPresenter merchantProfessionalPresenter;
+    private ReviewPresenter reviewPresenter;
 
     public void setMerchantProfessionalPresenter(MerchantProfessionalPresenter merchantProfessionalPresenter) {
         this.merchantProfessionalPresenter = merchantProfessionalPresenter;
@@ -49,6 +52,10 @@ public class MerchantProfileApiCalls {
 
     public void setImageUploadPresenter(ImageUploadPresenter imageUploadPresenter) {
         this.imageUploadPresenter = imageUploadPresenter;
+    }
+
+    public void setReviewPresenter(ReviewPresenter reviewPresenter) {
+        this.reviewPresenter = reviewPresenter;
     }
 
     static {
@@ -198,6 +205,36 @@ public class MerchantProfileApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("uploadImage failure", t.getLocalizedMessage(), t);
+                imageUploadPresenter.imageUploadError();
+            }
+        });
+    }
+
+
+    public void flagReview(String did, String mail, String auth, String codeQR, JsonReview jsonReview) {
+        merchantProfileApiUrls.flagReview(did, Constants.DEVICE_TYPE, mail, auth, codeQR,jsonReview).enqueue(new Callback<JsonReview>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonReview> call, @NonNull Response<JsonReview> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Response uploadImage", String.valueOf(response.body()));
+                        reviewPresenter.reviewResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed image remove");
+                        reviewPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        reviewPresenter.authenticationFailure();
+                    } else {
+                        reviewPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonReview> call, @NonNull Throwable t) {
                 Log.e("uploadImage failure", t.getLocalizedMessage(), t);
                 imageUploadPresenter.imageUploadError();
             }
