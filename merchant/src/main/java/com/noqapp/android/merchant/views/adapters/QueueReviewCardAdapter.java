@@ -1,20 +1,18 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.JsonReviewList;
+import com.noqapp.android.merchant.R;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.noqapp.android.common.beans.JsonReviewList;
-import com.noqapp.android.merchant.R;
-
-import java.util.List;
-import java.util.Map;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class QueueReviewCardAdapter extends RecyclerView.Adapter<QueueReviewCardAdapter.MyViewHolder> {
     private final Context context;
@@ -36,12 +34,9 @@ public class QueueReviewCardAdapter extends RecyclerView.Adapter<QueueReviewCard
 
     @Override
     public void onBindViewHolder(final QueueReviewCardAdapter.MyViewHolder holder, final int listPosition) {
-
-        holder.tv_customer_name.setText(
-                TextUtils.isEmpty(reviews.get(listPosition).getqName())?"Guest User Null":reviews.get(listPosition).getqName());
-        float f = reviews.get(listPosition).getAggregateRatingCount() * 1.0f /
-                reviews.get(listPosition).getJsonReviews().size();
-        holder.tv_business_customer_id.setText("Rating "+ String.format("%.01f", f));
+        holder.tv_customer_name.setText(TextUtils.isEmpty(reviews.get(listPosition).getDisplayName()) ? "N/A" : reviews.get(listPosition).getDisplayName());
+        float f = reviews.get(listPosition).getAggregateRatingCount() * 1.0f / reviews.get(listPosition).getJsonReviews().size();
+        holder.tv_business_customer_id.setText("Rating " + String.format("%.01f", f));
 
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

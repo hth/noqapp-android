@@ -35,11 +35,11 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
     @JsonProperty ("qr")
     private String codeQR;
 
-    @JsonIgnore
-    String qName; // for local use
-
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    @JsonIgnore
+    private String displayName; // for local use
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;
@@ -77,12 +77,12 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getqName() {
-        return qName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setqName(String qName) {
-        this.qName = qName;
+    public void setDisplayName(String qName) {
+        this.displayName = qName;
     }
 
     @Override

@@ -1,5 +1,14 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.beans.JsonReviewList;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+
+import com.squareup.picasso.Picasso;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -7,15 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.noqapp.android.common.beans.JsonReview;
-import com.noqapp.android.common.beans.JsonReviewList;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.squareup.picasso.Picasso;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,29 +40,29 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
     @Override
     public void onBindViewHolder(final QueueReviewListAdapter.MyViewHolder holder, final int listPosition) {
         final JsonReview jsonReview = jsonReviewList.getJsonReviews().get(listPosition);
-        holder.tv_name.setText(TextUtils.isEmpty(jsonReview.getName())?"Guest User Null":jsonReview.getName());
+        holder.tv_name.setText(TextUtils.isEmpty(jsonReview.getName()) ? "Guest User Null" : jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());
-        holder.tv_review_detail.setVisibility(jsonReview.isReviewShow()? View.VISIBLE: View.GONE);
+        holder.tv_review_detail.setVisibility(jsonReview.isReviewShow() ? View.VISIBLE : View.GONE);
         holder.tv_rating.setText(String.valueOf(jsonReview.getRatingCount()));
-        holder.tv_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,jsonReview.getCreated()));
-       // Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
+        holder.tv_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonReview.getCreated()));
+        // Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {
                 Picasso.get()
                         .load(AppUtils.getImageUrls(BuildConfig.PROFILE_BUCKET, jsonReview.getProfileImage()))
-                       // .placeholder(ImageUtils.getProfilePlaceholder(context))
-                      //  .error(ImageUtils.getProfileErrorPlaceholder(context))
+                        // .placeholder(ImageUtils.getProfilePlaceholder(context))
+                        //  .error(ImageUtils.getProfileErrorPlaceholder(context))
                         .into(holder.iv_main);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.iv_flag.setVisibility(jsonReview.isReviewShow()?View.VISIBLE:View.INVISIBLE);
+        holder.iv_flag.setVisibility(jsonReview.isReviewShow() ? View.VISIBLE : View.INVISIBLE);
         holder.iv_flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null != listener){
-                    listener.reviewItemListClick(jsonReviewList.getCodeQR(),jsonReview);
+                if (null != listener) {
+                    listener.reviewItemListClick(jsonReviewList.getCodeQR(), jsonReview);
                 }
             }
         });

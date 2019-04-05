@@ -5,17 +5,6 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
@@ -28,7 +17,16 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueReviewListAdapter;
 import com.noqapp.android.merchant.views.interfaces.ReviewPresenter;
 
-
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,7 +69,7 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
         initProgress();
 
         JsonReviewList jsonReviewList = (JsonReviewList) getIntent().getSerializableExtra("data");
-        tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getqName())?"Guest User Null":jsonReviewList.getqName());
+        tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getDisplayName()) ? "N/A" : jsonReviewList.getDisplayName());
         QueueReviewListAdapter queueReviewCardAdapter = new QueueReviewListAdapter(jsonReviewList, this, this);
         rcv_review.setAdapter(queueReviewCardAdapter);
     }
@@ -90,17 +88,18 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
     @Override
     public void reviewItemListClick(String codeQR, JsonReview jsonReview) {
         progressDialog.show();
-        merchantProfileApiCalls.flagReview(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),codeQR,jsonReview);
+        merchantProfileApiCalls.flagReview(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR, jsonReview);
     }
 
     @Override
     public void reviewResponse(JsonReview jsonReview) {
         dismissProgress();
-        if(null != jsonReview){
+        if (null != jsonReview) {
             // call api
-            Log.e("jsonReview",jsonReview.toString());
+            Log.e("jsonReview", jsonReview.toString());
         }
     }
+
     @Override
     public void authenticationFailure() {
         dismissProgress();
