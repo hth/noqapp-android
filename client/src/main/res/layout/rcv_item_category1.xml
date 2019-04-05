@@ -111,7 +111,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="Consultation \n fees"
+                    android:text="Consultation"
                     android:textSize="@dimen/text_size_twelve" />
             </RelativeLayout>
 
@@ -140,9 +140,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingRight="25dp"
+                    android:paddingRight="5dp"
                     android:text="200"
-                    android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_twelve" />
             </RelativeLayout>
 
