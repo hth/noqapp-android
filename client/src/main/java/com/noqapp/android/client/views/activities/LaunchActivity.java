@@ -215,7 +215,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 int selectedPosition = drawerAdapter.getData().get(position - 1).getIcon();
                 switch (selectedPosition) {
                     case R.drawable.invite: {
-                        Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
+                        Intent in = new Intent(LaunchActivity.this, MedicalProfileActivity.class);
                         startActivity(in);
                         break;
                     }

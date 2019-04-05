@@ -1,6 +1,7 @@
 package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -9,10 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * hitender
- * 10/10/18 10:18 PM
- */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
@@ -35,8 +32,14 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
     @JsonProperty("ar")
     private int aggregateRatingCount;
 
+    @JsonProperty ("qr")
+    private String codeQR;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    @JsonIgnore
+    private String displayName; // for local use
 
     public List<JsonReview> getJsonReviews() {
         return jsonReviews;
@@ -56,6 +59,15 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonReviewList setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -63,6 +75,14 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
     public JsonReviewList setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String qName) {
+        this.displayName = qName;
     }
 
     @Override

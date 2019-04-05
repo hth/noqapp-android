@@ -198,7 +198,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
               holder.tv_consult_fees_header.setVisibility(View.GONE);
         }else{
               // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
-              String feeString = "<b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b>";
+              String feeString = "fees <font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>";
               holder.tv_consult_fees.setText(Html.fromHtml(feeString));
               holder.tv_consult_fees.setVisibility(View.VISIBLE);
               holder.tv_consult_fees_header.setVisibility(View.VISIBLE);

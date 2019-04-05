@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.views.fragments.MerchantReviewQListFragment;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
 
 import androidx.viewpager.widget.ViewPager;
@@ -26,8 +27,10 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
                     //Do nothing
             }
         }
+        merchantReviewQListFragment = new MerchantReviewQListFragment();
+        adapter.addFragment(merchantReviewQListFragment, "Reviews");
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
     }
 
     @Override
@@ -41,6 +44,7 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
                         if(null != jsonMerchant.getJsonProfessionalProfile()) {
                             LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
                             userAdditionalInfoFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
+                            merchantReviewQListFragment.updateUI(jsonMerchant.getJsonProfessionalProfile());
                         }
                         break;
                     default:
