@@ -40,7 +40,7 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
     @Override
     public void onBindViewHolder(final QueueReviewListAdapter.MyViewHolder holder, final int listPosition) {
         final JsonReview jsonReview = jsonReviewList.getJsonReviews().get(listPosition);
-        holder.tv_name.setText(TextUtils.isEmpty(jsonReview.getName()) ? "Guest User Null" : jsonReview.getName());
+        holder.tv_name.setText(TextUtils.isEmpty(jsonReview.getName()) ? "Customer Name - N/A" : jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());
         holder.tv_review_detail.setVisibility(jsonReview.isReviewShow() ? View.VISIBLE : View.GONE);
         holder.tv_rating.setText(String.valueOf(jsonReview.getRatingCount()));

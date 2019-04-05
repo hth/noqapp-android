@@ -37,7 +37,6 @@ public class MerchantReviewQListFragment extends Fragment implements QueueReview
     private RecyclerView rcv_review;
     private ProgressDialog progressDialog;
     private List<JsonReviewList> jsonReviewLists = new ArrayList<>();
-
     public MerchantReviewQListFragment() {
 
     }
@@ -49,8 +48,6 @@ public class MerchantReviewQListFragment extends Fragment implements QueueReview
         initProgress();
         rcv_review.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_review.setItemAnimator(new DefaultItemAnimator());
-
-
         return view;
     }
 
