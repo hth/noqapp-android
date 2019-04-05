@@ -8,6 +8,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -70,7 +71,7 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
         initProgress();
 
         JsonReviewList jsonReviewList = (JsonReviewList) getIntent().getSerializableExtra("data");
-      //  tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getDisplayName())?"Guest User Null":jsonReviewList.getDisplayName());
+        tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getqName())?"Guest User Null":jsonReviewList.getqName());
         QueueReviewListAdapter queueReviewCardAdapter = new QueueReviewListAdapter(jsonReviewList, this, this);
         rcv_review.setAdapter(queueReviewCardAdapter);
     }

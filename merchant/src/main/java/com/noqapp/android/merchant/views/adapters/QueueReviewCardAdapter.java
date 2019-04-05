@@ -37,8 +37,8 @@ public class QueueReviewCardAdapter extends RecyclerView.Adapter<QueueReviewCard
     @Override
     public void onBindViewHolder(final QueueReviewCardAdapter.MyViewHolder holder, final int listPosition) {
 
-//        holder.tv_customer_name.setText(
-//                TextUtils.isEmpty(reviews.get(listPosition).getDisplayName())?"Guest User Null":reviews.get(listPosition).getDisplayName());
+        holder.tv_customer_name.setText(
+                TextUtils.isEmpty(reviews.get(listPosition).getqName())?"Guest User Null":reviews.get(listPosition).getqName());
         float f = reviews.get(listPosition).getAggregateRatingCount() * 1.0f /
                 reviews.get(listPosition).getJsonReviews().size();
         holder.tv_business_customer_id.setText("Rating "+ f);

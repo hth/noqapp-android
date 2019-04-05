@@ -31,6 +31,9 @@ public class JsonReviewBucket extends AbstractDomain {
     @JsonProperty("rls")
     private List<JsonReviewList> jsonReviewLists = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonReviewList> getJsonReviewLists() {
         return jsonReviewLists;
     }
@@ -44,4 +47,13 @@ public class JsonReviewBucket extends AbstractDomain {
         this.jsonReviewLists.add(jsonReviewList);
         return this;
     }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
 }

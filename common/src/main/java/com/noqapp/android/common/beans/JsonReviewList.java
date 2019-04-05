@@ -1,6 +1,7 @@
 package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -33,6 +34,9 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
 
     @JsonProperty ("qr")
     private String codeQR;
+
+    @JsonIgnore
+    String qName; // for local use
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -71,6 +75,14 @@ public class JsonReviewList extends AbstractDomain implements Serializable {
     public JsonReviewList setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    public String getqName() {
+        return qName;
+    }
+
+    public void setqName(String qName) {
+        this.qName = qName;
     }
 
     @Override
