@@ -10,7 +10,8 @@ public enum PaymentStatusEnum {
     PA("PA", "Paid"),
     PF("PF", "Payment Fail"),
     FP("FP", "Flagged Payment"),
-    PC("PC", "Payment Cancelled");
+    PC("PC", "Payment Cancelled"),
+    PR("PR", "Payment Refund");
 
     private final String description;
     private final String name;

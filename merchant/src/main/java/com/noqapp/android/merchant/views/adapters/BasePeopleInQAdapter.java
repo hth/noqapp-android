@@ -6,6 +6,7 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -269,6 +270,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             if (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus() == PaymentStatusEnum.PA) {
                 recordHolder.tv_payment_stat.setText("Paid");
                 recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_nogradient_round);
+                if(jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO){
+                    recordHolder.tv_payment_stat .setBackgroundResource(R.drawable.grey_background);
+                }
             }else{
                 recordHolder.tv_payment_stat.setText("Accept Payment");
                 recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);

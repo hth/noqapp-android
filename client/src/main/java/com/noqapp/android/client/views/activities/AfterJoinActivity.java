@@ -306,19 +306,33 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-                if(SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()){
+                if (SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()) {
                     Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
                     queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                     tokenPresenterResponse(jsonToken);
-                }else {
-                    triggerOnlinePayment();
+                } else {
+                    if (Integer.parseInt(token.getJsonPurchaseOrder().getOrderPrice()) > 0) {
+                        triggerOnlinePayment();
+                    } else {
+                        queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
+                        JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+                        jsonCashfreeNotification.setTxMsg(null);
+                        jsonCashfreeNotification.setTxTime(null);
+                        jsonCashfreeNotification.setReferenceId(null);
+                        jsonCashfreeNotification.setPaymentMode(null);  // cash
+                        jsonCashfreeNotification.setSignature(null);
+                        jsonCashfreeNotification.setOrderAmount(token.getJsonPurchaseOrder().getOrderPrice()); // amount
+                        jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+                        jsonCashfreeNotification.setOrderId(token.getJsonPurchaseOrder().getTransactionId());   // transactionID
+                        queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+                    }
                 }
-            } else  if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+            } else if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                 tokenPresenterResponse(jsonToken);
                 btn_pay.setVisibility(View.GONE);
-            }else {
+            } else {
                 Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -332,7 +346,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         this.jsonToken = token;
         if (null != token) {
             Log.d(TAG, token.toString());
-            if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB||
+            if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB ||
                     token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                 tokenPresenterResponse(jsonToken);
@@ -349,7 +363,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void responsePresenterResponse(JsonResponse response) {
         if (null != response) {
-            if (response.getResponse() == 1) {
+            if (response.getResponse() == Constants.SUCCESS) {
                 Toast.makeText(this, getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
@@ -395,6 +409,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     private void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Cancel Queue");
             progressDialog.show();
             if (UserUtils.isLogin()) {
                 queueApiAuthenticCall.setResponsePresenter(this);
@@ -620,11 +635,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         jsonCashfreeNotification.setTxMsg(map.get("txMsg"));
         jsonCashfreeNotification.setTxTime(map.get("txTime"));
         jsonCashfreeNotification.setReferenceId(map.get("referenceId"));
-        jsonCashfreeNotification.setPaymentMode(map.get("paymentMode"));
+        jsonCashfreeNotification.setPaymentMode(map.get("paymentMode"));  // cash
         jsonCashfreeNotification.setSignature(map.get("signature"));
-        jsonCashfreeNotification.setOrderAmount(map.get("orderAmount"));
-        jsonCashfreeNotification.setTxStatus(map.get("txStatus"));
-        jsonCashfreeNotification.setOrderId(map.get("orderId"));
+        jsonCashfreeNotification.setOrderAmount(map.get("orderAmount")); // amount
+        jsonCashfreeNotification.setTxStatus(map.get("txStatus"));   //Success
+        jsonCashfreeNotification.setOrderId(map.get("orderId"));   // transactionID
         queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
     }
 
@@ -644,7 +659,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         // finish();
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
             // do nothing
-        }else {
+        } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 queueApiAuthenticCall.setResponsePresenter(this);
