@@ -205,7 +205,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         } else if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_amount_remaining.setVisibility(View.VISIBLE);
             tv_total_amt_paid.setText(currencySymbol + "" + CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment()));
-            tv_total_amt_remain.setText(currencySymbol + (new BigDecimal(jsonPurchaseOrder.getOrderPrice()).subtract(new BigDecimal(jsonPurchaseOrder.getPartialPayment())).divide(new BigDecimal(100)));
+            tv_total_amt_remain.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrder.getOrderPrice()).subtract(new BigDecimal(jsonPurchaseOrder.getPartialPayment())).toString()));
             tv_total_amt_paid_label.setText("Total Amount Paid (In Cash):");
         } else {
             tv_total_amt_paid.setText(currencySymbol + "0.00");
@@ -218,7 +218,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
             tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(currencySymbol + new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity()).divide(new BigDecimal(100));
+            tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
                 //added for  Pharmacy order place from merchant side directly
                 findViewById(R.id.ll_amount).setVisibility(View.GONE);
