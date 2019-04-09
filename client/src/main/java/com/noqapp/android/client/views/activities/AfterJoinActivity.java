@@ -60,6 +60,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -107,11 +108,13 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private TextView tv_payment_status, tv_due_amt;
     private CardView card_amount;
     private TextView tv_total_order_amt;
+    private CFPaymentService cfPaymentService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
+        new InitPaymentGateway().execute();
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
@@ -258,6 +261,20 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     ShowAlertInformation.showNetworkDialog(this);
                 }
             }
+        }
+    }
+
+    private class InitPaymentGateway extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            cfPaymentService = CFPaymentService.getCFPaymentServiceInstance();
+            cfPaymentService.setOrientation(0);
+            cfPaymentService.setConfirmOnExit(true);
+            return null;
+        }
+
+        protected void onPostExecute(String result) {
         }
     }
 
@@ -653,9 +670,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         params.put(PARAM_CUSTOMER_NAME, customerName);
         params.put(PARAM_CUSTOMER_PHONE, customerPhone);
         params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
-        CFPaymentService cfPaymentService = CFPaymentService.getCFPaymentServiceInstance();
-        cfPaymentService.setOrientation(0);
-        cfPaymentService.setConfirmOnExit(true);
         cfPaymentService.doPayment(this, params, token, this, stage);
 
     }
