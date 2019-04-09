@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.model;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderHealthCare;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.model.response.api.store.PurchaseOrderApiUrls;

@@ -4,7 +4,6 @@ import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderHealthCare;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
