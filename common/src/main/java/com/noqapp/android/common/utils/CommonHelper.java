@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -175,5 +177,13 @@ public class CommonHelper {
             address = area + ", " + address;
         }
         return address;
+    }
+
+    public static String displayPrice(String number) {
+        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+    }
+
+    public static String displayPrice(int number) {
+        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
     }
 }

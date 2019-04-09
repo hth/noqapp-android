@@ -37,7 +37,9 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -183,12 +185,12 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     private void updateUI() {
         String currencySymbol = getIntent().getExtras().getString(AppUtilities.CURRENCY_SYMBOL);
-        tv_tax_amt.setText(currencySymbol + "" + "0.0");
+        tv_tax_amt.setText(currencySymbol + "0.00");
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
-        tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
         } else {
@@ -197,16 +199,16 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             rl_amount_remaining.setVisibility(View.GONE);
-            tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-            tv_total_amt_remain.setText(currencySymbol + "0.0");
+            tv_total_amt_paid.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+            tv_total_amt_remain.setText(currencySymbol + "0.00");
             tv_total_amt_paid_label.setText(getString(R.string.total_amount_paid));
         } else if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_amount_remaining.setVisibility(View.VISIBLE);
-            tv_total_amt_paid.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100);
-            tv_total_amt_remain.setText(currencySymbol + (Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100);
+            tv_total_amt_paid.setText(currencySymbol + "" + CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment()));
+            tv_total_amt_remain.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrder.getOrderPrice()).subtract(new BigDecimal(jsonPurchaseOrder.getPartialPayment())).toString()));
             tv_total_amt_paid_label.setText("Total Amount Paid (In Cash):");
         } else {
-            tv_total_amt_paid.setText(currencySymbol + "0.0");
+            tv_total_amt_paid.setText(currencySymbol + "0.00");
             rl_amount_remaining.setVisibility(View.VISIBLE);
         }
         for (int i = 0; i < oldjsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
@@ -215,8 +217,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + currencySymbol + "" + (jsonPurchaseOrderProduct.getProductPrice() / 100) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(currencySymbol + "" + jsonPurchaseOrderProduct.getProductPrice() * jsonPurchaseOrderProduct.getProductQuantity() / 100);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
                 //added for  Pharmacy order place from merchant side directly
                 findViewById(R.id.ll_amount).setVisibility(View.GONE);

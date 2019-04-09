@@ -140,7 +140,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         if(null != jsonQueueHistorical.getJsonPurchaseOrder()){
             String currencySymbol = AppUtilities.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());;
-            tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()) / 100);
+            tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()));
             if (PaymentStatusEnum.PA == jsonQueueHistorical.getJsonPurchaseOrder().getPaymentStatus()) {
                 tv_payment_status.setText("Paid via: " + jsonQueueHistorical.getJsonPurchaseOrder().getPaymentMode().getDescription());
             } else {
