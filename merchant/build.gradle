@@ -425,9 +425,9 @@ task jacocoTestReport(type: JacocoReport) {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'com.google.android.material:material:1.1.0-alpha05'
-    implementation 'androidx.mediarouter:mediarouter:1.1.0-alpha02'
+    implementation 'androidx.mediarouter:mediarouter:1.1.0-alpha03'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
@@ -436,8 +436,8 @@ dependencies {
     implementation 'net.danlew:android.joda:2.9.9.3'
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-auth:16.2.0'
-    implementation 'com.google.firebase:firebase-messaging:17.5.0'
+    implementation 'com.google.firebase:firebase-auth:16.2.1'
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.8@aar') {
         transitive = true
@@ -445,12 +445,12 @@ dependencies {
     implementation('com.crashlytics.sdk.android:answers:1.4.1@aar') {
         transitive = true
     }
-    implementation 'com.airbnb.android:lottie:2.8.0'
+    implementation 'com.airbnb.android:lottie:3.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-    implementation 'org.rauschig:jarchivelib:0.8.0'
+    implementation 'org.rauschig:jarchivelib:1.0.0'
     implementation 'org.apache.commons:commons-compress:1.18'
     implementation 'com.github.RobertApikyan:SegmentedControl:1.1.0'
     implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
