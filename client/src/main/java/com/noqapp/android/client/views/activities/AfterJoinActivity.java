@@ -13,8 +13,6 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -51,6 +49,8 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
@@ -242,6 +242,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
 
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
+                    progressDialog.setMessage("Fetching Queue data..");
                     progressDialog.show();
                     queueApiAuthenticCall.purchaseOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
                             String.valueOf(jsonTokenAndQueue.getToken()), codeQR);
@@ -249,6 +250,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     if (isResumeFirst) {
+                        progressDialog.setMessage("Joining Queue..");
                         progressDialog.show();
                         callQueue();
                     }
