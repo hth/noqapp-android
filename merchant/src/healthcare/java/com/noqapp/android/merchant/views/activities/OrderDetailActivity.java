@@ -12,6 +12,8 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -25,16 +27,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.apache.commons.lang3.StringUtils;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private TextView tv_cost;
+    private TextView tv_cost,tv_order_state;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -81,6 +80,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_address = findViewById(R.id.tv_address);
         tv_cost = findViewById(R.id.tv_cost);
+        tv_order_state = findViewById(R.id.tv_order_state);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -147,6 +147,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
+        tv_order_state.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         try {
             tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
         } catch (Exception e) {
