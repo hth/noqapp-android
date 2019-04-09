@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
 import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
+import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,7 @@ public class ManageQueueApiCalls {
     private TopicPresenter topicPresenter;
     private QueuePersonListPresenter queuePersonListPresenter;
     private QueuePaymentPresenter queuePaymentPresenter;
+    private QueueRefundPaymentPresenter queueRefundPaymentPresenter;
 
 
     public void setManageQueuePresenter(ManageQueuePresenter manageQueuePresenter) {
@@ -58,6 +60,10 @@ public class ManageQueueApiCalls {
 
     public void setQueuePaymentPresenter(QueuePaymentPresenter queuePaymentPresenter) {
         this.queuePaymentPresenter = queuePaymentPresenter;
+    }
+
+    public void setQueueRefundPaymentPresenter(QueueRefundPaymentPresenter queueRefundPaymentPresenter) {
+        this.queueRefundPaymentPresenter = queueRefundPaymentPresenter;
     }
 
     static {
@@ -355,6 +361,36 @@ public class ManageQueueApiCalls {
             public void onFailure(@NonNull Call<JsonQueuedPerson> call, @NonNull Throwable t) {
                 Log.e("changeUserInQueue", t.getLocalizedMessage(), t);
                 queuePaymentPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+
+    public void cancel(String did, String mail, String auth, JsonQueuedPerson jsonQueuedPerson) {
+        manageQueueApiUrls.cancel(did, Constants.DEVICE_TYPE, mail, auth, jsonQueuedPerson).enqueue(new Callback<JsonQueuedPerson>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonQueuedPerson> call, @NonNull Response<JsonQueuedPerson> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("refund Q payment", String.valueOf(response.body()));
+                        queueRefundPaymentPresenter.queueRefundPaymentResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while refund Q payment");
+                        queueRefundPaymentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        queueRefundPaymentPresenter.authenticationFailure();
+                    } else {
+                        queueRefundPaymentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonQueuedPerson> call, @NonNull Throwable t) {
+                Log.e("onFail refund Q payment", t.getLocalizedMessage(), t);
+                queueRefundPaymentPresenter.responseErrorPresenter(null);
             }
         });
     }

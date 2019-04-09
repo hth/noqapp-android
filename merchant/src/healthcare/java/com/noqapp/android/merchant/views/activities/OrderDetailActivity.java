@@ -5,12 +5,14 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
+import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,11 +31,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter , QueueRefundPaymentPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private TextView tv_cost,tv_order_state;
+    private TextView tv_cost, tv_order_state;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -43,6 +45,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private JsonQueuedPerson jsonQueuedPerson;
     private ManageQueueApiCalls manageQueueApiCalls;
     private String qCodeQR;
+    private Button btn_refund;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -76,6 +79,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_toolbar_title.setText(getString(R.string.order_details));
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePaymentPresenter(this);
+        manageQueueApiCalls.setQueueRefundPaymentPresenter(this);
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_address = findViewById(R.id.tv_address);
@@ -103,33 +107,57 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         qCodeQR = getIntent().getStringExtra("qCodeQR");
         rl_payment = findViewById(R.id.rl_payment);
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
+        btn_refund = findViewById(R.id.btn_refund);
+        btn_refund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.show();
+                progressDialog.setMessage("Starting payment refund..");
+                JsonQueuedPerson jqp = new JsonQueuedPerson()
+                        .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                        .setToken(jsonQueuedPerson.getToken());
+
+                JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                        .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                        .setCodeQR(qCodeQR)
+                        .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                        .setToken(jsonQueuedPerson.getToken())
+                        .setTransactionId(jsonQueuedPerson.getTransactionId());
+                jqp.setJsonPurchaseOrder(jpo);
+                manageQueueApiCalls.cancel(BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        jqp);
+            }
+        });
         initProgress();
         updateUI();
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Starting payment..");
-                    JsonQueuedPerson jqp = new JsonQueuedPerson()
-                            .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                            .setToken(jsonQueuedPerson.getToken());
+                progressDialog.show();
+                progressDialog.setMessage("Starting payment..");
+                JsonQueuedPerson jqp = new JsonQueuedPerson()
+                        .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                        .setToken(jsonQueuedPerson.getToken());
 
-                    JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                            .setCodeQR(qCodeQR)
-                            .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                            .setTransactionId(jsonQueuedPerson.getTransactionId())
-                            .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                    jqp.setJsonPurchaseOrder(jpo);
-                    manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            jqp);
-                }
+                JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                        .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                        .setCodeQR(qCodeQR)
+                        .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                        .setTransactionId(jsonQueuedPerson.getTransactionId())
+                        .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                jqp.setJsonPurchaseOrder(jpo);
+                manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        jqp);
+            }
         });
     }
 
     private void updateUI() {
+        btn_refund.setVisibility(View.GONE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
@@ -144,8 +172,12 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
                 //tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
             }
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+                btn_refund.setVisibility(View.VISIBLE);
+            }
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
+
         }
         tv_order_state.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         try {
@@ -202,6 +234,21 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA) {
                 updateUI();
                 Toast.makeText(OrderDetailActivity.this, "Payment updated successfully", Toast.LENGTH_LONG).show();
+                if (null != updateWholeList) {
+                    updateWholeList.updateWholeList();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void queueRefundPaymentResponse(JsonQueuedPerson jsonQueuedPerson) {
+        dismissProgress();
+        if (null != jsonQueuedPerson) {
+            jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
+            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PR) {
+                updateUI();
+                Toast.makeText(OrderDetailActivity.this, "Payment refund successfully", Toast.LENGTH_LONG).show();
                 if (null != updateWholeList) {
                     updateWholeList.updateWholeList();
                 }

@@ -363,7 +363,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void responsePresenterResponse(JsonResponse response) {
         if (null != response) {
-            if (response.getResponse() == 1) {
+            if (response.getResponse() == Constants.SUCCESS) {
                 Toast.makeText(this, getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
