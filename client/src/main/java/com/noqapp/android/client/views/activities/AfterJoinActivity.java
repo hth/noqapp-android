@@ -642,13 +642,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
         //enableDisableOrderButton(false);
         // finish();
-
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            queueApiAuthenticCall.setResponsePresenter(this);
-            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
+        if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+            // do nothing
+        }else {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.show();
+                queueApiAuthenticCall.setResponsePresenter(this);
+                queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
+            } else {
+                ShowAlertInformation.showNetworkDialog(this);
+            }
         }
     }
 
@@ -722,6 +725,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     private void pay() {
         if (null != jsonTokenAndQueue.getJsonPurchaseOrder()) {
+            progressDialog.setMessage("Starting payment process...");
             progressDialog.show();
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder().setCodeQR(codeQR).
                     setQueueUserId(jsonTokenAndQueue.getQueueUserId()).setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
