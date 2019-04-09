@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
@@ -82,9 +83,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// Health Care Service Menu Screen
-public class HCSMenuActivity extends AppCompatActivity implements FilePresenter, AutoCompleteHCSMenuAdapter.SearchByPos, HCSMenuAdapter.StaggeredClick,
-        FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+/**
+ * Health Care Service Menu Screen
+ */
+public class HCSMenuActivity extends AppCompatActivity implements FilePresenter, AutoCompleteHCSMenuAdapter.SearchByPos, HCSMenuAdapter.StaggeredClick, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -736,7 +738,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                         jsonPurchaseOrder.setAdditionalNote("");
                         jsonPurchaseOrder.setCustomized(true);
-                        purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                        purchaseOrderApiCalls.medicalPurchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                         // Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
                     } else {
                         ShowAlertInformation.showNetworkDialog(HCSMenuActivity.this);

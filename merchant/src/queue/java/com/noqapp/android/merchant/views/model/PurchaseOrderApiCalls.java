@@ -244,6 +244,35 @@ public class PurchaseOrderApiCalls {
         });
     }
 
+    public void medicalPurchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderService.medicalPurchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrderList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("purchase", String.valueOf(response.body()));
+                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while purchase");
+                        purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        purchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+                Log.e("purchase fail", t.getLocalizedMessage(), t);
+                purchaseOrderPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
     public void modify(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
         purchaseOrderService.modify(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
