@@ -6,6 +6,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -181,8 +182,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         }
         tv_order_state.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         try {
-            tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
+            tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
+            //TODO log error
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
     }

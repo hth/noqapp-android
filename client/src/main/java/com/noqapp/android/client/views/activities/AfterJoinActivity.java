@@ -46,6 +46,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
@@ -74,6 +75,7 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -311,7 +313,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                     tokenPresenterResponse(jsonToken);
                 } else {
-                    if (Integer.parseInt(token.getJsonPurchaseOrder().getOrderPrice()) > 0) {
+                    if (new BigDecimal(token.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
                         triggerOnlinePayment();
                     } else {
                         queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
@@ -718,7 +720,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         String currencySymbol = "Rs.";//AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());;
         card_amount.setVisibility(View.VISIBLE);
         // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
             btn_pay.setVisibility(View.GONE);
