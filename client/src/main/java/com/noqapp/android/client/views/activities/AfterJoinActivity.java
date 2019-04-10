@@ -674,7 +674,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void onNavigateBack() {
         Log.e("User Navigate Back", "Back without payment");
-        Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Cancelled transaction. Please try again.", Toast.LENGTH_LONG).show();
         //enableDisableOrderButton(false);
         // finish();
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
