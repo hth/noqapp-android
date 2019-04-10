@@ -5,14 +5,18 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
 import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
@@ -40,7 +44,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -56,7 +60,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private EditText edt_amount;
     private View rl_payment;
     private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment;
-    private Button btn_pay_partial;
+    private Button btn_pay_partial,btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
 
@@ -126,7 +130,23 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         cv_notes = findViewById(R.id.cv_notes);
         edt_amount = findViewById(R.id.edt_amount);
         rl_payment = findViewById(R.id.rl_payment);
-
+        btn_refund = findViewById(R.id.btn_refund);
+        btn_refund.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.show();
+                progressDialog.setMessage("Starting payment refund..");
+                OrderServed orderServed = new OrderServed();
+                orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                orderServed.setQueueStatus(QueueStatusEnum.N);
+                orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
+                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
+                purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+            }
+        });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_pay_partial = findViewById(R.id.btn_pay_partial);
         initProgress();
@@ -195,6 +215,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
 
 
     private void updateUI() {
+        btn_refund.setVisibility(View.GONE);
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
@@ -238,6 +259,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
                 tv_remaining_amount_value.setText(currencySymbol + " 0");
+            }
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
+                btn_refund.setVisibility(View.VISIBLE);
             }
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
@@ -373,5 +397,25 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 updateWholeList.updateWholeList();
             }
         }
+    }
+
+    @Override
+    public void orderProcessedResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
+        dismissProgress();
+        if (null != jsonPurchaseOrderList && jsonPurchaseOrderList.getPurchaseOrders().size()>0) {
+            jsonPurchaseOrder = jsonPurchaseOrderList.getPurchaseOrders().get(0);
+            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PR) {
+                updateUI();
+                Toast.makeText(OrderDetailActivity.this, "Payment refund successfully", Toast.LENGTH_LONG).show();
+                if (null != updateWholeList) {
+                    updateWholeList.updateWholeList();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void orderProcessedError() {
+
     }
 }
