@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter , QueueRefundPaymentPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -46,7 +46,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private JsonQueuedPerson jsonQueuedPerson;
     private ManageQueueApiCalls manageQueueApiCalls;
     private String qCodeQR;
-    private Button btn_refund;
+    private Button btn_refund, btn_pay_now;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -107,7 +107,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         });
         qCodeQR = getIntent().getStringExtra("qCodeQR");
         rl_payment = findViewById(R.id.rl_payment);
-        Button btn_pay_now = findViewById(R.id.btn_pay_now);
+        btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_refund = findViewById(R.id.btn_refund);
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,23 +136,31 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                progressDialog.setMessage("Starting payment..");
-                JsonQueuedPerson jqp = new JsonQueuedPerson()
-                        .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                        .setToken(jsonQueuedPerson.getToken());
 
-                JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                        .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                        .setCodeQR(qCodeQR)
-                        .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                        .setTransactionId(jsonQueuedPerson.getTransactionId())
-                        .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                jqp.setJsonPurchaseOrder(jpo);
-                manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        jqp);
+
+                if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
+                    Toast.makeText(OrderDetailActivity.this, "Payment not allowed on cancelled order.", Toast.LENGTH_SHORT).show();
+                } else {
+                    progressDialog.show();
+                    progressDialog.setMessage("Starting payment..");
+                    JsonQueuedPerson jqp = new JsonQueuedPerson()
+                            .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                            .setToken(jsonQueuedPerson.getToken());
+
+                    JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                            .setCodeQR(qCodeQR)
+                            .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                            .setTransactionId(jsonQueuedPerson.getTransactionId())
+                            .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                    jqp.setJsonPurchaseOrder(jpo);
+                    manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            jqp);
+                }
+
+
             }
         });
     }
