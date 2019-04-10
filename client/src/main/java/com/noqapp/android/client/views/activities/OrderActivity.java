@@ -500,14 +500,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void onFailure(Map<String, String> map) {
         Log.d("CFSDKSample", "Payment Failure");
-        Toast.makeText(this, "Transaction Failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Transaction failed", Toast.LENGTH_LONG).show();
         enableDisableOrderButton(false);
     }
 
     @Override
     public void onNavigateBack() {
         Log.e("User Navigate Back", "Back without payment");
-        Toast.makeText(this, "You canceled the transaction.Please try again", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Cancelled transaction. Please try again.", Toast.LENGTH_LONG).show();
         enableDisableOrderButton(false);
     }
 
