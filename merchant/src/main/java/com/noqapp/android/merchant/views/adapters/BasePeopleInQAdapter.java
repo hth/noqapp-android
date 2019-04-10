@@ -5,7 +5,6 @@ import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -267,15 +266,30 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
         if (!TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
             recordHolder.tv_payment_stat.setVisibility(View.VISIBLE);
-            if (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus() == PaymentStatusEnum.PA) {
-                recordHolder.tv_payment_stat.setText("Paid");
-                recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_nogradient_round);
-                if(jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO){
-                    recordHolder.tv_payment_stat .setBackgroundResource(R.drawable.grey_background);
-                }
-            }else{
-                recordHolder.tv_payment_stat.setText("Accept Payment");
-                recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
+            switch (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus()) {
+                case PA:
+                    recordHolder.tv_payment_stat.setText("Paid");
+                    recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_nogradient_round);
+                    if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
+                        recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                    }
+                    if(jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.N){
+                        recordHolder.tv_payment_stat.setText("Refund Due");
+                    }
+                    break;
+                case PR:
+                    recordHolder.tv_payment_stat.setText("Payment Refunded");
+                    recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                    break;
+                default:
+                    recordHolder.tv_payment_stat.setText("Accept Payment");
+                    if(jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
+                            jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+                        recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
+                    }else{
+                        recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                    }
+                    break;
             }
         } else {
             recordHolder.tv_payment_stat.setVisibility(View.GONE);

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -136,28 +137,31 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                     Toast.makeText(OrderDetailActivity.this, "Payment not allowed on cancelled order.", Toast.LENGTH_SHORT).show();
                 } else {
-                    progressDialog.show();
-                    progressDialog.setMessage("Starting payment..");
-                    JsonQueuedPerson jqp = new JsonQueuedPerson()
-                            .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                            .setToken(jsonQueuedPerson.getToken());
+                    if(jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
+                            jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S ) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Starting payment..");
+                        JsonQueuedPerson jqp = new JsonQueuedPerson()
+                                .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                                .setToken(jsonQueuedPerson.getToken());
 
-                    JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                            .setCodeQR(qCodeQR)
-                            .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                            .setTransactionId(jsonQueuedPerson.getTransactionId())
-                            .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                    jqp.setJsonPurchaseOrder(jpo);
-                    manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            jqp);
+                        JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                                .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                                .setCodeQR(qCodeQR)
+                                .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                                .setTransactionId(jsonQueuedPerson.getTransactionId())
+                                .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                        jqp.setJsonPurchaseOrder(jpo);
+                        manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                jqp);
+                    }else{
+                        Toast.makeText(OrderDetailActivity.this, "Payment not allowed on Cancelled/Skipped order.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
 
