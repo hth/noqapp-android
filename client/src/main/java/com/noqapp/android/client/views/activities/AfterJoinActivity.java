@@ -148,9 +148,11 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                             cancelQueue();
                             break;
                         case E:
+                            cancelQueue();
                             Toast.makeText(AfterJoinActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
                             break;
                         case U:
+                            cancelQueue();
                             Toast.makeText(AfterJoinActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
                             break;
                     }

@@ -1,19 +1,13 @@
 package com.noqapp.android.client.views.activities;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.network.NoQueueMessagingService;
@@ -39,17 +33,24 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderPresenter, ActivityCommunicator, CFClientInterface, CashFreeNotifyPresenter {
 
@@ -153,21 +154,36 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             @Override
             public void onClick(View v) {
                 if (null != jsonPurchaseOrder) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Order cancel in progress..");
-                        purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-
-                        if (AppUtilities.isRelease()) {
-                            Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_ORDER)
-                                    .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
-                        }
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
+                    switch (jsonPurchaseOrder.getTransactionVia()) {
+                        case I:
+                            cancelOrder();
+                            break;
+                        case E:
+                            cancelOrder();
+                            Toast.makeText(OrderConfirmActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
+                            break;
+                        case U:
+                            cancelOrder();
+                            Toast.makeText(OrderConfirmActivity.this, "Your payment mode is unknown. You cannot cancel the order.", Toast.LENGTH_SHORT).show();
+                            break;
                     }
                 }
             }
         });
+    }
+    private void cancelOrder(){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            progressDialog.setMessage("Order cancel in progress..");
+            purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+            if (AppUtilities.isRelease()) {
+                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_ORDER)
+                        .putCustomAttribute("Order Id", jsonPurchaseOrder.getTransactionId()));
+            }
+        } else {
+            ShowAlertInformation.showNetworkDialog(OrderConfirmActivity.this);
+        }
     }
 
     public void checkProductWithZeroPrice() {
