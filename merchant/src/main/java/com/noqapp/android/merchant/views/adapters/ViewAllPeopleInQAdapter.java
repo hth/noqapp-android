@@ -83,6 +83,8 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         private TextView tv_customer_name;
         private TextView tv_business_customer_id;
         private TextView tv_customer_mobile;
+        private TextView tv_payment_status;
+        private TextView tv_order_state;
         private CardView card_view;
 
 
@@ -91,6 +93,8 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
             this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
+            this.tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
+            this.tv_order_state = itemView.findViewById(R.id.tv_order_state);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

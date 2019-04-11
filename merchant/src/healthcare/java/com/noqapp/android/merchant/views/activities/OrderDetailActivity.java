@@ -11,8 +11,10 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.presenter.beans.body.Served;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 
@@ -21,8 +23,12 @@ import org.apache.commons.lang3.StringUtils;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,13 +37,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private TextView tv_cost, tv_order_state;
+    private TextView tv_cost, tv_order_state,tv_consultation_fee_value;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -48,7 +56,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private ManageQueueApiCalls manageQueueApiCalls;
     private String qCodeQR;
     private Button btn_refund, btn_pay_now;
-
+    private TextView tv_paid_amount_value, tv_remaining_amount_value;
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -84,8 +92,11 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         manageQueueApiCalls.setQueueRefundPaymentPresenter(this);
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
         tv_payment_status = findViewById(R.id.tv_payment_status);
+        tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
+        tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
         tv_address = findViewById(R.id.tv_address);
         tv_cost = findViewById(R.id.tv_cost);
+        tv_consultation_fee_value = findViewById(R.id.tv_consultation_fee_value);
         tv_order_state = findViewById(R.id.tv_order_state);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
@@ -113,27 +124,64 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                progressDialog.setMessage("Starting payment refund..");
-                JsonQueuedPerson jqp = new JsonQueuedPerson()
-                        .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                        .setToken(jsonQueuedPerson.getToken());
+                AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
+                builder.setTitle(null);
+                View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
+                tvtitle.setText("Alert");
+                tv_msg.setText("You are initiating refund process. Please confirm");
+                builder.setView(customDialogView);
+                final AlertDialog mAlertDialog = builder.create();
+                mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                mAlertDialog.setCanceledOnTouchOutside(false);
+                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                View separator = customDialogView.findViewById(R.id.seperator);
+                btn_yes.setText("Yes");
+                btn_no.setVisibility(View.VISIBLE);
+                separator.setVisibility(View.VISIBLE);
+                btn_no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                    }
+                });
+                btn_yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Starting payment refund..");
+                            JsonQueuedPerson jqp = new JsonQueuedPerson()
+                                    .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                                    .setToken(jsonQueuedPerson.getToken());
 
-                JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                        .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                        .setCodeQR(qCodeQR)
-                        .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                        .setToken(jsonQueuedPerson.getToken())
-                        .setTransactionId(jsonQueuedPerson.getTransactionId());
-                jqp.setJsonPurchaseOrder(jpo);
-                manageQueueApiCalls.cancel(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        jqp);
+                            JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                                    .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                                    .setCodeQR(qCodeQR)
+                                    .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                                    .setToken(jsonQueuedPerson.getToken())
+                                    .setTransactionId(jsonQueuedPerson.getTransactionId());
+                            jqp.setJsonPurchaseOrder(jpo);
+                            manageQueueApiCalls.cancel(BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    jqp);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                        }
+                    }
+                });
+                mAlertDialog.show();
             }
         });
         initProgress();
         updateUI();
+        TextView tv_item_count = findViewById(R.id.tv_item_count);
+        tv_item_count.setText("Total Items: (1)");
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,23 +190,59 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 } else {
                     if(jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
                             jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S ) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Starting payment..");
-                        JsonQueuedPerson jqp = new JsonQueuedPerson()
-                                .setQueueUserId(jsonQueuedPerson.getQueueUserId())
-                                .setToken(jsonQueuedPerson.getToken());
 
-                        JsonPurchaseOrder jpo = new JsonPurchaseOrder()
-                                .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                                .setCodeQR(qCodeQR)
-                                .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
-                                .setTransactionId(jsonQueuedPerson.getTransactionId())
-                                .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                        jqp.setJsonPurchaseOrder(jpo);
-                        manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                jqp);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+                        LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
+                        builder.setTitle(null);
+                        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                        TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
+                        tvtitle.setText("Alert");
+                        tv_msg.setText("You are initiating payment process. Please confirm");
+                        builder.setView(customDialogView);
+                        final AlertDialog mAlertDialog = builder.create();
+                        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        mAlertDialog.setCanceledOnTouchOutside(false);
+                        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                        Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                        View separator = customDialogView.findViewById(R.id.seperator);
+                        btn_yes.setText("Yes");
+                        btn_no.setVisibility(View.VISIBLE);
+                        separator.setVisibility(View.VISIBLE);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        });
+                        btn_yes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    progressDialog.show();
+                                    progressDialog.setMessage("Starting payment..");
+                                    JsonQueuedPerson jqp = new JsonQueuedPerson()
+                                            .setQueueUserId(jsonQueuedPerson.getQueueUserId())
+                                            .setToken(jsonQueuedPerson.getToken());
+
+                                    JsonPurchaseOrder jpo = new JsonPurchaseOrder()
+                                            .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                                            .setCodeQR(qCodeQR)
+                                            .setBizStoreId(jsonQueuedPerson.getJsonPurchaseOrder().getBizStoreId())
+                                            .setTransactionId(jsonQueuedPerson.getTransactionId())
+                                            .setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                                    jqp.setJsonPurchaseOrder(jpo);
+                                    manageQueueApiCalls.counterPayment(BaseLaunchActivity.getDeviceID(),
+                                            LaunchActivity.getLaunchActivity().getEmail(),
+                                            LaunchActivity.getLaunchActivity().getAuth(),
+                                            jqp);
+                                } else {
+                                    ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                                }
+                            }
+                        });
+                        mAlertDialog.show();
                     }else{
                         Toast.makeText(OrderDetailActivity.this, "Payment not allowed on Cancelled/Skipped order.", Toast.LENGTH_SHORT).show();
                     }
@@ -173,6 +257,17 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_refund.setVisibility(View.GONE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        try {
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+            } else {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
         } else {
@@ -183,7 +278,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                //tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " 0");
             }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
@@ -195,9 +291,11 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_order_state.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         try {
             tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+            tv_consultation_fee_value.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
             //TODO log error
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
+            tv_consultation_fee_value.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
     }
 

@@ -221,7 +221,8 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
 
         if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
+            //recordHolder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#9DC5C3"));
             recordHolder.tv_sequence_number.setTextColor(Color.BLACK);
             recordHolder.tv_join_timing.setTextColor(Color.BLACK);
         } else {

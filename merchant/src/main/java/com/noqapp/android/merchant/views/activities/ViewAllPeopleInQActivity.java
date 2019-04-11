@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
     private ProgressDialog progressDialog;
     private ExpandableListView listview;
-    private TextView tv_empty;
+    private RelativeLayout rl_empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +53,11 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all);
+        setContentView(R.layout.activity_view_all_people);
         listview = findViewById(R.id.exp_list_view);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        tv_empty = findViewById(R.id.tv_empty);
+        rl_empty = findViewById(R.id.rl_empty);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -100,10 +101,10 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
                 listview.setVisibility(View.GONE);
-                tv_empty.setVisibility(View.VISIBLE);
+                rl_empty.setVisibility(View.VISIBLE);
             } else {
                 listview.setVisibility(View.VISIBLE);
-                tv_empty.setVisibility(View.GONE);
+                rl_empty.setVisibility(View.GONE);
             }
 
         }

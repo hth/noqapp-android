@@ -215,4 +215,14 @@
     <string name="text_fees">Fee/Service Charge</string>
     <string name="enable_payment">Enable Payment Service</string>
     <string name="screen_all_review">Reviews</string>
+
+
+
+    <!-- Empty Screens labels -->
+    <string name="empty_noti_title">Empty notification</string>
+    <string name="empty_noti_subtitle">You haven\'t receive any notification yet :(.</string>
+    <string name="empty_followup_title">Empty Follow up</string>
+    <string name="empty_followup_subtitle">There are no followup scheduled :(.</string>
+    <string name="empty_queue_title">Empty Queue</string>
+    <string name="empty_queue_subtitle">Looks like no one has \n join the queue yet.</string>
 </resources>
