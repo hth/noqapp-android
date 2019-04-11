@@ -38,4 +38,9 @@
     <dimen name="close_image_size">40dp</dimen>
 
     <dimen name="image_item_margin">10dp</dimen>
+
+
+    <dimen name="empty_title_size">20sp</dimen>
+    <dimen name="empty_subtitle_size">16sp</dimen>
+    <dimen name="empty_icons">150dp</dimen>
 </resources>
