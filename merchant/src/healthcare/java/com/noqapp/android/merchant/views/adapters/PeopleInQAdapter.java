@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -21,10 +22,13 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.PatientProfileActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,12 +223,59 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         // temporary crash fix
                         LaunchActivity.getLaunchActivity().setUserProfessionalProfile(new JsonProfessionalProfilePersonal().setFormVersion(FormVersionEnum.MFD1));
                     }
-                    //  if (LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getFormVersion() == FormVersionEnum.MFD1) {
-                    Intent intent = new Intent(context, PatientProfileActivity.class);
-                    intent.putExtra("qCodeQR", qCodeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("bizCategoryId", bizCategoryId);
-                    context.startActivity(intent);
+
+                    PreferenceObjects preferenceObjects = null;
+                    try {
+                        preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (null == preferenceObjects) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        LayoutInflater inflater = LayoutInflater.from(context);
+                        builder.setTitle(null);
+                        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                        TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
+                        tvtitle.setText("Alert");
+                        tv_msg.setText("You havn't set your setting preferences. Do you want to set it now?");
+                        builder.setView(customDialogView);
+                        final AlertDialog mAlertDialog = builder.create();
+                        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        mAlertDialog.setCanceledOnTouchOutside(false);
+                        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                        Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                        View separator = customDialogView.findViewById(R.id.seperator);
+                        btn_yes.setText("Yes");
+                        btn_no.setVisibility(View.VISIBLE);
+                        separator.setVisibility(View.VISIBLE);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                                Intent intent = new Intent(context, PatientProfileActivity.class);
+                                intent.putExtra("qCodeQR", qCodeQR);
+                                intent.putExtra("data", jsonQueuedPerson);
+                                intent.putExtra("bizCategoryId", bizCategoryId);
+                                context.startActivity(intent);
+                            }
+                        });
+                        btn_yes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                                Intent in = new Intent(context, PreferenceActivity.class);
+                                context.startActivity(in);
+                            }
+                        });
+                        mAlertDialog.show();
+                    }  else {
+                        Intent intent = new Intent(context, PatientProfileActivity.class);
+                        intent.putExtra("qCodeQR", qCodeQR);
+                        intent.putExtra("data", jsonQueuedPerson);
+                        intent.putExtra("bizCategoryId", bizCategoryId);
+                        context.startActivity(intent);
+                    }
                     //}
                 } else {
                     Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
