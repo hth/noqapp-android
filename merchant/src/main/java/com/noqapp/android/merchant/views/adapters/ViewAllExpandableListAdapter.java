@@ -66,7 +66,6 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_child);
         }
         childViewHolder.rv.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         int columnCount;
         if (new AppUtils().isTablet(context.getApplicationContext())) {
             columnCount = 7;

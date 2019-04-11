@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -559,25 +560,56 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            LaunchActivity.getLaunchActivity().progressDialog.show();
-                            Served served = new Served();
-                            served.setCodeQR(jsonTopic.getCodeQR());
-                            served.setQueueStatus(jsonTopic.getQueueStatus());
-                            served.setQueueUserState(QueueUserStateEnum.N);
-                            served.setServedNumber(jsonTopic.getServingNumber());
-                            served.setGoTo(tv_counter_name.getText().toString());
-                            setPresenter();
-                            manageQueueApiCalls.served(
-                                    BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    served);
-                            chronometer.stop();
-                            chronometer.setBase(SystemClock.elapsedRealtime());
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(context);
-                        }
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        LayoutInflater inflater = LayoutInflater.from(context);
+                        builder.setTitle(null);
+                        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                        TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
+                        tvtitle.setText("Alert");
+                        tv_msg.setText("Do you really want to skip the user");
+                        builder.setView(customDialogView);
+                        final AlertDialog mAlertDialog = builder.create();
+                        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        mAlertDialog.setCanceledOnTouchOutside(false);
+                        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                        Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                        View separator = customDialogView.findViewById(R.id.seperator);
+                        btn_yes.setText("Yes");
+                        btn_no.setVisibility(View.VISIBLE);
+                        separator.setVisibility(View.VISIBLE);
+                        btn_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                            }
+                        });
+                        btn_yes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mAlertDialog.dismiss();
+                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                                    Served served = new Served();
+                                    served.setCodeQR(jsonTopic.getCodeQR());
+                                    served.setQueueStatus(jsonTopic.getQueueStatus());
+                                    served.setQueueUserState(QueueUserStateEnum.N);
+                                    served.setServedNumber(jsonTopic.getServingNumber());
+                                    served.setGoTo(tv_counter_name.getText().toString());
+                                    setPresenter();
+                                    manageQueueApiCalls.served(
+                                            BaseLaunchActivity.getDeviceID(),
+                                            LaunchActivity.getLaunchActivity().getEmail(),
+                                            LaunchActivity.getLaunchActivity().getAuth(),
+                                            served);
+                                    chronometer.stop();
+                                    chronometer.setBase(SystemClock.elapsedRealtime());
+                                } else {
+                                    ShowAlertInformation.showNetworkDialog(context);
+                                }
+                            }
+                        });
+                        mAlertDialog.show();
                     }
                 } else if (queueStatus == QueueStatusEnum.S) {
                     Toast.makeText(context, context.getString(R.string.error_start), Toast.LENGTH_LONG).show();

@@ -1,6 +1,28 @@
 package com.noqapp.android.merchant.views.activities;
 
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -13,6 +35,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
 import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
@@ -23,24 +46,6 @@ import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -60,7 +65,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private EditText edt_amount;
     private View rl_payment;
     private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment;
-    private Button btn_pay_partial,btn_refund;
+    private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
 
@@ -134,17 +139,55 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                progressDialog.setMessage("Starting payment refund..");
-                OrderServed orderServed = new OrderServed();
-                orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                orderServed.setServedNumber(jsonPurchaseOrder.getToken());
-                orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                orderServed.setQueueStatus(QueueStatusEnum.N);
-                orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
-                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
-                purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
+                builder.setTitle(null);
+                View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                tvtitle.setText("Alert");
+                tv_msg.setText("You are initiating refund process. Please confirm");
+                builder.setView(customDialogView);
+                final AlertDialog mAlertDialog = builder.create();
+                mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                mAlertDialog.setCanceledOnTouchOutside(false);
+                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                View separator = customDialogView.findViewById(R.id.seperator);
+                btn_yes.setText("Yes");
+                btn_no.setVisibility(View.VISIBLE);
+                separator.setVisibility(View.VISIBLE);
+                btn_no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                    }
+                });
+                btn_yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mAlertDialog.dismiss();
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Starting payment refund..");
+                            OrderServed orderServed = new OrderServed();
+                            orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                            orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                            orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                            orderServed.setQueueStatus(QueueStatusEnum.N);
+                            orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
+                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                            purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
+                            purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                        }
+                    }
+                });
+                mAlertDialog.show();
+
             }
         });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
@@ -163,13 +206,50 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                         if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
                             Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order amount.", Toast.LENGTH_LONG).show();
                         } else {
-                            progressDialog.show();
-                            progressDialog.setMessage("Starting payment..");
-                            jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                            jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
-                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                            purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                            purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+                            LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
+                            builder.setTitle(null);
+                            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                            TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                            tvtitle.setText("Alert");
+                            tv_msg.setText("You are initiating payment process. Please confirm");
+                            builder.setView(customDialogView);
+                            final AlertDialog mAlertDialog = builder.create();
+                            mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            mAlertDialog.setCanceledOnTouchOutside(false);
+                            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                            Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                            View separator = customDialogView.findViewById(R.id.seperator);
+                            btn_yes.setText("Yes");
+                            btn_no.setVisibility(View.VISIBLE);
+                            separator.setVisibility(View.VISIBLE);
+                            btn_no.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mAlertDialog.dismiss();
+                                }
+                            });
+                            btn_yes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mAlertDialog.dismiss();
+                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                        progressDialog.show();
+                                        progressDialog.setMessage("Starting payment..");
+                                        jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                                        jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
+                                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                                        purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
+                                        purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                                    } else {
+                                        ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                                    }
+                                }
+                            });
+                            mAlertDialog.show();
+
                         }
                     }
                 }
@@ -196,14 +276,51 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 if (isProductWithoutPrice) {
                     Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
                 } else {
-                    progressDialog.show();
-                    progressDialog.setMessage("Starting payment..");
-                    jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                    jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
-                    PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                    purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                    purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
-                    purchaseOrderApiCalls.counterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+                    LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
+                    builder.setTitle(null);
+                    View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
+                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
+                    tvtitle.setText("Alert");
+                    tv_msg.setText("You are initiating payment process. Please confirm");
+                    builder.setView(customDialogView);
+                    final AlertDialog mAlertDialog = builder.create();
+                    mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    mAlertDialog.setCanceledOnTouchOutside(false);
+                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
+                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
+                    View separator = customDialogView.findViewById(R.id.seperator);
+                    btn_yes.setText("Yes");
+                    btn_no.setVisibility(View.VISIBLE);
+                    separator.setVisibility(View.VISIBLE);
+                    btn_no.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mAlertDialog.dismiss();
+                        }
+                    });
+                    btn_yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mAlertDialog.dismiss();
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                progressDialog.show();
+                                progressDialog.setMessage("Starting payment..");
+                                jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                                jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
+                                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                                purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
+                                purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
+                                purchaseOrderApiCalls.counterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                            }
+                        }
+                    });
+                    mAlertDialog.show();
                 }
 
             }
@@ -402,7 +519,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     @Override
     public void orderProcessedResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         dismissProgress();
-        if (null != jsonPurchaseOrderList && jsonPurchaseOrderList.getPurchaseOrders().size()>0) {
+        if (null != jsonPurchaseOrderList && jsonPurchaseOrderList.getPurchaseOrders().size() > 0) {
             jsonPurchaseOrder = jsonPurchaseOrderList.getPurchaseOrders().get(0);
             if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PR) {
                 updateUI();
