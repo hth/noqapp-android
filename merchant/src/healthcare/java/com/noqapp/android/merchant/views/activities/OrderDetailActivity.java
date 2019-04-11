@@ -27,6 +27,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,7 +45,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private TextView tv_cost, tv_order_state;
+    private TextView tv_cost, tv_order_state,tv_consultation_fee_value;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -55,7 +56,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private ManageQueueApiCalls manageQueueApiCalls;
     private String qCodeQR;
     private Button btn_refund, btn_pay_now;
-
+    private TextView tv_paid_amount_value, tv_remaining_amount_value;
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -91,8 +92,11 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         manageQueueApiCalls.setQueueRefundPaymentPresenter(this);
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
         tv_payment_status = findViewById(R.id.tv_payment_status);
+        tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
+        tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
         tv_address = findViewById(R.id.tv_address);
         tv_cost = findViewById(R.id.tv_cost);
+        tv_consultation_fee_value = findViewById(R.id.tv_consultation_fee_value);
         tv_order_state = findViewById(R.id.tv_order_state);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
@@ -176,6 +180,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         });
         initProgress();
         updateUI();
+        TextView tv_item_count = findViewById(R.id.tv_item_count);
+        tv_item_count.setText("Total Items: (1)");
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,6 +257,17 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_refund.setVisibility(View.GONE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        try {
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+            } else {
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
         } else {
@@ -261,7 +278,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                //tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+                tv_remaining_amount_value.setText(currencySymbol + " 0");
             }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
@@ -273,9 +291,11 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_order_state.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
         try {
             tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+            tv_consultation_fee_value.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
             //TODO log error
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
+            tv_consultation_fee_value.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
     }
 
