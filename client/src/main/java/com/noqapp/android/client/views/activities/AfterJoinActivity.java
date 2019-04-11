@@ -5,14 +5,27 @@ package com.noqapp.android.client.views.activities;
  */
 
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -49,36 +62,23 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class AfterJoinActivity extends BaseActivity implements TokenPresenter, ResponsePresenter, ActivityCommunicator,
         CFClientInterface, CashFreeNotifyQPresenter, QueueJsonPurchaseOrderPresenter {
@@ -717,7 +717,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void cashFreeNotifyQResponse(JsonToken jsonToken) {
         btn_pay.setVisibility(View.GONE);
         if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
-            Toast.makeText(this, "Token generated successfully.", Toast.LENGTH_LONG).show();
+            if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+                // show only when it comes from join screen
+                Toast.makeText(this, "Token generated successfully.", Toast.LENGTH_LONG).show();
+            }
             queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
             tokenPresenterResponse(jsonToken);
         } else {
@@ -747,6 +750,25 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             btn_pay.setVisibility(View.VISIBLE);
         }
         dismissProgress();
+        //
+        if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+                if (new BigDecimal(jsonPurchaseOrder.getOrderPrice()).intValue() == 0) {
+                    queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
+                    JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+                    jsonCashfreeNotification.setTxMsg(null);
+                    jsonCashfreeNotification.setTxTime(null);
+                    jsonCashfreeNotification.setReferenceId(null);
+                    jsonCashfreeNotification.setPaymentMode(null);  // cash
+                    jsonCashfreeNotification.setSignature(null);
+                    jsonCashfreeNotification.setOrderAmount(jsonPurchaseOrder.getOrderPrice()); // amount
+                    jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+                    jsonCashfreeNotification.setOrderId(jsonPurchaseOrder.getTransactionId());   // transactionID
+                    queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+                }
+            }
+        }
+        //
     }
 
     @Override
