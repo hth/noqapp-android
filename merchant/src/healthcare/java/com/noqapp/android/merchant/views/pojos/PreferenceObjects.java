@@ -161,4 +161,14 @@ public class PreferenceObjects {
         this.preferredStoreInfoHashMap = preferredStoreInfoHashMap;
         return this;
     }
+
+
+    public boolean isEmpty() {
+        return pathologyList.isEmpty() && mriList.isEmpty() &&
+                scanList.isEmpty() && sonoList.isEmpty() &&
+                specList.isEmpty() && symptomsList.isEmpty() &&
+                xrayList.isEmpty() && medicineList.isEmpty() &&
+                diagnosisList.isEmpty() && proDiagnosisList.isEmpty() &&
+                instructionList.isEmpty() && preferredStoreInfoHashMap.isEmpty() ;
+    }
 }
