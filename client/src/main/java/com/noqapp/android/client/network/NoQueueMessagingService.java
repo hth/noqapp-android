@@ -12,6 +12,7 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
@@ -54,11 +55,12 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -121,6 +123,17 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         Log.e("FCM", object.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }
+                    break;
+                case CQO:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientTokenAndQueueData.class);
+                        Log.e("FCM", object.toString());
+                        Toast.makeText(LaunchActivity.getLaunchActivity(), "Success!!!", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(LaunchActivity.getLaunchActivity(), "Parsing exception", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case QR:
