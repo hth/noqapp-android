@@ -226,6 +226,7 @@ public interface TokenQueueApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_NO_SERVICE_NO_PAY}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/token/paymentInitiate.json")

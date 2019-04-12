@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -9,9 +8,11 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -46,6 +47,7 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 
 import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -186,7 +188,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             language = "en_US";
         }
         callLocationManager();
-
+        ((MyApplication) getApplication()).setLocale(this);
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
@@ -717,7 +719,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
-            ((MyApplication) getApplication()).setLocale();
+            ((MyApplication) getApplication()).setLocale(this);
             this.recreate();
         }
     }
@@ -813,6 +815,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                 } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
+                } else if (object instanceof JsonClientTokenAndQueueData) {
+                    Log.e("JsonTokenAndQueueList", ((JsonClientTokenAndQueueData) object).toString());
                 } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                 } else if (object instanceof JsonMedicalFollowUp) {
@@ -921,6 +925,16 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
+                    } else if (object instanceof JsonClientTokenAndQueueData) {
+                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
+                        if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
+                            TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
+                        }
+                        for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
+                            NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
+                        }
+                        if (null != scanFragment)
+                            scanFragment.fetchCurrentAndHistoryList();
                     }
                 } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
                     if (object instanceof JsonAlertData) {

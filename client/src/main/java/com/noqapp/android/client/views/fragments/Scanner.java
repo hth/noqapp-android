@@ -13,18 +13,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 public abstract class Scanner extends NoQueueBaseFragment {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private final String TAG = Scanner.class.getSimpleName();
-    private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 102;
+    private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 109;
     private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
@@ -87,8 +86,7 @@ public abstract class Scanner extends NoQueueBaseFragment {
     }
 
     private void requestCameraAndStoragePermission() {
-        ActivityCompat.requestPermissions(
-                getActivity(),
+        requestPermissions(
                 CAMERA_AND_STORAGE_PERMISSION_PERMS,
                 CAMERA_AND_STORAGE_PERMISSION_CODE);
     }

@@ -5,10 +5,11 @@ import com.noqapp.android.common.utils.FontsOverride;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.Locale;
 
@@ -34,7 +35,7 @@ public class MyApplication extends Application {
         FontsOverride.overrideFont(this, "MONOSPACE", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
-        setLocale();
+        setLocale(this);
     }
 
     private Locale getLocaleFromPref() {
@@ -47,16 +48,19 @@ public class MyApplication extends Application {
         return locale;
     }
 
-    private void overwriteConfigurationLocale(Configuration config, Locale locale) {
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-    }
+    public void setLocale(Context ctx) {
+        Locale newLocale = getLocaleFromPref();
+        Resources activityRes = ctx.getResources();
+        Configuration activityConf = activityRes.getConfiguration();
 
-    public void setLocale() {
-        Locale locale = getLocaleFromPref();
-        Log.d(LOG_TAG, "Set locale to " + locale);
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        overwriteConfigurationLocale(config, locale);
+        activityConf.setLocale(newLocale);
+        activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
+
+        Resources applicationRes = getBaseContext().getResources();
+        Configuration applicationConf = applicationRes.getConfiguration();
+        applicationConf.setLocale(newLocale);
+        applicationRes.updateConfiguration(applicationConf,
+                applicationRes.getDisplayMetrics());
     }
 
     private SharedPreferences getPreferences() {

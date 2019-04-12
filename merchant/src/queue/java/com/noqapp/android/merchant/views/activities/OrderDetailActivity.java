@@ -1,28 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -46,6 +24,27 @@ import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -64,7 +63,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private CardView cv_notes;
     private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment,tv_transaction_via;
     private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
@@ -108,6 +107,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_update_price = findViewById(R.id.btn_update_price);
         tv_cost = findViewById(R.id.tv_cost);
         tv_multiple_payment = findViewById(R.id.tv_multiple_payment);
+        tv_transaction_via = findViewById(R.id.tv_transaction_via);
         rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
@@ -370,7 +370,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             rl_payment.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
+                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()||
+                PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
@@ -388,6 +389,12 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
         } catch (Exception e) {
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
+        }
+
+        if (null == jsonPurchaseOrder.getTransactionVia()) {
+            tv_transaction_via.setText("N/A");
+        } else {
+            tv_transaction_via.setText(jsonPurchaseOrder.getTransactionVia().getDescription());
         }
     }
 

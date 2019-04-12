@@ -13,6 +13,7 @@ import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -29,6 +30,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -54,11 +56,12 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -70,6 +73,7 @@ import java.util.concurrent.TimeUnit;
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
+
     public NoQueueMessagingService() {
     }
 
@@ -77,7 +81,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
-
     }
 
     public static void subscribeTopics(String topic) {
@@ -121,6 +124,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         Log.e("FCM", object.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }
+                    break;
+                case CQO:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonTokenAndQueueList jsonTokenAndQueueList = new JsonTokenAndQueueList();
+                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(remoteMessage.getData().get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {}));
+                        object = jsonTokenAndQueueList;
+                        Log.e("FCM", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(LaunchActivity.getLaunchActivity(), "Parsing exception", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case QR:

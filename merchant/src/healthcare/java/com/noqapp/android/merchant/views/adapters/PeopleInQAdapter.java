@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
-import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -24,6 +23,8 @@ import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
+
+import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.content.Context;
@@ -230,7 +231,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (null == preferenceObjects) {
+                    if (null == preferenceObjects || preferenceObjects.isEmpty()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         LayoutInflater inflater = LayoutInflater.from(context);
                         builder.setTitle(null);
