@@ -164,7 +164,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             locale = Locale.ENGLISH;
             language = "en_US";
         }
-
+       ((MyApplication) getApplication()).setLocale(this);
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -689,7 +689,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void showChangeLangDialog() {
-        android.app.AlertDialog.Builder dialogBuilder = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_language, null);
         dialogBuilder.setView(dialogView);
@@ -697,6 +697,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         final LinearLayout ll_english = dialogView.findViewById(R.id.ll_english);
         final RadioButton rb_hi = dialogView.findViewById(R.id.rb_hi);
         final RadioButton rb_en = dialogView.findViewById(R.id.rb_en);
+        final AlertDialog b =  dialogBuilder.create();;
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
             rb_en.setChecked(false);
@@ -709,16 +710,17 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             @Override
             public void onClick(View v) {
                 AppUtils.changeLanguage("hi");
+                b.dismiss();
             }
         });
         ll_english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtils.changeLanguage("en");
+                b.dismiss();
             }
         });
         dialogBuilder.setTitle("");
-        android.app.AlertDialog b = dialogBuilder.create();
         b.show();
     }
 
@@ -726,16 +728,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
         if (key.equals("pref_language")) {
-            ((MyApplication) getApplication()).setLocale();
-            restartActivity();
+            ((MyApplication) getApplication()).setLocale(this);
+            this.recreate();
         }
     }
 
-    private void restartActivity() {
-        Intent intent = getIntent();
-        startActivity(intent);
-        finish();
-    }
 
     public void updateMenuList(boolean showChart) {
         drawerItem.clear();
