@@ -186,7 +186,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             language = "en_US";
         }
         callLocationManager();
-
+        ((MyApplication) getApplication()).setLocale(this);
         iv_search.setOnClickListener(this);
         tv_location.setOnClickListener(this);
         iv_notification.setOnClickListener(this);
@@ -717,7 +717,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
-            ((MyApplication) getApplication()).setLocale();
+            ((MyApplication) getApplication()).setLocale(this);
             this.recreate();
         }
     }
