@@ -39,7 +39,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -613,12 +612,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
                         if (tv_start.getText().equals(context.getString(R.string.pause))) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                            builder.setTitle("Confirm");
-                            builder.setMessage("Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
-                            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                                @Override
+                                public void btnPositiveClick() {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         LaunchActivity.getLaunchActivity().progressDialog.show();
                                         Served served = new Served();
@@ -637,19 +634,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(context);
                                     }
-                                    dialog.dismiss();
                                 }
-                            });
 
-                            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                                public void btnNegativeClick() {
+                                    //Do nothing
                                 }
                             });
-
-                            AlertDialog alert = builder.create();
-                            alert.show();
+                            showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 LaunchActivity.getLaunchActivity().progressDialog.show();
