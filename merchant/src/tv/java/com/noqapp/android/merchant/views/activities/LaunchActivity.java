@@ -5,7 +5,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 
 import com.crashlytics.android.answers.Answers;
@@ -13,9 +12,7 @@ import com.crashlytics.android.answers.Answers;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -58,11 +55,11 @@ public class LaunchActivity extends BaseLaunchActivity {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             deviceApiCalls.isSupportedAppVersion(UserUtils.getDeviceId());
         }
-        tv_name.setCompoundDrawablesWithIntrinsicBounds( 0,0,R.drawable.tv,  0);
+        tv_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tv, 0);
         tv_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(LaunchActivity.this,MainActivity.class);
+                Intent in = new Intent(LaunchActivity.this, MainActivity.class);
                 startActivity(in);
             }
         });
@@ -72,11 +69,6 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(Constants.PUSH_NOTIFICATION));
-
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
     }

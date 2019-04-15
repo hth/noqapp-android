@@ -129,5 +129,7 @@ public class AppUtils extends CommonHelper {
         //Log.i(TAG, "File location " + location);
         return location;
     }
-
+    public static boolean isRelease(){
+        return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
+    }
 }

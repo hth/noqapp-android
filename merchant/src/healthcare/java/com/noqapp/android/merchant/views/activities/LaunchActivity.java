@@ -8,7 +8,6 @@ import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 
 import com.crashlytics.android.answers.Answers;
@@ -16,9 +15,7 @@ import com.crashlytics.android.answers.Answers;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -80,12 +77,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
-
-
-        // register new push message receiver
-        // by doing this, the activity will be notified each time a new message arrives
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(Constants.PUSH_NOTIFICATION));
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
