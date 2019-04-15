@@ -129,7 +129,11 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             recordHolder.tv_order_cancel.setVisibility(View.VISIBLE);
             recordHolder.tv_order_accept.setVisibility(View.VISIBLE);
         } else {
-            recordHolder.tv_order_cancel.setVisibility(View.GONE);
+            if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+                recordHolder.tv_order_cancel.setVisibility(View.VISIBLE);
+            } else {
+                recordHolder.tv_order_cancel.setVisibility(View.GONE);
+            }
             recordHolder.tv_order_accept.setVisibility(View.GONE);
         }
 

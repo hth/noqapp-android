@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import static com.noqapp.android.merchant.BuildConfig.BUILD_TYPE;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
@@ -40,6 +38,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
@@ -107,7 +106,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected long lastPress;
     protected Toast backpressToast;
     public NetworkUtil networkUtil;
-    protected BroadcastReceiver broadcastReceiver;
+    protected FcmNotificationReceiver fcmNotificationReceiver;
     protected static LaunchActivity launchActivity;
     public FrameLayout list_fragment, list_detail_fragment;
     public Toolbar toolbar;
@@ -164,16 +163,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             locale = Locale.ENGLISH;
             language = "en_US";
         }
-       ((MyApplication) getApplication()).setLocale(this);
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
-                    // new push notification is received
-                    updateListByNotification(intent);
-                }
-            }
-        };
+        ((MyApplication) getApplication()).setLocale(this);
+        fcmNotificationReceiver = new FcmNotificationReceiver();
+        fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
     protected void initDrawer() {
@@ -540,7 +532,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     @Override
     public void appBlacklistResponse(JsonLatestAppVersion jsonLatestAppVersion) {
         if (null != jsonLatestAppVersion && !TextUtils.isEmpty(jsonLatestAppVersion.getLatestAppVersion())) {
-            if (!BUILD_TYPE.equals("debug")) {
+            if (AppUtils.isRelease()) {
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
@@ -612,7 +604,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
@@ -697,7 +688,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         final LinearLayout ll_english = dialogView.findViewById(R.id.ll_english);
         final RadioButton rb_hi = dialogView.findViewById(R.id.rb_hi);
         final RadioButton rb_en = dialogView.findViewById(R.id.rb_en);
-        final AlertDialog b =  dialogBuilder.create();;
+        final AlertDialog b = dialogBuilder.create();
+        ;
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
             rb_en.setChecked(false);
@@ -768,6 +760,46 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public void callPreferredStore() {
 
+    }
+
+    public class FcmNotificationReceiver extends BroadcastReceiver {
+        public boolean isRegistered;
+
+        public void register(Context context, IntentFilter filter) {
+            try {
+                if (!isRegistered) {
+                    LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+                    Log.e("FCM Reciver: ", "register");
+                    isRegistered = true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void unregister(Context context) {
+            if (isRegistered) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+                Log.e("FCM Receiver: ", "unregister");
+                isRegistered = false;
+            }
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
+                // new push notification is received
+                updateListByNotification(intent);
+            }
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != fcmNotificationReceiver)
+            fcmNotificationReceiver.unregister(this);
     }
 
 }
