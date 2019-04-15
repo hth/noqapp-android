@@ -8,7 +8,6 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
-import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -815,8 +814,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                 } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
-                } else if (object instanceof JsonClientTokenAndQueueData) {
-                    Log.e("JsonTokenAndQueueList", ((JsonClientTokenAndQueueData) object).toString());
+                } else if (object instanceof JsonTokenAndQueueList) {
+                    Log.e("JsonTokenAndQueueList", ((JsonTokenAndQueueList) object).toString());
                 } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                 } else if (object instanceof JsonMedicalFollowUp) {
@@ -925,8 +924,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
-                    } else if (object instanceof JsonClientTokenAndQueueData) {
-                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
+                    } else if (object instanceof JsonTokenAndQueueList) {
+                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonTokenAndQueueList) object).getTokenAndQueues();
                         if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                         }
