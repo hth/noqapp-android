@@ -1,24 +1,13 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
@@ -50,22 +39,33 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatRadioButton;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatRadioButton;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter, CFClientInterface, CashFreeNotifyPresenter {
     private RadioGroup rg_address;
@@ -251,7 +251,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         } else {
             String storeGeoHash = getIntent().getExtras().getString("GeoHash");
             if (!TextUtils.isEmpty(storeGeoHash)) {
-                if (TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
+                if (null == jsonUserAddress || TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
                     tv_address.setError("Please select a valid address");
                     isValid = false;
                 } else {
@@ -456,7 +456,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 AppCompatRadioButton radioButtonChosen = group.findViewById(checkedId);
                 tv_address.setText(radioButtonChosen.getText());
                 rl_address.setVisibility(View.GONE);
-                jsonUserAddress = addressList.get(checkedId);
+                jsonUserAddress = addressList.get(Integer.parseInt(radioButtonChosen.getTag().toString()));
 
             }
         });
