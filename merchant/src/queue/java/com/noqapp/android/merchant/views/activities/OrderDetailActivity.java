@@ -14,6 +14,7 @@ import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
 import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
@@ -24,16 +25,13 @@ import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -139,35 +137,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-                LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
-                builder.setTitle(null);
-                View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                tvtitle.setText("Alert");
-                tv_msg.setText("You are initiating refund process. Please confirm");
-                builder.setView(customDialogView);
-                final AlertDialog mAlertDialog = builder.create();
-                mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                mAlertDialog.setCanceledOnTouchOutside(false);
-                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                View separator = customDialogView.findViewById(R.id.seperator);
-                btn_yes.setText("Yes");
-                btn_no.setVisibility(View.VISIBLE);
-                separator.setVisibility(View.VISIBLE);
-                btn_no.setOnClickListener(new View.OnClickListener() {
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                });
-                btn_yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
+                    public void btnPositiveClick() {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
                             progressDialog.setMessage("Starting payment refund..");
@@ -185,9 +158,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                         }
                     }
-                });
-                mAlertDialog.show();
 
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Alert","You are initiating refund process. Please confirm");
             }
         });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
@@ -206,34 +183,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                         if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
                             Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order amount.", Toast.LENGTH_LONG).show();
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-                            LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
-                            builder.setTitle(null);
-                            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                            TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                            tvtitle.setText("Alert");
-                            tv_msg.setText("You are initiating payment process. Please confirm");
-                            builder.setView(customDialogView);
-                            final AlertDialog mAlertDialog = builder.create();
-                            mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                            mAlertDialog.setCanceledOnTouchOutside(false);
-                            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                            Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                            View separator = customDialogView.findViewById(R.id.seperator);
-                            btn_yes.setText("Yes");
-                            btn_no.setVisibility(View.VISIBLE);
-                            separator.setVisibility(View.VISIBLE);
-                            btn_no.setOnClickListener(new View.OnClickListener() {
+
+                            ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    mAlertDialog.dismiss();
-                                }
-                            });
-                            btn_yes.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    mAlertDialog.dismiss();
+                                public void btnPositiveClick() {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         progressDialog.show();
                                         progressDialog.setMessage("Starting payment..");
@@ -247,9 +201,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                                         ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                                     }
                                 }
-                            });
-                            mAlertDialog.show();
 
+                                @Override
+                                public void btnNegativeClick() {
+                                    //Do nothing
+                                }
+                            });
+                            showDialog.displayDialog("Alert","You are initiating payment process. Please confirm");
                         }
                     }
                 }
@@ -276,35 +234,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 if (isProductWithoutPrice) {
                     Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
                 } else {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-                    LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
-                    builder.setTitle(null);
-                    View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Alert");
-                    tv_msg.setText("You are initiating payment process. Please confirm");
-                    builder.setView(customDialogView);
-                    final AlertDialog mAlertDialog = builder.create();
-                    mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                    mAlertDialog.setCanceledOnTouchOutside(false);
-                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                    View separator = customDialogView.findViewById(R.id.seperator);
-                    btn_yes.setText("Yes");
-                    btn_no.setVisibility(View.VISIBLE);
-                    separator.setVisibility(View.VISIBLE);
-                    btn_no.setOnClickListener(new View.OnClickListener() {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
-                        }
-                    });
-                    btn_yes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
+                        public void btnPositiveClick() {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
                                 progressDialog.setMessage("Starting payment..");
@@ -319,8 +252,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                                 ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                             }
                         }
+
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
                     });
-                    mAlertDialog.show();
+                    showDialog.displayDialog("Alert","You are initiating payment process. Please confirm");
                 }
 
             }

@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 
@@ -31,7 +32,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -46,7 +46,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -143,35 +142,20 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             @Override
             public void onClick(View v) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
-                    LayoutInflater inflater = LayoutInflater.from(SettingActivity.this);
-                    builder.setTitle(null);
-                    View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                    builder.setView(customDialogView);
-                    final AlertDialog mAlertDialog = builder.create();
-                    mAlertDialog.setCanceledOnTouchOutside(false);
-                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Remove Schedule");
-                    tv_msg.setText("Do you want to remove schedule?");
-                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                    btn_no.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
-                        }
-                    });
-                    btn_yes.setOnClickListener(new View.OnClickListener() {
 
+                    ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void btnPositiveClick() {
                             progressDialog.show();
                             queueSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                            mAlertDialog.dismiss();
+                        }
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
                         }
                     });
-                    mAlertDialog.show();
+                    showDialog.displayDialog("Remove Schedule", "Do you want to remove schedule?");
                 } else {
                     ShowAlertInformation.showNetworkDialog(SettingActivity.this);
                 }

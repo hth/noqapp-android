@@ -12,7 +12,6 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
@@ -22,6 +21,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -39,9 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -560,34 +558,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     if (tv_counter_name.getText().toString().trim().equals("")) {
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        LayoutInflater inflater = LayoutInflater.from(context);
-                        builder.setTitle(null);
-                        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                        TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
-                        tvtitle.setText("Alert");
-                        tv_msg.setText("Do you really want to skip the user");
-                        builder.setView(customDialogView);
-                        final AlertDialog mAlertDialog = builder.create();
-                        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        mAlertDialog.setCanceledOnTouchOutside(false);
-                        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                        View separator = customDialogView.findViewById(R.id.seperator);
-                        btn_yes.setText("Yes");
-                        btn_no.setVisibility(View.VISIBLE);
-                        separator.setVisibility(View.VISIBLE);
-                        btn_no.setOnClickListener(new View.OnClickListener() {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
-                            }
-                        });
-                        btn_yes.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
+                            public void btnPositiveClick() {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                                     LaunchActivity.getLaunchActivity().progressDialog.show();
                                     Served served = new Served();
@@ -608,8 +582,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                                     ShowAlertInformation.showNetworkDialog(context);
                                 }
                             }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
                         });
-                        mAlertDialog.show();
+                        showDialog.displayDialog("Alert", "Do you really want to skip the user. Please confirm");
                     }
                 } else if (queueStatus == QueueStatusEnum.S) {
                     Toast.makeText(context, context.getString(R.string.error_start), Toast.LENGTH_LONG).show();
@@ -633,12 +612,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                     } else {
                         if (tv_start.getText().equals(context.getString(R.string.pause))) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                            builder.setTitle("Confirm");
-                            builder.setMessage("Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
-                            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                                @Override
+                                public void btnPositiveClick() {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         LaunchActivity.getLaunchActivity().progressDialog.show();
                                         Served served = new Served();
@@ -657,19 +634,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(context);
                                     }
-                                    dialog.dismiss();
                                 }
-                            });
 
-                            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                                public void btnNegativeClick() {
+                                    //Do nothing
                                 }
                             });
-
-                            AlertDialog alert = builder.create();
-                            alert.show();
+                            showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 LaunchActivity.getLaunchActivity().progressDialog.show();

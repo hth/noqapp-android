@@ -5,21 +5,20 @@ import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 
 import android.content.Context;
 import android.graphics.Paint;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -94,37 +93,19 @@ public class MenuAdapter extends BaseAdapter {
         childViewHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = LayoutInflater.from(context);
-                builder.setTitle(null);
-                View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                builder.setView(customDialogView);
-                final AlertDialog mAlertDialog = builder.create();
-                mAlertDialog.setCanceledOnTouchOutside(false);
-                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                tvtitle.setText("Delete Menu Item");
-                tv_msg.setText("Do you want to delete it from Menu Item List?");
-                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                btn_no.setOnClickListener(new View.OnClickListener() {
+                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                });
-                btn_yes.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
+                    public void btnPositiveClick() {
                         Toast.makeText(context, "Deleted from Menu Item List", Toast.LENGTH_LONG).show();
                         menuItemUpdate.menuItemUpdate(jsonStoreProduct, ActionTypeEnum.REMOVE);
-                        mAlertDialog.dismiss();
+                    }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
                     }
                 });
-                mAlertDialog.show();
-
+                showDialog.displayDialog("Delete Menu Item", "Do you want to delete it from Menu Item List?");
             }
         });
         childViewHolder.iv_edit.setOnClickListener(new View.OnClickListener() {

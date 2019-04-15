@@ -1,21 +1,19 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,39 +58,22 @@ public class HCSMenuAdapter extends RecyclerView.Adapter<HCSMenuAdapter.MyViewHo
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 hcsMenuObjects.get(position).setSelect(isChecked);
-
                 if(isRemove){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    LayoutInflater inflater = LayoutInflater.from(context);
-                    builder.setTitle(null);
-                    View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                    builder.setView(customDialogView);
-                    final AlertDialog mAlertDialog = builder.create();
-                    mAlertDialog.setCanceledOnTouchOutside(false);
-                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Delete Test Item");
-                    tv_msg.setText("Do you want to delete it from Test List?");
-                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                    btn_no.setOnClickListener(new View.OnClickListener() {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
-                        }
-                    });
-                    btn_yes.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
+                        public void btnPositiveClick() {
                             if (null != staggeredClick) {
                                 staggeredClick.staggeredClick(isRemove, hcsMenuObjects.get(position), position);
                                 Toast.makeText(context, "Deleted from Test List", Toast.LENGTH_LONG).show();
                             }
-                            mAlertDialog.dismiss();
+                        }
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
                         }
                     });
-                    mAlertDialog.show();
+                    showDialog.displayDialog("Delete Test Item", "Do you want to delete it from Test List?");
                 }else {
                     if (isChecked) {
                         holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));

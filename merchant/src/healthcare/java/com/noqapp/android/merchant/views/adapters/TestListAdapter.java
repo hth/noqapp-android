@@ -3,17 +3,16 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 
 import android.app.Activity;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -61,36 +60,19 @@ public class TestListAdapter extends BaseAdapter {
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = LayoutInflater.from(context);
-                builder.setTitle(null);
-                View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                builder.setView(customDialogView);
-                final AlertDialog mAlertDialog = builder.create();
-                mAlertDialog.setCanceledOnTouchOutside(false);
-                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                tvtitle.setText("Flag as incorrect");
-                tv_msg.setText("Flag this data only when there is mistake in spelling, duplicate data");
-                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                btn_no.setOnClickListener(new View.OnClickListener() {
+                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                });
-                btn_yes.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
+                    public void btnPositiveClick() {
                         if (null != flagListItem)
                             flagListItem.flagItem(position);
-                        mAlertDialog.dismiss();
+                    }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
                     }
                 });
-                mAlertDialog.show();
-
+                showDialog.displayDialog("Flag as incorrect", "Flag this data only when there is mistake in spelling, duplicate data");
             }
         });
 

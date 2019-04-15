@@ -18,6 +18,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
@@ -623,34 +624,20 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     protected void showLogoutDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(launchActivity);
-        LayoutInflater inflater = LayoutInflater.from(launchActivity);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
+        ShowCustomDialog showDialog = new ShowCustomDialog(this);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+            public void btnPositiveClick() {
                 clearLoginData(false);
-                mAlertDialog.dismiss();
                 Answers.getInstance().logCustom(new CustomEvent("Logout")
                         .putCustomAttribute("Success", "true"));
             }
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
         });
-        mAlertDialog.show();
-        ShowAlertInformation.resizeAlert(mAlertDialog, this);
+        showDialog.displayDialog(getString(R.string.title_logout), getString(R.string.msg_logout));
     }
 
     public void setActionBarTitle(String title) {
@@ -740,7 +727,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         mDrawerList.setAdapter(drawerAdapter);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         ((TextView) findViewById(R.id.tv_version)).setText(
-                BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")
+                AppUtils.isRelease()
                         ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
                         : getString(R.string.version_no, "Not for release"));
     }

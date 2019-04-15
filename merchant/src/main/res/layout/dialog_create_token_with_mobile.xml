@@ -138,7 +138,7 @@
                             android:layout_marginRight="5dp"
                             app:ccp_textSize="14sp"
                             app:ccp_defaultNameCode="IN"
-                            app:ccp_countryPreference="US,IN"
+                            app:ccp_countryPreference="IN,US"
                             android:layout_marginBottom="10dp"
                             app:ccp_defaultLanguage="ENGLISH"
                             app:ccp_rememberLastSelection="true"

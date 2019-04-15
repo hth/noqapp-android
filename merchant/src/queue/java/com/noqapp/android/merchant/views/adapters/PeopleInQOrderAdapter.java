@@ -5,6 +5,7 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
@@ -17,9 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -155,34 +154,19 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_order_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = LayoutInflater.from(context);
-                builder.setTitle(null);
-                View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                builder.setView(customDialogView);
-                final AlertDialog mAlertDialog = builder.create();
-                mAlertDialog.setCanceledOnTouchOutside(false);
-                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                tvtitle.setText("Cancel Order");
-                tv_msg.setText("Do you want to cancel the order?");
-                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                btn_no.setOnClickListener(new View.OnClickListener() {
+                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
+                    public void btnPositiveClick() {
+                        peopleInQOrderAdapterClick.orderCancelClick(position);
                     }
-                });
-                btn_yes.setOnClickListener(new View.OnClickListener() {
 
                     @Override
-                    public void onClick(View v) {
-                        peopleInQOrderAdapterClick.orderCancelClick(position);
-                        mAlertDialog.dismiss();
+                    public void btnNegativeClick() {
+                        //Do nothing
                     }
                 });
-                mAlertDialog.show();
+                showDialog.displayDialog("Cancel Order","Do you want to cancel the order?");
 
             }
         });
