@@ -14,6 +14,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 
@@ -22,11 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +34,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
@@ -123,34 +121,12 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-                LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
-                builder.setTitle(null);
-                View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                tvtitle.setText("Alert");
-                tv_msg.setText("You are initiating refund process. Please confirm");
-                builder.setView(customDialogView);
-                final AlertDialog mAlertDialog = builder.create();
-                mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                mAlertDialog.setCanceledOnTouchOutside(false);
-                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                View separator = customDialogView.findViewById(R.id.seperator);
-                btn_yes.setText("Yes");
-                btn_no.setVisibility(View.VISIBLE);
-                separator.setVisibility(View.VISIBLE);
-                btn_no.setOnClickListener(new View.OnClickListener() {
+
+
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                });
-                btn_yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
+                    public void btnPositiveClick() {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
                             progressDialog.setMessage("Starting payment refund..");
@@ -173,8 +149,13 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                             ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                         }
                     }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
                 });
-                mAlertDialog.show();
+                showDialog.displayDialog("Alert", "You are initiating refund process. Please confirm");
             }
         });
         initProgress();
@@ -190,34 +171,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
                             jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-                        LayoutInflater inflater = LayoutInflater.from(OrderDetailActivity.this);
-                        builder.setTitle(null);
-                        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                        tvtitle.setText("Alert");
-                        tv_msg.setText("You are initiating payment process. Please confirm");
-                        builder.setView(customDialogView);
-                        final AlertDialog mAlertDialog = builder.create();
-                        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        mAlertDialog.setCanceledOnTouchOutside(false);
-                        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                        View separator = customDialogView.findViewById(R.id.seperator);
-                        btn_yes.setText("Yes");
-                        btn_no.setVisibility(View.VISIBLE);
-                        separator.setVisibility(View.VISIBLE);
-                        btn_no.setOnClickListener(new View.OnClickListener() {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
-                            }
-                        });
-                        btn_yes.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
+                            public void btnPositiveClick() {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                                     progressDialog.show();
                                     progressDialog.setMessage("Starting payment..");
@@ -240,8 +197,13 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                                     ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                                 }
                             }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
                         });
-                        mAlertDialog.show();
+                        showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
                     } else {
                         Toast.makeText(OrderDetailActivity.this, "Payment not allowed on Cancelled/Skipped order.", Toast.LENGTH_SHORT).show();
                     }
@@ -273,7 +235,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             rl_payment.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()||
+                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());

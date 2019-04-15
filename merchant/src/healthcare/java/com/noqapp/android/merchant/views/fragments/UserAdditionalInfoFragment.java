@@ -8,6 +8,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
@@ -15,8 +16,6 @@ import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresente
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -184,37 +184,20 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    LayoutInflater inflater = LayoutInflater.from(getActivity());
-                    builder.setTitle(null);
-                    View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                    builder.setView(customDialogView);
-                    final AlertDialog mAlertDialog = builder.create();
-                    mAlertDialog.setCanceledOnTouchOutside(false);
-                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Delete Eductaion");
-                    tv_msg.setText("Do you want to delete it from education list?");
-                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                    btn_no.setOnClickListener(new View.OnClickListener() {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
-                        }
-                    });
-                    btn_yes.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
+                        public void btnPositiveClick() {
                             Toast.makeText(getActivity(), "Deleted from Education list", Toast.LENGTH_LONG).show();
                             jsonProfessionalProfilePersonal.getEducation().remove(jsonNameDatePair);
                             ll_education.removeView(inflatedLayout);
-                            mAlertDialog.dismiss();
+                        }
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
                         }
                     });
-                    mAlertDialog.show();
-
+                    showDialog.displayDialog("Delete Education", "Do you want to delete it from education list?");
                 }
             });
             ll_education.addView(inflatedLayout);
@@ -234,37 +217,21 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    LayoutInflater inflater = LayoutInflater.from(getActivity());
-                    builder.setTitle(null);
-                    View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                    builder.setView(customDialogView);
-                    final AlertDialog mAlertDialog = builder.create();
-                    mAlertDialog.setCanceledOnTouchOutside(false);
-                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Delete Award");
-                    tv_msg.setText("Do you want to delete it from award list?");
-                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                    btn_no.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
-                        }
-                    });
-                    btn_yes.setOnClickListener(new View.OnClickListener() {
 
+                    ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void btnPositiveClick() {
                             Toast.makeText(getActivity(), "Deleted from award list", Toast.LENGTH_LONG).show();
                             jsonProfessionalProfilePersonal.getAwards().remove(jsonNameDatePair);
                             ll_experience.removeView(inflatedLayout);
-                            mAlertDialog.dismiss();
+                        }
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
                         }
                     });
-                    mAlertDialog.show();
-
+                    showDialog.displayDialog("Delete Award", "Do you want to delete it from award list?");
                 }
             });
             ll_experience.addView(inflatedLayout);
@@ -283,37 +250,24 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    LayoutInflater inflater = LayoutInflater.from(getActivity());
-                    builder.setTitle(null);
-                    View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                    builder.setView(customDialogView);
-                    final AlertDialog mAlertDialog = builder.create();
-                    mAlertDialog.setCanceledOnTouchOutside(false);
-                    TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                    TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                    tvtitle.setText("Delete License");
-                    tv_msg.setText("Do you want to delete it from license list?");
-                    Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                    Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                    btn_no.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mAlertDialog.dismiss();
-                        }
-                    });
-                    btn_yes.setOnClickListener(new View.OnClickListener() {
 
+
+
+
+                    ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void btnPositiveClick() {
                             Toast.makeText(getActivity(), "Deleted from license list", Toast.LENGTH_LONG).show();
                             jsonProfessionalProfilePersonal.getLicenses().remove(jsonNameDatePair);
                             ll_license.removeView(inflatedLayout);
-                            mAlertDialog.dismiss();
+                        }
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
                         }
                     });
-                    mAlertDialog.show();
-
+                    showDialog.displayDialog("Delete License", "Do you want to delete it from License list?");
                 }
             });
             ll_license.addView(inflatedLayout);

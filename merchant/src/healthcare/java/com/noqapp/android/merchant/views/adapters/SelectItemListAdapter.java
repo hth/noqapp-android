@@ -1,15 +1,14 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import android.app.Activity;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,36 +46,19 @@ public class SelectItemListAdapter extends ArrayAdapter<DataObj> {
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = LayoutInflater.from(context);
-                builder.setTitle(null);
-                View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-                builder.setView(customDialogView);
-                final AlertDialog mAlertDialog = builder.create();
-                mAlertDialog.setCanceledOnTouchOutside(false);
-                TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                tvtitle.setText("Delete from list");
-                tv_msg.setText("Do you want to delete it from selected list?");
-                Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                btn_no.setOnClickListener(new View.OnClickListener() {
+                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
-                    }
-                });
-                btn_yes.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
+                    public void btnPositiveClick() {
                         if(null != removeListItem)
                             removeListItem.removeItem(position);
-                        mAlertDialog.dismiss();
+                    }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
                     }
                 });
-                mAlertDialog.show();
-
+                showDialog.displayDialog("Delete from list", "Do you want to delete it from selected list?");
             }
         });
 

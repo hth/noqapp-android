@@ -14,6 +14,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
@@ -29,7 +30,6 @@ import com.google.gson.Gson;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -232,28 +232,15 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         e.printStackTrace();
                     }
                     if (null == preferenceObjects || preferenceObjects.isEmpty()) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        LayoutInflater inflater = LayoutInflater.from(context);
-                        builder.setTitle(null);
-                        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                        TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
-                        tvtitle.setText("Alert");
-                        tv_msg.setText("You havn't set your setting preferences. Do you want to set it now?");
-                        builder.setView(customDialogView);
-                        final AlertDialog mAlertDialog = builder.create();
-                        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        mAlertDialog.setCanceledOnTouchOutside(false);
-                        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                        View separator = customDialogView.findViewById(R.id.seperator);
-                        btn_yes.setText("Yes");
-                        btn_no.setVisibility(View.VISIBLE);
-                        separator.setVisibility(View.VISIBLE);
-                        btn_no.setOnClickListener(new View.OnClickListener() {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
+                            public void btnPositiveClick() {
+                                Intent in = new Intent(context, PreferenceActivity.class);
+                                context.startActivity(in);
+                            }
+                            @Override
+                            public void btnNegativeClick() {
                                 Intent intent = new Intent(context, PatientProfileActivity.class);
                                 intent.putExtra("qCodeQR", qCodeQR);
                                 intent.putExtra("data", jsonQueuedPerson);
@@ -261,15 +248,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                                 context.startActivity(intent);
                             }
                         });
-                        btn_yes.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
-                                Intent in = new Intent(context, PreferenceActivity.class);
-                                context.startActivity(in);
-                            }
-                        });
-                        mAlertDialog.show();
+                        showDialog.displayDialog("Alert", "You havn't set your setting preferences. Do you want to set it now?");
                     }  else {
                         Intent intent = new Intent(context, PatientProfileActivity.class);
                         intent.putExtra("qCodeQR", qCodeQR);

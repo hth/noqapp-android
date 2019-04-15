@@ -15,6 +15,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.FileUtilsPdf;
 import com.noqapp.android.merchant.utils.PermissionUtils;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
 
@@ -40,15 +41,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -267,29 +265,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     }
 
     private void deleteImage(final String imageName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_logout, null, false);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-        tvtitle.setText("Delete Image");
-        tv_msg.setText("Do you want to delete it?");
-        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
+        ShowCustomDialog showDialog = new ShowCustomDialog(this);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+            public void btnPositiveClick() {
                 try {
                     selectPos = jsonMedicalRecordTemp.getImages().indexOf(imageName);
                 } catch (Exception e) {
@@ -308,11 +287,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
-
-                mAlertDialog.dismiss();
+            }
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
             }
         });
-        mAlertDialog.show();
+        showDialog.displayDialog("Delete Image", "Do you want to delete it?");
     }
 
 
