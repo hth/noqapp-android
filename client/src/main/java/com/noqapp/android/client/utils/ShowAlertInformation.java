@@ -31,34 +31,20 @@ public class ShowAlertInformation {
     }
 
     public static void showThemeDialog(Context context, String title, String message, boolean isGravityLeft) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-        tvtitle.setText(title);
-        tv_msg.setText(message);
-        if (isGravityLeft)
-            tv_msg.setGravity(Gravity.LEFT);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
+        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+        showDialog.setGravityLeft(isGravityLeft);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
+            public void btnPositiveClick() {
+               //Do nothing
+            }
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
             }
         });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
+        showDialog.displayDialog(title, message);
+
     }
 
     public static void showThemeDialog(Context context, String title, String message) {
@@ -66,34 +52,19 @@ public class ShowAlertInformation {
     }
 
     public static void showBarcodeErrorDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-        tvtitle.setText(context.getString(R.string.barcode_error));
-        tv_msg.setText(context.getString(R.string.barcode_error_msg));
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
 
+        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
+            public void btnPositiveClick() {
                 ((Activity)context).finish();
             }
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
         });
-        mAlertDialog.show();
+        showDialog.displayDialog(context.getString(R.string.barcode_error), context.getString(R.string.barcode_error_msg));
     }
 
     public static void showThemePlayStoreDialog(final Context context, String title, String message, boolean isNegativeEnable) {

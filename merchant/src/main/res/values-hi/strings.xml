@@ -150,4 +150,5 @@
     <string name="text_fees">Fee/Service Charge</string>
     <string name="enable_payment">Enable Payment Service</string>
     <string name="screen_all_review">Reviews</string>
+    <string name="user_details">Customer details</string>
 </resources>

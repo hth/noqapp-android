@@ -1,18 +1,25 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.network.NoQueueMessagingService;
-import com.noqapp.android.client.presenter.ProfileAddressPresenter;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
@@ -26,7 +33,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserAddress;
-import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -39,40 +45,24 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatRadioButton;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ProfileAddressPresenter, CFClientInterface, CashFreeNotifyPresenter {
-    private RadioGroup rg_address;
+import androidx.appcompat.widget.AppCompatRadioButton;
+
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, CFClientInterface, CashFreeNotifyPresenter {
     private TextView tv_address;
-    private RelativeLayout rl_address;
-    private EditText edt_phone, edt_add_address;
-    private Button btn_add_address;
+    private EditText edt_phone;
     private EditText edt_optional;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private ClientProfileApiCall clientProfileApiCall;
@@ -93,50 +83,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
         TextView tv_due_amt = findViewById(R.id.tv_due_amt);
-        rg_address = findViewById(R.id.rg_address);
-        rl_address = findViewById(R.id.rl_address);
         tv_address = findViewById(R.id.tv_address);
 
         acrb_cash = findViewById(R.id.acrb_cash);
         acrb_online = findViewById(R.id.acrb_online);
 
-        edt_add_address = findViewById(R.id.edt_add_address);
-        btn_add_address = findViewById(R.id.btn_add_address);
         TextView tv_add_address = findViewById(R.id.tv_add_address);
         TextView tv_change_address = findViewById(R.id.tv_change_address);
-        TextView tv_cancel = findViewById(R.id.tv_cancel);
         tv_change_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rl_address.setVisibility(View.VISIBLE);
-            }
-        });
-        btn_add_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_add_address.setError(null);
-                if (TextUtils.isEmpty(edt_add_address.getText().toString())) {
-                    edt_add_address.setError(getString(R.string.error_field_required));
-                } else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Adding address in progress..");
-                        clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
-                    }
-                }
-            }
-        });
-        tv_add_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_add_address.setVisibility(View.VISIBLE);
-                btn_add_address.setVisibility(View.VISIBLE);
-            }
-        });
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rl_address.setVisibility(View.GONE);
+                Intent in = new Intent(OrderActivity.this,AddressBookActivity.class);
+                startActivityForResult(in,78);
             }
         });
         edt_phone = findViewById(R.id.edt_phone);
@@ -154,7 +112,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfilePresenter(this);
-        clientProfileApiCall.setProfileAddressPresenter(this);
         tv_tax_amt.setText(currencySymbol + "0.00");
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
@@ -207,12 +164,18 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
             }
         });
-        JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
-        jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
-        profileAddressResponse(jsonUserAddressList);
-        if (jsonUserAddressList.getJsonUserAddresses().size() > 0)
-            jsonUserAddress = jsonUserAddressList.getJsonUserAddresses().get(0);
-        rl_address.setVisibility(View.GONE);
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 78) {
+            if (null != data.getExtras()) {
+                jsonUserAddress = (JsonUserAddress) data.getExtras().getSerializable("jsonUserAddress");
+                if (null != jsonUserAddress) {
+                    tv_address.setText(jsonUserAddress.getAddress());
+                }
+            }
+        }
     }
 
     public void checkProductWithZeroPrice() {
@@ -373,109 +336,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         dismissProgress();
     }
 
-
-    @Override
-    public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
-        final List<JsonUserAddress> addressList = jsonUserAddressList.getJsonUserAddresses();
-        JsonProfile jp = LaunchActivity.getUserProfile();
-        jp.setJsonUserAddresses(addressList);
-        LaunchActivity.setUserProfile(jp);
-        Log.e("address list: ", addressList.toString());
-        rg_address.removeAllViews();
-        for (int i = 0; i < addressList.size(); i++) {
-
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View radio_view = inflater.inflate(R.layout.list_item_radio, null, false);
-            final AppCompatRadioButton rdbtn = radio_view.findViewById(R.id.acrb);
-            rdbtn.setId(i);
-            rdbtn.setTag(addressList.get(i).getId());
-            rdbtn.setText(addressList.get(i).getAddress());
-            rdbtn.setPadding(10, 20, 10, 20);
-            rdbtn.setLayoutParams(
-                    new RadioGroup.LayoutParams(
-                            android.view.ViewGroup.LayoutParams.FILL_PARENT,
-                            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-            );
-            rdbtn.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    final int DRAWABLE_RIGHT = 2;
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        if (event.getRawX() >= (rdbtn.getRight() - rdbtn.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                            // your action here
-                            AlertDialog.Builder builder = new AlertDialog.Builder(OrderActivity.this);
-                            LayoutInflater inflater = LayoutInflater.from(OrderActivity.this);
-                            builder.setTitle(null);
-                            View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-                            builder.setView(customDialogView);
-                            final AlertDialog mAlertDialog = builder.create();
-                            mAlertDialog.setCanceledOnTouchOutside(false);
-                            TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-                            TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-                            tvtitle.setText("Delete Address");
-                            tv_msg.setText("Do you want to delete address from address list?");
-                            Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-                            Button btn_no = customDialogView.findViewById(R.id.btn_no);
-                            View separator = customDialogView.findViewById(R.id.seperator);
-                            btn_no.setVisibility(View.VISIBLE);
-                            separator.setVisibility(View.VISIBLE);
-                            btn_yes.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        progressDialog.show();
-                                        progressDialog.setMessage("Deleting address..");
-                                        clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
-                                    } else {
-                                        ShowAlertInformation.showNetworkDialog(OrderActivity.this);
-                                    }
-                                    mAlertDialog.dismiss();
-                                }
-                            });
-                            btn_no.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-
-                                    mAlertDialog.dismiss();
-                                }
-                            });
-                            mAlertDialog.show();
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            });
-            rg_address.addView(rdbtn);
-        }
-        rg_address.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                AppCompatRadioButton radioButtonChosen = group.findViewById(checkedId);
-                tv_address.setText(radioButtonChosen.getText());
-                rl_address.setVisibility(View.GONE);
-                jsonUserAddress = addressList.get(Integer.parseInt(radioButtonChosen.getTag().toString()));
-
-            }
-        });
-        rl_address.setVisibility(View.VISIBLE);
-        edt_add_address.setVisibility(View.GONE);
-        btn_add_address.setVisibility(View.GONE);
-        edt_add_address.setText("");
-        dismissProgress();
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (rl_address.getVisibility() == View.VISIBLE) {
-            rl_address.setVisibility(View.GONE);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     public void onSuccess(Map<String, String> map) {

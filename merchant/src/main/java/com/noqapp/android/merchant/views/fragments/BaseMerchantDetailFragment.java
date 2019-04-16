@@ -38,15 +38,20 @@ import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -350,31 +355,24 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     private void showCounterEditDialog(final Context mContext, final TextView textView, final String codeQR) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_edit_counter, null, false);
-        final AutoCompleteTextView actv_counter = customDialogView.findViewById(R.id.actv_counter);
+
+
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_edit_counter);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+
+        final AutoCompleteTextView actv_counter = dialog.findViewById(R.id.actv_counter);
         final ArrayList<String> names = LaunchActivity.getLaunchActivity().getCounterNames();
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                 (mContext, android.R.layout.simple_list_item_1, names);
         actv_counter.setAdapter(adapter1);
         actv_counter.setThreshold(1);
         AppUtils.setAutoCompleteText(actv_counter, textView.getText().toString().trim());
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Button btn_update = customDialogView.findViewById(R.id.btn_update);
-        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_update.setOnClickListener(new View.OnClickListener() {
-
+        Button btnPositive = dialog.findViewById(R.id.btnPositive);
+        Button btnNegative = dialog.findViewById(R.id.btnNegative);
+        btnPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 actv_counter.setError(null);
@@ -388,11 +386,20 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         names.add(actv_counter.getText().toString());
                         LaunchActivity.getLaunchActivity().setCounterNames(names);
                     }
-                    mAlertDialog.dismiss();
+                    dialog.dismiss();
                 }
             }
         });
-        mAlertDialog.show();
+        btnNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
     }
 
 

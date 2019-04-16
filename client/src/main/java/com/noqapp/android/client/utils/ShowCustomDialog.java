@@ -1,6 +1,4 @@
-package com.noqapp.android.merchant.utils;
-
-import com.noqapp.android.merchant.R;
+package com.noqapp.android.client.utils;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,16 +13,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.client.R;
+
 public class ShowCustomDialog {
     private Context context;
     private boolean showNegativeBtn = false;
     private boolean isGravityLeft = false;
-    private int icon;
     private DialogClickListener dialogClickListener;
 
     public void setIcon(int icon) {
         this.icon = icon;
     }
+
+    private int icon;
 
     public void setGravityLeft(boolean gravityLeft) {
         isGravityLeft = gravityLeft;

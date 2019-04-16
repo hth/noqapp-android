@@ -52,6 +52,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private String qCodeQR;
     private Button btn_refund, btn_pay_now;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
+    private TextView tv_token,tv_q_name,tv_customer_name;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -86,6 +87,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePaymentPresenter(this);
         manageQueueApiCalls.setQueueRefundPaymentPresenter(this);
+        tv_token = findViewById(R.id.tv_token);
+        tv_q_name = findViewById(R.id.tv_q_name);
+        tv_customer_name = findViewById(R.id.tv_customer_name);
+
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
@@ -216,6 +221,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
 
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
+        tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
+        tv_token.setText(String.valueOf(jsonQueuedPerson.getToken()));
+        tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         try {

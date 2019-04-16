@@ -20,6 +20,7 @@ import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.NavigationDrawerAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
@@ -270,22 +271,21 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         AppUtilities.openPlayStore(launchActivity);
                         break;
                     case R.drawable.ic_logout:
-                        new AlertDialog.Builder(launchActivity)
-                                .setTitle(getString(R.string.logout))
-                                .setMessage(getString(R.string.logout_msg))
-                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        NoQueueBaseActivity.clearPreferences();
-                                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                                        startActivity(loginIntent);
-                                    }
-                                })
-                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // user doesn't want to logout
-                                    }
-                                })
-                                .show();
+                        ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity,true);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                NoQueueBaseActivity.clearPreferences();
+                                Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                                startActivity(loginIntent);
+                            }
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
+                        });
+                        showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
+
                         break;
                 }
                 drawer.closeDrawer(GravityCompat.START);
