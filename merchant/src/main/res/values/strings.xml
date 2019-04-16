@@ -225,4 +225,5 @@
     <string name="empty_followup_subtitle">There are no followup scheduled :(.</string>
     <string name="empty_queue_title">Empty Queue</string>
     <string name="empty_queue_subtitle">Looks like no one has \n join the queue yet.</string>
+    <string name="user_details">Customer details</string>
 </resources>

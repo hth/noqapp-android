@@ -65,6 +65,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
+    private TextView tv_token,tv_q_name,tv_customer_name;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -96,7 +97,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         });
 
         tv_toolbar_title.setText(getString(R.string.order_details));
-
+        tv_token = findViewById(R.id.tv_token);
+        tv_q_name = findViewById(R.id.tv_q_name);
+        tv_customer_name = findViewById(R.id.tv_customer_name);
         ListView listview = findViewById(R.id.listview);
         TextView tv_item_count = findViewById(R.id.tv_item_count);
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
@@ -271,6 +274,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
 
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
+        tv_customer_name.setText(jsonPurchaseOrder.getCustomerName());
+        tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
+        tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
