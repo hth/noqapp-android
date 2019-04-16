@@ -271,7 +271,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         AppUtilities.openPlayStore(launchActivity);
                         break;
                     case R.drawable.ic_logout:
-                        ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity);
+                        ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity,true);
                         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
                             public void btnPositiveClick() {
