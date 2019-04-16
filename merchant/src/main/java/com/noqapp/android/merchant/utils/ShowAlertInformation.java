@@ -20,34 +20,18 @@ public class ShowAlertInformation {
     }
 
     public static void showThemeDialog(Context context, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        TextView tv_msg =  customDialogView.findViewById(R.id.tv_msg);
-        tvtitle.setText(title);
-        tv_msg.setText(message);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
+        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
+            public void btnPositiveClick() {
+                //Do nothing
+            }
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
             }
         });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
-        resizeAlert(mAlertDialog,context);
+        showDialog.displayDialog(title, message);
     }
 
     public static void showThemePlayStoreDialog(final Context context, String title, String message, boolean isNegativeEnable) {

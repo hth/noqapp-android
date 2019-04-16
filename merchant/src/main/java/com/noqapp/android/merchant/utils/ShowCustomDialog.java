@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,8 +17,19 @@ import android.widget.TextView;
 
 public class ShowCustomDialog {
     private Context context;
+    private boolean showNegativeBtn = false;
+    private boolean isGravityLeft = false;
     private DialogClickListener dialogClickListener;
 
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
+
+    private int icon;
+
+    public void setGravityLeft(boolean gravityLeft) {
+        isGravityLeft = gravityLeft;
+    }
 
     public interface DialogClickListener {
         void btnPositiveClick();
@@ -34,6 +46,10 @@ public class ShowCustomDialog {
     public ShowCustomDialog(Context context) {
         this.context = context;
     }
+    public ShowCustomDialog(Context context,boolean showNegativeBtn) {
+        this.context = context;
+        this.showNegativeBtn = showNegativeBtn;
+    }
 
     public void displayDialog(String title, String msg) {
         displayDialog(title, msg, "", "");
@@ -49,8 +65,13 @@ public class ShowCustomDialog {
         TextView tv_msg = dialog.findViewById(R.id.tv_msg);
         tv_title.setText(title);
         tv_msg.setText(msg);
+        if (isGravityLeft)
+            tv_msg.setGravity(Gravity.LEFT);
+
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
+        if(showNegativeBtn)
+            btnNegative.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(btnPositiveText))
             btnPositive.setText(btnPositiveText);
         if (!TextUtils.isEmpty(btnNegativeText))
