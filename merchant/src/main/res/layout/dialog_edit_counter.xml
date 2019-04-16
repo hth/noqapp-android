@@ -1,25 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="25dp"
     android:layout_gravity="center"
-    android:background="@android:color/white"
+    android:minHeight="300dp"
+    android:maxWidth="350dp"
+    android:background="@drawable/dialog_bg"
+    android:outlineProvider="paddedBounds"
     android:gravity="center"
     android:paddingTop="10dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="Enter counter name"
+            android:textStyle="bold"
             android:textColor="@color/color_action_bar"
             android:textSize="@dimen/text_size_sixteen" />
 
@@ -40,52 +43,43 @@
             android:minLines="1"
             android:singleLine="true" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/actv_counter"
-            android:background="@color/color_grey_bg" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_below="@+id/actv_counter"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="2"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btnPositive"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.5"
-                android:background="@android:color/transparent"
-                android:text="@string/cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_sixteen" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color_grey_bg" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:text="UPDATE"
+                android:padding="10dp"
+                android:layout_marginRight="5dp"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"/>
 
             <Button
-                android:id="@+id/btn_update"
+                android:id="@+id/btnNegative"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_below="@+id/llotp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="0.5"
-                android:background="@android:color/transparent"
-                android:text="@string/update"
-                android:textAllCaps="false"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_sixteen" />
-
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:text="CANCEL"
+                android:padding="10dp"
+                android:layout_marginLeft="5dp"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:textStyle="bold"/>
         </LinearLayout>
 
     </RelativeLayout>

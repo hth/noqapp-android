@@ -19,13 +19,12 @@ public class ShowCustomDialog {
     private Context context;
     private boolean showNegativeBtn = false;
     private boolean isGravityLeft = false;
+    private int icon;
     private DialogClickListener dialogClickListener;
 
     public void setIcon(int icon) {
         this.icon = icon;
     }
-
-    private int icon;
 
     public void setGravityLeft(boolean gravityLeft) {
         isGravityLeft = gravityLeft;
