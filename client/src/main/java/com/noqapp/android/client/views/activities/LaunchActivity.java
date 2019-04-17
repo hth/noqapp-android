@@ -674,6 +674,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             ReviewDB.insert(cv);
         }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+        // Clear all activity from stack then launch skip(Join) Screen
+        Intent in1 = new Intent(this, LaunchActivity.class);
+        in1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(in1);
         Intent in = new Intent(this, JoinActivity.class);
         in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
