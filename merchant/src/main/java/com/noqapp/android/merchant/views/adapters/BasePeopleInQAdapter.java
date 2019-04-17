@@ -274,7 +274,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
                     }
-                    if(jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.N){
+                    if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.N) {
                         recordHolder.tv_payment_stat.setText("Refund Due");
                     }
                     break;
@@ -282,12 +282,26 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     recordHolder.tv_payment_stat.setText("Payment Refunded");
                     recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
                     break;
+                case PP:
+                    if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
+                        recordHolder.tv_payment_stat.setText("No Payment Due");
+                        recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                    }else{
+                        recordHolder.tv_payment_stat.setText("Accept Payment");
+                        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
+                                jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+                            recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
+                        } else {
+                            recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                        }
+                    }
+                    break;
                 default:
                     recordHolder.tv_payment_stat.setText("Accept Payment");
-                    if(jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
+                    if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
                             jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                         recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
-                    }else{
+                    } else {
                         recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
                     }
                     break;

@@ -30,16 +30,19 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
+import androidx.viewpager.widget.ViewPager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -84,6 +87,15 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("Case History Settings");
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         initProgress();
         preferenceActivity = this;
         try {
