@@ -154,18 +154,22 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             @Override
             public void onClick(View v) {
                 if (null != jsonPurchaseOrder) {
-                    switch (jsonPurchaseOrder.getTransactionVia()) {
-                        case I:
-                            cancelOrder();
-                            break;
-                        case E:
-                            cancelOrder();
-                            Toast.makeText(OrderConfirmActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
-                            break;
-                        case U:
-                            cancelOrder();
-                            Toast.makeText(OrderConfirmActivity.this, "Your payment mode is unknown. You cannot cancel the order.", Toast.LENGTH_SHORT).show();
-                            break;
+                    if (null == jsonPurchaseOrder.getTransactionVia()) {
+                        cancelOrder();
+                    } else {
+                        switch (jsonPurchaseOrder.getTransactionVia()) {
+                            case I:
+                                cancelOrder();
+                                break;
+                            case E:
+                                cancelOrder();
+                                Toast.makeText(OrderConfirmActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
+                                break;
+                            case U:
+                                cancelOrder();
+                                Toast.makeText(OrderConfirmActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
                     }
                 }
             }
