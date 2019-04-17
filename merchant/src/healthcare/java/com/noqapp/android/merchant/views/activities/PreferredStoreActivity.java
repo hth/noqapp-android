@@ -91,7 +91,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
         viewPager = findViewById(R.id.pager);

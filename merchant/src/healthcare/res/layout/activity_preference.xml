@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="#99ffffff"
     android:orientation="vertical">
+    <include layout="@layout/toolbar_layout"/>
 
     <RelativeLayout
         android:id="@+id/layout"

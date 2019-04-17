@@ -275,7 +275,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonPurchaseOrder.getCustomerName());
-        tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
+        tv_token.setText("Token/Order No. "+String.valueOf(jsonPurchaseOrder.getToken()));
         tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
