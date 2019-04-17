@@ -143,7 +143,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             @Override
             public void onClick(View view) {
                 if (null != jsonTokenAndQueue) {
-                    if (null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                    if (null == jsonTokenAndQueue.getJsonPurchaseOrder() ||null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
                         cancelQueue();
                     } else {
                         switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
