@@ -222,7 +222,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
-        tv_token.setText(String.valueOf(jsonQueuedPerson.getToken()));
+        tv_token.setText("Token/Order No. "+String.valueOf(jsonQueuedPerson.getToken()));
         tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
