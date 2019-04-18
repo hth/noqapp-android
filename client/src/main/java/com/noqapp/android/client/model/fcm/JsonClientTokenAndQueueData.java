@@ -38,6 +38,10 @@ public class JsonClientTokenAndQueueData extends JsonData implements Serializabl
     @JsonProperty("mo")
     private MessageOriginEnum messageOrigin;
 
+    /** Code QR of store that is originating message. */
+    @JsonProperty("qr")
+    private String codeQR;
+
     private List<JsonTokenAndQueue> tokenAndQueues = new ArrayList<>();
 
     public MessageOriginEnum getMessageOrigin() {
@@ -46,6 +50,15 @@ public class JsonClientTokenAndQueueData extends JsonData implements Serializabl
 
     public JsonClientTokenAndQueueData setMessageOrigin(MessageOriginEnum messageOrigin) {
         this.messageOrigin = messageOrigin;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonClientTokenAndQueueData setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 
@@ -62,6 +75,7 @@ public class JsonClientTokenAndQueueData extends JsonData implements Serializabl
     public String toString() {
         final StringBuffer sb = new StringBuffer("JsonClientTokenAndQueueData{");
         sb.append("messageOrigin=").append(messageOrigin);
+        sb.append("codeQR=").append(codeQR);
         sb.append(", tokenAndQueues=").append(tokenAndQueues);
         sb.append('}');
         return sb.toString();
