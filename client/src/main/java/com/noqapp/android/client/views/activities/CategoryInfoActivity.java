@@ -20,6 +20,7 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.AccreditionAdapter;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
@@ -89,6 +90,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
     private View view_loader;
+    private RecyclerView rcv_accreditation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         btn_join_queues = findViewById(R.id.btn_join_queues);
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
+        rcv_accreditation = findViewById(R.id.rcv_accreditation);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         listener = this;
@@ -272,7 +275,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
-
+            rcv_accreditation.setHasFixedSize(true);
+            rcv_accreditation.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            List<String> accreditationImages = new ArrayList<>();
+            if (bizStoreElastic.getAccreditation().size() > 0) {
+                for (int i = 0; i < bizStoreElastic.getAccreditation().size(); i++) {
+                    accreditationImages.add(bizStoreElastic.getAccreditation().get(i).getFilename());
+                }
+            }
+            AccreditionAdapter accreditionAdapter = new AccreditionAdapter(this, accreditationImages);
+            rcv_accreditation.setAdapter(accreditionAdapter);
             if (null != storeServiceImages && storeServiceImages.size() > 0) {
                 iv_category_banner.setOnClickListener(new View.OnClickListener() {
                     @Override

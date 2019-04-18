@@ -1,26 +1,5 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.common.beans.JsonHour;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import org.joda.time.LocalDateTime;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -35,12 +14,28 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import androidx.annotation.ColorInt;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
+
+import org.joda.time.LocalDateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,6 +58,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 public class AppUtilities extends CommonHelper {
     private static final String TAG = AppUtilities.class.getSimpleName();
@@ -406,6 +405,9 @@ public class AppUtilities extends CommonHelper {
                 break;
             case BuildConfig.SERVICE_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.SERVICE_BUCKET + url;
+                break;
+            case BuildConfig.ACCREDITATION_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.ACCREDITATION_BUCKET + url;
                 break;
             default:
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
