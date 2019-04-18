@@ -1,5 +1,31 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.ServicePaymentEnum;
@@ -18,45 +44,21 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalTime;
-
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
@@ -74,10 +76,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private String YES = "Yes";
     private String NO = "No";
     private EditText edt_deduction_amount, edt_fees;
+    private EditText edt_follow_up_in_days,edt_discounted_followup_price,edt_limited_followup_days;
     private SegmentedControl sc_paid_user;
     private List<String> pay_list = new ArrayList<>();
     private ServicePaymentEnum servicePaymentEnum;
     private LinearLayout ll_payment;
+    private TextView tv_fee_after_discounted_followup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +113,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleStoreOfflineLabel = findViewById(R.id.toggleStoreOfflineLabel);
         edt_deduction_amount = findViewById(R.id.edt_deduction_amount);
         edt_fees = findViewById(R.id.edt_fees);
+        tv_fee_after_discounted_followup = findViewById(R.id.tv_fee_after_discounted_followup);
+        edt_follow_up_in_days = findViewById(R.id.edt_follow_up_in_days);
+        edt_discounted_followup_price = findViewById(R.id.edt_discounted_followup_price);
+        edt_limited_followup_days = findViewById(R.id.edt_limited_followup_days);
         ll_payment = findViewById(R.id.ll_payment);
         codeQR = getIntent().getStringExtra("codeQR");
         toggleDayClosed.setOnClickListener(this);
@@ -311,6 +319,40 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 callUpdate();
             }
         });
+
+        edt_discounted_followup_price.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() != 0){
+                    if(!TextUtils.isEmpty(edt_fees.getText().toString())) {
+                        tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
+                        try {
+                            tv_fee_after_discounted_followup.setText("Your Service Charges in followup will be " +
+                                    (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        tv_fee_after_discounted_followup.setText("");
+                        tv_fee_after_discounted_followup.setVisibility(View.GONE);
+                    }
+                }else{
+                    tv_fee_after_discounted_followup.setText("");
+                    tv_fee_after_discounted_followup.setVisibility(View.GONE);
+                }
+
+            }
+        });
         btn_update_deduction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -323,7 +365,35 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                         } else {
                             if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && !TextUtils.isEmpty(edt_fees.getText().toString())) {
                                 if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
-                                    updatePaymentSettings();
+                                    if(TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                                        if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >=
+                                                    (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                updatePaymentSettings();
+                                            }else {
+                                                Toast.makeText(SettingActivity.this, "Limited follow up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                            }
+                                        } else {
+                                            updatePaymentSettings();
+                                        }
+                                    }else{
+                                        if(Integer.parseInt(edt_discounted_followup_price.getText().toString())>=0 &&
+                                                (Integer.parseInt(edt_discounted_followup_price.getText().toString())
+                                                        <Integer.parseInt(edt_fees.getText().toString()))){
+                                            if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                                                if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >=
+                                                        (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                    updatePaymentSettings();
+                                                }else {
+                                                    Toast.makeText(SettingActivity.this, "Limited follow up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                                }
+                                            } else {
+                                                updatePaymentSettings();
+                                            }
+                                        }else{
+                                            Toast.makeText(SettingActivity.this, "Discounted follow up price cannot be greater than Service Charges", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
                                 } else {
                                     Toast.makeText(SettingActivity.this, "Cancellation charges cannot be greater than Service Charges", Toast.LENGTH_LONG).show();
                                 }
@@ -335,6 +405,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 }else{
                     edt_fees.setText("0");
                     edt_deduction_amount.setText("0");
+                    edt_discounted_followup_price.setText("0");
+                    edt_follow_up_in_days.setText("0");
+                    edt_limited_followup_days.setText("0");
                     updatePaymentSettings();
                 }
             }
@@ -361,6 +434,22 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 queueSetting.setProductPrice(0);
             } else {
                 queueSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
+            }
+
+            if (TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                queueSetting.setFreeFollowupDays(0);
+            } else {
+                queueSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
+                queueSetting.setDiscountedFollowupDays(0);
+            } else {
+                queueSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                queueSetting.setDiscountedFollowupProductPrice(0);
+            } else {
+                queueSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
             }
             queueSetting.setServicePayment(servicePaymentEnum);
             queueSetting.setEnabledPayment(cb_enable_payment.isChecked());
@@ -452,6 +541,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             sc_paid_user.setSelectedSegment(pay_list.indexOf(servicePaymentEnum.getDescription()));
             edt_deduction_amount.setText(String.valueOf(queueSetting.getCancellationPrice() / 100));
             edt_fees.setText(String.valueOf(queueSetting.getProductPrice() / 100));
+
+            edt_discounted_followup_price.setText(String.valueOf(queueSetting.getDiscountedFollowupProductPrice() / 100));
+            edt_follow_up_in_days.setText(String.valueOf(queueSetting.getFreeFollowupDays()));
+            edt_limited_followup_days.setText(String.valueOf(queueSetting.getDiscountedFollowupDays()));
         }
         dismissProgress();
     }
