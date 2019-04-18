@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class StoreSettingApiCalls {
 
     private static final String TAG = StoreSettingApiCalls.class.getSimpleName();
-    private static final StoreSettingApiUrls STORE_SETTING_API_URLS;
+    private static final StoreSettingApiUrls storeSettingApiUrls;
     private StoreSettingPresenter storeSettingPresenter;
 
     public StoreSettingApiCalls(StoreSettingPresenter storeSettingPresenter) {
@@ -30,11 +30,11 @@ public class StoreSettingApiCalls {
     }
 
     static {
-        STORE_SETTING_API_URLS = RetrofitClient.getClient().create(StoreSettingApiUrls.class);
+        storeSettingApiUrls = RetrofitClient.getClient().create(StoreSettingApiUrls.class);
     }
 
     public void getQueueState(String did, String mail, String auth, String codeQR) {
-        STORE_SETTING_API_URLS.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreSetting>() {
+        storeSettingApiUrls.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreSetting>() {
             @Override
             public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -63,7 +63,7 @@ public class StoreSettingApiCalls {
     }
 
     public void removeSchedule(String did, String mail, String auth, String codeQR) {
-        STORE_SETTING_API_URLS.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreSetting>() {
+        storeSettingApiUrls.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreSetting>() {
             @Override
             public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -93,7 +93,7 @@ public class StoreSettingApiCalls {
 
 
     public void modify(String did, String mail, String auth, StoreSetting storeSetting) {
-        STORE_SETTING_API_URLS.modify(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
+        storeSettingApiUrls.modify(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
             @Override
             public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -128,7 +128,7 @@ public class StoreSettingApiCalls {
     }
 
     public void serviceCost(String did, String mail, String auth, StoreSetting storeSetting) {
-        STORE_SETTING_API_URLS.serviceCost(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
+        storeSettingApiUrls.serviceCost(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
             @Override
             public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
