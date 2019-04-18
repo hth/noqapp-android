@@ -1,11 +1,28 @@
 package com.noqapp.android.client.network;
 
-import static com.noqapp.android.client.utils.Constants.CodeQR;
-import static com.noqapp.android.client.utils.Constants.Firebase_Type;
-import static com.noqapp.android.client.utils.Constants.ISREVIEW;
-import static com.noqapp.android.client.utils.Constants.QRCODE;
-import static com.noqapp.android.client.utils.Constants.TOKEN;
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.DatabaseHelper;
 import com.noqapp.android.client.model.database.DatabaseTable;
@@ -31,38 +48,8 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-
 import org.apache.commons.lang3.StringUtils;
-
 import org.json.JSONObject;
-
-import android.app.ActivityManager;
-import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ComponentName;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -70,6 +57,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import static com.noqapp.android.client.utils.Constants.CodeQR;
+import static com.noqapp.android.client.utils.Constants.Firebase_Type;
+import static com.noqapp.android.client.utils.Constants.ISREVIEW;
+import static com.noqapp.android.client.utils.Constants.QRCODE;
+import static com.noqapp.android.client.utils.Constants.TOKEN;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
@@ -304,20 +302,14 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
                             if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
                                 TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
-                            }else{
-                                NotificationDB.insertNotification(
-                                        NotificationDB.KEY_NOTIFY,
-                                        "", ((JsonClientTokenAndQueueData) object).getBody(),
-                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
                             }
+                            NotificationDB.insertNotification(
+                                    NotificationDB.KEY_NOTIFY,
+                                    ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
+                                    ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+
                             for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                                 NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
-                                if(i==0) {
-                                    NotificationDB.insertNotification(
-                                            NotificationDB.KEY_NOTIFY,
-                                            jsonTokenAndQueueList.get(i).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
-                                            ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
-                                }
                             }
                             sendNotification(title, body, false);
                         } else {
