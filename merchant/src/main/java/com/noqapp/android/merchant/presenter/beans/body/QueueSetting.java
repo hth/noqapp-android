@@ -84,13 +84,13 @@ public class QueueSetting {
     @JsonProperty("sp")
     private ServicePaymentEnum servicePayment;
 
-    @JsonProperty("ffd")
+    @JsonProperty("fd")
     private int freeFollowupDays;
 
-    @JsonProperty("dfd")
+    @JsonProperty("dd")
     private int discountedFollowupDays;
 
-    @JsonProperty("dfp")
+    @JsonProperty("dp")
     private int discountedFollowupProductPrice;
 
     @JsonProperty("sa")
