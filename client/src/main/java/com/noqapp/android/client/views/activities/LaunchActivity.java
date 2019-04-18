@@ -927,6 +927,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
+                    }else if (object instanceof JsonTopicQueueData) {
+                        updateNotification(object, codeQR);
                     } else if (object instanceof JsonClientTokenAndQueueData) {
                         List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
                         if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
@@ -986,7 +988,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
             if (null != jtk) {
                 //update DB & after join screen
-                jtk.setServingNumber(Integer.parseInt(current_serving));
+                if( Integer.parseInt(current_serving)<jtk.getServingNumber()){
+                    // Do nothing - In Case of getting service no less than what the object have
+                }else{
+                    jtk.setServingNumber(Integer.parseInt(current_serving));
+                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                }
 
                 if (object instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
                     jtk.setPurchaseOrderState(purchaseOrderStateEnum);
@@ -1021,7 +1028,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     //un subscribe the topic
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                 }
-                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+
                 if (activityCommunicator != null) {
                     boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 
