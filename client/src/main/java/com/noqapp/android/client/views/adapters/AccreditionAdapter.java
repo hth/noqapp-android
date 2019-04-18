@@ -79,13 +79,13 @@ public class AccreditionAdapter extends RecyclerView.Adapter<AccreditionAdapter.
 
         @Override
         public void onClick(View view) {
-
-//                Intent intent = new Intent(context, SliderActivity.class);
-//                intent.putExtra("pos", getAdapterPosition());
-//                intent.putExtra("imageurls", (ArrayList<String>) imageUrls);
-//                intent.putExtra("isDocument", isDocument);
-//                intent.putExtra("recordReferenceId", recordReferenceId);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, SliderActivity.class);
+                intent.putExtra("pos", getAdapterPosition());
+                intent.putExtra("imageurls", (ArrayList<String>) imageUrls);
+                intent.putExtra("isDocument", false);
+                intent.putExtra("recordReferenceId", "");
+                intent.putExtra("bucket",BuildConfig.ACCREDITATION_BUCKET);
+                context.startActivity(intent);
 
         }
     }

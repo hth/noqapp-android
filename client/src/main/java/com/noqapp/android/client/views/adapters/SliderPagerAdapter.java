@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,17 @@ public class SliderPagerAdapter extends PagerAdapter {
     private ArrayList<String> image_arraylist;
     private boolean isDocument = false;
     private String recordReferenceId;
+    private String bucket;
 
     public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist) {
         this.activity = activity;
         this.image_arraylist = image_arraylist;
+    }
+
+    public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist,String bucket) {
+        this.activity = activity;
+        this.image_arraylist = image_arraylist;
+        this.bucket = bucket;
     }
 
     public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist, boolean isDocument, String recordReferenceId) {
@@ -78,7 +86,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
             Picasso.get()
-                    .load(AppUtilities.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
+                    .load(AppUtilities.getImageUrls(TextUtils.isEmpty(bucket)?BuildConfig.SERVICE_BUCKET:bucket, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
                     .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
                     .into(im_slider);
