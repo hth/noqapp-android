@@ -945,7 +945,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".8"
                                 android:padding="5dp"
-                                android:text="@string/text_follow_in_days"
+                                android:text="@string/text_followup_in_days"
                                 android:textColor="@color/color_total_val"
                                 android:textSize="@dimen/text_size_fourteen" />
 

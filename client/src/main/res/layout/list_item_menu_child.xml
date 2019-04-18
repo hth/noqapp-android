@@ -38,9 +38,6 @@
                 android:layout_below="@+id/tv_child_title"
                 android:text=""
                 android:textSize="@dimen/text_size_ten"/>
-
-
-
     </RelativeLayout>
 
     <LinearLayout
