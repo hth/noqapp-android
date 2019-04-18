@@ -1,5 +1,36 @@
 package com.noqapp.android.client.views.activities;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -8,10 +39,10 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
@@ -45,44 +76,17 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -97,11 +101,6 @@ import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
@@ -674,6 +673,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             ReviewDB.insert(cv);
         }
         Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+        // Clear all activity from stack then launch skip(Join) Screen
+        Intent in1 = new Intent(this, LaunchActivity.class);
+        in1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(in1);
         Intent in = new Intent(this, JoinActivity.class);
         in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -814,8 +817,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                 } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
-                } else if (object instanceof JsonTokenAndQueueList) {
-                    Log.e("JsonTokenAndQueueList", ((JsonTokenAndQueueList) object).toString());
+                } else if (object instanceof JsonClientTokenAndQueueData) {
+                    Log.e("JsonClientTokenAndQData", ((JsonClientTokenAndQueueData) object).toString());
                 } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                 } else if (object instanceof JsonMedicalFollowUp) {
@@ -924,14 +927,22 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
-                    } else if (object instanceof JsonTokenAndQueueList) {
-                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonTokenAndQueueList) object).getTokenAndQueues();
+                    }else if (object instanceof JsonTopicQueueData) {
+                        updateNotification(object, codeQR);
+                    } else if (object instanceof JsonClientTokenAndQueueData) {
+                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
                         if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
                         }
+                        NotificationDB.insertNotification(
+                                NotificationDB.KEY_NOTIFY,
+                                ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
+                                ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
                         }
+                        updateNotificationBadgeCount();
                         if (null != scanFragment)
                             scanFragment.fetchCurrentAndHistoryList();
                     }
@@ -977,7 +988,12 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
             if (null != jtk) {
                 //update DB & after join screen
-                jtk.setServingNumber(Integer.parseInt(current_serving));
+                if( Integer.parseInt(current_serving)<jtk.getServingNumber()){
+                    // Do nothing - In Case of getting service no less than what the object have
+                }else{
+                    jtk.setServingNumber(Integer.parseInt(current_serving));
+                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                }
 
                 if (object instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
                     jtk.setPurchaseOrderState(purchaseOrderStateEnum);
@@ -1012,7 +1028,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     //un subscribe the topic
                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                 }
-                TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+
                 if (activityCommunicator != null) {
                     boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
 

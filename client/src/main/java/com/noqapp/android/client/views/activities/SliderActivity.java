@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -61,7 +62,11 @@ public class SliderActivity extends AppCompatActivity {
         if(b.getBoolean("isDocument")){
             sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list,true,b.getString("recordReferenceId"));
         }else{
-            sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
+            if(TextUtils.isEmpty(b.getString("bucket"))) {
+                sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list);
+            }else {
+                sliderPagerAdapter = new SliderPagerAdapter(this, slider_image_list,b.getString("bucket"));
+            }
         }
 
         vp_slider.setAdapter(sliderPagerAdapter);

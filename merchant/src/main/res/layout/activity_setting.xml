@@ -856,6 +856,131 @@
                                 android:textSize="@dimen/text_size_fourteen" />
 
                         </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/followup_setting"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_sixteen"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".8"
+                                android:padding="5dp"
+                                android:text="@string/text_follow_in_days"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                            <EditText
+                                android:id="@+id/edt_follow_up_in_days"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".2"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:digits="0123456789"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".8"
+                                android:padding="5dp"
+                                android:text="@string/text_discounted_followup_price"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                            <EditText
+                                android:id="@+id/edt_discounted_followup_price"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".2"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:digits="0123456789"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_fee_after_discounted_followup"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:visibility="gone"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".8"
+                                android:padding="5dp"
+                                android:text="@string/text_limited_followup_days"
+                                android:textColor="@color/color_total_val"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                            <EditText
+                                android:id="@+id/edt_limited_followup_days"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".2"
+                                android:background="@drawable/square_white_bg_drawable"
+                                android:digits="0123456789"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="4"
+                                android:maxLines="1"
+                                android:minLines="1"
+                                android:padding="5dp"
+                                android:singleLine="true"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+                        </LinearLayout>
                     </LinearLayout>
                         <Button
                             android:id="@+id/btn_update_deduction"

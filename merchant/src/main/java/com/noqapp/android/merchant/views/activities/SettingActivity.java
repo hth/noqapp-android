@@ -7,15 +7,15 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.QueueSettingApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
+import com.noqapp.android.merchant.model.StoreSettingApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
+import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +30,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,26 +60,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class SettingActivity extends AppCompatActivity implements QueueSettingPresenter, View.OnClickListener {
+public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack, iv_delete_scheduling;
     private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline;
     private String codeQR;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
-    private CheckBox cb_limit,cb_enable_payment;
+    private CheckBox cb_limit, cb_enable_payment;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
-    private QueueSettingApiCalls queueSettingApiCalls;
-    private QueueSetting queueSettingTemp;
+    private StoreSettingApiCalls storeSettingApiCalls;
+    private StoreSetting storeSettingTemp;
     private TextView togglePreventJoinLabel, toggleTodayClosedLabel, toggleDayClosedLabel, toggleStoreOfflineLabel;
     private String YES = "Yes";
     private String NO = "No";
     private EditText edt_deduction_amount, edt_fees;
+    private EditText edt_follow_up_in_days, edt_discounted_followup_price, edt_limited_followup_days;
     private SegmentedControl sc_paid_user;
     private List<String> pay_list = new ArrayList<>();
     private ServicePaymentEnum servicePaymentEnum;
     private LinearLayout ll_payment;
+    private TextView tv_fee_after_discounted_followup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +91,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        queueSettingApiCalls = new QueueSettingApiCalls(this);
+        storeSettingApiCalls = new StoreSettingApiCalls(this);
         setContentView(R.layout.activity_setting);
 
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -109,6 +113,10 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
         toggleStoreOfflineLabel = findViewById(R.id.toggleStoreOfflineLabel);
         edt_deduction_amount = findViewById(R.id.edt_deduction_amount);
         edt_fees = findViewById(R.id.edt_fees);
+        tv_fee_after_discounted_followup = findViewById(R.id.tv_fee_after_discounted_followup);
+        edt_follow_up_in_days = findViewById(R.id.edt_follow_up_in_days);
+        edt_discounted_followup_price = findViewById(R.id.edt_discounted_followup_price);
+        edt_limited_followup_days = findViewById(R.id.edt_limited_followup_days);
         ll_payment = findViewById(R.id.ll_payment);
         codeQR = getIntent().getStringExtra("codeQR");
         toggleDayClosed.setOnClickListener(this);
@@ -148,8 +156,9 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                         @Override
                         public void btnPositiveClick() {
                             progressDialog.show();
-                            queueSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                            storeSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                         }
+
                         @Override
                         public void btnNegativeClick() {
                             //Do nothing
@@ -311,19 +320,77 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                 callUpdate();
             }
         });
+
+        edt_discounted_followup_price.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (s.length() != 0) {
+                    if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
+                        tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
+                        try {
+                            tv_fee_after_discounted_followup.setText("Your Service Charges in followup will be " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        tv_fee_after_discounted_followup.setText("");
+                        tv_fee_after_discounted_followup.setVisibility(View.GONE);
+                    }
+                } else {
+                    tv_fee_after_discounted_followup.setText("");
+                    tv_fee_after_discounted_followup.setVisibility(View.GONE);
+                }
+
+            }
+        });
         btn_update_deduction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(cb_enable_payment.isChecked()) {
-                    if(TextUtils.isEmpty(edt_fees.getText().toString()) ||Integer.parseInt(edt_fees.getText().toString())==0){
-                        Toast.makeText(SettingActivity.this, "Service Charges can't be zero", Toast.LENGTH_LONG).show();
-                    }else {
+                if (cb_enable_payment.isChecked()) {
+                    if (TextUtils.isEmpty(edt_fees.getText().toString()) || Integer.parseInt(edt_fees.getText().toString()) == 0) {
+                        Toast.makeText(SettingActivity.this, "Service Charge cannot be zero", Toast.LENGTH_LONG).show();
+                    } else {
                         if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && TextUtils.isEmpty(edt_fees.getText().toString())) {
-                            Toast.makeText(SettingActivity.this, "Cancellation charges not allowed without Service Charges", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SettingActivity.this, "Cancellation Charge is not allowed without Service Charge", Toast.LENGTH_LONG).show();
                         } else {
                             if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && !TextUtils.isEmpty(edt_fees.getText().toString())) {
                                 if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
-                                    updatePaymentSettings();
+                                    if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                                        if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >=
+                                                    (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                updatePaymentSettings();
+                                            } else {
+                                                Toast.makeText(SettingActivity.this, "Limited follow up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                            }
+                                        } else {
+                                            updatePaymentSettings();
+                                        }
+                                    } else {
+                                        if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) < Integer.parseInt(edt_fees.getText().toString()))) {
+                                            if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                                                if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >= (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                    updatePaymentSettings();
+                                                } else {
+                                                    Toast.makeText(SettingActivity.this, "Limited follow up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                                }
+                                            } else {
+                                                updatePaymentSettings();
+                                            }
+                                        } else {
+                                            Toast.makeText(SettingActivity.this, "Discounted follow up price cannot be greater than Service Charges", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
                                 } else {
                                     Toast.makeText(SettingActivity.this, "Cancellation charges cannot be greater than Service Charges", Toast.LENGTH_LONG).show();
                                 }
@@ -332,9 +399,12 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                             }
                         }
                     }
-                }else{
+                } else {
                     edt_fees.setText("0");
                     edt_deduction_amount.setText("0");
+                    edt_discounted_followup_price.setText("0");
+                    edt_follow_up_in_days.setText("0");
+                    edt_limited_followup_days.setText("0");
                     updatePaymentSettings();
                 }
             }
@@ -342,7 +412,7 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            queueSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            storeSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
@@ -351,20 +421,36 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     private void updatePaymentSettings() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.show();
-            QueueSetting queueSetting = queueSettingTemp;
+            StoreSetting storeSetting = storeSettingTemp;
             if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
-                queueSetting.setCancellationPrice(0);
+                storeSetting.setCancellationPrice(0);
             } else {
-                queueSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
+                storeSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
             }
             if (TextUtils.isEmpty(edt_fees.getText().toString())) {
-                queueSetting.setProductPrice(0);
+                storeSetting.setProductPrice(0);
             } else {
-                queueSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
+                storeSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
             }
-            queueSetting.setServicePayment(servicePaymentEnum);
-            queueSetting.setEnabledPayment(cb_enable_payment.isChecked());
-            queueSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+
+            if (TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                storeSetting.setFreeFollowupDays(0);
+            } else {
+                storeSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
+                storeSetting.setDiscountedFollowupDays(0);
+            } else {
+                storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                storeSetting.setDiscountedFollowupProductPrice(0);
+            } else {
+                storeSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
+            }
+            storeSetting.setServicePayment(servicePaymentEnum);
+            storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
+            storeSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
@@ -404,43 +490,43 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     }
 
     @Override
-    public void queueSettingResponse(QueueSetting queueSetting) {
-        if (null != queueSetting) {
-            queueSettingTemp = queueSetting;
-            toggleDayClosed.setChecked(queueSetting.isDayClosed());
-            toggleDayClosedLabel.setText(queueSetting.isDayClosed() ? YES : NO);
-            togglePreventJoin.setChecked(queueSetting.isPreventJoining());
-            togglePreventJoinLabel.setText(queueSetting.isPreventJoining() ? YES : NO);
-            toggleTodayClosed.setChecked(queueSetting.isTempDayClosed());
-            toggleTodayClosedLabel.setText(queueSetting.isTempDayClosed() ? YES : NO);
-            toggleStoreOffline.setChecked(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
-            toggleStoreOfflineLabel.setText(queueSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? YES : NO);
-            cb_enable_payment.setChecked(queueSetting.isEnabledPayment());
-            ll_payment.setVisibility(queueSetting.isEnabledPayment()?View.VISIBLE:View.GONE);
-            tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenAvailableFrom()));
-            tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getStartHour()));
-            tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getTokenNotAvailableFrom()));
-            tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(queueSetting.getEndHour()));
-            LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", queueSetting.getStartHour()));
-            localTime = localTime.plusMinutes(queueSetting.getDelayedInMinutes());
+    public void queueSettingResponse(StoreSetting storeSetting) {
+        if (null != storeSetting) {
+            storeSettingTemp = storeSetting;
+            toggleDayClosed.setChecked(storeSetting.isDayClosed());
+            toggleDayClosedLabel.setText(storeSetting.isDayClosed() ? YES : NO);
+            togglePreventJoin.setChecked(storeSetting.isPreventJoining());
+            togglePreventJoinLabel.setText(storeSetting.isPreventJoining() ? YES : NO);
+            toggleTodayClosed.setChecked(storeSetting.isTempDayClosed());
+            toggleTodayClosedLabel.setText(storeSetting.isTempDayClosed() ? YES : NO);
+            toggleStoreOffline.setChecked(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
+            toggleStoreOfflineLabel.setText(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? YES : NO);
+            cb_enable_payment.setChecked(storeSetting.isEnabledPayment());
+            ll_payment.setVisibility(storeSetting.isEnabledPayment() ? View.VISIBLE : View.GONE);
+            tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getTokenAvailableFrom()));
+            tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getStartHour()));
+            tv_token_not_available.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getTokenNotAvailableFrom()));
+            tv_store_close.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getEndHour()));
+            LocalTime localTime = Formatter.parseLocalTime(String.format(Locale.US, "%04d", storeSetting.getStartHour()));
+            localTime = localTime.plusMinutes(storeSetting.getDelayedInMinutes());
             tv_delay_in_minute.setText(Formatter.convertMilitaryTo24HourFormat(localTime));
-            if (TextUtils.isEmpty(queueSetting.getScheduledFromDay())) {
+            if (TextUtils.isEmpty(storeSetting.getScheduledFromDay())) {
                 tv_scheduling_status.setText("");
                 tv_scheduling_status.setVisibility(View.GONE);
                 iv_delete_scheduling.setVisibility(View.GONE);
             } else {
-                tv_scheduling_status.setText("Scheduled to close from " + queueSetting.getScheduledFromDay() + " to " + queueSetting.getScheduledUntilDay());
+                tv_scheduling_status.setText("Scheduled to close from " + storeSetting.getScheduledFromDay() + " to " + storeSetting.getScheduledUntilDay());
                 tv_scheduling_status.setVisibility(View.VISIBLE);
                 iv_delete_scheduling.setVisibility(View.VISIBLE);
             }
 
-            if (queueSetting.getAvailableTokenCount() <= 0) {
+            if (storeSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
                 tv_limited_label.setText(getString(R.string.unlimited_token));
                 edt_token_no.setVisibility(View.INVISIBLE);
             } else {
                 cb_limit.setChecked(false);
-                edt_token_no.setText(String.valueOf(queueSetting.getAvailableTokenCount()));
+                edt_token_no.setText(String.valueOf(storeSetting.getAvailableTokenCount()));
                 edt_token_no.setVisibility(View.VISIBLE);
                 tv_limited_label.setText(getString(R.string.limited_token));
                 if (edt_token_no != null) {
@@ -448,10 +534,14 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
                     new AppUtils().hideKeyBoard(this);
                 }
             }
-            ServicePaymentEnum servicePaymentEnum = queueSetting.getServicePayment();
+            ServicePaymentEnum servicePaymentEnum = storeSetting.getServicePayment();
             sc_paid_user.setSelectedSegment(pay_list.indexOf(servicePaymentEnum.getDescription()));
-            edt_deduction_amount.setText(String.valueOf(queueSetting.getCancellationPrice() / 100));
-            edt_fees.setText(String.valueOf(queueSetting.getProductPrice() / 100));
+            edt_deduction_amount.setText(CommonHelper.displayPrice(storeSetting.getCancellationPrice()));
+            edt_fees.setText(CommonHelper.displayPrice(storeSetting.getProductPrice()));
+
+            edt_discounted_followup_price.setText(String.valueOf(storeSetting.getDiscountedFollowupProductPrice() / 100));
+            edt_follow_up_in_days.setText(String.valueOf(storeSetting.getFreeFollowupDays()));
+            edt_limited_followup_days.setText(String.valueOf(storeSetting.getDiscountedFollowupDays()));
         }
         dismissProgress();
     }
@@ -460,16 +550,16 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
     public void queueSettingError() {
         dismissProgress();
         // to make sure the data is not changed in case of error
-        if (null != queueSettingTemp) {
-            queueSettingResponse(queueSettingTemp);
+        if (null != storeSettingTemp) {
+            queueSettingResponse(storeSettingTemp);
         }
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (null != queueSettingTemp) {
-            queueSettingResponse(queueSettingTemp);
+        if (null != storeSettingTemp) {
+            queueSettingResponse(storeSettingTemp);
         }
         new ErrorResponseHandler().processError(this, eej);
     }
@@ -520,41 +610,41 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
 
     private void updateQueueSettings() {
         progressDialog.setMessage("Updating Queue Settings...");
-        QueueSetting queueSetting = new QueueSetting();
-        queueSetting.setCodeQR(codeQR);
-        queueSetting.setDayClosed(toggleDayClosed.isChecked());
-        queueSetting.setPreventJoining(togglePreventJoin.isChecked());
-        queueSetting.setTempDayClosed(toggleTodayClosed.isChecked());
-        queueSetting.setStoreActionType(toggleStoreOffline.isChecked() ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
-        queueSetting.setEnabledPayment(cb_enable_payment.isChecked());
+        StoreSetting storeSetting = new StoreSetting();
+        storeSetting.setCodeQR(codeQR);
+        storeSetting.setDayClosed(toggleDayClosed.isChecked());
+        storeSetting.setPreventJoining(togglePreventJoin.isChecked());
+        storeSetting.setTempDayClosed(toggleTodayClosed.isChecked());
+        storeSetting.setStoreActionType(toggleStoreOffline.isChecked() ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
+        storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
         if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
-            queueSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+            storeSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
         }
 
         if (StringUtils.isNotBlank(tv_store_start.getText().toString())) {
-            queueSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+            storeSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
         }
 
         if (StringUtils.isNotBlank(tv_token_not_available.getText().toString())) {
-            queueSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+            storeSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
         }
 
         if (StringUtils.isNotBlank(tv_store_close.getText().toString())) {
-            queueSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
+            storeSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
         }
 
         if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
-            queueSetting.setFromDay(tv_scheduling_from.getText().toString());
+            storeSetting.setFromDay(tv_scheduling_from.getText().toString());
         }
 
         if (StringUtils.isNotBlank(tv_scheduling_ending.getText().toString())) {
-            queueSetting.setUntilDay(tv_scheduling_ending.getText().toString());
+            storeSetting.setUntilDay(tv_scheduling_ending.getText().toString());
         }
 
         if (StringUtils.isBlank(edt_token_no.getText().toString())) {
-            queueSetting.setAvailableTokenCount(0);
+            storeSetting.setAvailableTokenCount(0);
         } else {
-            queueSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
+            storeSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
         }
 
         if (arrivalTextChange) {
@@ -567,11 +657,11 @@ public class SettingActivity extends AppCompatActivity implements QueueSettingPr
             int startMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
 
             Duration duration = new Duration(delay.plusHours(startHour).plusMinutes(startMinutes), start.plusHours(delayHour).plusMinutes(delayMinutes));
-            queueSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
+            storeSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
         } else {
-            queueSetting.setDelayedInMinutes(0);
+            storeSetting.setDelayedInMinutes(0);
         }
-        queueSettingApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), queueSetting);
+        storeSettingApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
     }
 
     private class TextViewClick implements View.OnClickListener {

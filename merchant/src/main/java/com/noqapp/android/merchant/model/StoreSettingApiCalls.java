@@ -1,11 +1,11 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.merchant.model.response.api.QueueSettingApiUrls;
+import com.noqapp.android.merchant.model.response.api.StoreSettingApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
+import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.views.interfaces.QueueSettingPresenter;
+import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,145 +19,145 @@ import retrofit2.Response;
  * User: chandra
  * Date: 7/15/17 10:27 AM
  */
-public class QueueSettingApiCalls {
+public class StoreSettingApiCalls {
 
-    private static final String TAG = QueueSettingApiCalls.class.getSimpleName();
-    private static final QueueSettingApiUrls queueSettingApiUrls;
-    private QueueSettingPresenter queueSettingPresenter;
+    private static final String TAG = StoreSettingApiCalls.class.getSimpleName();
+    private static final StoreSettingApiUrls storeSettingApiUrls;
+    private StoreSettingPresenter storeSettingPresenter;
 
-    public QueueSettingApiCalls(QueueSettingPresenter queueSettingPresenter) {
-        this.queueSettingPresenter = queueSettingPresenter;
+    public StoreSettingApiCalls(StoreSettingPresenter storeSettingPresenter) {
+        this.storeSettingPresenter = storeSettingPresenter;
     }
 
     static {
-        queueSettingApiUrls = RetrofitClient.getClient().create(QueueSettingApiUrls.class);
+        storeSettingApiUrls = RetrofitClient.getClient().create(StoreSettingApiUrls.class);
     }
 
     public void getQueueState(String did, String mail, String auth, String codeQR) {
-        queueSettingApiUrls.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
+        storeSettingApiUrls.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreSetting>() {
             @Override
-            public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+            public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("getQueueState", String.valueOf(response.body()));
-                        queueSettingPresenter.queueSettingResponse(response.body());
+                        storeSettingPresenter.queueSettingResponse(response.body());
                     } else {
                         Log.e(TAG, "Found error while getQueueState");
-                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                        storeSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        queueSettingPresenter.authenticationFailure();
+                        storeSettingPresenter.authenticationFailure();
                     } else {
-                        queueSettingPresenter.responseErrorPresenter(response.code());
+                        storeSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
                 Log.e("fail getQueueState", t.getLocalizedMessage(), t);
-                queueSettingPresenter.queueSettingError();
+                storeSettingPresenter.queueSettingError();
             }
         });
     }
 
     public void removeSchedule(String did, String mail, String auth, String codeQR) {
-        queueSettingApiUrls.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<QueueSetting>() {
+        storeSettingApiUrls.removeSchedule(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<StoreSetting>() {
             @Override
-            public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+            public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("removeSchedule", String.valueOf(response.body()));
-                        queueSettingPresenter.queueSettingResponse(response.body());
+                        storeSettingPresenter.queueSettingResponse(response.body());
                     } else {
                         Log.e(TAG, "Found error while removeSchedule");
-                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                        storeSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        queueSettingPresenter.authenticationFailure();
+                        storeSettingPresenter.authenticationFailure();
                     } else {
-                        queueSettingPresenter.responseErrorPresenter(response.code());
+                        storeSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
                 Log.e("fail removeSchedule", t.getLocalizedMessage(), t);
-                queueSettingPresenter.queueSettingError();
+                storeSettingPresenter.queueSettingError();
             }
         });
     }
 
 
-    public void modify(String did, String mail, String auth, QueueSetting queueSetting) {
-        queueSettingApiUrls.modify(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
+    public void modify(String did, String mail, String auth, StoreSetting storeSetting) {
+        storeSettingApiUrls.modify(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
             @Override
-            public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+            public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "Modify setting, response jsonToken" + response.body().toString());
-                            queueSettingPresenter.queueSettingResponse(response.body());
+                            storeSettingPresenter.queueSettingResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to modify setting");
-                            queueSettingPresenter.queueSettingError();
+                            storeSettingPresenter.queueSettingError();
                         }
                     } else if (response.body() != null && response.body().getError() != null) {
                         ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                         Log.e(TAG, "Got error" + errorEncounteredJson.getReason());
-                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                        storeSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        queueSettingPresenter.authenticationFailure();
+                        storeSettingPresenter.authenticationFailure();
                     } else {
-                        queueSettingPresenter.responseErrorPresenter(response.code());
+                        storeSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
                 Log.e("fail modify", t.getLocalizedMessage(), t);
-                queueSettingPresenter.queueSettingError();
+                storeSettingPresenter.queueSettingError();
             }
         });
     }
 
-    public void serviceCost(String did, String mail, String auth, QueueSetting queueSetting) {
-        queueSettingApiUrls.serviceCost(did, Constants.DEVICE_TYPE, mail, auth, queueSetting).enqueue(new Callback<QueueSetting>() {
+    public void serviceCost(String did, String mail, String auth, StoreSetting storeSetting) {
+        storeSettingApiUrls.serviceCost(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
             @Override
-            public void onResponse(@NonNull Call<QueueSetting> call, @NonNull Response<QueueSetting> response) {
+            public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "serviceCost setting, response jsonToken" + response.body().toString());
-                            queueSettingPresenter.queueSettingResponse(response.body());
+                            storeSettingPresenter.queueSettingResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to serviceCost setting");
-                            queueSettingPresenter.queueSettingError();
+                            storeSettingPresenter.queueSettingError();
                         }
                     } else if (response.body() != null && response.body().getError() != null) {
                         ErrorEncounteredJson errorEncounteredJson = response.body().getError();
                         Log.e(TAG, "Got errorserviceCost" + errorEncounteredJson.getReason());
-                        queueSettingPresenter.responseErrorPresenter(response.body().getError());
+                        storeSettingPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        queueSettingPresenter.authenticationFailure();
+                        storeSettingPresenter.authenticationFailure();
                     } else {
-                        queueSettingPresenter.responseErrorPresenter(response.code());
+                        storeSettingPresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<QueueSetting> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
                 Log.e("fail serviceCost", t.getLocalizedMessage(), t);
-                queueSettingPresenter.queueSettingError();
+                storeSettingPresenter.queueSettingError();
             }
         });
     }
