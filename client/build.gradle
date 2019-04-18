@@ -218,6 +218,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
 
@@ -258,6 +259,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
 
@@ -296,6 +298,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
         }
     }

@@ -1,5 +1,6 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.noqapp.android.client.model.types.AccreditationEnum;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.JsonNameDatePair;
@@ -145,6 +146,9 @@ public class BizStoreElastic implements Serializable {
 
     @JsonProperty("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
+
+    @JsonProperty("AC")
+    private List<AccreditationEnum> accreditation = new LinkedList<>();
 
     /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
     @JsonProperty("WP")
@@ -472,6 +476,15 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
+    public List<AccreditationEnum> getAccreditation() {
+        return accreditation;
+    }
+
+    public BizStoreElastic setAccreditation(List<AccreditationEnum> accreditation) {
+        this.accreditation = accreditation;
+        return this;
+    }
+
     public String getWebProfileId() {
         return webProfileId;
     }
@@ -490,18 +503,18 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
-    public String getCompleteEducation(){
-        if(null == education || education.size() == 0)
+    public String getCompleteEducation() {
+        if (null == education || education.size() == 0)
             return "";
-        else{
-            String edu = "";
+        else {
+            StringBuilder edu = new StringBuilder();
             for (int i = 0; i < education.size(); i++) {
-                edu += education.get(i).getName()+", ";
+                edu.append(education.get(i).getName()).append(", ");
             }
-            if (edu.endsWith(", ")) {
-                edu = edu.substring(0, edu.length() - 2);
+            if (edu.toString().endsWith(", ")) {
+                edu = new StringBuilder(edu.substring(0, edu.length() - 2));
             }
-            return edu;
+            return edu.toString();
         }
     }
 
@@ -551,6 +564,7 @@ public class BizStoreElastic implements Serializable {
                 ", bizServiceImages=" + bizServiceImages +
                 ", amenities=" + amenities +
                 ", facilities=" + facilities +
+                ", accreditation=" + accreditation +
                 ", webProfileId='" + webProfileId + '\'' +
                 ", education=" + education +
                 ", active=" + active +
