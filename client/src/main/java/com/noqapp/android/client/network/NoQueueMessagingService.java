@@ -12,6 +12,7 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
@@ -129,9 +130,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 case CQO:
                     try {
                         ObjectMapper mapper = new ObjectMapper();
+                        JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientTokenAndQueueData.class);
                         JsonTokenAndQueueList jsonTokenAndQueueList = new JsonTokenAndQueueList();
                         jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(remoteMessage.getData().get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {}));
-                        object = jsonTokenAndQueueList;
+                        jsonClientTokenAndQueueData.setTokenAndQueues(jsonTokenAndQueueList.getTokenAndQueues());
+                        object = jsonClientTokenAndQueueData;
                         Log.e("FCM", object.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -297,6 +300,26 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             } else {
                                 sendNotification(title, body, false);
                             }
+                        }else if (object instanceof JsonClientTokenAndQueueData) {
+                            List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
+                            if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
+                                TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
+                            }else{
+                                NotificationDB.insertNotification(
+                                        NotificationDB.KEY_NOTIFY,
+                                        "", ((JsonClientTokenAndQueueData) object).getBody(),
+                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+                            }
+                            for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
+                                NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
+                                if(i==0) {
+                                    NotificationDB.insertNotification(
+                                            NotificationDB.KEY_NOTIFY,
+                                            jsonTokenAndQueueList.get(i).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
+                                            ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+                                }
+                            }
+                            sendNotification(title, body, false);
                         } else {
                             sendNotification(title, body, false);
                             // add notification to DB

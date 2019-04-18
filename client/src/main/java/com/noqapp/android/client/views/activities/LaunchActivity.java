@@ -8,6 +8,7 @@ import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
+import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -818,8 +819,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                 } else if (object instanceof JsonTopicOrderData) {
                     Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
-                } else if (object instanceof JsonTokenAndQueueList) {
-                    Log.e("JsonTokenAndQueueList", ((JsonTokenAndQueueList) object).toString());
+                } else if (object instanceof JsonClientTokenAndQueueData) {
+                    Log.e("JsonClientTokenAndQData", ((JsonClientTokenAndQueueData) object).toString());
                 } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                 } else if (object instanceof JsonMedicalFollowUp) {
@@ -928,14 +929,26 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
-                    } else if (object instanceof JsonTokenAndQueueList) {
-                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonTokenAndQueueList) object).getTokenAndQueues();
+                    } else if (object instanceof JsonClientTokenAndQueueData) {
+                        List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
                         if (null != jsonTokenAndQueueList && jsonTokenAndQueueList.size() > 0) {
                             TokenAndQueueDB.saveCurrentQueue(jsonTokenAndQueueList);
+                        }else{
+                            NotificationDB.insertNotification(
+                                    NotificationDB.KEY_NOTIFY,
+                                    "", ((JsonClientTokenAndQueueData) object).getBody(),
+                                    ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
                         }
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
+                            if(i==0) {
+                                NotificationDB.insertNotification(
+                                        NotificationDB.KEY_NOTIFY,
+                                        jsonTokenAndQueueList.get(i).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
+                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+                            }
                         }
+                        updateNotificationBadgeCount();
                         if (null != scanFragment)
                             scanFragment.fetchCurrentAndHistoryList();
                     }
