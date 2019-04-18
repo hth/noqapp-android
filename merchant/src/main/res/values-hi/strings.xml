@@ -152,7 +152,7 @@
     <string name="screen_all_review">Reviews</string>
     <string name="user_details">Customer details</string>
     <string name="followup_setting">Followup Settings</string>
-    <string name="text_follow_in_days">Free Followup within days</string>
+    <string name="text_followup_in_days">Free Followup within days</string>
     <string name="text_discounted_followup_price">Discounted followup price</string>
     <string name="text_limited_followup_days">Limited Folloup  days</string>
 </resources>

@@ -338,7 +338,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                     if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
                         tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
                         try {
-                            tv_fee_after_discounted_followup.setText("Your Service Charges in followup will be " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+                            tv_fee_after_discounted_followup.setText("Service charge for limited followup is " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -536,8 +536,8 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             }
             ServicePaymentEnum servicePaymentEnum = storeSetting.getServicePayment();
             sc_paid_user.setSelectedSegment(pay_list.indexOf(servicePaymentEnum.getDescription()));
-            edt_deduction_amount.setText(CommonHelper.displayPrice(storeSetting.getCancellationPrice()));
-            edt_fees.setText(CommonHelper.displayPrice(storeSetting.getProductPrice()));
+            edt_deduction_amount.setText(String.valueOf(storeSetting.getCancellationPrice() / 100));
+            edt_fees.setText(String.valueOf(storeSetting.getProductPrice() / 100));
 
             edt_discounted_followup_price.setText(String.valueOf(storeSetting.getDiscountedFollowupProductPrice() / 100));
             edt_follow_up_in_days.setText(String.valueOf(storeSetting.getFreeFollowupDays()));
