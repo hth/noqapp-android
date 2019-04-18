@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class QueueSetting {
+public class StoreSetting {
 
     @JsonProperty("qr")
     private String codeQR;
@@ -87,7 +87,7 @@ public class QueueSetting {
     @JsonProperty("fd")
     private int freeFollowupDays;
 
-    @JsonProperty("dd")
+    @JsonProperty("df")
     private int discountedFollowupDays;
 
     @JsonProperty("dp")
@@ -103,7 +103,7 @@ public class QueueSetting {
         return codeQR;
     }
 
-    public QueueSetting setCodeQR(String codeQR) {
+    public StoreSetting setCodeQR(String codeQR) {
         this.codeQR = codeQR;
         return this;
     }
@@ -112,7 +112,7 @@ public class QueueSetting {
         return tokenAvailableFrom;
     }
 
-    public QueueSetting setTokenAvailableFrom(int tokenAvailableFrom) {
+    public StoreSetting setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
         return this;
     }
@@ -121,7 +121,7 @@ public class QueueSetting {
         return startHour;
     }
 
-    public QueueSetting setStartHour(int startHour) {
+    public StoreSetting setStartHour(int startHour) {
         this.startHour = startHour;
         return this;
     }
@@ -130,7 +130,7 @@ public class QueueSetting {
         return tokenNotAvailableFrom;
     }
 
-    public QueueSetting setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+    public StoreSetting setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
         this.tokenNotAvailableFrom = tokenNotAvailableFrom;
         return this;
     }
@@ -139,7 +139,7 @@ public class QueueSetting {
         return endHour;
     }
 
-    public QueueSetting setEndHour(int endHour) {
+    public StoreSetting setEndHour(int endHour) {
         this.endHour = endHour;
         return this;
     }
@@ -148,7 +148,7 @@ public class QueueSetting {
         return delayedInMinutes;
     }
 
-    public QueueSetting setDelayedInMinutes(int delayedInMinutes) {
+    public StoreSetting setDelayedInMinutes(int delayedInMinutes) {
         this.delayedInMinutes = delayedInMinutes;
         return this;
     }
@@ -157,7 +157,7 @@ public class QueueSetting {
         return dayClosed;
     }
 
-    public QueueSetting setDayClosed(boolean dayClosed) {
+    public StoreSetting setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
         return this;
     }
@@ -166,7 +166,7 @@ public class QueueSetting {
         return tempDayClosed;
     }
 
-    public QueueSetting setTempDayClosed(boolean tempDayClosed) {
+    public StoreSetting setTempDayClosed(boolean tempDayClosed) {
         this.tempDayClosed = tempDayClosed;
         return this;
     }
@@ -175,7 +175,7 @@ public class QueueSetting {
         return preventJoining;
     }
 
-    public QueueSetting setPreventJoining(boolean preventJoining) {
+    public StoreSetting setPreventJoining(boolean preventJoining) {
         this.preventJoining = preventJoining;
         return this;
     }
@@ -184,7 +184,7 @@ public class QueueSetting {
         return availableTokenCount;
     }
 
-    public QueueSetting setAvailableTokenCount(int availableTokenCount) {
+    public StoreSetting setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
         return this;
     }
@@ -193,7 +193,7 @@ public class QueueSetting {
         return fromDay;
     }
 
-    public QueueSetting setFromDay(String fromDay) {
+    public StoreSetting setFromDay(String fromDay) {
         this.fromDay = fromDay;
         return this;
     }
@@ -202,7 +202,7 @@ public class QueueSetting {
         return untilDay;
     }
 
-    public QueueSetting setUntilDay(String untilDay) {
+    public StoreSetting setUntilDay(String untilDay) {
         this.untilDay = untilDay;
         return this;
     }
@@ -211,7 +211,7 @@ public class QueueSetting {
         return scheduledFromDay;
     }
 
-    public QueueSetting setScheduledFromDay(String scheduledFromDay) {
+    public StoreSetting setScheduledFromDay(String scheduledFromDay) {
         this.scheduledFromDay = scheduledFromDay;
         return this;
     }
@@ -220,7 +220,7 @@ public class QueueSetting {
         return scheduledUntilDay;
     }
 
-    public QueueSetting setScheduledUntilDay(String scheduledUntilDay) {
+    public StoreSetting setScheduledUntilDay(String scheduledUntilDay) {
         this.scheduledUntilDay = scheduledUntilDay;
         return this;
     }
@@ -229,7 +229,7 @@ public class QueueSetting {
         return enabledPayment;
     }
 
-    public QueueSetting setEnabledPayment(boolean enabledPayment) {
+    public StoreSetting setEnabledPayment(boolean enabledPayment) {
         this.enabledPayment = enabledPayment;
         return this;
     }
@@ -238,7 +238,7 @@ public class QueueSetting {
         return productPrice;
     }
 
-    public QueueSetting setProductPrice(int productPrice) {
+    public StoreSetting setProductPrice(int productPrice) {
         this.productPrice = productPrice;
         return this;
     }
@@ -247,7 +247,7 @@ public class QueueSetting {
         return cancellationPrice;
     }
 
-    public QueueSetting setCancellationPrice(int cancellationPrice) {
+    public StoreSetting setCancellationPrice(int cancellationPrice) {
         this.cancellationPrice = cancellationPrice;
         return this;
     }
@@ -256,7 +256,7 @@ public class QueueSetting {
         return servicePayment;
     }
 
-    public QueueSetting setServicePayment(ServicePaymentEnum servicePayment) {
+    public StoreSetting setServicePayment(ServicePaymentEnum servicePayment) {
         this.servicePayment = servicePayment;
         return this;
     }
@@ -265,7 +265,7 @@ public class QueueSetting {
         return freeFollowupDays;
     }
 
-    public QueueSetting setFreeFollowupDays(int freeFollowupDays) {
+    public StoreSetting setFreeFollowupDays(int freeFollowupDays) {
         this.freeFollowupDays = freeFollowupDays;
         return this;
     }
@@ -274,7 +274,7 @@ public class QueueSetting {
         return discountedFollowupDays;
     }
 
-    public QueueSetting setDiscountedFollowupDays(int discountedFollowupDays) {
+    public StoreSetting setDiscountedFollowupDays(int discountedFollowupDays) {
         this.discountedFollowupDays = discountedFollowupDays;
         return this;
     }
@@ -283,7 +283,7 @@ public class QueueSetting {
         return discountedFollowupProductPrice;
     }
 
-    public QueueSetting setDiscountedFollowupProductPrice(int discountedFollowupProductPrice) {
+    public StoreSetting setDiscountedFollowupProductPrice(int discountedFollowupProductPrice) {
         this.discountedFollowupProductPrice = discountedFollowupProductPrice;
         return this;
     }
@@ -292,7 +292,7 @@ public class QueueSetting {
         return storeActionType;
     }
 
-    public QueueSetting setStoreActionType(ActionTypeEnum storeActionType) {
+    public StoreSetting setStoreActionType(ActionTypeEnum storeActionType) {
         this.storeActionType = storeActionType;
         return this;
     }
@@ -301,14 +301,14 @@ public class QueueSetting {
         return error;
     }
 
-    public QueueSetting setError(ErrorEncounteredJson error) {
+    public StoreSetting setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
     }
 
     @Override
     public String toString() {
-        return "QueueSetting{" +
+        return "StoreSetting{" +
                 "codeQR='" + codeQR + '\'' +
                 ", tokenAvailableFrom=" + tokenAvailableFrom +
                 ", startHour=" + startHour +

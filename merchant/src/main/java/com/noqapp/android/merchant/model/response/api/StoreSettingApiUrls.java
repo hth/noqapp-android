@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.merchant.presenter.beans.body.QueueSetting;
+import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 /**
  * Created by chandra on 7/15/17.
  */
-public interface QueueSettingApiUrls {
+public interface StoreSettingApiUrls {
 
     /**
      * Errors
@@ -20,8 +20,8 @@ public interface QueueSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/mq/state/{codeQR}.json")
-    Call<QueueSetting> getQueueState(
+    @GET("api/m/ss/state/{codeQR}.json")
+    Call<StoreSetting> getQueueState(
         @Header("X-R-DID")
         String did,
 
@@ -44,8 +44,8 @@ public interface QueueSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/mq/removeSchedule/{codeQR}.json")
-    Call<QueueSetting> removeSchedule(
+    @POST("api/m/ss/removeSchedule/{codeQR}.json")
+    Call<StoreSetting> removeSchedule(
         @Header("X-R-DID")
         String did,
 
@@ -69,8 +69,8 @@ public interface QueueSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_ACTION_NOT_PERMITTED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/mq/modify.json")
-    Call<QueueSetting> modify(
+    @POST("api/m/ss/modify.json")
+    Call<StoreSetting> modify(
         @Header("X-R-DID")
         String did,
 
@@ -84,7 +84,7 @@ public interface QueueSettingApiUrls {
         String auth,
 
         @Body
-        QueueSetting queueSetting
+        StoreSetting storeSetting
     );
 
     /**
@@ -93,8 +93,8 @@ public interface QueueSettingApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PRODUCT_PRICE_CANNOT_BE_ZERO}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/mq/serviceCost.json")
-    Call<QueueSetting> serviceCost(
+    @POST("api/m/ss/serviceCost.json")
+    Call<StoreSetting> serviceCost(
         @Header("X-R-DID")
         String did,
 
@@ -108,6 +108,6 @@ public interface QueueSettingApiUrls {
         String auth,
 
         @Body
-        QueueSetting queueSetting
+        StoreSetting storeSetting
     );
 }
