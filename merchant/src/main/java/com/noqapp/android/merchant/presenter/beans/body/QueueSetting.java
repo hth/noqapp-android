@@ -84,6 +84,15 @@ public class QueueSetting {
     @JsonProperty("sp")
     private ServicePaymentEnum servicePayment;
 
+    @JsonProperty("ffd")
+    private int freeFollowupDays;
+
+    @JsonProperty("dfd")
+    private int discountedFollowupDays;
+
+    @JsonProperty("dfp")
+    private int discountedFollowupProductPrice;
+
     @JsonProperty("sa")
     private ActionTypeEnum storeActionType;
 
@@ -249,6 +258,33 @@ public class QueueSetting {
 
     public QueueSetting setServicePayment(ServicePaymentEnum servicePayment) {
         this.servicePayment = servicePayment;
+        return this;
+    }
+
+    public int getFreeFollowupDays() {
+        return freeFollowupDays;
+    }
+
+    public QueueSetting setFreeFollowupDays(int freeFollowupDays) {
+        this.freeFollowupDays = freeFollowupDays;
+        return this;
+    }
+
+    public int getDiscountedFollowupDays() {
+        return discountedFollowupDays;
+    }
+
+    public QueueSetting setDiscountedFollowupDays(int discountedFollowupDays) {
+        this.discountedFollowupDays = discountedFollowupDays;
+        return this;
+    }
+
+    public int getDiscountedFollowupProductPrice() {
+        return discountedFollowupProductPrice;
+    }
+
+    public QueueSetting setDiscountedFollowupProductPrice(int discountedFollowupProductPrice) {
+        this.discountedFollowupProductPrice = discountedFollowupProductPrice;
         return this;
     }
 
