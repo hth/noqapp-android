@@ -367,11 +367,10 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                                 if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
                                     if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
                                         if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >=
-                                                    (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >= (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                 updatePaymentSettings();
                                             } else {
-                                                Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be greater than follow-up days", Toast.LENGTH_LONG).show();
                                             }
                                         } else {
                                             updatePaymentSettings();
