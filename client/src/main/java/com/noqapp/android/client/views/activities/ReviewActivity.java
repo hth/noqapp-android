@@ -123,12 +123,12 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                     }
                     profileList.add(0, NoQueueBaseActivity.getUserProfile());
                     if (AppUtilities.isRelease()) {
-                        tv_details.setText("Token: " + jtk.getToken() + " : " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
+                        tv_details.setText("Token: " + jtk.getToken() + ", Issued to: " + AppUtilities.getNameFromQueueUserID(jtk.getQueueUserId(), profileList));
                     } else {
-                        tv_details.setText("Token: " + jtk.getToken() + " : " + jtk.getQueueUserId());
+                        tv_details.setText("Token: " + jtk.getToken() + ", Issued to: " + jtk.getQueueUserId());
                     }
                 } else {
-                    tv_details.setText("Token: " + jtk.getToken() + " : Guest user");
+                    tv_details.setText("Token: " + jtk.getToken() + ", Guest user");
                 }
 
                 switch (jtk.getBusinessType()) {
