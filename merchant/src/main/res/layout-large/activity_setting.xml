@@ -965,7 +965,6 @@
                                     android:singleLine="true"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_fourteen"/>
-
                         </LinearLayout>
 
                         <LinearLayout
@@ -981,12 +980,12 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".8"
                                     android:padding="5dp"
-                                    android:text="@string/text_discounted_followup_price"
+                                    android:text="@string/text_limited_followup_days"
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen"/>
 
                             <EditText
-                                    android:id="@+id/edt_discounted_followup_price"
+                                    android:id="@+id/edt_limited_followup_days"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".2"
@@ -1017,12 +1016,12 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".8"
                                     android:padding="5dp"
-                                    android:text="@string/text_limited_followup_days"
+                                    android:text="@string/text_discounted_followup_price"
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen"/>
 
                             <EditText
-                                    android:id="@+id/edt_limited_followup_days"
+                                    android:id="@+id/edt_discounted_followup_price"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".2"

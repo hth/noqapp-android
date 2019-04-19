@@ -322,7 +322,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         });
 
         edt_discounted_followup_price.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -332,13 +331,12 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
                         tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
                         try {
-                            tv_fee_after_discounted_followup.setText("Service charge for limited followup is " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+                            tv_fee_after_discounted_followup.setText("Service charge for limited follow-up until " + edt_limited_followup_days.getText().toString() + " days is " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -367,11 +365,10 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                                 if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
                                     if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
                                         if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >=
-                                                    (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >= (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                 updatePaymentSettings();
                                             } else {
-                                                Toast.makeText(SettingActivity.this, "Limited follow up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be greater than follow-up days", Toast.LENGTH_LONG).show();
                                             }
                                         } else {
                                             updatePaymentSettings();
@@ -382,17 +379,17 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                                                 if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >= (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                     updatePaymentSettings();
                                                 } else {
-                                                    Toast.makeText(SettingActivity.this, "Limited follow up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
                                                 }
                                             } else {
                                                 updatePaymentSettings();
                                             }
                                         } else {
-                                            Toast.makeText(SettingActivity.this, "Discounted follow up price cannot be greater than Service Charges", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 } else {
-                                    Toast.makeText(SettingActivity.this, "Cancellation charges cannot be greater than Service Charges", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SettingActivity.this, "Cancellation charge cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
                                 }
                             } else {
                                 updatePaymentSettings();
