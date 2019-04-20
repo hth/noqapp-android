@@ -279,7 +279,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         TextView tv_toolbar_title = view.findViewById(R.id.tv_toolbar_title);
         sp_patient_list = view.findViewById(R.id.sp_patient_list);
         tv_select_patient = view.findViewById(R.id.tv_select_patient);
-        tv_toolbar_title.setText("Create order");
+        tv_toolbar_title.setText("Create Order");
         tv_create_token.setText("Click button to create order");
         edt_mobile = view.findViewById(R.id.edt_mobile);
         final EditText edt_id = view.findViewById(R.id.edt_id);

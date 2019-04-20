@@ -596,7 +596,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             tv_cost.setText(currencySymbol + " " + String.valueOf(price));
         }
 
-        tv_toolbar_title.setText("Create order");
+        tv_toolbar_title.setText("Create Order");
         tv_create_token.setText("Click button to create order");
         edt_mobile = view.findViewById(R.id.edt_mobile);
         final EditText edt_id = view.findViewById(R.id.edt_id);
