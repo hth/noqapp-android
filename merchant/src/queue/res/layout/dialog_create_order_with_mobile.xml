@@ -233,7 +233,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:background="@drawable/bg_gradient_round"
-                        android:text="create order"
+                        android:text="Create Order"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_twelve"
