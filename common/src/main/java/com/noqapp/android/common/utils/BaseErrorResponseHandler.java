@@ -48,6 +48,7 @@ public abstract class BaseErrorResponseHandler {
                     case USER_ALREADY_IN_QUEUE:
                     case MERCHANT_COULD_NOT_ACQUIRE:
                     case QUEUE_NOT_STARTED:
+                    case QUEUE_NOT_RE_STARTED:
                     case USER_EXISTING:
                     case USER_NOT_FOUND:
                     case USER_SOCIAL:
