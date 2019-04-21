@@ -696,39 +696,34 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     @Override
     public void PeopleInQClick(int position) {
-        if (queueStatusOuter) {
-            if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
-                Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
-            } else {
-                if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.setVisibility(View.VISIBLE);
-                        lastSelectedPos = position;
-                        Served served = new Served();
-                        served.setCodeQR(jsonTopic.getCodeQR());
-                        served.setQueueStatus(jsonTopic.getQueueStatus());
-                        // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
-                        //served.setServedNumber(jsonTopic.getServingNumber());
-                        served.setGoTo(tv_counter_name.getText().toString());
-                        served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-                        manageQueueApiCalls.acquire(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                served);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(getActivity());
-                    }
-                } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                    Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
-                }
-            }
+        if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
+            Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
         } else {
-            ShowAlertInformation.showThemeDialog(context, "Error", "Please start the queue to avail this facility");
+            if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.setVisibility(View.VISIBLE);
+                    lastSelectedPos = position;
+                    Served served = new Served();
+                    served.setCodeQR(jsonTopic.getCodeQR());
+                    served.setQueueStatus(jsonTopic.getQueueStatus());
+                    // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
+                    //served.setServedNumber(jsonTopic.getServingNumber());
+                    served.setGoTo(tv_counter_name.getText().toString());
+                    served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
+                    manageQueueApiCalls.acquire(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            served);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
+                }
+            } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
+                Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
+            }
         }
-
     }
 
     @Override
