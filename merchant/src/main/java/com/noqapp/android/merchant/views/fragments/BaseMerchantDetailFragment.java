@@ -695,7 +695,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     @Override
-    public void PeopleInQClick(int position) {
+    public void peopleInQClick(int position) {
         if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
             Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
         } else {

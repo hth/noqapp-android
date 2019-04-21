@@ -111,7 +111,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
 
     public interface PeopleInQAdapterClick {
 
-        void PeopleInQClick(int position);
+        void peopleInQClick(int position);
 
         void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR);
     }
@@ -214,7 +214,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_status_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                peopleInQAdapterClick.PeopleInQClick(position);
+                peopleInQAdapterClick.peopleInQClick(position);
             }
         });
         // check parameter to show client is new or has previously visited
