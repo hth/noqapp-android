@@ -208,11 +208,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    public void PeopleInQClick(int position) {
+    public void peopleInQClick(int position) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
 
         } else {
-            super.PeopleInQClick(position);
+            super.peopleInQClick(position);
         }
 
     }
