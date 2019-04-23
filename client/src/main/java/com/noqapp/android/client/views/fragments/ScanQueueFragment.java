@@ -50,6 +50,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -81,6 +82,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ScanQueueFragment extends Scanner implements View.OnClickListener, FeedAdapter.OnItemClickListener, CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter {
@@ -565,6 +567,16 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         LaunchActivity.getLaunchActivity().dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
         if (null != getActivity() && isAdded()) {
+            Collections.sort(currentQueueList, new Comparator<JsonTokenAndQueue>() {
+                public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
+                    try {
+                        return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreateDate()));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return 0;
+                    }
+                }
+            });
             CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
             rv_current_activity.setAdapter(currentActivityAdapter);
             tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
@@ -629,7 +641,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                             startActivity(blinker);
                             break;
                         case CO:
-                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), title + " is " + body);
+                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), title , body);
                             break;
                         default:
                             //Do Nothing

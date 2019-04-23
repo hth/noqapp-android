@@ -19,7 +19,6 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,11 +36,9 @@ import java.util.List;
 
 public class MedicalHistoryActivity extends BaseActivity implements MedicalRecordPresenter {
 
-
     private ListView listview;
     private RelativeLayout rl_empty;
     private List<JsonMedicalRecord> jsonMedicalRecords = new ArrayList<>();
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +48,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         FrameLayout frame_layout = findViewById(R.id.frame_layout);
         rl_empty = findViewById(R.id.rl_empty);
         initActionsViews(false);
-        context = this;
-
         tv_toolbar_title.setText(getString(R.string.medical_history));
-
         if (jsonMedicalRecords.size() <= 0) {
             listview.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
@@ -62,7 +56,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             listview.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        if (NetworkUtils.isConnectingToInternet(context)) {
+        if (NetworkUtils.isConnectingToInternet(this)) {
 
             if (UserUtils.isLogin()) {
                 if (jsonMedicalRecords.size() == 0) {
@@ -88,7 +82,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
         Collections.sort(jsonMedicalRecords, new Comparator<JsonMedicalRecord>() {
             public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
                 try {
-                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getCreateDate()));
+                    return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreateDate()));
                 }catch (Exception e){
                     e.printStackTrace();
                     return 0;

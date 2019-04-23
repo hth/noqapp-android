@@ -113,10 +113,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+                orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
                 orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-
 
                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                 purchaseOrderApiCalls.setAcquireOrderPresenter(this);
@@ -126,8 +126,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         }
     }
-
-
 
     @Override
     public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
@@ -180,7 +178,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         mAlertDialog.setCanceledOnTouchOutside(false);
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
@@ -214,14 +211,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             super.peopleInQClick(position);
         }
-
     }
 
     @Override
     public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR) {
 
     }
-
 
     @Override
     public void orderDoneClick(int position) {
@@ -234,10 +229,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+                orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
                 orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-
 
                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                 purchaseOrderApiCalls.setOrderProcessedPresenter(this);
@@ -248,7 +243,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
     }
 
-
     @Override
     public void orderCancelClick(int position) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -258,6 +252,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());
             orderServed.setTransactionId(purchaseOrders.get(position).getTransactionId());
+            orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
             orderServed.setGoTo(tv_counter_name.getText().toString());
             orderServed.setQueueStatus(QueueStatusEnum.N);
             orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
@@ -314,184 +309,177 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     protected void updateUI() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            {
-                final PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                purchaseOrderApiCalls.setAcquireOrderPresenter(this);
-                final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
-                queueStatusOuter = queueStatus == QueueStatusEnum.N;
-                String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
-                if (TextUtils.isEmpty(cName))
-                    tv_counter_name.setText("");
-                else
-                    tv_counter_name.setText(cName);
+            final PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+            purchaseOrderApiCalls.setAcquireOrderPresenter(this);
+            final QueueStatusEnum queueStatus = jsonTopic.getQueueStatus();
+            queueStatusOuter = queueStatus == QueueStatusEnum.N;
+            String cName = mAdapterCallback.getNameList().get(jsonTopic.getCodeQR());
+            if (TextUtils.isEmpty(cName)) {
+                tv_counter_name.setText("");
+            } else {
+                tv_counter_name.setText(cName);
+            }
 
-                tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour())
-                        + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
+            tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getStartHour()) + " - " + Formatter.convertMilitaryTo12HourFormat(jsonTopic.getHour().getEndHour()));
+            tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
+            /* Add to show only remaining people in queue */
+            tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
+            tv_title.setText(jsonTopic.getDisplayName());
+            //   iv_generate_token.setVisibility(View.GONE);
+            iv_view_followup.setVisibility(View.GONE);
+            btn_start.setText(context.getString(R.string.start));
+            btn_start.setBackgroundResource(R.drawable.start);
+            btn_skip.setVisibility(View.GONE);
+            tv_skip.setVisibility(View.GONE);
 
-                tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
-                /* Add to show only remaining people in queue */
-                tv_total_value.setText(String.valueOf(jsonTopic.getToken() - jsonTopic.getServingNumber()));
-                tv_title.setText(jsonTopic.getDisplayName());
-                //   iv_generate_token.setVisibility(View.GONE);
-                iv_view_followup.setVisibility(View.GONE);
-                btn_start.setText(context.getString(R.string.start));
-                btn_start.setBackgroundResource(R.drawable.start);
-                btn_skip.setVisibility(View.GONE);
-                tv_skip.setVisibility(View.GONE);
+            if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
+                    || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
+                    || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
+                // TODO(hth) Implement further settings for merchant topic
+            }
 
-                if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.M_ADMIN
-                        || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER
-                        || LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
-                    // TODO(hth) Implement further settings for merchant topic
+            switch (queueStatus) {
+                case S:
+                    tv_start.setText(context.getString(R.string.start));
+                    btn_next.setEnabled(false);
+                    btn_next.setBackgroundResource(R.drawable.next_inactive);
+                    btn_skip.setEnabled(false);
+                    btn_skip.setBackgroundResource(R.drawable.skip_inactive);
+                    break;
+                case R:
+                    tv_start.setText(context.getString(R.string.continues));
+                    btn_next.setEnabled(false);
+                    btn_next.setBackgroundResource(R.drawable.next_inactive);
+                    btn_skip.setEnabled(false);
+                    btn_skip.setBackgroundResource(R.drawable.skip_inactive);
+                    break;
+                case N:
+                    tv_next.setText(context.getString(R.string.next));
+                    btn_next.setEnabled(true);
+                    btn_next.setBackgroundResource(R.drawable.next);
+                    btn_skip.setEnabled(true);
+                    btn_skip.setBackgroundResource(R.drawable.skip);
+                    tv_start.setText(context.getString(R.string.pause));
+                    btn_start.setBackgroundResource(R.drawable.pause);
+                    break;
+                case D:
+                    tv_start.setText(context.getString(R.string.done));
+                    tv_total_value.setText("0");
+                    btn_start.setBackgroundResource(R.drawable.stop);
+                    btn_next.setEnabled(false);
+                    btn_next.setBackgroundResource(R.drawable.next_inactive);
+                    btn_skip.setEnabled(false);
+                    btn_skip.setBackgroundResource(R.drawable.skip_inactive);
+                    break;
+                case C:
+                    tv_start.setText(context.getString(R.string.closed));
+                    btn_start.setEnabled(false);
+                    btn_start.setBackgroundResource(R.drawable.stop_inactive);
+                    btn_next.setEnabled(false);
+                    btn_next.setBackgroundResource(R.drawable.next_inactive);
+                    btn_skip.setEnabled(false);
+                    btn_skip.setBackgroundResource(R.drawable.skip_inactive);
+                    break;
+                case P:
+                    tv_start.setText(context.getString(R.string.pause));
+                    btn_next.setEnabled(false);
+                    btn_next.setBackgroundResource(R.drawable.next_inactive);
+                    btn_skip.setEnabled(false);
+                    btn_skip.setBackgroundResource(R.drawable.skip_inactive);
+                    btn_start.setBackgroundResource(R.drawable.pause);
+                    break;
+                default:
+                    Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
+            }
+
+            btn_next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+                    if (tv_counter_name.getText().toString().trim().equals("")) {
+                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                    } else {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            OrderServed orderServed = new OrderServed();
+                            orderServed.setCodeQR(jsonTopic.getCodeQR());
+                            orderServed.setServedNumber(jsonTopic.getServingNumber());
+                            orderServed.setGoTo(tv_counter_name.getText().toString());
+                            orderServed.setQueueStatus(QueueStatusEnum.N);
+                            orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
+                            purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(context);
+                        }
+                    }
                 }
-
-                switch (queueStatus) {
-                    case S:
-                        tv_start.setText(context.getString(R.string.start));
-                        btn_next.setEnabled(false);
-                        btn_next.setBackgroundResource(R.drawable.next_inactive);
-                        btn_skip.setEnabled(false);
-                        btn_skip.setBackgroundResource(R.drawable.skip_inactive);
-                        break;
-                    case R:
-                        tv_start.setText(context.getString(R.string.continues));
-                        btn_next.setEnabled(false);
-                        btn_next.setBackgroundResource(R.drawable.next_inactive);
-                        btn_skip.setEnabled(false);
-                        btn_skip.setBackgroundResource(R.drawable.skip_inactive);
-                        break;
-                    case N:
-                        tv_next.setText(context.getString(R.string.next));
-                        btn_next.setEnabled(true);
-                        btn_next.setBackgroundResource(R.drawable.next);
-                        btn_skip.setEnabled(true);
-                        btn_skip.setBackgroundResource(R.drawable.skip);
-                        tv_start.setText(context.getString(R.string.pause));
-                        btn_start.setBackgroundResource(R.drawable.pause);
-                        break;
-                    case D:
-                        tv_start.setText(context.getString(R.string.done));
-                        tv_total_value.setText("0");
-                        btn_start.setBackgroundResource(R.drawable.stop);
-                        btn_next.setEnabled(false);
-                        btn_next.setBackgroundResource(R.drawable.next_inactive);
-                        btn_skip.setEnabled(false);
-                        btn_skip.setBackgroundResource(R.drawable.skip_inactive);
-                        break;
-                    case C:
-                        tv_start.setText(context.getString(R.string.closed));
-                        btn_start.setEnabled(false);
-                        btn_start.setBackgroundResource(R.drawable.stop_inactive);
-                        btn_next.setEnabled(false);
-                        btn_next.setBackgroundResource(R.drawable.next_inactive);
-                        btn_skip.setEnabled(false);
-                        btn_skip.setBackgroundResource(R.drawable.skip_inactive);
-                        break;
-                    case P:
-                        tv_start.setText(context.getString(R.string.pause));
-                        btn_next.setEnabled(false);
-                        btn_next.setBackgroundResource(R.drawable.next_inactive);
-                        btn_skip.setEnabled(false);
-                        btn_skip.setBackgroundResource(R.drawable.skip_inactive);
-                        btn_start.setBackgroundResource(R.drawable.pause);
-                        break;
-                    default:
-                        Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
-                }
-
-                btn_next.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+            });
+            btn_start.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+                    if (jsonTopic.getToken() == 0) {
+                        Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
+                    } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
+                        Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
+                    } else if (queueStatus == QueueStatusEnum.D) {
+                        Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
+                    } else {
                         if (tv_counter_name.getText().toString().trim().equals("")) {
                             Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                         } else {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                LaunchActivity.getLaunchActivity().progressDialog.show();
-                                OrderServed orderServed = new OrderServed();
-                                orderServed.setCodeQR(jsonTopic.getCodeQR());
-                                orderServed.setServedNumber(jsonTopic.getServingNumber());
-                                orderServed.setGoTo(tv_counter_name.getText().toString());
-                                orderServed.setQueueStatus(QueueStatusEnum.N);
-                                orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(context);
-                            }
-                        }
-                    }
-                });
-                btn_start.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                        if (jsonTopic.getToken() == 0) {
-                            Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
-                        } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
-                            Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
-                        } else if (queueStatus == QueueStatusEnum.D) {
-                            Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
-                        } else {
-                            if (tv_counter_name.getText().toString().trim().equals("")) {
-                                Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
-                            } else {
-                                if (tv_start.getText().equals(context.getString(R.string.pause))) {
-
-
-                                    ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                        @Override
-                                        public void btnPositiveClick() {
-                                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                                LaunchActivity.getLaunchActivity().progressDialog.show();
-                                                OrderServed orderServed = new OrderServed();
-                                                orderServed.setCodeQR(jsonTopic.getCodeQR());
-                                                orderServed.setServedNumber(jsonTopic.getServingNumber());
-                                                orderServed.setGoTo(tv_counter_name.getText().toString());
-                                                orderServed.setQueueStatus(QueueStatusEnum.N);
-                                                orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                                purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-                                            } else {
-                                                ShowAlertInformation.showNetworkDialog(context);
-                                            }
+                            if (tv_start.getText().equals(context.getString(R.string.pause))) {
+                                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                                    @Override
+                                    public void btnPositiveClick() {
+                                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                                            OrderServed orderServed = new OrderServed();
+                                            orderServed.setCodeQR(jsonTopic.getCodeQR());
+                                            orderServed.setServedNumber(jsonTopic.getServingNumber());
+                                            orderServed.setGoTo(tv_counter_name.getText().toString());
+                                            orderServed.setQueueStatus(QueueStatusEnum.N);
+                                            orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
+                                            purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                                        } else {
+                                            ShowAlertInformation.showNetworkDialog(context);
                                         }
-                                        @Override
-                                        public void btnNegativeClick() {
-                                            //Do nothing
-                                        }
-                                    });
-                                    showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
-                                } else {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                                        OrderServed orderServed = new OrderServed();
-                                        orderServed.setCodeQR(jsonTopic.getCodeQR());
-                                        orderServed.setServedNumber(jsonTopic.getServingNumber());
-                                        orderServed.setGoTo(tv_counter_name.getText().toString());
-                                        orderServed.setQueueStatus(QueueStatusEnum.N);
-                                        orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                        purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-                                    } else {
-                                        ShowAlertInformation.showNetworkDialog(context);
                                     }
+                                    @Override
+                                    public void btnNegativeClick() {
+                                        //Do nothing
+                                    }
+                                });
+                                showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
+                            } else {
+                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                                    OrderServed orderServed = new OrderServed();
+                                    orderServed.setCodeQR(jsonTopic.getCodeQR());
+                                    orderServed.setServedNumber(jsonTopic.getServingNumber());
+                                    orderServed.setGoTo(tv_counter_name.getText().toString());
+                                    orderServed.setQueueStatus(QueueStatusEnum.N);
+                                    orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
+                                    purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                                } else {
+                                    ShowAlertInformation.showNetworkDialog(context);
                                 }
                             }
                         }
                     }
-                });
-
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setVisibility(View.VISIBLE);
-                    getAllPeopleInQ(jsonTopic);
-
-                } else {
-                    ShowAlertInformation.showNetworkDialog(getActivity());
                 }
+            });
+
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.setVisibility(View.VISIBLE);
+                getAllPeopleInQ(jsonTopic);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
             }
         } else {
             super.updateUI();
         }
-
     }
 
     @Override
@@ -501,7 +489,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             //Hence update only that objects
             JsonPurchaseOrder jsonPurchaseOrder = jsonPurchaseOrderList.getPurchaseOrders().get(0);
             for (int j = 0; j < jsonPurchaseOrderList.getPurchaseOrders().size(); j++) {
-
                 for (int i = 0; i < purchaseOrders.size(); i++) {
                     if (purchaseOrders.get(i).getToken() == jsonPurchaseOrder.getToken()) {
                         purchaseOrders.set(i, jsonPurchaseOrder);
@@ -512,8 +499,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
         peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
-        if (jsonTopic.getServingNumber() > 0)
+        if (jsonTopic.getServingNumber() > 0) {
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
+        }
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 

@@ -54,7 +54,7 @@ public class TokenAndQueueDB {
                     tokenAndQueue.setToken(cursor.getInt(12));
                     tokenAndQueue.setQueueStatus(QueueStatusEnum.valueOf(cursor.getString(13)));
                     //    tokenAndQueue.setServiceEndTime(cursor.getString(14));
-                    tokenAndQueue.setCreateDate(cursor.getString(15));
+                    tokenAndQueue.setCreateDate(cursor.getString(17));
                     tokenAndQueue.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(18)));
                     tokenAndQueue.setGeoHash(cursor.getString(19));
                     tokenAndQueue.setTown(cursor.getString(20));

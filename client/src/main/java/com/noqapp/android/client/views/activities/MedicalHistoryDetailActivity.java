@@ -13,6 +13,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,9 +98,14 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         } else {
             tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
         }
+        tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jsonMedicalRecord.getDiagnosedByDisplayName())?View.GONE:View.VISIBLE);
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
-        tv_create.setText(jsonMedicalRecord.getCreateDate());
+        try {
+            tv_create.setText(CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();

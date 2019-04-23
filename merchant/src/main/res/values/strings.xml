@@ -220,11 +220,11 @@
 
     <!-- Empty Screens labels -->
     <string name="empty_noti_title">Empty notification</string>
-    <string name="empty_noti_subtitle">You haven\'t receive any notification yet :(.</string>
-    <string name="empty_followup_title">Empty Follow up</string>
-    <string name="empty_followup_subtitle">There are no followup scheduled :(.</string>
+    <string name="empty_noti_subtitle">There are no notification</string>
+    <string name="empty_followup_title">Empty Follow-up</string>
+    <string name="empty_followup_subtitle">There are no follow-up scheduled</string>
     <string name="empty_queue_title">Empty Queue</string>
-    <string name="empty_queue_subtitle">Looks like no one has \n join the queue yet.</string>
+    <string name="empty_queue_subtitle">No one has joined the queue</string>
     <string name="user_details">Customer details</string>
     <string name="followup_setting">Follow-up Settings</string>
     <string name="text_followup_in_days">Free follow-up until days</string>

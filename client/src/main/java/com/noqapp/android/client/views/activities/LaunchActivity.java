@@ -1,36 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -76,17 +45,47 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -101,6 +100,11 @@ import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
@@ -728,15 +732,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
 
     public void showChangeLangDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_language, null);
-        dialogBuilder.setView(dialogView);
-
-        final LinearLayout ll_hindi = dialogView.findViewById(R.id.ll_hindi);
-        final LinearLayout ll_english = dialogView.findViewById(R.id.ll_english);
-        final RadioButton rb_hi = dialogView.findViewById(R.id.rb_hi);
-        final RadioButton rb_en = dialogView.findViewById(R.id.rb_en);
+        final Dialog dialog = new Dialog(launchActivity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_language);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+        final LinearLayout ll_hindi = dialog.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_english = dialog.findViewById(R.id.ll_english);
+        final RadioButton rb_hi = dialog.findViewById(R.id.rb_hi);
+        final RadioButton rb_en = dialog.findViewById(R.id.rb_en);
 
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
@@ -745,12 +749,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
-        final AlertDialog b = dialogBuilder.create();
         ll_hindi.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtilities.changeLanguage("hi");
-                b.dismiss();
+                dialog.dismiss();
                 if (AppUtilities.isRelease()) {
                     Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
                             .putCustomAttribute("Language", "HINDI"));
@@ -761,16 +764,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             @Override
             public void onClick(View v) {
                 AppUtilities.changeLanguage("en");
-                b.dismiss();
+                dialog.dismiss();
                 if (AppUtilities.isRelease()) {
                     Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
                             .putCustomAttribute("Language", "ENGLISH"));
                 }
             }
         });
-        dialogBuilder.setTitle("");
-
-        b.show();
+        dialog.show();
     }
 
     @Override
@@ -838,7 +839,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 ((JsonAlertData) object).getTitle(),
                                 ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() ,((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
@@ -955,7 +956,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 ((JsonAlertData) object).getTitle(),
                                 ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() ,((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else {
                         updateNotification(object, codeQR);

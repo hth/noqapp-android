@@ -3,14 +3,16 @@ package com.noqapp.android.client.views.adapters;
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import android.content.Context;
-import androidx.cardview.widget.CardView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 
 import java.util.List;
 
@@ -53,16 +55,22 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        if (jsonMedicalRecordList.get(position).getBusinessType() == BusinessTypeEnum.DO) {
-            recordHolder.tv_diagnosed_by.setText("Dr. " + jsonMedicalRecordList.get(position).getDiagnosedByDisplayName());
+        JsonMedicalRecord jmr = jsonMedicalRecordList.get(position);
+        if (jmr.getBusinessType() == BusinessTypeEnum.DO) {
+            recordHolder.tv_diagnosed_by.setText("Dr. " + jmr.getDiagnosedByDisplayName());
         } else {
-            recordHolder.tv_diagnosed_by.setText(jsonMedicalRecordList.get(position).getDiagnosedByDisplayName());
+            recordHolder.tv_diagnosed_by.setText(jmr.getDiagnosedByDisplayName());
         }
-        recordHolder.tv_business_name.setText(jsonMedicalRecordList.get(position).getBusinessName());
-        recordHolder.tv_business_category_name.setText(jsonMedicalRecordList.get(position).getBizCategoryName());
-        recordHolder.tv_complaints.setText(jsonMedicalRecordList.get(position).getChiefComplain());
-        recordHolder.tv_create.setText(jsonMedicalRecordList.get(position).getCreateDate());
-        recordHolder.tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecordList.get(position).getRecordAccess().size());
+        recordHolder.tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jmr.getDiagnosedByDisplayName())?View.GONE:View.VISIBLE);
+        recordHolder.tv_business_name.setText(jmr.getBusinessName());
+        recordHolder.tv_business_category_name.setText(jmr.getBizCategoryName());
+        recordHolder.tv_complaints.setText(jmr.getChiefComplain());
+        try {
+            recordHolder.tv_create.setText(CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jmr.getCreateDate())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        recordHolder.tv_no_of_time_access.setText("# of times record viewed: " + jmr.getRecordAccess().size());
         return view;
     }
 

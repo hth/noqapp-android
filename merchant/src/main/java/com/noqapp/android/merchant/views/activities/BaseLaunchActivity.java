@@ -35,6 +35,7 @@ import com.crashlytics.android.answers.CustomEvent;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,15 +43,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,7 +60,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -667,16 +667,16 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void showChangeLangDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_language, null);
-        dialogBuilder.setView(dialogView);
-        final LinearLayout ll_hindi = dialogView.findViewById(R.id.ll_hindi);
-        final LinearLayout ll_english = dialogView.findViewById(R.id.ll_english);
-        final RadioButton rb_hi = dialogView.findViewById(R.id.rb_hi);
-        final RadioButton rb_en = dialogView.findViewById(R.id.rb_en);
-        final AlertDialog b = dialogBuilder.create();
-        ;
+        final Dialog dialog = new Dialog(launchActivity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_language);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+        final LinearLayout ll_hindi = dialog.findViewById(R.id.ll_hindi);
+        final LinearLayout ll_english = dialog.findViewById(R.id.ll_english);
+        final RadioButton rb_hi = dialog.findViewById(R.id.rb_hi);
+        final RadioButton rb_en = dialog.findViewById(R.id.rb_en);
+
         if (language.equals("hi")) {
             rb_hi.setChecked(true);
             rb_en.setChecked(false);
@@ -684,25 +684,22 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
-
         ll_hindi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtils.changeLanguage("hi");
-                b.dismiss();
+                dialog.dismiss();
             }
         });
         ll_english.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtils.changeLanguage("en");
-                b.dismiss();
+                dialog.dismiss();
             }
         });
-        dialogBuilder.setTitle("");
-        b.show();
+        dialog.show();
     }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
