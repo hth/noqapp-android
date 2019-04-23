@@ -98,6 +98,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         } else {
             tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
         }
+        tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jsonMedicalRecord.getDiagnosedByDisplayName())?View.GONE:View.VISIBLE);
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
         try {
