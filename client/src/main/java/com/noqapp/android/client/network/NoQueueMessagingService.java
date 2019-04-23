@@ -335,6 +335,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                             current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());
                             go_to = ((JsonTopicQueueData) object).getGoTo();
                         }
+                        if (object instanceof JsonTopicOrderData) {
+                            Log.e("IN JsonTopicOrderData", ((JsonTopicOrderData) object).toString());
+                            current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());
+                            go_to = ((JsonTopicOrderData) object).getGoTo();
+                        }
                         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
                         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
                             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
