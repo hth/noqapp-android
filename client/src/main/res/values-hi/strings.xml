@@ -282,11 +282,11 @@
 
     <!-- Empty Screens labels -->
     <string name="empty_order_title">Your bag is empty</string>
-    <string name="empty_order_subtitle">Looks like you haven\'t \n made your choice yet.</string>
+    <string name="empty_order_subtitle">There is nothing selected</string>
     <string name="empty_noti_title">Empty notification</string>
-    <string name="empty_noti_subtitle">You haven\'t receive any notification yet :(.</string>
+    <string name="empty_noti_subtitle">There are no notification</string>
     <string name="empty_queue_title">Empty Queue</string>
-    <string name="empty_queue_subtitle">Looks like you haven\'t \n join any queue yet.</string>
+    <string name="empty_queue_subtitle">You have yet to see the \n awesomeness of NoQueue. \n Join a queue to see it.</string>
     <string name="empty_medical_h_title">Empty Medical History</string>
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
     <string name="empty_review_title">Rate Us</string>
