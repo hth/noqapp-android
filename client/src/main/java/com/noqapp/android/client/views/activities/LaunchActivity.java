@@ -972,16 +972,22 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         String go_to = "";
         String messageOrigin = "";
         String current_serving = "";
+        String title = "";
+        String body = "";
         PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
         if (object instanceof JsonTopicQueueData) {
             current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
             go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
             messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            title = ((JsonTopicQueueData) object).getTitle();
+            body = ((JsonTopicQueueData) object).getBody();
         } else if (object instanceof JsonTopicOrderData) {
             current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
             go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
             messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
             purchaseOrderStateEnum = ((JsonTopicOrderData) object).getPurchaseOrderState();
+            title = ((JsonTopicOrderData) object).getTitle();
+            body = ((JsonTopicOrderData) object).getBody();
         }
         ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
         for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
@@ -1069,7 +1075,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
                         }
                     }
-                    scanFragment.updateListFromNotification(jtk, go_to);
+                    scanFragment.updateListFromNotification(jtk, go_to,title,body);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

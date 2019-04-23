@@ -61,11 +61,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private CardView cv_notes;
     private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment,tv_transaction_via;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via;
     private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
-    private TextView tv_token,tv_q_name,tv_customer_name;
+    private TextView tv_token, tv_q_name, tv_customer_name;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -167,7 +167,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                         //Do nothing
                     }
                 });
-                showDialog.displayDialog("Alert","You are initiating refund process. Please confirm");
+                showDialog.displayDialog("Alert", "You are initiating refund process. Please confirm");
             }
         });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
@@ -210,7 +210,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                                     //Do nothing
                                 }
                             });
-                            showDialog.displayDialog("Alert","You are initiating payment process. Please confirm");
+                            showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
                         }
                     }
                 }
@@ -261,7 +261,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             //Do nothing
                         }
                     });
-                    showDialog.displayDialog("Alert","You are initiating payment process. Please confirm");
+                    showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
                 }
 
             }
@@ -275,7 +275,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonPurchaseOrder.getCustomerName());
-        tv_token.setText("Token/Order No. "+String.valueOf(jsonPurchaseOrder.getToken()));
+        tv_token.setText("Token/Order No. " + String.valueOf(jsonPurchaseOrder.getToken()));
         tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
@@ -314,9 +314,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             rl_payment.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()||
+                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
-            tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
+            if (null != jsonPurchaseOrder.getPaymentMode()) {
+                tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
+            }
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));

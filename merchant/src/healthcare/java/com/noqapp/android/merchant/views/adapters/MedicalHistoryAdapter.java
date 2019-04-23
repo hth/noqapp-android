@@ -80,6 +80,7 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
             recordHolder.tv_medicine = view.findViewById(R.id.tv_medicine);
             recordHolder.tv_attachment = view.findViewById(R.id.tv_attachment);
 
+            recordHolder.ll_medical = view.findViewById(R.id.ll_medical);
             recordHolder.ll_xray = view.findViewById(R.id.ll_xray);
             recordHolder.ll_sono = view.findViewById(R.id.ll_sono);
             recordHolder.ll_scan = view.findViewById(R.id.ll_scan);
@@ -288,6 +289,11 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
             recordHolder.ll_sono.setVisibility(View.GONE);
         }
         showHideViews(recordHolder.tv_examination, recordHolder.tv_medicine, recordHolder.tv_complaints);
+        if(jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.HS){
+            recordHolder.ll_medical.setVisibility(View.GONE);
+        }else{
+            recordHolder.ll_medical.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -363,6 +369,7 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         TextView tv_observation_spec_label;
         TextView tv_observation_mri_label;
 
+        LinearLayout ll_medical;
         LinearLayout ll_xray;
         LinearLayout ll_sono;
         LinearLayout ll_scan;
