@@ -839,7 +839,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 ((JsonAlertData) object).getTitle(),
                                 ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() ,((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
@@ -956,7 +956,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 ((JsonAlertData) object).getTitle(),
                                 ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() + " is " + ((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() ,((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else {
                         updateNotification(object, codeQR);

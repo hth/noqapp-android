@@ -641,7 +641,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                             startActivity(blinker);
                             break;
                         case CO:
-                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), title + " is " + body);
+                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), title , body);
                             break;
                         default:
                             //Do Nothing
