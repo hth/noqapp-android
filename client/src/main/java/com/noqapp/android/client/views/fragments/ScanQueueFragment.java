@@ -585,7 +585,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
     }
 
-    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to) {
+    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to,String title, String body) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
@@ -629,7 +629,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                             startActivity(blinker);
                             break;
                         case CO:
-                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), jq.getBusinessName() + " has cancelled your order. Sorry for your inconvenience. :(");
+                            ShowAlertInformation.showInfoDisplayDialog(getActivity(), title + " is " + body);
                             break;
                         default:
                             //Do Nothing
