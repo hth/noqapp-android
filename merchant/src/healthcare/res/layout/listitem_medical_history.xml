@@ -69,61 +69,68 @@
                         android:textSize="@dimen/text_size_twelve"/>
             </RelativeLayout>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Symptoms:"
-                    android:textColor="@android:color/black"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginStart="5dp"
-                    android:textSize="12sp"/>
-
-            <TextView
-                    android:id="@+id/tv_complaints"
+            <LinearLayout
+                    android:id="@+id/ll_medical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="5dp"
-                    android:textSize="@dimen/text_size_twelve"/>
+                    android:orientation="vertical">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Diagnosis:"
-                    android:textColor="@android:color/black"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginStart="5dp"
-                    android:textSize="12sp"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Symptoms:"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
 
-            <TextView
-                    android:id="@+id/tv_examination"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="5dp"
-                    android:textSize="@dimen/text_size_twelve"/>
+                <TextView
+                        android:id="@+id/tv_complaints"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Medicines:"
-                    android:textColor="@android:color/black"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginStart="5dp"
-                    android:textSize="12sp"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Diagnosis:"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
 
-            <TextView
-                    android:id="@+id/tv_medicine"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:layout_marginStart="5dp"
-                    android:textSize="@dimen/text_size_twelve"/>
+                <TextView
+                        android:id="@+id/tv_examination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Medicines:"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:textSize="12sp"/>
+
+                <TextView
+                        android:id="@+id/tv_medicine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="5dp"
+                        android:textSize="@dimen/text_size_twelve"/>
+            </LinearLayout>
 
             <View
                     android:id="@+id/view_separator"

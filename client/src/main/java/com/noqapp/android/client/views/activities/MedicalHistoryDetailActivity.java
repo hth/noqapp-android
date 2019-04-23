@@ -1,15 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
@@ -26,11 +16,20 @@ import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
 
@@ -140,48 +139,52 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             ll_medication.setVisibility(View.GONE);
         }
         String notAvailable = "N/A";
+        LinearLayout ll_physical = findViewById(R.id.ll_physical);
+        if (jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.HS) {
+            ll_physical.setVisibility(View.GONE);
+        } else {
+            ll_physical.setVisibility(View.VISIBLE);
 
-
-        if (null != jsonMedicalRecord.getMedicalPhysical()) {
-            if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
-                tv_respiration.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
-            } else {
-                tv_respiration.setText(notAvailable);
-            }
-            if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
-                tv_height.setText(jsonMedicalRecord.getMedicalPhysical().getHeight());
-            } else {
-                tv_height.setText(notAvailable);
-            }
-            if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
-                tv_pulse.setText(jsonMedicalRecord.getMedicalPhysical().getPulse());
+            if (null != jsonMedicalRecord.getMedicalPhysical()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
+                    tv_respiration.setText(jsonMedicalRecord.getMedicalPhysical().getRespiratory());
+                } else {
+                    tv_respiration.setText(notAvailable);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
+                    tv_height.setText(jsonMedicalRecord.getMedicalPhysical().getHeight());
+                } else {
+                    tv_height.setText(notAvailable);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+                    tv_pulse.setText(jsonMedicalRecord.getMedicalPhysical().getPulse());
+                } else {
+                    tv_pulse.setText(notAvailable);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
+                    tv_bp.setText(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]);
+                } else {
+                    tv_bp.setText(notAvailable);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
+                    tv_weight.setText(jsonMedicalRecord.getMedicalPhysical().getWeight());
+                } else {
+                    tv_weight.setText(notAvailable);
+                }
+                if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
+                    tv_temperature.setText(jsonMedicalRecord.getMedicalPhysical().getTemperature());
+                } else {
+                    tv_temperature.setText(notAvailable);
+                }
             } else {
                 tv_pulse.setText(notAvailable);
-            }
-            if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
-                tv_bp.setText(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]);
-            } else {
                 tv_bp.setText(notAvailable);
-            }
-            if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
-                tv_weight.setText(jsonMedicalRecord.getMedicalPhysical().getWeight());
-            } else {
                 tv_weight.setText(notAvailable);
-            }
-            if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
-                tv_temperature.setText(jsonMedicalRecord.getMedicalPhysical().getTemperature());
-            } else {
                 tv_temperature.setText(notAvailable);
+                tv_respiration.setText(notAvailable);
+                tv_height.setText(notAvailable);
             }
-        } else {
-            tv_pulse.setText(notAvailable);
-            tv_bp.setText(notAvailable);
-            tv_weight.setText(notAvailable);
-            tv_temperature.setText(notAvailable);
-            tv_respiration.setText(notAvailable);
-            tv_height.setText(notAvailable);
         }
-
         if (null == jsonMedicalRecord.getMedicalPathologiesLists() || jsonMedicalRecord.getMedicalPathologiesLists().size() == 0
                 || jsonMedicalRecord.getMedicalPathologiesLists().get(0).getJsonMedicalPathologies().isEmpty()) {
             ll_pathology.setVisibility(View.GONE);

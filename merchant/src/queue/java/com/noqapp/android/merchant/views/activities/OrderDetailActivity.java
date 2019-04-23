@@ -316,6 +316,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()||
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
+            if(null != jsonPurchaseOrder.getPaymentMode())
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
