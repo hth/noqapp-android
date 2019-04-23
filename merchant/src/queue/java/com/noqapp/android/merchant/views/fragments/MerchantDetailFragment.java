@@ -113,10 +113,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+                orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
                 orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-
 
                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                 purchaseOrderApiCalls.setAcquireOrderPresenter(this);
@@ -126,8 +126,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         }
     }
-
-
 
     @Override
     public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
@@ -180,7 +178,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         mAlertDialog.setCanceledOnTouchOutside(false);
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
@@ -214,14 +211,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         } else {
             super.peopleInQClick(position);
         }
-
     }
 
     @Override
     public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR) {
 
     }
-
 
     @Override
     public void orderDoneClick(int position) {
@@ -234,10 +229,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
+                orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
                 orderServed.setGoTo(tv_counter_name.getText().toString());
                 orderServed.setQueueStatus(QueueStatusEnum.N);
                 orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
-
 
                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                 purchaseOrderApiCalls.setOrderProcessedPresenter(this);
@@ -248,7 +243,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
     }
 
-
     @Override
     public void orderCancelClick(int position) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -258,6 +252,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());
             orderServed.setTransactionId(purchaseOrders.get(position).getTransactionId());
+            orderServed.setQueueUserId(purchaseOrders.get(position).getQueueUserId());
             orderServed.setGoTo(tv_counter_name.getText().toString());
             orderServed.setQueueStatus(QueueStatusEnum.N);
             orderServed.setPurchaseOrderState(purchaseOrders.get(position).getPresentOrderState());
@@ -434,8 +429,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
                         } else {
                             if (tv_start.getText().equals(context.getString(R.string.pause))) {
-
-
                                 ShowCustomDialog showDialog = new ShowCustomDialog(context);
                                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                                     @Override
@@ -475,20 +468,18 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                             }
                         }
                     }
-                });
-
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setVisibility(View.VISIBLE);
-                    getAllPeopleInQ(jsonTopic);
-
-                } else {
-                    ShowAlertInformation.showNetworkDialog(getActivity());
                 }
+            });
+
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.setVisibility(View.VISIBLE);
+                getAllPeopleInQ(jsonTopic);
+            } else {
+                ShowAlertInformation.showNetworkDialog(getActivity());
             }
         } else {
             super.updateUI();
         }
-
     }
 
     @Override
@@ -498,7 +489,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             //Hence update only that objects
             JsonPurchaseOrder jsonPurchaseOrder = jsonPurchaseOrderList.getPurchaseOrders().get(0);
             for (int j = 0; j < jsonPurchaseOrderList.getPurchaseOrders().size(); j++) {
-
                 for (int i = 0; i < purchaseOrders.size(); i++) {
                     if (purchaseOrders.get(i).getToken() == jsonPurchaseOrder.getToken()) {
                         purchaseOrders.set(i, jsonPurchaseOrder);
@@ -509,8 +499,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
         peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
-        if (jsonTopic.getServingNumber() > 0)
+        if (jsonTopic.getServingNumber() > 0) {
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
+        }
         LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
