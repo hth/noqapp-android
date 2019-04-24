@@ -13,6 +13,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -692,7 +693,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     private void triggerOnlinePayment() {
         String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
-        String stage = Constants.stage;
+        String stage = BuildConfig.CASHFREE_STAGE;
         String appId = Constants.appId;
         String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
         String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();

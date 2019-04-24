@@ -8,6 +8,7 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
 import com.noqapp.android.client.network.NoQueueMessagingService;
@@ -391,7 +392,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     private void triggerOnlinePayment() {
         String token = jsonPurchaseOrder.getJsonResponseWithCFToken().getCftoken();
-        String stage = Constants.stage;
+        String cashfreeStage = BuildConfig.CASHFREE_STAGE;
         String appId = Constants.appId;
         String orderId = jsonPurchaseOrder.getTransactionId();
         String orderAmount = jsonPurchaseOrder.getJsonResponseWithCFToken().getOrderAmount();
@@ -412,8 +413,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         CFPaymentService cfPaymentService = CFPaymentService.getCFPaymentServiceInstance();
         cfPaymentService.setOrientation(0);
         cfPaymentService.setConfirmOnExit(true);
-        cfPaymentService.doPayment(this, params, token, this, stage);
-
+        cfPaymentService.doPayment(this, params, token, this, cashfreeStage);
     }
 
     @Override

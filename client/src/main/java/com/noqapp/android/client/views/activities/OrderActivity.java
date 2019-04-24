@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
@@ -377,7 +378,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     private void triggerOnlinePayment() {
         String token = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getCftoken();
-        String stage = Constants.stage;
+        String stage = BuildConfig.CASHFREE_STAGE;
         String appId = Constants.appId;
         String orderId = jsonPurchaseOrderServer.getTransactionId();
         String orderAmount = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getOrderAmount();

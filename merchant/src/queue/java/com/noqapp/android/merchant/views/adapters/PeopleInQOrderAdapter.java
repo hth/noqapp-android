@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -11,6 +12,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +61,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         TextView tv_order_cancel;
         TextView tv_order_accept;
         TextView tv_upload_document;
+        TextView tv_join_timing;
+        RelativeLayout rl_sequence_new_time;
+        ImageView iv_new;
         CardView cardview;
 
         private MyViewHolder(View itemView) {
@@ -71,6 +78,9 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             this.tv_order_cancel = itemView.findViewById(R.id.tv_order_cancel);
             this.tv_order_accept = itemView.findViewById(R.id.tv_order_accept);
             this.tv_upload_document = itemView.findViewById(R.id.tv_upload_document);
+            this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
+            this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
+            this.iv_new = itemView.findViewById(R.id.iv_new);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
@@ -104,9 +114,21 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     public void onBindViewHolder(final MyViewHolder recordHolder, final int position) {
         final JsonPurchaseOrder jsonPurchaseOrder = dataSet.get(position);
         final String phoneNo = jsonPurchaseOrder.getCustomerPhone();
-
+        recordHolder.tv_join_timing.setText(Formatter.getTime(jsonPurchaseOrder.getCreated()));
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonPurchaseOrder.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonPurchaseOrder.getCustomerName());
+       // recordHolder.iv_new.setVisibility(jsonPurchaseOrder.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
+       // if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#d2475f"));
+            recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
+            recordHolder.tv_join_timing.setTextColor(Color.WHITE);
+//        } else {
+//            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#aaaaaa"));
+//            recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
+//            recordHolder.tv_join_timing.setTextColor(Color.WHITE);
+//        }
+
+
         if (null != LaunchActivity.getLaunchActivity()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                     PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
