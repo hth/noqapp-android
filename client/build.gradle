@@ -220,7 +220,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
-            buildConfigField STRING, "CASH_FREE_STAGE", cashFreeSandbox
+            buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
         }
 
         sandbox {
@@ -262,7 +262,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
-            buildConfigField STRING, "CASH_FREE_STAGE", cashFreeSandbox
+            buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
         }
 
         release {
@@ -302,7 +302,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
-            buildConfigField STRING, "CASH_FREE_STAGE", cashFreeLive
+            buildConfigField STRING, "CASHFREE_STAGE", cashfreeProd
         }
     }
 
