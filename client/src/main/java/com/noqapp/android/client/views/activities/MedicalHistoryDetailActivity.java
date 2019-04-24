@@ -19,10 +19,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history_details);
 
+        ImageView iv_profile = findViewById(R.id.iv_profile);
         TextView tv_diagnosed_by = findViewById(R.id.tv_diagnosed_by);
         TextView tv_business_name = findViewById(R.id.tv_business_name);
         TextView tv_business_category_name = findViewById(R.id.tv_business_category_name);
@@ -83,6 +86,11 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
             ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(), true, jsonMedicalRecord.getRecordReferenceId());
             rv_thumb_images.setAdapter(thumbnailGalleryAdapter);
+        }
+        if(BusinessTypeEnum.DO == jsonMedicalRecord.getBusinessType()){
+            iv_profile.setImageResource(R.drawable.doctor);
+        }else{
+            iv_profile.setImageResource(R.drawable.lab);
         }
         tv_complaints.setText(parseCheifComplanits(jsonMedicalRecord.getChiefComplain()));
         tv_past_history.setText(jsonMedicalRecord.getJsonUserMedicalProfile().getPastHistory());
