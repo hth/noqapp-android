@@ -315,10 +315,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
-                Toast.makeText(this, "Order cancelled successfully.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Order cancelled successfully", Toast.LENGTH_LONG).show();
                 iv_home.performClick();
             } else {
-                Toast.makeText(this, "failed to cancel order .", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Failed to cancel order", Toast.LENGTH_LONG).show();
             }
         } else {
             //Show error
