@@ -8,6 +8,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
@@ -117,7 +118,12 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         recordHolder.tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         recordHolder.tv_business_category_name.setText("(" + jsonMedicalRecord.getBizCategoryName() + ")");
         recordHolder.tv_complaints.setText(parseSymptoms(jsonMedicalRecord.getChiefComplain()));
-        recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
+       // recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
+        try {
+            recordHolder.tv_create.setText("Visited: " +CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         recordHolder.tv_examination.setText(jsonMedicalRecord.getExamination());
         recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
         if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {

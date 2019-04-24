@@ -700,24 +700,35 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
         } else {
             if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setVisibility(View.VISIBLE);
-                    lastSelectedPos = position;
-                    Served served = new Served();
-                    served.setCodeQR(jsonTopic.getCodeQR());
-                    served.setQueueStatus(jsonTopic.getQueueStatus());
-                    // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
-                    //served.setServedNumber(jsonTopic.getServingNumber());
-                    served.setGoTo(tv_counter_name.getText().toString());
-                    served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
-                    manageQueueApiCalls.acquire(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            served);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(getActivity());
-                }
+                ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.setVisibility(View.VISIBLE);
+                            lastSelectedPos = position;
+                            Served served = new Served();
+                            served.setCodeQR(jsonTopic.getCodeQR());
+                            served.setQueueStatus(jsonTopic.getQueueStatus());
+                            // served.setQueueUserState(QueueUserStateEnum.N); don't send for time being
+                            //served.setServedNumber(jsonTopic.getServingNumber());
+                            served.setGoTo(tv_counter_name.getText().toString());
+                            served.setServedNumber(jsonQueuedPersonArrayList.get(position).getToken());
+                            manageQueueApiCalls.acquire(
+                                    BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(getActivity());
+                        }
+                    }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Alert", "Do you want to acquire it?");
             } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
                 Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
             } else {
