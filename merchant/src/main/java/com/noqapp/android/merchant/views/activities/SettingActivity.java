@@ -1,28 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.StoreSettingApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalTime;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -48,17 +25,41 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.ServicePaymentEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.StoreSettingApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
@@ -80,8 +81,9 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private SegmentedControl sc_paid_user;
     private List<String> pay_list = new ArrayList<>();
     private ServicePaymentEnum servicePaymentEnum;
-    private LinearLayout ll_payment;
+    private LinearLayout ll_payment, ll_follow_up;
     private TextView tv_fee_after_discounted_followup;
+    private boolean isFollowUpAllow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +120,19 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         edt_discounted_followup_price = findViewById(R.id.edt_discounted_followup_price);
         edt_limited_followup_days = findViewById(R.id.edt_limited_followup_days);
         ll_payment = findViewById(R.id.ll_payment);
+        ll_follow_up = findViewById(R.id.ll_follow_up);
         codeQR = getIntent().getStringExtra("codeQR");
         toggleDayClosed.setOnClickListener(this);
         toggleTodayClosed.setOnClickListener(this);
         togglePreventJoin.setOnClickListener(this);
         toggleStoreOffline.setOnClickListener(this);
-
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+            ll_follow_up.setVisibility(View.VISIBLE);
+            isFollowUpAllow = true;
+        } else {
+            ll_follow_up.setVisibility(View.GONE);
+            isFollowUpAllow = false;
+        }
         pay_list.clear();
         pay_list.addAll(ServicePaymentEnum.asListOfDescription());
         sc_paid_user.addSegments(pay_list);
@@ -363,30 +372,34 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                         } else {
                             if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && !TextUtils.isEmpty(edt_fees.getText().toString())) {
                                 if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
-                                    if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
-                                        if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >= (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
-                                                updatePaymentSettings();
-                                            } else {
-                                                Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be greater than follow-up days", Toast.LENGTH_LONG).show();
-                                            }
-                                        } else {
-                                            updatePaymentSettings();
-                                        }
-                                    } else {
-                                        if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) < Integer.parseInt(edt_fees.getText().toString()))) {
+                                    if (isFollowUpAllow) {
+                                        if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
                                             if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                                                if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) >= (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                     updatePaymentSettings();
                                                 } else {
-                                                    Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be greater than follow up days", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be less than free follow-up days", Toast.LENGTH_LONG).show();
                                                 }
                                             } else {
                                                 updatePaymentSettings();
                                             }
                                         } else {
-                                            Toast.makeText(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
+                                            if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) < Integer.parseInt(edt_fees.getText().toString()))) {
+                                                if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                                                    if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                        updatePaymentSettings();
+                                                    } else {
+                                                        Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be less than free follow up days", Toast.LENGTH_LONG).show();
+                                                    }
+                                                } else {
+                                                    updatePaymentSettings();
+                                                }
+                                            } else {
+                                                Toast.makeText(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
+                                            }
                                         }
+                                    } else {
+                                        updatePaymentSettings();
                                     }
                                 } else {
                                     Toast.makeText(SettingActivity.this, "Cancellation charge cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
