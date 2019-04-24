@@ -258,7 +258,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
 
         }
-        tv_order_state.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
         } else {
@@ -271,6 +271,11 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             //TODO log error
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
             tv_consultation_fee_value.setText(currencySymbol + " " + String.valueOf(0 / 100));
+        }
+
+        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState()&& null == jsonPurchaseOrder.getPaymentMode()) {
+            rl_payment.setVisibility(View.GONE);
+            tv_payment_mode.setText("N/A");
         }
     }
 
