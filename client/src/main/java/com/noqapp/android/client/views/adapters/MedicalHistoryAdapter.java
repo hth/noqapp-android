@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
@@ -50,6 +51,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             recordHolder.tv_complaints = view.findViewById(R.id.tv_complaints);
             recordHolder.tv_create = view.findViewById(R.id.tv_create);
             recordHolder.tv_no_of_time_access = view.findViewById(R.id.tv_no_of_time_access);
+            recordHolder.iv_profile = view.findViewById(R.id.iv_profile);
             recordHolder.cardview = view.findViewById(R.id.cardview);
             view.setTag(recordHolder);
         } else {
@@ -71,6 +73,11 @@ public class MedicalHistoryAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         recordHolder.tv_no_of_time_access.setText("# of times record viewed: " + jmr.getRecordAccess().size());
+        if(BusinessTypeEnum.DO == jmr.getBusinessType()){
+            recordHolder.iv_profile.setImageResource(R.drawable.doctor);
+        }else{
+            recordHolder.iv_profile.setImageResource(R.drawable.lab);
+        }
         return view;
     }
 
@@ -82,6 +89,7 @@ public class MedicalHistoryAdapter extends BaseAdapter {
         TextView tv_business_category_name;
         TextView tv_no_of_time_access;
         CardView cardview;
+        ImageView iv_profile;
 
         RecordHolder() {
         }
