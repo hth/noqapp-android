@@ -1,357 +1,394 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#99ffffff"
-              android:orientation="vertical">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99ffffff"
+    android:orientation="vertical">
 
-    <include layout="@layout/tool_bar_history"/>
+    <include layout="@layout/tool_bar_history" />
 
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:background="#efefef">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#efefef"
+        android:padding="5dp">
 
         <androidx.cardview.widget.CardView
-                android:id="@+id/card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                card_view:cardBackgroundColor="@color/white"
-                card_view:cardCornerRadius="5dp"
-                card_view:cardElevation="2dp"
-                card_view:cardUseCompatPadding="true">
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="5dp"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true">
 
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
 
                     <RelativeLayout
-                            android:id="@+id/tv_loc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="5dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_alignParentLeft="true">
+                        android:id="@+id/tv_loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginRight="10dp"
+                        android:paddingTop="5dp">
 
                         <TextView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_alignParentTop="true"
-                                android:background="@drawable/round_corner_aqua"/>
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/round_corner_aqua" />
 
 
                         <ImageView
-                                android:layout_width="3dp"
-                                android:layout_height="90dp"
-                                android:layout_marginLeft="3dp"
-                                android:layerType="software"
-                                android:src="@drawable/blue_dash_vertical"/>
+                            android:layout_width="3dp"
+                            android:layout_height="90dp"
+                            android:layout_marginLeft="3dp"
+                            android:layerType="software"
+                            android:src="@drawable/blue_dash_vertical" />
 
                         <TextView
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_alignParentBottom="true"
-                                android:background="@drawable/round_corner_aqua"/>
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/round_corner_aqua" />
 
 
                     </RelativeLayout>
 
 
                     <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/tv_loc"
-                            android:layout_alignParentRight="true"
-                            android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/tv_loc"
+                        android:orientation="vertical">
 
                         <TextView
-                                android:id="@+id/tv_store_name"
-                                style="@style/style_join_queue_tv"
-                                android:textColor="@color/colorAddress"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="5dp"
-                                android:textSize="@dimen/text_size_eighteen"/>
+                            android:id="@+id/tv_store_name"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_eighteen"
+                            android:textStyle="bold" />
 
                         <TextView
-                                android:id="@+id/tv_address"
-                                style="@style/style_join_queue_tv"
-                                android:layout_marginBottom="10dp"
-                                android:ellipsize="end"
-                                android:maxLines="2"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_fourteen"/>
+                            android:id="@+id/tv_address"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="10dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_fourteen" />
 
                         <TextView
-                                style="@style/style_join_queue_tv"
-                                android:textColor="@color/colorAddress"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="5dp"
-                                android:text="Delivery Address"
-                                android:textSize="@dimen/text_size_eighteen"/>
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="5dp"
+                            android:text="Delivery Address"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_eighteen"
+                            android:textStyle="bold" />
 
                         <TextView
-                                android:id="@+id/tv_delivery_address"
-                                style="@style/style_join_queue_tv"
-                                android:layout_marginBottom="10dp"
-                                android:ellipsize="end"
-                                android:maxLines="2"
-                                android:textColor="@color/colorAddress"
-                                android:textSize="@dimen/text_size_fourteen"/>
+                            android:id="@+id/tv_delivery_address"
+                            style="@style/style_join_queue_tv"
+                            android:layout_marginBottom="10dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textColor="@color/colorAddress"
+                            android:textSize="@dimen/text_size_fourteen" />
                     </LinearLayout>
                 </RelativeLayout>
 
                 <LinearLayout
-                        android:layout_width="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#80deea"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/tv_order_status"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="#80deea"
-                        android:padding="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:layout_alignParentLeft="true"
+                        android:layout_weight=".5"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
 
                     <TextView
-                            android:id="@+id/tv_order_status"
-                            android:layout_width="0dp"
-                            android:layout_weight=".5"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/colorAddress"
-                            android:layout_alignParentLeft="true"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_order_number"
-                            android:layout_width="0dp"
-                            android:layout_weight=".5"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="center_vertical|right"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                        android:id="@+id/tv_order_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_weight=".5"
+                        android:gravity="center_vertical|right"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen" />
                 </LinearLayout>
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
 
                     <TextView
-                            android:id="@+id/tv_order_date"
-                            style="@style/style_join_queue_tv"
-                            android:layout_width="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_alignParentLeft="true"
-                            android:textColor="@color/colorAddress"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                        android:id="@+id/tv_order_date"
+                        style="@style/style_join_queue_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <FrameLayout
-                            android:layout_width="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+
+                        <TextView
+                            android:id="@+id/tv_store_rating"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true">
+                            android:drawableLeft="@mipmap/star_fill"
+                            android:drawablePadding="5dp"
+                            android:gravity="right"
+                            android:text=""
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/rating_text_size" />
 
                         <TextView
-                                android:id="@+id/tv_store_rating"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="right"
-                                android:text=""
-                                android:drawableLeft="@mipmap/star_fill"
-                                android:drawablePadding="5dp"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/rating_text_size"/>
-
-                        <TextView
-                                android:id="@+id/tv_add_review"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="right"
-                                android:text="Add Review"
-                                android:textAllCaps="true"
-                                android:padding="5dp"
-                                android:background="@drawable/btn_bg_inactive"
-                                android:visibility="gone"
-                                android:textSize="@dimen/text_size_fourteen"/>
+                            android:id="@+id/tv_add_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/btn_bg_inactive"
+                            android:gravity="right"
+                            android:padding="5dp"
+                            android:text="Add Review"
+                            android:textAllCaps="true"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:visibility="gone" />
                     </FrameLayout>
                 </RelativeLayout>
 
                 <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/button_disable"/>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:text="@string/order_details"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/button_disable" />
 
                 <LinearLayout
-                        android:id="@+id/ll_order_details"
+                    android:id="@+id/ll_patient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_patient_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:orientation="vertical"
-                        android:padding="10dp"/>
+                        android:text="@string/patient_name"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold"  />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/button_disable" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/order_details"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/ll_order_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical"
+                    android:padding="10dp" />
 
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="@string/total_amount"
+                        android:textSize="@dimen/store_info" />
 
                     <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/total_amount"
-                            android:textSize="@dimen/store_info"/>
-
-                    <TextView
-                            android:id="@+id/tv_total_order_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/store_info"/>
+                        android:id="@+id/tv_total_order_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textSize="@dimen/store_info" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="@string/total_tax"
+                        android:textSize="@dimen/store_info" />
 
                     <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="@string/total_tax"
-                            android:textSize="@dimen/store_info"/>
-
-                    <TextView
-                            android:id="@+id/tv_tax_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textSize="@dimen/store_info"/>
+                        android:id="@+id/tv_tax_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textSize="@dimen/store_info" />
                 </RelativeLayout>
 
                 <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="5dp"
-                        android:background="@color/button_disable"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/button_disable" />
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:orientation="horizontal">
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"
+                        android:text="Total: "
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:gravity="left"
-                            android:text="Total: "
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"/>
-
-                    <TextView
-                            android:id="@+id/tv_due_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                        android:id="@+id/tv_due_amt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
                 </RelativeLayout>
 
                 <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
                     <TextView
-                            android:id="@+id/tv_payment_mode"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text=""
-                            android:textSize="@dimen/text_size_fourteen"/>
+                        android:id="@+id/tv_payment_mode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:text=""
+                        android:textSize="@dimen/text_size_fourteen" />
 
                     <FrameLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5">
 
                         <Button
-                                android:id="@+id/btn_reorder"
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:background="@drawable/btn_bg_inactive"
-                                android:fontFamily="sans-serif-medium"
-                                android:gravity="center"
-                                android:layout_gravity="right"
-                                android:text="@string/reorder"
-                                android:textAllCaps="true"
-                                android:textColor="@color/btn_color"
-                                android:textSize="@dimen/text_size_fourteen"
-                                android:textStyle="normal"/>
+                            android:id="@+id/btn_reorder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="right"
+                            android:background="@drawable/btn_bg_inactive"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/reorder"
+                            android:textAllCaps="true"
+                            android:textColor="@color/btn_color"
+                            android:textSize="@dimen/text_size_fourteen"
+                            android:textStyle="normal" />
                     </FrameLayout>
                 </LinearLayout>
 
                 <TextView
-                        android:id="@+id/tv_additional_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:visibility="gone"/>
+                    android:id="@+id/tv_additional_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

@@ -1,21 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
-import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.body.Feedback;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.MessageOriginEnum;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,7 +9,25 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
+import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderProductHistorical;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.body.Feedback;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public class OrderHistoryDetailActivity extends BaseActivity {
 
@@ -51,10 +53,29 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         TextView tv_store_rating = findViewById(R.id.tv_store_rating);
         TextView tv_add_review = findViewById(R.id.tv_add_review);
         TextView tv_additional_info = findViewById(R.id.tv_additional_info);
+        LinearLayout ll_patient = findViewById(R.id.ll_patient);
+        TextView tv_name = findViewById(R.id.tv_name);
         Button btn_reorder = findViewById(R.id.btn_reorder);
+        TextView tv_patient_label = findViewById(R.id.tv_patient_label);
         final JsonPurchaseOrderHistorical jsonPurchaseOrder = (JsonPurchaseOrderHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
+        }
+        List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
+        profileList.add(0, NoQueueBaseActivity.getUserProfile());
+        tv_name.setText(AppUtilities.getNameFromQueueUserID(jsonPurchaseOrder.getQueueUserId(), profileList));
+        if (tv_name.getText().toString().equals("")) {
+            tv_name.setText("Guest User");
+        }
+        switch (jsonPurchaseOrder.getBusinessType()) {
+            case DO:
+            case HS:
+            case PH:
+                tv_patient_label.setText(getString(R.string.patient_name));
+                break;
+            default:
+                ll_patient.setVisibility(View.GONE);
+                tv_patient_label.setText("Customer Name:");
         }
         String currencySymbol = AppUtilities.getCurrencySymbol(jsonPurchaseOrder.getCountryShortName());
         tv_support.setOnClickListener(new View.OnClickListener() {
