@@ -220,6 +220,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
+            buildConfigField STRING, "CASH_FREE_STAGE", cashFreeSandbox
         }
 
         sandbox {
@@ -261,6 +262,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
+            buildConfigField STRING, "CASH_FREE_STAGE", cashFreeSandbox
         }
 
         release {
@@ -300,6 +302,7 @@ android {
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
+            buildConfigField STRING, "CASH_FREE_STAGE", cashFreeLive
         }
     }
 
@@ -357,7 +360,7 @@ android {
 
     sourceSets {
         androidTest {
-            java.srcDirs = ['test/java', 'androidTestDebug/java']
+            java.srcDirs = ['test/java', 'androidTest/java']
         }
     }
 
