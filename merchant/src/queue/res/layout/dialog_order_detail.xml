@@ -513,6 +513,33 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@+id/tv_order_state"
+                            android:paddingLeft="5dp"
+                            android:text="Order State:"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_twelve"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_order_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:paddingRight="5dp"
+                            android:textSize="@dimen/text_size_twelve" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
                             android:layout_toLeftOf="@+id/tv_address"
                             android:paddingLeft="5dp"
                             android:text="Delivery Address:"

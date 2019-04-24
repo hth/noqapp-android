@@ -61,11 +61,12 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private CardView cv_notes;
     private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via,tv_order_state;
     private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
     private TextView tv_token, tv_q_name, tv_customer_name;
+    private OrderItemAdapter adapter;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -109,6 +110,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_cost = findViewById(R.id.tv_cost);
         tv_multiple_payment = findViewById(R.id.tv_multiple_payment);
         tv_transaction_via = findViewById(R.id.tv_transaction_via);
+        tv_order_state = findViewById(R.id.tv_order_state);
         rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
@@ -173,7 +175,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_pay_partial = findViewById(R.id.btn_pay_partial);
         initProgress();
-        updateUI();
         btn_pay_partial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,9 +267,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
 
             }
         });
+        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
-        OrderItemAdapter adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol, this);
+        adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol, this);
         listview.setAdapter(adapter);
+        updateUI();
     }
 
 
@@ -280,7 +283,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
-        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
+
         try {
             if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
                 tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
@@ -313,6 +317,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         } else {
             rl_payment.setVisibility(View.GONE);
         }
+
+
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
@@ -341,6 +347,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             tv_transaction_via.setText("N/A");
         } else {
             tv_transaction_via.setText(jsonPurchaseOrder.getTransactionVia().getDescription());
+        }
+
+        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState()&& null == jsonPurchaseOrder.getPaymentMode()) {
+            rl_payment.setVisibility(View.GONE);
+            btn_update_price.setVisibility(View.GONE);
+            tv_payment_mode.setText("N/A");
+            adapter.setClickEnable(false);
         }
     }
 

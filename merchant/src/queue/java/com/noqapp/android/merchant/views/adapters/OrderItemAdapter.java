@@ -25,6 +25,11 @@ public class OrderItemAdapter extends BaseAdapter {
     private List<JsonPurchaseOrderProduct> jsonPurchaseOrderProductList;
     private String currencySymbol;
     private OrderDetailActivity orderDetailActivity;
+    private boolean isClickEnable = true;
+
+    public void setClickEnable(boolean clickEnable) {
+        isClickEnable = clickEnable;
+    }
 
     public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> notificationsList, String currencySymbol, OrderDetailActivity orderDetailActivity) {
         this.context = context;
@@ -68,7 +73,7 @@ public class OrderItemAdapter extends BaseAdapter {
         recordHolder.tv_amount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (jsonPurchaseOrderProductList.get(position).getProductPrice() == 0) {
+                if (jsonPurchaseOrderProductList.get(position).getProductPrice() == 0 && isClickEnable) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     LayoutInflater inflater = LayoutInflater.from(context);
                     builder.setTitle(null);
