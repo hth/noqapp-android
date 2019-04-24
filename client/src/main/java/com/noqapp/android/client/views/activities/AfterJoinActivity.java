@@ -693,7 +693,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
 
     private void triggerOnlinePayment() {
         String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
-        String stage = BuildConfig.CASH_FREE_STAGE;
+        String stage = BuildConfig.CASHFREE_STAGE;
         String appId = Constants.appId;
         String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
         String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();

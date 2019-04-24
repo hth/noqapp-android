@@ -378,7 +378,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     private void triggerOnlinePayment() {
         String token = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getCftoken();
-        String stage = BuildConfig.CASH_FREE_STAGE;
+        String stage = BuildConfig.CASHFREE_STAGE;
         String appId = Constants.appId;
         String orderId = jsonPurchaseOrderServer.getTransactionId();
         String orderAmount = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getOrderAmount();
