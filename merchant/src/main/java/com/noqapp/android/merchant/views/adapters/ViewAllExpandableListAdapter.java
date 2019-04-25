@@ -68,7 +68,7 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.rv.setHasFixedSize(true);
         int columnCount;
         if (new AppUtils().isTablet(context.getApplicationContext())) {
-            columnCount = 7;
+            columnCount = 5;
         } else {
             columnCount = 2;
         }
