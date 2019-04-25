@@ -34,6 +34,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -313,7 +315,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                peopleInQAdapterClick.viewOrderClick(context,jsonQueuedPerson,qCodeQR);
+                if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
+                    peopleInQAdapterClick.viewOrderClick(context,jsonQueuedPerson,qCodeQR);
+                } else {
+                    Toast.makeText(context, "You don't have permission to accept payment", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
