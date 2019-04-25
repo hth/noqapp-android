@@ -48,6 +48,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     private Button btn_create_order;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
     private String countryCode = "";
+    private String cid = "";
     private CountryCodePicker ccp;
 
     @Override
@@ -116,6 +117,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 }
             }
         });
+        cid = "";
         ccp = customDialogView.findViewById(R.id.ccp);
         String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
@@ -151,11 +153,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     LaunchActivity.getLaunchActivity().progressDialog.show();
                     setDispensePresenter();
                     String phone = "";
-                    String cid = "";
+                    cid = "";
                     if (rb_mobile.isChecked()) {
                         edt_id.setText("");
                         countryCode = ccp.getSelectedCountryCode();
                         phone = countryCode + edt_mobile.getText().toString();
+                        cid = "";
                     } else {
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
@@ -210,13 +213,18 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         btn_create_order.setEnabled(false);
                         LaunchActivity.getLaunchActivity().progressDialog.show();
-                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+                        String phoneNoWithCode =  "";
                         setDispensePresenter();
+                        if(TextUtils.isEmpty(cid)){
+                            phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+                        }
 
-                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
+                                setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                         jsonBusinessCustomer
                                 .setCodeQR(topicsList.get(currrentpos).getCodeQR())
-                                .setCustomerPhone(phoneNoWithCode);
+                                .setCustomerPhone(phoneNoWithCode)
+                        .setBusinessCustomerId(cid);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
                                 BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
