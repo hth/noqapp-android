@@ -384,7 +384,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                                                 updatePaymentSettings();
                                             }
                                         } else {
-                                            if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) < Integer.parseInt(edt_fees.getText().toString()))) {
+                                            if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString()))) {
                                                 if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
                                                     if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                         updatePaymentSettings();
