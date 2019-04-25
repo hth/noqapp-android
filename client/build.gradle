@@ -221,7 +221,7 @@ android {
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
-            buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIDTest
+            buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
         }
 
         sandbox {
@@ -264,7 +264,7 @@ android {
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
-            buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIDTest
+            buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
         }
 
         release {
@@ -305,7 +305,7 @@ android {
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeProd
-            buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIDProd
+            buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdProd
         }
     }
 
