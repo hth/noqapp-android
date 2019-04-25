@@ -482,6 +482,19 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen"/>
 
+                    <Button
+                        android:id="@+id/btn_print"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/bg_nogradient_round"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Print invoice"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_fourteen"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
