@@ -42,7 +42,7 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter,OrderDetailActivity.UpdateWholeList {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
@@ -213,9 +213,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         btn_create_order.setEnabled(false);
                         LaunchActivity.getLaunchActivity().progressDialog.show();
-                        String phoneNoWithCode =  "";
+                        String phoneNoWithCode = "";
                         setDispensePresenter();
-                        if(TextUtils.isEmpty(cid)){
+                        if (TextUtils.isEmpty(cid)) {
                             phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
                         }
 
@@ -224,7 +224,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         jsonBusinessCustomer
                                 .setCodeQR(topicsList.get(currrentpos).getCodeQR())
                                 .setCustomerPhone(phoneNoWithCode)
-                        .setBusinessCustomerId(cid);
+                                .setBusinessCustomerId(cid);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
                                 BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -240,12 +240,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-   public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR) {
+    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR) {
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
         in.putExtra("qCodeQR", qCodeQR);
-        in.putExtra("qName",jsonTopic.getDisplayName());
+        in.putExtra("qName", jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
     }
 
