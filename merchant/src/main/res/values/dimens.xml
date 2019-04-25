@@ -44,6 +44,6 @@
     <dimen name="empty_subtitle_size">16sp</dimen>
     <dimen name="empty_icons">150dp</dimen>
 
-    <dimen name="ppq_width">150dp</dimen>
-    <dimen name="ppq_height">200dp</dimen>
+    <dimen name="ppq_width">160dp</dimen>
+    <dimen name="ppq_height">220dp</dimen>
 </resources>
