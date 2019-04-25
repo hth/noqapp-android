@@ -129,6 +129,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                 case BK:
+                case HS:
                     holder.tv_store_special.setVisibility(View.GONE);
                     holder.tv_status.setVisibility(View.GONE);
                     holder.tv_category_name.setText("");
