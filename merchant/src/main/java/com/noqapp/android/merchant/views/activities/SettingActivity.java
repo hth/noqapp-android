@@ -342,17 +342,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
-                    if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
-                        tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
-                        try {
-                            tv_fee_after_discounted_followup.setText("Service charge for limited follow-up until " + edt_limited_followup_days.getText().toString() + " days is " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        tv_fee_after_discounted_followup.setText("");
-                        tv_fee_after_discounted_followup.setVisibility(View.GONE);
-                    }
+                   updateDiscountLabel();
                 } else {
                     tv_fee_after_discounted_followup.setText("");
                     tv_fee_after_discounted_followup.setVisibility(View.GONE);
@@ -425,6 +415,20 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             storeSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+        }
+    }
+
+    private void updateDiscountLabel() {
+        if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
+            tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
+            try {
+                tv_fee_after_discounted_followup.setText("Service charge for limited follow-up until " + edt_limited_followup_days.getText().toString() + " days is " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            tv_fee_after_discounted_followup.setText("");
+            tv_fee_after_discounted_followup.setVisibility(View.GONE);
         }
     }
 
@@ -552,6 +556,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             edt_discounted_followup_price.setText(String.valueOf(storeSetting.getDiscountedFollowupProductPrice() / 100));
             edt_follow_up_in_days.setText(String.valueOf(storeSetting.getFreeFollowupDays()));
             edt_limited_followup_days.setText(String.valueOf(storeSetting.getDiscountedFollowupDays()));
+            updateDiscountLabel();
         }
         dismissProgress();
     }
