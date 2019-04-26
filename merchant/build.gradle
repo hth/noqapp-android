@@ -456,7 +456,7 @@ dependencies {
     implementation 'org.rauschig:jarchivelib:1.0.0'
     implementation 'org.apache.commons:commons-compress:1.18'
     implementation 'com.github.RobertApikyan:SegmentedControl:1.1.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:16.1.2'
+    implementation 'com.google.android.gms:play-services-cast-framework:16.2.0'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'com.itextpdf:itextpdf:5.5.13'

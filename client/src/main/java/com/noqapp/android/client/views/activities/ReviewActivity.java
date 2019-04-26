@@ -19,7 +19,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -177,7 +177,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
                         progressDialog.setMessage("Submitting review...");
                         progressDialog.show();
                         if (UserUtils.isLogin()) {
-                            if (jtk.getBusinessType() == BusinessTypeEnum.RS) {
+                            if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
                                 OrderReview orderReview = new OrderReview();
                                 orderReview.setCodeQR(jtk.getCodeQR());
                                 orderReview.setToken(jtk.getToken());
