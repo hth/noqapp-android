@@ -239,6 +239,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                                 Intent in = new Intent(context, PreferenceActivity.class);
                                 context.startActivity(in);
                             }
+
                             @Override
                             public void btnNegativeClick() {
                                 Intent intent = new Intent(context, PatientProfileActivity.class);
@@ -249,7 +250,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                             }
                         });
                         showDialog.displayDialog("Alert", "You havn't set your setting preferences. Do you want to set it now?");
-                    }  else {
+                    } else {
                         Intent intent = new Intent(context, PatientProfileActivity.class);
                         intent.putExtra("qCodeQR", qCodeQR);
                         intent.putExtra("data", jsonQueuedPerson);

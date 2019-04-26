@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -112,10 +111,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     }
 
     public interface PeopleInQAdapterClick {
-
         void peopleInQClick(int position);
 
-        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR);
+        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -289,10 +287,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_payment_stat.setText("No Payment Due");
                         recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
-                    }else{
+                    } else {
                         recordHolder.tv_payment_stat.setText("Accept Payment");
-                        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
-                                jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+                        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                             recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
                         } else {
                             recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
@@ -316,7 +313,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             @Override
             public void onClick(View v) {
                 if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
-                    peopleInQAdapterClick.viewOrderClick(context,jsonQueuedPerson,qCodeQR);
+                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, qCodeQR);
                 } else {
                     Toast.makeText(context, "You don't have permission to accept payment", Toast.LENGTH_SHORT).show();
                 }
