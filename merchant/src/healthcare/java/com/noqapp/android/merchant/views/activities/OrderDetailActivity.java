@@ -17,11 +17,15 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
+import com.noqapp.android.merchant.views.utils.PdfGenerator;
+import com.noqapp.android.merchant.views.utils.PdfInvoiceGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -35,6 +39,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
     private ProgressDialog progressDialog;
@@ -53,7 +59,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private Button btn_refund, btn_pay_now;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
     private TextView tv_token,tv_q_name,tv_customer_name;
-
+    private final int STORAGE_PERMISSION_CODE = 102;
+    private final String[] STORAGE_PERMISSION_PERMS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -213,12 +222,40 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                         Toast.makeText(OrderDetailActivity.this, "Payment not allowed on Cancelled/Skipped order.", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
 
-
+        Button btn_print = findViewById(R.id.btn_print);
+        btn_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isStoragePermissionAllowed()) {
+                    PdfInvoiceGenerator pdfGenerator = new PdfInvoiceGenerator(OrderDetailActivity.this);
+                    pdfGenerator.createPdf(jsonQueuedPerson);
+                } else {
+                    requestStoragePermission();
+                }
             }
         });
     }
+    private boolean isStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
 
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+                this,
+                STORAGE_PERMISSION_PERMS,
+                STORAGE_PERMISSION_CODE);
+    }
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
