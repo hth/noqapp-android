@@ -193,14 +193,24 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
-        recordHolder.tv_last_visit.setText(TextUtils.isEmpty(jsonQueuedPerson.getClientVisitedThisStoreDate()) ? "" : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
-        recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user)) :
-                Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
-        recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        recordHolder.tv_last_visit.setText(TextUtils.isEmpty(
+                jsonQueuedPerson.getClientVisitedThisStoreDate())
+                ? ""
+                : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
+        recordHolder.tv_customer_name.setText(
+                TextUtils.isEmpty(jsonQueuedPerson.getCustomerName())
+                        ? context.getString(R.string.unregister_user)
+                        : jsonQueuedPerson.getCustomerName());
+        recordHolder.tv_business_customer_id.setText(
+                TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
+                        ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
+                        : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
+        recordHolder.tv_customer_mobile.setText(
+                TextUtils.isEmpty(phoneNo)
+                        ? context.getString(R.string.unregister_user)
+                        : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
+        if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
             recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -312,7 +322,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
+                if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
                     peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, qCodeQR);
                 } else {
                     Toast.makeText(context, "You don't have permission to accept payment", Toast.LENGTH_SHORT).show();

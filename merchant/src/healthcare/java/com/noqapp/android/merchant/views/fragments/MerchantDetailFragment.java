@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
