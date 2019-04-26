@@ -118,16 +118,16 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         recordHolder.tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         recordHolder.tv_business_category_name.setText("(" + jsonMedicalRecord.getBizCategoryName() + ")");
         recordHolder.tv_complaints.setText(parseSymptoms(jsonMedicalRecord.getChiefComplain()));
-       // recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
+        // recordHolder.tv_create.setText("Visited: " + jsonMedicalRecord.getCreateDate());
         try {
-            recordHolder.tv_create.setText("Visited: " +CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate())));
+            recordHolder.tv_create.setText("Visited: " + CommonHelper.SDF_YYYY_MM_DD_HH_MM_A.format(CommonHelper.SDF_ISO8601_FMT.parse(jsonMedicalRecord.getCreateDate())));
         } catch (Exception e) {
             e.printStackTrace();
         }
         recordHolder.tv_examination.setText(jsonMedicalRecord.getExamination());
         recordHolder.tv_medicine.setText(getMedicineFormList(jsonMedicalRecord.getMedicalMedicines()));
         if (null != jsonMedicalRecord.getImages() && jsonMedicalRecord.getImages().size() > 0) {
-            recordHolder.tv_attachment.setText("Attachment Available: " + jsonMedicalRecord.getImages().size());
+            recordHolder.tv_attachment.setText("" + jsonMedicalRecord.getImages().size());
             recordHolder.tv_attachment.setVisibility(View.VISIBLE);
             recordHolder.view_separator.setVisibility(View.VISIBLE);
             recordHolder.tv_attachment.setOnClickListener(new View.OnClickListener() {
@@ -141,20 +141,9 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                 }
             });
         } else {
-            recordHolder.tv_attachment.setText("No Attachment Available");
+            recordHolder.tv_attachment.setText("No Attachment");
             recordHolder.tv_attachment.setVisibility(View.GONE);
             recordHolder.view_separator.setVisibility(View.GONE);
-        }
-        if (null != jsonMedicalRecord.getMedicalPathologiesLists() && jsonMedicalRecord.getMedicalPathologiesLists().size() > 0
-                && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null &&
-                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0) {
-            recordHolder.tv_attachment_pathology.setText("Attachment Available: " + jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size());
-            recordHolder.tv_observation_pathology_label.setText(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation());
-            recordHolder.ll_pathology.setVisibility(View.VISIBLE);
-        } else {
-            recordHolder.tv_attachment_pathology.setText("No Attachment Available");
-            recordHolder.tv_observation_pathology_label.setText("N/A");
-            recordHolder.ll_pathology.setVisibility(View.GONE);
         }
         recordHolder.ll_scan.setVisibility(View.GONE);
         recordHolder.ll_spec.setVisibility(View.GONE);
@@ -162,6 +151,34 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         recordHolder.ll_pathology.setVisibility(View.GONE);
         recordHolder.ll_mri.setVisibility(View.GONE);
         recordHolder.ll_sono.setVisibility(View.GONE);
+        if (null != jsonMedicalRecord.getMedicalPathologiesLists() && jsonMedicalRecord.getMedicalPathologiesLists().size() > 0
+                && jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages() != null &&
+                jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size() > 0) {
+            recordHolder.tv_attachment_pathology.setText("" + jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages().size());
+            if (TextUtils.isEmpty(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation())) {
+                recordHolder.tv_observation_pathology_label.setText("N/A");
+            } else {
+                recordHolder.tv_observation_pathology_label.setText(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation());
+            }
+            recordHolder.tv_attachment_pathology.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callSliderScreen(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(), jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId());
+                }
+            });
+            recordHolder.tv_observation_pathology_label.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateObservation(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId(), LabCategoryEnum.PATH);
+                }
+            });
+            recordHolder.ll_pathology.setVisibility(View.VISIBLE);
+        } else {
+            recordHolder.tv_attachment_pathology.setText("No Attachment");
+            recordHolder.tv_observation_pathology_label.setText("N/A");
+            recordHolder.ll_pathology.setVisibility(View.GONE);
+        }
+
         if (null != jsonMedicalRecord.getMedicalRadiologyLists() && jsonMedicalRecord.getMedicalRadiologyLists().size() > 0) {
             for (int i = 0; i < jsonMedicalRecord.getMedicalRadiologyLists().size(); i++) {
                 final JsonMedicalRadiologyList jsonMedicalRadiologyList = jsonMedicalRecord.getMedicalRadiologyLists().get(i);
@@ -232,23 +249,23 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                         });
                         recordHolder.ll_xray.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
-                    case PATH:
-                        recordHolder.tv_attachment_pathology.setText(value);
-                        recordHolder.tv_attachment_pathology.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
-                        });
-                        recordHolder.tv_observation_pathology_label.setText(observation);
-                        recordHolder.tv_observation_pathology_label.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
-                            }
-                        });
-                        recordHolder.ll_pathology.setVisibility(showLayout ? View.VISIBLE : View.GONE);
-                        break;
+//                    case PATH:
+//                        recordHolder.tv_attachment_pathology.setText(value);
+//                        recordHolder.tv_attachment_pathology.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
+//                            }
+//                        });
+//                        recordHolder.tv_observation_pathology_label.setText(observation);
+//                        recordHolder.tv_observation_pathology_label.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
+//                            }
+//                        });
+//                        recordHolder.ll_pathology.setVisibility(showLayout ? View.VISIBLE : View.GONE);
+//                        break;
                     case MRI:
                         recordHolder.tv_attachment_mri.setText(value);
                         recordHolder.tv_attachment_mri.setOnClickListener(new View.OnClickListener() {
@@ -286,18 +303,11 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                     default:
                 }
             }
-        } else {
-            recordHolder.ll_scan.setVisibility(View.GONE);
-            recordHolder.ll_spec.setVisibility(View.GONE);
-            recordHolder.ll_xray.setVisibility(View.GONE);
-            recordHolder.ll_pathology.setVisibility(View.GONE);
-            recordHolder.ll_mri.setVisibility(View.GONE);
-            recordHolder.ll_sono.setVisibility(View.GONE);
         }
         showHideViews(recordHolder.tv_examination, recordHolder.tv_medicine, recordHolder.tv_complaints);
-        if(jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.HS){
+        if (jsonMedicalRecord.getBusinessType() == BusinessTypeEnum.HS) {
             recordHolder.ll_medical.setVisibility(View.GONE);
-        }else{
+        } else {
             recordHolder.ll_medical.setVisibility(View.VISIBLE);
         }
         return view;
