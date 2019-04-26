@@ -10,9 +10,11 @@ import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PdfInvoiceGenerator;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -25,8 +27,10 @@ import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -45,6 +49,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter {
     private ProgressDialog progressDialog;
@@ -67,6 +73,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private RelativeLayout rl_multiple;
     private TextView tv_token, tv_q_name, tv_customer_name;
     private OrderItemAdapter adapter;
+    private final int STORAGE_PERMISSION_CODE = 102;
+    private final String[] STORAGE_PERMISSION_PERMS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -272,8 +282,41 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol, this);
         listview.setAdapter(adapter);
         updateUI();
+        Button btn_print = findViewById(R.id.btn_print);
+        btn_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isStoragePermissionAllowed()) {
+                    PdfInvoiceGenerator pdfGenerator = new PdfInvoiceGenerator(OrderDetailActivity.this);
+                    JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson();
+                    jsonQueuedPerson.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                    jsonQueuedPerson.setCustomerName(jsonPurchaseOrder.getCustomerName());
+                    jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
+                    pdfGenerator.createPdf(jsonQueuedPerson);
+                } else {
+                    requestStoragePermission();
+                }
+            }
+        });
+    }
+    private boolean isStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
     }
 
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+                this,
+                STORAGE_PERMISSION_PERMS,
+                STORAGE_PERMISSION_CODE);
+    }
 
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);

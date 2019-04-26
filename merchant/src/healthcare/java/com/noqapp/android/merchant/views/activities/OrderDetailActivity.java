@@ -13,12 +13,11 @@ import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PdfInvoiceGenerator;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
-import com.noqapp.android.merchant.views.utils.PdfGenerator;
-import com.noqapp.android.merchant.views.utils.PdfInvoiceGenerator;
 
 import org.apache.commons.lang3.StringUtils;
 
