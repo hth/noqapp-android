@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -180,7 +181,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("visibility", DataVisibilityEnum.H.getName().equals(jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name()));
+                    in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+                    //in.putExtra("paymentPermission", PaymentPermissionEnum.A == jsonTopic.getJsonPaymentPermission().getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
@@ -281,7 +283,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataVisibility());
+                peopleInQAdapter = new PeopleInQAdapter(
+                        jsonQueuedPersonArrayList,
+                        context,
+                        this,
+                        jsonTopic.getCodeQR(),
+                        jsonTopic.getJsonDataVisibility(),
+                        jsonTopic.getJsonPaymentPermission());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         } else {
@@ -422,7 +430,16 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         }
                     }
             );
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility(), jsonTopic.getBizCategoryId());
+            peopleInQAdapter = new PeopleInQAdapter(
+                    jsonQueuedPersonArrayList,
+                    context,
+                    this,
+                    jsonTopic.getCodeQR(),
+                    jsonTopic.getServingNumber(),
+                    jsonTopic.getQueueStatus(),
+                    jsonTopic.getJsonDataVisibility(),
+                    jsonTopic.getJsonPaymentPermission(),
+                    jsonTopic.getBizCategoryId());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if (jsonTopic.getServingNumber() > 0)
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -689,7 +706,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     protected void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
-        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataVisibility());
+        peopleInQAdapter = new PeopleInQAdapter(
+                jsonQueuedPersonArrayList,
+                context,
+                this,
+                jsonTopic.getCodeQR(),
+                jsonTopic.getJsonDataVisibility(),
+                jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQAdapter);
     }
 

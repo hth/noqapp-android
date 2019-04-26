@@ -9,6 +9,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
+import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -45,12 +46,29 @@ import java.util.Random;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, JsonDataVisibility jsonDataVisibility) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility);
+    public PeopleInQAdapter(
+            List<JsonQueuedPerson> data,
+            Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick,
+            String qCodeQR,
+            JsonDataVisibility jsonDataVisibility,
+            JsonPaymentPermission jsonPaymentPermission
+    ) {
+        super(data, context, peopleInQAdapterClick, qCodeQR, jsonDataVisibility, jsonPaymentPermission);
     }
 
-    public PeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId) {
-        super(data, context, peopleInQAdapterClick, qCodeQR, glowPosition, queueStatusEnum, jsonDataVisibility, bizCategoryId);
+    public PeopleInQAdapter(
+            List<JsonQueuedPerson> data,
+            Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick,
+            String qCodeQR,
+            int glowPosition,
+            QueueStatusEnum queueStatusEnum,
+            JsonDataVisibility jsonDataVisibility,
+            JsonPaymentPermission jsonPaymentPermission,
+            String bizCategoryId
+    ) {
+        super(data, context, peopleInQAdapterClick, qCodeQR, glowPosition, queueStatusEnum, jsonDataVisibility, jsonPaymentPermission, bizCategoryId);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
@@ -59,7 +60,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), FollowUpListActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("visibility", DataVisibilityEnum.H.getName().equals(jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name()));
+                    in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+                    //in.putExtra("paymentPermission", PaymentPermissionEnum.A == jsonTopic.getJsonPaymentPermission().getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);

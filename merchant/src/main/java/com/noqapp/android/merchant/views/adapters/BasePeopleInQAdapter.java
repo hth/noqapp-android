@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -13,6 +14,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
+import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -53,6 +55,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     protected BusinessCustomerApiCalls businessCustomerApiCalls;
     private QueueStatusEnum queueStatusEnum;
     private JsonDataVisibility jsonDataVisibility;
+    private JsonPaymentPermission jsonPaymentPermission;
 
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
@@ -153,7 +156,14 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, JsonDataVisibility jsonDataVisibility) {
+    protected BasePeopleInQAdapter(
+            List<JsonQueuedPerson> data,
+            Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick,
+            String qCodeQR,
+            JsonDataVisibility jsonDataVisibility,
+            JsonPaymentPermission jsonPaymentPermission
+    ) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -163,9 +173,20 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.jsonDataVisibility = jsonDataVisibility;
+        this.jsonPaymentPermission = jsonPaymentPermission;
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId) {
+    protected BasePeopleInQAdapter(
+            List<JsonQueuedPerson> data,
+            Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick,
+            String qCodeQR,
+            int glowPosition,
+            QueueStatusEnum queueStatusEnum,
+            JsonDataVisibility jsonDataVisibility,
+            JsonPaymentPermission jsonPaymentPermission,
+            String bizCategoryId
+    ) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -177,6 +198,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
+        this.jsonPaymentPermission = jsonPaymentPermission;
         this.bizCategoryId = bizCategoryId;
     }
 
@@ -257,8 +279,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 break;
             case A:
                 recordHolder.tv_status_msg.setBackgroundResource(R.drawable.grey_background);
-                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
-                        context, R.color.disable_list));
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
                 break;
             case N:
@@ -322,10 +343,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
                     peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, qCodeQR);
                 } else {
-                    Toast.makeText(context, "You don't have permission to accept payment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "You do not have permission to accept payment", Toast.LENGTH_SHORT).show();
                 }
             }
         });
