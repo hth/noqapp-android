@@ -196,8 +196,8 @@ public class ReceiptGeneratorPDF {
         try {
             table.setWidthPercentage(100);
             table.setWidths(new int[]{1, 4, 1, 2, 2});
-            for (int i = 0; i < receipt.getPurchaseOrderProducts().size(); i++) {
-                JsonPurchaseOrderProduct jpop = receipt.getPurchaseOrderProducts().get(i);
+            for (int i = 0; i < receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size(); i++) {
+                JsonPurchaseOrderProduct jpop = receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().get(i);
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(i + 1), normalFont));
                 table.addCell(pdfPCellWithoutBorder(jpop.getProductName(), normalFont));
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(jpop.getProductQuantity()), normalFont));
@@ -218,22 +218,22 @@ public class ReceiptGeneratorPDF {
         try {
             table.setWidthPercentage(100);
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Status:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentStatus().getDescription(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getJsonPurchaseOrder().getPaymentStatus().getDescription(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Total Cost:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getOrderPrice(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getJsonPurchaseOrder().getOrderPrice(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Balance Amount:", normalBoldFont, 5));
             table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.computeBalanceAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Paid Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getPartialPayment(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getJsonPurchaseOrder().getPartialPayment(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Transaction Via:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTransactionVia().getFriendlyDescription(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getJsonPurchaseOrder().getTransactionVia().getFriendlyDescription(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Mode:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentMode().getDescription(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getJsonPurchaseOrder().getPaymentMode().getDescription(), normalFont, 5));
 
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);
@@ -280,7 +280,7 @@ public class ReceiptGeneratorPDF {
 
         // Line 2
         table.addCell(pdfPCellWithoutBorder("Customer Name       :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(receipt.getCustomerName(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getJsonPurchaseOrder().getCustomerName(), normalFont));
         table.addCell(pdfPCellWithoutBorder("Date                       :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(formattedDate, normalFont));
 

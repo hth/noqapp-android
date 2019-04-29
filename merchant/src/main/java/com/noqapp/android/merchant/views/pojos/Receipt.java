@@ -1,7 +1,10 @@
 package com.noqapp.android.merchant.views.pojos;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.TransactionViaEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -37,41 +40,59 @@ public class Receipt extends AbstractDomain implements Serializable {
     @JsonProperty("qr")
     private String codeQR;
 
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
+
     @JsonProperty("n")
     private String businessName;
 
     @JsonProperty("sa")
     private String storeAddress;
 
+    @JsonProperty("p")
+    private String storePhone;
+
     @JsonProperty("bc")
     private String businessCustomerId;
 
-    @JsonProperty("n")
-    private String customerName;
-
-    @JsonProperty("nm")
-    private String name;
+    @JsonProperty("qid")
+    private String queueUserId;
 
     @JsonProperty ("ti")
     private String transactionId;
 
-    @JsonProperty("py")
-    private PaymentStatusEnum paymentStatus;
+    @JsonProperty ("po")
+    private JsonPurchaseOrder jsonPurchaseOrder;
 
-    @JsonProperty ("op")
-    private String orderPrice;
+    /* Professional Name. */
+    @JsonProperty("nm")
+    private String name;
 
-    @JsonProperty("pp")
-    private String partialPayment;
+    /* Required to mark as a valid profile. */
+    @JsonProperty("ed")
+    private List<JsonNameDatePair> education;
 
-    @JsonProperty ("pm")
-    private PaymentModeEnum paymentMode;
+    /* Required to mark as a valid profile. */
+    @JsonProperty("li")
+    private List<JsonNameDatePair> licenses;
 
-    @JsonProperty("tv")
-    private TransactionViaEnum transactionVia;
+    public String getCodeQR() {
+        return codeQR;
+    }
 
-    @JsonProperty ("pop")
-    private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
+    public Receipt setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public Receipt setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
 
     public String getBusinessName() {
         return businessName;
@@ -91,12 +112,12 @@ public class Receipt extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getStorePhone() {
+        return storePhone;
     }
 
-    public Receipt setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public Receipt setStorePhone(String storePhone) {
+        this.storePhone = storePhone;
         return this;
     }
 
@@ -109,12 +130,12 @@ public class Receipt extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public Receipt setName(String name) {
-        this.name = name;
+    public Receipt setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 
@@ -127,90 +148,71 @@ public class Receipt extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public PaymentStatusEnum getPaymentStatus() {
-        return paymentStatus;
+    public JsonPurchaseOrder getJsonPurchaseOrder() {
+        return jsonPurchaseOrder;
     }
 
-    public Receipt setPaymentStatus(PaymentStatusEnum paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public Receipt setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
+        this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
     }
 
-    public String getOrderPrice() {
-        return orderPrice;
+    public String getName() {
+        return name;
     }
 
-    public Receipt setOrderPrice(String orderPrice) {
-        this.orderPrice = orderPrice;
+    public Receipt setName(String name) {
+        this.name = name;
         return this;
     }
 
-    public String getPartialPayment() {
-        return partialPayment;
+    public List<JsonNameDatePair> getEducation() {
+        return education;
     }
 
-    public Receipt setPartialPayment(String partialPayment) {
-        this.partialPayment = partialPayment;
+    public Receipt setEducation(List<JsonNameDatePair> education) {
+        this.education = education;
         return this;
     }
 
-    public PaymentModeEnum getPaymentMode() {
-        return paymentMode;
+    public List<JsonNameDatePair> getLicenses() {
+        return licenses;
     }
 
-    public Receipt setPaymentMode(PaymentModeEnum paymentMode) {
-        this.paymentMode = paymentMode;
-        return this;
-    }
-
-    public TransactionViaEnum getTransactionVia() {
-        return transactionVia;
-    }
-
-    public Receipt setTransactionVia(TransactionViaEnum transactionVia) {
-        this.transactionVia = transactionVia;
-        return this;
-    }
-
-    public List<JsonPurchaseOrderProduct> getPurchaseOrderProducts() {
-        return purchaseOrderProducts;
-    }
-
-    public Receipt setPurchaseOrderProducts(List<JsonPurchaseOrderProduct> purchaseOrderProducts) {
-        this.purchaseOrderProducts = purchaseOrderProducts;
+    public Receipt setLicenses(List<JsonNameDatePair> licenses) {
+        this.licenses = licenses;
         return this;
     }
 
     public String computeBalanceAmount() {
-        switch (paymentStatus) {
+        switch (jsonPurchaseOrder.getPaymentStatus()) {
             case PA:
                 return "0";
             default:
-                if (StringUtils.isBlank(partialPayment)) {
-                    return CommonHelper.displayPrice(orderPrice);
+                if (StringUtils.isBlank(jsonPurchaseOrder.getPartialPayment())) {
+                    return CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
                 } else {
                     return CommonHelper.displayPrice(
-                            String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(partialPayment)));
+                            String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
                 }
         }
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("MedicalInvoiceObj{");
-        sb.append("businessName='").append(businessName).append('\'');
-        sb.append(", storeAddress='").append(storeAddress).append('\'');
-        sb.append(", businessCustomerId='").append(businessCustomerId).append('\'');
-        sb.append(", customerName='").append(customerName).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", transactionId='").append(transactionId).append('\'');
-        sb.append(", paymentStatus='").append(paymentStatus).append('\'');
-        sb.append(", orderPrice='").append(orderPrice).append('\'');
-        sb.append(", partialPayment='").append(partialPayment).append('\'');
-        sb.append(", paymentMode='").append(paymentMode).append('\'');
-        sb.append(", transactionVia='").append(transactionVia).append('\'');
-        sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);
-        sb.append('}');
-        return sb.toString();
+        return "Receipt{" +
+                "codeQR='" + codeQR + '\'' +
+                ", businessType=" + businessType +
+                ", businessName='" + businessName + '\'' +
+                ", storeAddress='" + storeAddress + '\'' +
+                ", storePhone='" + storePhone + '\'' +
+                ", businessCustomerId='" + businessCustomerId + '\'' +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", transactionId='" + transactionId + '\'' +
+                ", jsonPurchaseOrder=" + jsonPurchaseOrder +
+                ", name='" + name + '\'' +
+                ", education=" + education +
+                ", licenses=" + licenses +
+                '}';
     }
 }
