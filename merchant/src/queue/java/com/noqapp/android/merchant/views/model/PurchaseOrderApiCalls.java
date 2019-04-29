@@ -16,6 +16,8 @@ import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ public class PurchaseOrderApiCalls {
     private LabFilePresenter labFilePresenter;
     private PaymentProcessPresenter paymentProcessPresenter;
     private ModifyOrderPresenter modifyOrderPresenter;
+    private ReceiptInfoPresenter receiptInfoPresenter;
 
     public void setPaymentProcessPresenter(PaymentProcessPresenter paymentProcessPresenter) {
         this.paymentProcessPresenter = paymentProcessPresenter;
@@ -63,6 +66,11 @@ public class PurchaseOrderApiCalls {
 
     public void setModifyOrderPresenter(ModifyOrderPresenter modifyOrderPresenter) {
         this.modifyOrderPresenter = modifyOrderPresenter;
+    }
+
+
+    public void setReceiptInfoPresenter(ReceiptInfoPresenter receiptInfoPresenter) {
+        this.receiptInfoPresenter = receiptInfoPresenter;
     }
 
     static {
@@ -443,6 +451,35 @@ public class PurchaseOrderApiCalls {
             public void onFailure(@NonNull Call<LabFile> call, @NonNull Throwable t) {
                 Log.e("onFailureShowAttachment", t.getLocalizedMessage(), t);
                 labFilePresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void receiptInfo(String did, String mail, String auth, Receipt receipt) {
+        purchaseOrderService.receiptInfo(did, Constants.DEVICE_TYPE, mail, auth, receipt).enqueue(new Callback<Receipt>() {
+            @Override
+            public void onResponse(@NonNull Call<Receipt> call, @NonNull Response<Receipt> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("showAttachment", String.valueOf(response.body()));
+                        receiptInfoPresenter.receiptInfoResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed showAttachment");
+                        receiptInfoPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        receiptInfoPresenter.authenticationFailure();
+                    } else {
+                        receiptInfoPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Receipt> call, @NonNull Throwable t) {
+                Log.e("onFailureShowAttachment", t.getLocalizedMessage(), t);
+                receiptInfoPresenter.responseErrorPresenter(null);
             }
         });
     }

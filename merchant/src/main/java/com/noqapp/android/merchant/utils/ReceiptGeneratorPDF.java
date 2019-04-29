@@ -2,10 +2,6 @@ package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.model.types.TransactionViaEnum;
-import com.noqapp.android.common.model.types.order.PaymentModeEnum;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -31,7 +27,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
@@ -289,45 +284,45 @@ public class ReceiptGeneratorPDF extends PdfHealper{
 
 
     private void initPdfObj() {
-        receipt = new Receipt();
-        receipt.setBusinessName("SSD Hospital ???");
-        receipt.setStoreAddress("Koparkhairne AreaAndTown?? ");
-        receipt.setBusinessCustomerId(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? TransactionViaEnum.U.getDescription() : jsonQueuedPerson.getBusinessCustomerId());
-        receipt.setCustomerName(jsonQueuedPerson.getCustomerName());
-        receipt.setName("Rohan Mudgar ?????");
-        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
-
-        PaymentModeEnum paymentMode = null;
-        PaymentStatusEnum paymentStatus;
-        String partialPayment = "";
-        try {
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-                partialPayment = String.valueOf(0);
-            } else {
-                partialPayment = CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
-            paymentMode = jsonPurchaseOrder.getPaymentMode();
-
-            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                partialPayment = CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
-            }
-        }
-        paymentStatus = jsonPurchaseOrder.getPaymentStatus();
-        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
-            paymentMode = null;
-        }
-
-        receipt.setPaymentMode(paymentMode);
-        receipt.setPaymentStatus(paymentStatus);
-        receipt.setPartialPayment(partialPayment);
-        receipt.setOrderPrice(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
-        receipt.setTransactionVia(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia() : TransactionViaEnum.U);
-        receipt.setPurchaseOrderProducts(jsonPurchaseOrder.getPurchaseOrderProducts());
+//        receipt = new Receipt();
+//        receipt.setBusinessName("SSD Hospital ???");
+//        receipt.setStoreAddress("Koparkhairne AreaAndTown?? ");
+//        receipt.setBusinessCustomerId(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? TransactionViaEnum.U.getDescription() : jsonQueuedPerson.getBusinessCustomerId());
+//        receipt.setCustomerName(jsonQueuedPerson.getCustomerName());
+//        receipt.setName("Rohan Mudgar ?????");
+//        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
+//
+//        PaymentModeEnum paymentMode = null;
+//        PaymentStatusEnum paymentStatus;
+//        String partialPayment = "";
+//        try {
+//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+//                partialPayment = String.valueOf(0);
+//            } else {
+//                partialPayment = CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
+//                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
+//                PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
+//            paymentMode = jsonPurchaseOrder.getPaymentMode();
+//
+//            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+//                partialPayment = CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
+//            }
+//        }
+//        paymentStatus = jsonPurchaseOrder.getPaymentStatus();
+//        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
+//            paymentMode = null;
+//        }
+//
+//        receipt.setPaymentMode(paymentMode);
+//        receipt.setPaymentStatus(paymentStatus);
+//        receipt.setPartialPayment(partialPayment);
+//        receipt.setOrderPrice(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+//        receipt.setTransactionVia(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia() : TransactionViaEnum.U);
+//        receipt.setPurchaseOrderProducts(jsonPurchaseOrder.getPurchaseOrderProducts());
     }
 }

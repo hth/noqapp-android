@@ -1,13 +1,10 @@
 package com.noqapp.android.merchant.views.pojos;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.TransactionViaEnum;
-import com.noqapp.android.common.model.types.order.PaymentModeEnum;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -18,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings({
@@ -75,6 +71,9 @@ public class Receipt extends AbstractDomain implements Serializable {
     /* Required to mark as a valid profile. */
     @JsonProperty("li")
     private List<JsonNameDatePair> licenses;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getCodeQR() {
         return codeQR;
@@ -198,21 +197,31 @@ public class Receipt extends AbstractDomain implements Serializable {
         }
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "Receipt{" +
-                "codeQR='" + codeQR + '\'' +
-                ", businessType=" + businessType +
-                ", businessName='" + businessName + '\'' +
-                ", storeAddress='" + storeAddress + '\'' +
-                ", storePhone='" + storePhone + '\'' +
-                ", businessCustomerId='" + businessCustomerId + '\'' +
-                ", queueUserId='" + queueUserId + '\'' +
-                ", transactionId='" + transactionId + '\'' +
-                ", jsonPurchaseOrder=" + jsonPurchaseOrder +
-                ", name='" + name + '\'' +
-                ", education=" + education +
-                ", licenses=" + licenses +
-                '}';
+        final StringBuffer sb = new StringBuffer("Receipt{");
+        sb.append("codeQR='").append(codeQR).append('\'');
+        sb.append(", businessType=").append(businessType);
+        sb.append(", businessName='").append(businessName).append('\'');
+        sb.append(", storeAddress='").append(storeAddress).append('\'');
+        sb.append(", storePhone='").append(storePhone).append('\'');
+        sb.append(", businessCustomerId='").append(businessCustomerId).append('\'');
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", transactionId='").append(transactionId).append('\'');
+        sb.append(", jsonPurchaseOrder=").append(jsonPurchaseOrder);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", education=").append(education);
+        sb.append(", licenses=").append(licenses);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

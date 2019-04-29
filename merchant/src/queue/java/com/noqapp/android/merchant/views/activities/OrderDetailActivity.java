@@ -10,12 +10,10 @@ import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
-import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -24,7 +22,9 @@ import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,7 +49,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -70,6 +70,16 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private RelativeLayout rl_multiple;
     private TextView tv_token, tv_q_name, tv_customer_name;
     private OrderItemAdapter adapter;
+
+    @Override
+    public void receiptInfoResponse(Receipt receipt) {
+        try {
+            Log.e("Data", receipt.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -275,17 +285,30 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         listview.setAdapter(adapter);
         updateUI();
         PermissionHelper permissionHelper = new PermissionHelper(this);
+        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+        purchaseOrderApiCalls.setReceiptInfoPresenter(this);
         Button btn_print = findViewById(R.id.btn_print);
         btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (permissionHelper.isStoragePermissionAllowed()) {
-                    ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
-                    JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson();
-                    jsonQueuedPerson.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
-                    jsonQueuedPerson.setCustomerName(jsonPurchaseOrder.getCustomerName());
-                    jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
-                    receiptGeneratorPDF.createPdf(jsonQueuedPerson);
+//                    ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
+//                    JsonQueuedPerson jsonQueuedPerson = new JsonQueuedPerson();
+//                    jsonQueuedPerson.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+//                    jsonQueuedPerson.setCustomerName(jsonPurchaseOrder.getCustomerName());
+//                    jsonQueuedPerson.setJsonPurchaseOrder(jsonPurchaseOrder);
+//                    receiptGeneratorPDF.createPdf(jsonQueuedPerson);
+
+
+                    progressDialog.show();
+                    progressDialog.setMessage("Fetching documents...");
+                    Receipt receipt = new Receipt();
+                    receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                    receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                    receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                    purchaseOrderApiCalls.receiptInfo(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(), receipt);
                 } else {
                     permissionHelper.requestStoragePermission();
                 }
@@ -519,4 +542,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     public void orderProcessedError() {
 
     }
+
+
 }
