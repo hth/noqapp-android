@@ -1,9 +1,9 @@
 package com.noqapp.android.merchant.utils;
 
-
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.TransactionViaEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -49,7 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PdfInvoiceGenerator {
+public class ReceiptGeneratorPDF {
     private BaseFont baseFont;
     private Context mContext;
     private JsonQueuedPerson jsonQueuedPerson;
@@ -60,9 +60,8 @@ public class PdfInvoiceGenerator {
     private Font urFontName;
     private String currencySymbol;
     private Receipt receipt;
-    public static final String RUPEE = "The Rupee character \u20B9 and the Rupee symbol \u20A8";
 
-    public PdfInvoiceGenerator(Context mContext) {
+    public ReceiptGeneratorPDF(Context mContext) {
         this.mContext = mContext;
         try {
             baseFont = BaseFont.createFont("assets/fonts/opensan.ttf", "UTF-8", BaseFont.EMBEDDED);
@@ -196,8 +195,7 @@ public class PdfInvoiceGenerator {
         PdfPTable table = new PdfPTable(5);
         try {
             table.setWidthPercentage(100);
-            table.setWidths(new int[]{1, 4
-                    , 1, 2, 2});
+            table.setWidths(new int[]{1, 4, 1, 2, 2});
             for (int i = 0; i < receipt.getPurchaseOrderProducts().size(); i++) {
                 JsonPurchaseOrderProduct jpop = receipt.getPurchaseOrderProducts().get(i);
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(i + 1), normalFont));
@@ -220,7 +218,7 @@ public class PdfInvoiceGenerator {
         try {
             table.setWidthPercentage(100);
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Status:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentStatus(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentStatus().getDescription(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Total Cost:", normalBoldFont, 5));
             table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTotalAmount(), urFontName, 5));
@@ -232,10 +230,10 @@ public class PdfInvoiceGenerator {
             table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaidAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Transaction Via:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTransactionVia(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTransactionVia().getFriendlyDescription(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Mode:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentMode(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentMode().getDescription(), normalFont, 5));
 
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);
@@ -250,8 +248,7 @@ public class PdfInvoiceGenerator {
         //table.getDefaultCell().setBorder(Rectangle.BOTTOM | Rectangle.TOP);
         try {
             table.setWidthPercentage(100);
-            table.setWidths(new int[]{1, 4
-                    , 1, 2, 2});
+            table.setWidths(new int[]{1, 4, 1, 2, 2});
             table.addCell(pdfPCellWithTopBottomBorder("Sr. No ", normalBoldFont));
             table.addCell(pdfPCellWithTopBottomBorder("Service Name", normalBoldFont));
             table.addCell(pdfPCellWithTopBottomBorder("Qty:", normalBoldFont));
@@ -364,8 +361,8 @@ public class PdfInvoiceGenerator {
         receipt.setOrderId(jsonPurchaseOrder.getTransactionId());
 
 
-        String paymentMode = "";
-        String paymentStatus = "";
+        PaymentModeEnum paymentMode = null;
+        PaymentStatusEnum paymentStatus;
         String paidAmount = "";
         String balanceAmount = "";
         try {
@@ -384,16 +381,16 @@ public class PdfInvoiceGenerator {
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
-            paymentMode = jsonPurchaseOrder.getPaymentMode().getDescription();
+            paymentMode = jsonPurchaseOrder.getPaymentMode();
 
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
                 balanceAmount = currencySymbol + " " + String.valueOf(0);
                 paidAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
             }
         }
-        paymentStatus = null != jsonPurchaseOrder.getPaymentStatus() ? jsonPurchaseOrder.getPaymentStatus().getDescription() : TransactionViaEnum.U.getDescription();
+        paymentStatus = jsonPurchaseOrder.getPaymentStatus();
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
-            paymentMode = TransactionViaEnum.U.getDescription();
+            paymentMode = null;
         }
 
         receipt.setPaymentMode(paymentMode);
@@ -401,7 +398,7 @@ public class PdfInvoiceGenerator {
         receipt.setPaidAmount(paidAmount);
         receipt.setBalanceAmount(balanceAmount);
         receipt.setTotalAmount(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
-        receipt.setTransactionVia(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia().getFriendlyDescription() : TransactionViaEnum.U.getDescription());
+        receipt.setTransactionVia(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia() : TransactionViaEnum.U);
         receipt.setPurchaseOrderProducts(jsonPurchaseOrder.getPurchaseOrderProducts());
     }
 }

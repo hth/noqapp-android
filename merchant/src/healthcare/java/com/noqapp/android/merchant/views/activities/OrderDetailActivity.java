@@ -13,7 +13,7 @@ import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.PdfInvoiceGenerator;
+import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
@@ -229,7 +229,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             @Override
             public void onClick(View v) {
                 if (isStoragePermissionAllowed()) {
-                    PdfInvoiceGenerator pdfGenerator = new PdfInvoiceGenerator(OrderDetailActivity.this);
+                    ReceiptGeneratorPDF pdfGenerator = new ReceiptGeneratorPDF(OrderDetailActivity.this);
                     pdfGenerator.createPdf(jsonQueuedPerson);
                 } else {
                     requestStoragePermission();

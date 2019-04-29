@@ -1,6 +1,9 @@
 package com.noqapp.android.merchant.views.pojos;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.TransactionViaEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,12 +15,12 @@ public class Receipt {
     private String customerName;
     private String doctorName;
     private String orderId;
-    private String paymentStatus;
+    private PaymentStatusEnum paymentStatus;
     private String totalAmount;
     private String paidAmount;
     private String balanceAmount;
-    private String paymentMode;
-    private String transactionVia;
+    private PaymentModeEnum paymentMode;
+    private TransactionViaEnum transactionVia;
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     public String getBusinessName() {
@@ -74,11 +77,11 @@ public class Receipt {
         return this;
     }
 
-    public String getPaymentStatus() {
+    public PaymentStatusEnum getPaymentStatus() {
         return paymentStatus;
     }
 
-    public Receipt setPaymentStatus(String paymentStatus) {
+    public Receipt setPaymentStatus(PaymentStatusEnum paymentStatus) {
         this.paymentStatus = paymentStatus;
         return this;
     }
@@ -110,20 +113,20 @@ public class Receipt {
         return this;
     }
 
-    public String getPaymentMode() {
+    public PaymentModeEnum getPaymentMode() {
         return paymentMode;
     }
 
-    public Receipt setPaymentMode(String paymentMode) {
+    public Receipt setPaymentMode(PaymentModeEnum paymentMode) {
         this.paymentMode = paymentMode;
         return this;
     }
 
-    public String getTransactionVia() {
+    public TransactionViaEnum getTransactionVia() {
         return transactionVia;
     }
 
-    public Receipt setTransactionVia(String transactionVia) {
+    public Receipt setTransactionVia(TransactionViaEnum transactionVia) {
         this.transactionVia = transactionVia;
         return this;
     }
