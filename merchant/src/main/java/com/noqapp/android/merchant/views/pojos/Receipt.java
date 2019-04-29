@@ -5,27 +5,26 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import java.util.LinkedList;
 import java.util.List;
 
-public class InvoiceObj {
-
+public class Receipt {
     private String businessName;
     private String businessAddress;
     private String businessCustomerId;
     private String customerName;
     private String doctorName;
     private String orderId;
-    private String payment_status;
-    private String total_amount;
-    private String paid_amount;
-    private String balance_amount;
-    private String payment_mode;
-    private String transaction_via;
+    private String paymentStatus;
+    private String totalAmount;
+    private String paidAmount;
+    private String balanceAmount;
+    private String paymentMode;
+    private String transactionVia;
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     public String getBusinessName() {
         return businessName;
     }
 
-    public InvoiceObj setBusinessName(String businessName) {
+    public Receipt setBusinessName(String businessName) {
         this.businessName = businessName;
         return this;
     }
@@ -34,7 +33,7 @@ public class InvoiceObj {
         return businessAddress;
     }
 
-    public InvoiceObj setBusinessAddress(String businessAddress) {
+    public Receipt setBusinessAddress(String businessAddress) {
         this.businessAddress = businessAddress;
         return this;
     }
@@ -43,7 +42,7 @@ public class InvoiceObj {
         return customerName;
     }
 
-    public InvoiceObj setCustomerName(String customerName) {
+    public Receipt setCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
     }
@@ -52,7 +51,7 @@ public class InvoiceObj {
         return businessCustomerId;
     }
 
-    public InvoiceObj setBusinessCustomerId(String businessCustomerId) {
+    public Receipt setBusinessCustomerId(String businessCustomerId) {
         this.businessCustomerId = businessCustomerId;
         return this;
     }
@@ -61,7 +60,7 @@ public class InvoiceObj {
         return doctorName;
     }
 
-    public InvoiceObj setDoctorName(String doctorName) {
+    public Receipt setDoctorName(String doctorName) {
         this.doctorName = doctorName;
         return this;
     }
@@ -70,62 +69,62 @@ public class InvoiceObj {
         return orderId;
     }
 
-    public InvoiceObj setOrderId(String orderId) {
+    public Receipt setOrderId(String orderId) {
         this.orderId = orderId;
         return this;
     }
 
-    public String getPayment_status() {
-        return payment_status;
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public InvoiceObj setPayment_status(String payment_status) {
-        this.payment_status = payment_status;
+    public Receipt setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
         return this;
     }
 
-    public String getTotal_amount() {
-        return total_amount;
+    public String getTotalAmount() {
+        return totalAmount;
     }
 
-    public InvoiceObj setTotal_amount(String total_amount) {
-        this.total_amount = total_amount;
+    public Receipt setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
         return this;
     }
 
-    public String getPaid_amount() {
-        return paid_amount;
+    public String getPaidAmount() {
+        return paidAmount;
     }
 
-    public InvoiceObj setPaid_amount(String paid_amount) {
-        this.paid_amount = paid_amount;
+    public Receipt setPaidAmount(String paidAmount) {
+        this.paidAmount = paidAmount;
         return this;
     }
 
-    public String getBalance_amount() {
-        return balance_amount;
+    public String getBalanceAmount() {
+        return balanceAmount;
     }
 
-    public InvoiceObj setBalance_amount(String balance_amount) {
-        this.balance_amount = balance_amount;
+    public Receipt setBalanceAmount(String balanceAmount) {
+        this.balanceAmount = balanceAmount;
         return this;
     }
 
-    public String getPayment_mode() {
-        return payment_mode;
+    public String getPaymentMode() {
+        return paymentMode;
     }
 
-    public InvoiceObj setPayment_mode(String payment_mode) {
-        this.payment_mode = payment_mode;
+    public Receipt setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
         return this;
     }
 
-    public String getTransaction_via() {
-        return transaction_via;
+    public String getTransactionVia() {
+        return transactionVia;
     }
 
-    public InvoiceObj setTransaction_via(String transaction_via) {
-        this.transaction_via = transaction_via;
+    public Receipt setTransactionVia(String transactionVia) {
+        this.transactionVia = transactionVia;
         return this;
     }
 
@@ -133,7 +132,7 @@ public class InvoiceObj {
         return purchaseOrderProducts;
     }
 
-    public InvoiceObj setPurchaseOrderProducts(List<JsonPurchaseOrderProduct> purchaseOrderProducts) {
+    public Receipt setPurchaseOrderProducts(List<JsonPurchaseOrderProduct> purchaseOrderProducts) {
         this.purchaseOrderProducts = purchaseOrderProducts;
         return this;
     }
@@ -147,12 +146,12 @@ public class InvoiceObj {
         sb.append(", customerName='").append(customerName).append('\'');
         sb.append(", doctorName='").append(doctorName).append('\'');
         sb.append(", orderId='").append(orderId).append('\'');
-        sb.append(", payment_status='").append(payment_status).append('\'');
-        sb.append(", total_amount='").append(total_amount).append('\'');
-        sb.append(", paid_amount='").append(paid_amount).append('\'');
-        sb.append(", balance_amount='").append(balance_amount).append('\'');
-        sb.append(", payment_mode='").append(payment_mode).append('\'');
-        sb.append(", transaction_via='").append(transaction_via).append('\'');
+        sb.append(", paymentStatus='").append(paymentStatus).append('\'');
+        sb.append(", totalAmount='").append(totalAmount).append('\'');
+        sb.append(", paidAmount='").append(paidAmount).append('\'');
+        sb.append(", balanceAmount='").append(balanceAmount).append('\'');
+        sb.append(", paymentMode='").append(paymentMode).append('\'');
+        sb.append(", transactionVia='").append(transactionVia).append('\'');
         sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);
         sb.append('}');
         return sb.toString();

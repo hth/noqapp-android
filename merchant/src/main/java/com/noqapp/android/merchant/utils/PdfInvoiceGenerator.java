@@ -3,13 +3,14 @@ package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.TransactionViaEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.pojos.InvoiceObj;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -57,9 +58,8 @@ public class PdfInvoiceGenerator {
     private Font normalBoldFont;
     private Font normalBigFont;
     private Font urFontName;
-    private String notAvailable = "N/A";
     private String currencySymbol;
-    private InvoiceObj invoiceObj;
+    private Receipt receipt;
     public static final String RUPEE = "The Rupee character \u20B9 and the Rupee symbol \u20A8";
 
     public PdfInvoiceGenerator(Context mContext) {
@@ -104,7 +104,7 @@ public class PdfInvoiceGenerator {
             Chunk glue = new Chunk(new VerticalPositionMark());
 
             Font titleFont = new Font(baseFont, 13.0f, Font.BOLD, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(invoiceObj.getBusinessName(), titleFont);
+            Chunk titleChunk = new Chunk(receipt.getBusinessName(), titleFont);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
@@ -113,7 +113,7 @@ public class PdfInvoiceGenerator {
             Font noqFont = new Font(baseFont, 13.0f, Font.BOLD, BaseColor.BLACK);
 
 
-            Chunk degreeChunk = new Chunk(invoiceObj.getBusinessAddress(), normalFont);
+            Chunk degreeChunk = new Chunk(receipt.getBusinessAddress(), normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
@@ -198,8 +198,8 @@ public class PdfInvoiceGenerator {
             table.setWidthPercentage(100);
             table.setWidths(new int[]{1, 4
                     , 1, 2, 2});
-            for (int i = 0; i < invoiceObj.getPurchaseOrderProducts().size(); i++) {
-                JsonPurchaseOrderProduct jpop = invoiceObj.getPurchaseOrderProducts().get(i);
+            for (int i = 0; i < receipt.getPurchaseOrderProducts().size(); i++) {
+                JsonPurchaseOrderProduct jpop = receipt.getPurchaseOrderProducts().get(i);
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(i + 1), normalFont));
                 table.addCell(pdfPCellWithoutBorder(jpop.getProductName(), normalFont));
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(jpop.getProductQuantity()), normalFont));
@@ -220,22 +220,22 @@ public class PdfInvoiceGenerator {
         try {
             table.setWidthPercentage(100);
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Status:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(invoiceObj.getPayment_status(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentStatus(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Total Cost:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(invoiceObj.getTotal_amount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTotalAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Balance Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(invoiceObj.getBalance_amount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getBalanceAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Paid Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(invoiceObj.getPaid_amount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaidAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Transaction Via:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(invoiceObj.getTransaction_via(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTransactionVia(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Mode:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(invoiceObj.getPayment_mode(), normalFont, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentMode(), normalFont, 5));
 
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);
@@ -277,19 +277,19 @@ public class PdfInvoiceGenerator {
 
         // Line 1
         table.addCell(pdfPCellWithoutBorder("MR No                   :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(invoiceObj.getBusinessCustomerId(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getBusinessCustomerId(), normalFont));
         table.addCell(pdfPCellWithoutBorder("Order Id                :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(invoiceObj.getOrderId(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getOrderId(), normalFont));
 
         // Line 2
         table.addCell(pdfPCellWithoutBorder("Customer Name       :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(invoiceObj.getCustomerName(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getCustomerName(), normalFont));
         table.addCell(pdfPCellWithoutBorder("Date                       :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(formattedDate, normalFont));
 
         // Line 3
         table.addCell(pdfPCellWithoutBorder("Doctor Name       :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(invoiceObj.getDoctorName(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getDoctorName(), normalFont));
         table.addCell(pdfPCellWithoutBorder("Time                       :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(time, normalFont));
 
@@ -355,26 +355,27 @@ public class PdfInvoiceGenerator {
     }
 
     private void initPdfObj() {
-        invoiceObj = new InvoiceObj();
-        invoiceObj.setBusinessName("SSD Hospital ???");
-        invoiceObj.setBusinessAddress("Koparkhairne AreaAndTown?? ");
-        invoiceObj.setBusinessCustomerId(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? notAvailable : jsonQueuedPerson.getBusinessCustomerId());
-        invoiceObj.setCustomerName(jsonQueuedPerson.getCustomerName());
-        invoiceObj.setDoctorName("Rohan Mudgar ?????");
-        invoiceObj.setOrderId(jsonPurchaseOrder.getTransactionId());
+        receipt = new Receipt();
+        receipt.setBusinessName("SSD Hospital ???");
+        receipt.setBusinessAddress("Koparkhairne AreaAndTown?? ");
+        receipt.setBusinessCustomerId(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? TransactionViaEnum.U.getDescription() : jsonQueuedPerson.getBusinessCustomerId());
+        receipt.setCustomerName(jsonQueuedPerson.getCustomerName());
+        receipt.setDoctorName("Rohan Mudgar ?????");
+        receipt.setOrderId(jsonPurchaseOrder.getTransactionId());
 
 
-        String payment_mode = "";
-        String payment_status = "";
-        String paid_amount = "";
-        String balance_amount = "";
+        String paymentMode = "";
+        String paymentStatus = "";
+        String paidAmount = "";
+        String balanceAmount = "";
         try {
             if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-                paid_amount = currencySymbol + " " + String.valueOf(0);
-                balance_amount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
+                paidAmount = currencySymbol + " " + String.valueOf(0);
+                balanceAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
             } else {
-                paid_amount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment());
-                balance_amount = currencySymbol + " " + CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) -
+                paidAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment());
+                balanceAmount = currencySymbol + " " +
+                        CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) -
                         Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
             }
         } catch (Exception e) {
@@ -383,24 +384,24 @@ public class PdfInvoiceGenerator {
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
-            payment_mode = jsonPurchaseOrder.getPaymentMode().getDescription();
+            paymentMode = jsonPurchaseOrder.getPaymentMode().getDescription();
 
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                balance_amount = currencySymbol + " " + String.valueOf(0);
-                paid_amount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
+                balanceAmount = currencySymbol + " " + String.valueOf(0);
+                paidAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
             }
         }
-        payment_status = null != jsonPurchaseOrder.getPaymentStatus() ? jsonPurchaseOrder.getPaymentStatus().getDescription() : notAvailable;
+        paymentStatus = null != jsonPurchaseOrder.getPaymentStatus() ? jsonPurchaseOrder.getPaymentStatus().getDescription() : TransactionViaEnum.U.getDescription();
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
-            payment_mode = notAvailable;
+            paymentMode = TransactionViaEnum.U.getDescription();
         }
 
-        invoiceObj.setPayment_mode(payment_mode);
-        invoiceObj.setPayment_status(payment_status);
-        invoiceObj.setPaid_amount(paid_amount);
-        invoiceObj.setBalance_amount(balance_amount);
-        invoiceObj.setTotal_amount(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
-        invoiceObj.setTransaction_via(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia().getFriendlyDescription() : notAvailable);
-        invoiceObj.setPurchaseOrderProducts(jsonPurchaseOrder.getPurchaseOrderProducts());
+        receipt.setPaymentMode(paymentMode);
+        receipt.setPaymentStatus(paymentStatus);
+        receipt.setPaidAmount(paidAmount);
+        receipt.setBalanceAmount(balanceAmount);
+        receipt.setTotalAmount(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+        receipt.setTransactionVia(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia().getFriendlyDescription() : TransactionViaEnum.U.getDescription());
+        receipt.setPurchaseOrderProducts(jsonPurchaseOrder.getPurchaseOrderProducts());
     }
 }
