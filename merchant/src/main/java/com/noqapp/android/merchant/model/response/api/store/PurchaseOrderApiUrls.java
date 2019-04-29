@@ -6,6 +6,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -326,5 +327,23 @@ public interface PurchaseOrderApiUrls {
 
             @Body
             LabFile labFile
+    );
+
+    @POST("api/m/s/purchaseOrder/receiptInfo.json")
+    Call<Receipt> receiptInfo(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            Receipt receipt
     );
 }
