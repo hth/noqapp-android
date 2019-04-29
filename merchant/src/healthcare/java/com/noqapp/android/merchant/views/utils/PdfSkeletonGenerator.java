@@ -3,12 +3,15 @@ package com.noqapp.android.merchant.views.utils;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.PdfHealper;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -25,22 +28,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PdfSkeletonGenerator {
+public class PdfSkeletonGenerator extends PdfHealper {
     private BaseFont baseFont;
     private Context mContext;
     private JsonMedicalRecord jsonMedicalRecord;
@@ -76,6 +83,7 @@ public class PdfSkeletonGenerator {
         String dest = getAppPath(mContext) + fileName;
         if (new File(dest).exists()) {
             new File(dest).delete();
+            Log.e("Delete", "File deleted successfully");
         }
 
         try {
@@ -92,28 +100,6 @@ public class PdfSkeletonGenerator {
             document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
-//            try {
-//                // get input stream
-//                InputStream ims = mContext.getAssets().open("logo.png");
-//                Bitmap bmp = BitmapFactory.decodeStream(ims);
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                Image image = Image.getInstance(stream.toByteArray());
-//                image.scaleToFit(100, 30);
-//
-//                Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-//                Font titleFont1 = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-//                Chunk titleChunk = new Chunk(LaunchActivity.getLaunchActivity().getUserProfessionalProfile().getName(), titleFont);
-//                Paragraph titleParagraph = new Paragraph();
-//                titleParagraph.add(titleChunk);
-//                titleParagraph.add(glue);
-//                titleParagraph.add(new Chunk("NoQueue",titleFont1));
-//                document.add(titleParagraph);
-//                addVerticalSpace();
-//            } catch (IOException ex) {
-//                return;
-//            }
-
             Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
             Chunk titleChunk = new Chunk("SSD ????", titleFont);
             Paragraph titleParagraph = new Paragraph();
@@ -129,7 +115,7 @@ public class PdfSkeletonGenerator {
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
-            degreeParagraph.add(new Chunk("NoQueue", noqFont));
+            degreeParagraph.add(new Chunk(" ", noqFont)); //"NoQueue"
             document.add(degreeParagraph);
             addVerticalSpace();
 
@@ -150,15 +136,41 @@ public class PdfSkeletonGenerator {
             document.add(addVerticalSpaceBefore(20f));
             document.add(new Paragraph(""));
 
-            document.add(getSEPData());
-            document.add(addVerticalSpaceBefore(20f));
+            {
+                Chunk chunkInvestigation = new Chunk("Symptoms:", normalBigFont);
+                Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
+                document.add(paragraphInvestigation);
+                document.add(addVerticalSpaceAfter(5f));
+                //document.add(getInvestigationData());
+                document.add(new Paragraph("\n"));
+                document.add(new Paragraph(""));
+                document.add(addVerticalSpaceBefore(20.0f));
+            }{
+                Chunk chunkInvestigation = new Chunk("Clinical Findings:", normalBigFont);
+                Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
+                document.add(paragraphInvestigation);
+                document.add(addVerticalSpaceAfter(5f));
+                //document.add(getInvestigationData());
+                document.add(new Paragraph("\n"));
+                document.add(new Paragraph(""));
+                document.add(addVerticalSpaceBefore(20.0f));
+            }{
+                Chunk chunkInvestigation = new Chunk("Provisional Diagnosis:", normalBigFont);
+                Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
+                document.add(paragraphInvestigation);
+                document.add(addVerticalSpaceAfter(5f));
+                //document.add(getInvestigationData());
+                document.add(new Paragraph("\n"));
+                document.add(new Paragraph(""));
+                document.add(addVerticalSpaceBefore(20.0f));
+            }
 
             Chunk chunkInvestigation = new Chunk("Investigation:", normalBigFont);
             Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
             document.add(paragraphInvestigation);
             document.add(addVerticalSpaceAfter(5f));
             //document.add(getInvestigationData());
-            document.add(new Paragraph("\n\n\n"));
+            document.add(new Paragraph("\n"));
             document.add(new Paragraph(""));
             document.add(addVerticalSpaceBefore(20.0f));
 
@@ -175,8 +187,9 @@ public class PdfSkeletonGenerator {
             Paragraph paragraphMedicine = new Paragraph(chunkMedicine);
             document.add(paragraphMedicine);
             document.add(addVerticalSpace());
-            //document.add(getMedicineData());
-            document.add(new Paragraph("\n\n\n\n\n\n"));
+            document.add(getMedicineHeaderData());
+            document.add(getMedicineData());
+            document.add(new Paragraph("\n"));
             document.add(addVerticalSpaceBefore(20f));
 
             Chunk chunkInstruction = new Chunk("Instruction:", normalBigFont);
@@ -249,29 +262,58 @@ public class PdfSkeletonGenerator {
 
     private PdfPTable getPatientData() {
         PdfPTable table = new PdfPTable(3);
-        table.addCell(pdfPCellWithoutBorder("Name ????", normalFont));
-        table.addCell(pdfPCellWithoutBorder(pulse, normalFont));
-        table.addCell(pdfPCellWithoutBorder(height, normalFont));
-        table.addCell(pdfPCellWithoutBorder("Gender ????" + "," + "Age ?????", normalFont));
-        table.addCell(pdfPCellWithoutBorder(bloodpressure, normalFont));
-        table.addCell(pdfPCellWithoutBorder(respiration, normalFont));
-        table.addCell(pdfPCellWithoutBorder("Address ???", normalFont));
-        table.addCell(pdfPCellWithoutBorder(weight, normalFont));
-        table.addCell(pdfPCellWithoutBorder(temprature, normalFont));
+        table.addCell(getCellWithTextAndImage("Name ????", "user.png"));
+        // table.addCell(pdfPCellWithoutBorder(pulse, normalFont));
+        table.addCell(getCellWithTextAndImage(pulse, "pulse.png"));
+        table.addCell(getCellWithTextAndImage(height, "height.png"));
+        table.addCell(getCellWithTextAndImage("Gender ????" + "," + "Age ?????", "gender.png"));
+        table.addCell(getCellWithTextAndImage(bloodpressure, "blood.png"));
+        table.addCell(getCellWithTextAndImage(respiration, "respirstion.png"));
+        table.addCell(getCellWithTextAndImage("Address ???", "address.png"));
+        table.addCell(getCellWithTextAndImage(weight, "weight.png"));
+        table.addCell(getCellWithTextAndImage(temprature, "temperature.png"));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
         return table;
+    }
+
+    private PdfPCell getCellWithTextAndImage(String label, String icon) {
+        PdfPCell cell = new PdfPCell();
+        cell.setPaddingBottom(5);
+        cell.setBorder(Rectangle.NO_BORDER);
+        try {
+            InputStream ims = mContext.getAssets().open(icon);
+            Bitmap bmp = BitmapFactory.decodeStream(ims);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Image img = Image.getInstance(stream.toByteArray());
+            img.scaleAbsolute(15f, 15f);
+            img.setAlignment(Element.ALIGN_LEFT);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.add(new Chunk(img, 0, 0));
+            Phrase phrase = new Phrase(" " + label, normalFont);
+            paragraph.add(phrase);
+            paragraph.setAlignment(Element.ALIGN_TOP);
+            cell.addElement(paragraph);
+            // return cell;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cell;
+
     }
 
     private PdfPTable getSEPData() {
         PdfPTable table = new PdfPTable(3);
         try {
             table.addCell(pdfPCellWithoutBorder("Symptoms:", normalBigFont, 5));
-            table.addCell(pdfPCellWithoutBorder("Examination:", normalBigFont, 5));
+            //table.addCell(pdfPCellWithoutBorder("Examination:", normalBigFont, 5));
+            table.addCell(pdfPCellWithoutBorder("Clinical Findings:", normalBigFont, 5));
             table.addCell(pdfPCellWithoutBorder("Provisional Diagnosis:", normalBigFont, 5));
             table.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
-            table.addCell(getExaminationPdfCell());
-            table.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
+            //table.addCell(getExaminationPdfCell());
+            //table.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
 
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);
@@ -315,66 +357,46 @@ public class PdfSkeletonGenerator {
     }
 
 
-    private PdfPTable getMedicineData() {
-        PdfPTable table = new PdfPTable(5);
-//        for (int i = 0; i < caseHistory.getJsonMedicineList().size(); i++) {
-//            JsonMedicalMedicine jsonMedicalMedicine = caseHistory.getJsonMedicineList().get(i);
-//            table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getPharmacyCategory(), normalFont));
-//            table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getName(), normalFont));
-//            table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getMedicationIntake(), normalFont));
-//            table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getDailyFrequency(), normalFont));
-//            table.addCell(pdfPCellWithBorder(jsonMedicalMedicine.getCourse(), normalFont));
-//        }
+    private PdfPTable getMedicineHeaderData() {
+        PdfPTable table = new PdfPTable(3);
+        try {
+            table.setWidthPercentage(100);
+            table.setWidths(new int[]{6, 5, 5});
 
-        table.setTotalWidth(PageSize.A4.getWidth() - 80);
-        table.setLockedWidth(true);
+            table.addCell(pdfPCellHeader("DRUG", normalBoldFont));
+            table.addCell(pdfPCellHeader("DOUSE", normalBoldFont));
+            table.addCell(pdfPCellHeader("ROUTE", normalBoldFont));
+            table.setTotalWidth(PageSize.A4.getWidth() - 80);
+            table.setLockedWidth(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return table;
     }
 
-
-    private Paragraph addVerticalSpace() {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(10f); // for adding extra space after a view
-        return paragraph;
+    private PdfPTable getMedicineData() {
+        PdfPTable table = new PdfPTable(4);
+        try {
+            table.setWidthPercentage(100);
+            table.setWidths(new int[]{1, 5, 5, 5});
+            for (int i = 0; i < 5; i++) {
+                table.addCell(pdfPCellWithBorder("" + (i + 1), normalFont));
+                table.addCell(pdfPCellWithBorder("", normalFont));
+                table.addCell(pdfPCellWithBorder("", normalFont));
+                table.addCell(pdfPCellWithBorder("O/IM/IV/SC", normalFont));
+            }
+            table.setTotalWidth(PageSize.A4.getWidth() - 80);
+            table.setLockedWidth(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return table;
     }
 
-
-    private Paragraph addVerticalSpaceBefore(float space) {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingBefore(space); // for adding extra space after a view
-        return paragraph;
-    }
-
-    private Paragraph addVerticalSpaceAfter(float space) {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(space); // for adding extra space after a view
-        return paragraph;
-    }
-
-    private PdfPCell pdfPCellWithBorder(String label, Font font) {
+    private PdfPCell pdfPCellHeader(String label, Font font) {
         PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
         // pdfPCell.setBorder(Rectangle.NO_BORDER);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorder(String label, Font font) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorderWithPadding(String label, Font font, int padding) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        pdfPCell.setPaddingBottom(padding);
-        pdfPCell.setPaddingTop(padding);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorder(String label, Font font, int padding) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        pdfPCell.setPaddingBottom(padding);
         return pdfPCell;
     }
 
@@ -386,59 +408,46 @@ public class PdfSkeletonGenerator {
                 if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
                     pulse = "Pulse: " + jsonMedicalRecord.getMedicalPhysical().getPulse() + " bpm";
                 } else {
-                    pulse = "Pulse: " + notAvailable;
+                    pulse = "Pulse:__________________________" + notAvailable;
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     bloodpressure = "Blood Pressure: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1] + " mmHg";
                 } else {
-                    bloodpressure = "Blood Pressure: " + notAvailable;
+                    bloodpressure = "Blood Pressure:________________" + notAvailable;
                 }
 
                 if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     height = "Height: " + jsonMedicalRecord.getMedicalPhysical().getHeight() + " cm";
                 } else {
-                    height = "Height: " + notAvailable;
+                    height = "Height:_________________________" + notAvailable;
                 }
 
                 if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     respiration = "Respiration Rate: " + jsonMedicalRecord.getMedicalPhysical().getRespiratory();
                 } else {
-                    respiration = "Respiration Rate: " + notAvailable;
+                    respiration = "Respiration Rate:_______________" + notAvailable;
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     weight = "Weight: " + jsonMedicalRecord.getMedicalPhysical().getWeight() + " kg";
                 } else {
-                    weight = "Weight: " + notAvailable;
+                    weight = "Weight:_________________________" + notAvailable;
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
                     temprature = "Temperature: " + jsonMedicalRecord.getMedicalPhysical().getTemperature();
                 } else {
-                    temprature = "Temperature: " + notAvailable;
+                    temprature = "Temperature:___________________" + notAvailable;
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            pulse = "Pulse: " + notAvailable;
-            bloodpressure = "Blood Pressure: " + notAvailable;
-            height = "Height: " + notAvailable;
-            respiration = "Respiration Rate: " + notAvailable;
-            weight = "Weight: " + notAvailable;
-            temprature = "Temperature: " + notAvailable;
+            pulse = "Pulse:__________________________" + notAvailable;
+            bloodpressure = "Blood Pressure:________________" + notAvailable;
+            height = "Height:_________________________" + notAvailable;
+            respiration = "Respiration Rate:_______________" + notAvailable;
+            weight = "Weight:_________________________" + notAvailable;
+            temprature = "Temperature:___________________" + notAvailable;
         }
-
-    }
-
-    private PdfPCell getExaminationPdfCell() {
-        PdfPTable testTable = new PdfPTable(1);
-        testTable.addCell(pdfPCellWithoutBorder("Clinical Findings: ", normalBoldFont));
-        testTable.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
-        testTable.addCell(pdfPCellWithoutBorder("Result: ", normalBoldFont));
-        testTable.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
-        PdfPCell cell = new PdfPCell(testTable);
-        cell.setPadding(0);
-        cell.setBorder(Rectangle.NO_BORDER);
-        return cell;
     }
 }

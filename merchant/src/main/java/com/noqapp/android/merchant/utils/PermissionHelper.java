@@ -13,7 +13,7 @@ public class PermissionHelper {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    
+
     public PermissionHelper(Activity activity) {
         this.activity = activity;
     }

@@ -19,10 +19,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
@@ -49,7 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReceiptGeneratorPDF {
+public class ReceiptGeneratorPDF extends PdfHealper{
     private BaseFont baseFont;
     private Context mContext;
     private JsonQueuedPerson jsonQueuedPerson;
@@ -156,13 +153,7 @@ public class ReceiptGeneratorPDF {
         }
     }
 
-    private LineSeparator getLineSeparator() {
-        // LINE SEPARATOR
-        LineSeparator lineSeparator = new LineSeparator();
-        //lineSeparator.setOffset(-20);
-        lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
-        return lineSeparator;
-    }
+
 
     private static void openFile(Context context, File url) throws ActivityNotFoundException {
         Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", url);
@@ -296,60 +287,6 @@ public class ReceiptGeneratorPDF {
         return table;
     }
 
-
-    private Paragraph addVerticalSpace() {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(10f); // for adding extra space after a view
-        return paragraph;
-    }
-
-
-    private Paragraph addVerticalSpaceBefore(float space) {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingBefore(space); // for adding extra space after a view
-        return paragraph;
-    }
-
-    private Paragraph addVerticalSpaceAfter(float space) {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(space); // for adding extra space after a view
-        return paragraph;
-    }
-
-    private PdfPCell pdfPCellWithBorder(String label, Font font) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        // pdfPCell.setBorder(Rectangle.NO_BORDER);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorder(String label, Font font) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithTopBottomBorder(String label, Font font) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.BOTTOM | Rectangle.TOP);
-        pdfPCell.setPaddingBottom(8);
-        pdfPCell.setPaddingTop(5);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorderWithPadding(String label, Font font, int padding) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        pdfPCell.setPaddingBottom(padding);
-        pdfPCell.setPaddingTop(padding);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorder(String label, Font font, int padding) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        pdfPCell.setPaddingBottom(padding);
-        return pdfPCell;
-    }
 
     private void initPdfObj() {
         receipt = new Receipt();

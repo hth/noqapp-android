@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.PdfHealper;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
@@ -16,7 +17,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -31,10 +31,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PdfGenerator {
+public class PdfGenerator extends PdfHealper {
     private BaseFont baseFont;
     private Context mContext;
     private CaseHistory caseHistory;
@@ -332,53 +332,6 @@ public class PdfGenerator {
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
         return table;
-    }
-
-
-    private Paragraph addVerticalSpace() {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(10f); // for adding extra space after a view
-        return paragraph;
-    }
-
-
-    private Paragraph addVerticalSpaceBefore(float space) {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingBefore(space); // for adding extra space after a view
-        return paragraph;
-    }
-
-    private Paragraph addVerticalSpaceAfter(float space) {
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(space); // for adding extra space after a view
-        return paragraph;
-    }
-
-    private PdfPCell pdfPCellWithBorder(String label, Font font) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        // pdfPCell.setBorder(Rectangle.NO_BORDER);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorder(String label, Font font) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorderWithPadding(String label, Font font, int padding) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        pdfPCell.setPaddingBottom(padding);
-        pdfPCell.setPaddingTop(padding);
-        return pdfPCell;
-    }
-
-    private PdfPCell pdfPCellWithoutBorder(String label, Font font, int padding) {
-        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        pdfPCell.setBorder(Rectangle.NO_BORDER);
-        pdfPCell.setPaddingBottom(padding);
-        return pdfPCell;
     }
 
     private String covertStringList2String(List<String> data) {
