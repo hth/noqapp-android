@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -51,8 +50,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
-        PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList ,HCSMenuActivity.UpdateWholeList{
+public class MerchantDetailFragment
+        extends BaseMerchantDetailFragment
+        implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList ,HCSMenuActivity.UpdateWholeList{
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -102,7 +102,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         }
     }
 
-
     @Override
     public void orderAcceptClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
@@ -142,8 +141,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             );
             peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
-            if (jsonTopic.getServingNumber() > 0)
+            if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
+            }
         }
         dismissProgress();
     }
@@ -272,7 +272,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
         in.putExtra("qName",jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
-
     }
 
     @Override
