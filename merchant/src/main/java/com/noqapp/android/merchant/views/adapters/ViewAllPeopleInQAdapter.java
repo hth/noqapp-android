@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -9,9 +10,6 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.graphics.Color;
 import android.text.Html;
 import android.text.TextUtils;
@@ -21,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -49,8 +49,23 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
         holder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
         holder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        holder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus().getDescription()));
-        holder.tv_order_state.setText(Html.fromHtml("<b>Order Status: </b>" + jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState().getDescription()));
+        switch (jsonQueuedPerson.getQueueUserState()) {
+            case A:
+                //TODO(show) abort state or other states
+                break;
+            case S:
+            default:
+
+        }
+        final JsonPurchaseOrder jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
+        if (null != jsonPurchaseOrder) {
+            holder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + jsonPurchaseOrder.getPaymentStatus().getDescription()));
+            holder.tv_order_state.setText(Html.fromHtml("<b>Order Status: </b>" + jsonPurchaseOrder.getPresentOrderState().getDescription()));
+        } else {
+            holder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + context.getString(R.string.unregister_user)));
+            holder.tv_order_state.setText(Html.fromHtml("<b>Order Status: </b>" + context.getString(R.string.unregister_user)));
+        }
+
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         holder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
                 ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
