@@ -19,6 +19,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -30,9 +31,7 @@ import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
-import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -46,8 +45,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
@@ -57,10 +54,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrintFragment extends Fragment implements MedicalRecordPresenter {
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
     private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_radio_special, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
@@ -408,14 +401,15 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         adapter = new MedicalRecordAdapter(getActivity(), caseHistory.getJsonMedicineList());
         lv_medicine.setAdapter(adapter);
         btn_print_pdf.setVisibility(View.VISIBLE);
+        PermissionHelper permissionHelper = new PermissionHelper(getActivity());
         btn_print_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isStoragePermissionAllowed()) {
+                if (permissionHelper.isStoragePermissionAllowed()) {
                     PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
                     pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup));
                 } else {
-                    requestStoragePermission();
+                    permissionHelper.requestStoragePermission();
                 }
             }
         });
@@ -479,24 +473,6 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         }
     }
 
-    private boolean isStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                getActivity(),
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
-    }
     private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse, String storeId) {
 
         if (null == storeId) {

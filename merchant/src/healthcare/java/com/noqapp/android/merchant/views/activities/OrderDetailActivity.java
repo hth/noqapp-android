@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
@@ -21,10 +22,8 @@ import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -38,8 +37,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
     private ProgressDialog progressDialog;
@@ -57,11 +54,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private String qCodeQR;
     private Button btn_refund, btn_pay_now;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
-    private TextView tv_token,tv_q_name,tv_customer_name;
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+    private TextView tv_token, tv_q_name, tv_customer_name;
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -223,42 +216,25 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
             }
         });
-
+        PermissionHelper permissionHelper = new PermissionHelper(this);
         Button btn_print = findViewById(R.id.btn_print);
         btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isStoragePermissionAllowed()) {
-                    ReceiptGeneratorPDF pdfGenerator = new ReceiptGeneratorPDF(OrderDetailActivity.this);
-                    pdfGenerator.createPdf(jsonQueuedPerson);
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
+                    receiptGeneratorPDF.createPdf(jsonQueuedPerson);
                 } else {
-                    requestStoragePermission();
+                    permissionHelper.requestStoragePermission();
                 }
             }
         });
     }
-    private boolean isStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
 
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
-    }
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
-        tv_token.setText("Token/Order No. "+String.valueOf(jsonQueuedPerson.getToken()));
+        tv_token.setText("Token/Order No. " + String.valueOf(jsonQueuedPerson.getToken()));
         tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
@@ -294,7 +270,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
 
         }
-        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getDescription());
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
         } else {
@@ -309,7 +285,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_consultation_fee_value.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
 
-        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState()&& null == jsonPurchaseOrder.getPaymentMode()) {
+        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
         }

@@ -9,21 +9,21 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.customviews.MeterView;
+import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
+import com.noqapp.android.merchant.views.utils.PdfSkeletonGenerator;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -34,6 +34,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -54,6 +56,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
 
+    private JsonMedicalRecord jsonMedicalRecord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isDialog) {
@@ -337,7 +340,23 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalActivity.this);
         }
+        PermissionHelper permissionHelper = new PermissionHelper(this);
+        Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
+        btn_print_pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
+                    pdfGenerator.createPdf(jsonMedicalRecord);
+                } else {
+                    permissionHelper.requestStoragePermission();
+                }
+            }
+        });
     }
+
+
+
 
     private void initProgress() {
         progressDialog = new ProgressDialog(this);
@@ -396,6 +415,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
 
     @Override
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
+        this.jsonMedicalRecord = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
             Log.e("data", jsonMedicalRecord.toString());
             try {
