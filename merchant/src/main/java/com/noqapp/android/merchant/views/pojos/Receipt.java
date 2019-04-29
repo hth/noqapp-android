@@ -1,26 +1,76 @@
 package com.noqapp.android.merchant.views.pojos;
 
+import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.model.types.TransactionViaEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Receipt {
+@SuppressWarnings({
+        "PMD.BeanMembersShouldSerialize",
+        "PMD.LocalVariableCouldBeFinal",
+        "PMD.MethodArgumentCouldBeFinal",
+        "PMD.LongVariable",
+        "unused"
+})
+@JsonAutoDetect(
+        fieldVisibility = JsonAutoDetect.Visibility.ANY,
+        getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Receipt extends AbstractDomain implements Serializable {
+
+    @JsonProperty("qr")
+    private String codeQR;
+
+    @JsonProperty("n")
     private String businessName;
-    private String businessAddress;
+
+    @JsonProperty("sa")
+    private String storeAddress;
+
+    @JsonProperty("bc")
     private String businessCustomerId;
+
+    @JsonProperty("n")
     private String customerName;
-    private String doctorName;
-    private String orderId;
+
+    @JsonProperty("nm")
+    private String name;
+
+    @JsonProperty ("ti")
+    private String transactionId;
+
+    @JsonProperty("py")
     private PaymentStatusEnum paymentStatus;
-    private String totalAmount;
-    private String paidAmount;
-    private String balanceAmount;
+
+    @JsonProperty ("op")
+    private String orderPrice;
+
+    @JsonProperty("pp")
+    private String partialPayment;
+
+    @JsonProperty ("pm")
     private PaymentModeEnum paymentMode;
+
+    @JsonProperty("tv")
     private TransactionViaEnum transactionVia;
+
+    @JsonProperty ("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     public String getBusinessName() {
@@ -32,12 +82,12 @@ public class Receipt {
         return this;
     }
 
-    public String getBusinessAddress() {
-        return businessAddress;
+    public String getStoreAddress() {
+        return storeAddress;
     }
 
-    public Receipt setBusinessAddress(String businessAddress) {
-        this.businessAddress = businessAddress;
+    public Receipt setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress;
         return this;
     }
 
@@ -59,21 +109,21 @@ public class Receipt {
         return this;
     }
 
-    public String getDoctorName() {
-        return doctorName;
+    public String getName() {
+        return name;
     }
 
-    public Receipt setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
+    public Receipt setName(String name) {
+        this.name = name;
         return this;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public Receipt setOrderId(String orderId) {
-        this.orderId = orderId;
+    public Receipt setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
         return this;
     }
 
@@ -86,30 +136,21 @@ public class Receipt {
         return this;
     }
 
-    public String getTotalAmount() {
-        return totalAmount;
+    public String getOrderPrice() {
+        return orderPrice;
     }
 
-    public Receipt setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
+    public Receipt setOrderPrice(String orderPrice) {
+        this.orderPrice = orderPrice;
         return this;
     }
 
-    public String getPaidAmount() {
-        return paidAmount;
+    public String getPartialPayment() {
+        return partialPayment;
     }
 
-    public Receipt setPaidAmount(String paidAmount) {
-        this.paidAmount = paidAmount;
-        return this;
-    }
-
-    public String getBalanceAmount() {
-        return balanceAmount;
-    }
-
-    public Receipt setBalanceAmount(String balanceAmount) {
-        this.balanceAmount = balanceAmount;
+    public Receipt setPartialPayment(String partialPayment) {
+        this.partialPayment = partialPayment;
         return this;
     }
 
@@ -140,19 +181,32 @@ public class Receipt {
         return this;
     }
 
+    public String computeBalanceAmount() {
+        switch (paymentStatus) {
+            case PA:
+                return "0";
+            default:
+                if (StringUtils.isBlank(partialPayment)) {
+                    return CommonHelper.displayPrice(orderPrice);
+                } else {
+                    return CommonHelper.displayPrice(
+                            String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(partialPayment)));
+                }
+        }
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("MedicalInvoiceObj{");
         sb.append("businessName='").append(businessName).append('\'');
-        sb.append(", businessAddress='").append(businessAddress).append('\'');
+        sb.append(", storeAddress='").append(storeAddress).append('\'');
         sb.append(", businessCustomerId='").append(businessCustomerId).append('\'');
         sb.append(", customerName='").append(customerName).append('\'');
-        sb.append(", doctorName='").append(doctorName).append('\'');
-        sb.append(", orderId='").append(orderId).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", transactionId='").append(transactionId).append('\'');
         sb.append(", paymentStatus='").append(paymentStatus).append('\'');
-        sb.append(", totalAmount='").append(totalAmount).append('\'');
-        sb.append(", paidAmount='").append(paidAmount).append('\'');
-        sb.append(", balanceAmount='").append(balanceAmount).append('\'');
+        sb.append(", orderPrice='").append(orderPrice).append('\'');
+        sb.append(", partialPayment='").append(partialPayment).append('\'');
         sb.append(", paymentMode='").append(paymentMode).append('\'');
         sb.append(", transactionVia='").append(transactionVia).append('\'');
         sb.append(", purchaseOrderProducts=").append(purchaseOrderProducts);

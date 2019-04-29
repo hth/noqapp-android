@@ -112,7 +112,7 @@ public class ReceiptGeneratorPDF {
             Font noqFont = new Font(baseFont, 13.0f, Font.BOLD, BaseColor.BLACK);
 
 
-            Chunk degreeChunk = new Chunk(receipt.getBusinessAddress(), normalFont);
+            Chunk degreeChunk = new Chunk(receipt.getStoreAddress(), normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
@@ -221,13 +221,13 @@ public class ReceiptGeneratorPDF {
             table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaymentStatus().getDescription(), normalFont, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Total Cost:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTotalAmount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getOrderPrice(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Balance Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getBalanceAmount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.computeBalanceAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Paid Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getPaidAmount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getPartialPayment(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Transaction Via:", normalBoldFont, 5));
             table.addCell(pdfPCellWithoutBorderWithPadding(receipt.getTransactionVia().getFriendlyDescription(), normalFont, 5));
@@ -276,7 +276,7 @@ public class ReceiptGeneratorPDF {
         table.addCell(pdfPCellWithoutBorder("MR No                   :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(receipt.getBusinessCustomerId(), normalFont));
         table.addCell(pdfPCellWithoutBorder("Order Id                :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(receipt.getOrderId(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getTransactionId(), normalFont));
 
         // Line 2
         table.addCell(pdfPCellWithoutBorder("Customer Name       :", normalBoldFont));
@@ -286,7 +286,7 @@ public class ReceiptGeneratorPDF {
 
         // Line 3
         table.addCell(pdfPCellWithoutBorder("Doctor Name       :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(receipt.getDoctorName(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(receipt.getName(), normalFont));
         table.addCell(pdfPCellWithoutBorder("Time                       :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(time, normalFont));
 
@@ -354,26 +354,20 @@ public class ReceiptGeneratorPDF {
     private void initPdfObj() {
         receipt = new Receipt();
         receipt.setBusinessName("SSD Hospital ???");
-        receipt.setBusinessAddress("Koparkhairne AreaAndTown?? ");
+        receipt.setStoreAddress("Koparkhairne AreaAndTown?? ");
         receipt.setBusinessCustomerId(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? TransactionViaEnum.U.getDescription() : jsonQueuedPerson.getBusinessCustomerId());
         receipt.setCustomerName(jsonQueuedPerson.getCustomerName());
-        receipt.setDoctorName("Rohan Mudgar ?????");
-        receipt.setOrderId(jsonPurchaseOrder.getTransactionId());
-
+        receipt.setName("Rohan Mudgar ?????");
+        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
 
         PaymentModeEnum paymentMode = null;
         PaymentStatusEnum paymentStatus;
-        String paidAmount = "";
-        String balanceAmount = "";
+        String partialPayment = "";
         try {
             if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-                paidAmount = currencySymbol + " " + String.valueOf(0);
-                balanceAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
+                partialPayment = String.valueOf(0);
             } else {
-                paidAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment());
-                balanceAmount = currencySymbol + " " +
-                        CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) -
-                        Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
+                partialPayment = CommonHelper.displayPrice(jsonPurchaseOrder.getPartialPayment());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -384,8 +378,7 @@ public class ReceiptGeneratorPDF {
             paymentMode = jsonPurchaseOrder.getPaymentMode();
 
             if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                balanceAmount = currencySymbol + " " + String.valueOf(0);
-                paidAmount = currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
+                partialPayment = CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
             }
         }
         paymentStatus = jsonPurchaseOrder.getPaymentStatus();
@@ -395,9 +388,8 @@ public class ReceiptGeneratorPDF {
 
         receipt.setPaymentMode(paymentMode);
         receipt.setPaymentStatus(paymentStatus);
-        receipt.setPaidAmount(paidAmount);
-        receipt.setBalanceAmount(balanceAmount);
-        receipt.setTotalAmount(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+        receipt.setPartialPayment(partialPayment);
+        receipt.setOrderPrice(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         receipt.setTransactionVia(null != jsonPurchaseOrder.getTransactionVia() ? jsonPurchaseOrder.getTransactionVia() : TransactionViaEnum.U);
         receipt.setPurchaseOrderProducts(jsonPurchaseOrder.getPurchaseOrderProducts());
     }
