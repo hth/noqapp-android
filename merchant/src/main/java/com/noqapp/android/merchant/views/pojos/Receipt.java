@@ -1,16 +1,15 @@
 package com.noqapp.android.merchant.views.pojos;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -196,6 +195,19 @@ public class Receipt extends AbstractDomain implements Serializable {
                 }
         }
     }
+
+    public String computePaidAmount() {
+        switch (jsonPurchaseOrder.getPaymentStatus()) {
+            case PA:
+                return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice())));
+            case MP:
+                return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
+            default:
+                return "0";
+        }
+    }
+
+
 
     public ErrorEncounteredJson getError() {
         return error;
