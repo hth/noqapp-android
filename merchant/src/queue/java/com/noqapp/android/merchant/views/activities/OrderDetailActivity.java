@@ -166,6 +166,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             OrderServed orderServed = new OrderServed();
                             orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
                             orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                            orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
                             orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
                             orderServed.setQueueStatus(QueueStatusEnum.N);
                             orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
