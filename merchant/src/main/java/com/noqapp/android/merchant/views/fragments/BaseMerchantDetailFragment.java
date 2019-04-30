@@ -182,6 +182,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
                     in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+                    in.putExtra("payment_permission",jsonTopic.getJsonPaymentPermission());
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);

@@ -135,58 +135,41 @@
                             android:layout_marginBottom="10dp"
                             android:background="@android:color/darker_gray"/>
 
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
 
 
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/tv_consultation_fee_value"
-                                android:paddingLeft="5dp"
-                                android:text="Consultation Fees: "
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"
-                                android:textStyle="bold"/>
-
-                        <TextView
-                                android:id="@+id/tv_consultation_fee_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:paddingRight="5dp"
-                                android:textSize="@dimen/text_size_twelve"/>
-
-                    </RelativeLayout>
+                    <com.noqapp.android.merchant.utils.FixedHeightListView
+                        android:id="@+id/listview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:fadeScrollbars="false"
+                        android:scrollbarAlwaysDrawVerticalTrack="true" />
 
                     <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="5dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp">
 
 
                         <TextView
-                                android:id="@+id/tv_order_state1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/tv_order_state"
-                                android:paddingLeft="5dp"
-                                android:text="Order State: "
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_twelve"
-                                android:textStyle="bold"/>
+                            android:id="@+id/tv_order_state1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_toLeftOf="@+id/tv_order_state"
+                            android:paddingLeft="5dp"
+                            android:text="Order State: "
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_twelve"
+                            android:textStyle="bold"/>
 
                         <TextView
-                                android:id="@+id/tv_order_state"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:paddingRight="5dp"
-                                android:textSize="@dimen/text_size_twelve"/>
+                            android:id="@+id/tv_order_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:paddingRight="5dp"
+                            android:textSize="@dimen/text_size_twelve"/>
 
                     </RelativeLayout>
                 </LinearLayout>

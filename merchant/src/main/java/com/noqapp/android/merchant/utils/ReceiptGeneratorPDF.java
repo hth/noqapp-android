@@ -205,10 +205,10 @@ public class ReceiptGeneratorPDF extends PdfHealper{
             table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getOrderPrice()), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Balance Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.computeBalanceAmount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getJsonPurchaseOrder().computeBalanceAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Paid Amount:", normalBoldFont, 5));
-            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.computePaidAmount(), urFontName, 5));
+            table.addCell(pdfPCellWithoutBorderWithPadding(currencySymbol + " " + receipt.getJsonPurchaseOrder().computePaidAmount(), urFontName, 5));
 
             table.addCell(pdfPCellWithoutBorderWithPadding("Transaction Via:", normalBoldFont, 5));
             String transactionVia = (null == receipt.getJsonPurchaseOrder().getTransactionVia())?"N/A":receipt.getJsonPurchaseOrder().getTransactionVia().getFriendlyDescription();

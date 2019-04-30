@@ -118,6 +118,20 @@
                     android:text="Cancelled"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_twelve" />
+
+                <TextView
+                    android:id="@+id/tv_accept_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/bg_nogradient_round"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Payment Status"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_ten"/>
+
             </LinearLayout>
         </LinearLayout>
 

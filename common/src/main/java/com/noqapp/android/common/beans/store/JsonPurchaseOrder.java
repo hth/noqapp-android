@@ -1,5 +1,11 @@
 package com.noqapp.android.common.beans.store;
 
+import android.text.TextUtils;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
@@ -9,11 +15,7 @@ import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -47,25 +49,25 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String customerPhone;
 
-    @JsonProperty ("da")
+    @JsonProperty("da")
     private String deliveryAddress;
 
-    @JsonProperty ("sd")
+    @JsonProperty("sd")
     private int storeDiscount;
 
     @JsonProperty("pp")
     private String partialPayment;
 
-    @JsonProperty ("op")
+    @JsonProperty("op")
     private String orderPrice;
 
-    @JsonProperty ("dm")
+    @JsonProperty("dm")
     private DeliveryModeEnum deliveryMode;
 
-    @JsonProperty ("pm")
+    @JsonProperty("pm")
     private PaymentModeEnum paymentMode;
 
     @JsonProperty("py")
@@ -74,29 +76,29 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("pop")
+    @JsonProperty("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
 
     /* Populated from TokenQueue. */
-    @JsonProperty ("s")
+    @JsonProperty("s")
     private int servingNumber;
 
-    @JsonProperty ("t")
+    @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName;
 
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private String expectedServiceBegin;
 
-    @JsonProperty ("ti")
+    @JsonProperty("ti")
     private String transactionId;
 
-    @JsonProperty ("ps")
+    @JsonProperty("ps")
     private PurchaseOrderStateEnum presentOrderState;
 
-    @JsonProperty ("c")
+    @JsonProperty("c")
     private String created;
 
     @JsonProperty("an")
@@ -348,6 +350,31 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     public JsonPurchaseOrder setCustomized(boolean customized) {
         this.customized = customized;
         return this;
+    }
+
+    public String computeBalanceAmount() {
+        switch (paymentStatus) {
+            case PA:
+                return "0";
+            default:
+                if (TextUtils.isEmpty(partialPayment)) {
+                    return CommonHelper.displayPrice(orderPrice);
+                } else {
+                    return CommonHelper.displayPrice(
+                            String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(partialPayment)));
+                }
+        }
+    }
+
+    public String computePaidAmount() {
+        switch (paymentStatus) {
+            case PA:
+                return CommonHelper.displayPrice(orderPrice);
+            case MP:
+                return CommonHelper.displayPrice(partialPayment);
+            default:
+                return "0";
+        }
     }
 
     public ErrorEncounteredJson getError() {

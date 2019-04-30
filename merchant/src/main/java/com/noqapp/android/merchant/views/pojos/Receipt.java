@@ -182,33 +182,6 @@ public class Receipt extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String computeBalanceAmount() {
-        switch (jsonPurchaseOrder.getPaymentStatus()) {
-            case PA:
-                return "0";
-            default:
-                if (StringUtils.isBlank(jsonPurchaseOrder.getPartialPayment())) {
-                    return CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice());
-                } else {
-                    return CommonHelper.displayPrice(
-                            String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
-                }
-        }
-    }
-
-    public String computePaidAmount() {
-        switch (jsonPurchaseOrder.getPaymentStatus()) {
-            case PA:
-                return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice())));
-            case MP:
-                return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment())));
-            default:
-                return "0";
-        }
-    }
-
-
-
     public ErrorEncounteredJson getError() {
         return error;
     }

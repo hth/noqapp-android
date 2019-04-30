@@ -9,6 +9,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -97,7 +98,8 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             Log.e("data size", "" + jsonQueuePersonList.getQueuedPeople().size());
             createData(jsonQueuePersonList.getQueuedPeople());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-            ViewAllExpandableListAdapter adapter = new ViewAllExpandableListAdapter(ViewAllPeopleInQActivity.this, expandableListTitle, expandableListDetail,getIntent().getBooleanExtra("visibility",false));
+            ViewAllExpandableListAdapter adapter = new ViewAllExpandableListAdapter(ViewAllPeopleInQActivity.this, expandableListTitle,
+                    expandableListDetail,getIntent().getBooleanExtra("visibility",false),(JsonPaymentPermission) getIntent().getSerializableExtra("payment_permission"));
             listview.setAdapter(adapter);
             if (expandableListTitle.size() <= 0) {
                 listview.setVisibility(View.GONE);

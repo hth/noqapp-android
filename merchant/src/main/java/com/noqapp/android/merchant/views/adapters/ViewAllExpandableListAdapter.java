@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.utils.AppUtils;
 
@@ -31,13 +32,15 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
     private boolean visibility;
+    private JsonPaymentPermission jsonPaymentPermission;
 
     public ViewAllExpandableListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility) {
+                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility,JsonPaymentPermission jsonPaymentPermission) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
         this.visibility =visibility;
+        this.jsonPaymentPermission = jsonPaymentPermission;
     }
 
     @Override
@@ -74,7 +77,7 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
         }
         childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null,visibility);
+        ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null,visibility,jsonPaymentPermission);
         childViewHolder.rv.setAdapter(currentActivityAdapter);
         currentActivityAdapter.notifyDataSetChanged();
         return convertView;
