@@ -23,6 +23,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -59,9 +61,8 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     private TextView tv_female;
     private LinearLayout ll_pwd;
     private Button btnRegistration;
-
+    private long mLastClickTime = 0;
     private DatePickerDialog fromDatePickerDialog;
-
     private ProgressDialog progressDialog;
 
     @Override
@@ -161,6 +162,10 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
             btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 callRegistrationAPI();
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -76,6 +77,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private RelativeLayout rl_multiple;
     private TextView tv_token, tv_q_name, tv_customer_name;
     private OrderItemAdapter adapter;
+    private long mLastClickTime = 0;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -150,6 +152,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
@@ -160,6 +166,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             OrderServed orderServed = new OrderServed();
                             orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
                             orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                            orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
                             orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
                             orderServed.setQueueStatus(QueueStatusEnum.N);
                             orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
@@ -186,6 +193,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_pay_partial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (isProductWithoutPrice) {
                     Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
                 } else {
@@ -227,6 +238,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_update_price.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (isProductWithoutPrice) {
                     Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
                 } else {
@@ -242,6 +257,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (isProductWithoutPrice) {
                     Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
                 } else {
@@ -286,6 +305,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
                     ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this,false);
                     showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
