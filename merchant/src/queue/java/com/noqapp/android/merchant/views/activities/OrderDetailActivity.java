@@ -1,30 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.common.model.types.order.PaymentModeEnum;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
-import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
-import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
-import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
-import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -43,10 +19,41 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
+import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
+import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
+import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
+import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
+import com.noqapp.android.merchant.views.pojos.Receipt;
+
+import org.apache.commons.lang3.StringUtils;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -196,11 +203,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                                         progressDialog.show();
                                         progressDialog.setMessage("Starting payment..");
                                         jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                                        jsonPurchaseOrder.setPartialPayment(String.valueOf(Double.parseDouble(edt_amount.getText().toString()) * 100));
+                                        jsonPurchaseOrder.setPartialPayment(String.valueOf(Integer.parseInt(edt_amount.getText().toString()) * 100));
                                         PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                                         purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
                                         purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-
                                     } else {
                                         ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                                     }
@@ -272,8 +278,34 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol, this);
         listview.setAdapter(adapter);
         updateUI();
+        PermissionHelper permissionHelper = new PermissionHelper(this);
+        ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
+        receiptInfoApiCalls.setReceiptInfoPresenter(this);
+        Button btn_print = findViewById(R.id.btn_print);
+        btn_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this,false);
+                    showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+                }else{
+                    if (permissionHelper.isStoragePermissionAllowed()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Fetching receipt info...");
+                        Receipt receipt = new Receipt();
+                        receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                        receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    } else {
+                        permissionHelper.requestStoragePermission();
+                    }
+                }
+            }
+        });
     }
-
 
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
@@ -285,17 +317,20 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
 
-        try {
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-            } else {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+//            } else {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+      //  }
+        tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
+        tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
+
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             if (isProductWithoutPrice) {
@@ -326,10 +361,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             }
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-                tv_remaining_amount_value.setText(currencySymbol + " 0");
-            }
+//            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+//                tv_remaining_amount_value.setText(currencySymbol + " 0");
+//            }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
             }
@@ -338,7 +373,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         }
 
         try {
-            tv_cost.setText(currencySymbol + " " + String.valueOf(Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) / 100));
+            tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         } catch (Exception e) {
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
@@ -361,18 +396,21 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         jsonPurchaseOrder.getPurchaseOrderProducts().set(pos, jpop);
         checkProductWithZeroPrice();
         jsonPurchaseOrder.setOrderPrice(String.valueOf(calculateTotalPrice()));
-        tv_cost.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-        try {
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-            } else {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+//        try {
+//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+//            } else {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
+        tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
+
     }
 
     private double calculateTotalPrice() {
@@ -499,6 +537,18 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
 
     @Override
     public void orderProcessedError() {
+        dismissProgress();
+    }
 
+    @Override
+    public void receiptInfoResponse(Receipt receipt) {
+        try {
+            Log.e("Data", receipt.toString());
+            ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
+            receiptGeneratorPDF.createPdf(receipt);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        dismissProgress();
     }
 }

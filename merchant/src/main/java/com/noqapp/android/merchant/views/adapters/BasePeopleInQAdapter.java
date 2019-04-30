@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -13,6 +14,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
+import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -35,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +55,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     protected BusinessCustomerApiCalls businessCustomerApiCalls;
     private QueueStatusEnum queueStatusEnum;
     private JsonDataVisibility jsonDataVisibility;
+    private JsonPaymentPermission jsonPaymentPermission;
 
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
@@ -112,10 +114,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     }
 
     public interface PeopleInQAdapterClick {
-
         void peopleInQClick(int position);
 
-        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson,String qCodeQR);
+        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -155,7 +156,14 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         }
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, JsonDataVisibility jsonDataVisibility) {
+    protected BasePeopleInQAdapter(
+            List<JsonQueuedPerson> data,
+            Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick,
+            String qCodeQR,
+            JsonDataVisibility jsonDataVisibility,
+            JsonPaymentPermission jsonPaymentPermission
+    ) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -165,9 +173,20 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.jsonDataVisibility = jsonDataVisibility;
+        this.jsonPaymentPermission = jsonPaymentPermission;
     }
 
-    protected BasePeopleInQAdapter(List<JsonQueuedPerson> data, Context context, PeopleInQAdapterClick peopleInQAdapterClick, String qCodeQR, int glowPosition, QueueStatusEnum queueStatusEnum, JsonDataVisibility jsonDataVisibility, String bizCategoryId) {
+    protected BasePeopleInQAdapter(
+            List<JsonQueuedPerson> data,
+            Context context,
+            PeopleInQAdapterClick peopleInQAdapterClick,
+            String qCodeQR,
+            int glowPosition,
+            QueueStatusEnum queueStatusEnum,
+            JsonDataVisibility jsonDataVisibility,
+            JsonPaymentPermission jsonPaymentPermission,
+            String bizCategoryId
+    ) {
         this.dataSet = data;
         this.context = context;
         this.peopleInQAdapterClick = peopleInQAdapterClick;
@@ -179,6 +198,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.queueStatusEnum = queueStatusEnum;
         this.jsonDataVisibility = jsonDataVisibility;
+        this.jsonPaymentPermission = jsonPaymentPermission;
         this.bizCategoryId = bizCategoryId;
     }
 
@@ -195,14 +215,24 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
-        recordHolder.tv_last_visit.setText(TextUtils.isEmpty(jsonQueuedPerson.getClientVisitedThisStoreDate()) ? "" : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
-        recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
-        recordHolder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user)) :
-                Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
-        recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        recordHolder.tv_last_visit.setText(TextUtils.isEmpty(
+                jsonQueuedPerson.getClientVisitedThisStoreDate())
+                ? ""
+                : "Last visit: " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonQueuedPerson.getClientVisitedThisStoreDate()));
+        recordHolder.tv_customer_name.setText(
+                TextUtils.isEmpty(jsonQueuedPerson.getCustomerName())
+                        ? context.getString(R.string.unregister_user)
+                        : jsonQueuedPerson.getCustomerName());
+        recordHolder.tv_business_customer_id.setText(
+                TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
+                        ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
+                        : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
+        recordHolder.tv_customer_mobile.setText(
+                TextUtils.isEmpty(phoneNo)
+                        ? context.getString(R.string.unregister_user)
+                        : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
+        if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
             recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -249,8 +279,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 break;
             case A:
                 recordHolder.tv_status_msg.setBackgroundResource(R.drawable.grey_background);
-                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(
-                        context, R.color.disable_list));
+                recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
                 recordHolder.tv_status_msg.setText(context.getString(R.string.msg_client_left_queue));
                 break;
             case N:
@@ -289,10 +318,9 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_payment_stat.setText("No Payment Due");
                         recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
-                    }else{
+                    } else {
                         recordHolder.tv_payment_stat.setText("Accept Payment");
-                        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
-                                jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+                        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
                             recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.bg_unpaid);
                         } else {
                             recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
@@ -315,10 +343,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
         recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DataVisibilityEnum.H.getName().equals(jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name())) {
-                    peopleInQAdapterClick.viewOrderClick(context,jsonQueuedPerson,qCodeQR);
+                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, qCodeQR);
                 } else {
-                    Toast.makeText(context, "You don't have permission to accept payment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "You do not have permission to accept payment", Toast.LENGTH_SHORT).show();
                 }
             }
         });

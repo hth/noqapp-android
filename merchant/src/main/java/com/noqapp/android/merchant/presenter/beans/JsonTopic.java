@@ -34,6 +34,9 @@ public class JsonTopic extends JsonToken implements Serializable {
     @JsonProperty("dv")
     private JsonDataVisibility jsonDataVisibility;
 
+    @JsonProperty("pp")
+    private JsonPaymentPermission jsonPaymentPermission;
+
     public String getTopic() {
         return topic;
     }
@@ -60,12 +63,22 @@ public class JsonTopic extends JsonToken implements Serializable {
         return this;
     }
 
+    public JsonPaymentPermission getJsonPaymentPermission() {
+        return jsonPaymentPermission;
+    }
+
+    public JsonTopic setJsonPaymentPermission(JsonPaymentPermission jsonPaymentPermission) {
+        this.jsonPaymentPermission = jsonPaymentPermission;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "JsonTopic{" +
                 "topic='" + topic + '\'' +
                 ", hour=" + hour +
                 ", jsonDataVisibility=" + jsonDataVisibility +
+                ", jsonPaymentPermission=" + jsonPaymentPermission +
                 '}';
     }
 }

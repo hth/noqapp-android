@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
@@ -60,7 +60,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), FollowUpListActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("visibility", DataVisibilityEnum.H.getName().equals(jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name()));
+                    in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
@@ -68,7 +68,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         });
         return v;
-
     }
 
     @Override
@@ -126,10 +125,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setText("Search Patient");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
                 boolean isValid = true;
                 edt_mobile.setError(null);
                 edt_id.setError(null);

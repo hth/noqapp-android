@@ -16,6 +16,7 @@ import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
 
 import android.util.Log;
 import androidx.annotation.NonNull;

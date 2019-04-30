@@ -6,6 +6,7 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

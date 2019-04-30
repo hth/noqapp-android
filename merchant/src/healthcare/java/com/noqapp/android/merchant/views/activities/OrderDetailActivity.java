@@ -10,43 +10,45 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
+import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
-import com.noqapp.android.merchant.views.utils.PdfGenerator;
-import com.noqapp.android.merchant.views.utils.PdfInvoiceGenerator;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private TextView tv_cost, tv_order_state, tv_consultation_fee_value;
+    private TextView tv_cost, tv_order_state;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -58,11 +60,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private String qCodeQR;
     private Button btn_refund, btn_pay_now;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
-    private TextView tv_token,tv_q_name,tv_customer_name;
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
+    private TextView tv_token, tv_q_name, tv_customer_name;
+    private OrderItemAdapter adapter;
+    private String currencySymbol;
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -93,6 +93,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         });
 
         tv_toolbar_title.setText(getString(R.string.order_details));
+        ListView listview = findViewById(R.id.listview);
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setQueuePaymentPresenter(this);
         manageQueueApiCalls.setQueueRefundPaymentPresenter(this);
@@ -107,7 +108,6 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_transaction_via = findViewById(R.id.tv_transaction_via);
         tv_address = findViewById(R.id.tv_address);
         tv_cost = findViewById(R.id.tv_cost);
-        tv_consultation_fee_value = findViewById(R.id.tv_consultation_fee_value);
         tv_order_state = findViewById(R.id.tv_order_state);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
@@ -128,7 +128,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
 
             }
         });
-        qCodeQR = getIntent().getStringExtra("qCodeQR");
+        qCodeQR = jsonPurchaseOrder.getCodeQR();
         rl_payment = findViewById(R.id.rl_payment);
         btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_refund = findViewById(R.id.btn_refund);
@@ -172,10 +172,11 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 showDialog.displayDialog("Alert", "You are initiating refund process. Please confirm");
             }
         });
+        currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         initProgress();
         updateUI();
         TextView tv_item_count = findViewById(R.id.tv_item_count);
-        tv_item_count.setText("Total Items: (1)");
+        tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
         btn_pay_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,56 +225,57 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
             }
         });
-
+        ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
+        receiptInfoApiCalls.setReceiptInfoPresenter(this);
+        PermissionHelper permissionHelper = new PermissionHelper(this);
         Button btn_print = findViewById(R.id.btn_print);
         btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isStoragePermissionAllowed()) {
-                    PdfInvoiceGenerator pdfGenerator = new PdfInvoiceGenerator(OrderDetailActivity.this);
-                    pdfGenerator.createPdf(jsonQueuedPerson);
-                } else {
-                    requestStoragePermission();
+                if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this,false);
+                    showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+                }else{
+                    if (permissionHelper.isStoragePermissionAllowed()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Fetching receipt info...");
+                        Receipt receipt = new Receipt();
+                        receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                        receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    } else {
+                        permissionHelper.requestStoragePermission();
+                    }
                 }
             }
         });
-    }
-    private boolean isStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
+        adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol);
+        listview.setAdapter(adapter);
     }
 
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
-    }
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
-        tv_token.setText("Token/Order No. "+String.valueOf(jsonQueuedPerson.getToken()));
+        tv_token.setText("Token/Order No. " + String.valueOf(jsonQueuedPerson.getToken()));
         tv_q_name.setText(getIntent().getStringExtra("qName"));
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
-        String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
-        try {
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-            } else {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
+//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+//            } else {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
+//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
+        tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
         } else {
@@ -284,10 +286,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-                tv_remaining_amount_value.setText(currencySymbol + " 0");
-            }
+//            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
+//                tv_remaining_amount_value.setText(currencySymbol + " 0");
+//            }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
             }
@@ -295,7 +297,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
 
         }
-        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getDescription());
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
         } else {
@@ -303,14 +305,12 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         }
         try {
             tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
-            tv_consultation_fee_value.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
-        } catch (Exception e) {
+             } catch (Exception e) {
             //TODO log error
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
-            tv_consultation_fee_value.setText(currencySymbol + " " + String.valueOf(0 / 100));
-        }
+            }
 
-        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState()&& null == jsonPurchaseOrder.getPaymentMode()) {
+        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
         }
@@ -383,5 +383,17 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
             }
         }
+    }
+
+    @Override
+    public void receiptInfoResponse(Receipt receipt) {
+        try {
+            Log.e("Data", receipt.toString());
+            ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
+            receiptGeneratorPDF.createPdf(receipt);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        dismissProgress();
     }
 }

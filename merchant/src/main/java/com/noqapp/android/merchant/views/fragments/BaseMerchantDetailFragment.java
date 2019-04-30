@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -47,7 +48,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +63,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -182,7 +181,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
                     in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("visibility", DataVisibilityEnum.H.getName().equals(jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()).name()));
+                    in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+                    in.putExtra("payment_permission",jsonTopic.getJsonPaymentPermission());
                     ((Activity) context).startActivity(in);
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
@@ -283,7 +283,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
-                peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataVisibility());
+                peopleInQAdapter = new PeopleInQAdapter(
+                        jsonQueuedPersonArrayList,
+                        context,
+                        this,
+                        jsonTopic.getCodeQR(),
+                        jsonTopic.getJsonDataVisibility(),
+                        jsonTopic.getJsonPaymentPermission());
                 rv_queue_people.setAdapter(peopleInQAdapter);
             }
         } else {
@@ -309,18 +315,21 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token && null != tv_create_token) {
-            if (null != edt_mobile)
+            if (null != edt_mobile) {
                 edt_mobile.setText("");
-            if (null != ll_main_section)
+            }
+            if (null != ll_main_section) {
                 ll_main_section.setVisibility(View.GONE);
+            }
 
             switch (token.getQueueStatus()) {
                 case C:
                     tv_create_token.setText("Queue is closed. Cannot generate token.");
                     btn_create_token.setClickable(true);
                     btn_create_token.setText(context.getString(R.string.queue_closed));
-                    if (null != getActivity())
+                    if (null != getActivity()) {
                         ShowAlertInformation.showThemeDialog(getActivity(), "Queue is closed", "Cannot generate token.");
+                    }
                     break;
                 case D:
                 case N:
@@ -355,8 +364,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     private void showCounterEditDialog(final Context mContext, final TextView textView, final String codeQR) {
-
-
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_edit_counter);
@@ -365,10 +372,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
         final AutoCompleteTextView actv_counter = dialog.findViewById(R.id.actv_counter);
         final ArrayList<String> names = LaunchActivity.getLaunchActivity().getCounterNames();
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
-                (mContext, android.R.layout.simple_list_item_1, names);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, names);
         actv_counter.setAdapter(adapter1);
         actv_counter.setThreshold(1);
+        actv_counter.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
         AppUtils.setAutoCompleteText(actv_counter, textView.getText().toString().trim());
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
@@ -423,7 +430,16 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         }
                     }
             );
-            peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getServingNumber(), jsonTopic.getQueueStatus(), jsonTopic.getJsonDataVisibility(), jsonTopic.getBizCategoryId());
+            peopleInQAdapter = new PeopleInQAdapter(
+                    jsonQueuedPersonArrayList,
+                    context,
+                    this,
+                    jsonTopic.getCodeQR(),
+                    jsonTopic.getServingNumber(),
+                    jsonTopic.getQueueStatus(),
+                    jsonTopic.getJsonDataVisibility(),
+                    jsonTopic.getJsonPaymentPermission(),
+                    jsonTopic.getBizCategoryId());
             rv_queue_people.setAdapter(peopleInQAdapter);
             if (jsonTopic.getServingNumber() > 0)
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -690,7 +706,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     protected void resetList() {
         jsonQueuedPersonArrayList = new ArrayList<>();
-        peopleInQAdapter = new PeopleInQAdapter(jsonQueuedPersonArrayList, context, this, jsonTopic.getCodeQR(), jsonTopic.getJsonDataVisibility());
+        peopleInQAdapter = new PeopleInQAdapter(
+                jsonQueuedPersonArrayList,
+                context,
+                this,
+                jsonTopic.getCodeQR(),
+                jsonTopic.getJsonDataVisibility(),
+                jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQAdapter);
     }
 

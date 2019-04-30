@@ -7,7 +7,7 @@ import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.model.response.api.DeviceApiUrls;
+import com.noqapp.android.merchant.model.response.open.DeviceApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;

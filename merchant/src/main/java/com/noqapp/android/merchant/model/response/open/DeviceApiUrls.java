@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.model.response.api;
+package com.noqapp.android.merchant.model.response.open;
 
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;

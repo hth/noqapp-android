@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.merchant.model.response.api.RegisterApiUrls;
+import com.noqapp.android.merchant.model.response.open.RegisterApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.body.Login;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
