@@ -188,7 +188,7 @@ public class CommonHelper {
         return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
     }
 
-    public static String getOrderId(String transactionId) {
+    public static String transactionForDisplayOnly(String transactionId) {
         return transactionId.substring(transactionId.substring(0, transactionId.lastIndexOf("-")).lastIndexOf("-") + 1);
     }
 }

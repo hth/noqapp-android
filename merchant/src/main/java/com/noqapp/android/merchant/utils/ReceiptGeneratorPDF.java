@@ -1,10 +1,8 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
@@ -260,7 +258,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
         table.addCell(pdfPCellWithoutBorder("MR No                   :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(checkNull(receipt.getBusinessCustomerId()), normalFont));
         table.addCell(pdfPCellWithoutBorder("Order Id                :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(CommonHelper.getOrderId(receipt.getTransactionId()), normalFont));
+        table.addCell(pdfPCellWithoutBorder(CommonHelper.transactionForDisplayOnly(receipt.getTransactionId()), normalFont));
 
         // Line 2
         table.addCell(pdfPCellWithoutBorder("Customer Name       :", normalBoldFont));
