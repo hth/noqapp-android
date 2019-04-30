@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.merchant.model.response.api.ManageQueueApiUrls;
+import com.noqapp.android.merchant.model.response.api.queue.QueueApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -33,7 +33,7 @@ import retrofit2.Response;
 public class ManageQueueApiCalls {
     private static final String TAG = ManageQueueApiCalls.class.getSimpleName();
 
-    private static final ManageQueueApiUrls manageQueueApiUrls;
+    private static final QueueApiUrls queueApiUrls;
     private ManageQueuePresenter manageQueuePresenter;
     private DispenseTokenPresenter dispenseTokenPresenter;
     private TopicPresenter topicPresenter;
@@ -67,7 +67,7 @@ public class ManageQueueApiCalls {
     }
 
     static {
-        manageQueueApiUrls = RetrofitClient.getClient().create(ManageQueueApiUrls.class);
+        queueApiUrls = RetrofitClient.getClient().create(QueueApiUrls.class);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ManageQueueApiCalls {
      * @param auth
      */
     public void getQueues(String did, String mail, String auth) {
-        manageQueueApiUrls.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
+        queueApiUrls.getQueues(did, Constants.DEVICE_TYPE, Constants.appVersion(), mail, auth).enqueue(new Callback<JsonTopicList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTopicList> call, @NonNull Response<JsonTopicList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -110,7 +110,7 @@ public class ManageQueueApiCalls {
      * @param auth
      */
     public void served(String did, String mail, String auth, Served served) {
-        manageQueueApiUrls.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
+        queueApiUrls.served(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -150,7 +150,7 @@ public class ManageQueueApiCalls {
      * @param auth
      */
     public void acquire(String did, String mail, String auth, Served served) {
-        manageQueueApiUrls.acquire(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
+        queueApiUrls.acquire(did, Constants.DEVICE_TYPE, mail, auth, served).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -185,7 +185,7 @@ public class ManageQueueApiCalls {
     }
 
     public void getAllQueuePersonList(String did, String mail, String auth, String codeQR) {
-        manageQueueApiUrls.showClients(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
+        queueApiUrls.showClients(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -215,7 +215,7 @@ public class ManageQueueApiCalls {
     }
 
     public void getAllQueuePersonListHistory(String did, String mail, String auth, String codeQR) {
-        manageQueueApiUrls.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
+        queueApiUrls.showClientsHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -245,7 +245,7 @@ public class ManageQueueApiCalls {
 
 
     public void dispenseToken(String did, String mail, String auth, String codeQR) {
-        manageQueueApiUrls.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
+        queueApiUrls.dispenseTokenWithoutClientInfo(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -277,7 +277,7 @@ public class ManageQueueApiCalls {
 
 
     public void dispenseTokenWithClientInfo(String did, String mail, String auth, JsonBusinessCustomer jsonBusinessCustomer) {
-        manageQueueApiUrls.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonToken>() {
+        queueApiUrls.dispenseTokenWithClientInfo(did, Constants.DEVICE_TYPE, mail, auth, jsonBusinessCustomer).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -308,7 +308,7 @@ public class ManageQueueApiCalls {
 
 
     public void changeUserInQueue(String did, String mail, String auth, ChangeUserInQueue changeUserInQueue) {
-        manageQueueApiUrls.changeUserInQueue(did, Constants.DEVICE_TYPE, mail, auth, changeUserInQueue).enqueue(new Callback<JsonQueuePersonList>() {
+        queueApiUrls.changeUserInQueue(did, Constants.DEVICE_TYPE, mail, auth, changeUserInQueue).enqueue(new Callback<JsonQueuePersonList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuePersonList> call, @NonNull Response<JsonQueuePersonList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -337,7 +337,7 @@ public class ManageQueueApiCalls {
     }
 
     public void counterPayment(String did, String mail, String auth, JsonQueuedPerson jsonQueuedPerson) {
-        manageQueueApiUrls.counterPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonQueuedPerson).enqueue(new Callback<JsonQueuedPerson>() {
+        queueApiUrls.counterPayment(did, Constants.DEVICE_TYPE, mail, auth, jsonQueuedPerson).enqueue(new Callback<JsonQueuedPerson>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuedPerson> call, @NonNull Response<JsonQueuedPerson> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
@@ -367,7 +367,7 @@ public class ManageQueueApiCalls {
 
 
     public void cancel(String did, String mail, String auth, JsonQueuedPerson jsonQueuedPerson) {
-        manageQueueApiUrls.cancel(did, Constants.DEVICE_TYPE, mail, auth, jsonQueuedPerson).enqueue(new Callback<JsonQueuedPerson>() {
+        queueApiUrls.cancel(did, Constants.DEVICE_TYPE, mail, auth, jsonQueuedPerson).enqueue(new Callback<JsonQueuedPerson>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueuedPerson> call, @NonNull Response<JsonQueuedPerson> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {

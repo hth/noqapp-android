@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.model.response.api;
+package com.noqapp.android.merchant.model.response.api.queue;
 
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -20,7 +20,7 @@ import retrofit2.http.Path;
  * Date: 4/16/17 5:40 PM
  */
 
-public interface ManageQueueApiUrls {
+public interface QueueApiUrls {
 
     /**
      * Errors
