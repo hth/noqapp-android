@@ -50,6 +50,8 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -138,7 +140,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
 
             }
         });
-
         tv_notes = findViewById(R.id.tv_notes);
         tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
         tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
@@ -203,7 +204,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                                         progressDialog.show();
                                         progressDialog.setMessage("Starting payment..");
                                         jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                                        jsonPurchaseOrder.setPartialPayment(String.valueOf(Integer.parseInt(edt_amount.getText().toString()) * 100));
+                                        jsonPurchaseOrder.setPartialPayment(new BigDecimal(edt_amount.getText().toString()).multiply(new BigDecimal("100")).toString());
                                         PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                                         purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
                                         purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
