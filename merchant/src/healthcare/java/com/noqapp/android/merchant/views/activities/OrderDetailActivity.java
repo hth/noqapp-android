@@ -10,6 +10,7 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -19,6 +20,8 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,6 +31,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,7 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -216,16 +220,30 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
             }
         });
+        ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
+        receiptInfoApiCalls.setReceiptInfoPresenter(this);
         PermissionHelper permissionHelper = new PermissionHelper(this);
         Button btn_print = findViewById(R.id.btn_print);
         btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (permissionHelper.isStoragePermissionAllowed()) {
-                    ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
-                    receiptGeneratorPDF.createPdf(jsonQueuedPerson);
-                } else {
-                    permissionHelper.requestStoragePermission();
+                if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this,false);
+                    showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+                }else{
+                    if (permissionHelper.isStoragePermissionAllowed()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Fetching receipt info...");
+                        Receipt receipt = new Receipt();
+                        receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                        receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    } else {
+                        permissionHelper.requestStoragePermission();
+                    }
                 }
             }
         });
@@ -358,5 +376,17 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
             }
         }
+    }
+
+    @Override
+    public void receiptInfoResponse(Receipt receipt) {
+        try {
+            Log.e("Data", receipt.toString());
+            ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
+            receiptGeneratorPDF.createPdf(receipt);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        dismissProgress();
     }
 }

@@ -29,6 +29,7 @@ import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -278,8 +279,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         listview.setAdapter(adapter);
         updateUI();
         PermissionHelper permissionHelper = new PermissionHelper(this);
-        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-        purchaseOrderApiCalls.setReceiptInfoPresenter(this);
+        ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
+        receiptInfoApiCalls.setReceiptInfoPresenter(this);
         Button btn_print = findViewById(R.id.btn_print);
         btn_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,7 +296,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                         receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
                         receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
                         receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                        purchaseOrderApiCalls.receiptInfo(BaseLaunchActivity.getDeviceID(),
+                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
                                 LaunchActivity.getLaunchActivity().getEmail(),
                                 LaunchActivity.getLaunchActivity().getAuth(), receipt);
                     } else {
