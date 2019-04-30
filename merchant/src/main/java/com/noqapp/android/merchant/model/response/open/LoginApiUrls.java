@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.model.response.api.open;
+package com.noqapp.android.merchant.model.response.open;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
