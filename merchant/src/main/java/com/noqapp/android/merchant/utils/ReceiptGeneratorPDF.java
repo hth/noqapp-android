@@ -260,7 +260,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
         table.addCell(pdfPCellWithoutBorder("MR No                   :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(checkNull(receipt.getBusinessCustomerId()), normalFont));
         table.addCell(pdfPCellWithoutBorder("Order Id                :", normalBoldFont));
-        table.addCell(pdfPCellWithoutBorder(receipt.getTransactionId(), normalFont));
+        table.addCell(pdfPCellWithoutBorder(CommonHelper.getOrderId(receipt.getTransactionId()), normalFont));
 
         // Line 2
         table.addCell(pdfPCellWithoutBorder("Customer Name       :", normalBoldFont));
