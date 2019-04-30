@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     private String countryCode = "";
     private String cid = "";
     private CountryCodePicker ccp;
+    private long mLastClickTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,6 +129,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         btn_create_token.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 boolean isValid = true;
                 edt_mobile.setError(null);
                 edt_id.setError(null);
@@ -208,6 +214,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 @Override
                 public void onClick(View v) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
                         btn_create_order.setEnabled(false);
                         LaunchActivity.getLaunchActivity().progressDialog.show();
                         String phoneNoWithCode = "";
