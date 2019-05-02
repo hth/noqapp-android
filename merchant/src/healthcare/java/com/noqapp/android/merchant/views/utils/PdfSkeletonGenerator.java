@@ -1,17 +1,11 @@
 package com.noqapp.android.merchant.views.utils;
 
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.PdfHealper;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -30,11 +24,19 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHealper;
-import com.noqapp.android.merchant.views.pojos.Receipt;
+
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
+import androidx.core.content.FileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,8 +48,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.core.content.FileProvider;
 
 public class PdfSkeletonGenerator extends PdfHealper {
     private BaseFont baseFont;
@@ -112,8 +112,7 @@ public class PdfSkeletonGenerator extends PdfHealper {
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
             String education = new AppUtils().getCompleteEducation(receipt.getEducation());
             String education_temp = TextUtils.isEmpty(education) ? notAvailable : education;
-            Chunk degreeChunk = new Chunk(education_temp
-                    + " (Reg. Id: " + temp + ")", normalFont);
+            Chunk degreeChunk = new Chunk(education_temp + " (Reg. No.: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
@@ -124,7 +123,7 @@ public class PdfSkeletonGenerator extends PdfHealper {
 
             Paragraph hospital = new Paragraph();
             hospital.add(new Chunk(receipt.getBusinessName(), normalBoldFont));
-            hospital.add(new Chunk("," + receipt.getStoreAddress(), normalFont));
+            hospital.add(new Chunk(", " + receipt.getStoreAddress(), normalFont));
             document.add(hospital);
 
             // LINE SEPARATOR
@@ -368,7 +367,7 @@ public class PdfSkeletonGenerator extends PdfHealper {
             table.setWidths(new int[]{6, 5, 5});
 
             table.addCell(pdfPCellHeader("DRUG", normalBoldFont));
-            table.addCell(pdfPCellHeader("DOUSE", normalBoldFont));
+            table.addCell(pdfPCellHeader("DOSE", normalBoldFont));
             table.addCell(pdfPCellHeader("ROUTE", normalBoldFont));
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);
