@@ -5,7 +5,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHealper;
+import com.noqapp.android.merchant.utils.PdfHelper;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
@@ -45,7 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PdfGenerator extends PdfHealper {
+public class PdfGenerator extends PdfHelper {
     private BaseFont baseFont;
     private Context mContext;
     private CaseHistory caseHistory;

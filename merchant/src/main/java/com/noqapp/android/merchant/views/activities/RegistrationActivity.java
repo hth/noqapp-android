@@ -162,6 +162,8 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
             btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                     return;
                 }

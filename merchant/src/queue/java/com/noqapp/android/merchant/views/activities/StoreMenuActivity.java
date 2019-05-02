@@ -336,8 +336,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                     }
                     progressDialog.show();
-
-
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
                     businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -389,6 +389,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.setMessage("Placing order....");
                         progressDialog.show();
+                        progressDialog.setCancelable(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
                         HashMap<String, ChildData> getOrder = getOrders();
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;

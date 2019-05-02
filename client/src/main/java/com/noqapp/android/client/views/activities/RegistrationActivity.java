@@ -1,5 +1,22 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -14,26 +31,11 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import android.app.DatePickerDialog;
-import android.graphics.Color;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import androidx.core.content.ContextCompat;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
     private final String TAG = RegistrationActivity.class.getSimpleName();
@@ -45,10 +47,11 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     private EditText edt_confirm_pwd;
     private TextView tv_male;
     private TextView tv_female;
+    private TextView tv_transgender;
     private LinearLayout ll_pwd;
     private Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;
-
+    private long mLastClickTime = 0;
     public String gender = "";
 
     @Override
@@ -72,11 +75,13 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
+        tv_transgender = findViewById(R.id.tv_transgender);
         ll_pwd = findViewById(R.id.ll_pwd);
         btnRegistration = findViewById(R.id.btnRegistration);
         tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        tv_transgender.setOnClickListener(this);
         btnRegistration.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
         Calendar newCalendar = Calendar.getInstance();
@@ -132,11 +137,17 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     private void actionRegistration() {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.blue_gradient_or);
             btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
                 callRegistrationAPI();
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
@@ -200,17 +211,30 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
+            tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_male.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
             tv_male.setText(getString(R.string.male));
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
+            tv_transgender.setTextColor(Color.BLACK);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.theme_aqua));
+            tv_female.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
+            tv_transgender.setTextColor(Color.BLACK);
             tv_female.setText(getString(R.string.female));
+        }else if (v == tv_transgender) {
+            gender = "T";
+            tv_transgender.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
+            tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_male.setTextColor(Color.BLACK);
+            tv_female.setTextColor(Color.BLACK);
+            tv_transgender.setTextColor(Color.WHITE);
+            tv_transgender.setText(getString(R.string.transgender));
         }
     }
 

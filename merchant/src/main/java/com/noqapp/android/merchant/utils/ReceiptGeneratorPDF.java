@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
@@ -40,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReceiptGeneratorPDF extends PdfHealper{
+public class ReceiptGeneratorPDF extends PdfHelper {
     private BaseFont baseFont;
     private Context mContext;
     private Font normalFont;
@@ -70,9 +69,9 @@ public class ReceiptGeneratorPDF extends PdfHealper{
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         currencySymbol = "₹";
         String fileName = new SimpleDateFormat("'NoQueue_" + receipt.getJsonPurchaseOrder().getCustomerName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
-        String dest = getAppPath(mContext) + fileName;
-        if (new File(dest).exists()) {
-            new File(dest).delete();
+        File dest = new File(getAppPath(mContext) + fileName);
+        if (dest.exists()) {
+            Log.d("Delete", "File deleted successfully " +  dest.delete());
         }
 
         try {
@@ -95,9 +94,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
 
-
             Font noqFont = new Font(baseFont, 13.0f, Font.BOLD, BaseColor.BLACK);
-
 
             Chunk degreeChunk = new Chunk(receipt.getStoreAddress(), normalFont);
             Paragraph degreeParagraph = new Paragraph();
@@ -133,7 +130,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
             document.close();
 
             Toast.makeText(mContext, "Invoice Generated", Toast.LENGTH_SHORT).show();
-            openFile(mContext, new File(dest));
+            openFile(mContext, dest);
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
         } catch (ActivityNotFoundException ae) {
@@ -142,9 +139,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
             e.printStackTrace();
         }
     }
-
-
-
+    
     private static void openFile(Context context, File url) throws ActivityNotFoundException {
         Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", url);
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -278,7 +273,4 @@ public class ReceiptGeneratorPDF extends PdfHealper{
         return table;
     }
 
-    private String checkNull(String input){
-        return TextUtils.isEmpty(input)? "N/A":input;
-    }
 }

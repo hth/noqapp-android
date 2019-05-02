@@ -136,6 +136,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
                     progressDialog.show();
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.setMessage("Order placing in progress..");
                     if (validateForm()) {
                         if (isProductWithoutPrice) {

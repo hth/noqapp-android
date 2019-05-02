@@ -18,6 +18,7 @@ import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ import android.widget.Toast;
 public class LoginActivity extends OTPActivity {
 
     private final String TAG = LoginActivity.class.getSimpleName();
-
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,10 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     protected void callApi(String phoneNumber) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
         progressDialog.setMessage("Login in progress");
         Login login = new Login();
         login.setPhone(phoneNumber);

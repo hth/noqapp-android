@@ -149,6 +149,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
                             progressDialog.setMessage("Starting payment refund..");
+                            progressDialog.setCancelable(false);
+                            progressDialog.setCanceledOnTouchOutside(false);
                             JsonQueuedPerson jqp = new JsonQueuedPerson()
                                     .setQueueUserId(jsonQueuedPerson.getQueueUserId())
                                     .setToken(jsonQueuedPerson.getToken());
@@ -202,6 +204,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                                     progressDialog.show();
                                     progressDialog.setMessage("Starting payment..");
+                                    progressDialog.setCancelable(false);
+                                    progressDialog.setCanceledOnTouchOutside(false);
                                     JsonQueuedPerson jqp = new JsonQueuedPerson()
                                             .setQueueUserId(jsonQueuedPerson.getQueueUserId())
                                             .setToken(jsonQueuedPerson.getToken());
@@ -252,6 +256,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     if (permissionHelper.isStoragePermissionAllowed()) {
                         progressDialog.show();
                         progressDialog.setMessage("Fetching receipt info...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
                         Receipt receipt = new Receipt();
                         receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
                         receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());

@@ -154,6 +154,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
                 if (isValid) {
                     LaunchActivity.getLaunchActivity().progressDialog.show();
+                    LaunchActivity.getLaunchActivity().progressDialog.setCancelable(false);
+                    LaunchActivity.getLaunchActivity().progressDialog.setCanceledOnTouchOutside(false);
                     setDispensePresenter();
                     String phone = "";
                     cid = "";
@@ -220,6 +222,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         mLastClickTime = SystemClock.elapsedRealtime();
                         btn_create_order.setEnabled(false);
                         LaunchActivity.getLaunchActivity().progressDialog.show();
+                        LaunchActivity.getLaunchActivity().progressDialog.setCancelable(false);
+                        LaunchActivity.getLaunchActivity().progressDialog.setCanceledOnTouchOutside(false);
                         String phoneNoWithCode = "";
                         setDispensePresenter();
                         if (TextUtils.isEmpty(cid)) {

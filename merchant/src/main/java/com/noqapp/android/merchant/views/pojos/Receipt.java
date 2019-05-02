@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -70,6 +71,10 @@ public class Receipt extends AbstractDomain implements Serializable {
     /* Required to mark as a valid profile. */
     @JsonProperty("li")
     private List<JsonNameDatePair> licenses;
+
+    /* Customer Detail. */
+    @JsonProperty("jp")
+    private JsonProfile jsonProfile;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -182,12 +187,30 @@ public class Receipt extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public JsonProfile getJsonProfile() {
+        return jsonProfile;
+    }
+
+    public Receipt setJsonProfile(JsonProfile jsonProfile) {
+        this.jsonProfile = jsonProfile;
+        return this;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
 
     public void setError(ErrorEncounteredJson error) {
         this.error = error;
+    }
+
+    public String displayProfessionalName() {
+        switch (businessType) {
+            case DO:
+                return "Dr. " + name;
+            default:
+                return name;
+        }
     }
 
     @Override

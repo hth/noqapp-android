@@ -8,14 +8,18 @@ import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.customviews.MeterView;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
 import com.noqapp.android.merchant.views.utils.PdfSkeletonGenerator;
 
@@ -42,7 +46,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 import java.util.ArrayList;
 
-public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged {
+public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
@@ -55,8 +59,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     private SegmentedControl sc_follow_up;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
-
     private JsonMedicalRecord jsonMedicalRecord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isDialog) {
@@ -340,22 +344,34 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalActivity.this);
         }
+        ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
+        receiptInfoApiCalls.setReceiptInfoPresenter(this);
         PermissionHelper permissionHelper = new PermissionHelper(this);
         Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
         btn_print_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (permissionHelper.isStoragePermissionAllowed()) {
-                    PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
-                    pdfGenerator.createPdf(jsonMedicalRecord);
+                    if (TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(PhysicalActivity.this, false);
+                        showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+                    } else {
+                        progressDialog.show();
+                        progressDialog.setMessage("Fetching receipt info...");
+                        Receipt receipt = new Receipt();
+                        receipt.setCodeQR(codeQR);
+                        receipt.setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                        receipt.setTransactionId(jsonQueuedPerson.getTransactionId());
+                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    }
                 } else {
                     permissionHelper.requestStoragePermission();
                 }
             }
         });
     }
-
-
 
 
     private void initProgress() {
@@ -417,26 +433,30 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
         this.jsonMedicalRecord = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
-            Log.e("data", jsonMedicalRecord.toString());
+            Log.i("data", jsonMedicalRecord.toString());
             try {
                 if (!TextUtils.isEmpty(jsonMedicalRecord.getFollowUpInDays())) {
                     int index = follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays());
-                    if (-1 != index)
+                    if (-1 != index) {
                         sc_follow_up.setSelectedSegment(index);
+                    }
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
+
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                     sc_enable_oxygen.setChecked(true);
                 } else {
                     sc_enable_oxygen.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
                     mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
                 } else {
                     sc_enable_pulse.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
+
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
                     sc_enable_bp.setChecked(true);
@@ -444,20 +464,21 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                     sc_enable_bp.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
                     sc_enable_height.setChecked(true);
                 } else {
                     sc_enable_height.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
                     sc_enable_rr.setChecked(true);
                 } else {
                     sc_enable_rr.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
+
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
                         mv_weight1.setValue(Integer.parseInt(temp[0]));
@@ -469,7 +490,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 } else {
                     sc_enable_weight.setChecked(false);
                 }
-                if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
+
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
                         mv_temperature1.setValue(Integer.parseInt(temp[0]));
@@ -513,5 +535,17 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             default:
                 break;
         }
+    }
+
+    @Override
+    public void receiptInfoResponse(Receipt receipt) {
+        try {
+            Log.e("Data", receipt.toString());
+            PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
+            pdfGenerator.createPdf(receipt, jsonMedicalRecord);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dismissProgress();
     }
 }

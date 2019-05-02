@@ -8,7 +8,9 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
-public class PdfHealper {
+import android.text.TextUtils;
+
+public class PdfHelper {
 
     protected PdfPCell pdfPCellWithoutBorder(String label, Font font) {
         PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
@@ -72,4 +74,7 @@ public class PdfHealper {
         return lineSeparator;
     }
 
+    protected String checkNull(String input) {
+        return TextUtils.isEmpty(input) ? "N/A" : input;
+    }
 }
