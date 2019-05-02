@@ -1,5 +1,7 @@
 package com.noqapp.android.merchant.utils;
 
+import android.text.TextUtils;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
@@ -71,5 +73,7 @@ public class PdfHealper {
         lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
         return lineSeparator;
     }
-
+    protected String checkNull(String input){
+        return TextUtils.isEmpty(input)? "N/A":input;
+    }
 }

@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.utils;
 
 
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -132,7 +133,7 @@ public class PdfSkeletonGenerator extends PdfHealper {
 
             document.add(new Chunk(lineSeparator));
             document.add(addVerticalSpaceBefore(10f));
-            document.add(getPatientData());
+            document.add(getPatientData(receipt));
 
             document.add(addVerticalSpaceBefore(20f));
             document.add(new Paragraph(""));
@@ -142,7 +143,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
                 Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
                 document.add(paragraphInvestigation);
                 document.add(addVerticalSpaceAfter(5f));
-                //document.add(getInvestigationData());
                 document.add(new Paragraph("\n"));
                 document.add(new Paragraph(""));
                 document.add(addVerticalSpaceBefore(20.0f));
@@ -152,7 +152,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
                 Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
                 document.add(paragraphInvestigation);
                 document.add(addVerticalSpaceAfter(5f));
-                //document.add(getInvestigationData());
                 document.add(new Paragraph("\n"));
                 document.add(new Paragraph(""));
                 document.add(addVerticalSpaceBefore(20.0f));
@@ -162,7 +161,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
                 Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
                 document.add(paragraphInvestigation);
                 document.add(addVerticalSpaceAfter(5f));
-                //document.add(getInvestigationData());
                 document.add(new Paragraph("\n"));
                 document.add(new Paragraph(""));
                 document.add(addVerticalSpaceBefore(20.0f));
@@ -172,7 +170,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
             Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
             document.add(paragraphInvestigation);
             document.add(addVerticalSpaceAfter(5f));
-            //document.add(getInvestigationData());
             document.add(new Paragraph("\n"));
             document.add(new Paragraph(""));
             document.add(addVerticalSpaceBefore(20.0f));
@@ -263,16 +260,17 @@ public class PdfSkeletonGenerator extends PdfHealper {
         return dir.getPath() + File.separator;
     }
 
-    private PdfPTable getPatientData() {
+    private PdfPTable getPatientData(Receipt receipt) {
+        JsonProfile jsonProfile = receipt.getJsonProfile();
         PdfPTable table = new PdfPTable(3);
-        table.addCell(getCellWithTextAndImage("Name ????", "user.png"));
+        table.addCell(getCellWithTextAndImage(jsonProfile.getName(), "user.png"));
         // table.addCell(pdfPCellWithoutBorder(pulse, normalFont));
         table.addCell(getCellWithTextAndImage(pulse, "pulse.png"));
         table.addCell(getCellWithTextAndImage(height, "height.png"));
-        table.addCell(getCellWithTextAndImage("Gender ????" + "," + "Age ?????", "gender.png"));
+        table.addCell(getCellWithTextAndImage(jsonProfile.getGender().getDescription() + "," + new AppUtils().calculateAge(jsonProfile.getBirthday()), "gender.png"));
         table.addCell(getCellWithTextAndImage(bloodpressure, "blood.png"));
         table.addCell(getCellWithTextAndImage(respiration, "respirstion.png"));
-        table.addCell(getCellWithTextAndImage("Address ???", "address.png"));
+        table.addCell(getCellWithTextAndImage(checkNull(jsonProfile.getAddress()), "address.png"));
         table.addCell(getCellWithTextAndImage(weight, "weight.png"));
         table.addCell(getCellWithTextAndImage(temprature, "temperature.png"));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
@@ -306,59 +304,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
         return cell;
 
     }
-
-    private PdfPTable getSEPData() {
-        PdfPTable table = new PdfPTable(3);
-        try {
-            table.addCell(pdfPCellWithoutBorder("Symptoms:", normalBigFont, 5));
-            //table.addCell(pdfPCellWithoutBorder("Examination:", normalBigFont, 5));
-            table.addCell(pdfPCellWithoutBorder("Clinical Findings:", normalBigFont, 5));
-            table.addCell(pdfPCellWithoutBorder("Provisional Diagnosis:", normalBigFont, 5));
-            table.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
-            //table.addCell(getExaminationPdfCell());
-            //table.addCell(pdfPCellWithoutBorder("\n\n", normalFont));
-
-            table.setTotalWidth(PageSize.A4.getWidth() - 80);
-            table.setLockedWidth(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return table;
-    }
-
-
-    private PdfPTable getInvestigationData() {
-        PdfPTable table = new PdfPTable(1);
-//        if (caseHistory.getPathologyList().size() > 0) {
-//            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.PATH.getDescription(), normalBoldFont, 5));
-//            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getPathologyList()), normalFont));
-//        }
-//        if (caseHistory.getXrayList().size() > 0) {
-//            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.XRAY.getDescription(), normalBoldFont, 5));
-//            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getXrayList()), normalFont));
-//        }
-//        if (caseHistory.getMriList().size() > 0) {
-//            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.MRI.getDescription(), normalBoldFont, 5));
-//            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getMriList()), normalFont));
-//        }
-//        if (caseHistory.getSonoList().size() > 0) {
-//            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SONO.getDescription(), normalBoldFont, 5));
-//            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSonoList()), normalFont));
-//        }
-//        if (caseHistory.getScanList().size() > 0) {
-//            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SCAN.getDescription(), normalBoldFont, 5));
-//            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getScanList()), normalFont));
-//        }
-//        if (caseHistory.getSpecList().size() > 0) {
-//            table.addCell(pdfPCellWithoutBorderWithPadding(HealthCareServiceEnum.SPEC.getDescription(), normalBoldFont, 5));
-//            table.addCell(pdfPCellWithoutBorder(covertStringList2String(caseHistory.getSpecList()), normalFont));
-//        }
-        table.setTotalWidth(PageSize.A4.getWidth() - 80);
-        table.setLockedWidth(true);
-
-        return table;
-    }
-
 
     private PdfPTable getMedicineHeaderData() {
         PdfPTable table = new PdfPTable(3);

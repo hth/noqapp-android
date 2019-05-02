@@ -278,7 +278,4 @@ public class ReceiptGeneratorPDF extends PdfHealper{
         return table;
     }
 
-    private String checkNull(String input){
-        return TextUtils.isEmpty(input)? "N/A":input;
-    }
 }
