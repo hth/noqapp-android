@@ -105,6 +105,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
                                 progressDialog.setMessage("Starting payment process..");
+                                progressDialog.setCancelable(false);
+                                progressDialog.setCanceledOnTouchOutside(false);
                                 purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                                 isPayClick = true;
                             }

@@ -659,7 +659,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                     }
                     progressDialog.show();
-
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
 
                     businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
@@ -714,6 +715,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         progressDialog.setMessage("Placing order....");
                         progressDialog.show();
+                        progressDialog.setCancelable(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
                         btn_create_order.setEnabled(false);
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;

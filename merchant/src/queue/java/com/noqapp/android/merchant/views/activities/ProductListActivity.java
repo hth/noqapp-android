@@ -222,6 +222,8 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Updating data...");
             progressDialog.show();
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setActionOnProductPresenter(this);
             storeProductApiCalls.actionOnProduct(UserUtils.getEmail(), UserUtils.getAuth(), codeQR, actionTypeEnum, jsonStoreProduct);

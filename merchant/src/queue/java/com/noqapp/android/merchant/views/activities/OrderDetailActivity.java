@@ -163,6 +163,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
                             progressDialog.setMessage("Starting payment refund..");
+                            progressDialog.setCancelable(false);
+                            progressDialog.setCanceledOnTouchOutside(false);
                             OrderServed orderServed = new OrderServed();
                             orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
                             orderServed.setServedNumber(jsonPurchaseOrder.getToken());
@@ -214,6 +216,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         progressDialog.show();
                                         progressDialog.setMessage("Starting payment..");
+                                        progressDialog.setCancelable(false);
+                                        progressDialog.setCanceledOnTouchOutside(false);
                                         jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                                         jsonPurchaseOrder.setPartialPayment(new BigDecimal(edt_amount.getText().toString()).multiply(new BigDecimal("100")).toString());
                                         PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
@@ -247,6 +251,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 } else {
                     progressDialog.show();
                     progressDialog.setMessage("Updating price..");
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
                     PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                     purchaseOrderApiCalls.setModifyOrderPresenter(OrderDetailActivity.this);
                     purchaseOrderApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
@@ -271,6 +277,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
                                 progressDialog.setMessage("Starting payment..");
+                                progressDialog.setCancelable(false);
+                                progressDialog.setCanceledOnTouchOutside(false);
                                 jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                                 jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
                                 PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
@@ -316,6 +324,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                     if (permissionHelper.isStoragePermissionAllowed()) {
                         progressDialog.show();
                         progressDialog.setMessage("Fetching receipt info...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
                         Receipt receipt = new Receipt();
                         receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
                         receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
