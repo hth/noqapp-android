@@ -63,7 +63,6 @@ public class ReceiptGeneratorPDF extends PdfHelper {
         }
     }
 
-
     public void createPdf(Receipt temp) {
         this.receipt = temp;
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
@@ -166,7 +165,6 @@ public class ReceiptGeneratorPDF extends PdfHelper {
         return dir.getPath() + File.separator;
     }
 
-
     private PdfPTable getOrderData() {
         PdfPTable table = new PdfPTable(5);
         try {
@@ -190,7 +188,6 @@ public class ReceiptGeneratorPDF extends PdfHelper {
 
     private PdfPTable getPaymentInfoTable() {
         PdfPTable table = new PdfPTable(4);
-
         try {
             table.setWidthPercentage(100);
             table.addCell(pdfPCellWithoutBorderWithPadding("Payment Status:", normalBoldFont, 5));
@@ -240,7 +237,6 @@ public class ReceiptGeneratorPDF extends PdfHelper {
     }
 
     private PdfPTable getGeneralInfoData() {
-
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
 
         Date c = Calendar.getInstance().getTime();
@@ -267,10 +263,8 @@ public class ReceiptGeneratorPDF extends PdfHelper {
         table.addCell(pdfPCellWithoutBorder("Time                       :", normalBoldFont));
         table.addCell(pdfPCellWithoutBorder(time, normalFont));
 
-
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
         return table;
     }
-
 }
