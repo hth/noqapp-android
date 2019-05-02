@@ -139,9 +139,7 @@ public class ReceiptGeneratorPDF extends PdfHelper {
             e.printStackTrace();
         }
     }
-
-
-
+    
     private static void openFile(Context context, File url) throws ActivityNotFoundException {
         Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", url);
         Intent intent = new Intent(Intent.ACTION_VIEW);
