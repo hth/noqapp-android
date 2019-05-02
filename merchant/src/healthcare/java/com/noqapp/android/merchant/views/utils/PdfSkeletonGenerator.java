@@ -61,8 +61,8 @@ public class PdfSkeletonGenerator extends PdfHealper {
     private String pulse = "";
     private String weight = "";
     private String height = "";
-    private String temprature = "";
-    private String bloodpressure = "";
+    private String temperature = "";
+    private String bloodPressure = "";
     private String respiration = "";
 
     public PdfSkeletonGenerator(Context mContext) {
@@ -77,15 +77,12 @@ public class PdfSkeletonGenerator extends PdfHealper {
         }
     }
 
-
     public void createPdf(Receipt receipt, JsonMedicalRecord jsonMedicalRecord) {
-
         initPhysical(jsonMedicalRecord);
-        String fileName = new SimpleDateFormat("'NoQueue_" + "Chandra B Sharma" + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
-        String dest = getAppPath(mContext) + fileName;
-        if (new File(dest).exists()) {
-            new File(dest).delete();
-            Log.e("Delete", "File deleted successfully");
+        String fileName = new SimpleDateFormat("'NoQueue_" + receipt.getJsonProfile().getName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
+        File dest = new File(getAppPath(mContext) + fileName);
+        if (dest.exists()) {
+            Log.d("Delete", "File deleted successfully " +  dest.delete());
         }
         try {
             Document document = new Document();
@@ -107,7 +104,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
 
-
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
             String license = new AppUtils().getCompleteEducation(receipt.getLicenses());
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
@@ -120,7 +116,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
             degreeParagraph.add(new Chunk(" ", noqFont)); //"NoQueue"
             document.add(degreeParagraph);
             addVerticalSpace();
-
 
             Paragraph hospital = new Paragraph();
             hospital.add(new Chunk(receipt.getBusinessName(), normalBoldFont));
@@ -214,7 +209,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
             Date c = Calendar.getInstance().getTime();
             String formattedDate = df.format(c);
 
-
             Paragraph p_sign = new Paragraph();
             p_sign.add(new Chunk("Signature: ", normalBigFont));
             p_sign.add(new Chunk(new LineSeparator()));
@@ -225,14 +219,13 @@ public class PdfSkeletonGenerator extends PdfHealper {
             document.close();
 
             Toast.makeText(mContext, "Report Generated", Toast.LENGTH_SHORT).show();
-            openFile(mContext, new File(dest));
+            openFile(mContext, dest);
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
         } catch (ActivityNotFoundException ae) {
             Toast.makeText(mContext, "No application found to open this file.", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private static void openFile(Context context, File url) throws ActivityNotFoundException {
         Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", url);
@@ -267,12 +260,12 @@ public class PdfSkeletonGenerator extends PdfHealper {
         // table.addCell(pdfPCellWithoutBorder(pulse, normalFont));
         table.addCell(getCellWithTextAndImage(pulse, "pulse.png"));
         table.addCell(getCellWithTextAndImage(height, "height.png"));
-        table.addCell(getCellWithTextAndImage(jsonProfile.getGender().getDescription() + "," + new AppUtils().calculateAge(jsonProfile.getBirthday()), "gender.png"));
-        table.addCell(getCellWithTextAndImage(bloodpressure, "blood.png"));
-        table.addCell(getCellWithTextAndImage(respiration, "respirstion.png"));
+        table.addCell(getCellWithTextAndImage(jsonProfile.getGender().getDescription() + ", " + new AppUtils().calculateAge(jsonProfile.getBirthday()), "gender.png"));
+        table.addCell(getCellWithTextAndImage(bloodPressure, "blood.png"));
+        table.addCell(getCellWithTextAndImage(respiration, "respiration.png"));
         table.addCell(getCellWithTextAndImage(checkNull(jsonProfile.getAddress()), "address.png"));
         table.addCell(getCellWithTextAndImage(weight, "weight.png"));
-        table.addCell(getCellWithTextAndImage(temprature, "temperature.png"));
+        table.addCell(getCellWithTextAndImage(temperature, "temperature.png"));
         table.setTotalWidth(PageSize.A4.getWidth() - 80);
         table.setLockedWidth(true);
         return table;
@@ -302,7 +295,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
             e.printStackTrace();
         }
         return cell;
-
     }
 
     private PdfPTable getMedicineHeaderData() {
@@ -348,7 +340,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
         return pdfPCell;
     }
 
-
     private void initPhysical(JsonMedicalRecord jsonMedicalRecord) {
         if (null != jsonMedicalRecord && null != jsonMedicalRecord.getMedicalPhysical()) {
             Log.e("data", jsonMedicalRecord.toString());
@@ -359,9 +350,9 @@ public class PdfSkeletonGenerator extends PdfHealper {
                     pulse = "Pulse:__________________________" + notAvailable;
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
-                    bloodpressure = "Blood Pressure: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1] + " mmHg";
+                    bloodPressure = "Blood Pressure: " + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0] + "/" + jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1] + " mmHg";
                 } else {
-                    bloodpressure = "Blood Pressure:________________" + notAvailable;
+                    bloodPressure = "Blood Pressure:________________" + notAvailable;
                 }
 
                 if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
@@ -381,9 +372,9 @@ public class PdfSkeletonGenerator extends PdfHealper {
                     weight = "Weight:_________________________" + notAvailable;
                 }
                 if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
-                    temprature = "Temperature: " + jsonMedicalRecord.getMedicalPhysical().getTemperature();
+                    temperature = "Temperature: " + jsonMedicalRecord.getMedicalPhysical().getTemperature();
                 } else {
-                    temprature = "Temperature:___________________" + notAvailable;
+                    temperature = "Temperature:___________________" + notAvailable;
                 }
 
             } catch (Exception e) {
@@ -391,11 +382,11 @@ public class PdfSkeletonGenerator extends PdfHealper {
             }
         } else {
             pulse = "Pulse:__________________________" + notAvailable;
-            bloodpressure = "Blood Pressure:________________" + notAvailable;
+            bloodPressure = "Blood Pressure:________________" + notAvailable;
             height = "Height:_________________________" + notAvailable;
             respiration = "Respiration Rate:_______________" + notAvailable;
             weight = "Weight:_________________________" + notAvailable;
-            temprature = "Temperature:___________________" + notAvailable;
+            temperature = "Temperature:___________________" + notAvailable;
         }
     }
 }

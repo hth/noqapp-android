@@ -14,7 +14,6 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
-import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.customviews.MeterView;
@@ -354,9 +353,9 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             public void onClick(View v) {
                 if (permissionHelper.isStoragePermissionAllowed()) {
                     if (TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
-                        ShowCustomDialog showDialog = new ShowCustomDialog(PhysicalActivity.this,false);
+                        ShowCustomDialog showDialog = new ShowCustomDialog(PhysicalActivity.this, false);
                         showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
-                    }else {
+                    } else {
                         progressDialog.show();
                         progressDialog.setMessage("Fetching receipt info...");
                         Receipt receipt = new Receipt();
@@ -373,8 +372,6 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             }
         });
     }
-
-
 
 
     private void initProgress() {
@@ -436,25 +433,28 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     public void jsonMedicalRecordResponse(JsonMedicalRecord jsonMedicalRecord) {
         this.jsonMedicalRecord = jsonMedicalRecord;
         if (null != jsonMedicalRecord) {
-            Log.e("data", jsonMedicalRecord.toString());
+            Log.i("data", jsonMedicalRecord.toString());
             try {
                 if (!TextUtils.isEmpty(jsonMedicalRecord.getFollowUpInDays())) {
                     int index = follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays());
                     if (-1 != index)
                         sc_follow_up.setSelectedSegment(index);
                 }
+
                 if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                     sc_enable_oxygen.setChecked(true);
                 } else {
                     sc_enable_oxygen.setChecked(false);
                 }
+
                 if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
                     mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
                 } else {
                     sc_enable_pulse.setChecked(false);
                 }
+
                 if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
@@ -476,6 +476,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 } else {
                     sc_enable_rr.setChecked(false);
                 }
+
                 if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
@@ -488,6 +489,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 } else {
                     sc_enable_weight.setChecked(false);
                 }
+
                 if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
@@ -538,9 +540,9 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     public void receiptInfoResponse(Receipt receipt) {
         try {
             Log.e("Data", receipt.toString());
-             PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
-             pdfGenerator.createPdf(receipt,jsonMedicalRecord);
-        }catch (Exception e){
+            PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
+            pdfGenerator.createPdf(receipt, jsonMedicalRecord);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         dismissProgress();
