@@ -5,7 +5,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
@@ -127,6 +126,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     private CountryCodePicker ccp;
     private String countryCode = "";
     private String countryShortName = "";
+
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -426,8 +426,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
             Toast.makeText(this, eej.getReason(), Toast.LENGTH_LONG).show();
             Intent in = new Intent(this, LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
-            in.putExtra("countryCode",countryCode);
-            in.putExtra("countryShortName",countryShortName);
+            in.putExtra("countryCode", countryCode);
+            in.putExtra("countryShortName", countryShortName);
             startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
@@ -653,7 +653,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         edt_id.setText("");
                         countryCode = ccp.getSelectedCountryCode();
                         countryShortName = ccp.getDefaultCountryName().toUpperCase();
-                        phone = countryCode+ edt_mobile.getText().toString();
+                        phone = countryCode + edt_mobile.getText().toString();
                     } else {
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
