@@ -1,5 +1,22 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
@@ -14,26 +31,11 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import android.app.DatePickerDialog;
-import android.graphics.Color;
-import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import androidx.core.content.ContextCompat;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
     private final String TAG = RegistrationActivity.class.getSimpleName();
@@ -48,7 +50,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     private LinearLayout ll_pwd;
     private Button btnRegistration;
     private DatePickerDialog fromDatePickerDialog;
-
+    private long mLastClickTime = 0;
     public String gender = "";
 
     @Override
@@ -132,6 +134,10 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     private void actionRegistration() {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
         if (validate()) {
             btnRegistration.setBackgroundResource(R.drawable.blue_gradient_or);
             btnRegistration.setTextColor(Color.WHITE);
