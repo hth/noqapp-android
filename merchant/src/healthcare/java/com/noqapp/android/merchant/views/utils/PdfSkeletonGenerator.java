@@ -1,9 +1,17 @@
 package com.noqapp.android.merchant.views.utils;
 
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.PdfHealper;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -22,19 +30,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
-import androidx.core.content.FileProvider;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.PdfHealper;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,10 +47,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.core.content.FileProvider;
+
 public class PdfSkeletonGenerator extends PdfHealper {
     private BaseFont baseFont;
     private Context mContext;
-    private JsonMedicalRecord jsonMedicalRecord;
     private Font normalFont;
     private Font normalBoldFont;
     private Font normalBigFont;
@@ -76,8 +77,8 @@ public class PdfSkeletonGenerator extends PdfHealper {
     }
 
 
-    public void createPdf(JsonMedicalRecord jsonMedicalRecord) {
-        this.jsonMedicalRecord = jsonMedicalRecord;
+    public void createPdf(Receipt receipt, JsonMedicalRecord jsonMedicalRecord) {
+
         initPhysical(jsonMedicalRecord);
         String fileName = new SimpleDateFormat("'NoQueue_" + "Chandra B Sharma" + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         String dest = getAppPath(mContext) + fileName;
@@ -85,7 +86,6 @@ public class PdfSkeletonGenerator extends PdfHealper {
             new File(dest).delete();
             Log.e("Delete", "File deleted successfully");
         }
-
         try {
             Document document = new Document();
 
@@ -101,16 +101,18 @@ public class PdfSkeletonGenerator extends PdfHealper {
             Chunk glue = new Chunk(new VerticalPositionMark());
 
             Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk("SSD ????", titleFont);
+            Chunk titleChunk = new Chunk(receipt.getName(), titleFont);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
 
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            String license = "Licences ???";
+            String license = new AppUtils().getCompleteEducation(receipt.getLicenses());
             String temp = TextUtils.isEmpty(license) ? notAvailable : license;
-            Chunk degreeChunk = new Chunk("Eductaion ????"
+            String education = new AppUtils().getCompleteEducation(receipt.getEducation());
+            String education_temp = TextUtils.isEmpty(education) ? notAvailable : education;
+            Chunk degreeChunk = new Chunk(education_temp
                     + " (Reg. Id: " + temp + ")", normalFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
@@ -121,8 +123,8 @@ public class PdfSkeletonGenerator extends PdfHealper {
 
 
             Paragraph hospital = new Paragraph();
-            hospital.add(new Chunk("Hospitral Name ??", normalBoldFont));
-            hospital.add(new Chunk(", " + "Area & Town ???", normalFont));
+            hospital.add(new Chunk(receipt.getBusinessName(), normalBoldFont));
+            hospital.add(new Chunk("," + receipt.getStoreAddress(), normalFont));
             document.add(hospital);
 
             // LINE SEPARATOR
@@ -145,7 +147,8 @@ public class PdfSkeletonGenerator extends PdfHealper {
                 document.add(new Paragraph("\n"));
                 document.add(new Paragraph(""));
                 document.add(addVerticalSpaceBefore(20.0f));
-            }{
+            }
+            {
                 Chunk chunkInvestigation = new Chunk("Clinical Findings:", normalBigFont);
                 Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
                 document.add(paragraphInvestigation);
@@ -154,7 +157,8 @@ public class PdfSkeletonGenerator extends PdfHealper {
                 document.add(new Paragraph("\n"));
                 document.add(new Paragraph(""));
                 document.add(addVerticalSpaceBefore(20.0f));
-            }{
+            }
+            {
                 Chunk chunkInvestigation = new Chunk("Provisional Diagnosis:", normalBigFont);
                 Paragraph paragraphInvestigation = new Paragraph(chunkInvestigation);
                 document.add(paragraphInvestigation);

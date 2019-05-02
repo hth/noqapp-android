@@ -8,14 +8,19 @@ import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
+import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.customviews.MeterView;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
 import com.noqapp.android.merchant.views.utils.PdfSkeletonGenerator;
 
@@ -42,7 +47,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 import java.util.ArrayList;
 
-public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged {
+public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
@@ -55,8 +60,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     private SegmentedControl sc_follow_up;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
-
     private JsonMedicalRecord jsonMedicalRecord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!isDialog) {
@@ -340,14 +345,28 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         } else {
             ShowAlertInformation.showNetworkDialog(PhysicalActivity.this);
         }
+        ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
+        receiptInfoApiCalls.setReceiptInfoPresenter(this);
         PermissionHelper permissionHelper = new PermissionHelper(this);
         Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
         btn_print_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (permissionHelper.isStoragePermissionAllowed()) {
-                    PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
-                    pdfGenerator.createPdf(jsonMedicalRecord);
+                    if (TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(PhysicalActivity.this,false);
+                        showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+                    }else {
+                        progressDialog.show();
+                        progressDialog.setMessage("Fetching receipt info...");
+                        Receipt receipt = new Receipt();
+                        receipt.setCodeQR(codeQR);
+                        receipt.setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                        receipt.setTransactionId(jsonQueuedPerson.getTransactionId());
+                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(), receipt);
+                    }
                 } else {
                     permissionHelper.requestStoragePermission();
                 }
@@ -513,5 +532,17 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             default:
                 break;
         }
+    }
+
+    @Override
+    public void receiptInfoResponse(Receipt receipt) {
+        try {
+            Log.e("Data", receipt.toString());
+             PdfSkeletonGenerator pdfGenerator = new PdfSkeletonGenerator(PhysicalActivity.this);
+             pdfGenerator.createPdf(receipt,jsonMedicalRecord);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        dismissProgress();
     }
 }
