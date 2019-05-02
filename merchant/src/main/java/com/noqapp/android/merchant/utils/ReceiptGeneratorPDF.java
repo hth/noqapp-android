@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.content.FileProvider;
@@ -40,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReceiptGeneratorPDF extends PdfHealper{
+public class ReceiptGeneratorPDF extends PdfHelper {
     private BaseFont baseFont;
     private Context mContext;
     private Font normalFont;

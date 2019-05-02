@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.utils;
 
-import android.text.TextUtils;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
@@ -10,7 +8,9 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
-public class PdfHealper {
+import android.text.TextUtils;
+
+public class PdfHelper {
 
     protected PdfPCell pdfPCellWithoutBorder(String label, Font font) {
         PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
@@ -73,7 +73,8 @@ public class PdfHealper {
         lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
         return lineSeparator;
     }
-    protected String checkNull(String input){
-        return TextUtils.isEmpty(input)? "N/A":input;
+
+    protected String checkNull(String input) {
+        return TextUtils.isEmpty(input) ? "N/A" : input;
     }
 }

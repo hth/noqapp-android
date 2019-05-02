@@ -1,11 +1,10 @@
 package com.noqapp.android.merchant.views.utils;
 
-
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHealper;
+import com.noqapp.android.merchant.utils.PdfHelper;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import com.itextpdf.text.BaseColor;
@@ -50,7 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PdfSkeletonGenerator extends PdfHealper {
+public class PdfSkeletonGenerator extends PdfHelper {
     private BaseFont baseFont;
     private Context mContext;
     private Font normalFont;
