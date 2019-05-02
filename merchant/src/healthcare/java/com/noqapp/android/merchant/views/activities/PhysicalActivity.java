@@ -437,25 +437,26 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             try {
                 if (!TextUtils.isEmpty(jsonMedicalRecord.getFollowUpInDays())) {
                     int index = follow_up_data.indexOf(jsonMedicalRecord.getFollowUpInDays());
-                    if (-1 != index)
+                    if (-1 != index) {
                         sc_follow_up.setSelectedSegment(index);
+                    }
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getOxygen()) {
                     mv_oxygen.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getOxygen()));
                     sc_enable_oxygen.setChecked(true);
                 } else {
                     sc_enable_oxygen.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getPulse()) {
                     mv_pulse.setValue(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getPulse()));
                     sc_enable_pulse.setChecked(true);
                 } else {
                     sc_enable_pulse.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getBloodPressure() && jsonMedicalRecord.getMedicalPhysical().getBloodPressure().length == 2) {
                     dsb_bp_high.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[0]));
                     dsb_bp_low.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getBloodPressure()[1]));
                     sc_enable_bp.setChecked(true);
@@ -463,21 +464,21 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                     sc_enable_bp.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getHeight()) {
                     dsb_height.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getHeight()));
                     sc_enable_height.setChecked(true);
                 } else {
                     sc_enable_height.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getRespiratory()) {
                     dsb_rr.setProgress(Integer.parseInt(jsonMedicalRecord.getMedicalPhysical().getRespiratory()));
                     sc_enable_rr.setChecked(true);
                 } else {
                     sc_enable_rr.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getWeight()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getWeight().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getWeight().split("\\.");
                         mv_weight1.setValue(Integer.parseInt(temp[0]));
@@ -490,7 +491,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                     sc_enable_weight.setChecked(false);
                 }
 
-                if (null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
+                if (null != jsonMedicalRecord.getMedicalPhysical() && null != jsonMedicalRecord.getMedicalPhysical().getTemperature()) {
                     if (jsonMedicalRecord.getMedicalPhysical().getTemperature().contains(".")) {
                         String[] temp = jsonMedicalRecord.getMedicalPhysical().getTemperature().split("\\.");
                         mv_temperature1.setValue(Integer.parseInt(temp[0]));

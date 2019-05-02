@@ -204,6 +204,15 @@ public class Receipt extends AbstractDomain implements Serializable {
         this.error = error;
     }
 
+    public String displayProfessionalName() {
+        switch (businessType) {
+            case DO:
+                return "Dr. " + name;
+            default:
+                return name;
+        }
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Receipt{");

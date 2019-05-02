@@ -70,9 +70,9 @@ public class ReceiptGeneratorPDF extends PdfHealper{
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         currencySymbol = "₹";
         String fileName = new SimpleDateFormat("'NoQueue_" + receipt.getJsonPurchaseOrder().getCustomerName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
-        String dest = getAppPath(mContext) + fileName;
-        if (new File(dest).exists()) {
-            new File(dest).delete();
+        File dest = new File(getAppPath(mContext) + fileName);
+        if (dest.exists()) {
+            Log.d("Delete", "File deleted successfully " +  dest.delete());
         }
 
         try {
@@ -95,9 +95,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
 
-
             Font noqFont = new Font(baseFont, 13.0f, Font.BOLD, BaseColor.BLACK);
-
 
             Chunk degreeChunk = new Chunk(receipt.getStoreAddress(), normalFont);
             Paragraph degreeParagraph = new Paragraph();
@@ -133,7 +131,7 @@ public class ReceiptGeneratorPDF extends PdfHealper{
             document.close();
 
             Toast.makeText(mContext, "Invoice Generated", Toast.LENGTH_SHORT).show();
-            openFile(mContext, new File(dest));
+            openFile(mContext, dest);
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
         } catch (ActivityNotFoundException ae) {

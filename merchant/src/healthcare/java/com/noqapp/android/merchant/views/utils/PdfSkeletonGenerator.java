@@ -84,6 +84,7 @@ public class PdfSkeletonGenerator extends PdfHealper {
         if (dest.exists()) {
             Log.d("Delete", "File deleted successfully " +  dest.delete());
         }
+
         try {
             Document document = new Document();
 
@@ -99,7 +100,7 @@ public class PdfSkeletonGenerator extends PdfHealper {
             Chunk glue = new Chunk(new VerticalPositionMark());
 
             Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(receipt.getName(), titleFont);
+            Chunk titleChunk = new Chunk(receipt.displayProfessionalName(), titleFont);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(titleChunk);
             document.add(titleParagraph);
