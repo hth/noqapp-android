@@ -43,6 +43,24 @@ public interface PurchaseOrderApiUrls {
             String codeQR
     );
 
+    @POST("api/m/s/purchaseOrder/showOrders/{codeQR}/historical.json")
+    Call<JsonPurchaseOrderList> showOrdersHistorical(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
