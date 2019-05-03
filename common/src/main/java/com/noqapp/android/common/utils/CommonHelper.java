@@ -181,11 +181,12 @@ public class CommonHelper {
     }
 
     public static String displayPrice(String number) {
-        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+        BigDecimal bd =  new BigDecimal(number).scaleByPowerOfTen(-2);
+        return bd.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
     }
 
     public static String displayPrice(int number) {
-        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+        return displayPrice(String.valueOf(number));
     }
 
     public static String transactionForDisplayOnly(String transactionId) {
