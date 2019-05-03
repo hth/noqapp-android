@@ -3,34 +3,40 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.utils.AppUtils;
+
 import android.content.Context;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class FollowupListAdapter extends BaseExpandableListAdapter {
+/**
+ * Created by chandra on 3/28/18.
+ */
+public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<Date> listDataHeader;
+    private List<Date> listDataHeader; // header titles
+    // child data in format of header title, child title
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
     private boolean visibility;
 
-    public FollowupListAdapter(Context context, List<Date> listDataHeader,
-                               Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility) {
+    public ViewAllExpandableListAdapter(Context context, List<Date> listDataHeader,
+                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
-        this.visibility = visibility;
+        this.visibility =visibility;
     }
 
     @Override
@@ -59,12 +65,17 @@ public class FollowupListAdapter extends BaseExpandableListAdapter {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_child);
         }
         childViewHolder.rv.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        childViewHolder.rv.setLayoutManager(horizontalLayoutManager);
+        int columnCount;
+        if (new AppUtils().isTablet(context.getApplicationContext())) {
+            columnCount = 5;
+        } else {
+            columnCount = 2;
+        }
+        childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        FollowupAllListAdapter followupAllListAdapter = new FollowupAllListAdapter(childData.getQueuedPeople(), context, null,visibility);
-        childViewHolder.rv.setAdapter(followupAllListAdapter);
-        followupAllListAdapter.notifyDataSetChanged();
+        ViewAllPeopleInQAdapter viewAllPeopleInQAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null,visibility);
+        childViewHolder.rv.setAdapter(viewAllPeopleInQAdapter);
+        viewAllPeopleInQAdapter.notifyDataSetChanged();
         return convertView;
     }
 

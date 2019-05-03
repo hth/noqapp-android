@@ -279,20 +279,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
         tv_token.setText("Token/Order No. " + String.valueOf(jsonQueuedPerson.getToken()));
-        tv_q_name.setText(getIntent().getStringExtra("qName"));
+        tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
-//        try {
-//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//            } else {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
@@ -305,10 +293,6 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-//            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " 0");
-//            }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
             }
@@ -324,14 +308,18 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         }
         try {
             tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
-             } catch (Exception e) {
-            //TODO log error
+        } catch (Exception e) {
+            e.printStackTrace();
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
-            }
+        }
 
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
+        }
+        if(getIntent().getBooleanExtra("isFromHistory",false)){
+            rl_payment.setVisibility(View.GONE);
+            btn_refund.setVisibility(View.GONE);
         }
     }
 

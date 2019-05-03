@@ -1,136 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/ppq_width"
-    android:layout_height="@dimen/ppq_height"
-    android:orientation="vertical"
-    android:tag="cards main container">
+              android:layout_width="@dimen/ppq_width"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:tag="cards main container">
 
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="2dp"
-        card_view:cardUseCompatPadding="true">
+                                       android:id="@+id/card_view"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       card_view:cardBackgroundColor="@android:color/white"
+                                       card_view:cardCornerRadius="10dp"
+                                       card_view:cardElevation="2dp"
+                                       card_view:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_sequence_new_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="5dp">
+                android:orientation="vertical">
+
+            <RelativeLayout
+                    android:id="@+id/rl_sequence_new_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="5dp">
 
                 <TextView
-                    android:id="@+id/tv_sequence_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text=""
-                    android:textSize="18sp" />
+                        android:id="@+id/tv_sequence_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text=""
+                        android:textSize="18sp"/>
 
                 <TextView
-                    android:id="@+id/tv_join_timing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/iv_new"
-                    android:layout_toRightOf="@+id/tv_sequence_number"
-                    android:gravity="right"
-                    android:text=""
-                    android:textSize="@dimen/text_size_ten" />
+                        android:id="@+id/tv_join_timing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/iv_new"
+                        android:layout_toRightOf="@+id/tv_sequence_number"
+                        android:gravity="right"
+                        android:text=""
+                        android:textSize="@dimen/text_size_ten"/>
 
                 <ImageView
-                    android:id="@+id/iv_new"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="3dp"
-                    android:background="@drawable/new_client"
-                    android:backgroundTint="@android:color/white"
-                    android:visibility="invisible" />
+                        android:id="@+id/iv_new"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="3dp"
+                        android:background="@drawable/new_client"
+                        android:backgroundTint="@android:color/white"
+                        android:visibility="invisible"/>
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_customer_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="chandra b sharma"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_fourteen" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_customer_mobile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:text="9988998898"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_twelve" />
+                        android:id="@+id/tv_customer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="chandra b sharma"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"/>
 
                 <TextView
-                    android:id="@+id/tv_business_customer_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:drawableRight="@drawable/edit"
-                    android:gravity="center_vertical"
-                    android:text="45"
-                    android:textSize="@dimen/text_size_twelve" />
+                        android:id="@+id/tv_customer_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="9988998898"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"/>
 
                 <TextView
-                    android:id="@+id/tv_payment_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:text="Paid"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_twelve" />
+                        android:id="@+id/tv_business_customer_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:drawableRight="@drawable/edit"
+                        android:gravity="center_vertical"
+                        android:text="45"
+                        android:textSize="@dimen/text_size_twelve"/>
 
                 <TextView
-                    android:id="@+id/tv_order_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:text="Cancelled"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_twelve" />
+                        android:id="@+id/tv_queue_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="-"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"/>
 
                 <TextView
-                    android:id="@+id/tv_accept_payment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/bg_nogradient_round"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Payment Status"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_ten"/>
+                        android:id="@+id/tv_payment_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="Paid"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_order_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="Cancelled"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve"/>
+
+                <TextView
+                        android:id="@+id/tv_order_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_drawable_red"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="View order details"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_twelve"/>
 
             </LinearLayout>
         </LinearLayout>

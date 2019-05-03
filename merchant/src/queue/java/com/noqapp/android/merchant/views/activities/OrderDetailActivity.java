@@ -1,26 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -51,10 +31,29 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
-
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import java.math.BigDecimal;
 
 public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
@@ -345,23 +344,11 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonPurchaseOrder.getCustomerName());
         tv_token.setText("Token/Order No. " + String.valueOf(jsonPurchaseOrder.getToken()));
-        tv_q_name.setText(getIntent().getStringExtra("qName"));
+        tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
-
-//        try {
-//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//            } else {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-      //  }
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 
@@ -395,10 +382,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             }
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-//            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " 0");
-//            }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
             }
@@ -424,6 +407,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             tv_payment_mode.setText("N/A");
             adapter.setClickEnable(false);
         }
+
+        if(getIntent().getBooleanExtra("isFromHistory",false)){
+            rl_payment.setVisibility(View.GONE);
+            btn_update_price.setVisibility(View.GONE);
+            rl_multiple.setVisibility(View.GONE);
+            btn_refund.setVisibility(View.GONE);
+        }
     }
 
     public void updateProductPriceList(JsonPurchaseOrderProduct jpop, int pos) {
@@ -431,17 +421,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         checkProductWithZeroPrice();
         jsonPurchaseOrder.setOrderPrice(String.valueOf(calculateTotalPrice()));
         tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-//        try {
-//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//            } else {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 

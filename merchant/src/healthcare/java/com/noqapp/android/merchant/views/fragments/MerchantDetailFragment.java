@@ -255,8 +255,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-        in.putExtra("qCodeQR", qCodeQR);
-        in.putExtra("qName", jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
     }
 
@@ -265,7 +263,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
         in.putExtra("codeQR", jsonTopic.getCodeQR());
         in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
-        in.putExtra("payment_permission", jsonTopic.getJsonPaymentPermission());
         ((Activity) context).startActivity(in);
     }
 

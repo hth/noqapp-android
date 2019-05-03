@@ -119,7 +119,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonPurchaseOrder.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonPurchaseOrder.getCustomerName());
        // recordHolder.iv_new.setVisibility(jsonPurchaseOrder.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
        // if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
-            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#d2475f"));
+            recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
             recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
             recordHolder.tv_join_timing.setTextColor(Color.WHITE);
 //        } else {
