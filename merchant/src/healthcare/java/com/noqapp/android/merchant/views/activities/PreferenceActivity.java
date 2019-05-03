@@ -50,11 +50,8 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -288,127 +285,8 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
         {
             if (null != temp) {
                 try {
-                   File destination = new File(Environment.getExternalStorageDirectory() + "/UnZipped/");
-                   uncompressTarGZ(temp,destination);
-//
-//                    Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
-//                    archiver.extract(temp, destination);
-//                    String path = Environment.getExternalStorageDirectory() + "/UnZipped";
-//                    Log.d("Files", "Path: " + path);
-//                    File directory = new File(path);
-//                    directory.deleteOnExit();
-
-
-///Test Code ^^^^^^^^
-
-//                    InputStream is;
-//                    int BUFFER_SIZE = 1024;
-//                    try {
-//                        is = new FileInputStream(temp);
-//                        GzipCompressorInputStream gzipIn = new GzipCompressorInputStream(is);
-//                        try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
-//                            TarArchiveEntry entry;
-//
-//                            while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-//
-//
-//                                if (entry.isDirectory()) {
-//                                    File f = new File(Environment.getExternalStorageDirectory() + "/Chandra/"+entry.getName());
-//                                    boolean created = f.mkdir();
-//                                    if (!created) {
-//                                        System.out.printf("Unable to create directory '%s', during extraction of archive contents.\n",
-//                                                f.getAbsolutePath());
-//                                    }else{
-//                                            System.out.printf("create directory '%s', during extraction of archive contents.\n",
-//                                                    f.getAbsolutePath());
-//                                        }
-//
-//                                } else {
-//
-//                                    File f = new File(Environment.getExternalStorageDirectory() + "/Chandra/"+entry.getName());
-//                                    boolean created = f.mkdir();
-//                                    int count;
-//                                    byte data[] = new byte[BUFFER_SIZE];
-//                                    FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory() + "/Chandra/"+entry.getName(), false);
-//                                    try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
-//                                        while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
-//                                            dest.write(data, 0, count);
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                            System.out.println("Untar completed successfully!");
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-
-
-///Test Code ^^^^^^^^
-
-
-//                    File[] files = directory.listFiles();
-//                    Log.d("Files", "Size: " + files.length);
-//                    masterData.clear();
-//                    for (File file : files) {
-//                        String fileName = file.getName();
-//                        Log.d("Files", "FileName:" + fileName);
-//                        if (fileName.endsWith(".csv")) {
-//                            int lineCount = 0;
-//                            try {
-//                                // PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf("_")));
-//                                BufferedReader buffer = new BufferedReader(new FileReader(file.getAbsolutePath()));
-//                                String line;
-//                                while ((line = buffer.readLine()) != null) {
-//                                    lineCount++;
-//                                    // PreferredStoreDB.insertPreferredStore(line);
-//                                    String[] strArray = line.split(",");
-//                                    masterData.add(new JsonMasterLab().
-//                                            setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    if (strArray[2].equals(HealthCareServiceEnum.SCAN.getName())) {
-//                                        masterDataScan.add(new JsonMasterLab().
-//                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    }
-//                                    if (strArray[2].equals(HealthCareServiceEnum.SONO.getName())) {
-//                                        masterDataSono.add(new JsonMasterLab().
-//                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    }
-//                                    if (strArray[2].equals(HealthCareServiceEnum.MRI.getName())) {
-//                                        masterDataMri.add(new JsonMasterLab().
-//                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    }
-//                                    if (strArray[2].equals(HealthCareServiceEnum.XRAY.getName())) {
-//                                        masterDataXray.add(new JsonMasterLab().
-//                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    }
-//                                    if (strArray[2].equals(HealthCareServiceEnum.PATH.getName())) {
-//                                        masterDataPath.add(new JsonMasterLab().
-//                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    }
-//                                    if (strArray[2].equals(HealthCareServiceEnum.SPEC.getName())) {
-//                                        masterDataSpec.add(new JsonMasterLab().
-//                                                setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
-//                                    }
-//                                    Log.e("data is :", line);
-//
-//                                }
-//                            } catch (Exception e) {
-//                                Log.e("Loading file=" + fileName + " line=" + lineCount + " reason={}", e.getLocalizedMessage(), e);
-//                                throw new RuntimeException("Loading file=" + fileName + " line=" + lineCount);
-//                            }
-//                        }
-//                    }
-//                    preferenceXrayFragment.setData(masterDataXray);
-//                    preferenceSonoFragment.setData(masterDataSono);
-//                    preferenceScanFragment.setData(masterDataScan);
-//                    preferenceMriFragment.setData(masterDataMri);
-//                    preferencePathFragment.setData(masterDataPath);
-//                    preferenceSpecFragment.setData(masterDataSpec);
-//                    for (File file : files) {
-//                        new File(path, file.getName()).delete();
-//                    }
-//                    directory.delete();
+                    File destination = new File(Environment.getExternalStorageDirectory() + "/UnZipped/");
+                    uncompressTarGZ(temp, destination);
                 } catch (Exception e) {
                     Log.e("Failed file loading {}", e.getLocalizedMessage(), e);
                     //TODO make sure to increase the date as not to fetch again
@@ -462,60 +340,46 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     }
 
 
+    public void uncompressTarGZ(File tarFile, File dest) {
+        try {
+            dest.mkdir();
+            TarArchiveInputStream tarIn = new TarArchiveInputStream(
+                    new GzipCompressorInputStream(
+                            new BufferedInputStream(
+                                    new FileInputStream(
+                                            tarFile
+                                    )
+                            )
+                    )
+            );
+            masterData.clear();
+            TarArchiveEntry tarEntry = tarIn.getNextTarEntry();
+            while (tarEntry != null) {
+                File destPath = new File(dest, tarEntry.getName());
+                if (tarEntry.isDirectory()) {
+                    destPath.mkdirs();
+                } else {
+                    destPath.createNewFile();
+                    byte[] btoRead = new byte[1024];
+                    BufferedOutputStream bout =
+                            new BufferedOutputStream(new FileOutputStream(destPath));
+                    int len = 0;
 
+                    while ((len = tarIn.read(btoRead)) != -1) {
+                        bout.write(btoRead, 0, len);
+                    }
 
+                    bout.close();
+                    btoRead = null;
 
-    public void uncompressTarGZ(File tarFile, File dest) throws IOException {
-        dest.mkdir();
-        TarArchiveInputStream tarIn = null;
-        tarIn = new TarArchiveInputStream(
-                new GzipCompressorInputStream(
-                        new BufferedInputStream(
-                                new FileInputStream(
-                                        tarFile
-                                )
-                        )
-                )
-        );
-        masterData.clear();
-        TarArchiveEntry tarEntry = tarIn.getNextTarEntry();
-        // tarIn is a TarArchiveInputStream
-        while (tarEntry != null) {// create a file with the same name as the tarEntry
-            File destPath = new File(dest, tarEntry.getName());
-            System.out.println("working: " + destPath.getCanonicalPath());
-            if (tarEntry.isDirectory()) {
-                destPath.mkdirs();
-            } else {
-                destPath.createNewFile();
-                //byte [] btoRead = new byte[(int)tarEntry.getSize()];
-                byte [] btoRead = new byte[1024];
-                //FileInputStream fin
-                //  = new FileInputStream(destPath.getCanonicalPath());
-                BufferedOutputStream bout =
-                        new BufferedOutputStream(new FileOutputStream(destPath));
-                int len = 0;
-
-                while((len = tarIn.read(btoRead)) != -1)
-                {
-                    bout.write(btoRead,0,len);
-                }
-
-                bout.close();
-                btoRead = null;
-
-                                  //  File[] files = directory.listFiles();
-                  //  Log.d("Files", "Size: " + files.length);
-
-
-                        if (destPath.getName().endsWith(".csv")) {
-                            int lineCount = 0;
-                            try {
-                                // PreferredStoreDB.deletePreferredStore(fileName.substring(0, fileName.lastIndexOf("_")));
-                                BufferedReader buffer = new BufferedReader(new FileReader(destPath.getAbsolutePath()));
-                                String line;
-                                while ((line = buffer.readLine()) != null) {
-                                    lineCount++;
-                                    // PreferredStoreDB.insertPreferredStore(line);
+                    if (destPath.getName().endsWith(".csv")) {
+                        int lineCount = 0;
+                        try {
+                            BufferedReader buffer = new BufferedReader(new FileReader(destPath.getAbsolutePath()));
+                            String line;
+                            while ((line = buffer.readLine()) != null) {
+                                lineCount++;
+                                try {
                                     String[] strArray = line.split(",");
                                     masterData.add(new JsonMasterLab().
                                             setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
@@ -544,24 +408,32 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                                                 setProductName(strArray[0]).setProductShortName(strArray[1]).setHealthCareService(HealthCareServiceEnum.valueOf(strArray[2])));
                                     }
                                     Log.e("data is :", line);
-
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e("data parsing error :", line);
                                 }
-                            } catch (Exception e) {
-                                Log.e("Loading file=" + destPath + " line=" + lineCount + " reason={}", e.getLocalizedMessage(), e);
-                                throw new RuntimeException("Loading file=" + destPath + " line=" + lineCount);
+
                             }
+                        } catch (Exception e) {
+                            Log.e("Loading file=" + destPath + " line=" + lineCount + " reason={}", e.getLocalizedMessage(), e);
+                            throw new RuntimeException("Loading file=" + destPath + " line=" + lineCount);
                         }
-
-
-//                    for (File file : files) {
-//                        new File(path, file.getName()).delete();
-//                    }
-//                    directory.delete();
-
+                    }
+                    if (destPath.exists()) {
+                        Log.e("File exist:", destPath.getAbsolutePath());
+                        destPath.delete();
+                    }
+                }
+                tarEntry = tarIn.getNextTarEntry();
             }
-            tarEntry = tarIn.getNextTarEntry();
+            tarIn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        tarIn.close();
+        if (tarFile.exists()) {
+            Log.e("File exist:", tarFile.getAbsolutePath());
+            tarFile.delete();
+        }
         preferenceXrayFragment.setData(masterDataXray);
         preferenceSonoFragment.setData(masterDataSono);
         preferenceScanFragment.setData(masterDataScan);
