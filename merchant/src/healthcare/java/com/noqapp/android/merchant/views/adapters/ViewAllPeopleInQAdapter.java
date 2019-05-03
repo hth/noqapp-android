@@ -1,21 +1,17 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.TextUtils;
@@ -25,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,14 +31,12 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
     private final OnItemClickListener listener;
     private List<JsonQueuedPerson> dataSet;
     private boolean visibility;
-    private JsonPaymentPermission jsonPaymentPermission;
 
-    public ViewAllPeopleInQAdapter(List<JsonQueuedPerson> data, Context context, OnItemClickListener listener,boolean visibility, JsonPaymentPermission jsonPaymentPermission) {
+    public ViewAllPeopleInQAdapter(List<JsonQueuedPerson> data, Context context, OnItemClickListener listener,boolean visibility) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
         this.visibility = visibility;
-        this.jsonPaymentPermission = jsonPaymentPermission;
     }
 
     @Override
@@ -95,16 +87,9 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
             holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
 
-        if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
-            //holder.rl_sequence_new_time.setBackgroundColor(Color.TRANSPARENT);
-            holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#9DC5C3"));
-            holder.tv_sequence_number.setTextColor(Color.BLACK);
-            holder.tv_join_timing.setTextColor(Color.BLACK);
-        } else {
-            holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
-            holder.tv_sequence_number.setTextColor(Color.WHITE);
-            holder.tv_join_timing.setTextColor(Color.WHITE);
-        }
+        holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
+        holder.tv_sequence_number.setTextColor(Color.WHITE);
+        holder.tv_join_timing.setTextColor(Color.WHITE);
 
         if (!TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
             holder.tv_accept_payment.setVisibility(View.VISIBLE);
@@ -153,13 +138,7 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         holder.tv_accept_payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                    Intent in = new Intent(context, OrderDetailActivity.class);
-                    in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-                    ((Activity) context).startActivity(in);
-                } else {
-                    Toast.makeText(context, "You do not have permission to accept payment", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
         holder.card_view.setOnClickListener(new View.OnClickListener() {

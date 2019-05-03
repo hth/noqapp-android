@@ -1,26 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -51,10 +31,29 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
-
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import java.math.BigDecimal;
 
 public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
@@ -423,6 +422,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             btn_update_price.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
             adapter.setClickEnable(false);
+        }
+
+        if(getIntent().getBooleanExtra("isFromHistory",false)){
+            rl_payment.setVisibility(View.GONE);
+            btn_update_price.setVisibility(View.GONE);
+            rl_multiple.setVisibility(View.GONE);
+            btn_refund.setVisibility(View.GONE);
         }
     }
 

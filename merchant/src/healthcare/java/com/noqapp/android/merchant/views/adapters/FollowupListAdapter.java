@@ -2,13 +2,9 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.utils.AppUtils;
-
 import android.content.Context;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,25 +18,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by chandra on 3/28/18.
- */
-public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
+public class FollowupListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<Date> listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<Date> listDataHeader;
     private Map<Date, List<JsonQueuePersonList>> listDataChild;
     private boolean visibility;
-    private JsonPaymentPermission jsonPaymentPermission;
 
-    public ViewAllExpandableListAdapter(Context context, List<Date> listDataHeader,
-                                        Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility,JsonPaymentPermission jsonPaymentPermission) {
+    public FollowupListAdapter(Context context, List<Date> listDataHeader,
+                               Map<Date, List<JsonQueuePersonList>> listChildData, boolean visibility) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
-        this.visibility =visibility;
-        this.jsonPaymentPermission = jsonPaymentPermission;
+        this.visibility = visibility;
     }
 
     @Override
@@ -69,17 +59,12 @@ public class ViewAllExpandableListAdapter extends BaseExpandableListAdapter {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_child);
         }
         childViewHolder.rv.setHasFixedSize(true);
-        int columnCount;
-        if (new AppUtils().isTablet(context.getApplicationContext())) {
-            columnCount = 5;
-        } else {
-            columnCount = 2;
-        }
-        childViewHolder.rv.setLayoutManager(new GridLayoutManager(context, columnCount));
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+        childViewHolder.rv.setLayoutManager(horizontalLayoutManager);
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        ViewAllPeopleInQAdapter currentActivityAdapter = new ViewAllPeopleInQAdapter(childData.getQueuedPeople(), context, null,visibility,jsonPaymentPermission);
-        childViewHolder.rv.setAdapter(currentActivityAdapter);
-        currentActivityAdapter.notifyDataSetChanged();
+        FollowupAllListAdapter followupAllListAdapter = new FollowupAllListAdapter(childData.getQueuedPeople(), context, null,visibility);
+        childViewHolder.rv.setAdapter(followupAllListAdapter);
+        followupAllListAdapter.notifyDataSetChanged();
         return convertView;
     }
 

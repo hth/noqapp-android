@@ -16,7 +16,6 @@ import com.noqapp.android.merchant.views.interfaces.ModifyOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -94,6 +93,35 @@ public class PurchaseOrderApiCalls {
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
                 Log.e("Order list error", t.getLocalizedMessage(), t);
+                purchaseOrderPresenter.purchaseOrderError();
+            }
+        });
+    }
+
+    public void showOrdersHistorical(String did, String mail, String auth, String codeQR) {
+        purchaseOrderService.showOrdersHistorical(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonPurchaseOrderList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Get history order list", String.valueOf(response.body()));
+                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Found error while Get history order list");
+                        purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        purchaseOrderPresenter.authenticationFailure();
+                    } else {
+                        purchaseOrderPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+                Log.e("HistoryOrder list error", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.purchaseOrderError();
             }
         });

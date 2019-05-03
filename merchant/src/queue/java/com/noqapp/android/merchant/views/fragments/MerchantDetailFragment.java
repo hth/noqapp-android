@@ -25,7 +25,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
-import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
+import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQOrderActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
@@ -94,10 +94,9 @@ public class MerchantDetailFragment
 
     @Override
     protected void showAllPeopleInQHistory() {
-        Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
+        Intent in = new Intent(getActivity(), ViewAllPeopleInQOrderActivity.class);
         in.putExtra("codeQR", jsonTopic.getCodeQR());
         in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
-        in.putExtra("payment_permission", jsonTopic.getJsonPaymentPermission());
         ((Activity) context).startActivity(in);
     }
 
