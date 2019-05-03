@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
@@ -220,13 +221,17 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue));
-        LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
-        LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        isFragmentVisible = true;
-        updateSnackbarTxt();
-        if (null != adapter) {
-            adapter.notifyDataSetChanged();
+        if (UserUtils.isLogin()) {
+            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue));
+            LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
+            LaunchActivity.getLaunchActivity().enableDisableBack(false);
+            isFragmentVisible = true;
+            updateSnackbarTxt();
+            if (null != adapter) {
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.GONE);
         }
     }
 

@@ -570,10 +570,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             LinearLayout.LayoutParams lp0 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp0);
-            if (null != merchantListFragment) {
-                merchantListFragment.clearData();
-                merchantListFragment = null;
-            }
+        }
+        for (Fragment fragment:getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+        if (null != merchantListFragment) {
+            merchantListFragment.clearData();
+            merchantListFragment = null;
         }
         // logout
         clearPreferences();

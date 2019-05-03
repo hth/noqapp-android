@@ -4,7 +4,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -212,9 +211,13 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
-        LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
-        LaunchActivity.getLaunchActivity().enableDisableBack(false);
+        if(UserUtils.isLogin()) {
+            LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
+            LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
+            LaunchActivity.getLaunchActivity().enableDisableBack(false);
+        }else{
+            LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.GONE);
+        }
     }
 
     public void updateListData(final ArrayList<JsonTopic> jsonTopics) {
