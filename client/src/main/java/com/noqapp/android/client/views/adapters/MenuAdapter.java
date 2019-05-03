@@ -48,8 +48,7 @@ public class MenuAdapter extends BaseAdapter {
         final ChildViewHolder childViewHolder;
         final ChildData childData = menuItemsList.get(position);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, viewGroup, false);
             childViewHolder = new ChildViewHolder();
             childViewHolder.tv_child_title = convertView.findViewById(R.id.tv_child_title);
@@ -62,8 +61,7 @@ public class MenuAdapter extends BaseAdapter {
             childViewHolder.tv_cat = convertView.findViewById(R.id.tv_cat);
             convertView.setTag(R.layout.list_item_menu_child, childViewHolder);
         } else {
-            childViewHolder = (ChildViewHolder) convertView
-                    .getTag(R.layout.list_item_menu_child);
+            childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
         }
         final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
@@ -94,14 +92,12 @@ public class MenuAdapter extends BaseAdapter {
                 String val = childViewHolder.tv_value.getText().toString();
                 int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
                 childViewHolder.tv_value.setText("" + number);
-                menuItemsList
-                        .get(position).setChildInput(number);
+                menuItemsList.get(position).setChildInput(number);
                 if (number <= 0) {
                     storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
                     cartOrderUpdate.updateCartOrderInfo(showCartAmount());
                 } else {
-                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                            .get(position));
+                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList.get(position));
                     cartOrderUpdate.updateCartOrderInfo(showCartAmount());
                 }
                 notifyDataSetChanged();
@@ -113,14 +109,12 @@ public class MenuAdapter extends BaseAdapter {
                 String val = childViewHolder.tv_value.getText().toString();
                 int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
                 childViewHolder.tv_value.setText("" + number);
-                menuItemsList
-                        .get(position).setChildInput(number);
+                menuItemsList.get(position).setChildInput(number);
                 if (number <= 0) {
                     storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
                     cartOrderUpdate.updateCartOrderInfo(showCartAmount());
                 } else {
-                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                            .get(position));
+                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList.get(position));
                     cartOrderUpdate.updateCartOrderInfo(showCartAmount());
                 }
                 notifyDataSetChanged();
