@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,7 +82,8 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
                 ((Activity) context).startActivity(in);
             }
         });
-        recordHolder.tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getDescription());
+        recordHolder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + jsonPurchaseOrder.getPaymentStatus().getDescription()));
+        recordHolder.tv_order_status.setText(Html.fromHtml("<b>Order Status: </b>" + jsonPurchaseOrder.getPresentOrderState().getDescription()));
         recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +103,7 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
         TextView tv_customer_mobile;
         TextView tv_sequence_number;
         TextView tv_order_data;
+        TextView tv_payment_status;
         TextView tv_order_status;
         TextView tv_join_timing;
         RelativeLayout rl_sequence_new_time;
@@ -114,6 +117,7 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
             this.tv_sequence_number = itemView.findViewById(R.id.tv_sequence_number);
             this.tv_order_data = itemView.findViewById(R.id.tv_order_data);
             this.tv_order_status = itemView.findViewById(R.id.tv_order_status);
+            this.tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.iv_new = itemView.findViewById(R.id.iv_new);
