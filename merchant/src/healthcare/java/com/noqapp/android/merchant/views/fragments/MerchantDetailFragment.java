@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
-import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
@@ -17,6 +16,7 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
+import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
 import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 
@@ -259,6 +259,16 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         in.putExtra("qName", jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
     }
+
+    @Override
+    protected void showAllPeopleInQHistory() {
+        Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
+        in.putExtra("codeQR", jsonTopic.getCodeQR());
+        in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+        in.putExtra("payment_permission", jsonTopic.getJsonPaymentPermission());
+        ((Activity) context).startActivity(in);
+    }
+
 
     @Override
     public void updateWholeList() {
