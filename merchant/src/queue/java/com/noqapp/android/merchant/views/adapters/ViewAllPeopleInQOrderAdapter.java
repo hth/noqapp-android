@@ -56,13 +56,28 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                     PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         }
+
+        if (visibility) {
+            if (null != LaunchActivity.getLaunchActivity()) {
+                recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
+                        PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+            }
+            recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                        new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+                }
+            });
+        } else {
+            recordHolder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
+        }
         recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
                 in.putExtra("isFromHistory",true);
-                in.putExtra("qName", "");
                 ((Activity) context).startActivity(in);
             }
         });

@@ -279,7 +279,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
         tv_token.setText("Token/Order No. " + String.valueOf(jsonQueuedPerson.getToken()));
-        tv_q_name.setText(getIntent().getStringExtra("qName"));
+        tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
@@ -316,6 +316,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
+        }
+        if(getIntent().getBooleanExtra("isFromHistory",false)){
+            rl_payment.setVisibility(View.GONE);
+            btn_refund.setVisibility(View.GONE);
         }
     }
 

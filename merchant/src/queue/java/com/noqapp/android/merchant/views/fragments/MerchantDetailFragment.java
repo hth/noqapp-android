@@ -280,7 +280,6 @@ public class MerchantDetailFragment
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-        in.putExtra("qName", jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
     }
 

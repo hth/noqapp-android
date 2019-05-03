@@ -1,17 +1,17 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.model.types.QueueUserStateEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.TextUtils;
@@ -32,7 +32,7 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
     private List<JsonQueuedPerson> dataSet;
     private boolean visibility;
 
-    public ViewAllPeopleInQAdapter(List<JsonQueuedPerson> data, Context context, OnItemClickListener listener,boolean visibility) {
+    public ViewAllPeopleInQAdapter(List<JsonQueuedPerson> data, Context context, OnItemClickListener listener, boolean visibility) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -67,15 +67,17 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
             holder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + context.getString(R.string.unregister_user)));
             holder.tv_order_state.setText(Html.fromHtml("<b>Order Status: </b>" + context.getString(R.string.unregister_user)));
         }
-
+        holder.tv_queue_status.setText(Html.fromHtml("<b>Queue Status: </b>" + jsonQueuedPerson.getQueueUserState().getDescription()));
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         holder.tv_business_customer_id.setText(TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
                 ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
                 : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
-        holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
-                PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         if (visibility) {
+            if (null != LaunchActivity.getLaunchActivity()) {
+                holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
+                        PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+            }
             holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,55 +92,13 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
         holder.tv_sequence_number.setTextColor(Color.WHITE);
         holder.tv_join_timing.setTextColor(Color.WHITE);
-
-        if (!TextUtils.isEmpty(jsonQueuedPerson.getTransactionId())) {
-            holder.tv_accept_payment.setVisibility(View.VISIBLE);
-            switch (jsonQueuedPerson.getJsonPurchaseOrder().getPaymentStatus()) {
-                case PA:
-                    holder.tv_accept_payment.setText("Paid");
-                    holder.tv_accept_payment.setBackgroundResource(R.drawable.bg_nogradient_round);
-                    if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
-                        holder.tv_accept_payment.setBackgroundResource(R.drawable.grey_background);
-                        holder.tv_accept_payment.setText("Refund Due");
-                    }
-                    if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.N) {
-                        holder.tv_accept_payment.setText("Refund Due");
-                    }
-                    break;
-                case PR:
-                    holder.tv_accept_payment.setText("Payment Refunded");
-                    holder.tv_accept_payment.setBackgroundResource(R.drawable.grey_background);
-                    break;
-                case PP:
-                    if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
-                        holder.tv_accept_payment.setText("No Payment Due");
-                        holder.tv_accept_payment.setBackgroundResource(R.drawable.grey_background);
-                    } else {
-                        holder.tv_accept_payment.setText("Accept Payment");
-                        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
-                            holder.tv_accept_payment.setBackgroundResource(R.drawable.bg_unpaid);
-                        } else {
-                            holder.tv_accept_payment.setBackgroundResource(R.drawable.grey_background);
-                        }
-                    }
-                    break;
-                default:
-                    holder.tv_accept_payment.setText("Accept Payment");
-                    if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
-                            jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
-                        holder.tv_accept_payment.setBackgroundResource(R.drawable.bg_unpaid);
-                    } else {
-                        holder.tv_accept_payment.setBackgroundResource(R.drawable.grey_background);
-                    }
-                    break;
-            }
-        } else {
-            holder.tv_accept_payment.setVisibility(View.GONE);
-        }
-        holder.tv_accept_payment.setOnClickListener(new View.OnClickListener() {
+        holder.tv_order_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent in = new Intent(context, OrderDetailActivity.class);
+                in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
+                in.putExtra("isFromHistory", true);
+                ((Activity) context).startActivity(in);
             }
         });
         holder.card_view.setOnClickListener(new View.OnClickListener() {
@@ -165,9 +125,10 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         private TextView tv_business_customer_id;
         private TextView tv_customer_mobile;
         private TextView tv_payment_status;
-        private TextView tv_accept_payment;
+        private TextView tv_order_data;
         private TextView tv_order_state;
         private TextView tv_sequence_number;
+        private TextView tv_queue_status;
         private RelativeLayout rl_sequence_new_time;
         private TextView tv_join_timing;
         private ImageView iv_new;
@@ -179,10 +140,11 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
             this.tv_customer_name = itemView.findViewById(R.id.tv_customer_name);
             this.tv_business_customer_id = itemView.findViewById(R.id.tv_business_customer_id);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
-            this.tv_payment_status = itemView.findViewById(R.id.tv_payment_status); 
-            this.tv_accept_payment = itemView.findViewById(R.id.tv_accept_payment);
+            this.tv_payment_status = itemView.findViewById(R.id.tv_payment_status);
+            this.tv_order_data = itemView.findViewById(R.id.tv_order_data);
             this.tv_order_state = itemView.findViewById(R.id.tv_order_state);
             this.tv_sequence_number = itemView.findViewById(R.id.tv_sequence_number);
+            this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
             this.rl_sequence_new_time = itemView.findViewById(R.id.rl_sequence_new_time);
             this.tv_join_timing = itemView.findViewById(R.id.tv_join_timing);
             this.iv_new = itemView.findViewById(R.id.iv_new);

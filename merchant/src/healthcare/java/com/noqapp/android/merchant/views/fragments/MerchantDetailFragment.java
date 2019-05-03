@@ -255,8 +255,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-        in.putExtra("qCodeQR", qCodeQR);
-        in.putExtra("qName", jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
     }
 
