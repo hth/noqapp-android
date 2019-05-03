@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -28,7 +27,6 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.LoginActivity;
 import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.SettingActivity;
-import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.DispenseTokenPresenter;
@@ -178,11 +176,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             @Override
             public void onClick(View view) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
-                    in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
-                    in.putExtra("payment_permission",jsonTopic.getJsonPaymentPermission());
-                    ((Activity) context).startActivity(in);
+                    showAllPeopleInQHistory();
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
@@ -207,6 +201,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     }
 
     protected abstract void createToken(Context context, String codeQR);
+
+    protected abstract void showAllPeopleInQHistory();
 
     @Override
     public void onResume() {

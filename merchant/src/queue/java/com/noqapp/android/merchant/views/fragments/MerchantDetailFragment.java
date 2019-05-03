@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -24,6 +25,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 import com.noqapp.android.merchant.views.activities.ProductListActivity;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
+import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
 import com.noqapp.android.merchant.views.adapters.PeopleInQOrderAdapter;
 import com.noqapp.android.merchant.views.interfaces.AcquireOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
@@ -52,7 +54,7 @@ import java.util.List;
 
 public class MerchantDetailFragment
         extends BaseMerchantDetailFragment
-        implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList ,HCSMenuActivity.UpdateWholeList{
+        implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList, HCSMenuActivity.UpdateWholeList {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -75,12 +77,12 @@ public class MerchantDetailFragment
     @Override
     protected void createToken(Context context, String codeQR) {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            if(jsonTopic.getBusinessType() == BusinessTypeEnum.HS) {
+            if (jsonTopic.getBusinessType() == BusinessTypeEnum.HS) {
                 HCSMenuActivity.updateWholeList = this;
                 Intent intent = new Intent(getActivity(), HCSMenuActivity.class);
                 intent.putExtra("jsonTopic", jsonTopic);
                 ((Activity) context).startActivity(intent);
-            }else{
+            } else {
                 Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
                 intent.putExtra("codeQR", jsonTopic.getCodeQR());
                 ((Activity) context).startActivity(intent);
@@ -88,6 +90,15 @@ public class MerchantDetailFragment
         } else {
             showCreateTokenDialog(context, codeQR);
         }
+    }
+
+    @Override
+    protected void showAllPeopleInQHistory() {
+        Intent in = new Intent(getActivity(), ViewAllPeopleInQActivity.class);
+        in.putExtra("codeQR", jsonTopic.getCodeQR());
+        in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+        in.putExtra("payment_permission", jsonTopic.getJsonPaymentPermission());
+        ((Activity) context).startActivity(in);
     }
 
     @Override
@@ -270,7 +281,7 @@ public class MerchantDetailFragment
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-        in.putExtra("qName",jsonTopic.getDisplayName());
+        in.putExtra("qName", jsonTopic.getDisplayName());
         ((Activity) context).startActivity(in);
     }
 
@@ -445,6 +456,7 @@ public class MerchantDetailFragment
                                             ShowAlertInformation.showNetworkDialog(context);
                                         }
                                     }
+
                                     @Override
                                     public void btnNegativeClick() {
                                         //Do nothing

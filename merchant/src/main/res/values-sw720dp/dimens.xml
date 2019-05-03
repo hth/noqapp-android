@@ -22,5 +22,5 @@
     <dimen name="play_btn_size">50dp</dimen>
 
     <dimen name="ppq_width">180dp</dimen>
-    <dimen name="ppq_height">260dp</dimen>
+    <dimen name="ppq_height">280dp</dimen>
 </resources>
