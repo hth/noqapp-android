@@ -73,6 +73,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("py")
     private PaymentStatusEnum paymentStatus;
 
+    @JsonProperty("dn")
+    private String displayName;
+
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
@@ -236,6 +239,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public JsonPurchaseOrder setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 
