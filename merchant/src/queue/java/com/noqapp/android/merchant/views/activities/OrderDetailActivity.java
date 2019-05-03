@@ -349,18 +349,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
-
-//        try {
-//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//            } else {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-      //  }
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 
@@ -394,10 +382,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             }
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
-//            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " 0");
-//            }
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 btn_refund.setVisibility(View.VISIBLE);
             }
@@ -437,17 +421,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         checkProductWithZeroPrice();
         jsonPurchaseOrder.setOrderPrice(String.valueOf(calculateTotalPrice()));
         tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-//        try {
-//            if (TextUtils.isEmpty(jsonPurchaseOrder.getPartialPayment())) {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(0));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100));
-//            } else {
-//                tv_paid_amount_value.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-//                tv_remaining_amount_value.setText(currencySymbol + " " + String.valueOf((Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) - Double.parseDouble(jsonPurchaseOrder.getPartialPayment())) / 100));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 
