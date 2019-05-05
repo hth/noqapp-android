@@ -67,7 +67,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
                         holder.tv_total.setText("Order being prepared");
                         break;
                     default:
-                        holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getDescription());
+                        holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getFriendlyDescription());
                         break;
                 }
                 holder.tv_total_value.setVisibility(View.GONE);

@@ -73,7 +73,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
             holder.tv_order_amount.setText("0");
             e.printStackTrace();
         }
-        holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getDescription());
+        holder.tv_queue_status.setText(jsonPurchaseOrderHistorical.getPresentOrderState().getFriendlyDescription());
         switch (jsonPurchaseOrderHistorical.getPresentOrderState()) {
             case CO:
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.colorMobile));
