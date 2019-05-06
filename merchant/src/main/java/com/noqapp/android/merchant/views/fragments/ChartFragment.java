@@ -32,7 +32,6 @@ import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
 import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
 import com.noqapp.android.merchant.utils.MyValueFormatter;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -138,12 +137,8 @@ public class ChartFragment extends Fragment {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
         entries.addAll(entries1);
-        DateFormatSymbols symbols = new DateFormatSymbols();
-        String[] monthNames = symbols.getMonths();
         PieDataSet dataSet = new PieDataSet(entries, "");
-
         dataSet.setDrawIcons(false);
-
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
@@ -220,7 +215,6 @@ public class ChartFragment extends Fragment {
             set1.setColors(ColorTemplate.MATERIAL_COLORS);
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
-
             BarData data = new BarData(dataSets);
             data.setHighlightEnabled(false); // to hide  the click text on bar
             data.setValueTextSize(10f);
@@ -229,8 +223,6 @@ public class ChartFragment extends Fragment {
             mChart.setData(data);
             mChart.invalidate();
         }
-
-
     }
 
     public void updateChart(HealthCareStat healthCareStat) {
@@ -250,9 +242,6 @@ public class ChartFragment extends Fragment {
     }
 
     private void updateLineChart(List<YearlyData> yearlyData) {
-
-
-
         int cnt = yearlyData.size();
         ArrayList<Entry> yVals1 = new ArrayList<>();
         mMonths.clear();
