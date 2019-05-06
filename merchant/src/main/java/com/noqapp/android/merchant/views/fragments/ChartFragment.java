@@ -1,13 +1,14 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
-import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
-import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
-import com.noqapp.android.merchant.utils.MyValueFormatter;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -15,6 +16,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -22,13 +26,11 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.fragment.app.Fragment;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
+import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
+import com.noqapp.android.merchant.utils.MyValueFormatter;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -36,12 +38,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 
 public class ChartFragment extends Fragment {
-
-
     private PieChart pieChart;
-    private BarChart mChart;
+    private HorizontalBarChart mChart;
+    private LineChart line_chart;
     private ArrayList<String> mMonths = new ArrayList<>();
     private String[] months = new String[]{
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -50,9 +54,9 @@ public class ChartFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
-
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
         mChart = view.findViewById(R.id.bar_chart);
+        line_chart = view.findViewById(R.id.line_chart);
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -241,13 +245,75 @@ public class ChartFragment extends Fragment {
             setData(entries, healthCareStat.getRepeatCustomers().getMonthOfYear());
             //set the bar data
             generateDataBar(healthCareStat.getTwelveMonths());
+            updateLineChart(healthCareStat.getTwelveMonths());
         }
     }
 
-    public class DayAxisValueFormatter extends ValueFormatter {
+    private void updateLineChart(List<YearlyData> yearlyData) {
 
-        public DayAxisValueFormatter() {
+
+
+        int cnt = yearlyData.size();
+        ArrayList<Entry> yVals1 = new ArrayList<>();
+        mMonths.clear();
+        // Sorted in reverse order
+        Collections.sort(yearlyData, new Comparator() {
+
+            public int compare(Object o1, Object o2) {
+
+                Integer x1 = ((YearlyData) o1).getYear();
+                Integer x2 = ((YearlyData) o2).getYear();
+                int sComp = x2.compareTo(x1);
+
+                if (sComp != 0) {
+                    return sComp;
+                }
+
+                Integer x11 = ((YearlyData) o1).getYearMonth();
+                Integer x22 = ((YearlyData) o2).getYearMonth();
+                return x22.compareTo(x11);
+            }
+        });
+        for (int i = 0; i < cnt; i++) {
+            yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue()));
+            mMonths.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
         }
+
+
+
+        LineDataSet dataSet = new LineDataSet(yVals1, "");
+        dataSet.setColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+        dataSet.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+
+        // Controlling X axis
+        XAxis xAxis = line_chart.getXAxis();
+        // Set the xAxis position to bottom. Default is top
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return months[(int) value];
+            }
+        };
+        xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
+        xAxis.setValueFormatter(formatter);
+
+        // Controlling right side of y axis
+        YAxis yAxisRight = line_chart.getAxisRight();
+        yAxisRight.setEnabled(false);
+
+        // Controlling left side of y axis
+        YAxis yAxisLeft = line_chart.getAxisLeft();
+        yAxisLeft.setGranularity(1f);
+
+        LineData data = new LineData(dataSet);
+        line_chart.getDescription().setEnabled(false);
+        line_chart.setData(data);
+        line_chart.animateX(2500);
+        line_chart.invalidate();
+    }
+
+    public class DayAxisValueFormatter extends ValueFormatter {
 
         @Override
         public String getFormattedValue(float value) {
