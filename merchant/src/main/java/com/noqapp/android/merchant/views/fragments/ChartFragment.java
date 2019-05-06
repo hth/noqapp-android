@@ -1,11 +1,10 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
+import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
+import com.noqapp.android.merchant.utils.MyValueFormatter;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -26,37 +25,34 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
-import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
-import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
-import com.noqapp.android.merchant.utils.MyValueFormatter;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-
 public class ChartFragment extends Fragment {
     private PieChart pieChart;
-    private HorizontalBarChart mChart;
-    private LineChart line_chart;
+    private HorizontalBarChart horizontalBarChart;
+    private LineChart lineChart;
     private ArrayList<String> mMonths = new ArrayList<>();
     private ArrayList<String> mMonths1 = new ArrayList<>();
-    private String[] months = new String[]{
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    };
+    private String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private YAxis leftAxis, rightAxis;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
-        mChart = view.findViewById(R.id.bar_chart);
-        line_chart = view.findViewById(R.id.line_chart);
+        horizontalBarChart = view.findViewById(R.id.bar_chart);
+        lineChart = view.findViewById(R.id.line_chart);
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -78,44 +74,44 @@ public class ChartFragment extends Fragment {
         pieChart.setHighlightPerTapEnabled(false);
         pieChart.getDescription().setTextSize(18f);
 
-        mChart.setDrawBarShadow(false);
-        mChart.setDrawValueAboveBar(true);
-        mChart.getDescription().setEnabled(false);
+        horizontalBarChart.setDrawBarShadow(false);
+        horizontalBarChart.setDrawValueAboveBar(true);
+        horizontalBarChart.getDescription().setEnabled(false);
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        mChart.setMaxVisibleValueCount(60);
-        mChart.setPinchZoom(false);
-        mChart.setScaleXEnabled(false);
-        mChart.setScaleYEnabled(false);
-        mChart.setDoubleTapToZoomEnabled(false);
-        mChart.setDrawGridBackground(false);
-        // mChart.setDrawYLabels(false);
+        horizontalBarChart.setMaxVisibleValueCount(60);
+        horizontalBarChart.setPinchZoom(false);
+        horizontalBarChart.setScaleXEnabled(false);
+        horizontalBarChart.setScaleYEnabled(false);
+        horizontalBarChart.setDoubleTapToZoomEnabled(false);
+        horizontalBarChart.setDrawGridBackground(false);
+        // horizontalBarChart.setDrawYLabels(false);
         // To hide the small color cubes at bottom of screen
-        mChart.getLegend().setEnabled(false);
+        horizontalBarChart.getLegend().setEnabled(false);
 
         ValueFormatter xAxisFormatter = new DayAxisValueFormatter();
-        XAxis xAxis = mChart.getXAxis();
+        XAxis xAxis = horizontalBarChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(12);
         xAxis.setValueFormatter(xAxisFormatter);
         ValueFormatter custom = new MyAxisValueFormatter();
-        leftAxis = mChart.getAxisLeft();
+        leftAxis = horizontalBarChart.getAxisLeft();
         // leftAxis.setLabelCount(5, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setSpaceTop(15f);
         leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        rightAxis = mChart.getAxisRight();
+        rightAxis = horizontalBarChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
         //rightAxis.setLabelCount(5, false);
         rightAxis.setValueFormatter(custom);
         rightAxis.setSpaceTop(15f);
         rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-        Legend l = mChart.getLegend();
+        Legend l = horizontalBarChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -124,7 +120,7 @@ public class ChartFragment extends Fragment {
         l.setFormSize(9f);
         l.setTextSize(11f);
         l.setXEntrySpace(4f);
-        mChart.animateY(700);
+        horizontalBarChart.animateY(700);
         Bundle bundle = getArguments();
         if (null != bundle) {
             HealthCareStat healthCareStat = (HealthCareStat) bundle.getSerializable("healthCareStat");
@@ -133,9 +129,7 @@ public class ChartFragment extends Fragment {
         return view;
     }
 
-
     private void setData(ArrayList<PieEntry> entries1, int month) {
-
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
         entries.addAll(entries1);
         PieDataSet dataSet = new PieDataSet(entries, "");
@@ -146,7 +140,6 @@ public class ChartFragment extends Fragment {
         dataSet.setValueTextSize(12f);
 
         // add a lot of colors
-
         ArrayList<Integer> colors = new ArrayList<Integer>();
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
@@ -170,29 +163,25 @@ public class ChartFragment extends Fragment {
         pieChart.invalidate();
     }
 
-
     private void generateDataBar(List<YearlyData> yearlyData) {
         int cnt = yearlyData.size();
         ArrayList<BarEntry> yVals1 = new ArrayList<>();
         mMonths.clear();
         // Sorted in reverse order
-        Collections.sort(yearlyData, new Comparator() {
+        Collections.sort(yearlyData, (Comparator) (o1, o2) -> {
+            Integer x1 = ((YearlyData) o1).getYear();
+            Integer x2 = ((YearlyData) o2).getYear();
+            int sComp = x2.compareTo(x1);
 
-            public int compare(Object o1, Object o2) {
-
-                Integer x1 = ((YearlyData) o1).getYear();
-                Integer x2 = ((YearlyData) o2).getYear();
-                int sComp = x2.compareTo(x1);
-
-                if (sComp != 0) {
-                    return sComp;
-                }
-
-                Integer x11 = ((YearlyData) o1).getYearMonth();
-                Integer x22 = ((YearlyData) o2).getYearMonth();
-                return x22.compareTo(x11);
+            if (sComp != 0) {
+                return sComp;
             }
+
+            Integer x11 = ((YearlyData) o1).getYearMonth();
+            Integer x22 = ((YearlyData) o2).getYearMonth();
+            return x22.compareTo(x11);
         });
+
         for (int i = 0; i < cnt; i++) {
             yVals1.add(new BarEntry(1 + i, yearlyData.get(i).getValue()));
             mMonths.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
@@ -202,13 +191,12 @@ public class ChartFragment extends Fragment {
         leftAxis.setLabelCount(mMonths.size(), false);
 
         BarDataSet set1;
-        if (mChart.getData() != null &&
-                mChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) mChart.getData().getDataSetByIndex(0);
+        if (horizontalBarChart.getData() != null && horizontalBarChart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) horizontalBarChart.getData().getDataSetByIndex(0);
             set1.setValues(yVals1);
-            mChart.getData().notifyDataChanged();
-            mChart.notifyDataSetChanged();
-            mChart.invalidate();
+            horizontalBarChart.getData().notifyDataChanged();
+            horizontalBarChart.notifyDataSetChanged();
+            horizontalBarChart.invalidate();
         } else {
             set1 = new BarDataSet(yVals1, "");
             set1.setDrawIcons(false);
@@ -221,8 +209,8 @@ public class ChartFragment extends Fragment {
             data.setValueTextSize(10f);
             data.setBarWidth(0.5f);
             data.setValueFormatter(new MyValueFormatter());
-            mChart.setData(data);
-            mChart.invalidate();
+            horizontalBarChart.setData(data);
+            horizontalBarChart.invalidate();
         }
     }
 
@@ -230,8 +218,7 @@ public class ChartFragment extends Fragment {
         if (null != healthCareStat) {
             int new_count = healthCareStat.getRepeatCustomers().getCustomerNew();
             int old_count = healthCareStat.getRepeatCustomers().getCustomerRepeat();
-            String[] mParties = new String[]{
-                    "New patient", "Repeat patient"};
+            String[] mParties = new String[]{"New patient", "Repeat patient"};
             ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
             entries.add(new PieEntry((float) new_count, mParties[0]));
             entries.add(new PieEntry((float) old_count, mParties[1]));
@@ -247,65 +234,59 @@ public class ChartFragment extends Fragment {
         ArrayList<Entry> yVals1 = new ArrayList<>();
         mMonths1.clear();
         // Sorted in reverse order
-        Collections.sort(yearlyData, new Comparator() {
+        Collections.sort(yearlyData, (Comparator) (o1, o2) -> {
+            Integer x1 = ((YearlyData) o1).getYear();
+            Integer x2 = ((YearlyData) o2).getYear();
+            int sComp = x1.compareTo(x2);
 
-            public int compare(Object o1, Object o2) {
-
-                Integer x1 = ((YearlyData) o1).getYear();
-                Integer x2 = ((YearlyData) o2).getYear();
-                int sComp = x1.compareTo(x2);
-
-                if (sComp != 0) {
-                    return sComp;
-                }
-
-                Integer x11 = ((YearlyData) o1).getYearMonth();
-                Integer x22 = ((YearlyData) o2).getYearMonth();
-                return x11.compareTo(x22);
+            if (sComp != 0) {
+                return sComp;
             }
+
+            Integer x11 = ((YearlyData) o1).getYearMonth();
+            Integer x22 = ((YearlyData) o2).getYearMonth();
+            return x11.compareTo(x22);
         });
+
         for (int i = 0; i < cnt; i++) {
             yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue()));
             mMonths1.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
         }
-
-
 
         LineDataSet dataSet = new LineDataSet(yVals1, "");
         dataSet.setColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         dataSet.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
 
         // Controlling X axis
-        XAxis xAxis = line_chart.getXAxis();
+        XAxis xAxis = lineChart.getXAxis();
         // Set the xAxis position to bottom. Default is top
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setLabelCount(mMonths1.size());
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return mMonths1.get((int) value-1);
+                return mMonths1.get((int) value - 1);
             }
         };
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setValueFormatter(formatter);
 
         // Controlling right side of y axis
-        YAxis yAxisRight = line_chart.getAxisRight();
+        YAxis yAxisRight = lineChart.getAxisRight();
         yAxisRight.setEnabled(false);
 
         // Controlling left side of y axis
-        YAxis yAxisLeft = line_chart.getAxisLeft();
+        YAxis yAxisLeft = lineChart.getAxisLeft();
         yAxisLeft.setGranularity(1f);
 
         LineData data = new LineData(dataSet);
-        line_chart.getDescription().setEnabled(false);
-        line_chart.setData(data);
-        line_chart.animateX(2500);
-        line_chart.invalidate();
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setData(data);
+        lineChart.animateX(2500);
+        lineChart.invalidate();
     }
 
     public class DayAxisValueFormatter extends ValueFormatter {
-
         @Override
         public String getFormattedValue(float value) {
             try {

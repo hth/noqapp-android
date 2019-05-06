@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="* Total fees accumulated in last 12 months"
+                    android:text="* Total fees accumulated in last 12 months **"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen" />
 
@@ -86,7 +86,7 @@
                     android:layout_alignParentBottom="true"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="* (Approx fee amount calculated)"
+                    android:text="** Approx fee amount calculated"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen" />
             </RelativeLayout>
