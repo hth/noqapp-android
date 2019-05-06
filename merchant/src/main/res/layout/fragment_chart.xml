@@ -30,11 +30,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Total number of patient in current month"
+                    android:text="Total patients visited this month"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen" />
-
-
+                
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
                     android:layout_width="match_parent"
@@ -65,10 +64,9 @@
                     android:layout_alignParentTop="true"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Total fees accumulated in last 12 months **"
+                    android:text="Earnings per month for last 12 months **"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen" />
-
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/line_chart"
@@ -86,7 +84,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:layout_alignParentBottom="true"
-                    android:text="** Approx fee amount calculated"
+                    android:text="** Earnings computed are approximate"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen" />
             </RelativeLayout>
@@ -113,7 +111,6 @@
                     android:text="Total number of patient in last 12 months"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_sixteen" />
-
 
                 <com.github.mikephil.charting.charts.HorizontalBarChart
                     android:id="@+id/bar_chart"

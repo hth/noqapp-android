@@ -28,9 +28,11 @@ import com.github.mikephil.charting.utils.MPPointF;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -53,6 +55,12 @@ public class ChartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chart, container, false);
         horizontalBarChart = view.findViewById(R.id.bar_chart);
         lineChart = view.findViewById(R.id.line_chart);
+
+        TextView tv1 = view.findViewById(R.id.tv1);
+        tv1.setText(Html.fromHtml(tv1.getText().toString().replace("**", "<b>*</b>")));
+        TextView tv2 = view.findViewById(R.id.tv2);
+        tv2.setText(Html.fromHtml(tv2.getText().toString().replace("**", "<b>*</b>")));
+
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
