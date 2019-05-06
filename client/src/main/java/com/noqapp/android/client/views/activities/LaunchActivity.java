@@ -1,5 +1,48 @@
 package com.noqapp.android.client.views.activities;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -45,51 +88,25 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -101,17 +118,11 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private TextView tv_badge;
     public TextView tv_location;
-
     private long lastPress;
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
@@ -241,6 +252,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                         break;
                     case R.drawable.legal: {
+                        if(!AppUtilities.isRelease()){
+                         new CreateBigImageNotification("https://dukeo.com/media/low-quality-blog-content.jpg").execute();
+                        }
                         Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
                         startActivity(in);
                         break;
@@ -1159,5 +1173,80 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 this,
                 STORAGE_PERMISSION_PERMS,
                 STORAGE_PERMISSION_CODE);
+    }
+
+
+    private void showBigNotification(String message, Bitmap image, String title ) {
+        int notifyID = 0;
+        String CHANNEL_ID = "my_channel_01";            // The id of the channel.
+        Intent intent = new Intent(this, LaunchActivity.class);
+        intent.putExtra("title", title);
+        intent.putExtra("message", message);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.launcher)
+                .setContentTitle(title)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setLargeIcon(image)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setChannelId(CHANNEL_ID)
+                .setContentIntent(pendingIntent);
+
+        if (image != null) {
+            notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
+                    .bigPicture(image)
+                    //.setSummaryText(message)
+                    .bigLargeIcon(null));
+        }
+        notificationBuilder.setContentText(message);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {       // For Oreo and greater than it, we required Notification Channel.
+            CharSequence name = "NoQueue Channel";                   // The user-visible name of the channel.
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance); //Create Notification Channel
+            notificationManager.createNotificationChannel(channel);
+        }
+        notificationManager.notify(notifyID /* ID of notification */, notificationBuilder.build());
+    }
+
+    private class CreateBigImageNotification extends AsyncTask<String, Void, Bitmap> {
+        private String imageUrl = "";
+
+        public CreateBigImageNotification(String imageUrl){
+            this.imageUrl = imageUrl;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(input);
+                return bitmap;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            showBigNotification("Doctor Vashvani is not coming today. Doctor is out of town." +
+                    " Sorry for inconvenience. Please wait for the doctor for tomorrow if possible ",result,"Hello Patient");
+        }
     }
 }
