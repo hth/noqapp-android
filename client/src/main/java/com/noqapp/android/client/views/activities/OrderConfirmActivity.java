@@ -260,7 +260,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 tv_status.setText("Order being prepared");
                 break;
             case PO:
-                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
                 if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
                     btn_pay_now.setVisibility(View.VISIBLE);
                 } else {
@@ -270,15 +270,15 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             case RD:
             case RP:
             case OD:
-                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
                 break;
             case VB: {
-                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
                 btn_pay_now.setVisibility(View.VISIBLE);
             }
             break;
             default:
-                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getDescription());
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
@@ -375,10 +375,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     case RD:
                     case RP:
                     case OD:
-                        tv_status.setText(jq.getPurchaseOrderState().getDescription());
+                        tv_status.setText(jq.getPurchaseOrderState().getFriendlyDescription());
                         break;
                     default:
-                        tv_status.setText(jq.getPurchaseOrderState().getDescription());
+                        tv_status.setText(jq.getPurchaseOrderState().getFriendlyDescription());
                 }
             }
             int currentTemp = currentServing == -1 ? jq.getServingNumber() : currentServing;

@@ -1,20 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.squareup.picasso.Picasso;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -27,16 +12,30 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.views.activities.ManagerProfileActivity;
+import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.Formatter;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
     private final Context context;
     private final OnItemClickListener listener;
     private List<BizStoreElastic> dataSet;
+    private boolean isSingleEntry = false;
 
 
     public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener) {
@@ -45,11 +44,24 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         this.listener = listener;
     }
 
+    public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener,boolean isSingleEntry) {
+        this.dataSet = jsonQueues;
+        this.context = context;
+        this.listener = listener;
+        this.isSingleEntry = isSingleEntry;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_item_category1, parent, false);
+        View view = null;
+        if(isSingleEntry){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.rcv_single_entry_item, parent, false);
+        }else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.rcv_item_category1, parent, false);
+        }
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -59,7 +71,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         holder.tv_name.setText(bizStoreElastic.getDisplayName());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
-        holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(),bizStoreElastic.getArea()));
+        holder.tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
         holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         if (bizStoreElastic.getReviewCount() == 0) {
             holder.tv_store_review.setText("No Review");
@@ -192,17 +204,17 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             Picasso.get().load(R.drawable.profile_theme).into(holder.iv_main);
         }
 
-        holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE:View.VISIBLE);
-          if(bizStoreElastic.getProductPrice()==0){
-              holder.tv_consult_fees.setVisibility(View.GONE);
-              holder.tv_consult_fees_header.setVisibility(View.GONE);
-        }else{
-              // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
-              String feeString = "fees <font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>";
-              holder.tv_consult_fees.setText(Html.fromHtml(feeString));
-              holder.tv_consult_fees.setVisibility(View.VISIBLE);
-              holder.tv_consult_fees_header.setVisibility(View.VISIBLE);
-          }
+        holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE : View.VISIBLE);
+        if (bizStoreElastic.getProductPrice() == 0) {
+            holder.tv_consult_fees.setVisibility(View.GONE);
+            holder.tv_consult_fees_header.setVisibility(View.GONE);
+        } else {
+            // String feeString = "<font color=#000000><b>"+ AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>  Consultation fee";
+            String feeString = "fees <font color=#000000><b>" + AppUtilities.getCurrencySymbol(bizStoreElastic.getCountryShortName()) + String.valueOf(bizStoreElastic.getProductPrice() / 100) + "</b></font>";
+            holder.tv_consult_fees.setText(Html.fromHtml(feeString));
+            holder.tv_consult_fees.setVisibility(View.VISIBLE);
+            holder.tv_consult_fees_header.setVisibility(View.VISIBLE);
+        }
         holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_join.setOnClickListener(new View.OnClickListener() {
             @Override

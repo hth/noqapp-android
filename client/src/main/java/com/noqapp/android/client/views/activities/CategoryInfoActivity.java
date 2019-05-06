@@ -12,6 +12,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
@@ -21,11 +22,13 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
+import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.google.android.flexbox.AlignItems;
@@ -39,10 +42,18 @@ import com.squareup.picasso.Picasso;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +69,7 @@ import java.util.Set;
 /**
  * Created by chandra on 5/7/17.
  */
-public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener {
+public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener,CategoryListAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -90,7 +101,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
     private View view_loader;
-    private RecyclerView rcv_accreditation;
+    private RecyclerView rcv_accreditation,rcv_single_queue;
+    private LinearLayout ll_top_header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +122,8 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
+        rcv_single_queue = findViewById(R.id.rcv_single_queue);
+        ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         listener = this;
@@ -330,7 +344,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         } else {
             //TODO(chandra) when its empty do something nice
         }
-
+        checkForSingleEntry();
         dismissProgress();
     }
 
@@ -427,11 +441,65 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
     }
 
-    public FlexboxLayoutManager getFlexBoxLayoutManager() {
+    private void checkForSingleEntry(){
+        rcv_single_queue.setVisibility(View.GONE);
+        ll_top_header.setVisibility(View.VISIBLE);
+
+        if ((null != getCategoryThatArePopulated() && getCategoryThatArePopulated().size()==1) &&
+                (null != cacheQueue.getIfPresent("queue") && cacheQueue.getIfPresent("queue").size()==1)){
+
+            Map.Entry<String, ArrayList<BizStoreElastic>> entry = cacheQueue.getIfPresent("queue").entrySet().iterator().next();
+            ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
+            if(bizStoreElastics.size() == 1){
+                if(!AppUtilities.isRelease())
+                Toast.makeText(this, "One item found", Toast.LENGTH_SHORT).show();
+                CategoryListAdapter categoryListAdapter = new CategoryListAdapter(bizStoreElastics, this, this,true);
+                rcv_single_queue.setHasFixedSize(true);
+                rcv_single_queue.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+                rcv_single_queue.setItemAnimator(new DefaultItemAnimator());
+                rcv_single_queue.setAdapter(categoryListAdapter);
+                rcv_single_queue.setVisibility(View.VISIBLE);
+                btn_join_queues.setVisibility(View.GONE);
+                ll_top_header.setVisibility(View.GONE);
+            }else{
+                if(!AppUtilities.isRelease())
+                Toast.makeText(this, bizStoreElastics.size()+" item found", Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            if(!AppUtilities.isRelease())
+            Toast.makeText(this, "Other Case", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+   public FlexboxLayoutManager getFlexBoxLayoutManager() {
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
         layoutManager.setAlignItems(AlignItems.FLEX_START);
         return layoutManager;
+    }
+
+    @Override
+    public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
+        switch (item.getBusinessType()) {
+            case DO:
+            case BK:
+            case HS:
+                // open hospital profile
+                Intent in = new Intent(this, JoinActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, false);
+                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));
+                startActivity(in);
+                break;
+            default:
+                // open order screen
+                in = new Intent(this, StoreDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("BizStoreElastic", item);
+                in.putExtras(bundle);
+                startActivity(in);
+        }
     }
 }

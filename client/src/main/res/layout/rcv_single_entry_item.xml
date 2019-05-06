@@ -10,21 +10,16 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         card_view:cardBackgroundColor="@color/white"
-        card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="0dp"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp">
+            android:orientation="vertical">
 
 
             <RelativeLayout
@@ -109,8 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/tv_specialization"
                     android:layout_alignParentRight="true"
-                    android:gravity="center"
                     android:layout_marginTop="5dp"
+                    android:gravity="center"
                     android:text="Consultation"
                     android:textSize="@dimen/text_size_twelve" />
             </RelativeLayout>

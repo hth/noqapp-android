@@ -300,7 +300,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
 
         }
-        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
         } else {
