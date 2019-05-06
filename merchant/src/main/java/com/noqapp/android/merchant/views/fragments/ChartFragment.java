@@ -46,6 +46,7 @@ public class ChartFragment extends Fragment {
     private HorizontalBarChart mChart;
     private LineChart line_chart;
     private ArrayList<String> mMonths = new ArrayList<>();
+    private ArrayList<String> mMonths1 = new ArrayList<>();
     private String[] months = new String[]{
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
@@ -244,7 +245,7 @@ public class ChartFragment extends Fragment {
     private void updateLineChart(List<YearlyData> yearlyData) {
         int cnt = yearlyData.size();
         ArrayList<Entry> yVals1 = new ArrayList<>();
-        mMonths.clear();
+        mMonths1.clear();
         // Sorted in reverse order
         Collections.sort(yearlyData, new Comparator() {
 
@@ -252,7 +253,7 @@ public class ChartFragment extends Fragment {
 
                 Integer x1 = ((YearlyData) o1).getYear();
                 Integer x2 = ((YearlyData) o2).getYear();
-                int sComp = x2.compareTo(x1);
+                int sComp = x1.compareTo(x2);
 
                 if (sComp != 0) {
                     return sComp;
@@ -260,12 +261,12 @@ public class ChartFragment extends Fragment {
 
                 Integer x11 = ((YearlyData) o1).getYearMonth();
                 Integer x22 = ((YearlyData) o2).getYearMonth();
-                return x22.compareTo(x11);
+                return x11.compareTo(x22);
             }
         });
         for (int i = 0; i < cnt; i++) {
             yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue()));
-            mMonths.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
+            mMonths1.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
         }
 
 
@@ -278,10 +279,11 @@ public class ChartFragment extends Fragment {
         XAxis xAxis = line_chart.getXAxis();
         // Set the xAxis position to bottom. Default is top
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelCount(mMonths1.size());
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return months[(int) value];
+                return mMonths1.get((int) value-1);
             }
         };
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
