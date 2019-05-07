@@ -56,7 +56,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
@@ -64,7 +66,10 @@ import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -114,6 +119,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData() != null) {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
+            String imageUrl = remoteMessage.getData().get("imageURL");
             MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
 
             Object object = null;
@@ -132,7 +138,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         ObjectMapper mapper = new ObjectMapper();
                         JsonClientTokenAndQueueData jsonClientTokenAndQueueData = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientTokenAndQueueData.class);
                         JsonTokenAndQueueList jsonTokenAndQueueList = new JsonTokenAndQueueList();
-                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(remoteMessage.getData().get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {}));
+                        jsonTokenAndQueueList.setTokenAndQueues(mapper.readValue(remoteMessage.getData().get("tqs"), new TypeReference<List<JsonTokenAndQueue>>() {
+                        }));
                         jsonClientTokenAndQueueData.setTokenAndQueues(jsonTokenAndQueueList.getTokenAndQueues());
                         object = jsonClientTokenAndQueueData;
                         Log.e("FCM", object.toString());
@@ -241,9 +248,9 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ((JsonAlertData) object).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
+                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(),imageUrl);
 
-                                sendNotification(title, body, false);
+                                sendNotification(title, body, false, imageUrl);
                             } else if (object instanceof JsonClientData) {
                                 Log.e("IN JsonClientData", ((JsonClientData) object).toString());
                                 String token = String.valueOf(((JsonClientData) object).getToken());
@@ -271,7 +278,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, true, token);//pass codeQR to open review screen
+                                    sendNotification(title, body, codeQR, true, token, imageUrl);//pass codeQR to open review screen
                                 } else if (((JsonClientData) object).getQueueUserState().getName().equalsIgnoreCase(QueueUserStateEnum.N.getName())) {
                                     ReviewData reviewData = ReviewDB.getValue(codeQR, token);
                                     if (null != reviewData) {
@@ -291,7 +298,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         cv.put(DatabaseTable.Review.KEY_GOTO, "");
                                         ReviewDB.insert(cv);
                                     }
-                                    sendNotification(title, body, codeQR, false, token);//pass codeQR to open skip screen
+                                    sendNotification(title, body, codeQR, false, token, imageUrl);//pass codeQR to open skip screen
                                 }
                             } else if (object instanceof JsonClientTokenAndQueueData) {
                                 List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
@@ -301,21 +308,21 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 NotificationDB.insertNotification(
                                         NotificationDB.KEY_NOTIFY,
                                         ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
-                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName(),imageUrl);
 
                                 for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                                     NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
                                 }
-                                sendNotification(title, body, false);
+                                sendNotification(title, body, false, imageUrl);
                             } else if (object instanceof JsonMedicalFollowUp) {
                                 Log.e("Alert set:", "data is :" + title + " ---- " + body);
-                                sendNotification(title, body, true);
+                                sendNotification(title, body, true, imageUrl);
                                 setAlarm((JsonMedicalFollowUp) object);
                             } else {
-                                sendNotification(title, body, false);
+                                sendNotification(title, body, false, imageUrl);
                             }
-                        }else {
-                            sendNotification(title, body, false);
+                        } else {
+                            sendNotification(title, body, false, imageUrl);
                             // add notification to DB
                             if (object instanceof JsonAlertData) {
                                 Log.e("IN JsonAlertData", ((JsonAlertData) object).toString());
@@ -324,7 +331,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ((JsonAlertData) object).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
+                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(),imageUrl);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
@@ -375,7 +382,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                     NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
                                 }
                                 TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                                sendNotification(title, body, true); // pass null to show only notification with no action
+                                sendNotification(title, body, true, imageUrl); // pass null to show only notification with no action
                             }
                         }
                     }
@@ -384,98 +391,22 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
                                 ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
-                                ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName());
+                                ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(),imageUrl);
                     }
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error reading message " + e.getLocalizedMessage(), e);
-                sendNotification(title, body, false);
+                sendNotification(title, body, false, imageUrl);
             }
         }
     }
 
-    private void sendNotification(String title, String messageBody, String codeQR, boolean isReview, String token) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon);
-        Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        if (null != codeQR) {
-            notificationIntent.putExtra(QRCODE, codeQR);
-            notificationIntent.putExtra(ISREVIEW, isReview);
-            notificationIntent.putExtra(TOKEN, token);
-        }
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        int notificationId = 1;
-
-        String channelId = "channel-01";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String channelName = "Channel Name";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, channelName, importance);
-            notificationManager.createNotificationChannel(mChannel);
-        }
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-                .setSmallIcon(getNotificationIcon())
-                .setLargeIcon(bm)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                .setLights(Color.parseColor("#ffb400"), 50, 10)
-                .setSound(defaultSoundUri);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-        stackBuilder.addNextIntent(notificationIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                Constants.requestCodeNotification,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        notificationManager.notify(notificationId, mBuilder.build());
+    private void sendNotification(String title, String messageBody, String codeQR, boolean isReview, String token, String imageUrl) {
+        new CreateBigImageNotificationWithReview(title, messageBody, codeQR, isReview, token, imageUrl).execute();
     }
 
-    private void sendNotification(String title, String messageBody, boolean isVibrate) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationId = 1;
-        String channelId = "channel-01";
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String channelName = "Channel Name";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, channelName, importance);
-            notificationManager.createNotificationChannel(mChannel);
-        }
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
-                .setSmallIcon(getNotificationIcon())
-                .setLargeIcon(bm)
-                .setContentTitle(title)
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                .setLights(Color.parseColor("#ffb400"), 50, 10)
-                .setSound(defaultSoundUri);
-        if (isVibrate)
-            mBuilder.setVibrate(new long[]{500, 500});
-        Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
-        stackBuilder.addNextIntent(notificationIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                Constants.requestCodeNotification,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        notificationManager.notify(notificationId, mBuilder.build());
-
+    private void sendNotification(String title, String messageBody, boolean isVibrate, String imageUrl) {
+        new CreateBigImageNotification(title, messageBody, imageUrl, isVibrate).execute();
     }
 
     /**
@@ -510,6 +441,10 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
     }
 
+    private Bitmap getNotificationBitmap() {
+        return BitmapFactory.decodeResource(getResources(), R.mipmap.launcher);
+    }
+
     private void setAlarm(JsonMedicalFollowUp jsonMedicalFollowUp) {
         try {
             Date startDate = CommonHelper.stringToDate(jsonMedicalFollowUp.getPopFollowUpAlert());
@@ -534,6 +469,169 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             Log.e("Alarm set", "Done Alarm");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private class CreateBigImageNotification extends AsyncTask<String, Void, Bitmap> {
+        private String imageUrl = "";
+        private String title, messageBody;
+        private boolean isVibrate;
+
+        public CreateBigImageNotification(String title, String message, String imageUrl, boolean isVibrate) {
+            this.imageUrl = imageUrl;
+            this.messageBody = message;
+            this.title = title;
+            this.isVibrate = isVibrate;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            if (TextUtils.isEmpty(imageUrl))
+                return null;
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(input);
+                return bitmap;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int notificationId = 1;
+            String channelId = "channel-01";
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                String channelName = "Channel Name";
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                NotificationChannel mChannel = new NotificationChannel(
+                        channelId, channelName, importance);
+                notificationManager.createNotificationChannel(mChannel);
+            }
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                    .setSmallIcon(getNotificationIcon())
+                    .setLargeIcon(getNotificationBitmap())
+                    .setContentTitle(title)
+                    .setContentText(messageBody)
+                    .setAutoCancel(true)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
+                    .setLights(Color.parseColor("#ffb400"), 50, 10)
+                    .setSound(defaultSoundUri);
+            if (bitmap != null) {
+                mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
+                        .bigPicture(bitmap)
+                        //.setSummaryText(message)
+                        .bigLargeIcon(null));
+            }
+            if (isVibrate)
+                mBuilder.setVibrate(new long[]{500, 500});
+            Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addNextIntent(notificationIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                    Constants.requestCodeNotification,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            notificationManager.notify(notificationId, mBuilder.build());
+        }
+    }
+
+    private class CreateBigImageNotificationWithReview extends AsyncTask<String, Void, Bitmap> {
+        private String imageUrl = "";
+        private String title, messageBody, codeQR, token;
+        private boolean isReview;
+
+        public CreateBigImageNotificationWithReview(String title, String messageBody, String codeQR, boolean isReview, String token, String imageUrl) {
+            this.imageUrl = imageUrl;
+            this.messageBody = messageBody;
+            this.title = title;
+            this.codeQR = codeQR;
+            this.token = token;
+            this.isReview = isReview;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            if (TextUtils.isEmpty(imageUrl))
+                return null;
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                bitmap = BitmapFactory.decodeStream(input);
+                return bitmap;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
+            if (null != codeQR) {
+                notificationIntent.putExtra(QRCODE, codeQR);
+                notificationIntent.putExtra(ISREVIEW, isReview);
+                notificationIntent.putExtra(TOKEN, token);
+            }
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            int notificationId = 1;
+
+            String channelId = "channel-01";
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                String channelName = "Channel Name";
+                int importance = NotificationManager.IMPORTANCE_HIGH;
+                NotificationChannel mChannel = new NotificationChannel(
+                        channelId, channelName, importance);
+                notificationManager.createNotificationChannel(mChannel);
+            }
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), channelId)
+                    .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorMobile))
+                    .setSmallIcon(getNotificationIcon())
+                    .setLargeIcon(getNotificationBitmap())
+                    .setContentTitle(title)
+                    .setContentText(messageBody)
+                    .setAutoCancel(true)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
+                    .setLights(Color.parseColor("#ffb400"), 50, 10)
+                    .setSound(defaultSoundUri);
+            if (bitmap != null) {
+                mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
+                        .bigPicture(bitmap)
+                        //.setSummaryText(message)
+                        .bigLargeIcon(null));
+            }
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+            stackBuilder.addNextIntent(notificationIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                    Constants.requestCodeNotification,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            mBuilder.setContentIntent(resultPendingIntent);
+
+            notificationManager.notify(notificationId, mBuilder.build());
         }
     }
 

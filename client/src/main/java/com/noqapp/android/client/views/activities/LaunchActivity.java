@@ -2,9 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -13,17 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -43,6 +34,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -88,15 +80,13 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
+
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -106,7 +96,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -252,9 +241,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                         break;
                     case R.drawable.legal: {
-                        if(!AppUtilities.isRelease()){
-                         new CreateBigImageNotification("https://dukeo.com/media/low-quality-blog-content.jpg").execute();
-                        }
                         Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
                         startActivity(in);
                         break;
@@ -288,7 +274,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         AppUtilities.openPlayStore(launchActivity);
                         break;
                     case R.drawable.ic_logout:
-                        ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity,true);
+                        ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
                         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
                             public void btnPositiveClick() {
@@ -296,6 +282,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                                 startActivity(loginIntent);
                             }
+
                             @Override
                             public void btnNegativeClick() {
                                 //Do nothing
@@ -841,7 +828,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
                             ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
-                            ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName());
+                            ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonMedicalFollowUp) object).getImageURL());
                 }
 
                 if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
@@ -851,9 +838,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 ((JsonAlertData) object).getCodeQR(),
                                 ((JsonAlertData) object).getBody(),
                                 ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
+                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() :
+                                        ((JsonAlertData) object).getBusinessType().getName(), ((JsonAlertData) object).getImageURL());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() ,((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle(), ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else if (object instanceof JsonClientData) {
                         String token = String.valueOf(((JsonClientData) object).getToken());
@@ -942,7 +930,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         }
                     } else if (object instanceof JsonTopicOrderData) {
                         updateNotification(object, codeQR);
-                    }else if (object instanceof JsonTopicQueueData) {
+                    } else if (object instanceof JsonTopicQueueData) {
                         updateNotification(object, codeQR);
                     } else if (object instanceof JsonClientTokenAndQueueData) {
                         List<JsonTokenAndQueue> jsonTokenAndQueueList = ((JsonClientTokenAndQueueData) object).getTokenAndQueues();
@@ -952,7 +940,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
                                 ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
-                                ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName());
+                                ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonClientTokenAndQueueData) object).getImageURL());
 
                         for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                             NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
@@ -968,9 +956,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                                 ((JsonAlertData) object).getCodeQR(),
                                 ((JsonAlertData) object).getBody(),
                                 ((JsonAlertData) object).getTitle(),
-                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName());
+                                ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() :
+                                        ((JsonAlertData) object).getBusinessType().getName(), ((JsonAlertData) object).getImageURL());
                         //Show some meaningful msg to the end user
-                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle() ,((JsonAlertData) object).getBody());
+                        ShowAlertInformation.showInfoDisplayDialog(LaunchActivity.this, ((JsonAlertData) object).getTitle(), ((JsonAlertData) object).getBody());
                         updateNotificationBadgeCount();
                     } else {
                         updateNotification(object, codeQR);
@@ -1009,9 +998,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
             if (null != jtk) {
                 //update DB & after join screen
-                if( Integer.parseInt(current_serving)<jtk.getServingNumber()){
+                if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
                     // Do nothing - In Case of getting service no less than what the object have
-                }else{
+                } else {
                     jtk.setServingNumber(Integer.parseInt(current_serving));
                     TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
                 }
@@ -1090,7 +1079,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
                         }
                     }
-                    scanFragment.updateListFromNotification(jtk, go_to,title,body);
+                    scanFragment.updateListFromNotification(jtk, go_to, title, body);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1175,78 +1164,4 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 STORAGE_PERMISSION_CODE);
     }
 
-
-    private void showBigNotification(String message, Bitmap image, String title ) {
-        int notifyID = 0;
-        String CHANNEL_ID = "my_channel_01";            // The id of the channel.
-        Intent intent = new Intent(this, LaunchActivity.class);
-        intent.putExtra("title", title);
-        intent.putExtra("message", message);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.launcher)
-                .setContentTitle(title)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .setLargeIcon(image)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setChannelId(CHANNEL_ID)
-                .setContentIntent(pendingIntent);
-
-        if (image != null) {
-            notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
-                    .bigPicture(image)
-                    //.setSummaryText(message)
-                    .bigLargeIcon(null));
-        }
-        notificationBuilder.setContentText(message);
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {       // For Oreo and greater than it, we required Notification Channel.
-            CharSequence name = "NoQueue Channel";                   // The user-visible name of the channel.
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance); //Create Notification Channel
-            notificationManager.createNotificationChannel(channel);
-        }
-        notificationManager.notify(notifyID /* ID of notification */, notificationBuilder.build());
-    }
-
-    private class CreateBigImageNotification extends AsyncTask<String, Void, Bitmap> {
-        private String imageUrl = "";
-
-        public CreateBigImageNotification(String imageUrl){
-            this.imageUrl = imageUrl;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            Bitmap bitmap = null;
-            try {
-                URL url = new URL(imageUrl);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                bitmap = BitmapFactory.decodeStream(input);
-                return bitmap;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            showBigNotification("Doctor Vashvani is not coming today. Doctor is out of town." +
-                    " Sorry for inconvenience. Please wait for the doctor for tomorrow if possible ",result,"Hello Patient");
-        }
-    }
 }

@@ -123,7 +123,8 @@ public class CreateTable {
                 + Notification.STATUS + " TEXT, "
                 + Notification.SEQUENCE + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Notification.CREATE_DATE + " TEXT, "
-                + Notification.BUSINESS_TYPE + " TEXT " +
+                + Notification.BUSINESS_TYPE + " TEXT, "
+                + Notification.IMAGE_URL + " TEXT " +
                 //+ "PRIMARY KEY(`" + Notification.KEY + "`)" +
 
                 ");");
@@ -143,6 +144,14 @@ public class CreateTable {
         try {
             db.execSQL("ALTER TABLE " + TokenQueue.TABLE_NAME + " ADD COLUMN " + TokenQueue.TRANSACTION_ID + " TEXT;");
             db.execSQL("ALTER TABLE " + TokenQueueHistory.TABLE_NAME + " ADD COLUMN " + TokenQueue.TRANSACTION_ID + " TEXT;");
+            Log.e("Table ","Created");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    static void alterNotificationTable(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE " + Notification.TABLE_NAME + " ADD COLUMN " + Notification.IMAGE_URL + " TEXT;");
             Log.e("Table ","Created");
         }catch (Exception e){
             e.printStackTrace();

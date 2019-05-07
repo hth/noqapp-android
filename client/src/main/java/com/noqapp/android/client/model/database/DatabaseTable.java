@@ -70,6 +70,8 @@ public class DatabaseTable {
         public static final String SEQUENCE = "sequence";
         public static final String CREATE_DATE = "createDate";
         public static final String BUSINESS_TYPE = "businessType";
+        public static final String IMAGE_URL = "imageUrl";
+
 
         private Notification() {
         }

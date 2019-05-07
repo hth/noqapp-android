@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class NotificationDB {
     private static final String TAG = NotificationDB.class.getSimpleName();
 
 
-    public static void insertNotification(String key, String codeQR, String value, String title,String businessType) {
+    public static void insertNotification(String key, String codeQR, String value, String title, String businessType, String imageUrl) {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseTable.Notification.KEY, key);
         cv.put(DatabaseTable.Notification.CODE_QR, codeQR);
@@ -38,7 +39,8 @@ public class NotificationDB {
         // Returns the current date with the same format as Javascript's new Date().toJSON(), ISO 8601
         String dateString = CommonHelper.changeUTCDateToString(new Date());
         cv.put(DatabaseTable.Notification.CREATE_DATE, dateString);
-        cv.put(DatabaseTable.Notification.BUSINESS_TYPE,businessType);
+        cv.put(DatabaseTable.Notification.BUSINESS_TYPE, businessType);
+        cv.put(DatabaseTable.Notification.IMAGE_URL, TextUtils.isEmpty(imageUrl) ? "" : imageUrl);
         try {
             long successCount = dbHandler.getWritableDb().insertWithOnConflict(
                     DatabaseTable.Notification.TABLE_NAME,
@@ -68,6 +70,7 @@ public class NotificationDB {
                         notificationBeans.setStatus(cursor.getString(4));
                         notificationBeans.setNotificationCreate(cursor.getString(6));
                         notificationBeans.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(7)));
+                        notificationBeans.setImageUrl(cursor.getString(8));
                         notificationBeansList.add(notificationBeans);
                     }
                 } finally {
@@ -104,10 +107,10 @@ public class NotificationDB {
         }
     }
 
-    public static void clearNotificationTable(){
+    public static void clearNotificationTable() {
         try {
             dbHandler.getWritableDb().delete(DatabaseTable.Notification.TABLE_NAME, null, null);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
