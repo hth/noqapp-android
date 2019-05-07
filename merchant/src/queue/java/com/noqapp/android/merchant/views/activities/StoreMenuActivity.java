@@ -407,7 +407,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                                 .setQueueUserId(jsonProfile.getQueueUserId())
                                 .setOrderPrice(String.valueOf(price));
                         jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-                        jsonPurchaseOrder.setDeliveryAddress("");
+                        jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
                         jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
                         jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
                         jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
