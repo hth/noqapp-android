@@ -13,6 +13,7 @@ public class NotificationBeans {
     private String status;
     private String notificationCreate;
     private BusinessTypeEnum businessType;
+    private String imageUrl;
 
     public NotificationBeans() {
 
@@ -64,14 +65,25 @@ public class NotificationBeans {
         return this;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public NotificationBeans setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "NotificationBeans{" +
-                "title='" + title + '\'' +
-                ", msg='" + msg + '\'' +
-                ", status='" + status + '\'' +
-                ", notificationCreate='" + notificationCreate + '\'' +
-                ", businessType=" + businessType +
-                '}';
+        final StringBuffer sb = new StringBuffer("NotificationBeans{");
+        sb.append("title='").append(title).append('\'');
+        sb.append(", msg='").append(msg).append('\'');
+        sb.append(", status='").append(status).append('\'');
+        sb.append(", notificationCreate='").append(notificationCreate).append('\'');
+        sb.append(", businessType=").append(businessType);
+        sb.append(", imageUrl='").append(imageUrl).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

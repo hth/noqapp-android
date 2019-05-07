@@ -41,6 +41,10 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
     @JsonProperty("body")
     private String body;
 
+    @JsonProperty("imageURL")
+    private String imageURL;
+
+
     public FirebaseMessageTypeEnum getFirebaseMessageType() {
         return firebaseMessageType;
     }
@@ -68,12 +72,23 @@ public abstract class JsonData extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public JsonData setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "JsonData{" +
-                "firebaseMessageType=" + firebaseMessageType +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonData{");
+        sb.append("firebaseMessageType=").append(firebaseMessageType);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", body='").append(body).append('\'');
+        sb.append(", imageURL='").append(imageURL).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

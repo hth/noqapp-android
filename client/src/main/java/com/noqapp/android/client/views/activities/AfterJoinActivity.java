@@ -792,8 +792,10 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             progressDialog.show();
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
-            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder().setCodeQR(codeQR).
-                    setQueueUserId(jsonTokenAndQueue.getQueueUserId()).setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
+            JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                    .setCodeQR(codeQR)
+                    .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                    .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
             queueApiAuthenticCall.paymentInitiate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }

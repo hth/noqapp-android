@@ -40,7 +40,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        Log.e("NEW_TOKEN",s);
+        Log.e("NEW_TOKEN", s);
     }
 
     // Clears notification tray messages
@@ -73,7 +73,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             // add notification to DB
 
             if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY,remoteMessage.getData().get(Constants.CodeQR),body,title);
+                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
             }
 
 
@@ -99,7 +99,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String title, String messageBody, RemoteMessage remoteMessage) {
         Intent notificationIntent = new Intent(getApplicationContext(), LaunchActivity.class);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.launcher);
         if (null != remoteMessage) {
             notificationIntent.putExtra(Constants.MESSAGE, messageBody);
             notificationIntent.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
@@ -172,6 +172,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         }
         return isInBackground;
     }
+
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.mipmap.notification_icon : R.mipmap.launcher;
