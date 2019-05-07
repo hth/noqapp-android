@@ -273,7 +273,12 @@ public class ChartFragment extends Fragment {
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return mMonths1.get((int) value - 1);
+                try {
+                    int index = (int) value - 1;
+                    return mMonths1.get(index); // minus 1 because array start with 0
+                } catch (Exception e) {
+                    return "";
+                }
             }
         };
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
@@ -289,8 +294,12 @@ public class ChartFragment extends Fragment {
 
         LineData data = new LineData(dataSet);
         lineChart.getDescription().setEnabled(false);
+        lineChart.setPinchZoom(false);
+        lineChart.setScaleXEnabled(false);
+        lineChart.setScaleYEnabled(false);
+        lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setData(data);
-        lineChart.animateX(2500);
+        lineChart.animateX(0);
         lineChart.invalidate();
     }
 
