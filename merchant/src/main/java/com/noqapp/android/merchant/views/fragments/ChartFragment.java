@@ -264,6 +264,7 @@ public class ChartFragment extends Fragment {
         LineDataSet dataSet = new LineDataSet(yVals1, "");
         dataSet.setColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         dataSet.setValueTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+        dataSet.setDrawFilled(true);
 
         // Controlling X axis
         XAxis xAxis = lineChart.getXAxis();
