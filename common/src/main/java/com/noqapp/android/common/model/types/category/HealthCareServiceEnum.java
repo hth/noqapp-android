@@ -43,7 +43,6 @@ public enum HealthCareServiceEnum {
         for (HealthCareServiceEnum healthCareService : HealthCareServiceEnum.values()) {
             a.add(healthCareService.description);
         }
-
         return a;
     }
 }

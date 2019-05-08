@@ -1,5 +1,10 @@
 package com.noqapp.android.common.model.types.medical;
 
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * hitender
  * 5/30/18 12:04 AM
@@ -33,5 +38,13 @@ public enum BloodTypeEnum {
     @Override
     public String toString() {
         return description;
+    }
+
+    public static List<String> asListOfDescription() {
+        List<String> a = new LinkedList<>();
+        for (BloodTypeEnum bloodTypeEnum : BloodTypeEnum.values()) {
+            a.add(bloodTypeEnum.description);
+        }
+        return a;
     }
 }

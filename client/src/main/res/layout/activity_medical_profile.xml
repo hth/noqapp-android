@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:paddingBottom="10dp"
             android:orientation="vertical">
 
 
@@ -549,10 +550,10 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="Medicine allergy"
-                        android:textStyle="bold"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_medicine_allergy"
@@ -570,11 +571,11 @@
                         android:background="#EEEEEE"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="Inherited  diseases"
+                        android:text="Family  history"
                         android:textAllCaps="true"
-                        android:textStyle="bold"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_family_history"
@@ -592,14 +593,36 @@
                         android:background="#EEEEEE"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:textStyle="bold"
-                        android:text="Medical problem"
+                        android:text="Past history"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_past_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="N/A"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#EEEEEE"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Known allergy"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_known_allergy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -619,6 +642,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="5dp"
+                android:visibility="gone"
                 card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="4dp">
 
@@ -787,6 +811,67 @@
                     </GridLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                card_view:cardBackgroundColor="@android:color/white"
+                card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/arrow_down"
+                        android:drawablePadding="5dp"
+                        android:gravity="left"
+                        android:padding="10dp"
+                        android:text="Blood Type"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+                        xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/sc_blood_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        segmentedcontrol:columnCount="4"
+                        segmentedcontrol:distributeEvenly="true"
+                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color1"
+                        segmentedcontrol:radius="6dp"
+                        segmentedcontrol:radiusForEverySegment="false"
+                        segmentedcontrol:segmentHorizontalMargin="0dp"
+                        segmentedcontrol:segmentVerticalMargin="0dp"
+                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                        segmentedcontrol:strokeWidth="1dp"
+                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                        segmentedcontrol:textVerticalPadding="5dp"
+                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color1"
+                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color1" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
 
