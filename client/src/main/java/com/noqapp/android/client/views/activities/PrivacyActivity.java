@@ -1,15 +1,15 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.ShowAlertInformation;
 
 
 public class PrivacyActivity extends BaseActivity implements View.OnClickListener {

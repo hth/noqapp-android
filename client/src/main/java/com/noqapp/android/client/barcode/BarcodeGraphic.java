@@ -15,16 +15,15 @@
  */
 package com.noqapp.android.client.barcode;
 
-import com.noqapp.android.client.barcode.camera.GraphicOverlay;
-
-import com.google.android.gms.vision.barcode.Barcode;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+
+import com.google.android.gms.vision.barcode.Barcode;
+import com.noqapp.android.client.barcode.camera.GraphicOverlay;
 
 /**
  * Graphic instance for rendering barcode position, size, and ID within an associated graphic

@@ -47,7 +47,10 @@
     <color name="empty_screen_color">#f2f2f2</color>
 
 
-
+    <color name="segment_bg_color1">@android:color/white</color>
+    <color name="segment_bg_color_select">#f4511e</color>
+    <color name="segment_text_color1">@android:color/black</color>
+    <color name="segment_text_color_select">@android:color/white</color>
 
 
 

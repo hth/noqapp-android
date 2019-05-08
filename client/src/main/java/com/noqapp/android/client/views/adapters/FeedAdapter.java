@@ -1,13 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonFeed;
-
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +8,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonFeed;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewHolder> {
     private final Context context;

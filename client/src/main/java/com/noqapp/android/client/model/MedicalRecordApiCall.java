@@ -1,5 +1,7 @@
 package com.noqapp.android.client.model;
 
+import android.util.Log;
+
 import com.noqapp.android.client.model.response.api.health.MedicalRecordApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
@@ -7,26 +9,24 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class MedicalRecordApiCall {
-    private final static MedicalRecordApiUrls MEDICAL_RECORD_API_SERVICE;
+    private final static MedicalRecordApiUrls medicalRecordApiUrls;
     private MedicalRecordPresenter medicalRecordPresenter;
-
-    public MedicalRecordApiCall(MedicalRecordPresenter medicalRecordPresenter) {
+    public void setMedicalRecordPresenter(MedicalRecordPresenter medicalRecordPresenter) {
         this.medicalRecordPresenter = medicalRecordPresenter;
     }
 
     static {
-        MEDICAL_RECORD_API_SERVICE = RetrofitClient.getClient().create(MedicalRecordApiUrls.class);
+        medicalRecordApiUrls = RetrofitClient.getClient().create(MedicalRecordApiUrls.class);
     }
 
     public void history(String mail, String auth) {
-        MEDICAL_RECORD_API_SERVICE.history(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
+        medicalRecordApiUrls.history(mail, auth).enqueue(new Callback<JsonMedicalRecordList>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalRecordList> call, @NonNull Response<JsonMedicalRecordList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

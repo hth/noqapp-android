@@ -1,7 +1,20 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
@@ -18,26 +31,13 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 import com.noqapp.android.client.views.adapters.SearchAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.apache.commons.lang3.StringUtils;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import java.util.ArrayList;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 
 /**
  * Created by chandra on 5/7/17.

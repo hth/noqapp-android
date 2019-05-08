@@ -1,14 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.activities.JoinActivity;
-import com.noqapp.android.client.views.activities.StoreDetailActivity;
-import com.noqapp.android.common.utils.CommonHelper;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +10,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.views.activities.JoinActivity;
+import com.noqapp.android.client.views.activities.StoreDetailActivity;
+import com.noqapp.android.common.utils.CommonHelper;
+
+import java.util.ArrayList;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 
 public class QueueHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;

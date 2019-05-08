@@ -14,13 +14,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.core.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.core.app.ActivityCompat;
 
 /**
  * Create this Class from tutorial :

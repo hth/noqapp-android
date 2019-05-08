@@ -1,11 +1,11 @@
 package com.noqapp.android.client.utils;
 
+import android.util.Log;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.common.utils.BaseConstants;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.util.Log;
 
 /**
  * User: hitender

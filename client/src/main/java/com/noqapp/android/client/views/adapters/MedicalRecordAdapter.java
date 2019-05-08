@@ -1,19 +1,20 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
-import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
-
 import android.content.Context;
-import androidx.cardview.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
+import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
+
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
 
 public class MedicalRecordAdapter extends BaseAdapter {
 

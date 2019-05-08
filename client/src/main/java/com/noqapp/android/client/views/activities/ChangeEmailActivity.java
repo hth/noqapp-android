@@ -1,5 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
@@ -15,15 +24,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter, ProfilePresenter {
 

@@ -27,6 +27,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -156,25 +157,37 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_cancel_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != jsonPurchaseOrder) {
-                    if (null == jsonPurchaseOrder.getTransactionVia()) {
-                        cancelOrder();
-                    } else {
-                        switch (jsonPurchaseOrder.getTransactionVia()) {
-                            case I:
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderConfirmActivity.this,true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (null != jsonPurchaseOrder) {
+                            if (null == jsonPurchaseOrder.getTransactionVia()) {
                                 cancelOrder();
-                                break;
-                            case E:
-                                cancelOrder();
-                                Toast.makeText(OrderConfirmActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
-                                break;
-                            case U:
-                                cancelOrder();
-                                Toast.makeText(OrderConfirmActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
-                                break;
+                            } else {
+                                switch (jsonPurchaseOrder.getTransactionVia()) {
+                                    case I:
+                                        cancelOrder();
+                                        break;
+                                    case E:
+                                        cancelOrder();
+                                        Toast.makeText(OrderConfirmActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case U:
+                                        cancelOrder();
+                                        Toast.makeText(OrderConfirmActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
                         }
                     }
-                }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
             }
         });
     }

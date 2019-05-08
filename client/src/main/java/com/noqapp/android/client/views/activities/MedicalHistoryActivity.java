@@ -5,6 +5,16 @@ package com.noqapp.android.client.views.activities;
  */
 
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
@@ -18,16 +28,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,11 +56,13 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             listview.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        if (NetworkUtils.isConnectingToInternet(this)) {
 
+        if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 if (jsonMedicalRecords.size() == 0) {
-                    new MedicalRecordApiCall(this).history(UserUtils.getEmail(), UserUtils.getAuth());
+                    MedicalRecordApiCall medicalRecordApiCall = new MedicalRecordApiCall();
+                    medicalRecordApiCall.setMedicalRecordPresenter(this);
+                    medicalRecordApiCall.history(UserUtils.getEmail(), UserUtils.getAuth());
                     progressDialog.show();
                 }
             } else {
@@ -83,7 +85,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             public int compare(JsonMedicalRecord o1, JsonMedicalRecord o2) {
                 try {
                     return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreateDate()));
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
                 }

@@ -1,14 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+
+import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 
-import com.google.gson.Gson;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

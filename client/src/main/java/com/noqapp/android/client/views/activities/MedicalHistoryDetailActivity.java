@@ -1,5 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
@@ -17,21 +28,11 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
 

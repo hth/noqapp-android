@@ -1,8 +1,7 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-
 import com.google.android.gms.maps.model.LatLng;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 
 import java.util.Comparator;
 

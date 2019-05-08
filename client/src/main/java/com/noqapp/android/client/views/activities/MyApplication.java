@@ -1,15 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.common.utils.FontsOverride;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import androidx.multidex.MultiDexApplication;
+
+import com.noqapp.android.common.utils.FontsOverride;
 
 import java.util.Locale;
+
+import androidx.multidex.MultiDexApplication;
 
 /**
  * Created by chandra on 5/20/17.

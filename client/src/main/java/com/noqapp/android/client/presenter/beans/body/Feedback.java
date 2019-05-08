@@ -1,11 +1,10 @@
 package com.noqapp.android.client.presenter.beans.body;
 
-import com.noqapp.android.common.model.types.MessageOriginEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 
 import java.io.Serializable;
 

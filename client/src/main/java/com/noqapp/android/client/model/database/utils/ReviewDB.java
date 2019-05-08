@@ -1,14 +1,14 @@
 package com.noqapp.android.client.model.database.utils;
 
-import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
-
-import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.client.presenter.beans.ReviewData;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import com.noqapp.android.client.model.database.DatabaseTable;
+import com.noqapp.android.client.presenter.beans.ReviewData;
+
+import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
 
 /**
  * User: hitender

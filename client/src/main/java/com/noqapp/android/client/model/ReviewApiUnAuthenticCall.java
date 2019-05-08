@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
+import android.util.Log;
 
 import com.noqapp.android.client.model.response.open.ReviewApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -12,10 +12,11 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonReviewList;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 /**
  * User: hitender
@@ -24,7 +25,7 @@ import retrofit2.Response;
 
 public class ReviewApiUnAuthenticCall {
     private final String TAG = RegisterApiCall.class.getSimpleName();
-    private static final ReviewApiUrls reviewService;
+    private static final ReviewApiUrls reviewApiUrls;
     private ReviewPresenter reviewPresenter;
     private AllReviewPresenter allReviewPresenter;
 
@@ -37,7 +38,7 @@ public class ReviewApiUnAuthenticCall {
     }
 
     static {
-        reviewService = RetrofitClient.getClient().create(ReviewApiUrls.class);
+        reviewApiUrls = RetrofitClient.getClient().create(ReviewApiUrls.class);
     }
 
     /**
@@ -45,7 +46,7 @@ public class ReviewApiUnAuthenticCall {
      * @param queueReview
      */
     public void queue(String did, QueueReview queueReview) {
-        reviewService.queue(did, DEVICE_TYPE, queueReview).enqueue(new Callback<JsonResponse>() {
+        reviewApiUrls.queue(did, DEVICE_TYPE, queueReview).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -75,7 +76,7 @@ public class ReviewApiUnAuthenticCall {
 
 
     public void review(String did, String codeQR) {
-        reviewService.review(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
+        reviewApiUrls.review(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
             @Override
             public void onResponse(@NonNull Call<JsonReviewList> call, @NonNull Response<JsonReviewList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -104,7 +105,7 @@ public class ReviewApiUnAuthenticCall {
     }
 
     public void reviewsLevelUp(String did, String codeQR) {
-        reviewService.reviewsLevelUp(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
+        reviewApiUrls.reviewsLevelUp(did, DEVICE_TYPE, codeQR).enqueue(new Callback<JsonReviewList>() {
             @Override
             public void onResponse(@NonNull Call<JsonReviewList> call, @NonNull Response<JsonReviewList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -126,7 +127,7 @@ public class ReviewApiUnAuthenticCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonReviewList> call, @NonNull Throwable t) {
-                Log.e("Failure all reviewsLevelUp ", t.getLocalizedMessage(), t);
+                Log.e("Failure reviewsLevelUp ", t.getLocalizedMessage(), t);
                 allReviewPresenter.responseErrorPresenter(null);
             }
         });

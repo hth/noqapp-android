@@ -1,13 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
-import com.noqapp.android.common.beans.NotificationBeans;
-import com.noqapp.android.common.utils.CommonHelper;
-
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,11 +10,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.utils.GetTimeAgoUtils;
+import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 public class NotificationListAdapter extends BaseAdapter {
     private Context context;

@@ -15,8 +15,6 @@
  */
 package com.noqapp.android.client.barcode.camera;
 
-import com.google.android.gms.common.images.Size;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -25,9 +23,12 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
-import androidx.annotation.RequiresPermission;
+
+import com.google.android.gms.common.images.Size;
 
 import java.io.IOException;
+
+import androidx.annotation.RequiresPermission;
 
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";

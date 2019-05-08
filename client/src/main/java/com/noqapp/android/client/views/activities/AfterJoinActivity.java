@@ -42,6 +42,7 @@ import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
@@ -141,25 +142,37 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (null != jsonTokenAndQueue) {
-                    if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                        cancelQueue();
-                    } else {
-                        switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                            case I:
+                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this,true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (null != jsonTokenAndQueue) {
+                            if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
                                 cancelQueue();
-                                break;
-                            case E:
-                                cancelQueue();
-                                Toast.makeText(AfterJoinActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
-                                break;
-                            case U:
-                                cancelQueue();
-                                Toast.makeText(AfterJoinActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
-                                break;
+                            } else {
+                                switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                                    case I:
+                                        cancelQueue();
+                                        break;
+                                    case E:
+                                        cancelQueue();
+                                        Toast.makeText(AfterJoinActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case U:
+                                        cancelQueue();
+                                        Toast.makeText(AfterJoinActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
                         }
                     }
-                }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
             }
         });
         btn_pay.setOnClickListener(new View.OnClickListener() {
@@ -702,7 +715,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private void triggerOnlinePayment() {
         String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
         String stage = BuildConfig.CASHFREE_STAGE;
-        String appId =  BuildConfig.CASHFREE_APP_ID;
+        String appId = BuildConfig.CASHFREE_APP_ID;
         String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
         String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";

@@ -1,5 +1,7 @@
 package com.noqapp.android.client.model;
 
+import android.util.Log;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -21,20 +23,19 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
-import android.util.Log;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.List;
 
 /**
  * Authorised call required authorised user
  */
 public class QueueApiAuthenticCall {
     private final String TAG = QueueApiAuthenticCall.class.getSimpleName();
-    private final static TokenQueueApiUrls TOKEN_QUEUE_API_SERVICE;
+    private final static TokenQueueApiUrls tokenQueueApiUrls;
     private QueuePresenter queuePresenter;
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
@@ -77,11 +78,11 @@ public class QueueApiAuthenticCall {
     }
 
     static {
-        TOKEN_QUEUE_API_SERVICE = RetrofitClient.getClient().create(TokenQueueApiUrls.class);
+        tokenQueueApiUrls = RetrofitClient.getClient().create(TokenQueueApiUrls.class);
     }
 
     public void getQueueState(String did, String mail, String auth, String codeQR) {
-        TOKEN_QUEUE_API_SERVICE.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
+        tokenQueueApiUrls.getQueueState(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonQueue>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueue> call, @NonNull Response<JsonQueue> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -113,7 +114,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void getAllJoinedQueues(String did, String mail, String auth) {
-        TOKEN_QUEUE_API_SERVICE.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
+        tokenQueueApiUrls.getAllJoinedQueue(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -144,7 +145,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void allHistoricalJoinedQueue(String did, String mail, String auth, DeviceToken deviceToken) {
-        TOKEN_QUEUE_API_SERVICE.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
+        tokenQueueApiUrls.allHistoricalJoinedQueue(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, deviceToken).enqueue(new Callback<JsonTokenAndQueueList>() {
             @Override
             public void onResponse(@NonNull Call<JsonTokenAndQueueList> call, @NonNull Response<JsonTokenAndQueueList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -173,7 +174,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void joinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        TOKEN_QUEUE_API_SERVICE.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+        tokenQueueApiUrls.joinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -204,7 +205,7 @@ public class QueueApiAuthenticCall {
         });
     }
     public void cashFreeQNotify(String did, String mail, String auth, JsonCashfreeNotification jsonCashfreeNotification) {
-        TOKEN_QUEUE_API_SERVICE.cashfreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonToken>() {
+        tokenQueueApiUrls.cashfreeNotify(did, Constants.DEVICE_TYPE, mail, auth, jsonCashfreeNotification).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -232,7 +233,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void payBeforeJoinQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        TOKEN_QUEUE_API_SERVICE.payBeforeJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+        tokenQueueApiUrls.payBeforeJoinQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -264,7 +265,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void skipPayBeforeQueue(String did, String mail, String auth, JoinQueue joinQueue) {
-        TOKEN_QUEUE_API_SERVICE.skipPayBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
+        tokenQueueApiUrls.skipPayBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, joinQueue).enqueue(new Callback<JsonToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonToken> call, @NonNull Response<JsonToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -296,7 +297,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void abortQueue(String did, String mail, String auth, String codeQR) {
-        TOKEN_QUEUE_API_SERVICE.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
+        tokenQueueApiUrls.abortQueue(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -325,7 +326,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void cancelPayBeforeQueue(String did, String mail, String auth, JsonToken jsonToken) {
-        TOKEN_QUEUE_API_SERVICE.cancelPayBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, jsonToken).enqueue(new Callback<JsonResponse>() {
+        tokenQueueApiUrls.cancelPayBeforeQueue(did, Constants.DEVICE_TYPE, mail, auth, jsonToken).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -354,7 +355,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void purchaseOrder(String did, String mail, String auth, String token,String codeQr) {
-        TOKEN_QUEUE_API_SERVICE.purchaseOrder(did, Constants.DEVICE_TYPE, mail, auth, token,codeQr).enqueue(new Callback<JsonPurchaseOrder>() {
+        tokenQueueApiUrls.purchaseOrder(did, Constants.DEVICE_TYPE, mail, auth, token,codeQr).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -383,7 +384,7 @@ public class QueueApiAuthenticCall {
     }
 
     public void paymentInitiate(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        TOKEN_QUEUE_API_SERVICE.paymentInitiate(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponseWithCFToken>() {
+        tokenQueueApiUrls.paymentInitiate(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponseWithCFToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Response<JsonResponseWithCFToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

@@ -4,6 +4,10 @@ package com.noqapp.android.client.views.activities;
  * Created by chandra on 5/7/17.
  */
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
@@ -11,10 +15,6 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.TimeZone;
 

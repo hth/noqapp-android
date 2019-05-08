@@ -1,9 +1,9 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.R;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import com.noqapp.android.client.R;
 
 public class ImageUtils {
 

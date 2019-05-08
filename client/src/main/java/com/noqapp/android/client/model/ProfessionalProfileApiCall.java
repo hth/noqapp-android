@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
+import android.util.Log;
 
 import com.noqapp.android.client.model.response.open.ProfessionalProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -9,15 +9,16 @@ import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.Constants;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
+
 public class ProfessionalProfileApiCall {
 
     private final String TAG = ProfessionalProfileApiCall.class.getSimpleName();
-    private static final ProfessionalProfileApiUrls professionalProfileService;
+    private static final ProfessionalProfileApiUrls professionalProfileApiUrls;
     private QueueManagerPresenter queueManagerPresenter;
 
     public ProfessionalProfileApiCall(QueueManagerPresenter queueManagerPresenter) {
@@ -25,7 +26,7 @@ public class ProfessionalProfileApiCall {
     }
 
     static {
-        professionalProfileService = RetrofitClient.getClient().create(ProfessionalProfileApiUrls.class);
+        professionalProfileApiUrls = RetrofitClient.getClient().create(ProfessionalProfileApiUrls.class);
     }
 
     /**
@@ -33,7 +34,7 @@ public class ProfessionalProfileApiCall {
      * @param webProfileId
      */
     public void profile(String did, String webProfileId) {
-        professionalProfileService.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
+        professionalProfileApiUrls.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

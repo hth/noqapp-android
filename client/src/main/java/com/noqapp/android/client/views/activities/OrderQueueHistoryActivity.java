@@ -1,13 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import android.os.AsyncTask;
+import android.os.Bundle;
+
+import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.OrderHistoryFragment;
 import com.noqapp.android.client.views.fragments.QueueHistoryFragment;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 
 public class OrderQueueHistoryActivity extends BaseActivity {

@@ -1,5 +1,12 @@
 package com.noqapp.android.client.views.activities;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
@@ -14,13 +21,6 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
 

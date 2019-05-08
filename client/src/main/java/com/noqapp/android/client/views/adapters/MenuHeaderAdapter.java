@@ -1,19 +1,20 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.MyViewHolder> {

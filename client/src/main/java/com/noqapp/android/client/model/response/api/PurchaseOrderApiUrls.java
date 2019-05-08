@@ -2,7 +2,6 @@ package com.noqapp.android.client.model.response.api;
 
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 

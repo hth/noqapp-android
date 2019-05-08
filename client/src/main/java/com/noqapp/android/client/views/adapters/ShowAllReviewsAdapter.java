@@ -1,17 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.common.beans.JsonReview;
-
-import com.noqapp.android.common.utils.CommonHelper;
-import com.squareup.picasso.Picasso;
-
 import android.content.Context;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAdapter.MyViewHolder> {
     private final Context context;

@@ -1,5 +1,24 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
@@ -25,33 +44,9 @@ import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.core.content.ContextCompat;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,6 +54,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
+import androidx.core.content.ContextCompat;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {

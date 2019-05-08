@@ -15,21 +15,6 @@
  */
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.barcode.BarcodeGraphic;
-import com.noqapp.android.client.barcode.BarcodeGraphicTracker;
-import com.noqapp.android.client.barcode.BarcodeTrackerFactory;
-import com.noqapp.android.client.barcode.camera.CameraSource;
-import com.noqapp.android.client.barcode.camera.CameraSourcePreview;
-import com.noqapp.android.client.barcode.camera.GraphicOverlay;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.MultiProcessor;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -43,8 +28,6 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -53,7 +36,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.barcode.BarcodeGraphic;
+import com.noqapp.android.client.barcode.BarcodeGraphicTracker;
+import com.noqapp.android.client.barcode.BarcodeTrackerFactory;
+import com.noqapp.android.client.barcode.camera.CameraSource;
+import com.noqapp.android.client.barcode.camera.CameraSourcePreview;
+import com.noqapp.android.client.barcode.camera.GraphicOverlay;
+
 import java.io.IOException;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the

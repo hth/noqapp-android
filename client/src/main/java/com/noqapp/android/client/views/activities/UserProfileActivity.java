@@ -1,6 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.BuildConfig;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -19,32 +34,16 @@ import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FileUtils;
-
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.core.content.ContextCompat;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
     private TextView tv_name;
@@ -121,18 +120,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-        try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        AppUtilities.loadProfilePic(iv_profile,NoQueueBaseActivity.getUserProfileUri(),this);
     }
 
     @Override

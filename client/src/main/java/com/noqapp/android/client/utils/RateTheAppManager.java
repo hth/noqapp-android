@@ -1,11 +1,5 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,6 +11,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.noqapp.android.client.R;
 
 public class RateTheAppManager {
 

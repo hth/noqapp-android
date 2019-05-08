@@ -1,5 +1,10 @@
 package com.noqapp.android.client.presenter.beans;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.base.Objects;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -10,13 +15,6 @@ import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
