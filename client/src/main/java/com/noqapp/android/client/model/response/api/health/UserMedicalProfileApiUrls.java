@@ -1,12 +1,10 @@
 package com.noqapp.android.client.model.response.api.health;
 
 import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
-import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
