@@ -13,6 +13,7 @@
     <string name="screen_profile">Profile</string>
     <string name="screen_edit_profile">Edit Profile</string>
     <string name="medical_profile">Medical Profile</string>
+    <string name="medical_profiles">Medical Profiles</string>
     <string name="screen_view_all">View All</string>
 
     <string name="action_settings">Settings</string>
@@ -322,5 +323,6 @@
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
     <string name="empty_review_title">Rate Us</string>
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
+    <string name="user_list">Users</string>
 
 </resources>

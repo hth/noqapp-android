@@ -73,7 +73,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             if (UserUtils.isLogin()) {
                 UserMedicalProfileApiCall userMedicalProfileApiCall = new UserMedicalProfileApiCall();
                 userMedicalProfileApiCall.setMedicalRecordProfilePresenter(this);
-                UserMedicalProfile userMedicalProfile = new UserMedicalProfile().setMedicalProfileOfQueueUserId(LaunchActivity.getUserProfile().getQueueUserId());
+                UserMedicalProfile userMedicalProfile = (UserMedicalProfile) getIntent().getSerializableExtra("userMedicalProfile");
                 userMedicalProfileApiCall.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), userMedicalProfile);
                 progressDialog.show();
             } else {

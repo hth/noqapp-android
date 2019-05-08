@@ -254,7 +254,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         break;
                     }
                     case R.drawable.medical_profile: {
-                        Intent in = new Intent(launchActivity, MedicalProfileActivity.class);
+                        Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
                         startActivity(in);
                         break;
                     }
@@ -1130,7 +1130,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     public void updateMenuList(boolean isLogin) {
         drawerItem.clear();
-        drawerItem.add(new NavigationBean(R.drawable.medical_profile, getString(R.string.medical_profile)));
+        drawerItem.add(new NavigationBean(R.drawable.medical_profile, getString(R.string.medical_profiles)));
         drawerItem.add(new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
         drawerItem.add(new NavigationBean(R.drawable.purchase_order, getString(R.string.order_history)));
         drawerItem.add(new NavigationBean(R.drawable.merchant_account, getString(R.string.merchant_account)));
