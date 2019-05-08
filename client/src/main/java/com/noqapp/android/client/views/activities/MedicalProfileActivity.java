@@ -22,6 +22,7 @@ import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysicalList;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
+import com.noqapp.android.common.model.types.medical.OccupationEnum;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class MedicalProfileActivity extends BaseActivity implements PhysicalReco
     private ImageView iv_profile;
     private SegmentedControl sc_blood_type;
     private ArrayList<String> sc_blood_type_data = new ArrayList<>();
+    private SegmentedControl sc_occupation_type;
+    private ArrayList<String> sc_occupation_type_data = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,11 @@ public class MedicalProfileActivity extends BaseActivity implements PhysicalReco
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
+
+        sc_occupation_type = findViewById(R.id.sc_occupation_type);
+        sc_occupation_type_data.clear();
+        sc_occupation_type_data.addAll(OccupationEnum.asListOfDescription());
+        sc_occupation_type.addSegments(sc_occupation_type_data);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 MedicalRecordApiCall medicalRecordApiCall = new MedicalRecordApiCall();
@@ -122,6 +130,11 @@ public class MedicalProfileActivity extends BaseActivity implements PhysicalReco
                 int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
                 if (-1 != index)
                     sc_blood_type.setSelectedSegment(index);
+            }
+            if (null != jsonUserMedicalProfile.getOccupation()) {
+                int index = sc_occupation_type_data.indexOf(jsonUserMedicalProfile.getOccupation().getDescription());
+                if (-1 != index)
+                    sc_occupation_type.setSelectedSegment(index);
             }
             Log.e("Data", jsonMedicalPhysicalList.toString());
             String notAvailable = "N/A";
