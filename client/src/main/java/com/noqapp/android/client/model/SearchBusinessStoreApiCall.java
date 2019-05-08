@@ -21,7 +21,7 @@ import retrofit2.Response;
  */
 
 public class SearchBusinessStoreApiCall {
-    private static final SearchBusinessStoreApiUrls SEARCH_BUSINESS_STORE_SERVICE;
+    private static final SearchBusinessStoreApiUrls searchBusinessStoreApiUrls;
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
 
     public SearchBusinessStoreApiCall(SearchBusinessStorePresenter searchBusinessStorePresenter) {
@@ -29,7 +29,7 @@ public class SearchBusinessStoreApiCall {
     }
 
     static {
-        SEARCH_BUSINESS_STORE_SERVICE = RetrofitClient.getClient().create(SearchBusinessStoreApiUrls.class);
+        searchBusinessStoreApiUrls = RetrofitClient.getClient().create(SearchBusinessStoreApiUrls.class);
     }
 
     /**
@@ -37,7 +37,7 @@ public class SearchBusinessStoreApiCall {
      * @param searchStoreQuery
      */
     public void otherMerchant(String did, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE_SERVICE.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        searchBusinessStoreApiUrls.otherMerchant(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -69,7 +69,7 @@ public class SearchBusinessStoreApiCall {
      * @param searchStoreQuery
      */
     public void healthCare(String did, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE_SERVICE.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        searchBusinessStoreApiUrls.healthCare(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -97,7 +97,7 @@ public class SearchBusinessStoreApiCall {
     }
 
     public void search(String did, SearchStoreQuery searchStoreQuery) {
-        SEARCH_BUSINESS_STORE_SERVICE.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
+        searchBusinessStoreApiUrls.search(did, DEVICE_TYPE, searchStoreQuery).enqueue(new Callback<BizStoreElasticList>() {
             @Override
             public void onResponse(@NonNull Call<BizStoreElasticList> call, @NonNull Response<BizStoreElasticList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

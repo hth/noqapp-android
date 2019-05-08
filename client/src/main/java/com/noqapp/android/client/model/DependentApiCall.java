@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class DependentApiCall {
     private final String TAG = DependentApiCall.class.getSimpleName();
-    private static final DependentApiUrls dependentApiService;
+    private static final DependentApiUrls dependentApiUrls;
     private DependencyPresenter dependencyPresenter;
 
     public DependentApiCall(DependencyPresenter dependencyPresenter) {
@@ -24,14 +24,14 @@ public class DependentApiCall {
     }
 
     static {
-        dependentApiService = RetrofitClient.getClient().create(DependentApiUrls.class);
+        dependentApiUrls = RetrofitClient.getClient().create(DependentApiUrls.class);
     }
 
     /**
      * @param registration
      */
     public void addDependency(String did, String mail, String auth,  Registration registration) {
-        dependentApiService.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
+        dependentApiUrls.add(did, Constants.DEVICE_TYPE, mail, auth, registration).enqueue(new Callback<JsonProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfile> call, @NonNull Response<JsonProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

@@ -23,7 +23,7 @@ import retrofit2.Response;
  */
 public class DeviceApiCall {
     private final String TAG = DeviceApiCall.class.getSimpleName();
-    private static final DeviceApiUrls deviceService;
+    private static final DeviceApiUrls deviceApiUrls;
     private AppBlacklistPresenter appBlacklistPresenter;
     private DeviceRegisterPresenter deviceRegisterPresenter;
 
@@ -41,7 +41,7 @@ public class DeviceApiCall {
     }
 
     static {
-        deviceService = RetrofitClient.getClient().create(DeviceApiUrls.class);
+        deviceApiUrls = RetrofitClient.getClient().create(DeviceApiUrls.class);
     }
 
     /**
@@ -51,7 +51,7 @@ public class DeviceApiCall {
      * @param deviceToken
      */
     public void register(String did, DeviceToken deviceToken) {
-        deviceService.register(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
+        deviceApiUrls.register(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken).enqueue(new Callback<DeviceRegistered>() {
             @Override
             public void onResponse(@NonNull Call<DeviceRegistered> call, @NonNull Response<DeviceRegistered> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -89,7 +89,7 @@ public class DeviceApiCall {
      * @param did
      */
     public void isSupportedAppVersion(String did) {
-        deviceService.isSupportedAppVersion(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
+        deviceApiUrls.isSupportedAppVersion(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, Constants.appVersion()).enqueue(new Callback<JsonLatestAppVersion>() {
             @Override
             public void onResponse(@NonNull Call<JsonLatestAppVersion> call, @NonNull Response<JsonLatestAppVersion> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

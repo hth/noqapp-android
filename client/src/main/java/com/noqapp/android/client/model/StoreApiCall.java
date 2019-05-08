@@ -20,7 +20,7 @@ import retrofit2.Response;
  */
 public class StoreApiCall {
     private final String TAG = StoreApiCall.class.getSimpleName();
-    private static final StoreDetailApiUrls STORE_DETAIL_SERVICE;
+    private static final StoreDetailApiUrls storeDetailApiUrls;
     private StorePresenter storePresenter;
 
     public StoreApiCall(StorePresenter storePresenter) {
@@ -28,7 +28,7 @@ public class StoreApiCall {
     }
 
     static {
-        STORE_DETAIL_SERVICE = RetrofitClient.getClient().create(StoreDetailApiUrls.class);
+        storeDetailApiUrls = RetrofitClient.getClient().create(StoreDetailApiUrls.class);
     }
 
     /**
@@ -38,7 +38,7 @@ public class StoreApiCall {
      * @param qrCode
      */
     public void getStoreService(String did, String qrCode) {
-        STORE_DETAIL_SERVICE.getStoreService(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
+        storeDetailApiUrls.getStoreService(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

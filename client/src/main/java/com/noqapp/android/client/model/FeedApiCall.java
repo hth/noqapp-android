@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class FeedApiCall {
 
     private final String TAG = FeedApiCall.class.getSimpleName();
-    private static final FeedApiUrls feedService;
+    private static final FeedApiUrls feedApiUrls;
     private FeedPresenter feedPresenter;
 
     public FeedApiCall(FeedPresenter feedPresenter) {
@@ -25,12 +25,12 @@ public class FeedApiCall {
     }
 
     static {
-        feedService = RetrofitClient.getClient().create(FeedApiUrls.class);
+        feedApiUrls = RetrofitClient.getClient().create(FeedApiUrls.class);
     }
 
 
     public void activeFeed(String did) {
-        feedService.activeFeed(did, DEVICE_TYPE).enqueue(new Callback<JsonFeedList>() {
+        feedApiUrls.activeFeed(did, DEVICE_TYPE).enqueue(new Callback<JsonFeedList>() {
             @Override
             public void onResponse(@NonNull Call<JsonFeedList> call, @NonNull Response<JsonFeedList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

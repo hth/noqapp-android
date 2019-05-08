@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class FeedbackApiCall {
     private final String TAG = RegisterApiCall.class.getSimpleName();
-    private static final FeedbackApiUrls feedbackApiService;
+    private static final FeedbackApiUrls feedbackApiUrls;
     private FeedbackPresenter feedbackPresenter;
 
     public FeedbackApiCall(FeedbackPresenter feedbackPresenter) {
@@ -25,11 +25,11 @@ public class FeedbackApiCall {
 
 
     static {
-        feedbackApiService = RetrofitClient.getClient().create(FeedbackApiUrls.class);
+        feedbackApiUrls = RetrofitClient.getClient().create(FeedbackApiUrls.class);
     }
 
     public void review(String did, String mail, String auth, Feedback feedback) {
-        feedbackApiService.review(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, feedback).enqueue(new Callback<JsonResponse>() {
+        feedbackApiUrls.review(did, Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, mail, auth, feedback).enqueue(new Callback<JsonResponse>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

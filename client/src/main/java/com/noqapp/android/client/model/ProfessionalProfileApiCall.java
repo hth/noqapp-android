@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class ProfessionalProfileApiCall {
 
     private final String TAG = ProfessionalProfileApiCall.class.getSimpleName();
-    private static final ProfessionalProfileApiUrls professionalProfileService;
+    private static final ProfessionalProfileApiUrls professionalProfileApiUrls;
     private QueueManagerPresenter queueManagerPresenter;
 
     public ProfessionalProfileApiCall(QueueManagerPresenter queueManagerPresenter) {
@@ -25,7 +25,7 @@ public class ProfessionalProfileApiCall {
     }
 
     static {
-        professionalProfileService = RetrofitClient.getClient().create(ProfessionalProfileApiUrls.class);
+        professionalProfileApiUrls = RetrofitClient.getClient().create(ProfessionalProfileApiUrls.class);
     }
 
     /**
@@ -33,7 +33,7 @@ public class ProfessionalProfileApiCall {
      * @param webProfileId
      */
     public void profile(String did, String webProfileId) {
-        professionalProfileService.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
+        professionalProfileApiUrls.profile(did, DEVICE_TYPE, webProfileId).enqueue(new Callback<JsonProfessionalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonProfessionalProfile> call, @NonNull Response<JsonProfessionalProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

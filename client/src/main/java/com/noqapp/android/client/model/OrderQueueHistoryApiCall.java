@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class OrderQueueHistoryApiCall {
     private final String TAG = OrderQueueHistoryApiCall.class.getSimpleName();
-    private static final HistoricalApiUrls historicalApiService;
+    private static final HistoricalApiUrls historicalApiUrls;
     private OrderHistoryPresenter orderHistoryPresenter;
     private QueueHistoryPresenter queueHistoryPresenter;
 
@@ -29,12 +29,12 @@ public class OrderQueueHistoryApiCall {
     }
 
     static {
-        historicalApiService = RetrofitClient.getClient().create(HistoricalApiUrls.class);
+        historicalApiUrls = RetrofitClient.getClient().create(HistoricalApiUrls.class);
     }
 
 
     public void orders(String mail, String auth) {
-        historicalApiService.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {
+        historicalApiUrls.orders(mail, auth).enqueue(new Callback<JsonPurchaseOrderHistoricalList>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrderHistoricalList> call, @NonNull Response<JsonPurchaseOrderHistoricalList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -63,7 +63,7 @@ public class OrderQueueHistoryApiCall {
     }
 
     public void queues(String mail, String auth) {
-        historicalApiService.queues(mail, auth).enqueue(new Callback<JsonQueueHistoricalList>() {
+        historicalApiUrls.queues(mail, auth).enqueue(new Callback<JsonQueueHistoricalList>() {
             @Override
             public void onResponse(@NonNull Call<JsonQueueHistoricalList> call, @NonNull Response<JsonQueueHistoricalList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
