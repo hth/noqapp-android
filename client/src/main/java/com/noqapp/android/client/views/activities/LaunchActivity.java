@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -80,7 +79,6 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
-
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -240,11 +238,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             requestStoragePermission();
                         }
                         break;
-                    case R.drawable.legal: {
-                        Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
-                        startActivity(in);
+                    case R.drawable.legal:
+                        if (AppUtilities.isRelease()) {
+                            Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
+                            startActivity(in);
+                        } else {
+                            Intent in = new Intent(LaunchActivity.this, MedicalProfileActivity.class);
+                            startActivity(in);
+                        }
                         break;
-                    }
                     case R.drawable.purchase_order: {
                         Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
                         startActivity(in);
