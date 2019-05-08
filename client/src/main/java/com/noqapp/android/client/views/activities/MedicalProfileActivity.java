@@ -9,8 +9,9 @@ import android.widget.Toast;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.MedicalRecordApiCall;
-import com.noqapp.android.client.presenter.PhysicalRecordPresenter;
+import com.noqapp.android.client.model.UserMedicalProfileApiCall;
+import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
+import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ImageUtils;
@@ -20,7 +21,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
-import com.noqapp.android.common.beans.medical.JsonMedicalPhysicalList;
+import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 import com.squareup.picasso.Picasso;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class MedicalProfileActivity extends BaseActivity implements PhysicalRecordPresenter {
+public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private TextView tv_patient_name, tv_patient_age_gender, tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
@@ -69,9 +70,10 @@ public class MedicalProfileActivity extends BaseActivity implements PhysicalReco
         sc_occupation_type.addSegments(sc_occupation_type_data);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
-                MedicalRecordApiCall medicalRecordApiCall = new MedicalRecordApiCall();
-                medicalRecordApiCall.setPhysicalRecordPresenter(this);
-                medicalRecordApiCall.physicalHistory(UserUtils.getEmail(), UserUtils.getAuth());
+                UserMedicalProfileApiCall userMedicalProfileApiCall = new UserMedicalProfileApiCall();
+                userMedicalProfileApiCall.setMedicalRecordProfilePresenter(this);
+                UserMedicalProfile userMedicalProfile = new UserMedicalProfile().setMedicalProfileOfQueueUserId(LaunchActivity.getUserProfile().getQueueUserId());
+                userMedicalProfileApiCall.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), userMedicalProfile);
                 progressDialog.show();
             } else {
                 Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
@@ -101,12 +103,14 @@ public class MedicalProfileActivity extends BaseActivity implements PhysicalReco
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
-    @Override
-    public void physicalRecordResponse(JsonMedicalPhysicalList jsonMedicalPhysicalList) {
-        if (null != jsonMedicalPhysicalList && jsonMedicalPhysicalList.getJsonMedicalPhysicals().size() > 0) {
 
-            JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalPhysicalList.getJsonUserMedicalProfile();
-            if (null != jsonUserMedicalProfile) {
+    @Override
+    public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
+        if (null != jsonMedicalProfile && jsonMedicalProfile.getJsonMedicalPhysicals().size() > 0) {
+
+            JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(0);
+            JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
+            if (null != jsonMedicalPhysical) {
                 Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
                 try {
                     if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
@@ -136,9 +140,8 @@ public class MedicalProfileActivity extends BaseActivity implements PhysicalReco
                 if (-1 != index)
                     sc_occupation_type.setSelectedSegment(index);
             }
-            Log.e("Data", jsonMedicalPhysicalList.toString());
+            Log.e("Data", jsonMedicalProfile.toString());
             String notAvailable = "N/A";
-            JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalPhysicalList.getJsonMedicalPhysicals().get(0);
             if (null != jsonMedicalPhysical) {
                 if (null != jsonMedicalPhysical.getRespiratory()) {
                     tv_respiration.setText(jsonMedicalPhysical.getRespiratory());

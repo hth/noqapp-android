@@ -4,8 +4,10 @@ import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 
 public interface UserMedicalProfileApiUrls {
 
@@ -15,7 +17,7 @@ public interface UserMedicalProfileApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_PROFILE_DOES_NOT_EXISTS}
      */
-    @GET("api/c/h/medicalProfile/profile.json")
+    @POST("api/c/h/medicalProfile/profile.json")
     Call<JsonMedicalProfile> profile(
             @Header("X-R-MAIL")
             String mail,
@@ -23,6 +25,7 @@ public interface UserMedicalProfileApiUrls {
             @Header("X-R-AUTH")
             String auth,
 
+            @Body
             UserMedicalProfile userMedicalProfile
     );
 }
