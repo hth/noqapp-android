@@ -45,6 +45,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_profile);
         initActionsViews(false);
+        tv_toolbar_title.setText(getString(R.string.medical_profile));
         tv_weight = findViewById(R.id.tv_weight);
         tv_pulse = findViewById(R.id.tv_pulse);
         tv_temperature = findViewById(R.id.tv_temperature);

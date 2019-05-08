@@ -12,6 +12,7 @@
     <string name="screen_search">Search</string>
     <string name="screen_profile">Profile</string>
     <string name="screen_edit_profile">Edit Profile</string>
+    <string name="medical_profile">Medical Profile</string>
     <string name="screen_view_all">View All</string>
 
     <string name="action_settings">Settings</string>
