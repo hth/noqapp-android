@@ -1,6 +1,7 @@
 package com.noqapp.android.common.beans.medical;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,6 +35,9 @@ public class JsonMedicalPhysicalList extends AbstractDomain implements Serializa
     @JsonProperty("mps")
     private List<JsonMedicalPhysical> jsonMedicalPhysicals = new LinkedList<>();
 
+    @JsonProperty("um")
+    private JsonUserMedicalProfile jsonUserMedicalProfile;
+
     public List<JsonMedicalPhysical> getJsonMedicalPhysicals() {
         return jsonMedicalPhysicals;
     }
@@ -45,6 +49,15 @@ public class JsonMedicalPhysicalList extends AbstractDomain implements Serializa
 
     public JsonMedicalPhysicalList addJsonMedicalPhysical(JsonMedicalPhysical jsonMedicalPhysical) {
         this.jsonMedicalPhysicals.add(jsonMedicalPhysical);
+        return this;
+    }
+
+    public JsonUserMedicalProfile getJsonUserMedicalProfile() {
+        return jsonUserMedicalProfile;
+    }
+
+    public JsonMedicalPhysicalList setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+        this.jsonUserMedicalProfile = jsonUserMedicalProfile;
         return this;
     }
 }
