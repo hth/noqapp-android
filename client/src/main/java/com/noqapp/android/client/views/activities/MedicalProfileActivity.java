@@ -1,20 +1,17 @@
 package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -22,9 +19,9 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -88,8 +85,12 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (null != eej)
+        if (null != eej) {
             new ErrorResponseHandler().processError(this, eej);
+//            if(eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.MEDICAL_PROFILE_DOES_NOT_EXISTS.getCode())){
+//                finish();
+//            }
+        }
     }
 
     @Override
@@ -111,20 +112,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
 
             JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(0);
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
-            if (null != jsonMedicalPhysical) {
-                Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-                try {
-                    if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                        Picasso.get()
-                                .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
-                                .placeholder(ImageUtils.getProfilePlaceholder(this))
-                                .error(ImageUtils.getProfileErrorPlaceholder(this))
-                                .into(iv_profile);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            AppUtilities.loadProfilePic(iv_profile, getIntent().getStringExtra("profileImageUrl"),this);
             tv_patient_name.setText(NoQueueBaseActivity.getUserName());
             tv_patient_age_gender.setText(new AppUtilities().calculateAge(NoQueueBaseActivity.getUserDOB()) + " (" + NoQueueBaseActivity.getGender() + ")");
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());

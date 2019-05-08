@@ -1,19 +1,15 @@
 package com.noqapp.android.client.views.adapters;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,7 +40,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) Vholder;
         final JsonProfile jsonProfile = jsonProfiles.get(position);
         holder.tv_name.setText(jsonProfile.getName());
-        loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage());
+        AppUtilities.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(),context);
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,23 +48,6 @@ public class ProfileAdapter extends RecyclerView.Adapter {
                     listener.onProfileItemClick(position, jsonProfile);
             }
         });
-
-
-    }
-
-    private void loadProfilePic(ImageView iv_profile, String imageUrl) {
-        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-        try {
-            if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
-                        .placeholder(ImageUtils.getProfilePlaceholder(context))
-                        .error(ImageUtils.getProfileErrorPlaceholder(context))
-                        .into(iv_profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

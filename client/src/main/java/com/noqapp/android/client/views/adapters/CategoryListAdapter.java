@@ -194,16 +194,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
         }
-        if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
-            Picasso.get().load(
-                    AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, bizStoreElastic.getDisplayImage()))
-                    .placeholder(context.getResources().getDrawable(R.drawable.profile_theme))
-                    .error(context.getResources().getDrawable(R.drawable.profile_theme))
-                    .into(holder.iv_main);
-        } else {
-            Picasso.get().load(R.drawable.profile_theme).into(holder.iv_main);
-        }
-
+        AppUtilities.loadProfilePic(holder.iv_main, bizStoreElastic.getDisplayImage(),context);
         holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE : View.VISIBLE);
         if (bizStoreElastic.getProductPrice() == 0) {
             holder.tv_consult_fees.setVisibility(View.GONE);

@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -31,6 +32,7 @@ import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
@@ -556,4 +558,20 @@ public class AppUtilities extends CommonHelper {
     public static boolean isRelease() {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
     }
+
+    public static void loadProfilePic(ImageView iv_profile, String imageUrl,Context context) {
+        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
+        try {
+            if (!TextUtils.isEmpty(imageUrl)) {
+                Picasso.get()
+                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, imageUrl))
+                        .placeholder(ImageUtils.getProfilePlaceholder(context))
+                        .error(ImageUtils.getProfileErrorPlaceholder(context))
+                        .into(iv_profile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -121,18 +121,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-        try {
-            if (!TextUtils.isEmpty(NoQueueBaseActivity.getUserProfileUri())) {
-                Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, NoQueueBaseActivity.getUserProfileUri()))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        AppUtilities.loadProfilePic(iv_profile,NoQueueBaseActivity.getUserProfileUri(),this);
     }
 
     @Override

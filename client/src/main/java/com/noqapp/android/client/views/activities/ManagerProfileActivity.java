@@ -74,18 +74,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         tv_total_review = findViewById(R.id.tv_total_review);
         tv_total_rating = findViewById(R.id.tv_total_rating);
         tv_name.setText(managerName);
-        Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
-        try {
-            if (!TextUtils.isEmpty(managerImageUrl)) {
-                Picasso.get()
-                        .load(AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, managerImageUrl))
-                        .placeholder(ImageUtils.getProfilePlaceholder(this))
-                        .error(ImageUtils.getProfileErrorPlaceholder(this))
-                        .into(iv_profile);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        AppUtilities.loadProfilePic(iv_profile,managerImageUrl,this);
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
@@ -233,5 +222,4 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         }
         return reviewCount;
     }
-
 }

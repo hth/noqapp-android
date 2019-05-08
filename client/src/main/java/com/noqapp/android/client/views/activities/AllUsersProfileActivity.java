@@ -50,6 +50,7 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
         }
         Intent in = new Intent(this, MedicalProfileActivity.class);
         in.putExtra("userMedicalProfile", userMedicalProfile);
+        in.putExtra("profileImageUrl",jsonProfile.getProfileImage());
         startActivity(in);
     }
 }
