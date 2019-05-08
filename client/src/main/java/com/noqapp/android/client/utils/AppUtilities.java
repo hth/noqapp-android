@@ -169,7 +169,6 @@ public class AppUtilities extends CommonHelper {
         return (double) Math.round(value * scale) / scale;
     }
 
-
     /**
      * Calculate distance between two points in latitude and longitude. Uses Haversine
      * method as its base.
@@ -204,9 +203,7 @@ public class AppUtilities extends CommonHelper {
         return round(dist / 1000);// distance in km
     }
 
-
     public static void changeLanguage(String language) {
-
         if (!language.equals("")) {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
@@ -225,7 +222,6 @@ public class AppUtilities extends CommonHelper {
             LaunchActivity.languagepref.edit()
                     .putString("pref_language", "en").apply();
         }
-
     }
 
     public static String getAdditionalCardText(BizStoreElastic bizStoreElastic) {
@@ -376,10 +372,8 @@ public class AppUtilities extends CommonHelper {
         } catch (JSONException e) {
             Log.e(TAG, "Cannot process JSON results", e);
         }
-
         return resultList;
     }
-
 
     public static String getNameFromQueueUserID(String queueUserID, List<JsonProfile> list) {
         String name = "";
@@ -395,7 +389,6 @@ public class AppUtilities extends CommonHelper {
         }
         return name;
     }
-
 
     public static String getImageUrls(String bucket_type, String url) {
         String location;
@@ -413,8 +406,6 @@ public class AppUtilities extends CommonHelper {
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-
-        //Log.i(TAG, "File location " + location);
         return location;
     }
 
@@ -511,10 +502,9 @@ public class AppUtilities extends CommonHelper {
         ShowAlertInformation.showAuthenticErrorDialog(context);
     }
 
-
     public String formatTodayStoreTiming(Context context, StoreHourElastic storeHourElastic) {
         if (storeHourElastic.isDayClosed())
-            return  "Closed";
+            return "Closed";
         else
             return formatTodayStoreTiming(context, storeHourElastic.getStartHour(), storeHourElastic.getEndHour());
     }
@@ -525,9 +515,9 @@ public class AppUtilities extends CommonHelper {
             key = context.getString(R.string.whole_day);
             return key;
         } else if (startHour == 0 && endHour == 0) {
-            return  "Closed";
-        }else {
-            return  key;
+            return "Closed";
+        } else {
+            return key;
         }
     }
 
@@ -563,8 +553,7 @@ public class AppUtilities extends CommonHelper {
         }
     }
 
-
-    public static boolean isRelease(){
+    public static boolean isRelease() {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
     }
 }

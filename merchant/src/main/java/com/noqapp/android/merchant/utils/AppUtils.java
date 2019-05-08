@@ -1,10 +1,5 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -14,6 +9,11 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -30,7 +30,6 @@ public class AppUtils extends CommonHelper {
         if (null == version || !version.contains(".")) {
             return null;
         }
-
         String[] split = version.split("\\.");
         ApkVersionModel apkVersionModel = null;
         if (split.length == 4) {
@@ -45,7 +44,6 @@ public class AppUtils extends CommonHelper {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-
     public void makeCall(Activity context, String phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             try {
@@ -56,12 +54,10 @@ public class AppUtils extends CommonHelper {
                 Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
                 Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
             }
-
         }
     }
 
     public static void changeLanguage(String language) {
-
         if (!language.equals("")) {
             if (language.equals("en")) {
                 LaunchActivity.language = "en_US";
@@ -87,7 +83,6 @@ public class AppUtils extends CommonHelper {
     public static void authenticationProcessing() {
         LaunchActivity.getLaunchActivity().clearLoginData(true);
     }
-
 
     public String getCompleteEducation(List<JsonNameDatePair> education) {
         if (null == education || education.size() == 0)
@@ -125,11 +120,10 @@ public class AppUtils extends CommonHelper {
                 Log.e("App Utils", "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
-
-        //Log.i(TAG, "File location " + location);
         return location;
     }
-    public static boolean isRelease(){
+
+    public static boolean isRelease() {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
     }
 }

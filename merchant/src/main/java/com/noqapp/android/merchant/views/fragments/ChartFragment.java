@@ -233,11 +233,11 @@ public class ChartFragment extends Fragment {
             setData(entries, healthCareStat.getRepeatCustomers().getMonthOfYear());
             //set the bar data
             generateDataBar(healthCareStat.getTwelveMonths());
-            updateLineChart(healthCareStat.getTwelveMonths());
+            updateLineChart(healthCareStat.getTwelveMonths(),healthCareStat.getProductPrice());
         }
     }
 
-    private void updateLineChart(List<YearlyData> yearlyData) {
+    private void updateLineChart(List<YearlyData> yearlyData, int productPrice) {
         int cnt = yearlyData.size();
         ArrayList<Entry> yVals1 = new ArrayList<>();
         mMonths1.clear();
@@ -257,7 +257,8 @@ public class ChartFragment extends Fragment {
         });
 
         for (int i = 0; i < cnt; i++) {
-            yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue()));
+            int price = (productPrice/100);
+            yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue()*price));
             mMonths1.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
         }
 
