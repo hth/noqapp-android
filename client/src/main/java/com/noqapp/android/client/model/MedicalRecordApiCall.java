@@ -3,7 +3,9 @@ package com.noqapp.android.client.model;
 import com.noqapp.android.client.model.response.api.health.MedicalRecordApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
+import com.noqapp.android.client.presenter.PhysicalRecordPresenter;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.common.beans.medical.JsonMedicalPhysicalList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 
 import androidx.annotation.NonNull;
@@ -16,9 +18,14 @@ import retrofit2.Response;
 public class MedicalRecordApiCall {
     private final static MedicalRecordApiUrls medicalRecordApiUrls;
     private MedicalRecordPresenter medicalRecordPresenter;
+    private PhysicalRecordPresenter physicalRecordPresenter;
 
-    public MedicalRecordApiCall(MedicalRecordPresenter medicalRecordPresenter) {
+    public void setMedicalRecordPresenter(MedicalRecordPresenter medicalRecordPresenter) {
         this.medicalRecordPresenter = medicalRecordPresenter;
+    }
+
+    public void setPhysicalRecordPresenter(PhysicalRecordPresenter physicalRecordPresenter) {
+        this.physicalRecordPresenter = physicalRecordPresenter;
     }
 
     static {
@@ -49,6 +56,34 @@ public class MedicalRecordApiCall {
             public void onFailure(@NonNull Call<JsonMedicalRecordList> call, @NonNull Throwable t) {
                 Log.e("history fail", t.getLocalizedMessage(), t);
                 medicalRecordPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void physicalHistory(String mail, String auth) {
+        medicalRecordApiUrls.physicalHistory(mail, auth).enqueue(new Callback<JsonMedicalPhysicalList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonMedicalPhysicalList> call, @NonNull Response<JsonMedicalPhysicalList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp history", String.valueOf(response.body()));
+                        physicalRecordPresenter.physicalRecordResponse(response.body());
+                    } else {
+                        physicalRecordPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                }else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        physicalRecordPresenter.authenticationFailure();
+                    } else{
+                        physicalRecordPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonMedicalPhysicalList> call, @NonNull Throwable t) {
+                Log.e("history fail", t.getLocalizedMessage(), t);
+                physicalRecordPresenter.responseErrorPresenter(null);
             }
         });
     }

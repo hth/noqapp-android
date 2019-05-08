@@ -1,12 +1,12 @@
 package com.noqapp.android.common.beans.medical;
 
-import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.beans.JsonUserMedicalProfile;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -38,6 +38,10 @@ public class JsonMedicalPhysicalList extends AbstractDomain implements Serializa
     @JsonProperty("um")
     private JsonUserMedicalProfile jsonUserMedicalProfile;
 
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public List<JsonMedicalPhysical> getJsonMedicalPhysicals() {
         return jsonMedicalPhysicals;
     }
@@ -59,5 +63,23 @@ public class JsonMedicalPhysicalList extends AbstractDomain implements Serializa
     public JsonMedicalPhysicalList setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
         this.jsonUserMedicalProfile = jsonUserMedicalProfile;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonMedicalPhysicalList{");
+        sb.append("jsonMedicalPhysicals=").append(jsonMedicalPhysicals);
+        sb.append(", jsonUserMedicalProfile=").append(jsonUserMedicalProfile);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

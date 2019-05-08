@@ -56,11 +56,13 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             listview.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        if (NetworkUtils.isConnectingToInternet(this)) {
 
+        if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 if (jsonMedicalRecords.size() == 0) {
-                    new MedicalRecordApiCall(this).history(UserUtils.getEmail(), UserUtils.getAuth());
+                    MedicalRecordApiCall medicalRecordApiCall = new MedicalRecordApiCall();
+                    medicalRecordApiCall.setMedicalRecordPresenter(this);
+                    medicalRecordApiCall.history(UserUtils.getEmail(), UserUtils.getAuth());
                     progressDialog.show();
                 }
             } else {

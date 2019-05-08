@@ -172,7 +172,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                         //Do nothing
                     }
                 });
-                showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
+                showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
             }
         });
         btn_pay.setOnClickListener(new View.OnClickListener() {

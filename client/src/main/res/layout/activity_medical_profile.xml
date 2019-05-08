@@ -59,21 +59,21 @@
 
 
                         <TextView
-                            android:id="@+id/tv_diagnosed_by"
+                            android:id="@+id/tv_patient_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="Chandra B Sharma"
+                            android:text="N/A"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_sixteen"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_business_category_name"
+                            android:id="@+id/tv_patient_age_gender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="45+ Yr (M)"
+                            android:text="N/A"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_twelve" />
 
@@ -165,7 +165,7 @@
                                 android:layout_below="@+id/tv_title"
                                 android:layout_toRightOf="@+id/iv_icon"
                                 android:padding="0dp"
-                                android:text="96"
+                                android:text="N/A"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -233,7 +233,7 @@
                                 android:layout_below="@+id/tv_title1"
                                 android:layout_toRightOf="@+id/iv_icon1"
                                 android:padding="0dp"
-                                android:text="96"
+                                android:text="N/A"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -295,7 +295,7 @@
                                 android:layout_below="@+id/tv_title2"
                                 android:layout_toRightOf="@+id/iv_icon2"
                                 android:padding="0dp"
-                                android:text="96"
+                                android:text="N/A"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -362,7 +362,7 @@
                                 android:layout_below="@+id/tv_title3"
                                 android:layout_toRightOf="@+id/iv_icon3"
                                 android:padding="0dp"
-                                android:text="96"
+                                android:text="N/A"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -423,7 +423,7 @@
                                 android:layout_below="@+id/tv_title4"
                                 android:layout_toRightOf="@+id/iv_icon4"
                                 android:padding="0dp"
-                                android:text="96"
+                                android:text="N/A"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -483,7 +483,7 @@
                                 android:layout_below="@+id/tv_title5"
                                 android:layout_toRightOf="@+id/iv_icon5"
                                 android:padding="0dp"
-                                android:text="96"
+                                android:text="N/A"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -532,7 +532,6 @@
                         android:gravity="left"
                         android:padding="10dp"
                         android:text="Medical History"
-
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -556,11 +555,12 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_medicine_allergy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Paracetamol"
+                        android:text="N/A"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -577,11 +577,12 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_family_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="diabetes"
+                        android:text="N/A"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -598,11 +599,12 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/tv_past_history"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Hemophilia"
+                        android:text="N/A"
                         android:textSize="14sp"
                         android:textStyle="normal" />
                 </LinearLayout>
