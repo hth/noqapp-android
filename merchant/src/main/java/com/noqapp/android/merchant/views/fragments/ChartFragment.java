@@ -36,6 +36,8 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -138,7 +140,7 @@ public class ChartFragment extends Fragment {
     }
 
     private void setData(ArrayList<PieEntry> entries1, int month) {
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        ArrayList<PieEntry> entries = new ArrayList<>();
         entries.addAll(entries1);
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setDrawIcons(false);
@@ -148,17 +150,27 @@ public class ChartFragment extends Fragment {
         dataSet.setValueTextSize(12f);
 
         // add a lot of colors
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (int c : ColorTemplate.VORDIPLOM_COLORS) {
             colors.add(c);
-        for (int c : ColorTemplate.JOYFUL_COLORS)
+        }
+
+        for (int c : ColorTemplate.JOYFUL_COLORS) {
             colors.add(c);
-        for (int c : ColorTemplate.COLORFUL_COLORS)
+        }
+
+        for (int c : ColorTemplate.COLORFUL_COLORS) {
             colors.add(c);
-        for (int c : ColorTemplate.LIBERTY_COLORS)
+        }
+
+        for (int c : ColorTemplate.LIBERTY_COLORS) {
             colors.add(c);
-        for (int c : ColorTemplate.PASTEL_COLORS)
+        }
+
+        for (int c : ColorTemplate.PASTEL_COLORS) {
             colors.add(c);
+        }
+
         colors.add(ColorTemplate.getHoloBlue());
         dataSet.setColors(colors);
         PieData data = new PieData(dataSet);
@@ -257,8 +269,8 @@ public class ChartFragment extends Fragment {
         });
 
         for (int i = 0; i < cnt; i++) {
-            int price = (productPrice/100);
-            yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue()*price));
+            BigDecimal price = new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64);
+            yVals1.add(new Entry(1 + i, yearlyData.get(i).getValue() * price.intValue()));
             mMonths1.add(months[yearlyData.get(i).getYearMonth() - 1] + " - " + yearlyData.get(i).getYear());
         }
 
