@@ -1,28 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
-import com.hbb20.CountryCodePicker;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
@@ -40,9 +17,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.hbb20.CountryCodePicker;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.NonNull;
 
 public abstract class OTPActivity extends BaseActivity implements ProfilePresenter {
     protected String TAG = LoginActivity.class.getSimpleName();

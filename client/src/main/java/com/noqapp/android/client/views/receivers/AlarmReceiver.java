@@ -1,8 +1,5 @@
 package com.noqapp.android.client.views.receivers;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +10,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 

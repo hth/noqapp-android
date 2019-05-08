@@ -1,19 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
-import com.noqapp.android.client.utils.GPSTracker;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
-
-import com.google.android.gms.maps.model.LatLng;
-
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +10,19 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.google.android.gms.maps.model.LatLng;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.GPSTracker;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
+
+import androidx.fragment.app.Fragment;
 
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, log;

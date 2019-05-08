@@ -15,13 +15,13 @@
  */
 package com.noqapp.android.client.barcode;
 
-import com.noqapp.android.client.barcode.camera.GraphicOverlay;
+import android.content.Context;
 
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.noqapp.android.client.barcode.camera.GraphicOverlay;
 
-import android.content.Context;
 import androidx.annotation.UiThread;
 
 /**

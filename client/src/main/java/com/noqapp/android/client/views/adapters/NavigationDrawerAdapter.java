@@ -1,8 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.NavigationBean;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.NavigationBean;
 
 import java.util.ArrayList;
 

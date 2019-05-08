@@ -1,5 +1,7 @@
 package com.noqapp.android.client.model;
 
+import android.util.Log;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -21,13 +23,12 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
-import android.util.Log;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.List;
 
 /**
  * Authorised call required authorised user

@@ -6,9 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import android.webkit.MimeTypeMap;
 
 public class ProfileActivity extends BaseActivity {
 

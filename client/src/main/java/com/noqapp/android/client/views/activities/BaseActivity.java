@@ -1,14 +1,15 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class BaseActivity extends AppCompatActivity {

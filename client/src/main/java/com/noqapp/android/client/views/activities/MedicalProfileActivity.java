@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,10 +17,10 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
@@ -66,6 +67,11 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_occupation_type_data.clear();
         sc_occupation_type_data.addAll(OccupationEnum.asListOfDescription());
         sc_occupation_type.addSegments(sc_occupation_type_data);
+        JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
+        AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
+        tv_patient_name.setText(jsonProfile.getName());
+        tv_patient_age_gender.setText(new AppUtilities().calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
+
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 UserMedicalProfileApiCall userMedicalProfileApiCall = new UserMedicalProfileApiCall();
@@ -109,12 +115,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     @Override
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         if (null != jsonMedicalProfile && jsonMedicalProfile.getJsonMedicalPhysicals().size() > 0) {
-
-            JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(0);
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
-            AppUtilities.loadProfilePic(iv_profile, getIntent().getStringExtra("profileImageUrl"),this);
-            tv_patient_name.setText(NoQueueBaseActivity.getUserName());
-            tv_patient_age_gender.setText(new AppUtilities().calculateAge(NoQueueBaseActivity.getUserDOB()) + " (" + NoQueueBaseActivity.getGender() + ")");
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
             tv_known_allergy.setText(jsonUserMedicalProfile.getKnownAllergies());
             tv_family_history.setText(jsonUserMedicalProfile.getFamilyHistory());
@@ -131,45 +132,69 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             }
             Log.e("Data", jsonMedicalProfile.toString());
             String notAvailable = "N/A";
-            if (null != jsonMedicalPhysical) {
-                if (null != jsonMedicalPhysical.getRespiratory()) {
-                    tv_respiration.setText(jsonMedicalPhysical.getRespiratory());
+
+            boolean isPulse = false, isBloodPressure = false, isTemperature = false, isWeigth = false, isHeight = false, isRR = false;
+            String pulse = "", bloodpressure = "", temperature = "", weight = "", height = "", rr = "";
+            for (int i = 0; i < jsonMedicalProfile.getJsonMedicalPhysicals().size(); i++) {
+                JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(i);
+                if (isPulse) {
+                    //Do nothing
                 } else {
-                    tv_respiration.setText(notAvailable);
+                    if (null != jsonMedicalPhysical.getPulse()) {
+                        pulse = jsonMedicalPhysical.getPulse();
+                        isPulse = true;
+                    }
                 }
-                if (null != jsonMedicalPhysical.getHeight()) {
-                    tv_height.setText(jsonMedicalPhysical.getHeight());
+                if (isBloodPressure) {
+                    //Do nothing
                 } else {
-                    tv_height.setText(notAvailable);
+                    if (null != jsonMedicalPhysical.getBloodPressure() && jsonMedicalPhysical.getBloodPressure().length == 2) {
+                        bloodpressure = jsonMedicalPhysical.getBloodPressure()[0] + "/" + jsonMedicalPhysical.getBloodPressure()[1];
+                        isBloodPressure = true;
+                    }
                 }
-                if (null != jsonMedicalPhysical.getPulse()) {
-                    tv_pulse.setText(jsonMedicalPhysical.getPulse());
+                if (isTemperature) {
+                    //Do nothing
                 } else {
-                    tv_pulse.setText(notAvailable);
+                    if (null != jsonMedicalPhysical.getTemperature()) {
+                        temperature = jsonMedicalPhysical.getTemperature();
+                        isTemperature = true;
+                    }
                 }
-                if (null != jsonMedicalPhysical.getBloodPressure() && jsonMedicalPhysical.getBloodPressure().length == 2) {
-                    tv_bp.setText(jsonMedicalPhysical.getBloodPressure()[0] + "/" + jsonMedicalPhysical.getBloodPressure()[1]);
+                if (isWeigth) {
+                    //Do nothing
                 } else {
-                    tv_bp.setText(notAvailable);
+                    if (null != jsonMedicalPhysical.getWeight()) {
+                        weight = jsonMedicalPhysical.getWeight();
+                        isWeigth = true;
+                    }
                 }
-                if (null != jsonMedicalPhysical.getWeight()) {
-                    tv_weight.setText(jsonMedicalPhysical.getWeight());
+                if (isHeight) {
+                    //Do nothing
                 } else {
-                    tv_weight.setText(notAvailable);
+                    if (null != jsonMedicalPhysical.getHeight()) {
+                        height = jsonMedicalPhysical.getHeight();
+                        isHeight = true;
+                    }
                 }
-                if (null != jsonMedicalPhysical.getTemperature()) {
-                    tv_temperature.setText(jsonMedicalPhysical.getTemperature());
+                if (isRR) {
+                    //Do nothing
                 } else {
-                    tv_temperature.setText(notAvailable);
+                    if (null != jsonMedicalPhysical.getRespiratory()) {
+                        rr = jsonMedicalPhysical.getRespiratory();
+                        isRR = true;
+                    }
                 }
-            } else {
-                tv_pulse.setText(notAvailable);
-                tv_bp.setText(notAvailable);
-                tv_weight.setText(notAvailable);
-                tv_temperature.setText(notAvailable);
-                tv_respiration.setText(notAvailable);
-                tv_height.setText(notAvailable);
+                if(isBloodPressure && isHeight && isPulse && isRR && isTemperature && isWeigth)
+                    break;
+
             }
+            tv_pulse.setText(TextUtils.isEmpty(pulse) ? notAvailable : pulse);
+            tv_bp.setText(TextUtils.isEmpty(bloodpressure) ? notAvailable : bloodpressure);
+            tv_weight.setText(TextUtils.isEmpty(weight) ? notAvailable : weight);
+            tv_temperature.setText(TextUtils.isEmpty(temperature) ? notAvailable : temperature);
+            tv_respiration.setText(TextUtils.isEmpty(rr) ? notAvailable : rr);
+            tv_height.setText(TextUtils.isEmpty(height) ? notAvailable : height);
         }
         dismissProgress();
     }

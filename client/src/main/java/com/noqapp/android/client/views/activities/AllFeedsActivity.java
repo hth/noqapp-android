@@ -1,21 +1,22 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.FeedAdapter;
 
-import android.content.Intent;
-import android.os.Bundle;
+import java.util.ArrayList;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class AllFeedsActivity extends AppCompatActivity implements FeedAdapter.OnItemClickListener {
 

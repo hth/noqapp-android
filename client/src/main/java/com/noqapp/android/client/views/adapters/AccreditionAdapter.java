@@ -11,10 +11,8 @@ import android.widget.TextView;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.views.activities.SliderActivity;
-import com.noqapp.android.client.views.activities.WebViewActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

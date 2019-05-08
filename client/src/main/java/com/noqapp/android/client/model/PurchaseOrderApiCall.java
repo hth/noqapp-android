@@ -1,5 +1,7 @@
 package com.noqapp.android.client.model;
 
+import android.util.Log;
+
 import com.noqapp.android.client.model.response.api.PurchaseOrderApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
@@ -10,7 +12,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;

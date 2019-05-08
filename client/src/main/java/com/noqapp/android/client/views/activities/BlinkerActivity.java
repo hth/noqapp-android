@@ -1,12 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +12,11 @@ import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 
 
 public class BlinkerActivity extends Activity {

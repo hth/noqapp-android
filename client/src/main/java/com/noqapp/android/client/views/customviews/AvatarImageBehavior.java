@@ -1,13 +1,14 @@
 package com.noqapp.android.client.views.customviews;
 
-import com.noqapp.android.client.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.noqapp.android.client.R;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @SuppressWarnings("unused")

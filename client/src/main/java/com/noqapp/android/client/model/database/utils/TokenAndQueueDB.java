@@ -1,14 +1,5 @@
 package com.noqapp.android.client.model.database.utils;
 
-import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
-import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
-
-import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -16,8 +7,17 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
+import static com.noqapp.android.client.views.activities.LaunchActivity.dbHandler;
 
 /**
  * User: omkar

@@ -1,17 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.WebViewActivity;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.InviteEvent;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -24,6 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.InviteEvent;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.WebViewActivity;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by chandra on 4/9/17.

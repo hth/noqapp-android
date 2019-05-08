@@ -1,14 +1,14 @@
 package com.noqapp.android.client.model.database;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.noqapp.android.client.views.activities.LaunchActivity;
+
 import static com.noqapp.android.client.model.database.DatabaseTable.Notification;
 import static com.noqapp.android.client.model.database.DatabaseTable.Review;
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueue;
 import static com.noqapp.android.client.model.database.DatabaseTable.TokenQueueHistory;
-
-import com.noqapp.android.client.views.activities.LaunchActivity;
-
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 /**
  * User: hitender

@@ -1,10 +1,10 @@
 package com.noqapp.android.client.utils;
 
+import android.content.Context;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.BaseErrorResponseHandler;
-
-import android.content.Context;
 
 public class ErrorResponseHandler extends BaseErrorResponseHandler {
 

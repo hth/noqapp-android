@@ -1,18 +1,19 @@
 package com.noqapp.android.client.views.fragments;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.StoreMenuActivity;
-import com.noqapp.android.client.views.adapters.MenuAdapter;
-import com.noqapp.android.common.beans.ChildData;
-
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.StoreMenuActivity;
+import com.noqapp.android.client.views.adapters.MenuAdapter;
+import com.noqapp.android.common.beans.ChildData;
+
 import java.util.List;
+
+import androidx.fragment.app.Fragment;
 
 
 public class FragmentDummy extends Fragment {

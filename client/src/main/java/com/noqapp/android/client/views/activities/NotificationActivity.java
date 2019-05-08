@@ -1,5 +1,12 @@
 package com.noqapp.android.client.views.activities;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
@@ -9,15 +16,9 @@ import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
 import com.noqapp.android.common.beans.NotificationBeans;
 
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class NotificationActivity extends AppCompatActivity {
 

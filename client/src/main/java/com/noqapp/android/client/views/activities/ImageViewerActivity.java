@@ -1,16 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.customviews.TouchImageView;
-
-import com.squareup.picasso.Picasso;
-
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.customviews.TouchImageView;
+import com.squareup.picasso.Picasso;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by chandra on 3/26/18.

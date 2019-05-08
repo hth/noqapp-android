@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model;
 
-import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
+import android.util.Log;
 
 import com.noqapp.android.client.model.response.open.FeedApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -9,10 +9,11 @@ import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.utils.Constants;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 
 public class FeedApiCall {
 

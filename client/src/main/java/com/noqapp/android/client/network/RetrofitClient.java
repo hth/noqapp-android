@@ -3,11 +3,11 @@ package com.noqapp.android.client.network;
 
 import com.noqapp.android.client.BuildConfig;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * User: omkar

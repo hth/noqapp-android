@@ -1,5 +1,13 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.OrderQueueHistoryApiCall;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
@@ -15,19 +23,12 @@ import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import java.util.ArrayList;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 
 public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
     private RecyclerView rcv_order_history;

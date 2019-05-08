@@ -1,10 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -16,6 +11,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
 
 import java.util.HashMap;
 import java.util.List;
