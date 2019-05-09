@@ -17,8 +17,8 @@ public enum BloodTypeEnum {
     ABP("ABP", "AB+"),
     ABN("ABN", "AB-");
 
-    private final String description;
     private final String name;
+    private final String description;
 
     BloodTypeEnum(String name, String description) {
         this.name = name;
