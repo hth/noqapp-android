@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
@@ -372,8 +373,7 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
                 if (TextUtils.isEmpty(partialPayment)) {
                     return CommonHelper.displayPrice(orderPrice);
                 } else {
-                    return CommonHelper.displayPrice(
-                            String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(partialPayment)));
+                    return CommonHelper.displayPrice(String.valueOf(Double.parseDouble(orderPrice) - Double.parseDouble(partialPayment)));
                 }
         }
     }

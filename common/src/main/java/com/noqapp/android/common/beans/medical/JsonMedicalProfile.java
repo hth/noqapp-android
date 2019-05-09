@@ -74,4 +74,14 @@ public class JsonMedicalProfile extends AbstractDomain implements Serializable {
         this.error = error;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonMedicalProfile{");
+        sb.append("jsonMedicalPhysicals=").append(jsonMedicalPhysicals);
+        sb.append(", jsonUserMedicalProfile=").append(jsonUserMedicalProfile);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
+    }
 }

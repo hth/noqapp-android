@@ -78,12 +78,12 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
             public void onClick(View v) {
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-                in.putExtra("isFromHistory",true);
+                in.putExtra("isFromHistory", true);
                 ((Activity) context).startActivity(in);
             }
         });
         recordHolder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + jsonPurchaseOrder.getPaymentStatus().getDescription()));
-        recordHolder.tv_order_status.setText(Html.fromHtml("<b>Order Status: </b>" + jsonPurchaseOrder.getPresentOrderState().getDescription()));
+        recordHolder.tv_order_status.setText(Html.fromHtml("<b>Order Status: </b>" + jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription()));
         recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

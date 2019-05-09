@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -70,7 +69,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private CardView cv_notes;
     private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via,tv_order_state;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via, tv_order_state;
     private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
@@ -317,9 +316,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this,false);
+                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, false);
                     showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
-                }else{
+                } else {
                     if (permissionHelper.isStoragePermissionAllowed()) {
                         progressDialog.show();
                         progressDialog.setMessage("Fetching receipt info...");
@@ -348,7 +347,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
-        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A":jsonPurchaseOrder.getPresentOrderState().getDescription());
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 
@@ -401,14 +400,14 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             tv_transaction_via.setText(jsonPurchaseOrder.getTransactionVia().getDescription());
         }
 
-        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState()&& null == jsonPurchaseOrder.getPaymentMode()) {
+        if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             btn_update_price.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
             adapter.setClickEnable(false);
         }
 
-        if(getIntent().getBooleanExtra("isFromHistory",false)){
+        if (getIntent().getBooleanExtra("isFromHistory", false)) {
             rl_payment.setVisibility(View.GONE);
             btn_update_price.setVisibility(View.GONE);
             rl_multiple.setVisibility(View.GONE);
@@ -559,7 +558,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             Log.e("Data", receipt.toString());
             ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
             receiptGeneratorPDF.createPdf(receipt);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         dismissProgress();

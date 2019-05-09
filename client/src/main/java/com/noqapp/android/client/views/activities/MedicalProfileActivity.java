@@ -3,6 +3,8 @@ package com.noqapp.android.client.views.activities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -28,15 +31,20 @@ import java.util.ArrayList;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter {
+public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
-    private TextView tv_patient_name, tv_patient_age_gender, tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
-    private ImageView iv_profile;
+    private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
     private SegmentedControl sc_blood_type;
     private ArrayList<String> sc_blood_type_data = new ArrayList<>();
     private SegmentedControl sc_occupation_type;
     private ArrayList<String> sc_occupation_type_data = new ArrayList<>();
+    private JsonMedicalProfile jsonMedicalProfile;
+    private UserMedicalProfileApiCall userMedicalProfileApiCall;
+    private ImageView iv_edit_blood_type, iv_edit_medical_history;
+    private TextView tv_update_blood_type, tv_update_medical_history;
+    private UserMedicalProfile userMedicalProfile;
+    private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +59,30 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_bp = findViewById(R.id.tv_bp);
         tv_respiration = findViewById(R.id.tv_respiration);
 
-        iv_profile = findViewById(R.id.iv_profile);
-        tv_patient_name = findViewById(R.id.tv_patient_name);
-        tv_patient_age_gender = findViewById(R.id.tv_patient_age_gender);
+        ImageView iv_profile = findViewById(R.id.iv_profile);
+        TextView tv_patient_name = findViewById(R.id.tv_patient_name);
+        TextView tv_patient_age_gender = findViewById(R.id.tv_patient_age_gender);
         tv_medicine_allergy = findViewById(R.id.tv_medicine_allergy);
         tv_family_history = findViewById(R.id.tv_family_history);
         tv_past_history = findViewById(R.id.tv_past_history);
         tv_known_allergy = findViewById(R.id.tv_known_allergy);
         sc_blood_type = findViewById(R.id.sc_blood_type);
+        iv_edit_blood_type = findViewById(R.id.iv_edit_blood_type);
+        iv_edit_medical_history = findViewById(R.id.iv_edit_medical_history);
+        tv_update_blood_type = findViewById(R.id.tv_update_blood_type);
+        tv_update_medical_history = findViewById(R.id.tv_update_medical_history);
+
+
+        edt_medicine_allergy = findViewById(R.id.edt_medicine_allergy);
+        edt_known_allergy = findViewById(R.id.edt_known_allergy);
+        edt_past_history = findViewById(R.id.edt_past_history);
+        edt_family_history = findViewById(R.id.edt_family_history);
+
+
+        iv_edit_blood_type.setOnClickListener(this);
+        iv_edit_medical_history.setOnClickListener(this);
+        tv_update_blood_type.setOnClickListener(this);
+        tv_update_medical_history.setOnClickListener(this);
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
@@ -68,15 +92,15 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_occupation_type_data.addAll(OccupationEnum.asListOfDescription());
         sc_occupation_type.addSegments(sc_occupation_type_data);
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
+        userMedicalProfile = (UserMedicalProfile) getIntent().getSerializableExtra("userMedicalProfile");
+
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
         tv_patient_age_gender.setText(new AppUtilities().calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
-
+        userMedicalProfileApiCall = new UserMedicalProfileApiCall();
+        userMedicalProfileApiCall.setMedicalRecordProfilePresenter(this);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
-                UserMedicalProfileApiCall userMedicalProfileApiCall = new UserMedicalProfileApiCall();
-                userMedicalProfileApiCall.setMedicalRecordProfilePresenter(this);
-                UserMedicalProfile userMedicalProfile = (UserMedicalProfile) getIntent().getSerializableExtra("userMedicalProfile");
                 userMedicalProfileApiCall.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), userMedicalProfile);
                 progressDialog.show();
             } else {
@@ -114,6 +138,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
 
     @Override
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
+        this.jsonMedicalProfile = jsonMedicalProfile;
+        showHideMedicalEdit(false);
         if (null != jsonMedicalProfile && jsonMedicalProfile.getJsonMedicalPhysicals().size() > 0) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
@@ -122,8 +148,13 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             tv_past_history.setText(jsonUserMedicalProfile.getPastHistory());
             if (null != jsonUserMedicalProfile.getBloodType()) {
                 int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
-                if (-1 != index)
+                if (-1 != index) {
                     sc_blood_type.setSelectedSegment(index);
+                    iv_edit_blood_type.setVisibility(View.INVISIBLE);
+                    tv_update_blood_type.setVisibility(View.GONE);
+                } else {
+                    iv_edit_blood_type.setVisibility(View.VISIBLE);
+                }
             }
             if (null != jsonUserMedicalProfile.getOccupation()) {
                 int index = sc_occupation_type_data.indexOf(jsonUserMedicalProfile.getOccupation().getDescription());
@@ -185,7 +216,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                         isRR = true;
                     }
                 }
-                if(isBloodPressure && isHeight && isPulse && isRR && isTemperature && isWeigth)
+                if (isBloodPressure && isHeight && isPulse && isRR && isTemperature && isWeigth)
                     break;
 
             }
@@ -197,5 +228,108 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             tv_height.setText(TextUtils.isEmpty(height) ? notAvailable : height);
         }
         dismissProgress();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.iv_edit_medical_history:
+                showHideMedicalEdit(true);
+                break;
+            case R.id.tv_update_medical_history: {
+                if (TextUtils.isEmpty(edt_medicine_allergy.getText().toString())
+                        && TextUtils.isEmpty(edt_family_history.getText().toString())
+                        && TextUtils.isEmpty(edt_past_history.getText().toString())
+                        && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
+                    Toast.makeText(this, "Edit atleast one field ", Toast.LENGTH_SHORT).show();
+                } else {
+                    JsonUserMedicalProfile jump;
+                    if (null == jsonMedicalProfile) {
+                        // In case of no medical record created jump is null
+                        jump = new JsonUserMedicalProfile();
+                    } else {
+                        jump = jsonMedicalProfile.getJsonUserMedicalProfile();
+                    }
+                    if (!TextUtils.isEmpty(edt_medicine_allergy.getText().toString())) {
+                        jump.setMedicineAllergies(edt_medicine_allergy.getText().toString());
+                    }
+                    if (!TextUtils.isEmpty(edt_family_history.getText().toString())) {
+                        jump.setFamilyHistory(edt_family_history.getText().toString());
+                    }
+                    if (!TextUtils.isEmpty(edt_past_history.getText().toString())) {
+                        jump.setPastHistory(edt_past_history.getText().toString());
+                    }
+                    if (!TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
+                        jump.setKnownAllergies(edt_known_allergy.getText().toString());
+                    }
+                    userMedicalProfile.setJsonUserMedicalProfile(jump);
+                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(),
+                            userMedicalProfile);
+                    progressDialog.setMessage("Updating medical history....");
+                    progressDialog.show();
+                }
+            }
+            break;
+            case R.id.iv_edit_blood_type:
+                tv_update_blood_type.setVisibility(View.VISIBLE);
+                break;
+            case R.id.tv_update_blood_type: {
+                if (-1 == sc_blood_type.getSelectedAbsolutePosition()) {
+                    Toast.makeText(this, "Please select blood type to update ", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (NetworkUtils.isConnectingToInternet(this)) {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(MedicalProfileActivity.this, true);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                try {
+                                    JsonUserMedicalProfile jump;
+                                    if (null == jsonMedicalProfile) {
+                                        // In case of no medical record created jump is null
+                                        jump = new JsonUserMedicalProfile();
+                                    } else {
+                                        jump = jsonMedicalProfile.getJsonUserMedicalProfile();
+                                    }
+                                    jump.setBloodType(BloodTypeEnum.getEnum(sc_blood_type_data.get(sc_blood_type.getSelectedAbsolutePosition())));
+                                    userMedicalProfile.setJsonUserMedicalProfile(jump);
+                                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(),
+                                            userMedicalProfile);
+                                    progressDialog.setMessage("Updating blood type....");
+                                    progressDialog.show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                tv_update_blood_type.setVisibility(View.GONE);
+                                sc_blood_type.clearSelection();
+                            }
+                        });
+                        showDialog.displayDialog("Alert", "This changes are final. You will not allow to change it later");
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(this);
+                    }
+                }
+            }
+            break;
+        }
+    }
+
+
+    private void showHideMedicalEdit(boolean isShown) {
+        tv_update_medical_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_medicine_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_family_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_past_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_known_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        if (!isShown) {
+            edt_medicine_allergy.setText("");
+            edt_family_history.setText("");
+            edt_past_history.setText("");
+            edt_known_allergy.setText("");
+        }
     }
 }
