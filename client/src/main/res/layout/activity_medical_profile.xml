@@ -539,9 +539,9 @@
                         android:layout_height="wrap_content"
                         android:background="#EEEEEE"
                         android:gravity="left"
-                        android:paddingRight="5dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
+                        android:paddingRight="5dp"
                         android:paddingBottom="5dp"
                         android:text="Medicine allergy"
                         android:textAllCaps="true"
@@ -564,9 +564,9 @@
                         android:layout_height="wrap_content"
                         android:background="#EEEEEE"
                         android:gravity="left"
-                        android:paddingRight="5dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
+                        android:paddingRight="5dp"
                         android:paddingBottom="5dp"
                         android:text="Family  history"
                         android:textAllCaps="true"
@@ -589,9 +589,9 @@
                         android:layout_height="wrap_content"
                         android:background="#EEEEEE"
                         android:gravity="left"
-                        android:paddingRight="5dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
+                        android:paddingRight="5dp"
                         android:paddingBottom="5dp"
                         android:text="Past history"
                         android:textAllCaps="true"
@@ -614,9 +614,9 @@
                         android:layout_height="wrap_content"
                         android:background="#EEEEEE"
                         android:gravity="left"
-                        android:paddingRight="5dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
+                        android:paddingRight="5dp"
                         android:paddingBottom="5dp"
                         android:text="Known allergy"
                         android:textAllCaps="true"
@@ -658,7 +658,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/add_folder"
+                        android:drawableRight="@drawable/med_edit"
                         android:drawablePadding="5dp"
                         android:gravity="left"
                         android:padding="10dp"
@@ -832,17 +832,32 @@
                     android:orientation="vertical"
                     android:paddingBottom="5dp">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/arrow_down"
-                        android:drawablePadding="5dp"
-                        android:gravity="left"
-                        android:padding="10dp"
-                        android:text="Blood Type"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/iv_edit_blood_type"
+                            android:drawablePadding="5dp"
+                            android:gravity="left"
+                            android:padding="10dp"
+                            android:text="Blood Type"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_edit_blood_type"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/med_edit"
+                            android:padding="20dp" />
+
+                    </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -871,6 +886,23 @@
                         segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color1"
                         segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
                         segmentedcontrol:unSelectedTextColor="@color/segment_text_color1" />
+
+                    <TextView
+                        android:id="@+id/tv_update_blood_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/btn_bg_enable"
+                        android:paddingLeft="25dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="25dp"
+                        android:paddingBottom="10dp"
+                        android:text="Update"
+                        android:visibility="gone"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

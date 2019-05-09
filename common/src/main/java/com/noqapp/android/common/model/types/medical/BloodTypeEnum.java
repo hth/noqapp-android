@@ -1,7 +1,5 @@
 package com.noqapp.android.common.model.types.medical;
 
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,5 +44,28 @@ public enum BloodTypeEnum {
             a.add(bloodTypeEnum.description);
         }
         return a;
+    }
+
+    public static BloodTypeEnum getEnum(String description) {
+        switch (description) {
+            case "AB-":
+                return ABN;
+            case "AB+":
+                return ABP;
+            case "A-":
+                return AN;
+            case "A+":
+                return AP;
+            case "B-":
+                return BN;
+            case "B+":
+                return BP;
+            case "O-":
+                return ON;
+            case "O+":
+                return OP;
+            default:
+                return null;
+        }
     }
 }
