@@ -621,7 +621,7 @@
                             android:drawablePadding="5dp"
                             android:gravity="left"
                             android:padding="10dp"
-                            android:text="Medical History"
+                            android:text="Personal History"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -1047,7 +1047,7 @@
                         android:drawablePadding="5dp"
                         android:gravity="left"
                         android:padding="10dp"
-                        android:text="Occupation Type"
+                        android:text="Occupation"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
