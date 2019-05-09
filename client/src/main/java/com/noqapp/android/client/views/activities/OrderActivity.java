@@ -149,7 +149,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                 progressDialog.setMessage("Order placing in progress..");
 
                                 jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
-                                        .setDeliveryMode(DeliveryModeEnum.TO)
+                                        .setDeliveryMode(DeliveryModeEnum.HD)
                                         .setPaymentMode(null) //not required here
                                         .setCustomerPhone(edt_phone.getText().toString())
                                         .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
