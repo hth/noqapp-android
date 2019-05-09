@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,17 +34,17 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
-    private TextView tv_patient_name, tv_patient_age_gender, tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
-    private ImageView iv_profile;
+    private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
     private SegmentedControl sc_blood_type;
     private ArrayList<String> sc_blood_type_data = new ArrayList<>();
     private SegmentedControl sc_occupation_type;
     private ArrayList<String> sc_occupation_type_data = new ArrayList<>();
     private JsonMedicalProfile jsonMedicalProfile;
     private UserMedicalProfileApiCall userMedicalProfileApiCall;
-    private ImageView iv_edit_blood_type;
-    private TextView tv_update_blood_type;
+    private ImageView iv_edit_blood_type, iv_edit_medical_history;
+    private TextView tv_update_blood_type, tv_update_medical_history;
     private UserMedicalProfile userMedicalProfile;
+    private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +59,30 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_bp = findViewById(R.id.tv_bp);
         tv_respiration = findViewById(R.id.tv_respiration);
 
-        iv_profile = findViewById(R.id.iv_profile);
-        tv_patient_name = findViewById(R.id.tv_patient_name);
-        tv_patient_age_gender = findViewById(R.id.tv_patient_age_gender);
+        ImageView iv_profile = findViewById(R.id.iv_profile);
+        TextView tv_patient_name = findViewById(R.id.tv_patient_name);
+        TextView tv_patient_age_gender = findViewById(R.id.tv_patient_age_gender);
         tv_medicine_allergy = findViewById(R.id.tv_medicine_allergy);
         tv_family_history = findViewById(R.id.tv_family_history);
         tv_past_history = findViewById(R.id.tv_past_history);
         tv_known_allergy = findViewById(R.id.tv_known_allergy);
         sc_blood_type = findViewById(R.id.sc_blood_type);
         iv_edit_blood_type = findViewById(R.id.iv_edit_blood_type);
+        iv_edit_medical_history = findViewById(R.id.iv_edit_medical_history);
         tv_update_blood_type = findViewById(R.id.tv_update_blood_type);
+        tv_update_medical_history = findViewById(R.id.tv_update_medical_history);
+
+
+        edt_medicine_allergy = findViewById(R.id.edt_medicine_allergy);
+        edt_known_allergy = findViewById(R.id.edt_known_allergy);
+        edt_past_history = findViewById(R.id.edt_past_history);
+        edt_family_history = findViewById(R.id.edt_family_history);
+
+
         iv_edit_blood_type.setOnClickListener(this);
+        iv_edit_medical_history.setOnClickListener(this);
         tv_update_blood_type.setOnClickListener(this);
+        tv_update_medical_history.setOnClickListener(this);
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
@@ -126,6 +139,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     @Override
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
+        showHideMedicalEdit(false);
         if (null != jsonMedicalProfile && jsonMedicalProfile.getJsonMedicalPhysicals().size() > 0) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
@@ -220,6 +234,43 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.iv_edit_medical_history:
+                showHideMedicalEdit(true);
+                break;
+            case R.id.tv_update_medical_history: {
+                if (TextUtils.isEmpty(edt_medicine_allergy.getText().toString())
+                        && TextUtils.isEmpty(edt_family_history.getText().toString())
+                        && TextUtils.isEmpty(edt_past_history.getText().toString())
+                        && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
+                    Toast.makeText(this, "Edit atleast one field ", Toast.LENGTH_SHORT).show();
+                } else {
+                    JsonUserMedicalProfile jump;
+                    if (null == jsonMedicalProfile) {
+                        // In case of no medical record created jump is null
+                        jump = new JsonUserMedicalProfile();
+                    } else {
+                        jump = jsonMedicalProfile.getJsonUserMedicalProfile();
+                    }
+                    if (!TextUtils.isEmpty(edt_medicine_allergy.getText().toString())) {
+                        jump.setMedicineAllergies(edt_medicine_allergy.getText().toString());
+                    }
+                    if (!TextUtils.isEmpty(edt_family_history.getText().toString())) {
+                        jump.setFamilyHistory(edt_family_history.getText().toString());
+                    }
+                    if (!TextUtils.isEmpty(edt_past_history.getText().toString())) {
+                        jump.setPastHistory(edt_past_history.getText().toString());
+                    }
+                    if (!TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
+                        jump.setKnownAllergies(edt_known_allergy.getText().toString());
+                    }
+                    userMedicalProfile.setJsonUserMedicalProfile(jump);
+                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(),
+                            userMedicalProfile);
+                    progressDialog.setMessage("Updating medical history....");
+                    progressDialog.show();
+                }
+            }
+            break;
             case R.id.iv_edit_blood_type:
                 tv_update_blood_type.setVisibility(View.VISIBLE);
                 break;
@@ -233,21 +284,28 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                             @Override
                             public void btnPositiveClick() {
                                 try {
-                                    JsonUserMedicalProfile jump = jsonMedicalProfile.getJsonUserMedicalProfile();
+                                    JsonUserMedicalProfile jump;
+                                    if (null == jsonMedicalProfile) {
+                                        // In case of no medical record created jump is null
+                                        jump = new JsonUserMedicalProfile();
+                                    } else {
+                                        jump = jsonMedicalProfile.getJsonUserMedicalProfile();
+                                    }
                                     jump.setBloodType(BloodTypeEnum.getEnum(sc_blood_type_data.get(sc_blood_type.getSelectedAbsolutePosition())));
                                     userMedicalProfile.setJsonUserMedicalProfile(jump);
                                     userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(),
                                             userMedicalProfile);
                                     progressDialog.setMessage("Updating blood type....");
                                     progressDialog.show();
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
 
                             @Override
                             public void btnNegativeClick() {
-                                //Do nothing
+                                tv_update_blood_type.setVisibility(View.GONE);
+                                sc_blood_type.clearSelection();
                             }
                         });
                         showDialog.displayDialog("Alert", "This changes are final. You will not allow to change it later");
@@ -257,6 +315,21 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 }
             }
             break;
+        }
+    }
+
+
+    private void showHideMedicalEdit(boolean isShown) {
+        tv_update_medical_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_medicine_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_family_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_past_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        edt_known_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        if (!isShown) {
+            edt_medicine_allergy.setText("");
+            edt_family_history.setText("");
+            edt_past_history.setText("");
+            edt_known_allergy.setText("");
         }
     }
 }

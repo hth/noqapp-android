@@ -507,7 +507,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
                 card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="4dp">
 
@@ -516,16 +516,32 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/med_edit"
-                        android:drawablePadding="5dp"
-                        android:gravity="left"
-                        android:padding="10dp"
-                        android:text="Medical History"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_toLeftOf="@+id/iv_edit_medical_history"
+                            android:drawablePadding="5dp"
+                            android:gravity="left"
+                            android:padding="10dp"
+                            android:text="Medical History"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_edit_medical_history"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/med_edit"
+                            android:padding="20dp" />
+                    </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -559,6 +575,20 @@
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
+                    <EditText
+                        android:id="@+id/edt_medicine_allergy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:gravity="left|top"
+                        android:hint="Edit medicine allergy"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:padding="5dp"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -583,6 +613,20 @@
                         android:text="N/A"
                         android:textSize="14sp"
                         android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/edt_family_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:gravity="left|top"
+                        android:hint="Edit family history"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:padding="5dp"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -609,6 +653,20 @@
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
+                    <EditText
+                        android:id="@+id/edt_past_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:gravity="left|top"
+                        android:hint="Edit past history"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:padding="5dp"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -633,6 +691,39 @@
                         android:text="N/A"
                         android:textSize="14sp"
                         android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/edt_known_allergy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:gravity="left|top"
+                        android:hint="Edit known allergy"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:padding="5dp"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_update_medical_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/btn_bg_enable"
+                        android:paddingLeft="25dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="25dp"
+                        android:paddingBottom="10dp"
+                        android:text="Update"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -892,17 +983,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
                         android:background="@drawable/btn_bg_enable"
                         android:paddingLeft="25dp"
                         android:paddingTop="10dp"
                         android:paddingRight="25dp"
                         android:paddingBottom="10dp"
                         android:text="Update"
-                        android:visibility="gone"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_twelve"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
