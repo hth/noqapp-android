@@ -250,7 +250,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                         && TextUtils.isEmpty(edt_family_history.getText().toString())
                         && TextUtils.isEmpty(edt_past_history.getText().toString())
                         && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
-                    Toast.makeText(this, "Edit atleast one field ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Edit at least one field", Toast.LENGTH_SHORT).show();
                 } else {
                     JsonUserMedicalProfile jump;
                     if (null == jsonMedicalProfile) {
@@ -318,7 +318,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                                 sc_blood_type.clearSelection();
                             }
                         });
-                        showDialog.displayDialog("Alert", "This changes are final. You will not allow to change it later");
+                        showDialog.displayDialog("Alert", "Blood Type change is permanent. Future change will be performed only by medical practitioner.");
                     } else {
                         ShowAlertInformation.showNetworkDialog(this);
                     }
