@@ -29,6 +29,7 @@ import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
@@ -42,7 +43,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     private JsonMedicalProfile jsonMedicalProfile;
     private UserMedicalProfileApiCall userMedicalProfileApiCall;
     private ImageView iv_edit_blood_type, iv_edit_medical_history;
-    private TextView tv_update_blood_type, tv_update_medical_history;
+    private TextView tv_update_blood_type, tv_update_medical_history, tv_cancel_medical_history;
     private UserMedicalProfile userMedicalProfile;
     private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
 
@@ -71,6 +72,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         iv_edit_medical_history = findViewById(R.id.iv_edit_medical_history);
         tv_update_blood_type = findViewById(R.id.tv_update_blood_type);
         tv_update_medical_history = findViewById(R.id.tv_update_medical_history);
+        tv_cancel_medical_history = findViewById(R.id.tv_cancel_medical_history);
 
 
         edt_medicine_allergy = findViewById(R.id.edt_medicine_allergy);
@@ -83,6 +85,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         iv_edit_medical_history.setOnClickListener(this);
         tv_update_blood_type.setOnClickListener(this);
         tv_update_medical_history.setOnClickListener(this);
+        tv_cancel_medical_history.setOnClickListener(this);
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
@@ -150,9 +153,11 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
                 if (-1 != index) {
                     sc_blood_type.setSelectedSegment(index);
+                    sc_blood_type.setEnabled(false);
                     iv_edit_blood_type.setVisibility(View.INVISIBLE);
                     tv_update_blood_type.setVisibility(View.GONE);
                 } else {
+                    sc_blood_type.setEnabled(true);
                     iv_edit_blood_type.setVisibility(View.VISIBLE);
                 }
             }
@@ -237,12 +242,15 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             case R.id.iv_edit_medical_history:
                 showHideMedicalEdit(true);
                 break;
+            case R.id.tv_cancel_medical_history:
+                showHideMedicalEdit(false);
+                break;
             case R.id.tv_update_medical_history: {
                 if (TextUtils.isEmpty(edt_medicine_allergy.getText().toString())
                         && TextUtils.isEmpty(edt_family_history.getText().toString())
                         && TextUtils.isEmpty(edt_past_history.getText().toString())
                         && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
-                    Toast.makeText(this, "Edit atleast one field ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Edit at least one field", Toast.LENGTH_SHORT).show();
                 } else {
                     JsonUserMedicalProfile jump;
                     if (null == jsonMedicalProfile) {
@@ -273,6 +281,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             break;
             case R.id.iv_edit_blood_type:
                 tv_update_blood_type.setVisibility(View.VISIBLE);
+                iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
                 break;
             case R.id.tv_update_blood_type: {
                 if (-1 == sc_blood_type.getSelectedAbsolutePosition()) {
@@ -305,10 +314,11 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                             @Override
                             public void btnNegativeClick() {
                                 tv_update_blood_type.setVisibility(View.GONE);
+                                iv_edit_blood_type.setBackground(ContextCompat.getDrawable(MedicalProfileActivity.this, R.drawable.edit_orange));
                                 sc_blood_type.clearSelection();
                             }
                         });
-                        showDialog.displayDialog("Alert", "This changes are final. You will not allow to change it later");
+                        showDialog.displayDialog("Alert", "Blood Type change is permanent. Future change will be performed only by medical practitioner.");
                     } else {
                         ShowAlertInformation.showNetworkDialog(this);
                     }
@@ -318,18 +328,25 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         }
     }
 
-
     private void showHideMedicalEdit(boolean isShown) {
         tv_update_medical_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        tv_cancel_medical_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_medicine_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_family_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_past_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_known_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
-        if (!isShown) {
+        if (isShown) {
+            edt_medicine_allergy.setText(tv_medicine_allergy.getText().toString());
+            edt_family_history.setText(tv_family_history.getText().toString());
+            edt_past_history.setText(tv_past_history.getText().toString());
+            edt_known_allergy.setText(tv_known_allergy.getText().toString());
+            iv_edit_medical_history.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+        } else {
             edt_medicine_allergy.setText("");
             edt_family_history.setText("");
             edt_past_history.setText("");
             edt_known_allergy.setText("");
+            iv_edit_medical_history.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_orange));
         }
     }
 }
