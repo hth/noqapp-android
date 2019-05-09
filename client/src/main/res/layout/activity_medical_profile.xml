@@ -198,7 +198,7 @@
                         android:drawablePadding="5dp"
                         android:gravity="left"
                         android:padding="10dp"
-                        android:text="Physical"
+                        android:text="Vitals"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
