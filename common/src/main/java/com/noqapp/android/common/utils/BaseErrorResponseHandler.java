@@ -57,6 +57,7 @@ public abstract class BaseErrorResponseHandler {
                     case MEDICAL_RECORD_ENTRY_DENIED:
                     case MEDICAL_RECORD_ACCESS_DENIED:
                     case MEDICAL_PROFILE_DOES_NOT_EXISTS:
+                    case MEDICAL_PROFILE_CANNOT_BE_CHANGED:
                     case BUSINESS_NOT_AUTHORIZED:
                     case BUSINESS_CUSTOMER_ID_DOES_NOT_EXISTS:
                     case BUSINESS_CUSTOMER_ID_EXISTS:
