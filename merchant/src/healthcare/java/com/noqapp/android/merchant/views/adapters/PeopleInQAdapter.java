@@ -282,5 +282,4 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
             }
         }
     }
-
 }

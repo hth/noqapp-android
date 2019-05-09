@@ -35,9 +35,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     protected String qCodeQR = "";
     private int glowPosition = -1;
 
-
     public interface PeopleInQOrderAdapterClick {
-
         void orderAcceptClick(int position);
 
         void orderDoneClick(int position);
@@ -45,7 +43,6 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         void orderCancelClick(int position);
 
         void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder);
-
     }
 
     protected PeopleInQOrderAdapterClick peopleInQOrderAdapterClick;
@@ -117,8 +114,8 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonPurchaseOrder.getCreated()));
         recordHolder.tv_sequence_number.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         recordHolder.tv_customer_name.setText(TextUtils.isEmpty(jsonPurchaseOrder.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonPurchaseOrder.getCustomerName());
-       // recordHolder.iv_new.setVisibility(jsonPurchaseOrder.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
-       // if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
+        // recordHolder.iv_new.setVisibility(jsonPurchaseOrder.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
+        // if (jsonQueuedPerson.isClientVisitedThisBusiness()) {
             recordHolder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
             recordHolder.tv_sequence_number.setTextColor(Color.WHITE);
             recordHolder.tv_join_timing.setTextColor(Color.WHITE);
@@ -188,8 +185,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                         //Do nothing
                     }
                 });
-                showDialog.displayDialog("Cancel Order","Do you want to cancel the order?");
-
+                showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
             }
         });
 
@@ -206,7 +202,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 recordHolder.tv_order_prepared.setText("Order prepared");
                 recordHolder.tv_upload_document.setVisibility(View.GONE);
         }
-        recordHolder.tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getDescription());
+        recordHolder.tv_order_status.setText("Status: " + jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             recordHolder.tv_order_prepared.setVisibility(View.VISIBLE);
         } else {
@@ -247,5 +243,4 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
     public int getItemCount() {
         return dataSet.size();
     }
-
 }

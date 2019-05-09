@@ -60,6 +60,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, CFClientInterface, CashFreeNotifyPresenter {
     private TextView tv_address;
     private EditText edt_phone;
@@ -140,17 +142,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     progressDialog.setMessage("Order placing in progress..");
                     if (validateForm()) {
                         if (isProductWithoutPrice) {
-                            Toast.makeText(OrderActivity.this, "Merchant have not set the price of the product.Hence payment cann't be proceed ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(OrderActivity.this, "Cannot process as merchant has not set product price", Toast.LENGTH_LONG).show();
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
                                 progressDialog.setMessage("Order placing in progress..");
 
-                                jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString());
-                                jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.HD);
-                                jsonPurchaseOrder.setPaymentMode(null); //not required here
-                                jsonPurchaseOrder.setCustomerPhone(edt_phone.getText().toString());
-                                jsonPurchaseOrder.setAdditionalNote(edt_optional.getText().toString());
+                                jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
+                                        .setDeliveryMode(DeliveryModeEnum.TO)
+                                        .setPaymentMode(null) //not required here
+                                        .setCustomerPhone(edt_phone.getText().toString())
+                                        .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                                 purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                                 enableDisableOrderButton(false);
                             } else {
@@ -192,7 +194,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             }
         }
     }
-
 
     private boolean validateForm() {
         boolean isValid = true;
