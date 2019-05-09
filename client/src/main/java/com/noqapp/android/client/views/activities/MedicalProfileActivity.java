@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -93,7 +94,6 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
-
         sc_occupation_type = findViewById(R.id.sc_occupation_type);
         sc_occupation_type_data.clear();
         sc_occupation_type_data.addAll(OccupationEnum.asListOfDescription());
@@ -160,6 +160,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
         showHideMedicalEdit(false);
+        sc_blood_type.clearSelection();
         if (null != jsonMedicalProfile) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
@@ -170,14 +171,17 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
                 if (-1 != index) {
                     sc_blood_type.setSelectedSegment(index);
-                    sc_blood_type.setEnabled(false);
+                    sc_blood_type.setSelectedTextColor(Color.BLACK);
+                    sc_blood_type.setSelectedBackgroundColor(Color.WHITE);
                     iv_edit_blood_type.setVisibility(View.INVISIBLE);
                     tv_update_blood_type.setVisibility(View.GONE);
                     tv_blood_type_update_msg.setVisibility(View.VISIBLE);
                 } else {
-                    sc_blood_type.setEnabled(true);
                     iv_edit_blood_type.setVisibility(View.VISIBLE);
                     tv_blood_type_update_msg.setVisibility(View.GONE);
+                    sc_blood_type.setSelectedTextColor(Color.WHITE);
+                    sc_blood_type.setSelectedBackgroundColor(Color.parseColor("#f4511e"));
+                    sc_blood_type.clearSelection();
                 }
             }
             if (null != jsonUserMedicalProfile.getOccupation()) {
