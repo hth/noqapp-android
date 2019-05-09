@@ -27,7 +27,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserMedicalProfile implements Serializable {
+public class MedicalProfile implements Serializable {
 
     @JsonProperty("qid")
     private String medicalProfileOfQueueUserId;
@@ -42,7 +42,7 @@ public class UserMedicalProfile implements Serializable {
         return medicalProfileOfQueueUserId;
     }
 
-    public UserMedicalProfile setMedicalProfileOfQueueUserId(String medicalProfileOfQueueUserId) {
+    public MedicalProfile setMedicalProfileOfQueueUserId(String medicalProfileOfQueueUserId) {
         this.medicalProfileOfQueueUserId = medicalProfileOfQueueUserId;
         return this;
     }
@@ -51,7 +51,7 @@ public class UserMedicalProfile implements Serializable {
         return guardianQueueUserId;
     }
 
-    public UserMedicalProfile setGuardianQueueUserId(String guardianQueueUserId) {
+    public MedicalProfile setGuardianQueueUserId(String guardianQueueUserId) {
         this.guardianQueueUserId = guardianQueueUserId;
         return this;
     }
@@ -60,7 +60,7 @@ public class UserMedicalProfile implements Serializable {
         return jsonUserMedicalProfile;
     }
 
-    public UserMedicalProfile setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
+    public MedicalProfile setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
         this.jsonUserMedicalProfile = jsonUserMedicalProfile;
         return this;
     }
