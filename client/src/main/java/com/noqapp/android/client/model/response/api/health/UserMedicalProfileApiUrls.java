@@ -32,6 +32,7 @@ public interface UserMedicalProfileApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#ACCOUNT_INACTIVE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MEDICAL_PROFILE_CANNOT_BE_CHANGED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/h/medicalProfile/updateUserMedicalProfile.json")
