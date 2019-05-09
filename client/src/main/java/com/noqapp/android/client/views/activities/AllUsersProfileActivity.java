@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
+import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ProfileAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -41,15 +41,15 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
 
     @Override
     public void onProfileItemClick(int pos, JsonProfile jsonProfile) {
-        UserMedicalProfile userMedicalProfile = new UserMedicalProfile();
-        userMedicalProfile.setMedicalProfileOfQueueUserId(jsonProfile.getQueueUserId());
+        MedicalProfile medicalProfile = new MedicalProfile();
+        medicalProfile.setMedicalProfileOfQueueUserId(jsonProfile.getQueueUserId());
         if (LaunchActivity.getUserProfile().getQueueUserId().equalsIgnoreCase(jsonProfile.getQueueUserId())) {
-            userMedicalProfile.setGuardianQueueUserId("");
+            medicalProfile.setGuardianQueueUserId("");
         } else {
-            userMedicalProfile.setGuardianQueueUserId(LaunchActivity.getUserProfile().getQueueUserId());
+            medicalProfile.setGuardianQueueUserId(LaunchActivity.getUserProfile().getQueueUserId());
         }
         Intent in = new Intent(this, MedicalProfileActivity.class);
-        in.putExtra("userMedicalProfile", userMedicalProfile);
+        in.putExtra("medicalProfile", medicalProfile);
         in.putExtra("jsonProfile",jsonProfile);
         startActivity(in);
     }

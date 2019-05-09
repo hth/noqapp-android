@@ -1,18 +1,9 @@
 package com.noqapp.android.client.views.activities;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
-import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
+import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -27,10 +18,18 @@ import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
-import java.util.ArrayList;
-
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+
+import java.util.ArrayList;
 
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
 
@@ -44,7 +43,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     private UserMedicalProfileApiCall userMedicalProfileApiCall;
     private ImageView iv_edit_blood_type, iv_edit_medical_history;
     private TextView tv_update_blood_type, tv_update_medical_history, tv_cancel_medical_history;
-    private UserMedicalProfile userMedicalProfile;
+    private MedicalProfile medicalProfile;
     private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
 
     @Override
@@ -95,7 +94,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_occupation_type_data.addAll(OccupationEnum.asListOfDescription());
         sc_occupation_type.addSegments(sc_occupation_type_data);
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
-        userMedicalProfile = (UserMedicalProfile) getIntent().getSerializableExtra("userMedicalProfile");
+        medicalProfile = (MedicalProfile) getIntent().getSerializableExtra("medicalProfile");
 
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
@@ -104,7 +103,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         userMedicalProfileApiCall.setMedicalRecordProfilePresenter(this);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
-                userMedicalProfileApiCall.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), userMedicalProfile);
+                userMedicalProfileApiCall.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
                 progressDialog.show();
             } else {
                 Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
@@ -271,9 +270,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                     if (!TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
                         jump.setKnownAllergies(edt_known_allergy.getText().toString());
                     }
-                    userMedicalProfile.setJsonUserMedicalProfile(jump);
-                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(),
-                            userMedicalProfile);
+                    medicalProfile.setJsonUserMedicalProfile(jump);
+                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
                     progressDialog.setMessage("Updating medical history....");
                     progressDialog.show();
                 }
@@ -301,9 +299,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                                         jump = jsonMedicalProfile.getJsonUserMedicalProfile();
                                     }
                                     jump.setBloodType(BloodTypeEnum.getEnum(sc_blood_type_data.get(sc_blood_type.getSelectedAbsolutePosition())));
-                                    userMedicalProfile.setJsonUserMedicalProfile(jump);
-                                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(),
-                                            userMedicalProfile);
+                                    medicalProfile.setJsonUserMedicalProfile(jump);
+                                    userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
                                     progressDialog.setMessage("Updating blood type....");
                                     progressDialog.show();
                                 } catch (Exception e) {

@@ -1,6 +1,6 @@
 package com.noqapp.android.client.model.response.api.health;
 
-import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
+import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
 import retrofit2.Call;
@@ -25,7 +25,7 @@ public interface UserMedicalProfileApiUrls {
             String auth,
 
             @Body
-            UserMedicalProfile userMedicalProfile
+            MedicalProfile medicalProfile
     );
 
     /**
@@ -43,6 +43,6 @@ public interface UserMedicalProfileApiUrls {
             String auth,
 
             @Body
-            UserMedicalProfile userMedicalProfile
+            MedicalProfile medicalProfile
     );
 }

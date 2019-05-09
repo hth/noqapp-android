@@ -5,7 +5,7 @@ import android.util.Log;
 import com.noqapp.android.client.model.response.api.health.UserMedicalProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
-import com.noqapp.android.client.presenter.beans.body.UserMedicalProfile;
+import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
@@ -26,8 +26,8 @@ public class UserMedicalProfileApiCall {
         userMedicalProfileApiUrls = RetrofitClient.getClient().create(UserMedicalProfileApiUrls.class);
     }
 
-    public void updateUserMedicalProfile(String mail, String auth, UserMedicalProfile userMedicalProfile) {
-        userMedicalProfileApiUrls.updateUserMedicalProfile(mail, auth, userMedicalProfile).enqueue(new Callback<JsonMedicalProfile>() {
+    public void updateUserMedicalProfile(String mail, String auth, MedicalProfile medicalProfile) {
+        userMedicalProfileApiUrls.updateUserMedicalProfile(mail, auth, medicalProfile).enqueue(new Callback<JsonMedicalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalProfile> call, @NonNull Response<JsonMedicalProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -54,8 +54,8 @@ public class UserMedicalProfileApiCall {
         });
     }
 
-    public void medicalProfile(String mail, String auth, UserMedicalProfile userMedicalProfile) {
-        userMedicalProfileApiUrls.profile(mail, auth, userMedicalProfile).enqueue(new Callback<JsonMedicalProfile>() {
+    public void medicalProfile(String mail, String auth, MedicalProfile medicalProfile) {
+        userMedicalProfileApiUrls.profile(mail, auth, medicalProfile).enqueue(new Callback<JsonMedicalProfile>() {
             @Override
             public void onResponse(@NonNull Call<JsonMedicalProfile> call, @NonNull Response<JsonMedicalProfile> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
