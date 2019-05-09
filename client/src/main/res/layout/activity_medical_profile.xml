@@ -1120,7 +1120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="10dp"
-                android:text="@string/share_info"
+                android:text="@string/share_medical_profile_info"
                 android:textColor="@color/button_color"
                 android:textSize="@dimen/text_size_fourteen"
                 android:textStyle="bold" />
