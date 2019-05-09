@@ -50,6 +50,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     private TextView tv_update_blood_type, tv_update_medical_history, tv_cancel_medical_history;
     private MedicalProfile medicalProfile;
     private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
+    private ScrollView scroll_view;
+    private CardView cv_personal_history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +102,9 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_occupation_type.addSegments(sc_occupation_type_data);
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         medicalProfile = (MedicalProfile) getIntent().getSerializableExtra("medicalProfile");
-        ScrollView scroll_view = findViewById(R.id.scroll_view);
+        scroll_view = findViewById(R.id.scroll_view);
         CardView cv_info = findViewById(R.id.cv_info);
+        cv_personal_history = findViewById(R.id.cv_personal_history);
         scroll_view.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
@@ -171,16 +174,16 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
                 if (-1 != index) {
                     sc_blood_type.setSelectedSegment(index);
-                    sc_blood_type.setSelectedTextColor(Color.BLACK);
-                    sc_blood_type.setSelectedBackgroundColor(Color.WHITE);
+                   // sc_blood_type.setSelectedTextColor(Color.BLACK);
+                   // sc_blood_type.setSelectedBackgroundColor(Color.WHITE);
                     iv_edit_blood_type.setVisibility(View.INVISIBLE);
                     tv_update_blood_type.setVisibility(View.GONE);
                     tv_blood_type_update_msg.setVisibility(View.VISIBLE);
                 } else {
                     iv_edit_blood_type.setVisibility(View.VISIBLE);
                     tv_blood_type_update_msg.setVisibility(View.GONE);
-                    sc_blood_type.setSelectedTextColor(Color.WHITE);
-                    sc_blood_type.setSelectedBackgroundColor(Color.parseColor("#f4511e"));
+                   // sc_blood_type.setSelectedTextColor(Color.WHITE);
+                   // sc_blood_type.setSelectedBackgroundColor(Color.parseColor("#f4511e"));
                     sc_blood_type.clearSelection();
                 }
             }
@@ -265,6 +268,12 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         switch (id) {
             case R.id.iv_edit_medical_history:
                 showHideMedicalEdit(true);
+                scroll_view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scroll_view.smoothScrollTo(0, cv_personal_history.getTop());
+                    }
+                });
                 break;
             case R.id.tv_cancel_medical_history:
                 showHideMedicalEdit(false);
