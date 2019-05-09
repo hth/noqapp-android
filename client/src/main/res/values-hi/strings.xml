@@ -291,6 +291,7 @@
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
     <string name="empty_review_title">Rate Us</string>
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
+    <string name="update_via_front_desk">To modify the blood group contact front desk/ doctor</string>
 
 
 </resources>

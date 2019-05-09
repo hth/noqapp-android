@@ -155,6 +155,19 @@
                         segmentedcontrol:unSelectedTextColor="@color/segment_text_color1" />
 
                     <TextView
+                        android:id="@+id/tv_blood_type_update_msg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:text="@string/update_via_front_desk"
+                        android:textColor="@color/button_color"
+                        android:visibility="gone"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
                         android:id="@+id/tv_update_blood_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -675,7 +688,6 @@
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="left|top"
                         android:hint="Edit medicine allergy"
-                        android:maxLines="2"
                         android:minLines="2"
                         android:padding="5dp"
                         android:textSize="14sp"
@@ -714,7 +726,6 @@
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="left|top"
                         android:hint="Edit family history"
-                        android:maxLines="2"
                         android:minLines="2"
                         android:padding="5dp"
                         android:textSize="14sp"
@@ -753,7 +764,6 @@
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="left|top"
                         android:hint="Edit past history"
-                        android:maxLines="2"
                         android:minLines="2"
                         android:padding="5dp"
                         android:textSize="14sp"
@@ -792,7 +802,6 @@
                         android:background="@drawable/square_white_bg_drawable"
                         android:gravity="left|top"
                         android:hint="Edit known allergy"
-                        android:maxLines="2"
                         android:minLines="2"
                         android:padding="5dp"
                         android:textSize="14sp"
@@ -802,7 +811,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp">
 
                         <TextView
                             android:id="@+id/tv_cancel_medical_history"
@@ -822,6 +832,7 @@
                             android:textSize="@dimen/text_size_twelve"
                             android:textStyle="bold"
                             android:visibility="gone" />
+
                         <TextView
                             android:id="@+id/tv_update_medical_history"
                             android:layout_width="wrap_content"

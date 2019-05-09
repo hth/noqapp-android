@@ -1,5 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
@@ -18,23 +27,15 @@ import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+
 import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-
-import java.util.ArrayList;
 
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
-    private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
+    private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
     private SegmentedControl sc_blood_type;
     private ArrayList<String> sc_blood_type_data = new ArrayList<>();
     private SegmentedControl sc_occupation_type;
@@ -66,6 +67,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_family_history = findViewById(R.id.tv_family_history);
         tv_past_history = findViewById(R.id.tv_past_history);
         tv_known_allergy = findViewById(R.id.tv_known_allergy);
+        tv_blood_type_update_msg = findViewById(R.id.tv_blood_type_update_msg);
         sc_blood_type = findViewById(R.id.sc_blood_type);
         iv_edit_blood_type = findViewById(R.id.iv_edit_blood_type);
         iv_edit_medical_history = findViewById(R.id.iv_edit_medical_history);
@@ -142,7 +144,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
         showHideMedicalEdit(false);
-        if (null != jsonMedicalProfile && jsonMedicalProfile.getJsonMedicalPhysicals().size() > 0) {
+        if (null != jsonMedicalProfile) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
             tv_known_allergy.setText(jsonUserMedicalProfile.getKnownAllergies());
@@ -155,9 +157,11 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                     sc_blood_type.setEnabled(false);
                     iv_edit_blood_type.setVisibility(View.INVISIBLE);
                     tv_update_blood_type.setVisibility(View.GONE);
+                    tv_blood_type_update_msg.setVisibility(View.VISIBLE);
                 } else {
                     sc_blood_type.setEnabled(true);
                     iv_edit_blood_type.setVisibility(View.VISIBLE);
+                    tv_blood_type_update_msg.setVisibility(View.GONE);
                 }
             }
             if (null != jsonUserMedicalProfile.getOccupation()) {
@@ -170,6 +174,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
 
             boolean isPulse = false, isBloodPressure = false, isTemperature = false, isWeigth = false, isHeight = false, isRR = false;
             String pulse = "", bloodpressure = "", temperature = "", weight = "", height = "", rr = "";
+            if(null != jsonMedicalProfile.getJsonMedicalPhysicals())
             for (int i = 0; i < jsonMedicalProfile.getJsonMedicalPhysicals().size(); i++) {
                 JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(i);
                 if (isPulse) {
