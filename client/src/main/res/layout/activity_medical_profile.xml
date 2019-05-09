@@ -611,7 +611,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview2"
+                    android:id="@+id/cv_personal_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
