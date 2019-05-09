@@ -1,5 +1,17 @@
 package com.noqapp.android.client.views.activities;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
@@ -18,23 +30,16 @@ import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-
-import java.util.ArrayList;
 
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
-    private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy;
+    private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
     private SegmentedControl sc_blood_type;
     private ArrayList<String> sc_blood_type_data = new ArrayList<>();
     private SegmentedControl sc_occupation_type;
@@ -66,6 +71,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_family_history = findViewById(R.id.tv_family_history);
         tv_past_history = findViewById(R.id.tv_past_history);
         tv_known_allergy = findViewById(R.id.tv_known_allergy);
+        tv_blood_type_update_msg = findViewById(R.id.tv_blood_type_update_msg);
         sc_blood_type = findViewById(R.id.sc_blood_type);
         iv_edit_blood_type = findViewById(R.id.iv_edit_blood_type);
         iv_edit_medical_history = findViewById(R.id.iv_edit_medical_history);
@@ -88,13 +94,25 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
-
         sc_occupation_type = findViewById(R.id.sc_occupation_type);
         sc_occupation_type_data.clear();
         sc_occupation_type_data.addAll(OccupationEnum.asListOfDescription());
         sc_occupation_type.addSegments(sc_occupation_type_data);
         JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
         medicalProfile = (MedicalProfile) getIntent().getSerializableExtra("medicalProfile");
+        ScrollView scroll_view = findViewById(R.id.scroll_view);
+        CardView cv_info = findViewById(R.id.cv_info);
+        scroll_view.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollY = scroll_view.getScrollY();
+                if (scrollY > 400) {
+                    cv_info.setVisibility(View.GONE);
+                } else {
+                    cv_info.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
@@ -142,7 +160,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
         showHideMedicalEdit(false);
-        if (null != jsonMedicalProfile && jsonMedicalProfile.getJsonMedicalPhysicals().size() > 0) {
+        sc_blood_type.clearSelection();
+        if (null != jsonMedicalProfile) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
             tv_known_allergy.setText(jsonUserMedicalProfile.getKnownAllergies());
@@ -152,12 +171,17 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
                 if (-1 != index) {
                     sc_blood_type.setSelectedSegment(index);
-                    sc_blood_type.setEnabled(false);
+                    sc_blood_type.setSelectedTextColor(Color.BLACK);
+                    sc_blood_type.setSelectedBackgroundColor(Color.WHITE);
                     iv_edit_blood_type.setVisibility(View.INVISIBLE);
                     tv_update_blood_type.setVisibility(View.GONE);
+                    tv_blood_type_update_msg.setVisibility(View.VISIBLE);
                 } else {
-                    sc_blood_type.setEnabled(true);
                     iv_edit_blood_type.setVisibility(View.VISIBLE);
+                    tv_blood_type_update_msg.setVisibility(View.GONE);
+                    sc_blood_type.setSelectedTextColor(Color.WHITE);
+                    sc_blood_type.setSelectedBackgroundColor(Color.parseColor("#f4511e"));
+                    sc_blood_type.clearSelection();
                 }
             }
             if (null != jsonUserMedicalProfile.getOccupation()) {
@@ -170,60 +194,61 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
 
             boolean isPulse = false, isBloodPressure = false, isTemperature = false, isWeigth = false, isHeight = false, isRR = false;
             String pulse = "", bloodpressure = "", temperature = "", weight = "", height = "", rr = "";
-            for (int i = 0; i < jsonMedicalProfile.getJsonMedicalPhysicals().size(); i++) {
-                JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(i);
-                if (isPulse) {
-                    //Do nothing
-                } else {
-                    if (null != jsonMedicalPhysical.getPulse()) {
-                        pulse = jsonMedicalPhysical.getPulse();
-                        isPulse = true;
+            if (null != jsonMedicalProfile.getJsonMedicalPhysicals())
+                for (int i = 0; i < jsonMedicalProfile.getJsonMedicalPhysicals().size(); i++) {
+                    JsonMedicalPhysical jsonMedicalPhysical = jsonMedicalProfile.getJsonMedicalPhysicals().get(i);
+                    if (isPulse) {
+                        //Do nothing
+                    } else {
+                        if (null != jsonMedicalPhysical.getPulse()) {
+                            pulse = jsonMedicalPhysical.getPulse();
+                            isPulse = true;
+                        }
                     }
-                }
-                if (isBloodPressure) {
-                    //Do nothing
-                } else {
-                    if (null != jsonMedicalPhysical.getBloodPressure() && jsonMedicalPhysical.getBloodPressure().length == 2) {
-                        bloodpressure = jsonMedicalPhysical.getBloodPressure()[0] + "/" + jsonMedicalPhysical.getBloodPressure()[1];
-                        isBloodPressure = true;
+                    if (isBloodPressure) {
+                        //Do nothing
+                    } else {
+                        if (null != jsonMedicalPhysical.getBloodPressure() && jsonMedicalPhysical.getBloodPressure().length == 2) {
+                            bloodpressure = jsonMedicalPhysical.getBloodPressure()[0] + "/" + jsonMedicalPhysical.getBloodPressure()[1];
+                            isBloodPressure = true;
+                        }
                     }
-                }
-                if (isTemperature) {
-                    //Do nothing
-                } else {
-                    if (null != jsonMedicalPhysical.getTemperature()) {
-                        temperature = jsonMedicalPhysical.getTemperature();
-                        isTemperature = true;
+                    if (isTemperature) {
+                        //Do nothing
+                    } else {
+                        if (null != jsonMedicalPhysical.getTemperature()) {
+                            temperature = jsonMedicalPhysical.getTemperature();
+                            isTemperature = true;
+                        }
                     }
-                }
-                if (isWeigth) {
-                    //Do nothing
-                } else {
-                    if (null != jsonMedicalPhysical.getWeight()) {
-                        weight = jsonMedicalPhysical.getWeight();
-                        isWeigth = true;
+                    if (isWeigth) {
+                        //Do nothing
+                    } else {
+                        if (null != jsonMedicalPhysical.getWeight()) {
+                            weight = jsonMedicalPhysical.getWeight();
+                            isWeigth = true;
+                        }
                     }
-                }
-                if (isHeight) {
-                    //Do nothing
-                } else {
-                    if (null != jsonMedicalPhysical.getHeight()) {
-                        height = jsonMedicalPhysical.getHeight();
-                        isHeight = true;
+                    if (isHeight) {
+                        //Do nothing
+                    } else {
+                        if (null != jsonMedicalPhysical.getHeight()) {
+                            height = jsonMedicalPhysical.getHeight();
+                            isHeight = true;
+                        }
                     }
-                }
-                if (isRR) {
-                    //Do nothing
-                } else {
-                    if (null != jsonMedicalPhysical.getRespiratory()) {
-                        rr = jsonMedicalPhysical.getRespiratory();
-                        isRR = true;
+                    if (isRR) {
+                        //Do nothing
+                    } else {
+                        if (null != jsonMedicalPhysical.getRespiratory()) {
+                            rr = jsonMedicalPhysical.getRespiratory();
+                            isRR = true;
+                        }
                     }
-                }
-                if (isBloodPressure && isHeight && isPulse && isRR && isTemperature && isWeigth)
-                    break;
+                    if (isBloodPressure && isHeight && isPulse && isRR && isTemperature && isWeigth)
+                        break;
 
-            }
+                }
             tv_pulse.setText(TextUtils.isEmpty(pulse) ? notAvailable : pulse);
             tv_bp.setText(TextUtils.isEmpty(bloodpressure) ? notAvailable : bloodpressure);
             tv_weight.setText(TextUtils.isEmpty(weight) ? notAvailable : weight);
