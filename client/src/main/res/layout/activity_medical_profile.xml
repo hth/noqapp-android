@@ -539,7 +539,7 @@
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
                             android:layout_margin="5dp"
-                            android:background="@drawable/med_edit"
+                            android:background="@drawable/edit_orange"
                             android:padding="20dp" />
                     </RelativeLayout>
 
@@ -749,7 +749,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/med_edit"
+                        android:drawableRight="@drawable/edit_orange"
                         android:drawablePadding="5dp"
                         android:gravity="left"
                         android:padding="10dp"
@@ -945,7 +945,7 @@
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
                             android:layout_margin="5dp"
-                            android:background="@drawable/med_edit"
+                            android:background="@drawable/edit_orange"
                             android:padding="20dp" />
 
                     </RelativeLayout>

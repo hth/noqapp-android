@@ -29,6 +29,7 @@ import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
@@ -236,6 +237,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         switch (id) {
             case R.id.iv_edit_medical_history:
                 showHideMedicalEdit(true);
+                iv_edit_medical_history.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
                 break;
             case R.id.tv_update_medical_history: {
                 if (TextUtils.isEmpty(edt_medicine_allergy.getText().toString())
@@ -273,6 +275,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             break;
             case R.id.iv_edit_blood_type:
                 tv_update_blood_type.setVisibility(View.VISIBLE);
+                iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
                 break;
             case R.id.tv_update_blood_type: {
                 if (-1 == sc_blood_type.getSelectedAbsolutePosition()) {
@@ -305,6 +308,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                             @Override
                             public void btnNegativeClick() {
                                 tv_update_blood_type.setVisibility(View.GONE);
+                                iv_edit_blood_type.setBackground(ContextCompat.getDrawable(MedicalProfileActivity.this, R.drawable.edit_orange));
                                 sc_blood_type.clearSelection();
                             }
                         });
@@ -318,14 +322,18 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         }
     }
 
-
     private void showHideMedicalEdit(boolean isShown) {
         tv_update_medical_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_medicine_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_family_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_past_history.setVisibility(isShown ? View.VISIBLE : View.GONE);
         edt_known_allergy.setVisibility(isShown ? View.VISIBLE : View.GONE);
-        if (!isShown) {
+        if (isShown) {
+            edt_medicine_allergy.setText(tv_medicine_allergy.getText().toString());
+            edt_family_history.setText(tv_family_history.getText().toString());
+            edt_past_history.setText(tv_past_history.getText().toString());
+            edt_known_allergy.setText(tv_known_allergy.getText().toString());
+        } else {
             edt_medicine_allergy.setText("");
             edt_family_history.setText("");
             edt_past_history.setText("");
