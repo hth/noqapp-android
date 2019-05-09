@@ -82,6 +82,98 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                card_view:cardBackgroundColor="@android:color/white"
+                card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/iv_edit_blood_type"
+                            android:drawablePadding="5dp"
+                            android:gravity="left"
+                            android:padding="10dp"
+                            android:text="Blood Type"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/iv_edit_blood_type"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/edit_orange"
+                            android:padding="20dp" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/sc_blood_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        segmentedcontrol:columnCount="4"
+                        segmentedcontrol:distributeEvenly="true"
+                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color1"
+                        segmentedcontrol:radius="6dp"
+                        segmentedcontrol:radiusForEverySegment="false"
+                        segmentedcontrol:segmentHorizontalMargin="0dp"
+                        segmentedcontrol:segmentVerticalMargin="0dp"
+                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                        segmentedcontrol:strokeWidth="1dp"
+                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                        segmentedcontrol:textVerticalPadding="5dp"
+                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color1"
+                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color1" />
+
+                    <TextView
+                        android:id="@+id/tv_update_blood_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/btn_bg_enable"
+                        android:paddingLeft="25dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="25dp"
+                        android:paddingBottom="10dp"
+                        android:text="Update"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview1"
@@ -706,24 +798,49 @@
                         android:textSize="14sp"
                         android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/tv_update_medical_history"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/btn_bg_enable"
-                        android:paddingLeft="25dp"
-                        android:paddingTop="10dp"
-                        android:paddingRight="25dp"
-                        android:paddingBottom="10dp"
-                        android:text="Update"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_cancel_medical_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/btn_bg_enable"
+                            android:paddingLeft="25dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="25dp"
+                            android:paddingBottom="10dp"
+                            android:text="Cancel"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/text_size_twelve"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                        <TextView
+                            android:id="@+id/tv_update_medical_history"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/btn_bg_enable"
+                            android:paddingLeft="25dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="25dp"
+                            android:paddingBottom="10dp"
+                            android:text="Update"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/text_size_twelve"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -903,99 +1020,6 @@
 
 
                     </GridLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="10dp"
-                card_view:cardBackgroundColor="@android:color/white"
-                card_view:cardCornerRadius="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="5dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/iv_edit_blood_type"
-                            android:drawablePadding="5dp"
-                            android:gravity="left"
-                            android:padding="10dp"
-                            android:text="Blood Type"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/iv_edit_blood_type"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="5dp"
-                            android:background="@drawable/edit_orange"
-                            android:padding="20dp" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@android:color/darker_gray" />
-
-                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/sc_blood_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        segmentedcontrol:columnCount="4"
-                        segmentedcontrol:distributeEvenly="true"
-                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color1"
-                        segmentedcontrol:radius="6dp"
-                        segmentedcontrol:radiusForEverySegment="false"
-                        segmentedcontrol:segmentHorizontalMargin="0dp"
-                        segmentedcontrol:segmentVerticalMargin="0dp"
-                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                        segmentedcontrol:strokeWidth="1dp"
-                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                        segmentedcontrol:textVerticalPadding="5dp"
-                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color1"
-                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color1" />
-
-                    <TextView
-                        android:id="@+id/tv_update_blood_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/btn_bg_enable"
-                        android:paddingLeft="25dp"
-                        android:paddingTop="10dp"
-                        android:paddingRight="25dp"
-                        android:paddingBottom="10dp"
-                        android:text="Update"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_size_twelve"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
