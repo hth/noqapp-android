@@ -1,20 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -34,11 +19,26 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.core.content.ContextCompat;
+
+import java.util.List;
 
 public class JoinActivity extends BaseActivity implements QueuePresenter {
     private final String TAG = JoinActivity.class.getSimpleName();
@@ -357,7 +357,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
             in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-            in.putExtra("profile_pos", sp_name_list.getSelectedItemPosition());
+            in.putExtra("qUserId", ((JsonProfile)sp_name_list.getSelectedItem()).getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             in.putExtra("isPayBeforeJoin", isPayBeforeJoin);
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);

@@ -1,26 +1,13 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
@@ -44,7 +31,6 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -59,23 +45,37 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chandra on 5/7/17.
@@ -91,6 +91,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private Button btn_cancel_queue;
     private TextView tv_after;
     private TextView tv_estimated_time;
+    private TextView tv_name;
     private TextView tv_vibrator_off;
     private LinearLayout ll_change_bg;
     private JsonToken jsonToken;
@@ -101,8 +102,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private String topic;
     private boolean isResumeFirst = true;
     private String gotoPerson = "";
-    private int profile_pos;
-    private List<JsonProfile> profileList;
     private String queueUserId = "";
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
@@ -111,6 +110,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private CardView card_amount;
     private TextView tv_total_order_amt;
     private CFPaymentService cfPaymentService;
+    private JsonProfile jsonProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,12 +137,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
         ll_change_bg = findViewById(R.id.ll_change_bg);
         card_amount = findViewById(R.id.card_amount);
-        TextView tv_name = findViewById(R.id.tv_name);
+        tv_name = findViewById(R.id.tv_name);
         ImageView iv_profile = findViewById(R.id.iv_profile);
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this,true);
+                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this, true);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
@@ -199,7 +199,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             tv_store_name.setText(jsonTokenAndQueue.getBusinessName());
             tv_queue_name.setText(jsonTokenAndQueue.getDisplayName());
             tv_address.setText(jsonTokenAndQueue.getStoreAddress());
-            profile_pos = bundle.getIntExtra("profile_pos", 1);
+            queueUserId = bundle.getStringExtra("qUserId");
+            List<JsonProfile> profileList = new ArrayList<>();
+            if (UserUtils.isLogin()) {
+                profileList = NoQueueBaseActivity.getAllProfileList();
+            }
+            if (!TextUtils.isEmpty(queueUserId)) {
+                jsonProfile = AppUtilities.getJsonProfileQueueUserID(queueUserId, profileList);
+                tv_name.setText(jsonProfile.getName());
+            }
+
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
 
@@ -224,14 +233,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     startActivity(goToA);
                 }
             });
-            if (UserUtils.isLogin()) {
-                profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-                profileList.add(0, NoQueueBaseActivity.getUserProfile());
-                profileList.add(0, new JsonProfile().setName("Select Patient"));
-                DependentAdapter adapter = new DependentAdapter(this, profileList);
-                tv_name.setText(profileList.get(profile_pos).getName());
-                queueUserId = profileList.get(profile_pos).getQueueUserId();
-            }
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
                 case PH:
@@ -271,7 +272,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
                 tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
                 setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-                tv_name.setText(AppUtilities.getNameFromQueueUserID(jsonTokenAndQueue.getQueueUserId(), profileList));
+                tv_name.setText(jsonProfile.getName());
                 tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
                 if (isVibratorOff()) {
                     ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
@@ -473,16 +474,16 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     private void callQueue() {
         if (codeQR != null) {
             if (UserUtils.isLogin()) {
-                JsonProfile jsonProfile = NoQueueBaseActivity.getUserProfile();
-                String queueUserId;
+                JsonProfile jp = NoQueueBaseActivity.getUserProfile();
+                String qUserId;
                 String guardianId = null;
-                if (profile_pos > 1) {
-                    queueUserId = profileList.get(profile_pos).getQueueUserId();
-                    guardianId = jsonProfile.getQueueUserId();
+                if (jp.getQueueUserId().equalsIgnoreCase(queueUserId)) {
+                    qUserId = jp.getQueueUserId();
                 } else {
-                    queueUserId = jsonProfile.getQueueUserId();
+                    qUserId = jsonProfile.getQueueUserId();
+                    guardianId = jp.getQueueUserId();
                 }
-                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(queueUserId).setGuardianQid(guardianId);
+                JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
 
                 if (jsonQueue.isEnabledPayment()) {
                     if (getIntent().getBooleanExtra("isPayBeforeJoin", false)) {
@@ -713,24 +714,28 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     }
 
     private void triggerOnlinePayment() {
-        String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
-        String stage = BuildConfig.CASHFREE_STAGE;
-        String appId = BuildConfig.CASHFREE_APP_ID;
-        String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
-        String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
-        String orderNote = "Test Order";
-        String customerName = LaunchActivity.getUserName();
-        String customerPhone = LaunchActivity.getPhoneNo();
-        String customerEmail = LaunchActivity.getActualMail();
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_APP_ID, appId);
-        params.put(PARAM_ORDER_ID, orderId);
-        params.put(PARAM_ORDER_AMOUNT, orderAmount);
-        params.put(PARAM_ORDER_NOTE, orderNote);
-        params.put(PARAM_CUSTOMER_NAME, customerName);
-        params.put(PARAM_CUSTOMER_PHONE, customerPhone);
-        params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
-        cfPaymentService.doPayment(this, params, token, this, stage);
+        if (NoQueueBaseActivity.isEmailVerified()) {
+            String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
+            String stage = BuildConfig.CASHFREE_STAGE;
+            String appId = BuildConfig.CASHFREE_APP_ID;
+            String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
+            String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
+            String orderNote = "Order: " + queueUserId;
+            String customerName = LaunchActivity.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
+            String customerPhone = LaunchActivity.getOfficePhoneNo();
+            String customerEmail = LaunchActivity.getOfficeMail();
+            Map<String, String> params = new HashMap<>();
+            params.put(PARAM_APP_ID, appId);
+            params.put(PARAM_ORDER_ID, orderId);
+            params.put(PARAM_ORDER_AMOUNT, orderAmount);
+            params.put(PARAM_ORDER_NOTE, orderNote);
+            params.put(PARAM_CUSTOMER_NAME, customerName);
+            params.put(PARAM_CUSTOMER_PHONE, customerPhone);
+            params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
+            cfPaymentService.doPayment(this, params, token, this, stage);
+        } else {
+            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

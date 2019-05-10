@@ -1,19 +1,22 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-
-import com.google.gson.Gson;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonProfile;
 
+import com.google.gson.Gson;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This Class is created to store the information which data need to be final(Consistent)
@@ -110,6 +113,19 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? "" : getMail();
     }
 
+
+    public static String getCustomerNameWithQid(String customerName, String queueUserId) {
+        return customerName + " " + queueUserId;
+    }
+
+    public static String getOfficeMail() {
+        return  getActualMail();
+    }
+
+    public static String getOfficePhoneNo() {
+        return getPhoneNo();
+    }
+
     public static boolean showEmailVerificationField() {
         if (getUserProfile().isAccountValidated()) {
             return false;
@@ -117,11 +133,13 @@ public class NoQueueBaseActivity extends AppCompatActivity {
             return !getMail().endsWith(Constants.MAIL_NOQAPP_COM);
         }
     }
+
     public static boolean isEmailVerified() {
         return getUserProfile().isAccountValidated();
 
 
     }
+
     public static String getAuth() {
         return sharedPreferences.getString(APIConstant.Key.XR_AUTH, "");
     }
@@ -184,7 +202,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         editor.putString(KEY_PREVIOUS_USER_QID, previousUserQID);
         editor.putBoolean(KEY_SHOW_HELPER, showHelper);
         editor.commit();
-        if(null != LaunchActivity.getLaunchActivity()){
+        if (null != LaunchActivity.getLaunchActivity()) {
             LaunchActivity.getLaunchActivity().updateDrawerUI();
         }
     }
@@ -192,6 +210,15 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     public static JsonProfile getUserProfile() {
         String json = sharedPreferences.getString(KEY_USER_PROFILE, "");
         return new Gson().fromJson(json, JsonProfile.class);
+    }
+
+    public static List<JsonProfile> getAllProfileList(){
+        List<JsonProfile> profileList = new ArrayList<>();
+        if (null != getUserProfile().getDependents()) {
+            profileList = getUserProfile().getDependents();
+        }
+        profileList.add(0, getUserProfile());
+        return profileList;
     }
 
     public static void setUserProfile(JsonProfile jsonProfile) {

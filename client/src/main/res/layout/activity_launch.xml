@@ -26,6 +26,7 @@
                 android:layout_above="@+id/line"
                 android:background="@android:color/white"
                 android:divider="@null"
+                android:groupIndicator="@null"
                 android:dividerHeight="0dp"/>
 
         <View

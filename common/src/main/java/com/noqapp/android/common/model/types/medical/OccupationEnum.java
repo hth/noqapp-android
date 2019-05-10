@@ -8,14 +8,18 @@ import java.util.List;
  * 7/30/18 3:37 PM
  */
 public enum OccupationEnum {
-    CMP("CPR", "Computer Professional"),
+    CMP("CMP", "Computer Professional"),
     DOC("DOC", "Doctor"),
     ENG("ENG", "Engineer"),
     STU("STU", "Student"),
     TEC("TEC", "Teacher"),
     POL("POL", "Police"), 
     HOW("HOW", "House Wife"),
-    LAW("LAW", "Lawyer");
+    RET("RET", "Retired"),
+    BAN("BAN", "Banker"),
+    SER("SER", "Service Industry"),
+    LAW("LAW", "Lawyer"),
+    GOV("GOV", "Government Official");
 
     private final String name;
     private final String description;
