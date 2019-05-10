@@ -142,7 +142,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this,true);
+                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this, true);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
@@ -713,24 +713,28 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     }
 
     private void triggerOnlinePayment() {
-        String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
-        String stage = BuildConfig.CASHFREE_STAGE;
-        String appId = BuildConfig.CASHFREE_APP_ID;
-        String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
-        String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
-        String orderNote = "Test Order";
-        String customerName = LaunchActivity.getUserName();
-        String customerPhone = LaunchActivity.getPhoneNo();
-        String customerEmail = LaunchActivity.getOfficeMail(queueUserId);
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_APP_ID, appId);
-        params.put(PARAM_ORDER_ID, orderId);
-        params.put(PARAM_ORDER_AMOUNT, orderAmount);
-        params.put(PARAM_ORDER_NOTE, orderNote);
-        params.put(PARAM_CUSTOMER_NAME, customerName);
-        params.put(PARAM_CUSTOMER_PHONE, customerPhone);
-        params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
-        cfPaymentService.doPayment(this, params, token, this, stage);
+        if (NoQueueBaseActivity.isEmailVerified()) {
+            String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
+            String stage = BuildConfig.CASHFREE_STAGE;
+            String appId = BuildConfig.CASHFREE_APP_ID;
+            String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
+            String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
+            String orderNote = "Test Order";
+            String customerName = LaunchActivity.getUserName();
+            String customerPhone = LaunchActivity.getPhoneNo();
+            String customerEmail = LaunchActivity.getOfficeMail(queueUserId);
+            Map<String, String> params = new HashMap<>();
+            params.put(PARAM_APP_ID, appId);
+            params.put(PARAM_ORDER_ID, orderId);
+            params.put(PARAM_ORDER_AMOUNT, orderAmount);
+            params.put(PARAM_ORDER_NOTE, orderNote);
+            params.put(PARAM_CUSTOMER_NAME, customerName);
+            params.put(PARAM_CUSTOMER_PHONE, customerPhone);
+            params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
+            cfPaymentService.doPayment(this, params, token, this, stage);
+        } else {
+            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
