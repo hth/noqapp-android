@@ -1,20 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -41,7 +28,27 @@ import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.common.cache.Cache;
+
 import com.squareup.picasso.Picasso;
+
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,13 +57,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import static com.google.common.cache.CacheBuilder.newBuilder;
 
 /**
  * Created by chandra on 5/7/17.
@@ -443,8 +443,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             Map.Entry<String, ArrayList<BizStoreElastic>> entry = cacheQueue.getIfPresent("queue").entrySet().iterator().next();
             ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
             if(bizStoreElastics.size() == 1){
-                if(!AppUtilities.isRelease())
-                Toast.makeText(this, "One item found", Toast.LENGTH_SHORT).show();
                 CategoryListAdapter categoryListAdapter = new CategoryListAdapter(bizStoreElastics, this, this,true);
                 rcv_single_queue.setHasFixedSize(true);
                 rcv_single_queue.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -454,12 +452,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 btn_join_queues.setVisibility(View.GONE);
                 ll_top_header.setVisibility(View.GONE);
             }else{
-                if(!AppUtilities.isRelease())
-                Toast.makeText(this, bizStoreElastics.size()+" item found", Toast.LENGTH_SHORT).show();
+                // Do nothing
             }
         }else {
-            if(!AppUtilities.isRelease())
-            Toast.makeText(this, "Other Case", Toast.LENGTH_SHORT).show();
+            // Do nothing
         }
 
     }

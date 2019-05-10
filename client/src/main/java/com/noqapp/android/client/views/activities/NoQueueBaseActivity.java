@@ -112,7 +112,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
 
 
     public static String getOfficeMail(String queueUserId) {
-        return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? queueUserId+"@mail.noqapp.com" : getMail();
+        //return getMail().endsWith(Constants.MAIL_NOQAPP_COM) ? queueUserId+"@mail.noqapp.com" : getMail();
+        return queueUserId+"@mail.noqapp.com";
     }
 
     public static boolean showEmailVerificationField() {
