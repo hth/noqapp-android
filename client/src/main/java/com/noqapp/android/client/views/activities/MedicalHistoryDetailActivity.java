@@ -1,16 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
@@ -28,11 +17,21 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MedicalHistoryDetailActivity extends BaseActivity {
 
@@ -116,8 +115,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         }
         tv_no_of_time_access.setText("# of times record viewed: " + jsonMedicalRecord.getRecordAccess().size());
 
-        List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-        profileList.add(0, NoQueueBaseActivity.getUserProfile());
+        List<JsonProfile> profileList = NoQueueBaseActivity.getAllProfileList();
         tv_patient_name.setText(AppUtilities.getNameFromQueueUserID(jsonMedicalRecord.getQueueUserId(), profileList));
 
         if (StringUtils.isBlank(tv_complaints.getText())) {

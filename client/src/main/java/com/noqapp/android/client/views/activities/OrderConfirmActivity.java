@@ -416,9 +416,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         String orderId = jsonPurchaseOrder.getTransactionId();
         String orderAmount = jsonPurchaseOrder.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName = LaunchActivity.getUserName();
-        String customerPhone = LaunchActivity.getPhoneNo();
-        String customerEmail = LaunchActivity.getOfficeMail(LaunchActivity.getUserProfile().getQueueUserId());
+        String customerName = LaunchActivity.getCustomerNameWithQid(LaunchActivity.getUserName(), LaunchActivity.getUserProfile().getQueueUserId());
+        String customerPhone = LaunchActivity.getOfficePhoneNo();
+        String customerEmail = LaunchActivity.getOfficeMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);
