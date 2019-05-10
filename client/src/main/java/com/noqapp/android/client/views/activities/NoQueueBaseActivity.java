@@ -119,11 +119,11 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getOfficeMail() {
-        return  "gateway-payment@noqapp.com";
+        return  getActualMail();
     }
 
     public static String getOfficePhoneNo() {
-        return "9653348114";
+        return getPhoneNo();
     }
 
     public static boolean showEmailVerificationField() {
