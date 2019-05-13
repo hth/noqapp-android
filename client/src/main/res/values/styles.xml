@@ -148,4 +148,11 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="SettingSeekbarStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/theme_color_red</item>
+        <item name="colorSwitchThumbNormal">#f2f2f2</item>
+        <item name="android:colorForeground">#80221f1f</item>
+    </style>
+
+
 </resources>

@@ -5,6 +5,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.noqapp.android.common.beans.JsonReviewList;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +38,10 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
     private RecyclerView rv_all_review;
     private TextView tv_review_label;
     private List<JsonReview> jsonReviews = new ArrayList<>();
+    private List<JsonReview> jsonReviewsOnlyText = new ArrayList<>();
     private RelativeLayout rl_empty;
+    private SwitchCompat toggleShowAll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,8 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         rv_all_review = findViewById(R.id.rv_all_review);
         rl_empty = findViewById(R.id.rl_empty);
         tv_review_label = findViewById(R.id.tv_review_label);
+        toggleShowAll = findViewById(R.id.toggleShowAll);
+        toggleShowAll.setVisibility(View.INVISIBLE);
         LinearLayoutManager horizontalLayoutManagaer
                 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv_all_review.setLayoutManager(horizontalLayoutManagaer);
@@ -119,20 +126,34 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         AppUtilities.setRatingBarColor(stars, this);
         if (null != jsonReviews && jsonReviews.size() > 0) {
-            List<JsonReview> temp = new ArrayList<>();
             listSize = jsonReviews.size();
+            jsonReviewsOnlyText.clear();
             for (int i = 0; i < jsonReviews.size(); i++) {
                 ratingCount += jsonReviews.get(i).getRatingCount();
                 if (!TextUtils.isEmpty(jsonReviews.get(i).getReview()))
-                    temp.add(jsonReviews.get(i));
+                    jsonReviewsOnlyText.add(jsonReviews.get(i));
             }
-           // jsonReviews = temp;
+            // jsonReviews = temp;
         }
         if (null == jsonReviews || jsonReviews.size() <= 0) {
             rv_all_review.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
+            toggleShowAll.setVisibility(View.INVISIBLE);
         } else {
+            toggleShowAll.setVisibility(View.VISIBLE);
             rv_all_review.setVisibility(View.VISIBLE);
+            toggleShowAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviewsOnlyText, ShowAllReviewsActivity.this);
+                        rv_all_review.setAdapter(showAllReviewsAdapter);
+                    } else {
+                        ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, ShowAllReviewsActivity.this);
+                        rv_all_review.setAdapter(showAllReviewsAdapter);
+                    }
+                }
+            });
             rl_empty.setVisibility(View.GONE);
             tv_review_label.setText("" + jsonReviews.size() + " Ratings");
             try {
@@ -145,7 +166,14 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 e.printStackTrace();
             }
         }
-        ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, this);
-        rv_all_review.setAdapter(showAllReviewsAdapter);
+        if (jsonReviewsOnlyText.size() > 0) {
+            toggleShowAll.setChecked(true);
+            ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviewsOnlyText, ShowAllReviewsActivity.this);
+            rv_all_review.setAdapter(showAllReviewsAdapter);
+        } else {
+            toggleShowAll.setChecked(false);
+            ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, ShowAllReviewsActivity.this);
+            rv_all_review.setAdapter(showAllReviewsAdapter);
+        }
     }
 }
