@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,8 +47,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     private ArrayList<String> sc_occupation_type_data = new ArrayList<>();
     private JsonMedicalProfile jsonMedicalProfile;
     private UserMedicalProfileApiCall userMedicalProfileApiCall;
-    private ImageView iv_edit_blood_type, iv_edit_medical_history, iv_edit_occupation;
-    private TextView tv_update_blood_type, tv_update_medical_history, tv_cancel_medical_history, tv_update_occupation;
+    private TextView iv_edit_blood_type, iv_edit_medical_history, iv_edit_occupation;
+    private TextView tv_update_blood_type, tv_cancel_blood_type, tv_update_medical_history, tv_cancel_medical_history, tv_update_occupation, tv_cancel_occupation;
     private MedicalProfile medicalProfile;
     private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
     private ScrollView scroll_view;
@@ -83,6 +84,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_update_blood_type = findViewById(R.id.tv_update_blood_type);
         tv_update_medical_history = findViewById(R.id.tv_update_medical_history);
         tv_cancel_medical_history = findViewById(R.id.tv_cancel_medical_history);
+        tv_cancel_blood_type = findViewById(R.id.tv_cancel_blood_type);
+        tv_cancel_occupation = findViewById(R.id.tv_cancel_occupation);
 
 
         edt_medicine_allergy = findViewById(R.id.edt_medicine_allergy);
@@ -98,6 +101,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_update_blood_type.setOnClickListener(this);
         tv_update_medical_history.setOnClickListener(this);
         tv_cancel_medical_history.setOnClickListener(this);
+        tv_cancel_blood_type.setOnClickListener(this);
+        tv_cancel_occupation.setOnClickListener(this);
         sc_blood_type_data.clear();
         sc_blood_type_data.addAll(BloodTypeEnum.asListOfDescription());
         sc_blood_type.addSegments(sc_blood_type_data);
@@ -169,6 +174,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     public void medicalRecordProfileResponse(JsonMedicalProfile jsonMedicalProfile) {
         this.jsonMedicalProfile = jsonMedicalProfile;
         showHideMedicalEdit(false);
+        showHideBloodEdit(false);
+        showHideOccupationEdit(false);
         sc_blood_type.clearSelection();
         sc_occupation_type.clearSelection();
         if (null != jsonMedicalProfile) {
@@ -278,15 +285,16 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         int id = v.getId();
         switch (id) {
             case R.id.iv_edit_occupation:
-                tv_update_occupation.setVisibility(View.VISIBLE);
-                ll_prevent_occupation_click.setVisibility(View.GONE);
-                iv_edit_occupation.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+                showHideOccupationEdit(true);
                 scroll_view.post(new Runnable() {
                     @Override
                     public void run() {
                         scroll_view.smoothScrollTo(0, cv_occupation.getBottom());
                     }
                 });
+                break;
+            case R.id.tv_cancel_occupation:
+                showHideOccupationEdit(false);
                 break;
             case R.id.tv_update_occupation:
                 if (-1 == sc_occupation_type.getSelectedAbsolutePosition()) {
@@ -359,9 +367,12 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 }
             }
             break;
+
             case R.id.iv_edit_blood_type:
-                tv_update_blood_type.setVisibility(View.VISIBLE);
-                iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+                showHideBloodEdit(true);
+                break;
+            case R.id.tv_cancel_blood_type:
+                showHideBloodEdit(false);
                 break;
             case R.id.tv_update_blood_type: {
                 if (-1 == sc_blood_type.getSelectedAbsolutePosition()) {
@@ -420,12 +431,61 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             edt_past_history.setText(tv_past_history.getText().toString());
             edt_known_allergy.setText(tv_known_allergy.getText().toString());
             iv_edit_medical_history.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+            iv_edit_medical_history.setTextColor(Color.BLACK);
         } else {
             edt_medicine_allergy.setText("");
             edt_family_history.setText("");
             edt_past_history.setText("");
             edt_known_allergy.setText("");
             iv_edit_medical_history.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_orange));
+            iv_edit_medical_history.setTextColor(Color.parseColor("#f4511e"));
+        }
+    }
+
+
+    private void showHideBloodEdit(boolean isShown) {
+        tv_update_blood_type.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        tv_cancel_blood_type.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        ll_prevent_click.setVisibility(isShown ? View.GONE : View.VISIBLE);
+        if (isShown) {
+            iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+            iv_edit_blood_type.setTextColor(Color.BLACK);
+        } else {
+            iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_orange));
+            iv_edit_blood_type.setTextColor(Color.parseColor("#f4511e"));
+            sc_blood_type.clearSelection();
+            if (null != jsonMedicalProfile) {
+                JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
+                if (null != jsonUserMedicalProfile.getBloodType()) {
+                    int index = sc_blood_type_data.indexOf(jsonUserMedicalProfile.getBloodType().getDescription());
+                    if (-1 != index) {
+                        sc_blood_type.setSelectedSegment(index);
+                    }
+                }
+            }
+        }
+    }
+
+    private void showHideOccupationEdit(boolean isShown) {
+        tv_update_occupation.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        tv_cancel_occupation.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        ll_prevent_occupation_click.setVisibility(isShown ? View.GONE : View.VISIBLE);
+        if (isShown) {
+            iv_edit_occupation.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+            iv_edit_occupation.setTextColor(Color.BLACK);
+        } else {
+            iv_edit_occupation.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_orange));
+            iv_edit_occupation.setTextColor(Color.parseColor("#f4511e"));
+            sc_occupation_type.clearSelection();
+            if (null != jsonMedicalProfile) {
+                JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
+                if (null != jsonUserMedicalProfile.getOccupation()) {
+                    int index = sc_occupation_type_data.indexOf(jsonUserMedicalProfile.getOccupation().getDescription());
+                    if (-1 != index) {
+                        sc_occupation_type.setSelectedSegment(index);
+                    }
+                }
+            }
         }
     }
 }
