@@ -1,5 +1,17 @@
 package com.noqapp.android.client.views.activities;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
@@ -18,22 +30,11 @@ import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-
-import java.util.ArrayList;
 
 public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
 
@@ -45,13 +46,13 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     private ArrayList<String> sc_occupation_type_data = new ArrayList<>();
     private JsonMedicalProfile jsonMedicalProfile;
     private UserMedicalProfileApiCall userMedicalProfileApiCall;
-    private ImageView iv_edit_blood_type, iv_edit_medical_history;
-    private TextView tv_update_blood_type, tv_update_medical_history, tv_cancel_medical_history;
+    private ImageView iv_edit_blood_type, iv_edit_medical_history, iv_edit_occupation;
+    private TextView tv_update_blood_type, tv_update_medical_history, tv_cancel_medical_history, tv_update_occupation;
     private MedicalProfile medicalProfile;
     private EditText edt_medicine_allergy, edt_known_allergy, edt_past_history, edt_family_history;
     private ScrollView scroll_view;
-    private CardView cv_personal_history;
-    private LinearLayout ll_prevent_click;
+    private CardView cv_personal_history, cv_occupation;
+    private LinearLayout ll_prevent_click, ll_prevent_occupation_click;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         sc_blood_type = findViewById(R.id.sc_blood_type);
         iv_edit_blood_type = findViewById(R.id.iv_edit_blood_type);
         iv_edit_medical_history = findViewById(R.id.iv_edit_medical_history);
+        iv_edit_occupation = findViewById(R.id.iv_edit_occupation);
+        tv_update_occupation = findViewById(R.id.tv_update_occupation);
         tv_update_blood_type = findViewById(R.id.tv_update_blood_type);
         tv_update_medical_history = findViewById(R.id.tv_update_medical_history);
         tv_cancel_medical_history = findViewById(R.id.tv_cancel_medical_history);
@@ -90,6 +93,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
 
         iv_edit_blood_type.setOnClickListener(this);
         iv_edit_medical_history.setOnClickListener(this);
+        iv_edit_occupation.setOnClickListener(this);
+        tv_update_occupation.setOnClickListener(this);
         tv_update_blood_type.setOnClickListener(this);
         tv_update_medical_history.setOnClickListener(this);
         tv_cancel_medical_history.setOnClickListener(this);
@@ -105,7 +110,9 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         scroll_view = findViewById(R.id.scroll_view);
         CardView cv_info = findViewById(R.id.cv_info);
         cv_personal_history = findViewById(R.id.cv_personal_history);
+        cv_occupation = findViewById(R.id.cv_occupation);
         ll_prevent_click = findViewById(R.id.ll_prevent_click);
+        ll_prevent_occupation_click = findViewById(R.id.ll_prevent_occupation_click);
         scroll_view.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
@@ -163,6 +170,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         this.jsonMedicalProfile = jsonMedicalProfile;
         showHideMedicalEdit(false);
         sc_blood_type.clearSelection();
+        sc_occupation_type.clearSelection();
         if (null != jsonMedicalProfile) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonMedicalProfile.getJsonUserMedicalProfile();
             tv_medicine_allergy.setText(jsonUserMedicalProfile.getMedicineAllergies());
@@ -185,8 +193,16 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             }
             if (null != jsonUserMedicalProfile.getOccupation()) {
                 int index = sc_occupation_type_data.indexOf(jsonUserMedicalProfile.getOccupation().getDescription());
-                if (-1 != index)
+                index = 4;
+                if (-1 != index) {
                     sc_occupation_type.setSelectedSegment(index);
+                    tv_update_occupation.setVisibility(View.GONE);
+                    ll_prevent_occupation_click.setVisibility(View.VISIBLE);
+                    iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_orange));
+                } else {
+                    ll_prevent_occupation_click.setVisibility(View.GONE);
+                    iv_edit_blood_type.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+                }
             }
             Log.e("Data", jsonMedicalProfile.toString());
             String notAvailable = "N/A";
@@ -262,6 +278,43 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.iv_edit_occupation:
+                tv_update_occupation.setVisibility(View.VISIBLE);
+                ll_prevent_occupation_click.setVisibility(View.GONE);
+                iv_edit_occupation.setBackground(ContextCompat.getDrawable(this, R.drawable.edit_black));
+                scroll_view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scroll_view.smoothScrollTo(0, cv_occupation.getBottom());
+                    }
+                });
+                break;
+            case R.id.tv_update_occupation:
+                if (-1 == sc_occupation_type.getSelectedAbsolutePosition()) {
+                    Toast.makeText(this, "Please select occupation type to update ", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (NetworkUtils.isConnectingToInternet(this)) {
+                        try {
+                            JsonUserMedicalProfile jump;
+                            if (null == jsonMedicalProfile) {
+                                // In case of no medical record created jump is null
+                                jump = new JsonUserMedicalProfile();
+                            } else {
+                                jump = jsonMedicalProfile.getJsonUserMedicalProfile();
+                            }
+                            jump.setOccupation(OccupationEnum.getEnum(sc_occupation_type_data.get(sc_occupation_type.getSelectedAbsolutePosition())));
+                            medicalProfile.setJsonUserMedicalProfile(jump);
+                            userMedicalProfileApiCall.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
+                            progressDialog.setMessage("Updating occupation type....");
+                            progressDialog.show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(this);
+                    }
+                }
+                break;
             case R.id.iv_edit_medical_history:
                 showHideMedicalEdit(true);
                 scroll_view.post(new Runnable() {
