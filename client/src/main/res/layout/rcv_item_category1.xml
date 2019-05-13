@@ -96,10 +96,15 @@
 
                 <TextView
                     android:id="@+id/tv_specialization"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="3dp"
+                    android:paddingRight="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:layout_toLeftOf="@+id/tv_consult_fees_header"
                     android:text="Dermatologist, Skin ethics Skin Clinic"
                     android:textSize="@dimen/text_size_twelve" />
 
@@ -122,13 +127,15 @@
 
                 <TextView
                     android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="5dp"
                     android:drawableLeft="@drawable/marker_grey"
                     android:drawablePadding="5dp"
                     android:ellipsize="end"
+                    android:paddingRight="5dp"
+                    android:layout_toLeftOf="@+id/tv_consult_fees"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:minLines="1"

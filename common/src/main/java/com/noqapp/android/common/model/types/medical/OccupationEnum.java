@@ -13,7 +13,7 @@ public enum OccupationEnum {
     ENG("ENG", "Engineer"),
     STU("STU", "Student"),
     TEC("TEC", "Teacher"),
-    POL("POL", "Police"), 
+    POL("POL", "Police"),
     HOW("HOW", "House Wife"),
     RET("RET", "Retired"),
     BAN("BAN", "Banker"),
@@ -49,4 +49,37 @@ public enum OccupationEnum {
         }
         return a;
     }
+
+    public static OccupationEnum getEnum(String description) {
+        switch (description) {
+            case "Computer Professional":
+                return CMP;
+            case "Doctor":
+                return DOC;
+            case "Engineer":
+                return ENG;
+            case "Student":
+                return STU;
+            case "Teacher":
+                return TEC;
+            case "Police":
+                return POL;
+            case "House Wife":
+                return HOW;
+            case "Retired":
+                return RET;
+            case "Banker":
+                return BAN;
+            case "Service Industry":
+                return SER;
+            case "Lawyer":
+                return LAW;
+            case "Government Official":
+                return GOV;
+            default:
+                return null;
+        }
+    }
+
+
 }
