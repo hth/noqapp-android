@@ -51,9 +51,9 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonQueueHistorical jsonQueueHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonQueueHistorical.getDisplayName());
-        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
+       // holder.tv_address.setText(AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
         // holder.tv_store_rating.setText(String.valueOf(jsonQueueHistorical.getRatingCount()));
-        holder.tv_business_name.setText(jsonQueueHistorical.getBusinessName());
+        holder.tv_business_name_address.setText(jsonQueueHistorical.getBusinessName()+" "+AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
         holder.tv_queue_join_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
@@ -134,7 +134,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         private TextView tv_queue_status;
         // private TextView tv_store_rating;
         // private TextView tv_add_review;
-        private TextView tv_business_name;
+        private TextView tv_business_name_address;
         private TextView tv_business_category;
         private Button btn_rejoin;
         private ImageView iv_details;
@@ -149,7 +149,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);
             // this.tv_store_rating = itemView.findViewById(R.id.tv_store_rating);
             // this.tv_add_review = itemView.findViewById(R.id.tv_add_review);
-            this.tv_business_name = itemView.findViewById(R.id.tv_business_name);
+            this.tv_business_name_address = itemView.findViewById(R.id.tv_business_name_address);
             this.tv_business_category = itemView.findViewById(R.id.tv_business_category);
             this.btn_rejoin = itemView.findViewById(R.id.btn_rejoin);
             this.iv_details = itemView.findViewById(R.id.iv_details);
