@@ -193,7 +193,6 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
             }
             if (null != jsonUserMedicalProfile.getOccupation()) {
                 int index = sc_occupation_type_data.indexOf(jsonUserMedicalProfile.getOccupation().getDescription());
-                index = 4;
                 if (-1 != index) {
                     sc_occupation_type.setSelectedSegment(index);
                     tv_update_occupation.setVisibility(View.GONE);
