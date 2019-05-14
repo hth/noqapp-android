@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 
@@ -71,7 +72,7 @@ public class MenuAdapter extends BaseAdapter {
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
         String currencySymbol = BaseLaunchActivity.getCurrencySymbol();
-        childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
                         + " "

@@ -1,15 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
 import com.noqapp.android.client.presenter.AllReviewPresenter;
@@ -24,13 +14,22 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Intent;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPresenter {

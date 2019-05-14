@@ -1,5 +1,11 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.views.activities.StoreMenuActivity;
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.TextUtils;
@@ -9,11 +15,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.StoreMenuActivity;
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class MenuAdapter extends BaseAdapter {
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
-        childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
+        childViewHolder.tv_price.setText(currencySymbol + " " + AppUtilities.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
                         + " "

@@ -62,7 +62,16 @@ public class MerchantDetailFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        iv_product_list.setVisibility(LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() == BusinessTypeEnum.RS ? View.VISIBLE : View.INVISIBLE);
+        switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+            case RS:
+            case GS:
+            case CF:
+                iv_product_list.setVisibility(View.VISIBLE);
+                break;
+            default:
+                iv_product_list.setVisibility(View.INVISIBLE);
+        }
+
         iv_product_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
