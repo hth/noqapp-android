@@ -293,6 +293,7 @@
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
+    <string name="screen_addressbook">Manage address</string>
 
 
 </resources>

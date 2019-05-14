@@ -47,18 +47,36 @@
                             android:textSize="16sp"
                             android:textStyle="bold"/>
 
-
-                    <TextView
-                            android:id="@+id/address"
+                    <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:text="@string/deliver_address"
-                            android:drawableLeft="@drawable/ic_location"
-                            android:gravity="bottom"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                                android:id="@+id/address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_toLeftOf="@+id/tv_change_address"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:text="@string/deliver_address"
+                                android:drawableLeft="@drawable/ic_location"
+                                android:gravity="bottom"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                        <TextView
+                                android:id="@+id/tv_change_address"
+                                style="@style/style_register_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:gravity="right"
+                                android:hint="@string/change_address"
+                                android:textSize="@dimen/text_size_fourteen"/>
+
+                    </RelativeLayout>
 
                     <TextView
                             android:id="@+id/tv_address"
@@ -66,21 +84,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
                             android:background="@null"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:hint="@string/add_address"
                             android:textSize="@dimen/text_size_fourteen"/>
 
-                    <TextView
-                            android:id="@+id/tv_change_address"
-                            style="@style/style_register_tv"
-                            android:layout_width="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:gravity="right"
-                            android:hint="@string/change_address"
-                            android:textSize="@dimen/text_size_fourteen"/>
 
                     <EditText
                             android:id="@+id/edt_phone"

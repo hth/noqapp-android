@@ -110,7 +110,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_toolbar_title.setText(getString(R.string.screen_order));
         tv_user_name.setText(NoQueueBaseActivity.getUserName());
         edt_phone.setText(NoQueueBaseActivity.getPhoneNo());
-        tv_address.setText(NoQueueBaseActivity.getAddress());
+        //tv_address.setText(NoQueueBaseActivity.getAddress());
         tv_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfilePresenter(this);

@@ -136,18 +136,6 @@
         <item name="colorControlNormal">@color/colorAccent</item>
     </style>
 
-    <style name="Transparent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowEnterTransition">@transition/explode</item>
-        <item name="android:windowExitTransition">@transition/explode</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
     <style name="SettingSeekbarStyle" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/theme_color_red</item>
         <item name="colorSwitchThumbNormal">#f2f2f2</item>

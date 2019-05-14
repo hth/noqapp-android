@@ -1,116 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#80000000"
-    android:descendantFocusability="afterDescendants"
-    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout"/>
 
     <RelativeLayout
-        android:id="@+id/rlTop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/top_round"
-        android:fillViewport="true"
-        android:orientation="vertical">
+            android:id="@+id/rlTop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:orientation="vertical">
 
         <ListView
-            android:id="@+id/listview_address"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_margin="0dp"
-            android:background="@color/white"
-            android:divider="#F1F1F1"
-            android:dividerHeight="1dp"
-            android:visibility="gone" />
+                android:id="@+id/listview_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_margin="0dp"
+                android:background="@color/white"
+                android:divider="#F1F1F1"
+                android:dividerHeight="1dp"
+                android:visibility="gone"/>
 
         <RelativeLayout
-            android:id="@+id/rl_address"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/top_round"
-            android:visibility="visible">
+                android:id="@+id/rl_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
             <TextView
-                android:id="@+id/tv_address_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40dp"
-                android:padding="10dp"
-                android:text="Select Address"
-                android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="bold" />
+                    android:id="@+id/tv_address_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:padding="10dp"
+                    android:text="Select Address"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="bold"/>
 
             <RadioGroup
-                android:id="@+id/rg_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/tv_add_address"
-                android:layout_below="@+id/tv_address_title"
-                android:layout_margin="10dp"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="10dp" />
+                    android:id="@+id/rg_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/tv_add_address"
+                    android:layout_below="@+id/tv_address_title"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="10dp"/>
 
             <TextView
-                android:id="@+id/tv_add_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/edt_add_address"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="10dp"
-                android:text="Add Address"
-                android:textColor="@color/theme_color_dark" />
+                    android:id="@+id/tv_add_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/edt_add_address"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="10dp"
+                    android:text="Add Address"
+                    android:textColor="@color/theme_color_dark"/>
 
 
             <EditText
-                android:id="@+id/edt_add_address"
-                style="@style/style_register_edt"
-                android:layout_above="@+id/btn_add_address"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:hint="Address"
-                android:visibility="visible" />
+                    android:id="@+id/edt_add_address"
+                    style="@style/style_register_edt"
+                    android:layout_above="@+id/btn_add_address"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Address"
+                    android:visibility="visible"/>
 
             <Button
-                android:id="@+id/btn_add_address"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_standard_height"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/grey_gradient"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/update"
-                android:textAllCaps="true"
-                android:textColor="@color/colorMobile"
-                android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="normal"
-                android:visibility="visible" />
+                    android:id="@+id/btn_add_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_standard_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/grey_gradient"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/update"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorMobile"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="normal"
+                    android:visibility="visible"/>
 
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-
-    <ImageView
-        android:id="@+id/iv_close"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignTop="@+id/rlTop"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="-20dp"
-        android:background="@drawable/circle_cross"
-        android:elevation="4dp" />
-
-</RelativeLayout>
+</LinearLayout>
