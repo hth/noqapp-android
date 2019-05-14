@@ -12,11 +12,14 @@ import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
+import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.ProfilePresenter;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
@@ -24,6 +27,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
@@ -62,7 +66,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, CFClientInterface, CashFreeNotifyPresenter {
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
     private TextView tv_address;
     private EditText edt_phone;
     private EditText edt_optional;
@@ -95,8 +99,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_change_address.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(OrderActivity.this,AddressBookActivity.class);
-                startActivityForResult(in,78);
+                Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
+                startActivityForResult(in, 78);
             }
         });
         edt_phone = findViewById(R.id.edt_phone);
@@ -170,7 +174,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         });
     }
 
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 78) {
             if (null != data.getExtras()) {
@@ -369,8 +373,39 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void onNavigateBack() {
         Log.e("User Navigate Back", "Back without payment");
-        Toast.makeText(this, "Cancelled transaction. Please try again.", Toast.LENGTH_LONG).show();
         enableDisableOrderButton(false);
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            purchaseOrderApiCall.setResponsePresenter(this);
+            purchaseOrderApiCall.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+    }
+
+    @Override
+    public void responsePresenterResponse(JsonResponse response) {
+        if (null != response) {
+            if (response.getResponse() == Constants.SUCCESS) {
+                Toast.makeText(this, getString(R.string.cancel_order), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, getString(R.string.fail_to_cancel_order), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.fail_to_cancel_order), Toast.LENGTH_LONG).show();
+        }
+        NoQueueMessagingService.unSubscribeTopics(getIntent().getExtras().getString("topic"));
+        if (null != jsonPurchaseOrderServer) {
+            TokenAndQueueDB.deleteTokenQueue(jsonPurchaseOrderServer.getCodeQR(), String.valueOf(jsonPurchaseOrderServer.getToken()));
+        }
+        onBackPressed();
+        dismissProgress();
+    }
+
+    @Override
+    public void responsePresenterError() {
+        Log.d("", "responsePresenterError");
+        dismissProgress();
     }
 
     private void enableDisableOrderButton(boolean enable) {
@@ -385,7 +420,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         String orderId = jsonPurchaseOrderServer.getTransactionId();
         String orderAmount = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName =  LaunchActivity.getCustomerNameWithQid(LaunchActivity.getUserName(), LaunchActivity.getUserProfile().getQueueUserId());
+        String customerName = LaunchActivity.getCustomerNameWithQid(LaunchActivity.getUserName(), LaunchActivity.getUserProfile().getQueueUserId());
         String customerPhone = LaunchActivity.getOfficePhoneNo();
         String customerEmail = LaunchActivity.getOfficeMail();
 

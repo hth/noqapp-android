@@ -76,6 +76,9 @@
     <string name="cancel_queue">You successfully cancel the queue</string>
     <string name="fail_to_cancel">Failed to cancel the queue</string>
 
+    <string name="cancel_order">You successfully cancel the order</string>
+    <string name="fail_to_cancel_order">Failed to cancel the order</string>
+
 
     <!--- Review Screen -->
     <string name="radio_save_30min">0</string>
