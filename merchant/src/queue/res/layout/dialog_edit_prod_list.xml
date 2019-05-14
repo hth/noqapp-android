@@ -201,7 +201,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
@@ -227,7 +227,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
-                        android:layout_weight="0"
+                        android:layout_weight="1"
                         android:layout_marginLeft="2dp"
                         android:layout_height="match_parent">
 
