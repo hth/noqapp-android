@@ -37,8 +37,9 @@
                 android:layout_toRightOf="@+id/tv_cat"
                 android:layout_below="@+id/tv_child_title"
                 android:text=""
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textSize="@dimen/text_size_ten"/>
-
 
 
     </RelativeLayout>
@@ -50,8 +51,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/ll_right"
             android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
 
         <TextView
@@ -86,8 +87,8 @@
 
         <Button
                 android:id="@+id/btn_decrease"
-                android:layout_width="@dimen/btn_height"
-                android:layout_height="@dimen/btn_height"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/green_round_corner"
                 android:text="-"
                 android:textColor="@color/colorAccent"
@@ -96,8 +97,8 @@
 
         <TextView
                 android:id="@+id/tv_value"
-                android:layout_width="@dimen/btn_height"
-                android:layout_height="@dimen/btn_height"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@android:color/white"
                 android:gravity="center"
                 android:text="0"
@@ -105,8 +106,8 @@
 
         <Button
                 android:id="@+id/btn_increase"
-                android:layout_width="@dimen/btn_height"
-                android:layout_height="@dimen/btn_height"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/green_round_corner"
                 android:text="+"
                 android:textColor="@color/colorAccent"

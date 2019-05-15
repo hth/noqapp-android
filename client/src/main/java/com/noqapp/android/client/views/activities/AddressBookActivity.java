@@ -1,22 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
@@ -30,74 +14,87 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
 
-import java.util.List;
-
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
+import java.util.List;
 
-public class AddressBookActivity extends AppCompatActivity implements ProfileAddressPresenter {
+
+public class AddressBookActivity extends BaseActivity implements ProfileAddressPresenter {
     private ProgressDialog progressDialog;
-    private Activity context;
     private RadioGroup rg_address;
     private EditText edt_add_address;
     private Button btn_add_address;
     private ClientProfileApiCall clientProfileApiCall;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        {
-            context = this;
-            setContentView(R.layout.activity_addressbook);
-            ImageView iv_close = findViewById(R.id.iv_close);
-            iv_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
-            ListView listview_address = findViewById(R.id.listview_address);
-            initProgress();
-            rg_address = findViewById(R.id.rg_address);
-            edt_add_address = findViewById(R.id.edt_add_address);
-            btn_add_address = findViewById(R.id.btn_add_address);
-            btn_add_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    edt_add_address.setError(null);
-                    if (TextUtils.isEmpty(edt_add_address.getText().toString())) {
-                        edt_add_address.setError(getString(R.string.error_field_required));
-                    } else {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Adding address in progress..");
-                            clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
-                        }
+
+        setContentView(R.layout.activity_addressbook);
+        initActionsViews(true);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        ListView listview_address = findViewById(R.id.listview_address);
+        initProgress();
+        tv_toolbar_title.setText(getString(R.string.screen_addressbook));
+        rg_address = findViewById(R.id.rg_address);
+        edt_add_address = findViewById(R.id.edt_add_address);
+        btn_add_address = findViewById(R.id.btn_add_address);
+        btn_add_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_add_address.setError(null);
+                if (TextUtils.isEmpty(edt_add_address.getText().toString())) {
+                    edt_add_address.setError(getString(R.string.error_field_required));
+                } else {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Adding address in progress..");
+                        clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                     }
                 }
-            });
-            TextView tv_add_address = findViewById(R.id.tv_add_address);
-            tv_add_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    edt_add_address.setVisibility(View.VISIBLE);
-                    btn_add_address.setVisibility(View.VISIBLE);
-                }
-            });
-            clientProfileApiCall = new ClientProfileApiCall();
-            clientProfileApiCall.setProfileAddressPresenter(this);
-            JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
-            jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
-            profileAddressResponse(jsonUserAddressList);
-            listview_address.setAdapter(new AddressListAdapter(this,jsonUserAddressList.getJsonUserAddresses(),null));
-        }
+            }
+        });
+        TextView tv_add_address = findViewById(R.id.tv_add_address);
+        tv_add_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_add_address.setVisibility(View.VISIBLE);
+                btn_add_address.setVisibility(View.VISIBLE);
+            }
+        });
+        clientProfileApiCall = new ClientProfileApiCall();
+        clientProfileApiCall.setProfileAddressPresenter(this);
+        JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
+        jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
+        profileAddressResponse(jsonUserAddressList);
+        listview_address.setAdapter(new AddressListAdapter(this, jsonUserAddressList.getJsonUserAddresses(), null));
+
     }
 
 
     @Override
     public void profileAddressResponse(JsonUserAddressList jsonUserAddressList) {
+        edt_add_address.setText("");
         final List<JsonUserAddress> addressList = jsonUserAddressList.getJsonUserAddresses();
         JsonProfile jp = LaunchActivity.getUserProfile();
         jp.setJsonUserAddresses(addressList);
@@ -192,9 +189,9 @@ public class AddressBookActivity extends AppCompatActivity implements ProfileAdd
 
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
+        // super.onBackPressed();
         Intent resultIntent = new Intent();
-       // resultIntent.putExtra("jsonUserAddress", "");
+        // resultIntent.putExtra("jsonUserAddress", "");
         setResult(78, resultIntent);
         finish();
     }
@@ -209,6 +206,7 @@ public class AddressBookActivity extends AppCompatActivity implements ProfileAdd
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
     }
+
     @Override
     public void authenticationFailure() {
         dismissProgress();

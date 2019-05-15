@@ -76,6 +76,9 @@
     <string name="cancel_queue">You successfully cancel the queue</string>
     <string name="fail_to_cancel">Failed to cancel the queue</string>
 
+    <string name="cancel_order">You successfully cancel the order</string>
+    <string name="fail_to_cancel_order">Failed to cancel the order</string>
+
 
     <!--- Review Screen -->
     <string name="radio_save_30min">0</string>
@@ -326,5 +329,6 @@
     <string name="user_list">Users</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
+    <string name="screen_addressbook">Manage address</string>
 
 </resources>

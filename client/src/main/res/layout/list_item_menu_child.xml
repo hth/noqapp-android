@@ -36,6 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_cat"
                 android:layout_below="@+id/tv_child_title"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text=""
                 android:textSize="@dimen/text_size_ten"/>
     </RelativeLayout>

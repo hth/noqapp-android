@@ -1,5 +1,7 @@
 package com.noqapp.android.common.utils;
 
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Months;
@@ -191,5 +193,15 @@ public class CommonHelper {
 
     public static String transactionForDisplayOnly(String transactionId) {
         return transactionId.substring(transactionId.substring(0, transactionId.lastIndexOf("-")).lastIndexOf("-") + 1);
+    }
+
+
+    public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct){
+        if(null != jsonStoreProduct){
+           return jsonStoreProduct.getDisplayPrice()+" / "+jsonStoreProduct.getUnitValue() + " "+ jsonStoreProduct.getUnitOfMeasurement().getDescription();
+        }else{
+            return"";
+        }
+
     }
 }

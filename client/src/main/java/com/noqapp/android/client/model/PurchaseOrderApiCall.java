@@ -1,17 +1,18 @@
 package com.noqapp.android.client.model;
 
-import android.util.Log;
-
 import com.noqapp.android.client.model.response.api.PurchaseOrderApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.PurchaseOrderPresenter;
+import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,6 +22,7 @@ public class PurchaseOrderApiCall {
     private final static PurchaseOrderApiUrls purchaseOrderApiUrls;
     private PurchaseOrderPresenter purchaseOrderPresenter;
     private CashFreeNotifyPresenter cashFreeNotifyPresenter;
+    private ResponsePresenter responsePresenter;
 
     public PurchaseOrderApiCall(PurchaseOrderPresenter purchaseOrderPresenter) {
         this.purchaseOrderPresenter = purchaseOrderPresenter;
@@ -28,6 +30,9 @@ public class PurchaseOrderApiCall {
 
     public void setCashFreeNotifyPresenter(CashFreeNotifyPresenter cashFreeNotifyPresenter) {
         this.cashFreeNotifyPresenter = cashFreeNotifyPresenter;
+    }
+    public void setResponsePresenter(ResponsePresenter responsePresenter) {
+        this.responsePresenter = responsePresenter;
     }
 
     static {
@@ -229,4 +234,36 @@ public class PurchaseOrderApiCall {
             }
         });
     }
+
+
+
+    public void cancelPayBeforeOrder(String did, String mail, String auth,  JsonPurchaseOrder jsonPurchaseOrder) {
+        purchaseOrderApiUrls.cancelPayBeforeOrder(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonResponse> call, @NonNull Response<JsonResponse> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Res: cancelPayBeforeO", String.valueOf(response.body()));
+                        responsePresenter.responsePresenterResponse(response.body());
+                    } else {
+                        Log.e(PurchaseOrderApiCall.class.getSimpleName(), "Fail cancelPayBeforeOrder");
+                        responsePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        responsePresenter.authenticationFailure();
+                    } else {
+                        responsePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
+                Log.e("cancelPayBeforeO fail", t.getLocalizedMessage(), t);
+                responsePresenter.responsePresenterError();
+            }
+        });
+    }
+
 }
