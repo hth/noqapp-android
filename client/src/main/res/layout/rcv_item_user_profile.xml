@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white">
@@ -21,20 +22,21 @@
             android:background="@android:color/transparent"
             android:padding="@dimen/list_item_margin">
 
-
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/profile_avatar"
-                android:backgroundTint="@color/button_color"
-                android:scaleType="centerInside" />
+                android:elevation="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_theme"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="3dp" />
 
             <TextView
                 android:id="@+id/tv_name"
