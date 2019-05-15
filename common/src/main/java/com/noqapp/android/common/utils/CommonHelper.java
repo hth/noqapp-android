@@ -1,5 +1,12 @@
 package com.noqapp.android.common.utils;
 
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Years;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -200,7 +200,6 @@ public class CommonHelper {
             return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getUnitValue() + " " + jsonStoreProduct.getUnitOfMeasurement().getDescription();
         } else {
             return "5/test"; // Return blank after testing
-
         }
     }
 
