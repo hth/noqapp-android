@@ -173,7 +173,7 @@ public class ReceiptGeneratorPDF extends PdfHelper {
             for (int i = 0; i < receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size(); i++) {
                 JsonPurchaseOrderProduct jpop = receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().get(i);
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(i + 1), normalFont));
-                table.addCell(pdfPCellWithoutBorder(jpop.getProductName(), normalFont));
+                table.addCell(pdfPCellWithoutBorder(jpop.getProductName()+ " " + AppUtils.getPriceWithUnits(null), normalFont));
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(jpop.getProductQuantity()), normalFont));
                 table.addCell(pdfPCellWithoutBorder(currencySymbol + " " + CommonHelper.displayPrice(jpop.getProductPrice()), urFontName));
                 table.addCell(pdfPCellWithoutBorder(currencySymbol + " " + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()), urFontName));

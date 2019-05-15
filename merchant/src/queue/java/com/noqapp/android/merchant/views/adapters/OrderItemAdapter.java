@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import android.content.Context;
@@ -62,7 +63,7 @@ public class OrderItemAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_title.setText(jsonPurchaseOrderProductList.get(position).getProductName() + " x " + jsonPurchaseOrderProductList.get(position).getProductQuantity());
+        recordHolder.tv_title.setText(jsonPurchaseOrderProductList.get(position).getProductName()+ " " + AppUtils.getPriceWithUnits(null) + " x " + jsonPurchaseOrderProductList.get(position).getProductQuantity());
         recordHolder.tv_amount.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProductList.get(position).getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProductList.get(position).getProductQuantity())).toString()));
         if (jsonPurchaseOrderProductList.get(position).getProductPrice() == 0) {
             recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit, 0);
