@@ -158,7 +158,8 @@ public class MerchantDetailFragment
                         }
                     }
             );
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
+                    this, jsonTopic.getServingNumber(),jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -176,7 +177,8 @@ public class MerchantDetailFragment
     protected void resetList() {
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             purchaseOrders = new ArrayList<>();
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this);
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
+                    this,jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
         } else {
             super.resetList();
@@ -515,7 +517,8 @@ public class MerchantDetailFragment
                 }
             }
         }
-        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(), this, jsonTopic.getServingNumber());
+        peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
+                this, jsonTopic.getServingNumber(),jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
         if (jsonTopic.getServingNumber() > 0) {
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);

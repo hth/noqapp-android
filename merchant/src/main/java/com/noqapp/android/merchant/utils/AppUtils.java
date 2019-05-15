@@ -5,7 +5,11 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,10 +17,15 @@ import android.widget.Toast;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * User: hitender
@@ -125,5 +134,22 @@ public class AppUtils extends CommonHelper {
 
     public static boolean isRelease() {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
+    }
+
+    public static void setRatingBarColor(LayerDrawable stars, Context context) {
+        // Filled stars
+        setRatingStarColor(stars.getDrawable(2), ContextCompat.getColor(context, R.color.rating_select));
+        // Half filled stars
+        setRatingStarColor(stars.getDrawable(1), ContextCompat.getColor(context, R.color.rating_unselect));
+        // Empty stars
+        setRatingStarColor(stars.getDrawable(0), ContextCompat.getColor(context, R.color.rating_unselect));
+    }
+
+    private static void setRatingStarColor(Drawable drawable, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            DrawableCompat.setTint(drawable, color);
+        } else {
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
     }
 }

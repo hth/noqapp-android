@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.noqapp.android.client.model.response.open.ReviewApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.AllReviewPresenter;
+import com.noqapp.android.common.presenter.AllReviewPresenter;
 import com.noqapp.android.client.presenter.ReviewPresenter;
 import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.Constants;
@@ -24,7 +24,7 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
  */
 
 public class ReviewApiUnAuthenticCall {
-    private final String TAG = RegisterApiCall.class.getSimpleName();
+    private final String TAG = ReviewApiUnAuthenticCall.class.getSimpleName();
     private static final ReviewApiUrls reviewApiUrls;
     private ReviewPresenter reviewPresenter;
     private AllReviewPresenter allReviewPresenter;

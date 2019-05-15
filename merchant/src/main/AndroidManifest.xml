@@ -126,6 +126,11 @@
                 android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity
+                android:name="com.noqapp.android.merchant.views.activities.ReviewListActivity"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity
                 android:name="com.noqapp.android.merchant.views.activities.ProductListActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">
