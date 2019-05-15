@@ -1,13 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -41,30 +49,22 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
-
 import org.apache.commons.lang3.StringUtils;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.widget.AppCompatRadioButton;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+
+import androidx.appcompat.widget.AppCompatRadioButton;
+
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
     private TextView tv_address;
@@ -78,6 +78,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private JsonPurchaseOrder jsonPurchaseOrderServer;
     private Button tv_place_order;
     private AppCompatRadioButton acrb_cash, acrb_online;
+    private AppCompatRadioButton acrb_home_delivery, acrb_take_away;
     private boolean isProductWithoutPrice = false;
     private JsonUserAddress jsonUserAddress;
 
@@ -93,6 +94,8 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
         acrb_cash = findViewById(R.id.acrb_cash);
         acrb_online = findViewById(R.id.acrb_online);
+        acrb_home_delivery = findViewById(R.id.acrb_home_delivery);
+        acrb_take_away = findViewById(R.id.acrb_take_away);
 
         TextView tv_add_address = findViewById(R.id.tv_add_address);
         TextView tv_change_address = findViewById(R.id.tv_change_address);
@@ -153,7 +156,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                 progressDialog.setMessage("Order placing in progress..");
 
                                 jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
-                                        .setDeliveryMode(DeliveryModeEnum.HD)
+                                        .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                         .setPaymentMode(null) //not required here
                                         .setCustomerPhone(edt_phone.getText().toString())
                                         .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
@@ -199,6 +202,10 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
     }
 
+    private boolean isAddressRequired(){
+        return !(acrb_cash.isChecked() || acrb_take_away.isChecked());
+    }
+
     private boolean validateForm() {
         boolean isValid = true;
         edt_phone.setError(null);
@@ -215,36 +222,37 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
             isValid = false;
         }
-        if (tv_address.getText().toString().equals("")) {
-            tv_address.setError("Please enter delivery address.");
-            isValid = false;
-        } else {
-            String storeGeoHash = getIntent().getExtras().getString("GeoHash");
-            if (!TextUtils.isEmpty(storeGeoHash)) {
-                if (null == jsonUserAddress || TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
-                    tv_address.setError("Please select a valid address");
-                    isValid = false;
-                } else {
-                    float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
-                    float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
-                    float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
-                    float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
-                    float distance = (float) AppUtilities.calculateDistance(lat_s, long_s, lat_d, long_d);
-                    if (BusinessTypeEnum.RS == jsonPurchaseOrder.getBusinessType()) {
-                        if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                            tv_address.setError("Please change the address. This address is very far from the store");
-                            isValid = false;
-                        }
+        if (isAddressRequired()) {
+            if (tv_address.getText().toString().equals("")) {
+                tv_address.setError("Please enter delivery address.");
+                isValid = false;
+            } else {
+                String storeGeoHash = getIntent().getExtras().getString("GeoHash");
+                if (!TextUtils.isEmpty(storeGeoHash)) {
+                    if (null == jsonUserAddress || TextUtils.isEmpty(jsonUserAddress.getGeoHash())) {
+                        tv_address.setError("Please select a valid address");
+                        isValid = false;
                     } else {
-                        if (distance > 150) { // Set for washing car stores
-                            tv_address.setError("Please change the address. This address is very far from the store");
-                            isValid = false;
+                        float lat_s = (float) GeoHashUtils.decodeLatitude(storeGeoHash);
+                        float long_s = (float) GeoHashUtils.decodeLongitude(storeGeoHash);
+                        float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
+                        float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
+                        float distance = (float) AppUtilities.calculateDistance(lat_s, long_s, lat_d, long_d);
+                        if (BusinessTypeEnum.RS == jsonPurchaseOrder.getBusinessType()) {
+                            if (distance > getIntent().getExtras().getInt("deliveryRange")) {
+                                tv_address.setError("Please change the address. This address is very far from the store");
+                                isValid = false;
+                            }
+                        } else {
+                            if (distance > 150) { // Set for washing car stores
+                                tv_address.setError("Please change the address. This address is very far from the store");
+                                isValid = false;
+                            }
                         }
                     }
                 }
             }
         }
-
         return isValid;
     }
 

@@ -31,9 +31,9 @@ public class OrderItemAdapter extends BaseAdapter {
         isClickEnable = clickEnable;
     }
 
-    public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> notificationsList, String currencySymbol, OrderDetailActivity orderDetailActivity) {
+    public OrderItemAdapter(Context context, List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts, String currencySymbol, OrderDetailActivity orderDetailActivity) {
         this.context = context;
-        this.jsonPurchaseOrderProductList = notificationsList;
+        this.jsonPurchaseOrderProductList = jsonPurchaseOrderProducts;
         this.currencySymbol = currencySymbol;
         this.orderDetailActivity = orderDetailActivity;
     }
