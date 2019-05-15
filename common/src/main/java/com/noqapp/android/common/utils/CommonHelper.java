@@ -200,7 +200,7 @@ public class CommonHelper {
             return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getUnitValue() + " " + jsonStoreProduct.getUnitOfMeasurement().getDescription();
         } else {
             return "5/test"; // Return blank after testing
-            
+
         }
     }
 

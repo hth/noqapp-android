@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -34,12 +35,13 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import java.util.List;
 
 
-public class AddressBookActivity extends BaseActivity implements ProfileAddressPresenter {
+public class AddressBookActivity extends BaseActivity implements ProfileAddressPresenter, AddressListAdapter.RemoveAddress {
     private ProgressDialog progressDialog;
     private RadioGroup rg_address;
     private EditText edt_add_address;
     private Button btn_add_address;
     private ClientProfileApiCall clientProfileApiCall;
+    private ListView lv_address;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
                 onBackPressed();
             }
         });
-        ListView listview_address = findViewById(R.id.listview_address);
+        lv_address = findViewById(R.id.listview_address);
         initProgress();
         tv_toolbar_title.setText(getString(R.string.screen_addressbook));
         rg_address = findViewById(R.id.rg_address);
@@ -87,7 +89,6 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
         JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
         jsonUserAddressList.setJsonUserAddresses(LaunchActivity.getUserProfile().getJsonUserAddresses());
         profileAddressResponse(jsonUserAddressList);
-        listview_address.setAdapter(new AddressListAdapter(this, jsonUserAddressList.getJsonUserAddresses(), null));
 
     }
 
@@ -100,6 +101,18 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
         jp.setJsonUserAddresses(addressList);
         LaunchActivity.setUserProfile(jp);
         Log.e("address list: ", addressList.toString());
+        lv_address.setAdapter(new AddressListAdapter(this, jsonUserAddressList.getJsonUserAddresses(), this));
+        lv_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                JsonUserAddress jsonUserAddress = addressList.get(position);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("jsonUserAddress", jsonUserAddress);
+                setResult(78, resultIntent);
+                //setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
+        });
         rg_address.removeAllViews();
         for (int i = 0; i < addressList.size(); i++) {
 
@@ -226,4 +239,15 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
             new ErrorResponseHandler().processError(this, eej);
     }
 
+    @Override
+    public void removeAddress(JsonUserAddress jsonUserAddress) {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            progressDialog.setMessage("Deleting address..");
+            clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),
+                    jsonUserAddress);
+        } else {
+            ShowAlertInformation.showNetworkDialog(AddressBookActivity.this);
+        }
+    }
 }

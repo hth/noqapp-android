@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="45dp"
+    android:paddingRight="20dp"
     android:background="@android:color/white">
 
     <TextView
@@ -15,18 +16,18 @@
         android:padding="10dp"
         android:text="title"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="@dimen/text_size_twelve" />
 
 
     <ImageView
         android:id="@+id/iv_delete"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="0dp"
         android:backgroundTint="@color/colorAccent"
-        android:background="@drawable/close"
+        android:background="@drawable/ic_cancel"
         android:padding="20dp" />
 
 </RelativeLayout>

@@ -14,16 +14,7 @@
             android:fillViewport="true"
             android:orientation="vertical">
 
-        <ListView
-                android:id="@+id/listview_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_margin="0dp"
-                android:background="@color/white"
-                android:divider="#F1F1F1"
-                android:dividerHeight="1dp"
-                android:visibility="gone"/>
+
 
         <RelativeLayout
                 android:id="@+id/rl_address"
@@ -42,17 +33,34 @@
                     android:text="Select Address"
                     android:textSize="@dimen/text_size_sixteen"
                     android:textStyle="bold"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tv_add_address"
+                android:layout_below="@+id/tv_address_title">
 
-            <RadioGroup
+                <RadioGroup
                     android:id="@+id/rg_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/tv_add_address"
-                    android:layout_below="@+id/tv_address_title"
                     android:layout_margin="10dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     android:padding="10dp"/>
+
+                <ListView
+                    android:id="@+id/listview_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="0dp"
+                    android:background="@color/white"
+                    android:divider="#F1F1F1"
+                    android:dividerHeight="1dp"
+                    android:visibility="visible"/>
+            </FrameLayout>
+
+
 
             <TextView
                     android:id="@+id/tv_add_address"
