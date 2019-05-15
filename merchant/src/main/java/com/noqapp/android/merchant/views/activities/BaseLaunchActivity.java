@@ -1,5 +1,34 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
@@ -27,38 +56,14 @@ import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import org.apache.commons.lang3.text.WordUtils;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -68,12 +73,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
@@ -211,6 +210,15 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                         startActivity(in);
                         break;
                     }
+                    case R.drawable.ic_reviews:
+                        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+                            Intent in1 = new Intent(launchActivity, ReviewListActivity.class);
+                            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                            startActivity(in1);
+                        } else {
+                            Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
+                        }
+                        break;
                     case R.drawable.case_history:
                         callPreference();
                         break;
@@ -571,7 +579,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp0);
         }
-        for (Fragment fragment:getSupportFragmentManager().getFragments()) {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         if (null != merchantListFragment) {
@@ -635,6 +643,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 Answers.getInstance().logCustom(new CustomEvent("Logout")
                         .putCustomAttribute("Success", "true"));
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing
@@ -703,6 +712,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         });
         dialog.show();
     }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
@@ -721,8 +731,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
         drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
         drawerItem.add(new NavigationBean(R.drawable.logout, "Logout"));
-        if (showChart)
+        if (showChart) {
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Statistics"));
+            drawerItem.add(2, new NavigationBean(R.drawable.ic_reviews, "Reviews"));
+        }
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

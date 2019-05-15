@@ -19,4 +19,7 @@
     <color name="default_bg_color">#F2F2F2</color>
     <color name="disable_list">#dbdbdb</color>
     <color name="empty_screen_color">#f2f2f2</color>
+
+    <color name="rating_select">#f4511e</color>
+    <color name="rating_unselect">#f89678</color>
 </resources>

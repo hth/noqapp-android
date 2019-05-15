@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.client.presenter.AllReviewPresenter;
+import com.noqapp.android.common.presenter.AllReviewPresenter;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;

@@ -1,34 +1,32 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.fragments.ReviewListFragment;
 
-public class ChartListActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 
-    public static ChartListActivity getChartListActivity() {
-        return chartListActivity;
+public class ReviewListActivity extends AppCompatActivity {
+
+
+    public static ReviewListActivity getReviewListActivity() {
+        return reviewListActivity;
     }
-    private static ChartListActivity chartListActivity;
+
+    private static ReviewListActivity reviewListActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,7 @@ public class ChartListActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        chartListActivity = this;
+        reviewListActivity = this;
 
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -48,14 +46,14 @@ public class ChartListActivity extends AppCompatActivity {
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onBackPressed();
             }
         });
-        tv_toolbar_title.setText("Statistics");
-        ChartListFragment merchantChartListFragment = new ChartListFragment();
+        tv_toolbar_title.setText("Reviews");
+        ReviewListFragment reviewListFragment = new ReviewListFragment();
         Bundle b = new Bundle();
         b.putSerializable("jsonTopic", getIntent().getExtras().getSerializable("jsonTopic"));
-        merchantChartListFragment.setArguments(b);
+        reviewListFragment.setArguments(b);
 
         if (new AppUtils().isTablet(getApplicationContext())) {
             FrameLayout list_fragment = findViewById(R.id.frame_layout);
@@ -65,10 +63,10 @@ public class ChartListActivity extends AppCompatActivity {
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp2);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, merchantChartListFragment);
+            fragmentTransaction.replace(R.id.frame_layout, reviewListFragment);
             fragmentTransaction.commit();
         } else {
-            replaceFragmentWithoutBackStack(R.id.frame_layout, merchantChartListFragment);
+            replaceFragmentWithoutBackStack(R.id.frame_layout, reviewListFragment);
         }
 
     }

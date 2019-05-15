@@ -117,10 +117,6 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
 
         if (new AppUtils().isTablet(getActivity())) {
             chartFragment = new ChartFragment();
-            Bundle b = new Bundle();
-            b.putSerializable("jsonMerchant", topics);
-            b.putInt("position", selected_pos);
-            chartFragment.setArguments(b);
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.list_detail_fragment, chartFragment);
             fragmentTransaction.commit();
