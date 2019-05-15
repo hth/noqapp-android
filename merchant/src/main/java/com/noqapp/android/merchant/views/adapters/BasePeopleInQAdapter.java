@@ -314,6 +314,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     recordHolder.tv_payment_stat.setText("Payment Refunded");
                     recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
                     break;
+                case PC:
+                    recordHolder.tv_payment_stat.setText("Payment Cancelled");
+                    recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                    break;
                 case PP:
                     if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_payment_stat.setText("No Payment Due");

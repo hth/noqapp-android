@@ -120,6 +120,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                     recordHolder.tv_order_data.setText("Payment Refunded");
                     recordHolder.tv_order_data.setBackgroundResource(R.drawable.grey_background);
                     break;
+                case PC:
+                    recordHolder.tv_order_data.setText("Payment Cancelled");
+                    recordHolder.tv_order_data.setBackgroundResource(R.drawable.grey_background);
+                    break;
                 case PP:
                     if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_order_data.setText("No Payment Due");
