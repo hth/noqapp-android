@@ -3,7 +3,7 @@ package com.noqapp.android.merchant.model;
 import com.noqapp.android.merchant.model.api.AdvertisementApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.AdvertisementPresenter;
-import com.noqapp.android.merchant.presenter.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.merchant.utils.Constants;
 
 import android.util.Log;

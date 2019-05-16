@@ -7,9 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonEvent;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.EventsAdapter;
+import com.noqapp.android.common.beans.JsonAdvertisement;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class AllEventsActivity extends AppCompatActivity implements EventsAdapte
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_all_events));
-        ArrayList<JsonEvent> listData = (ArrayList<JsonEvent>) getIntent().getExtras().getSerializable("list");
+        ArrayList<JsonAdvertisement> listData = (ArrayList<JsonAdvertisement>) getIntent().getExtras().getSerializable("list");
         if (null == listData)
             listData = new ArrayList<>();
         EventsAdapter eventsAdapter = new EventsAdapter(listData,  this,true);
@@ -45,7 +45,7 @@ public class AllEventsActivity extends AppCompatActivity implements EventsAdapte
     }
 
     @Override
-    public void onEventItemClick(JsonEvent item, View view, int pos) {
+    public void onEventItemClick(JsonAdvertisement item, View view, int pos) {
         Intent in = new Intent(this, EventsDetailActivity.class);
         in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);

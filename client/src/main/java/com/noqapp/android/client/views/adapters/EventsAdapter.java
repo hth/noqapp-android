@@ -10,27 +10,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonEvent;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.Random;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHolder> {
     private final OnItemClickListener listener;
-    private List<JsonEvent> dataSet;
+    private List<JsonAdvertisement> dataSet;
     private boolean increaseCardWidth;
 
-    public EventsAdapter(List<JsonEvent> data, OnItemClickListener listener) {
+    public EventsAdapter(List<JsonAdvertisement> data, OnItemClickListener listener) {
         this.dataSet = data;
         this.listener = listener;
     }
 
-    public EventsAdapter(List<JsonEvent> data, OnItemClickListener listener, boolean increaseCardWidth) {
+    public EventsAdapter(List<JsonAdvertisement> data, OnItemClickListener listener, boolean increaseCardWidth) {
         this.dataSet = data;
         this.listener = listener;
         this.increaseCardWidth = increaseCardWidth;
@@ -52,18 +51,18 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             params.leftMargin = 20;
             params.rightMargin = 20;
         }
-        JsonEvent item = dataSet.get(listPosition);
-        if (TextUtils.isEmpty(item.getImageUrl())) {
+        JsonAdvertisement item = dataSet.get(listPosition);
+        if (item.getImageUrls().size()==0) {
             holder.tv_title.setTextColor(Color.WHITE);
             holder.tv_subtitle.setTextColor(Color.WHITE);
             holder.iv_bg.setBackgroundColor(AppUtilities.generateRandomColor());
         } else {
-            Picasso.get().load(item.getImageUrl()).into(holder.iv_bg);
+            Picasso.get().load(item.getImageUrls().get(0)).into(holder.iv_bg);
             holder.tv_title.setTextColor(Color.TRANSPARENT);
             holder.tv_subtitle.setTextColor(Color.TRANSPARENT);
         }
         holder.tv_title.setText(item.getTitle());
-        holder.tv_subtitle.setText(item.getContent());
+        holder.tv_subtitle.setText(item.getShortDescription());
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +78,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     }
 
     public interface OnItemClickListener {
-        void onEventItemClick(JsonEvent item, View view, int pos);
+        void onEventItemClick(JsonAdvertisement item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

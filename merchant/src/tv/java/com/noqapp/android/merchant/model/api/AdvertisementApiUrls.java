@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model.api;
 
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.merchant.presenter.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonAdvertisementList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

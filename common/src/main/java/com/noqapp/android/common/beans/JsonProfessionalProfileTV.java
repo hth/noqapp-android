@@ -1,11 +1,11 @@
-package com.noqapp.android.merchant.presenter.beans;
-
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.io.Serializable;
 
 /**
  * hitender
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonProfessionalProfileTV extends JsonProfessionalProfilePersonal {
+public class JsonProfessionalProfileTV extends JsonProfessionalProfilePersonal implements Serializable {
 
     @JsonProperty("pi")
     private String profileImage;

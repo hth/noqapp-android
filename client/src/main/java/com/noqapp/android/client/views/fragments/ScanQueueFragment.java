@@ -32,7 +32,6 @@ import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
-import com.noqapp.android.client.presenter.beans.JsonEvent;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -67,6 +66,7 @@ import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
@@ -130,7 +130,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     private static TokenQueueViewInterface tokenQueueViewInterface;
     private static QueueHandler mHandler;
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
-    private List<JsonEvent> jsonEvents= new ArrayList<>();
+    private List<JsonAdvertisement> jsonAdvertisements= new ArrayList<>();
 
     public ScanQueueFragment() {
 
@@ -214,24 +214,27 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         rv_events.setHasFixedSize(true);
         rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_events.setItemAnimator(new DefaultItemAnimator());
-        jsonEvents = getEventData();
-        EventsAdapter eventsAdapter = new EventsAdapter(jsonEvents, this);
+        jsonAdvertisements = getAdvertisementData();
+        EventsAdapter eventsAdapter = new EventsAdapter(jsonAdvertisements, this);
         rv_events.setAdapter(eventsAdapter);
         return view;
     }
 
-    private List<JsonEvent> getEventData() {
-        ArrayList<JsonEvent> jsonEvents = new ArrayList<>();
-        JsonEvent jsonEvent = new JsonEvent();
+    private List<JsonAdvertisement> getAdvertisementData() {
+        ArrayList<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
+        JsonAdvertisement jsonEvent = new JsonAdvertisement();
         jsonEvent.setTitle("Practo");
-        jsonEvent.setContent("30 percent off on all orders");
-        jsonEvent.setImageUrl("https://d1m6qo1ndegqmm.cloudfront.net/uploadimages/coupons/11021-Practo_640x320_Banner.jpg");
+        jsonEvent.setShortDescription("30 percent off on all orders");
+        ArrayList<String> images = new ArrayList<>();
+        images.add("https://d1m6qo1ndegqmm.cloudfront.net/uploadimages/coupons/11021-Practo_640x320_Banner.jpg");
+        jsonEvent.setImageUrls(images);
 
-
-        JsonEvent jsonEvent1 = new JsonEvent();
+        JsonAdvertisement jsonEvent1 = new JsonAdvertisement();
         jsonEvent1.setTitle("Free lybrate coupon");
-        jsonEvent1.setContent("Lybrate offer you a huge discount on online appointment booking.");
-        jsonEvent1.setImageUrl("https://7coupons.in/images/share/lybrate.jpg");
+        jsonEvent1.setShortDescription("Lybrate offer you a huge discount on online appointment booking.");
+        ArrayList<String> images1 = new ArrayList<>();
+        images1.add("https://7coupons.in/images/share/lybrate.jpg");
+        jsonEvent1.setImageUrls(images1);
         ArrayList<String> tac = new ArrayList<>();
         tac.add("Sign-up & get Rs.500 Lybrate Cash.");
         tac.add("User gives miss call on number- +91- 9029001185 and receives a sms containing Signup Link.");
@@ -242,16 +245,16 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         jsonEvent1.setTermAndConditions(tac);
         jsonEvent.setTermAndConditions(tac);
 
-        JsonEvent jsonEvent2 = new JsonEvent();
+        JsonAdvertisement jsonEvent2 = new JsonAdvertisement();
         jsonEvent2.setTitle("Free Health Checkup");
-        jsonEvent2.setContent("We are inviting you for free body checkup at MGM Belapur @ 10 am Tomorrow");
-        jsonEvent2.setImageUrl("");
+        jsonEvent2.setShortDescription("We are inviting you for free body checkup at MGM Belapur @ 10 am Tomorrow");
+        jsonEvent2.setImageUrls(new ArrayList<String>());
         jsonEvent2.setTermAndConditions(tac);
 
-        jsonEvents.add(jsonEvent1);
-        jsonEvents.add(jsonEvent);
-        jsonEvents.add(jsonEvent2);
-        return jsonEvents;
+        jsonAdvertisements.add(jsonEvent1);
+        jsonAdvertisements.add(jsonEvent);
+        jsonAdvertisements.add(jsonEvent2);
+        return jsonAdvertisements;
     }
 
     @Override
@@ -522,7 +525,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
 
     private void allEventsClick() {
         Intent intent = new Intent(getActivity(), AllEventsActivity.class);
-        intent.putExtra("list", (Serializable) jsonEvents);
+        intent.putExtra("list", (Serializable) jsonAdvertisements);
         startActivity(intent);
     }
 
@@ -761,7 +764,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     }
 
     @Override
-    public void onEventItemClick(JsonEvent item, View view, int pos) {
+    public void onEventItemClick(JsonAdvertisement item, View view, int pos) {
         Intent in = new Intent(getActivity(), EventsDetailActivity.class);
         in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);
