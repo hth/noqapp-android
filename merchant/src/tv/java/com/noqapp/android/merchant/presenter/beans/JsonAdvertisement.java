@@ -2,7 +2,7 @@ package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.VigyaapanTypeEnum;
+import com.noqapp.android.common.beans.AdvertisementTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,10 +30,10 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonVigyaapanTV extends AbstractDomain {
+public class JsonAdvertisement extends AbstractDomain {
 
     @JsonProperty("vi")
-    private String vigyaapanId;
+    private String advertisementId;
 
     @JsonProperty("pp")
     private JsonProfessionalProfileTV jsonProfessionalProfileTV;
@@ -42,7 +42,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
     private List<String> imageUrls = new ArrayList<>();
 
     @JsonProperty("vt")
-    private VigyaapanTypeEnum vigyaapanType;
+    private AdvertisementTypeEnum advertisementType;
 
     @JsonProperty("ed")
     private String endDate;
@@ -53,12 +53,12 @@ public class JsonVigyaapanTV extends AbstractDomain {
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public String getVigyaapanId() {
-        return vigyaapanId;
+    public String getAdvertisementId() {
+        return advertisementId;
     }
 
-    public JsonVigyaapanTV setVigyaapanId(String vigyaapanId) {
-        this.vigyaapanId = vigyaapanId;
+    public JsonAdvertisement setAdvertisementId(String advertisementId) {
+        this.advertisementId = advertisementId;
         return this;
     }
 
@@ -66,7 +66,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return jsonProfessionalProfileTV;
     }
 
-    public JsonVigyaapanTV setJsonProfessionalProfileTV(JsonProfessionalProfileTV jsonProfessionalProfileTV) {
+    public JsonAdvertisement setJsonProfessionalProfileTV(JsonProfessionalProfileTV jsonProfessionalProfileTV) {
         this.jsonProfessionalProfileTV = jsonProfessionalProfileTV;
         return this;
     }
@@ -75,17 +75,17 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return imageUrls;
     }
 
-    public JsonVigyaapanTV setImageUrls(List<String> imageUrls) {
+    public JsonAdvertisement setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
         return this;
     }
 
-    public VigyaapanTypeEnum getVigyaapanType() {
-        return vigyaapanType;
+    public AdvertisementTypeEnum getAdvertisementType() {
+        return advertisementType;
     }
 
-    public JsonVigyaapanTV setVigyaapanType(VigyaapanTypeEnum vigyaapanType) {
-        this.vigyaapanType = vigyaapanType;
+    public JsonAdvertisement setAdvertisementType(AdvertisementTypeEnum advertisementType) {
+        this.advertisementType = advertisementType;
         return this;
     }
 
@@ -93,7 +93,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return endDate;
     }
 
-    public JsonVigyaapanTV setEndDate(String endDate) {
+    public JsonAdvertisement setEndDate(String endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -102,7 +102,7 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return endDateInitialized;
     }
 
-    public JsonVigyaapanTV setEndDateInitialized(boolean endDateInitialized) {
+    public JsonAdvertisement setEndDateInitialized(boolean endDateInitialized) {
         this.endDateInitialized = endDateInitialized;
         return this;
     }
@@ -111,18 +111,18 @@ public class JsonVigyaapanTV extends AbstractDomain {
         return error;
     }
 
-    public JsonVigyaapanTV setError(ErrorEncounteredJson error) {
+    public JsonAdvertisement setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
     }
 
     @Override
     public String toString() {
-        return "JsonVigyaapanTV{" +
-                "vigyaapanId='" + vigyaapanId + '\'' +
+        return "JsonAdvertisement{" +
+                "advertisementId='" + advertisementId + '\'' +
                 ", jsonProfessionalProfileTV=" + jsonProfessionalProfileTV +
                 ", imageUrls=" + imageUrls +
-                ", vigyaapanType=" + vigyaapanType +
+                ", advertisementType=" + advertisementType +
                 ", endDate='" + endDate + '\'' +
                 ", endDateInitialized=" + endDateInitialized +
                 ", error=" + error +

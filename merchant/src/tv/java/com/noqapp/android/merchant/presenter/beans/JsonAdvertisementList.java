@@ -29,10 +29,11 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonVigyaapanTVList extends AbstractDomain {
+public class JsonAdvertisementList extends AbstractDomain {
 
     @JsonProperty("vts")
-    private List<JsonVigyaapanTV> jsonVigyaapanTVs = new ArrayList<>();
+    private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -45,24 +46,24 @@ public class JsonVigyaapanTVList extends AbstractDomain {
     }
 
 
-    public List<JsonVigyaapanTV> getJsonVigyaapanTVs() {
-        return jsonVigyaapanTVs;
+    public List<JsonAdvertisement> getJsonAdvertisements() {
+        return jsonAdvertisements;
     }
 
-    public JsonVigyaapanTVList setJsonVigyaapanTVs(List<JsonVigyaapanTV> jsonVigyaapanTVs) {
-        this.jsonVigyaapanTVs = jsonVigyaapanTVs;
+    public JsonAdvertisementList setJsonAdvertisements(List<JsonAdvertisement> jsonAdvertisements) {
+        this.jsonAdvertisements = jsonAdvertisements;
         return this;
     }
 
-    public JsonVigyaapanTVList addJsonVigyaapanTV(JsonVigyaapanTV jsonVigyaapanTV) {
-        this.jsonVigyaapanTVs.add(jsonVigyaapanTV);
+    public JsonAdvertisementList addJsonVigyaapanTV(JsonAdvertisement jsonAdvertisement) {
+        this.jsonAdvertisements.add(jsonAdvertisement);
         return this;
     }
 
     @Override
     public String toString() {
-        return "JsonVigyaapanTVList{" +
-                "jsonVigyaapanTVs=" + jsonVigyaapanTVs +
+        return "JsonAdvertisementList{" +
+                "jsonAdvertisements=" + jsonAdvertisements +
                 ", error=" + error +
                 '}';
     }
