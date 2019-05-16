@@ -37,32 +37,68 @@ public abstract class BaseErrorResponseHandler {
                 MobileSystemErrorCodeEnum mobileSystemErrorCodeEnum = MobileSystemErrorCodeEnum.valueOf(eej.getSystemError());
                 switch (mobileSystemErrorCodeEnum) {
                     case USER_INPUT:
+
                     case MOBILE:
+
                     case MOBILE_JSON:
                     case MOBILE_UPGRADE:
                     case MOBILE_UPLOAD:
                     case MOBILE_UPLOAD_NO_SIZE:
                     case MOBILE_UPLOAD_EXCEED_SIZE:
                     case MOBILE_UPLOAD_UNSUPPORTED_FORMAT:
+
                     case MOBILE_ACTION_NOT_PERMITTED:
+
                     case USER_ALREADY_IN_QUEUE:
                     case MERCHANT_COULD_NOT_ACQUIRE:
+                    case STORE_OFFLINE:
+                    case STORE_DAY_CLOSED:
+                    case STORE_TEMP_DAY_CLOSED:
+                    case STORE_PREVENT_JOIN:
+                    case STORE_NO_LONGER_EXISTS:
                     case QUEUE_NOT_STARTED:
                     case QUEUE_NOT_RE_STARTED:
+
                     case USER_EXISTING:
                     case USER_NOT_FOUND:
                     case USER_SOCIAL:
                     case MAIL_OTP_FAILED:
                     case USER_MAX_DEPENDENT:
+                    case CHANGE_USER_IN_QUEUE:
+                    case FAILED_FINDING_ADDRESS:
+
                     case MEDICAL_RECORD_ENTRY_DENIED:
                     case MEDICAL_RECORD_ACCESS_DENIED:
-                    case MEDICAL_PROFILE_DOES_NOT_EXISTS:
-                    case MEDICAL_PROFILE_CANNOT_BE_CHANGED:
+                    case MEDICAL_RECORD_DOES_NOT_EXISTS:
+                    case MEDICAL_RECORD_POPULATED_WITH_LAB:
                     case BUSINESS_NOT_AUTHORIZED:
                     case BUSINESS_CUSTOMER_ID_DOES_NOT_EXISTS:
                     case BUSINESS_CUSTOMER_ID_EXISTS:
+                    case MEDICAL_PROFILE_DOES_NOT_EXISTS:
+                    case MEDICAL_PROFILE_CANNOT_BE_CHANGED:
+
+                    case PURCHASE_ORDER_PRICE_MISMATCH:
+                    case PURCHASE_ORDER_NOT_FOUND:
+                    case PRODUCT_PRICE_CANNOT_BE_ZERO:
+                    case PURCHASE_ORDER_FAILED_TO_CANCEL_AS_EXTERNALLY_PAID:
+                    case PURCHASE_ORDER_FAILED_TO_CANCEL_PARTIAL_PAY:
+                    case PURCHASE_ORDER_FAILED_TO_CANCEL:
+                    case PURCHASE_ORDER_ALREADY_CANCELLED:
+                    case PURCHASE_ORDER_CANNOT_ACTIVATE:
+                    case ORDER_PAYMENT_UPDATE_FAILED:
+                    case PURCHASE_ORDER_PRODUCT_NOT_FOUND:
+                    case FAILED_PLACING_MEDICAL_ORDER_AS_INCORRECT_BUSINESS:
+
+                    case QUEUE_JOIN_FAILED_PAYMENT_CALL_REQUEST:
+                    case QUEUE_JOIN_PAYMENT_FAILED:
+                    case QUEUE_NO_SERVICE_NO_PAY:
+
+                    case TRANSACTION_GATEWAY_DEFAULT:
+
                     case SEVERE:
                     case DEVICE_DETAIL_MISSING:
+                    case ACCOUNT_INACTIVE:
+
                     case WEB_APPLICATION:
                         break;
                     default:
