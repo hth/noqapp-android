@@ -35,11 +35,20 @@ public class JsonAdvertisement extends AbstractDomain {
     @JsonProperty("vi")
     private String advertisementId;
 
+    @JsonProperty("ti")
+    private String title;
+
+    @JsonProperty("bd")
+    private String body;
+
     @JsonProperty("pp")
     private JsonProfessionalProfileTV jsonProfessionalProfileTV;
 
     @JsonProperty("iu")
     private List<String> imageUrls = new ArrayList<>();
+
+    @JsonProperty("tcs")
+    private List<String> termAndConditions = new ArrayList<>();
 
     @JsonProperty("vt")
     private AdvertisementTypeEnum advertisementType;
@@ -62,6 +71,24 @@ public class JsonAdvertisement extends AbstractDomain {
         return this;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public JsonAdvertisement setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public JsonAdvertisement setBody(String body) {
+        this.body = body;
+        return this;
+    }
+
     public JsonProfessionalProfileTV getJsonProfessionalProfileTV() {
         return jsonProfessionalProfileTV;
     }
@@ -77,6 +104,15 @@ public class JsonAdvertisement extends AbstractDomain {
 
     public JsonAdvertisement setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
+        return this;
+    }
+
+    public List<String> getTermAndConditions() {
+        return termAndConditions;
+    }
+
+    public JsonAdvertisement setTermAndConditions(List<String> termAndConditions) {
+        this.termAndConditions = termAndConditions;
         return this;
     }
 
