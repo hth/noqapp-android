@@ -3,8 +3,6 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.IBConstant;
@@ -13,29 +11,21 @@ import com.noqapp.android.common.beans.JsonAdvertisement;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AllEventsActivity extends AppCompatActivity implements EventsAdapter.OnItemClickListener {
+public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(true);
         RecyclerView rv_feed = findViewById(R.id.rv_merchant_around_you);
         rv_feed.setHasFixedSize(true);
         rv_feed.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rv_feed.setItemAnimator(new DefaultItemAnimator());
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         tv_toolbar_title.setText(getString(R.string.screen_all_events));
         ArrayList<JsonAdvertisement> listData = (ArrayList<JsonAdvertisement>) getIntent().getExtras().getSerializable("list");
         if (null == listData)
