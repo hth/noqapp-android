@@ -207,4 +207,6 @@ public class CommonHelper {
         int scale = (int) Math.pow(10, 2);
         return (double) Math.round(value * scale) / scale;
     }
+
+    // Show offer msg section 
 }

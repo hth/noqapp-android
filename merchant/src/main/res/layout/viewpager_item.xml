@@ -393,11 +393,8 @@
                                 android:scaleType="centerInside"
                                 android:src="@drawable/history"
                                 android:tint="@android:color/white"/>
+
                     </LinearLayout>
-                    <!--<FrameLayout-->
-                    <!--android:id="@+id/rcv_frame"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"/>-->
                 </RelativeLayout>
 
                 <ProgressBar

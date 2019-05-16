@@ -151,6 +151,8 @@
 
 
     <string name="bullet">\u27A3</string>
+    <string name="circle_bullet">\u2B24</string>
+
 
     <string name="btn_playstore">Open Play Store</string>
     <string name="playstore_title">Unsupported Version</string>
@@ -310,6 +312,7 @@
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
     <string name="screen_all_feeds">All Feeds</string>
+    <string name="screen_all_events">Events &amp; Offers</string>
     <string name="total_amount_paid">Total Amount Paid:</string>
     <string name="total_amount_remaing">Total Amount Remaining:</string>
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>

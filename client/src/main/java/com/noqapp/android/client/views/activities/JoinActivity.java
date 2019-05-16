@@ -283,6 +283,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     tv_cancelation_fees.setVisibility(View.GONE);
                     tv_add.setVisibility(View.GONE);
                     add_person.setVisibility(View.GONE);
+                    sp_name_list.setSelection(1);// Q join @ Name of primary
                     sp_name_list.setVisibility(View.GONE);
             }
 

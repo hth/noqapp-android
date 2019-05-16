@@ -1,5 +1,22 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
@@ -15,6 +32,7 @@ import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
+import com.noqapp.android.client.presenter.beans.JsonEvent;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -29,11 +47,12 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.SortPlaces;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
+import com.noqapp.android.client.views.activities.AllEventsActivity;
 import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
+import com.noqapp.android.client.views.activities.EventsDetailActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
-import com.noqapp.android.client.views.activities.ImageViewerActivity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -42,6 +61,7 @@ import com.noqapp.android.client.views.activities.SearchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.activities.ViewAllListActivity;
 import com.noqapp.android.client.views.adapters.CurrentActivityAdapter;
+import com.noqapp.android.client.views.adapters.EventsAdapter;
 import com.noqapp.android.client.views.adapters.FeedAdapter;
 import com.noqapp.android.client.views.adapters.StoreInfoAdapter;
 import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoration;
@@ -52,25 +72,13 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -79,13 +87,10 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-public class ScanQueueFragment extends Scanner implements View.OnClickListener, FeedAdapter.OnItemClickListener, CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter, StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter {
+public class ScanQueueFragment extends Scanner implements View.OnClickListener,
+        FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
+        CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
+        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     private RelativeLayout rl_scan;
@@ -94,10 +99,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private RecyclerView rv_feed;
     private TextView tv_current_title;
     private TextView tv_deviceId;
-    private RecyclerView rv_merchant_around_you;
+    private RecyclerView rv_merchant_around_you, rv_events;
     private TextView tv_health_care_view_all;
     private TextView tv_near_view_all;
     private TextView tv_feed_view_all;
+    private TextView tv_events_view_all;
     private ProgressBar pb_current;
     private ProgressBar pb_health_care;
     private ProgressBar pb_near;
@@ -106,7 +112,6 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private LinearLayout rl_current_activity;
     private TextView tv_no_thanks;
     private TextView tv_update;
-    private AppCompatImageView iv_event;
 
     private boolean fromList = false;
     private ArrayList<BizStoreElastic> nearMeData;
@@ -125,6 +130,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private static TokenQueueViewInterface tokenQueueViewInterface;
     private static QueueHandler mHandler;
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
+    private List<JsonEvent> jsonEvents= new ArrayList<>();
 
     public ScanQueueFragment() {
 
@@ -178,10 +184,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         tv_current_title = view.findViewById(R.id.tv_current_title);
         tv_deviceId = view.findViewById(R.id.tv_deviceId);
         rv_merchant_around_you = view.findViewById(R.id.rv_merchant_around_you);
+        rv_events = view.findViewById(R.id.rv_events);
 
         tv_health_care_view_all = view.findViewById(R.id.tv_health_care_view_all);
         tv_near_view_all = view.findViewById(R.id.tv_near_view_all);
         tv_feed_view_all = view.findViewById(R.id.tv_feed_view_all);
+        tv_events_view_all = view.findViewById(R.id.tv_events_view_all);
         pb_current = view.findViewById(R.id.pb_current);
         pb_health_care = view.findViewById(R.id.pb_health_care);
         pb_near = view.findViewById(R.id.pb_near);
@@ -190,21 +198,60 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
         tv_update = view.findViewById(R.id.tv_update);
-        iv_event = view.findViewById(R.id.iv_event);
-//        Picasso.with(getActivity())
-//                .load("https://noqapp.com/imgs/appmages/garbhasanskar-ssd-march-2019.png")
-//                .into(iv_event);
-        iv_event.setOnClickListener(this);
+
         rl_scan.setOnClickListener(this);
         tv_health_care_view_all.setOnClickListener(this);
         tv_near_view_all.setOnClickListener(this);
         tv_feed_view_all.setOnClickListener(this);
+        tv_events_view_all.setOnClickListener(this);
 
         rv_feed = view.findViewById(R.id.rv_feed);
         rv_feed.setHasFixedSize(true);
         rv_feed.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_feed.setItemAnimator(new DefaultItemAnimator());
+
+
+        rv_events.setHasFixedSize(true);
+        rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rv_events.setItemAnimator(new DefaultItemAnimator());
+        jsonEvents = getEventData();
+        EventsAdapter eventsAdapter = new EventsAdapter(jsonEvents, this);
+        rv_events.setAdapter(eventsAdapter);
         return view;
+    }
+
+    private List<JsonEvent> getEventData() {
+        ArrayList<JsonEvent> jsonEvents = new ArrayList<>();
+        JsonEvent jsonEvent = new JsonEvent();
+        jsonEvent.setTitle("Practo");
+        jsonEvent.setContent("30 percent off on all orders");
+        jsonEvent.setImageUrl("https://d1m6qo1ndegqmm.cloudfront.net/uploadimages/coupons/11021-Practo_640x320_Banner.jpg");
+
+
+        JsonEvent jsonEvent1 = new JsonEvent();
+        jsonEvent1.setTitle("Free lybrate coupon");
+        jsonEvent1.setContent("Lybrate offer you a huge discount on online appointment booking.");
+        jsonEvent1.setImageUrl("https://7coupons.in/images/share/lybrate.jpg");
+        ArrayList<String> tac = new ArrayList<>();
+        tac.add("Sign-up & get Rs.500 Lybrate Cash.");
+        tac.add("User gives miss call on number- +91- 9029001185 and receives a sms containing Signup Link.");
+        tac.add("User Sign-up on website and goes to My Account.");
+        tac.add("User clicks on link and goes to coupon redemption page to receive Lybrate cash(exclusive code shared above).");
+        tac.add("User Redeems the Lybrate cash either on Doctor consultation or product or service.");
+        tac.add("Offer valid Pan India.");
+        jsonEvent1.setTermAndConditions(tac);
+        jsonEvent.setTermAndConditions(tac);
+
+        JsonEvent jsonEvent2 = new JsonEvent();
+        jsonEvent2.setTitle("Free Health Checkup");
+        jsonEvent2.setContent("We are inviting you for free body checkup at MGM Belapur @ 10 am Tomorrow");
+        jsonEvent2.setImageUrl("");
+        jsonEvent2.setTermAndConditions(tac);
+
+        jsonEvents.add(jsonEvent1);
+        jsonEvents.add(jsonEvent);
+        jsonEvents.add(jsonEvent2);
+        return jsonEvents;
     }
 
     @Override
@@ -470,7 +517,12 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
     private void allFeedsClick() {
         Intent intent = new Intent(getActivity(), AllFeedsActivity.class);
         intent.putExtra("list", (Serializable) jsonFeeds);
+        startActivity(intent);
+    }
 
+    private void allEventsClick() {
+        Intent intent = new Intent(getActivity(), AllEventsActivity.class);
+        intent.putExtra("list", (Serializable) jsonEvents);
         startActivity(intent);
     }
 
@@ -572,7 +624,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                 public int compare(JsonTokenAndQueue o1, JsonTokenAndQueue o2) {
                     try {
                         return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreateDate()).compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreateDate()));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                         return 0;
                     }
@@ -598,7 +650,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
         Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
     }
 
-    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to,String title, String body) {
+    public void updateListFromNotification(JsonTokenAndQueue jq, String go_to, String title, String body) {
         boolean isUpdated = TokenAndQueueDB.updateCurrentListQueueObject(jq.getCodeQR(), "" + jq.getServingNumber(), "" + jq.getToken());
         boolean isUserTurn = jq.afterHowLong() == 0;
         if (isUserTurn && isUpdated) {
@@ -642,7 +694,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
                             startActivity(blinker);
                             break;
                         case CO:
-                          //  ShowAlertInformation.showInfoDisplayDialog(getActivity(), title , body);
+                            //  ShowAlertInformation.showInfoDisplayDialog(getActivity(), title , body);
                             break;
                         default:
                             //Do Nothing
@@ -686,10 +738,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             case R.id.tv_feed_view_all:
                 allFeedsClick();
                 break;
-            case R.id.iv_event:
-                Intent in = new Intent(getActivity(), ImageViewerActivity.class);
-                startActivity(in);
+            case R.id.tv_events_view_all:
+                allEventsClick();
                 break;
+//            case R.id.iv_event:
+//                Intent in = new Intent(getActivity(), ImageViewerActivity.class);
+//                startActivity(in);
+//                break;
 
         }
     }
@@ -703,6 +758,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener, 
             tv_feed_view_all.setVisibility(jsonFeedList.getJsonFeeds().size() == 0 ? View.GONE : View.VISIBLE);
         }
         pb_feed.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onEventItemClick(JsonEvent item, View view, int pos) {
+        Intent in = new Intent(getActivity(), EventsDetailActivity.class);
+        in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
+        startActivity(in);
     }
 
     private static class QueueHandler extends Handler {

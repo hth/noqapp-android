@@ -52,9 +52,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment
-        extends BaseMerchantDetailFragment
-        implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList, HCSMenuActivity.UpdateWholeList {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
+        PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
+        PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList,
+        HCSMenuActivity.UpdateWholeList {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
