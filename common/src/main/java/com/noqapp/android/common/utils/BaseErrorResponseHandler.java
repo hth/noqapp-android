@@ -1,13 +1,11 @@
 package com.noqapp.android.common.utils;
 
-
 import com.noqapp.android.common.R;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ErrorTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 
 import android.util.Log;
-
 
 public abstract class BaseErrorResponseHandler {
     protected int icon;
