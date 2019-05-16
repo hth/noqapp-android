@@ -38,8 +38,8 @@ public class JsonAdvertisement extends AbstractDomain {
     @JsonProperty("ti")
     private String title;
 
-    @JsonProperty("bd")
-    private String body;
+    @JsonProperty("sd")
+    private String shortDescription;
 
     @JsonProperty("pp")
     private JsonProfessionalProfileTV jsonProfessionalProfileTV;
@@ -80,12 +80,12 @@ public class JsonAdvertisement extends AbstractDomain {
         return this;
     }
 
-    public String getBody() {
-        return body;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public JsonAdvertisement setBody(String body) {
-        this.body = body;
+    public JsonAdvertisement setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
         return this;
     }
 
