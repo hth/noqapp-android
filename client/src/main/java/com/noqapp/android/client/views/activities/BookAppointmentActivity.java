@@ -38,6 +38,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BookAppointmentActivity extends BaseActivity implements DatePickerListener, AppointmentDateAdapter.OnItemClickListener {
     private Spinner sp_name_list;
+    private RecyclerView rv_available_date;
+    private List<StoreHourElastic> storeHourElastics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         initActionsViews(true);
         tv_toolbar_title.setText("Book an Appointment");
         HorizontalPicker picker = findViewById(R.id.datePicker);
-        RecyclerView rv_available_date = findViewById(R.id.rv_available_date);
+        rv_available_date = findViewById(R.id.rv_available_date);
         sp_name_list = findViewById(R.id.sp_name_list);
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
@@ -59,28 +61,12 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
 
-        List<AppointmentModel> listData = new ArrayList<>();
         BizStoreElastic bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
-            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
-            String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getStartHour());
-            String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getEndHour());
-            ArrayList<String> timeSlot = getTimeSlot(10, from, to);
-            boolean temp = true;
-            for (int i = 0; i < timeSlot.size(); i++) {
-                listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(temp));
-                temp = !temp;
-            }
-
-        } else {
-            listData.add(new AppointmentModel().setTime("10:00 am").setBooked(true));
-            listData.add(new AppointmentModel().setTime("10:05 am").setBooked(false));
-            listData.add(new AppointmentModel().setTime("10:10 am").setBooked(true));
-            listData.add(new AppointmentModel().setTime("10:15 am").setBooked(false));
-            listData.add(new AppointmentModel().setTime("10:20 am").setBooked(false));
+            storeHourElastics = bizStoreElastic.getStoreHourElasticList();
+            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(storeHourElastics);
+            setAppointmentSlots(storeHourElastic);
         }
-        AppointmentDateAdapter appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
-        rv_available_date.setAdapter(appointmentDateAdapter);
 
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(new View.OnClickListener() {
@@ -95,12 +81,17 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                 }
             }
         });
-
     }
 
     @Override
     public void onDateSelected(@NonNull final DateTime dateSelected) {
-        Log.i("HorizontalPicker", "Selected date is " + dateSelected.toString());
+        Log.i("HorizontalPicker", "Selected date is " + dateSelected.getDayOfWeek());
+        int dayOfWeek = dateSelected.getDayOfWeek();
+        if (dayOfWeek == 0) {
+            dayOfWeek = 7;
+        }
+        StoreHourElastic storeHourElastic = getStoreHourElastic (storeHourElastics,dayOfWeek);
+        setAppointmentSlots(storeHourElastic);
     }
 
     @Override
@@ -108,7 +99,32 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         //
     }
 
-    public ArrayList<String> getTimeSlot(int slotMinute, String strFromTime, String strToTime) {
+    private StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList, int day) {
+        if (null != jsonHourList && jsonHourList.size() > 0) {
+            for (int i = 0; i < jsonHourList.size(); i++) {
+                if (jsonHourList.get(i).getDayOfWeek() == day) {
+                    return jsonHourList.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    private void setAppointmentSlots(StoreHourElastic storeHourElastic){
+        List<AppointmentModel> listData = new ArrayList<>();
+        String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getStartHour());
+        String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getEndHour());
+        ArrayList<String> timeSlot = getTimeSlots(10, from, to);
+        boolean temp = true;
+        for (int i = 0; i < timeSlot.size(); i++) {
+            listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(temp));
+            temp = !temp;
+        }
+        AppointmentDateAdapter appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
+        rv_available_date.setAdapter(appointmentDateAdapter);
+    }
+
+    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime) {
         ArrayList<String> timeSlot = new ArrayList<String>();
         try {
             int fromHour, fromMinute, toHour, toMinute;
