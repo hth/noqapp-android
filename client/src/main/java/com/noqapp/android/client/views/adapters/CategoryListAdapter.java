@@ -17,6 +17,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -41,7 +42,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         this.listener = listener;
     }
 
-    public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener,boolean isSingleEntry) {
+    public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener, boolean isSingleEntry) {
         this.dataSet = jsonQueues;
         this.context = context;
         this.listener = listener;
@@ -52,10 +53,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
         View view = null;
-        if(isSingleEntry){
+        if (isSingleEntry) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.rcv_single_entry_item, parent, false);
-        }else {
+        } else {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.rcv_item_category1, parent, false);
         }
@@ -191,7 +192,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
         }
-        AppUtilities.loadProfilePic(holder.iv_main, bizStoreElastic.getDisplayImage(),context);
+        AppUtilities.loadProfilePic(holder.iv_main, bizStoreElastic.getDisplayImage(), context);
         holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE : View.VISIBLE);
         if (bizStoreElastic.getProductPrice() == 0) {
             holder.tv_consult_fees.setVisibility(View.GONE);
@@ -218,13 +219,19 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                    Intent intent = new Intent(context, ManagerProfileActivity.class);
-                    intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
-                    intent.putExtra("managerName", bizStoreElastic.getDisplayName());
-                    intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
-                    intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
-                    context.startActivity(intent);
+                if (AppUtilities.isRelease()) {
+                    if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                        Intent intent = new Intent(context, ManagerProfileActivity.class);
+                        intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
+                        intent.putExtra("managerName", bizStoreElastic.getDisplayName());
+                        intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
+                        intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
+                        context.startActivity(intent);
+                    }
+                } else {
+                    Intent in = new Intent(context, BookAppointmentActivity.class);
+                    in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
+                    context.startActivity(in);
                 }
             }
         });
