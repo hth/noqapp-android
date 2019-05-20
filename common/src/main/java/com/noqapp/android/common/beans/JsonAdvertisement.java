@@ -29,7 +29,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonAdvertisement extends AbstractDomain implements Serializable {
 
-    @JsonProperty("vi")
+    @JsonProperty("ai")
     private String advertisementId;
 
     @JsonProperty("ti")
@@ -44,17 +44,11 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
     @JsonProperty("iu")
     private List<String> imageUrls = new ArrayList<>();
 
-    @JsonProperty("tcs")
+    @JsonProperty("tc")
     private List<String> termsAndConditions = new ArrayList<>();
 
-    @JsonProperty("vt")
+    @JsonProperty("at")
     private AdvertisementTypeEnum advertisementType;
-
-    @JsonProperty("ed")
-    private String endDate;
-
-    @JsonProperty("ei")
-    private boolean endDateInitialized;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -122,24 +116,6 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public JsonAdvertisement setEndDate(String endDate) {
-        this.endDate = endDate;
-        return this;
-    }
-
-    public boolean isEndDateInitialized() {
-        return endDateInitialized;
-    }
-
-    public JsonAdvertisement setEndDateInitialized(boolean endDateInitialized) {
-        this.endDateInitialized = endDateInitialized;
-        return this;
-    }
-
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -155,9 +131,6 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
                 "advertisementId='" + advertisementId + '\'' +
                 ", jsonProfessionalProfileTV=" + jsonProfessionalProfileTV +
                 ", imageUrls=" + imageUrls +
-                ", advertisementType=" + advertisementType +
-                ", endDate='" + endDate + '\'' +
-                ", endDateInitialized=" + endDateInitialized +
                 ", error=" + error +
                 '}';
     }
