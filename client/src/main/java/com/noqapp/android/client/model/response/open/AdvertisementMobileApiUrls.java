@@ -1,6 +1,5 @@
 package com.noqapp.android.client.model.response.open;
 
-import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 
 import retrofit2.Call;

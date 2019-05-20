@@ -50,6 +50,12 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
     @JsonProperty("at")
     private AdvertisementTypeEnum advertisementType;
 
+    @JsonProperty("n")
+    private String businessName;
+
+    @JsonProperty("av")
+    private AdvertisementViewerTypeEnum advertisementViewerType;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -113,6 +119,24 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
 
     public JsonAdvertisement setAdvertisementType(AdvertisementTypeEnum advertisementType) {
         this.advertisementType = advertisementType;
+        return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public JsonAdvertisement setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
+    public AdvertisementViewerTypeEnum getAdvertisementViewerType() {
+        return advertisementViewerType;
+    }
+
+    public JsonAdvertisement setAdvertisementViewerType(AdvertisementViewerTypeEnum advertisementViewerType) {
+        this.advertisementViewerType = advertisementViewerType;
         return this;
     }
 
