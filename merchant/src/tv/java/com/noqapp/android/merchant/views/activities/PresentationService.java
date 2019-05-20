@@ -7,7 +7,7 @@ import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
-import com.noqapp.android.merchant.presenter.AdvertisementPresenter;
+import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;

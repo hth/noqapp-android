@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter;
+package com.noqapp.android.common.presenter;
 
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 import com.noqapp.android.common.beans.JsonAdvertisementList;

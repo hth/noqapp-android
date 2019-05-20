@@ -1,10 +1,10 @@
-package com.noqapp.android.merchant.model;
+package com.noqapp.android.client.model;
 
-import com.noqapp.android.merchant.model.api.AdvertisementApiUrls;
-import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.common.presenter.AdvertisementPresenter;
+import com.noqapp.android.client.model.response.open.AdvertisementMobileApiUrls;
+import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
-import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.common.presenter.AdvertisementPresenter;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -15,7 +15,7 @@ import retrofit2.Response;
 public class AdvertisementApiCalls {
     private static final String TAG = AdvertisementApiCalls.class.getSimpleName();
 
-    protected static final AdvertisementApiUrls advertisementApiUrls;
+    protected static final AdvertisementMobileApiUrls advertisementMobileApiUrls;
     private AdvertisementPresenter advertisementPresenter;
 
     public void setAdvertisementPresenter(AdvertisementPresenter advertisementPresenter) {
@@ -23,14 +23,14 @@ public class AdvertisementApiCalls {
     }
 
     static {
-        advertisementApiUrls = RetrofitClient.getClient().create(AdvertisementApiUrls.class);
+        advertisementMobileApiUrls = RetrofitClient.getClient().create(AdvertisementMobileApiUrls.class);
     }
 
-    public void getAllAdvertisements(String did, String mail, String auth) {
-        advertisementApiUrls.getAllAdvertisements(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonAdvertisementList>() {
+    public void getAllAdvertisements(String did) {
+        advertisementMobileApiUrls.getAllAdvertisements(did, Constants.DEVICE_TYPE).enqueue(new Callback<JsonAdvertisementList>() {
             @Override
             public void onResponse(@NonNull Call<JsonAdvertisementList> call, @NonNull Response<JsonAdvertisementList> response) {
-                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         advertisementPresenter.advertisementResponse(response.body());
                         Log.d("getAllAdvertisements", String.valueOf(response.body()));
@@ -43,7 +43,7 @@ public class AdvertisementApiCalls {
                         advertisementPresenter.authenticationFailure();
                     } else {
                         advertisementPresenter.responseErrorPresenter(response.code());
-                        Log.e(TAG, ""+response.code());
+                        Log.e(TAG, "" + response.code());
                     }
                 }
             }
@@ -56,3 +56,4 @@ public class AdvertisementApiCalls {
         });
     }
 }
+

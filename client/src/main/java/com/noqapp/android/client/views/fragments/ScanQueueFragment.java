@@ -1,23 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.AdvertisementApiCalls;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -67,17 +51,30 @@ import com.noqapp.android.client.views.customviews.CirclePagerIndicatorDecoratio
 import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
+import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -87,10 +84,16 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
         CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
-        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter {
+        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter, AdvertisementPresenter {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     private RelativeLayout rl_scan;
@@ -108,6 +111,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     private ProgressBar pb_health_care;
     private ProgressBar pb_near;
     private ProgressBar pb_feed;
+    private ProgressBar pb_events;
     private CardView cv_update_location;
     private LinearLayout rl_current_activity;
     private TextView tv_no_thanks;
@@ -130,7 +134,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     private static TokenQueueViewInterface tokenQueueViewInterface;
     private static QueueHandler mHandler;
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
-    private List<JsonAdvertisement> jsonAdvertisements= new ArrayList<>();
+    private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
 
     public ScanQueueFragment() {
 
@@ -194,6 +198,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         pb_health_care = view.findViewById(R.id.pb_health_care);
         pb_near = view.findViewById(R.id.pb_near);
         pb_feed = view.findViewById(R.id.pb_feed);
+        pb_events = view.findViewById(R.id.pb_events);
         cv_update_location = view.findViewById(R.id.cv_update_location);
         rl_current_activity = view.findViewById(R.id.rl_current_activity);
         tv_no_thanks = view.findViewById(R.id.tv_no_thanks);
@@ -214,48 +219,10 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         rv_events.setHasFixedSize(true);
         rv_events.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv_events.setItemAnimator(new DefaultItemAnimator());
-        jsonAdvertisements = getAdvertisementData();
-        EventsAdapter eventsAdapter = new EventsAdapter(jsonAdvertisements, this);
-        rv_events.setAdapter(eventsAdapter);
+
         return view;
     }
 
-    private List<JsonAdvertisement> getAdvertisementData() {
-        ArrayList<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
-        JsonAdvertisement jsonEvent = new JsonAdvertisement();
-        jsonEvent.setTitle("Practo");
-        jsonEvent.setShortDescription("30 percent off on all orders");
-        ArrayList<String> images = new ArrayList<>();
-        images.add("https://d1m6qo1ndegqmm.cloudfront.net/uploadimages/coupons/11021-Practo_640x320_Banner.jpg");
-        jsonEvent.setImageUrls(images);
-
-        JsonAdvertisement jsonEvent1 = new JsonAdvertisement();
-        jsonEvent1.setTitle("Free lybrate coupon");
-        jsonEvent1.setShortDescription("Lybrate offer you a huge discount on online appointment booking.");
-        ArrayList<String> images1 = new ArrayList<>();
-        images1.add("https://7coupons.in/images/share/lybrate.jpg");
-        jsonEvent1.setImageUrls(images1);
-        ArrayList<String> tac = new ArrayList<>();
-        tac.add("Sign-up & get Rs.500 Lybrate Cash.");
-        tac.add("User gives miss call on number- +91- 9029001185 and receives a sms containing Signup Link.");
-        tac.add("User Sign-up on website and goes to My Account.");
-        tac.add("User clicks on link and goes to coupon redemption page to receive Lybrate cash(exclusive code shared above).");
-        tac.add("User Redeems the Lybrate cash either on Doctor consultation or product or service.");
-        tac.add("Offer valid Pan India.");
-        jsonEvent1.setTermsAndConditions(tac);
-        jsonEvent.setTermsAndConditions(tac);
-
-        JsonAdvertisement jsonEvent2 = new JsonAdvertisement();
-        jsonEvent2.setTitle("Free Health Checkup");
-        jsonEvent2.setShortDescription("We are inviting you for free body checkup at MGM Belapur @ 10 am Tomorrow");
-        jsonEvent2.setImageUrls(new ArrayList<String>());
-        jsonEvent2.setTermsAndConditions(tac);
-
-        jsonAdvertisements.add(jsonEvent1);
-        jsonAdvertisements.add(jsonEvent);
-        jsonAdvertisements.add(jsonEvent2);
-        return jsonAdvertisements;
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -286,6 +253,13 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
             FeedApiCall feedApiCall = new FeedApiCall(this);
             feedApiCall.activeFeed(UserUtils.getDeviceId());
             pb_feed.setVisibility(View.VISIBLE);
+
+            AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
+            advertisementApiCalls.setAdvertisementPresenter(this);
+            advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId());
+            pb_events.setVisibility(View.VISIBLE);
+
+
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -577,6 +551,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         pb_health_care.setVisibility(View.GONE);
         pb_near.setVisibility(View.GONE);
         pb_feed.setVisibility(View.GONE);
+        pb_events.setVisibility(View.GONE);
     }
 
     @Override
@@ -761,6 +736,18 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
             tv_feed_view_all.setVisibility(jsonFeedList.getJsonFeeds().size() == 0 ? View.GONE : View.VISIBLE);
         }
         pb_feed.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void advertisementResponse(JsonAdvertisementList jsonAdvertisementList) {
+        if (null != jsonAdvertisementList && jsonAdvertisementList.getJsonAdvertisements().size() > 0) {
+            jsonAdvertisements = jsonAdvertisementList.getJsonAdvertisements();
+            EventsAdapter eventsAdapter = new EventsAdapter(jsonAdvertisements, this);
+            rv_events.setAdapter(eventsAdapter);
+            tv_events_view_all.setVisibility(jsonAdvertisementList.getJsonAdvertisements().size() == 0 ? View.GONE : View.VISIBLE);
+        }
+        pb_events.setVisibility(View.GONE);
     }
 
     @Override
