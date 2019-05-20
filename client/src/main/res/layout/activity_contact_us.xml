@@ -58,8 +58,9 @@
                 android:textAllCaps="true"
                 android:textColor="@color/btn_color"
                 android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="bold"
-                android:background="@drawable/grey_gradient"/>
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:background="@drawable/btn_bg_inactive"/>
 
     </RelativeLayout>
 

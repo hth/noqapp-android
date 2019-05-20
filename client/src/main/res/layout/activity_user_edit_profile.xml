@@ -205,7 +205,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/grey_gradient"
+                        android:background="@drawable/btn_bg_inactive"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:gravity="center"

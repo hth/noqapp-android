@@ -1,5 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.RegisterApiCall;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.utils.CommonHelper;
+
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,26 +30,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.RegisterApiCall;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.body.Registration;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.utils.CommonHelper;
+import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import androidx.core.content.ContextCompat;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
     private final String TAG = RegistrationActivity.class.getSimpleName();
@@ -240,7 +239,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
 
     private boolean validate() {
-        btnRegistration.setBackgroundResource(R.drawable.grey_gradient);
+        btnRegistration.setBackgroundResource(R.drawable.btn_bg_inactive);
         btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
         boolean isValid = true;
         edt_Name.setError(null);
