@@ -5,6 +5,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
@@ -229,9 +230,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                         context.startActivity(intent);
                     }
                 } else {
-                    Intent in = new Intent(context, BookAppointmentActivity.class);
-                    in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
-                    context.startActivity(in);
+                    if (UserUtils.isLogin()) {
+                        Intent in = new Intent(context, BookAppointmentActivity.class);
+                        in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
+                        context.startActivity(in);
+                    } else {
+                        Toast.makeText(context, "Please login to book an appointment", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

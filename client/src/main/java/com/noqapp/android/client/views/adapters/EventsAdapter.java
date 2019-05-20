@@ -51,7 +51,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             params.rightMargin = 20;
         }
         JsonAdvertisement item = dataSet.get(listPosition);
-        if (null == item.getImageUrls() || item.getImageUrls().size()==0) {
+        if (null == item.getImageUrls() || item.getImageUrls().size() == 0) {
             holder.tv_title.setTextColor(Color.WHITE);
             holder.tv_subtitle.setTextColor(Color.WHITE);
             holder.iv_bg.setBackgroundColor(AppUtilities.generateRandomColor());
@@ -60,10 +60,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             holder.tv_title.setTextColor(Color.TRANSPARENT);
             holder.tv_subtitle.setTextColor(Color.TRANSPARENT);
         }
-        holder.tv_tac.setShadowLayer(30, 2, 2,   Color.WHITE);
-        if(item.getTermsAndConditions().size() == 0){
+        holder.tv_tac.setShadowLayer(30, 2, 2, Color.WHITE);
+        if (item.getTermsAndConditions().size() == 0) {
             holder.tv_tac.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.tv_tac.setVisibility(View.VISIBLE);
         }
         holder.tv_title.setText(item.getTitle());
@@ -87,7 +87,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_title, tv_subtitle,tv_tac;
+        private TextView tv_title, tv_subtitle, tv_tac;
         private ImageView iv_bg;
         private CardView card_view;
 

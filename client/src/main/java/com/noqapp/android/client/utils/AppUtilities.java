@@ -596,7 +596,12 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static int generateRandomColor() {
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        String []colors = new String[]{"#90C978","#AFD5AA","#83C6DD","#5DB1D1","#8DA290",
+        "#BEC7B4","#769ECB","#9DBAD5","#C8D6B9","#8FC1A9","#7CAA98","#58949C","#ECE6D2",
+                "#DF9881","#D4B59D","#CE9C6F","#D3EEFF","#836853","#988270","#4F9EC4","#3A506B",
+                "#606E79","#804040","#AF6E4D","#567192"};
+
+        int rnd = new Random().nextInt(colors.length);
+        return Color.parseColor(colors[rnd]);
     }
 }

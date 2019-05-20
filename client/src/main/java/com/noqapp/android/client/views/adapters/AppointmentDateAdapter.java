@@ -1,20 +1,18 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.pojos.AppointmentModel;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.pojos.AppointmentModel;
-
-import java.util.List;
-
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDateAdapter.MyViewHolder> {
     private final OnItemClickListener listener;
@@ -50,12 +48,13 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
         holder.tv_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (null != listener)
-//                    listener.onEventItemClick(dataSet.get(listPosition), v, listPosition);
-                if (item.isBooked()) {
-                    // Do nothing
-                } else {
-                    Toast.makeText(context, "Book your appointment", Toast.LENGTH_SHORT).show();
+                if (null != listener) {
+                    if (item.isBooked()) {
+                        // Do nothing
+                    } else {
+                        //Toast.makeText(context, "Book your appointment", Toast.LENGTH_SHORT).show();
+                        listener.onAppointmentSelected(dataSet.get(listPosition), v, listPosition);
+                    }
                 }
             }
         });
@@ -67,7 +66,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     }
 
     public interface OnItemClickListener {
-        void onEventItemClick(AppointmentModel item, View view, int pos);
+        void onAppointmentSelected(AppointmentModel item, View view, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

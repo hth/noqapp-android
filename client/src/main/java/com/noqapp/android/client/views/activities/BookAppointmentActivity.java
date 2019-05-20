@@ -1,14 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
-
-import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
-import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -20,7 +11,24 @@ import com.noqapp.android.client.views.pojos.AppointmentModel;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.Formatter;
 
+import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
+import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
+
 import org.joda.time.DateTime;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,16 +38,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class BookAppointmentActivity extends BaseActivity implements DatePickerListener, AppointmentDateAdapter.OnItemClickListener {
     private Spinner sp_name_list;
+    private TextView tv_date_time;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
+    private DateTime dateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         HorizontalPicker picker = findViewById(R.id.datePicker);
         rv_available_date = findViewById(R.id.rv_available_date);
         sp_name_list = findViewById(R.id.sp_name_list);
+        tv_date_time = findViewById(R.id.tv_date_time);
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
         profileList.add(0, new JsonProfile().setName("Select Patient"));
@@ -72,10 +77,13 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         btn_book_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tv_date_time.setError(null);
                 sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
                 if (sp_name_list.getSelectedItemPosition() == 0) {
                     Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
                     sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
+                } else if (TextUtils.isEmpty(tv_date_time.getText().toString())) {
+                    Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
                 } else {
                     // Process
                 }
@@ -86,17 +94,19 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     @Override
     public void onDateSelected(@NonNull final DateTime dateSelected) {
         Log.i("HorizontalPicker", "Selected date is " + dateSelected.getDayOfWeek());
+        dateTime = dateSelected;
         int dayOfWeek = dateSelected.getDayOfWeek();
         if (dayOfWeek == 0) {
             dayOfWeek = 7;
         }
-        StoreHourElastic storeHourElastic = getStoreHourElastic (storeHourElastics,dayOfWeek);
+        StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
         setAppointmentSlots(storeHourElastic);
     }
 
     @Override
-    public void onEventItemClick(AppointmentModel item, View view, int pos) {
-        //
+    public void onAppointmentSelected(AppointmentModel item, View view, int pos) {
+        if(null != dateTime)
+        tv_date_time.setText(item.getTime());
     }
 
     private StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList, int day) {
@@ -110,7 +120,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         return null;
     }
 
-    private void setAppointmentSlots(StoreHourElastic storeHourElastic){
+    private void setAppointmentSlots(StoreHourElastic storeHourElastic) {
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getEndHour());
