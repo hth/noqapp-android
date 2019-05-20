@@ -36,6 +36,7 @@ import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
+import com.noqapp.android.client.views.activities.ImageViewerActivity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -751,10 +752,20 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     }
 
     @Override
-    public void onEventItemClick(JsonAdvertisement item, View view, int pos) {
-        Intent in = new Intent(getActivity(), EventsDetailActivity.class);
-        in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
-        startActivity(in);
+    public void onEventItemClick(JsonAdvertisement item) {
+        switch (item.getAdvertisementViewerType()) {
+            case JBA: {
+                Intent in = new Intent(getActivity(), ImageViewerActivity.class);
+                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(item));
+                startActivity(in);
+                break;
+            }
+            default: {
+                Intent in = new Intent(getActivity(), EventsDetailActivity.class);
+                in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
+                startActivity(in);
+            }
+        }
     }
 
     private static class QueueHandler extends Handler {

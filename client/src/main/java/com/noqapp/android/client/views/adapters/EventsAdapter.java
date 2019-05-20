@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.common.beans.JsonAdvertisement;
@@ -57,8 +56,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             holder.tv_subtitle.setTextColor(Color.WHITE);
             holder.iv_bg.setBackgroundColor(AppUtilities.generateRandomColor());
         } else {
-            Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + item.getAdvertisementId()
-                    + "/" + item.getImageUrls().get(0)).into(holder.iv_bg);
+            Picasso.get().load(AppUtilities.getImageUrls(item)).into(holder.iv_bg);
             holder.tv_title.setTextColor(Color.TRANSPARENT);
             holder.tv_subtitle.setTextColor(Color.TRANSPARENT);
         }
@@ -68,7 +66,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             @Override
             public void onClick(View v) {
                 if (null != listener)
-                    listener.onEventItemClick(dataSet.get(listPosition), v, listPosition);
+                    listener.onEventItemClick(dataSet.get(listPosition));
             }
         });
     }
@@ -79,7 +77,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     }
 
     public interface OnItemClickListener {
-        void onEventItemClick(JsonAdvertisement item, View view, int pos);
+        void onEventItemClick(JsonAdvertisement item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

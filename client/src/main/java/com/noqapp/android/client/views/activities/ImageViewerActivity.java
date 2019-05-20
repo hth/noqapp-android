@@ -1,15 +1,16 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.views.customviews.TouchImageView;
+
+import com.squareup.picasso.Picasso;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.customviews.TouchImageView;
-import com.squareup.picasso.Picasso;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 
 public class ImageViewerActivity extends AppCompatActivity {
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,11 @@ public class ImageViewerActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_image_viewer);
         TouchImageView im_slider = findViewById(R.id.im_slider);
-        Picasso.get()
-                .load("https://noqapp.com/imgs/appmages/garbhasanskar-ssd-march-2019.png")
-                .into(im_slider);
+
+        if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
+            url = getIntent().getStringExtra(IBConstant.KEY_URL);
+        }
+        Picasso.get().load(url).into(im_slider);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -8,6 +8,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -423,6 +424,13 @@ public class AppUtilities extends CommonHelper {
         }
         return location;
     }
+
+    public static String getImageUrls(JsonAdvertisement jsonAdvertisement) {
+        return BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + jsonAdvertisement.getAdvertisementId()
+                + "/" + jsonAdvertisement.getImageUrls().get(0);
+    }
+
+
 
     public static void exportDatabase(Context context) {
         try {

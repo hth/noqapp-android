@@ -1,7 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 
@@ -28,8 +28,7 @@ public class EventsDetailActivity extends BaseActivity {
             if (null == jsonAdvertisement.getImageUrls() || jsonAdvertisement.getImageUrls().size()==0) {
                 Picasso.get().load(R.drawable.noqbanner).into(iv_event);
             } else {
-                Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + jsonAdvertisement.getAdvertisementId()
-                        + "/" + jsonAdvertisement.getImageUrls().get(0)).into(iv_event);
+                Picasso.get().load(AppUtilities.getImageUrls(jsonAdvertisement)).into(iv_event);
             }
             TextView tv_sub_title = findViewById(R.id.tv_sub_title);
             TextView tv_title = findViewById(R.id.tv_title);

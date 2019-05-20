@@ -1,19 +1,18 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.views.adapters.EventsAdapter;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 
-import java.util.ArrayList;
-
+import android.content.Intent;
+import android.os.Bundle;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnItemClickListener {
 
@@ -30,14 +29,25 @@ public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnI
         ArrayList<JsonAdvertisement> listData = (ArrayList<JsonAdvertisement>) getIntent().getExtras().getSerializable("list");
         if (null == listData)
             listData = new ArrayList<>();
-        EventsAdapter eventsAdapter = new EventsAdapter(listData,  this,true);
+        EventsAdapter eventsAdapter = new EventsAdapter(listData, this, true);
         rv_feed.setAdapter(eventsAdapter);
     }
 
     @Override
-    public void onEventItemClick(JsonAdvertisement item, View view, int pos) {
-        Intent in = new Intent(this, EventsDetailActivity.class);
-        in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
-        startActivity(in);
+    public void onEventItemClick(JsonAdvertisement item ) {
+        switch (item.getAdvertisementViewerType()) {
+            case JBA: {
+                Intent in = new Intent(this, ImageViewerActivity.class);
+                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(item));
+                startActivity(in);
+                break;
+            }
+            default: {
+                Intent in = new Intent(this, EventsDetailActivity.class);
+                in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
+                startActivity(in);
+            }
+        }
+
     }
 }
