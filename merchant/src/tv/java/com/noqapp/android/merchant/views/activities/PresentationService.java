@@ -139,48 +139,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 JsonAdvertisement jsonAdvertisement = jsonAdvertisementList.getJsonAdvertisements().get(i);
                 if (null != jsonAdvertisement) {
                     Log.e("data", jsonAdvertisement.toString());
-                    if (jsonAdvertisement.isEndDateInitialized()) { // check expire Ad's
-                        try {
-                            Date current = new SimpleDateFormat(AppUtils.ISO8601_FMT, Locale.getDefault()).parse(jsonAdvertisement.getEndDate());
-                            int date_diff = new Date().compareTo(current);
-
-                            if (date_diff < 0) {
-                                // do process
-                                Log.e("Date validate - true", jsonAdvertisement.getEndDate());
-                                switch (jsonAdvertisement.getAdvertisementType()) {
-                                    case MA:
-                                    case GI:
-                                        if (null != jsonAdvertisement.getImageUrls() && jsonAdvertisement.getImageUrls().size() > 0) {
-                                            image_list_size = image_list_size + jsonAdvertisement.getImageUrls().size();
-                                            if (null == jsonAdvertisement_images) {
-                                                jsonAdvertisement_images = new JsonAdvertisement();
-                                                jsonAdvertisement_images.getImageUrls().addAll(jsonAdvertisement.getImageUrls());
-                                                urlList.addAll(jsonAdvertisement.getImageUrls());
-                                            } else {
-                                                jsonAdvertisement_images.getImageUrls().addAll(jsonAdvertisement.getImageUrls());
-                                                urlList.addAll(jsonAdvertisement.getImageUrls());
-                                            }
-                                            Log.e("Advertisement: ", "Image URL called");
-                                        }
-                                        break;
-                                    case PP:
-                                        if (null != jsonAdvertisement.getJsonProfessionalProfileTV()) {
-                                            profile_size = 1;
-                                            jsonAdvertisement_profile = jsonAdvertisement;
-                                            Log.e("Advertisement: ", "Profile called");
-                                        }
-                                        break;
-                                    default:
-                                }
-                            } else {
-                                // error
-                                Log.e("Date validate - false", jsonAdvertisement.getEndDate());
-                                //break;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
                         switch (jsonAdvertisement.getAdvertisementType()) {
                             case MA:
                             case GI:
@@ -206,7 +164,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                 break;
                             default:
                         }
-                    }
+
                 }
             }
         }
