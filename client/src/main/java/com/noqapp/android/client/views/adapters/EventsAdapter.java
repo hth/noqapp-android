@@ -1,23 +1,23 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.common.beans.JsonAdvertisement;
+
+import com.squareup.picasso.Picasso;
+
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.common.beans.JsonAdvertisement;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHolder> {
     private final OnItemClickListener listener;
@@ -52,12 +52,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             params.rightMargin = 20;
         }
         JsonAdvertisement item = dataSet.get(listPosition);
-        if (item.getImageUrls().size()==0) {
+        if (null == item.getImageUrls() || item.getImageUrls().size()==0) {
             holder.tv_title.setTextColor(Color.WHITE);
             holder.tv_subtitle.setTextColor(Color.WHITE);
             holder.iv_bg.setBackgroundColor(AppUtilities.generateRandomColor());
         } else {
-            Picasso.get().load(item.getImageUrls().get(0)).into(holder.iv_bg);
+            Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + item.getAdvertisementId()
+                    + "/" + item.getImageUrls().get(0)).into(holder.iv_bg);
             holder.tv_title.setTextColor(Color.TRANSPARENT);
             holder.tv_subtitle.setTextColor(Color.TRANSPARENT);
         }

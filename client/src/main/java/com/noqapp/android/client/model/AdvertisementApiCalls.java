@@ -15,7 +15,7 @@ import retrofit2.Response;
 public class AdvertisementApiCalls {
     private static final String TAG = AdvertisementApiCalls.class.getSimpleName();
 
-    protected static final AdvertisementMobileApiUrls advertisementMobileApiUrls;
+    private static final AdvertisementMobileApiUrls advertisementMobileApiUrls;
     private AdvertisementPresenter advertisementPresenter;
 
     public void setAdvertisementPresenter(AdvertisementPresenter advertisementPresenter) {
