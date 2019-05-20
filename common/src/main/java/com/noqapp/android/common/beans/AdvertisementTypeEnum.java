@@ -6,8 +6,7 @@ package com.noqapp.android.common.beans;
  */
 public enum AdvertisementTypeEnum {
     PP("PP", "Professional Profile"),
-    MV("MV", "Merchant Vigyaapan"),
-    DV("DV", "Department of Vigyaapan"),
+    MA("MA", "Advertisement"),
     GI("GI", "General Information");
 
     private final String description;
