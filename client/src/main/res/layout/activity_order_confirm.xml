@@ -334,6 +334,8 @@
                                 android:layout_margin="10dp"
                                 android:paddingRight="10dp"
                                 android:background="@drawable/btn_bg_enable"
+                                android:foreground="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
                                 android:drawableRight="@drawable/order_arrow"
                                 android:text="Pay Now"
                                 android:visibility="gone"
@@ -377,7 +379,9 @@
                     android:textAllCaps="true"
                     android:textColor="@color/btn_color"
                     android:textSize="@dimen/text_size_sixteen"
-                    android:background="@drawable/btn_bg_inactive"/>
+                    android:background="@drawable/btn_bg_inactive"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"/>
 
 
         </LinearLayout>

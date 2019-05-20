@@ -1,108 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#f2f2f2"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:background="#f2f2f2"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    style="@style/style_invite_tv"
-                    android:textColor="@color/colorActionbar"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/tv_details"
-                    style="@style/style_invite_tv"
-                    android:textColor="@color/colorAddress"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_how_it_works"
-                    style="@style/style_invite_tv"
-                    android:text="@string/how_it_works"
-                    android:textColor="@color/colorActionbar"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/invite_code" />
-
-                <TextView
-                    style="@style/style_invite_tv"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/your_invite_code"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-
-                <RelativeLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/square_white_bg_drawable"
-                    android:padding="5dp">
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+
+                <TextView
+                        android:id="@+id/tv_title"
+                        style="@style/style_invite_tv"
+                        android:textColor="@color/colorActionbar"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:id="@+id/tv_details"
+                        style="@style/style_invite_tv"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="16sp"/>
+
+                <TextView
+                        android:id="@+id/tv_how_it_works"
+                        style="@style/style_invite_tv"
+                        android:text="@string/how_it_works"
+                        android:textColor="@color/colorActionbar"
+                        android:textSize="16sp"/>
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/invite_code"/>
+
+                <TextView
+                        style="@style/style_invite_tv"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/your_invite_code"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"/>
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/square_white_bg_drawable"
+                        android:padding="5dp">
 
                     <TextView
-                        android:id="@+id/tv_invite_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:textSize="18sp" />
+                            android:id="@+id/tv_invite_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:textSize="18sp"/>
 
                     <EditText
-                        android:id="@+id/tv_copy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:inputType="none"
-                        android:text="@string/copy"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:textColor="@color/colorActionbar"
-                        android:textSize="15sp" />
+                            android:id="@+id/tv_copy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:inputType="none"
+                            android:text="@string/copy"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:textColor="@color/colorActionbar"
+                            android:textSize="15sp"/>
                 </RelativeLayout>
 
 
                 <Button
-                    android:id="@+id/btn_send_invite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/btn_bg_enable"
-                    android:text="@string/send_invite"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="15sp" />
+                        android:id="@+id/btn_send_invite"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/btn_bg_enable"
+                        android:gravity="center"
+                        android:text="@string/send_invite"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>

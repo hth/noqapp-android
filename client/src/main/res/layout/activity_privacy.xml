@@ -145,26 +145,32 @@
                         android:id="@+id/btn_privacy"
                         android:layout_width="0dp"
                         android:layout_weight=".5"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_margin="10dp"
                         android:gravity="center"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
                         android:text="Privacy In Detail"
                         android:textAllCaps="false"
                         android:background="@drawable/btn_bg_enable"
                         android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         android:textSize="@dimen/text_size_sixteen"/>
 
                 <Button
                         android:id="@+id/btn_term_condition"
                         android:layout_width="0dp"
                         android:layout_weight=".5"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_margin="10dp"
                         android:gravity="center"
                         android:text="Terms &amp; Conditions"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
                         android:background="@drawable/btn_bg_enable"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
+                        android:textStyle="bold"
                         android:textSize="@dimen/text_size_sixteen"/>
 
             </LinearLayout>

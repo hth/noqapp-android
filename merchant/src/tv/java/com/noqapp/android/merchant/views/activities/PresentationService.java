@@ -148,8 +148,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                 // do process
                                 Log.e("Date validate - true", jsonAdvertisement.getEndDate());
                                 switch (jsonAdvertisement.getAdvertisementType()) {
-                                    case MV:
-                                    case DV:
+                                    case MA:
                                     case GI:
                                         if (null != jsonAdvertisement.getImageUrls() && jsonAdvertisement.getImageUrls().size() > 0) {
                                             image_list_size = image_list_size + jsonAdvertisement.getImageUrls().size();
@@ -183,8 +182,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         }
                     } else {
                         switch (jsonAdvertisement.getAdvertisementType()) {
-                            case MV:
-                            case DV:
+                            case MA:
                             case GI:
                                 if (null != jsonAdvertisement.getImageUrls() && jsonAdvertisement.getImageUrls().size() > 0) {
                                     image_list_size = image_list_size + jsonAdvertisement.getImageUrls().size();

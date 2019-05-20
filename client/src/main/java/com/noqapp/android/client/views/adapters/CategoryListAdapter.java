@@ -1,17 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -23,11 +11,23 @@ import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
-import java.util.List;
-
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
     private final Context context;
@@ -257,7 +257,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_store_timing;
         private TextView tv_time_label;
         private TextView tv_status;
-        private TextView tv_join;
+        private Button tv_join;
         private TextView tv_consult_fees;
         private TextView tv_consult_fees_header;
         private ImageView iv_main;
