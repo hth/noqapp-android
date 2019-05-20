@@ -242,14 +242,14 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         tac.add("User clicks on link and goes to coupon redemption page to receive Lybrate cash(exclusive code shared above).");
         tac.add("User Redeems the Lybrate cash either on Doctor consultation or product or service.");
         tac.add("Offer valid Pan India.");
-        jsonEvent1.setTermAndConditions(tac);
-        jsonEvent.setTermAndConditions(tac);
+        jsonEvent1.setTermsAndConditions(tac);
+        jsonEvent.setTermsAndConditions(tac);
 
         JsonAdvertisement jsonEvent2 = new JsonAdvertisement();
         jsonEvent2.setTitle("Free Health Checkup");
         jsonEvent2.setShortDescription("We are inviting you for free body checkup at MGM Belapur @ 10 am Tomorrow");
         jsonEvent2.setImageUrls(new ArrayList<String>());
-        jsonEvent2.setTermAndConditions(tac);
+        jsonEvent2.setTermsAndConditions(tac);
 
         jsonAdvertisements.add(jsonEvent1);
         jsonAdvertisements.add(jsonEvent);

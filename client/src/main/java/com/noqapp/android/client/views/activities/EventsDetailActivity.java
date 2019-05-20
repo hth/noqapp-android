@@ -34,8 +34,8 @@ public class EventsDetailActivity extends BaseActivity {
             tv_sub_title.setText(jsonEvent.getShortDescription());
             tv_title.setText(jsonEvent.getTitle());
             String term = "";
-            for (int i = 0; i < jsonEvent.getTermAndConditions().size(); i++) {
-                term += getString(R.string.circle_bullet) + " "+jsonEvent.getTermAndConditions().get(i) + " \n";
+            for (int i = 0; i < jsonEvent.getTermsAndConditions().size(); i++) {
+                term += getString(R.string.circle_bullet) + " "+jsonEvent.getTermsAndConditions().get(i) + " \n";
             }
             tv_tac.setText(term);
         }
