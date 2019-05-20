@@ -59,9 +59,10 @@ public class JsonAdvertisementList extends AbstractDomain {
 
     @Override
     public String toString() {
-        return "JsonAdvertisementList{" +
-                "jsonAdvertisements=" + jsonAdvertisements +
-                ", error=" + error +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonAdvertisementList{");
+        sb.append("jsonAdvertisements=").append(jsonAdvertisements);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

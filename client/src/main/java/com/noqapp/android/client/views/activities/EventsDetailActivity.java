@@ -32,8 +32,10 @@ public class EventsDetailActivity extends BaseActivity {
             }
             TextView tv_sub_title = findViewById(R.id.tv_sub_title);
             TextView tv_title = findViewById(R.id.tv_title);
+            TextView tv_store_name = findViewById(R.id.tv_store_name);
             TextView tv_tac = findViewById(R.id.tv_tac);
             tv_sub_title.setText(jsonAdvertisement.getShortDescription());
+            tv_store_name.setText(jsonAdvertisement.getBusinessName());
             tv_title.setText(jsonAdvertisement.getTitle());
             String term = "";
             for (int i = 0; i < jsonAdvertisement.getTermsAndConditions().size(); i++) {

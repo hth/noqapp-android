@@ -151,11 +151,18 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonAdvertisement{" +
-                "advertisementId='" + advertisementId + '\'' +
-                ", jsonProfessionalProfileTV=" + jsonProfessionalProfileTV +
-                ", imageUrls=" + imageUrls +
-                ", error=" + error +
-                '}';
+        final StringBuffer sb = new StringBuffer("JsonAdvertisement{");
+        sb.append("advertisementId='").append(advertisementId).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", shortDescription='").append(shortDescription).append('\'');
+        sb.append(", jsonProfessionalProfileTV=").append(jsonProfessionalProfileTV);
+        sb.append(", imageUrls=").append(imageUrls);
+        sb.append(", termsAndConditions=").append(termsAndConditions);
+        sb.append(", advertisementType=").append(advertisementType);
+        sb.append(", businessName='").append(businessName).append('\'');
+        sb.append(", advertisementViewerType=").append(advertisementViewerType);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }
