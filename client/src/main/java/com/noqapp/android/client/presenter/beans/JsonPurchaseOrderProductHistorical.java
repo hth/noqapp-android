@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
@@ -31,7 +32,7 @@ import java.io.Serializable;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonPurchaseOrderProductHistorical extends AbstractDomain implements Serializable{
+public class JsonPurchaseOrderProductHistorical extends AbstractDomain implements Serializable {
 
     @JsonProperty("pi")
     private String productId;
@@ -52,7 +53,7 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain implement
     @JsonProperty("uv")
     private int unitValue;
 
-    @JsonProperty ("um")
+    @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
     /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
@@ -202,5 +203,11 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain implement
 
     public void setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+    }
+
+
+    public JsonStoreProduct getJsonStoreProduct() {
+        return new JsonStoreProduct().setProductPrice(productPrice).setUnitValue(unitValue).
+                setUnitOfMeasurement(unitOfMeasurement).setPackageSize(packageSize).setProductType(productType);
     }
 }

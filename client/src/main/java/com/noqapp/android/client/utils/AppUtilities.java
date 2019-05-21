@@ -8,7 +8,6 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -169,27 +168,6 @@ public class AppUtilities extends CommonHelper {
         for (JsonQueue jsonQueue : jsonQueues) {
             System.out.println(jsonQueue.getDisplayName());
         }
-    }
-
-    /**
-     * Calculate distance between two points in latitude and longitude. Uses Haversine
-     * method as its base.
-     * <p>
-     * lat1, lng1 Start point lat2, lng2
-     *
-     * @returns Distance in KMeters
-     */
-    public static String calculateDistanceInKm(float lat1, float lng1, float lat2, float lng2) {
-        double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        float dist = (float) (earthRadius * c);
-
-        return String.valueOf(calculateDistance(lat1, lng1, lat2, lng2)) + " km";// distance in km
     }
 
     public static double calculateDistance(float lat1, float lng1, float lat2, float lng2) {
@@ -429,29 +407,6 @@ public class AppUtilities extends CommonHelper {
         return location;
     }
 
-    public static void exportDatabase(Context context) {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if (sd.canWrite()) {
-                String currentDBPath = "/data/" + context.getPackageName() + "/databases/" + "noqueue.db" + "";
-                String backupDBPath = System.currentTimeMillis() + "-noQueue.db";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public String formatWeeklyTimings(Context context, List<JsonHour> jsonHoursList) {
         String output = "";

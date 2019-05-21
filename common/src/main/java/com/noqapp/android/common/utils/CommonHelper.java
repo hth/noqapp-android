@@ -196,10 +196,16 @@ public class CommonHelper {
     }
 
     public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct) {
-        if (null != jsonStoreProduct) {
-            return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getUnitValue() + " " + jsonStoreProduct.getUnitOfMeasurement().getDescription();
-        } else {
-            return "5/test"; // Return blank after testing
+        try {
+            if (null != jsonStoreProduct) {
+                Log.e("jsonStoreProduct", jsonStoreProduct.toString());
+                return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getUnitValue() + " " + jsonStoreProduct.getUnitOfMeasurement().getDescription();
+            } else {
+                return "";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
         }
     }
 

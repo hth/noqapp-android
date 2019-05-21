@@ -63,9 +63,11 @@ public class OrderItemAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        recordHolder.tv_title.setText(jsonPurchaseOrderProductList.get(position).getProductName()+ " " + AppUtils.getPriceWithUnits(null) + " x " + jsonPurchaseOrderProductList.get(position).getProductQuantity());
-        recordHolder.tv_amount.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProductList.get(position).getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProductList.get(position).getProductQuantity())).toString()));
-        if (jsonPurchaseOrderProductList.get(position).getProductPrice() == 0) {
+        JsonPurchaseOrderProduct jpop = jsonPurchaseOrderProductList.get(position);
+        
+        recordHolder.tv_title.setText(jpop.getProductName()+ " " + AppUtils.getPriceWithUnits(jpop.getJsonStoreProduct()) + " x " + jpop.getProductQuantity());
+        recordHolder.tv_amount.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()));
+        if (jpop.getProductPrice() == 0) {
             recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit, 0);
         } else {
             recordHolder.tv_amount.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -74,7 +76,7 @@ public class OrderItemAdapter extends BaseAdapter {
         recordHolder.tv_amount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (jsonPurchaseOrderProductList.get(position).getProductPrice() == 0 && isClickEnable) {
+                if (jpop.getProductPrice() == 0 && isClickEnable) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     LayoutInflater inflater = LayoutInflater.from(context);
                     builder.setTitle(null);
@@ -102,11 +104,11 @@ public class OrderItemAdapter extends BaseAdapter {
                             } else {
                                 InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
-                                jsonPurchaseOrderProductList.get(position).setProductPrice(Integer.parseInt(edt_prod_price.getText().toString())*100);
+                                jpop.setProductPrice(Integer.parseInt(edt_prod_price.getText().toString())*100);
                                 //recordHolder.tv_amount.setText(currencySymbol + " "+String.valueOf(menuSelectData.get(pos).getPrice()));
                                 //tv_cost.setText(currencySymbol + " "+ String.valueOf(calculateTotalPrice()));
                                 notifyDataSetChanged();
-                                orderDetailActivity.updateProductPriceList(jsonPurchaseOrderProductList.get(position),position);
+                                orderDetailActivity.updateProductPriceList(jpop,position);
                                 mAlertDialog.dismiss();
                             }
                         }

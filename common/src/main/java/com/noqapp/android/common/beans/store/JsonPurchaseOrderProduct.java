@@ -1,13 +1,12 @@
 package com.noqapp.android.common.beans.store;
 
-import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.model.types.order.ProductTypeEnum;
-import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
 
 import java.io.Serializable;
 
@@ -49,7 +48,7 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
     @JsonProperty("uv")
     private int unitValue;
 
-    @JsonProperty ("um")
+    @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
     /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
@@ -150,5 +149,10 @@ public class JsonPurchaseOrderProduct extends AbstractDomain implements Serializ
         sb.append(", productQuantity=").append(productQuantity);
         sb.append('}');
         return sb.toString();
+    }
+
+    public JsonStoreProduct getJsonStoreProduct() {
+        return new JsonStoreProduct().setProductPrice(productPrice).setUnitValue(unitValue).
+                setUnitOfMeasurement(unitOfMeasurement).setPackageSize(packageSize).setProductType(productType);
     }
 }
