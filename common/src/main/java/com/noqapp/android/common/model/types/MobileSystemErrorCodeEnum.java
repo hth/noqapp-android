@@ -76,6 +76,7 @@ public enum MobileSystemErrorCodeEnum {
 
     /** Transaction. */
     TRANSACTION_GATEWAY_DEFAULT("4500", ALERT),
+    SERVICE_PAYMENT_NOT_ENABLED_FOR_THIS_BUSINESS_TYPE("4501", ALERT),
 
     /** Mobile application related issue. */
     SEVERE("5000", ERROR),
