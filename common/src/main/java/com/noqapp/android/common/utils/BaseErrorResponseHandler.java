@@ -92,7 +92,7 @@ public abstract class BaseErrorResponseHandler {
                     case QUEUE_NO_SERVICE_NO_PAY:
 
                     case TRANSACTION_GATEWAY_DEFAULT:
-                    case SERVICE_PAYMENT_NOT_ENABLED_FOR_THIS_BUSINESS_TYPE:
+                    case SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE:
 
                     case SEVERE:
                     case DEVICE_DETAIL_MISSING:
