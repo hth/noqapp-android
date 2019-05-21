@@ -391,6 +391,7 @@ public class AppUtilities extends CommonHelper {
         }
         return name;
     }
+
     public static JsonProfile getJsonProfileQueueUserID(String queueUserID, List<JsonProfile> list) {
         JsonProfile name = null;
         if (!TextUtils.isEmpty(queueUserID)) {
@@ -418,19 +419,15 @@ public class AppUtilities extends CommonHelper {
             case BuildConfig.ACCREDITATION_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.ACCREDITATION_BUCKET + url;
                 break;
+            case BuildConfig.ADVERTISEMENT_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + url;
+                break;
             default:
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
         return location;
     }
-
-    public static String getImageUrls(JsonAdvertisement jsonAdvertisement) {
-        return BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + jsonAdvertisement.getAdvertisementId()
-                + "/" + jsonAdvertisement.getImageUrls().get(0);
-    }
-
-
 
     public static void exportDatabase(Context context) {
         try {
@@ -550,8 +547,7 @@ public class AppUtilities extends CommonHelper {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             Uri bitmapUri = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
                 file.getParentFile().mkdirs();
                 FileOutputStream out = new FileOutputStream(file);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -580,7 +576,7 @@ public class AppUtilities extends CommonHelper {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
     }
 
-    public static void loadProfilePic(ImageView iv_profile, String imageUrl,Context context) {
+    public static void loadProfilePic(ImageView iv_profile, String imageUrl, Context context) {
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -596,10 +592,10 @@ public class AppUtilities extends CommonHelper {
     }
 
     public static int generateRandomColor() {
-        String []colors = new String[]{"#90C978","#AFD5AA","#83C6DD","#5DB1D1","#8DA290",
-        "#BEC7B4","#769ECB","#9DBAD5","#C8D6B9","#8FC1A9","#7CAA98","#58949C","#ECE6D2",
-                "#DF9881","#D4B59D","#CE9C6F","#D3EEFF","#836853","#988270","#4F9EC4","#3A506B",
-                "#606E79","#804040","#AF6E4D","#567192"};
+        String[] colors = new String[]{
+                "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
+                "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
+                "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
 
         int rnd = new Random().nextInt(colors.length);
         return Color.parseColor(colors[rnd]);

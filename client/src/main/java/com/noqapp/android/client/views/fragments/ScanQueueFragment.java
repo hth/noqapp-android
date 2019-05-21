@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.fragments;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
 import com.noqapp.android.client.model.FeedApiCall;
@@ -756,7 +757,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         switch (item.getAdvertisementViewerType()) {
             case JBA: {
                 Intent in = new Intent(getActivity(), ImageViewerActivity.class);
-                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(item));
+                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
                 startActivity(in);
                 break;
             }

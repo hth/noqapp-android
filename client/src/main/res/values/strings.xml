@@ -148,11 +148,13 @@
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">QJoin</string>
     <string name="login_hint">Phone no. without country code</string>
-
-
+    
     <string name="bullet">\u27A3</string>
-    <string name="circle_bullet">\u2B24</string>
-
+    <string name="circle_large_bullet">\u2B24</string>
+    <string name="circle_small_bullet">\u2022</string>
+    <string name="horizontal_ellipsis">\u2026</string>
+    <string name="triangular_bullet">\u2023</string>
+    <string name="right_pointing_angle_quotation">\u203A</string>
 
     <string name="btn_playstore">Open Play Store</string>
     <string name="playstore_title">Unsupported Version</string>

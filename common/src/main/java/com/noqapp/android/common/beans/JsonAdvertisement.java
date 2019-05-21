@@ -1,6 +1,7 @@
 package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -148,6 +149,16 @@ public class JsonAdvertisement extends AbstractDomain implements Serializable {
         this.error = error;
         return this;
     }
+
+    @JsonIgnore
+    public String createAdvertisementImageURL() {
+        if (!imageUrls.isEmpty()) {
+            return advertisementId + "/" + imageUrls.get(0);
+        }
+
+        return "";
+    }
+
 
     @Override
     public String toString() {

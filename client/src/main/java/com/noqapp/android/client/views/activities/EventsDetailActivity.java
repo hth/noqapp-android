@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
@@ -25,10 +26,10 @@ public class EventsDetailActivity extends BaseActivity {
         if (null != bundle) {
             JsonAdvertisement jsonAdvertisement = (JsonAdvertisement) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA_OBJECT);
             ImageView iv_event = findViewById(R.id.iv_event);
-            if (null == jsonAdvertisement.getImageUrls() || jsonAdvertisement.getImageUrls().size()==0) {
+            if (null == jsonAdvertisement.getImageUrls() || jsonAdvertisement.getImageUrls().size() == 0) {
                 Picasso.get().load(R.drawable.noqbanner).into(iv_event);
             } else {
-                Picasso.get().load(AppUtilities.getImageUrls(jsonAdvertisement)).into(iv_event);
+                Picasso.get().load(AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, jsonAdvertisement.createAdvertisementImageURL())).into(iv_event);
             }
             TextView tv_sub_title = findViewById(R.id.tv_sub_title);
             TextView tv_title = findViewById(R.id.tv_title);
@@ -39,7 +40,7 @@ public class EventsDetailActivity extends BaseActivity {
             tv_title.setText(jsonAdvertisement.getTitle());
             String term = "";
             for (int i = 0; i < jsonAdvertisement.getTermsAndConditions().size(); i++) {
-                term += getString(R.string.circle_bullet) + " "+jsonAdvertisement.getTermsAndConditions().get(i) + " \n";
+                term += getString(R.string.triangular_bullet) + " " + jsonAdvertisement.getTermsAndConditions().get(i) + " \n";
             }
             tv_tac.setText(term);
         }

@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
@@ -38,7 +39,7 @@ public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnI
         switch (item.getAdvertisementViewerType()) {
             case JBA: {
                 Intent in = new Intent(this, ImageViewerActivity.class);
-                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(item));
+                in.putExtra(IBConstant.KEY_URL, AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL()));
                 startActivity(in);
                 break;
             }

@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.common.beans.JsonAdvertisement;
@@ -56,7 +57,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
             holder.tv_subtitle.setTextColor(Color.WHITE);
             holder.iv_bg.setBackgroundColor(AppUtilities.generateRandomColor());
         } else {
-            Picasso.get().load(AppUtilities.getImageUrls(item)).into(holder.iv_bg);
+            Picasso.get().load(AppUtilities.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, item.createAdvertisementImageURL())).into(holder.iv_bg);
             holder.tv_title.setTextColor(Color.TRANSPARENT);
             holder.tv_subtitle.setTextColor(Color.TRANSPARENT);
         }
