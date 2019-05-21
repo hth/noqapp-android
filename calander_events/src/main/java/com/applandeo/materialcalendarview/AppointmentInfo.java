@@ -1,17 +1,17 @@
 package com.applandeo.materialcalendarview;
 
 public class AppointmentInfo {
-    private String patientName;
+    private String noOfPatient;
     private String info;
     private String appointmentDate;
     private String appointmentTime;
 
-    public String getPatientName() {
-        return patientName;
+    public String getNoOfPatient() {
+        return noOfPatient;
     }
 
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
+    public void setNoOfPatient(String noOfPatient) {
+        this.noOfPatient = noOfPatient;
     }
 
     public String getInfo() {
@@ -41,7 +41,7 @@ public class AppointmentInfo {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AppointmentInfo{");
-        sb.append("patientName='").append(patientName).append('\'');
+        sb.append("noOfPatient='").append(noOfPatient).append('\'');
         sb.append(", info='").append(info).append('\'');
         sb.append(", appointmentDate='").append(appointmentDate).append('\'');
         sb.append(", appointmentTime='").append(appointmentTime).append('\'');
