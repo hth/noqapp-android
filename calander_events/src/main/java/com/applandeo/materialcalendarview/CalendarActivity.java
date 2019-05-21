@@ -1,5 +1,7 @@
 package com.applandeo.materialcalendarview;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -17,12 +19,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CalendarActivity extends AppCompatActivity {
     private FixedHeightListView fh_list_view;
+    private ProgressDialog progressDialog;
+    private CalendarView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar_activity);
-
+        initProgress();
         // List<EventDay> events = new ArrayList<>();
 
         // Calendar calendar = Calendar.getInstance();
@@ -44,7 +48,7 @@ public class CalendarActivity extends AppCompatActivity {
 //        calendar4.add(Calendar.DAY_OF_MONTH, 13);
 //        events.add(new EventDay(calendar4, DrawableUtils.getThreeDots(this)));
 
-        CalendarView calendarView = findViewById(R.id.calendarView);
+        calendarView = findViewById(R.id.calendarView);
         fh_list_view = findViewById(R.id.fh_list_view);
 
         Calendar min = Calendar.getInstance();
@@ -55,8 +59,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView.setMinimumDate(min);
         calendarView.setMaximumDate(max);
-        List<EventDay> events = getMonthWiseEvents(Calendar.getInstance().get(Calendar.MONTH));
-        calendarView.setEvents(events);
+        fetchEvents(Calendar.getInstance().get(Calendar.MONTH));
 
         // calendarView.setDisabledDays(getDisabledDays());
 
@@ -70,25 +73,16 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
-                List<EventDay> events = getMonthWiseEvents(calendarView.getCurrentPageDate().getTime().getMonth());
-                calendarView.setEvents(events);
-                EventListAdapter adapter = new EventListAdapter(CalendarActivity.this, events);
-                fh_list_view.setAdapter(adapter);
+                fetchEvents(calendarView.getCurrentPageDate().getTime().getMonth());
             }
         });
 
         calendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
-                List<EventDay> events = getMonthWiseEvents(calendarView.getCurrentPageDate().getTime().getMonth());
-                calendarView.setEvents(events);
-                EventListAdapter adapter = new EventListAdapter(CalendarActivity.this, events);
-                fh_list_view.setAdapter(adapter);
+                fetchEvents(calendarView.getCurrentPageDate().getTime().getMonth());
             }
         });
-
-        EventListAdapter adapter = new EventListAdapter(this, events);
-        fh_list_view.setAdapter(adapter);
 
     }
 
@@ -192,4 +186,55 @@ public class CalendarActivity extends AppCompatActivity {
 
     }
 
+    private void fetchEvents(int month) {
+        progressDialog.show();
+        EventListAdapter adapter = new EventListAdapter(CalendarActivity.this, new ArrayList<EventDay>());
+        fh_list_view.setAdapter(adapter);
+        FetchEvents fetchEvents = new FetchEvents(month);
+        fetchEvents.execute();
+    }
+
+    private void eventResponse(int month) {
+        List<EventDay> events = getMonthWiseEvents(month);
+        calendarView.setEvents(events);
+        EventListAdapter adapter = new EventListAdapter(CalendarActivity.this, events);
+        fh_list_view.setAdapter(adapter);
+        dismissProgress();
+    }
+
+    private class FetchEvents extends AsyncTask<String, Void, String> {
+        private int month;
+
+        public FetchEvents(int month) {
+            this.month = month;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            for (int i = 0; i < 5; i++) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                }
+            }
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            eventResponse(month);
+        }
+    }
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching appointments...");
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
 }

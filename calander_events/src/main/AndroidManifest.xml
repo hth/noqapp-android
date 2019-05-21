@@ -11,7 +11,7 @@
             android:theme="@style/AppTheme">
         <activity
                 android:name=".CalendarActivity"
-                android:label="Standard calendar">
+                android:label="Calendar Appointments">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
