@@ -2,7 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.StoreApiCall;
+import com.noqapp.android.client.model.StoreDetailApiCall;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -107,25 +107,21 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         rv_photos.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tv_rating_review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
-                    Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
-                    bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
-                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, tv_store_address.getText().toString());
-                    in.putExtras(bundle);
-                    startActivity(in);
-                }
+        tv_rating_review.setOnClickListener(v -> {
+            if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
+                Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+                bundle1.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());
+                bundle1.putString(IBConstant.KEY_STORE_ADDRESS, tv_store_address.getText().toString());
+                in.putExtras(bundle1);
+                startActivity(in);
             }
         });
         progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
         if (NetworkUtils.isConnectingToInternet(this)) {
             progressDialog.show();
-            new StoreApiCall(this).getStoreService(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
+            new StoreDetailApiCall(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -164,8 +160,8 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
     }
 
     @Override
-    public void storeResponse(JsonStore tempjsonStore) {
-        this.jsonStore = tempjsonStore;
+    public void storeResponse(JsonStore jsonStore) {
+        this.jsonStore = jsonStore;
         dismissProgress();
         switch (jsonStore.getJsonQueue().getBusinessType()) {
             case DO:
@@ -183,23 +179,14 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_toolbar_title.setText(jsonQueue.getDisplayName());
         tv_contact_no.setText(jsonQueue.getStorePhone());
         tv_address.setText(jsonQueue.getStoreAddress());
-        tv_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
-            }
-        });
-        tv_address_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString());
-            }
-        });
+        tv_address.setOnClickListener(v -> AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
+        tv_address_title.setOnClickListener(v -> AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_address.getText().toString()));
         tv_store_address.setText(AppUtilities.getStoreAddress(jsonQueue.getTown(), jsonQueue.getArea()));
         tv_store_name.setText(jsonQueue.getDisplayName());
         tv_known_for.setText(jsonQueue.getFamousFor());
-        if (TextUtils.isEmpty(jsonQueue.getFamousFor()))
+        if (TextUtils.isEmpty(jsonQueue.getFamousFor())) {
             tv_header_famous.setVisibility(View.GONE);
+        }
         List<PaymentModeEnum> temp = jsonQueue.getPaymentModes();
         ArrayList<String> payment_data = new ArrayList<>();
         for (int i = 0; i < temp.size(); i++) {
@@ -283,17 +270,17 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
         final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
         for (int l = 0; l < jsonStoreCategories.size(); l++) {
-            listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
+            listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<>());
         }
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
                     listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
-                }
+                } 
             } else {
                 //TODO(hth) when product without category else it will drop
                 if (null == listDataChild.get(defaultCategory)) {
-                    listDataChild.put(defaultCategory, new ArrayList<ChildData>());
+                    listDataChild.put(defaultCategory, new ArrayList<>());
                 }
                 if (jsonStoreProducts.get(k).isActive()) {
                     listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));

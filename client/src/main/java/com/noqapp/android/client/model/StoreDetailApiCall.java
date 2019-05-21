@@ -19,12 +19,12 @@ import retrofit2.Response;
  * User: omkar
  * Date: 3/26/17 11:49 PM
  */
-public class StoreApiCall {
-    private final String TAG = StoreApiCall.class.getSimpleName();
+public class StoreDetailApiCall {
+    private final String TAG = StoreDetailApiCall.class.getSimpleName();
     private static final StoreDetailApiUrls storeDetailApiUrls;
     private StorePresenter storePresenter;
 
-    public StoreApiCall(StorePresenter storePresenter) {
+    public StoreDetailApiCall(StorePresenter storePresenter) {
         this.storePresenter = storePresenter;
     }
 
@@ -38,8 +38,8 @@ public class StoreApiCall {
      * @param did
      * @param qrCode
      */
-    public void getStoreService(String did, String qrCode) {
-        storeDetailApiUrls.getStoreService(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
+    public void getStoreDetail(String did, String qrCode) {
+        storeDetailApiUrls.getStoreDetail(did, Constants.DEVICE_TYPE, qrCode).enqueue(new Callback<JsonStore>() {
             @Override
             public void onResponse(@NonNull Call<JsonStore> call, @NonNull Response<JsonStore> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
