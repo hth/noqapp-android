@@ -214,6 +214,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
         }
@@ -255,6 +256,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
         }
@@ -293,6 +295,7 @@ android {
             buildConfigField STRING, "PROFILE_BUCKET", profileImageLocation
             buildConfigField STRING, "SERVICE_BUCKET", serviceImageLocation
             buildConfigField STRING, "MEDICAL_BUCKET", medicalImageLocation
+            buildConfigField STRING, "ADVERTISEMENT_BUCKET", advertisementImageLocation
             buildConfigField STRING, "ACCREDITATION_BUCKET", accreditationImageLocation
             buildConfigField STRING, "MEDICAL_FORM_VERSION", medicalFormVersion
         }
