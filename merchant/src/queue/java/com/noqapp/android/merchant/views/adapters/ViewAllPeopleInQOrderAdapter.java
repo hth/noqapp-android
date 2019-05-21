@@ -5,6 +5,7 @@ import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
@@ -78,7 +79,7 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
             public void onClick(View v) {
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-                in.putExtra("isFromHistory", true);
+                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
                 ((Activity) context).startActivity(in);
             }
         });

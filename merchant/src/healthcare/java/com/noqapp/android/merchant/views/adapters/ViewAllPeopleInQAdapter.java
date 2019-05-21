@@ -6,6 +6,7 @@ import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
@@ -97,7 +98,7 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
             public void onClick(View v) {
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-                in.putExtra("isFromHistory", true);
+                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
                 ((Activity) context).startActivity(in);
             }
         });

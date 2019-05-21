@@ -116,7 +116,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public interface PeopleInQAdapterClick {
         void peopleInQClick(int position);
 
-        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR);
+        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -348,9 +348,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             @Override
             public void onClick(View v) {
                 if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, qCodeQR);
+                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,false);
                 } else {
-                    Toast.makeText(context, "You do not have permission to accept payment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.payment_not_allowed), Toast.LENGTH_SHORT).show();
+                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,true);
                 }
             }
         });
