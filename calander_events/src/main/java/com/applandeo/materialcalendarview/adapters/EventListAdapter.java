@@ -12,6 +12,8 @@ import com.applandeo.materialcalendarview.R;
 
 import java.util.List;
 
+import androidx.cardview.widget.CardView;
+
 
 public class EventListAdapter extends BaseAdapter {
     private Context context;
@@ -42,7 +44,7 @@ public class EventListAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.list_item_event, parent, false);
             recordHolder.tv_no_of_patient = view.findViewById(R.id.tv_no_of_patient);
             recordHolder.tv_date = view.findViewById(R.id.tv_date);
-            // recordHolder.cardview = view.findViewById(R.id.cardview);
+            recordHolder.card_view = view.findViewById(R.id.card_view);
             view.setTag(recordHolder);
         } else {
             recordHolder = (RecordHolder) view.getTag();
@@ -56,7 +58,8 @@ public class EventListAdapter extends BaseAdapter {
     static class RecordHolder {
         TextView tv_date;
         TextView tv_no_of_patient;
-        //CardView cardview;
+        CardView card_view;
+
         RecordHolder() {
         }
     }

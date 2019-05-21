@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.adapters.EventListAdapter;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
 
@@ -17,7 +18,7 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class CalendarActivity extends AppCompatActivity {
+public class AppointmentActivity extends AppCompatActivity {
     private FixedHeightListView fh_list_view;
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
@@ -25,7 +26,7 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar_activity);
+        setContentView(R.layout.activity_appointment);
         initProgress();
         // List<EventDay> events = new ArrayList<>();
 
@@ -52,7 +53,7 @@ public class CalendarActivity extends AppCompatActivity {
         fh_list_view = findViewById(R.id.fh_list_view);
 
         Calendar min = Calendar.getInstance();
-        min.add(Calendar.MONTH, -2);
+        min.add(Calendar.MONTH, 0);
 
         Calendar max = Calendar.getInstance();
         max.add(Calendar.MONTH, 12);
@@ -63,12 +64,16 @@ public class CalendarActivity extends AppCompatActivity {
 
         // calendarView.setDisabledDays(getDisabledDays());
 
-        calendarView.setOnDayClickListener(eventDay ->
-                Toast.makeText(getApplicationContext(),
-                        null != eventDay.getAppointmentInfo() ? (eventDay.getCalendar().getTime().toString() + " "
-                                + eventDay.isEnabled() + "\n" + eventDay.getAppointmentInfo().toString()) : (eventDay.getCalendar().getTime().toString() + " "
-                                + eventDay.isEnabled()),
-                        Toast.LENGTH_SHORT).show());
+        calendarView.setOnDayClickListener(new OnDayClickListener() {
+            @Override
+            public void onDayClick(EventDay eventDay) {
+                if (eventDay.isEnabled()) {
+                    Toast.makeText(getApplicationContext(),
+                            (eventDay.getCalendar().getTime().toString()),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
@@ -188,7 +193,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     private void fetchEvents(int month) {
         progressDialog.show();
-        EventListAdapter adapter = new EventListAdapter(CalendarActivity.this, new ArrayList<EventDay>());
+        EventListAdapter adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>());
         fh_list_view.setAdapter(adapter);
         FetchEvents fetchEvents = new FetchEvents(month);
         fetchEvents.execute();
@@ -197,7 +202,7 @@ public class CalendarActivity extends AppCompatActivity {
     private void eventResponse(int month) {
         List<EventDay> events = getMonthWiseEvents(month);
         calendarView.setEvents(events);
-        EventListAdapter adapter = new EventListAdapter(CalendarActivity.this, events);
+        EventListAdapter adapter = new EventListAdapter(AppointmentActivity.this, events);
         fh_list_view.setAdapter(adapter);
         dismissProgress();
     }
@@ -211,7 +216,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -231,6 +236,8 @@ public class CalendarActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching appointments...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
     }
 
     protected void dismissProgress() {
