@@ -1,1 +1,1 @@
-include ':client', ':merchant', ':common', ':cashfreeSDK'
+include ':client', ':merchant', ':common', ':cashfreeSDK', ':calander_events'
