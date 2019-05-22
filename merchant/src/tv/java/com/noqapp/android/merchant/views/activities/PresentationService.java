@@ -146,11 +146,15 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                     image_list_size = image_list_size + jsonAdvertisement.getImageUrls().size();
                                     if (null == jsonAdvertisement_images) {
                                         jsonAdvertisement_images = new JsonAdvertisement();
-                                        jsonAdvertisement_images.getImageUrls().addAll(jsonAdvertisement.getImageUrls());
-                                        urlList.addAll(jsonAdvertisement.getImageUrls());
+                                        for (int j = 0; j < jsonAdvertisement.getImageUrls().size(); j++) {
+                                            jsonAdvertisement_images.getImageUrls().add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
+                                            urlList.add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
+                                        }
                                     } else {
-                                        jsonAdvertisement_images.getImageUrls().addAll(jsonAdvertisement.getImageUrls());
-                                        urlList.addAll(jsonAdvertisement.getImageUrls());
+                                        for (int j = 0; j < jsonAdvertisement.getImageUrls().size(); j++) {
+                                            jsonAdvertisement_images.getImageUrls().add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
+                                            urlList.add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
+                                        }
                                     }
                                     Log.e("Advertisement: ", "Image URL called");
                                 }
@@ -346,7 +350,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     ll_no_list.setVisibility(View.GONE);
                     Log.e("Inside Images", "Images: " + sequence);
                     if (url_pos < urlList.size()) {
-                        Picasso.get().load(urlList.get(url_pos)).into(iv_advertisement);
+                        String url = AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET,urlList.get(url_pos));
+                        Log.e("URL",url);
+                        Picasso.get().load(url).into(iv_advertisement);
                         iv_advertisement.setVisibility(View.VISIBLE);
                         ++url_pos;
                     } else {
