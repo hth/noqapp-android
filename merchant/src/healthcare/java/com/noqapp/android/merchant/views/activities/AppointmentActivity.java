@@ -1,21 +1,26 @@
-package com.applandeo.materialcalendarview;
+package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.applandeo.materialcalendarview.adapters.EventListAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.applandeo.materialcalendarview.AppointmentInfo;
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.adapters.EventListAdapter;
+import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 
 public class AppointmentActivity extends AppCompatActivity {

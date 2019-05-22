@@ -90,6 +90,11 @@
                 android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity
+                android:name="com.noqapp.android.merchant.views.activities.AppointmentActivity"
+                android:theme="@style/BaseTheme"
+                android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity
                 android:name="com.noqapp.android.merchant.views.activities.PreferenceActivity"
                 android:theme="@style/BaseTheme"
                 android:windowSoftInputMode="stateAlwaysHidden">

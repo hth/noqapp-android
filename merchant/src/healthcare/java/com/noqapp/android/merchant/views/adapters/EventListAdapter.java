@@ -1,4 +1,4 @@
-package com.applandeo.materialcalendarview.adapters;
+package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.R;
+import com.noqapp.android.merchant.R;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
 
 
 public class EventListAdapter extends BaseAdapter {

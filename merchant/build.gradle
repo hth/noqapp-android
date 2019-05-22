@@ -469,6 +469,7 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.18'
     implementation project(':common')
     implementation project(':cashfreeSDK')
+    implementation project(':calander_events')
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'

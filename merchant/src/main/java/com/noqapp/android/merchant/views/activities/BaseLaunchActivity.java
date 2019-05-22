@@ -225,6 +225,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     case R.drawable.pharmacy:
                         callPreferredStore();
                         break;
+                    case R.drawable.appointment:
+                        callAppointments();
+                        break;
                     default:
                 }
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -758,6 +761,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void callPreferredStore() {
+
+    }
+
+    public void callAppointments() {
 
     }
 
