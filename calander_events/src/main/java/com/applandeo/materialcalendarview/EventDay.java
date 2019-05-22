@@ -20,14 +20,14 @@ public class EventDay {
     private Calendar mDay;
     private Object mDrawable;
     private boolean mIsDisabled;
-    private AppointmentInfo appointmentInfo;
+    private Object eventObject;
 
     /**
      * @param day Calendar object which represents a date of the event
      */
     public EventDay(Calendar day) {
         mDay = day;
-        this.appointmentInfo = null;
+        this.eventObject = null;
     }
 
 
@@ -35,31 +35,31 @@ public class EventDay {
     /**
      * @param day Calendar object which represents a date of the event
      */
-    public EventDay(Calendar day,AppointmentInfo appointmentInfo) {
+    public EventDay(Calendar day,Object eventObject) {
         mDay = day;
-        this.appointmentInfo = appointmentInfo;
+        this.eventObject = eventObject;
     }
 
     /**
      * @param day      Calendar object which represents a date of the event
      * @param drawable Drawable resource which will be displayed in a day cell
      */
-    public EventDay(Calendar day, @DrawableRes int drawable,AppointmentInfo appointmentInfo) {
+    public EventDay(Calendar day, @DrawableRes int drawable,Object eventObject) {
         DateUtils.setMidnight(day);
         mDay = day;
         mDrawable = drawable;
-        this.appointmentInfo = appointmentInfo;
+        this.eventObject = eventObject;
     }
 
     /**
      * @param day      Calendar object which represents a date of the event
      * @param drawable Drawable which will be displayed in a day cell
      */
-    public EventDay(Calendar day, Drawable drawable,AppointmentInfo appointmentInfo) {
+    public EventDay(Calendar day, Drawable drawable,Object eventObject) {
         DateUtils.setMidnight(day);
         mDay = day;
         mDrawable = drawable;
-        this.appointmentInfo = appointmentInfo;
+        this.eventObject = eventObject;
     }
 
 
@@ -92,12 +92,11 @@ public class EventDay {
         mIsDisabled = enabled;
     }
 
-    public AppointmentInfo getAppointmentInfo() {
-        return appointmentInfo;
+    public Object getEventObject() {
+        return eventObject;
     }
 
-    public EventDay setAppointmentInfo(AppointmentInfo appointmentInfo) {
-        this.appointmentInfo = appointmentInfo;
-        return this;
+    public void setEventObject(Object eventObject) {
+        this.eventObject = eventObject;
     }
 }

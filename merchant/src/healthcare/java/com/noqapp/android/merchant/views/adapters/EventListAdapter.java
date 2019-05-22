@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.merchant.R;
 
 import java.util.List;
@@ -49,9 +50,9 @@ public class EventListAdapter extends BaseAdapter {
         } else {
             recordHolder = (RecordHolder) view.getTag();
         }
-        EventDay eventDay = eventDayList.get(position);
-        recordHolder.tv_date.setText(eventDay.getAppointmentInfo().getAppointmentDate());
-        recordHolder.tv_no_of_patient.setText(eventDay.getAppointmentInfo().getNoOfPatient());
+        JsonSchedule jsonSchedule = (JsonSchedule) eventDayList.get(position).getEventObject();
+        recordHolder.tv_date.setText(jsonSchedule.getDay());
+        recordHolder.tv_no_of_patient.setText(String.valueOf(jsonSchedule.getTotalAppointments()));
         return view;
     }
 

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,14 +11,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.applandeo.materialcalendarview.AppointmentInfo;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ScheduleApiCalls;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 
@@ -26,7 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class AppointmentActivity extends AppCompatActivity {
+public class AppointmentActivity extends AppCompatActivity implements AppointmentPresenter {
     private FixedHeightListView fh_list_view;
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
@@ -106,6 +114,18 @@ public class AppointmentActivity extends AppCompatActivity {
             }
         });
 
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.show();
+            ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
+            scheduleApiCalls.setAppointmentPresenter(this);
+            scheduleApiCalls.showSchedule(BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(), "month","codeQR");
+
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+
     }
 
     private List<Calendar> getDisabledDays() {
@@ -131,40 +151,36 @@ public class AppointmentActivity extends AppCompatActivity {
         switch (month) {
             case 4: {
                 Calendar calendar = Calendar.getInstance();
-                AppointmentInfo appointmentInfo = new AppointmentInfo();
-                appointmentInfo.setNoOfPatient("11");
-                appointmentInfo.setAppointmentTime("11:45 pm");
-                appointmentInfo.setAppointmentDate("21-May-19");
-                appointmentInfo.setInfo("Very urgent");
+                JsonSchedule appointmentInfo = new JsonSchedule();
+                appointmentInfo.setTotalAppointments(11);
+                appointmentInfo.setStartTime("11:45 pm");
+                appointmentInfo.setDay("21-May-19");
                 events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "Chand"), appointmentInfo));
                 Calendar calendar4 = Calendar.getInstance();
                 calendar4.add(Calendar.DAY_OF_MONTH, 2);
 
-                AppointmentInfo appointmentInfo1 = new AppointmentInfo();
-                appointmentInfo1.setNoOfPatient("12");
-                appointmentInfo1.setAppointmentTime("09:30 pm");
-                appointmentInfo1.setAppointmentDate("23-May-19");
-                appointmentInfo1.setInfo("Need diagnosis ASAP");
+                JsonSchedule appointmentInfo1 = new JsonSchedule();
+                appointmentInfo1.setTotalAppointments(12);
+                appointmentInfo1.setStartTime("09:30 pm");
+                appointmentInfo1.setDay("23-May-19");
                 events.add(new EventDay(calendar4, DrawableUtils.getThreeDots(this), appointmentInfo1));
 
                 Calendar calendar3 = Calendar.getInstance();
                 calendar3.add(Calendar.DAY_OF_MONTH, 5);
 
-                AppointmentInfo appointmentInfo3 = new AppointmentInfo();
-                appointmentInfo3.setNoOfPatient("6");
-                appointmentInfo3.setAppointmentTime("09:30 pm");
-                appointmentInfo3.setAppointmentDate("26-May-19");
-                appointmentInfo3.setInfo("Need diagnosis ASAP");
+                JsonSchedule appointmentInfo3 = new JsonSchedule();
+                appointmentInfo3.setTotalAppointments(6);
+                appointmentInfo3.setStartTime("09:30 pm");
+                appointmentInfo3.setDay("26-May-19");
                 events.add(new EventDay(calendar3, DrawableUtils.getThreeDots(this), appointmentInfo3));
 
                 Calendar calendar1 = Calendar.getInstance();
                 calendar1.add(Calendar.DAY_OF_MONTH, 7);
 
-                AppointmentInfo appointmentInfo2 = new AppointmentInfo();
-                appointmentInfo2.setNoOfPatient("9");
-                appointmentInfo2.setAppointmentTime("09:30 pm");
-                appointmentInfo2.setAppointmentDate("28-May-19");
-                appointmentInfo2.setInfo("Need diagnosis ASAP");
+                JsonSchedule appointmentInfo2 = new JsonSchedule();
+                appointmentInfo2.setTotalAppointments(9);
+                appointmentInfo2.setStartTime("09:30 pm");
+                appointmentInfo2.setDay("28-May-19");
                 events.add(new EventDay(calendar1, DrawableUtils.getThreeDots(this), appointmentInfo2));
             }
             return events;
@@ -179,11 +195,10 @@ public class AppointmentActivity extends AppCompatActivity {
                 cal.set(Calendar.DAY_OF_MONTH, 15);
                 cal.set(Calendar.YEAR, 2019);
 
-                AppointmentInfo appointmentInfo1 = new AppointmentInfo();
-                appointmentInfo1.setNoOfPatient("21");
-                appointmentInfo1.setAppointmentTime("23:30 am");
-                appointmentInfo1.setAppointmentDate("15-June-19");
-                appointmentInfo1.setInfo("Lal Lab path");
+                JsonSchedule appointmentInfo1 = new JsonSchedule();
+                appointmentInfo1.setTotalAppointments(21);
+                appointmentInfo1.setStartTime("23:30 am");
+                appointmentInfo1.setDay("15-June-19");
                 events.add(new EventDay(cal, DrawableUtils.getThreeDots(this), appointmentInfo1));
 
                 Calendar cal1 = Calendar.getInstance();
@@ -194,11 +209,10 @@ public class AppointmentActivity extends AppCompatActivity {
                 cal1.set(Calendar.MONTH, Calendar.JUNE);
                 cal1.set(Calendar.DAY_OF_MONTH, 27);
                 cal1.set(Calendar.YEAR, 2019);
-                AppointmentInfo appointmentInfo = new AppointmentInfo();
-                appointmentInfo.setNoOfPatient("5");
-                appointmentInfo.setAppointmentTime("9:00 pm");
-                appointmentInfo.setAppointmentDate("27-June-19");
-                appointmentInfo.setInfo("Hello doctor, want to visit for diagnosis once");
+                JsonSchedule appointmentInfo = new JsonSchedule();
+                appointmentInfo.setTotalAppointments(5);
+                appointmentInfo.setStartTime("9:00 pm");
+                appointmentInfo.setDay("27-June-19");
                 events.add(new EventDay(cal1, DrawableUtils.getCircleDrawableWithText(this, "Wow"), appointmentInfo));
             }
             return events;
@@ -223,6 +237,27 @@ public class AppointmentActivity extends AppCompatActivity {
         fh_list_view.setAdapter(adapter);
         dismissProgress();
     }
+
+    @Override
+    public void appointmentResponse(JsonScheduleList jsonScheduleList) {
+        Log.e("appointments", jsonScheduleList.toString());
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
+    }
+
 
     private class FetchEvents extends AsyncTask<String, Void, String> {
         private int month;

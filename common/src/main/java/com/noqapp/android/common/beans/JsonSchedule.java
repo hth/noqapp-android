@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 2019-05-22 10:44
@@ -23,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonSchedule extends AbstractDomain {
+public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("dy")
     private String day;
@@ -95,5 +97,17 @@ public class JsonSchedule extends AbstractDomain {
     public JsonSchedule setQid(String qid) {
         this.qid = qid;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonSchedule{" +
+                "day='" + day + '\'' +
+                ", totalAppointments=" + totalAppointments +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", name='" + name + '\'' +
+                ", qid='" + qid + '\'' +
+                '}';
     }
 }

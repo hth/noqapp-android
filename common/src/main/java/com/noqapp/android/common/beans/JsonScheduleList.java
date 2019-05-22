@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +27,13 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonScheduleList extends AbstractDomain {
+public class JsonScheduleList extends AbstractDomain implements Serializable {
 
     @JsonProperty("scs")
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public List<JsonSchedule> getJsonSchedules() {
         return jsonSchedules;
@@ -43,5 +47,21 @@ public class JsonScheduleList extends AbstractDomain {
     public JsonScheduleList addJsonSchedule(JsonSchedule jsonSchedule) {
         this.jsonSchedules.add(jsonSchedule);
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonScheduleList{" +
+                "jsonSchedules=" + jsonSchedules +
+                ", error=" + error +
+                '}';
     }
 }
