@@ -183,7 +183,7 @@ public class CommonHelper {
     }
 
     public static String displayPrice(String number) {
-        BigDecimal bd =  new BigDecimal(number).scaleByPowerOfTen(-2);
+        BigDecimal bd = new BigDecimal(number).scaleByPowerOfTen(-2);
         return bd.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
     }
 
@@ -195,18 +195,24 @@ public class CommonHelper {
         return transactionId.substring(transactionId.substring(0, transactionId.lastIndexOf("-")).lastIndexOf("-") + 1);
     }
 
-
-    public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct){
-        if(null != jsonStoreProduct){
-           return jsonStoreProduct.getDisplayPrice()+" / "+jsonStoreProduct.getUnitValue() + " "+ jsonStoreProduct.getUnitOfMeasurement().getDescription();
-        }else{
-            return"";
+    public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct) {
+        try {
+            if (null != jsonStoreProduct) {
+                Log.e("jsonStoreProduct", jsonStoreProduct.toString());
+                return jsonStoreProduct.getDisplayPrice() + " / " + jsonStoreProduct.getUnitValue() + " " + jsonStoreProduct.getUnitOfMeasurement().getDescription();
+            } else {
+                return "";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
         }
-
     }
 
     public static double round(float value) {
         int scale = (int) Math.pow(10, 2);
         return (double) Math.round(value * scale) / scale;
     }
+
+    // Show offer msg section 
 }

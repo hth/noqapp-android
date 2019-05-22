@@ -225,6 +225,8 @@
                                 android:layout_marginRight="0dp"
                                 android:layout_marginTop="10dp"
                                 android:background="@drawable/btn_bg_enable"
+                                android:foreground="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
                                 android:gravity="center"
                                 android:paddingLeft="100dp"
                                 android:paddingRight="100dp"

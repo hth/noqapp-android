@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,7 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
         merchantProfileApiCalls.setReviewPresenter(this);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         RecyclerView rcv_review = findViewById(R.id.rcv_review);
+        RelativeLayout rl_empty = findViewById(R.id.rl_empty);
         initProgress();
         rcv_review.setHasFixedSize(true);
         rcv_review.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -70,8 +72,13 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
 
         JsonReviewList jsonReviewList = (JsonReviewList) getIntent().getSerializableExtra("data");
         tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getDisplayName()) ? "N/A" : jsonReviewList.getDisplayName());
-        QueueReviewListAdapter queueReviewCardAdapter = new QueueReviewListAdapter(jsonReviewList, this, this);
+        QueueReviewListAdapter queueReviewCardAdapter = new QueueReviewListAdapter(jsonReviewList, this);
         rcv_review.setAdapter(queueReviewCardAdapter);
+        if (null == jsonReviewList.getJsonReviews()|| jsonReviewList.getJsonReviews().size() <= 0) {
+            rl_empty.setVisibility(View.VISIBLE);
+        } else {
+            rl_empty.setVisibility(View.GONE);
+        }
     }
 
     private void initProgress() {

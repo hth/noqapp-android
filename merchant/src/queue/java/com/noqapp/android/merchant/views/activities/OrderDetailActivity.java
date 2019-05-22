@@ -14,6 +14,7 @@ import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
@@ -407,7 +408,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             adapter.setClickEnable(false);
         }
 
-        if (getIntent().getBooleanExtra("isFromHistory", false)) {
+        if (getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false)) {
             rl_payment.setVisibility(View.GONE);
             btn_update_price.setVisibility(View.GONE);
             rl_multiple.setVisibility(View.GONE);

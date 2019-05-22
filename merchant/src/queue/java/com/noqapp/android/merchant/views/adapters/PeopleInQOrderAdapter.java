@@ -48,7 +48,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
 
         void orderCancelClick(int position);
 
-        void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder);
+        void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder, boolean isPaymentNotAllowed);
     }
 
     public PeopleInQOrderAdapter(List<JsonPurchaseOrder> data, Context context, String qCodeQR,
@@ -120,6 +120,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                     recordHolder.tv_order_data.setText("Payment Refunded");
                     recordHolder.tv_order_data.setBackgroundResource(R.drawable.grey_background);
                     break;
+                case PC:
+                    recordHolder.tv_order_data.setText("Payment Cancelled");
+                    recordHolder.tv_order_data.setBackgroundResource(R.drawable.grey_background);
+                    break;
                 case PP:
                     if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_order_data.setText("No Payment Due");
@@ -175,9 +179,10 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
             @Override
             public void onClick(View v) {
                 if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder);
+                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,false);
                 } else {
-                    Toast.makeText(context, "You do not have permission to accept payment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.payment_not_allowed), Toast.LENGTH_SHORT).show();
+                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,true);
                 }
             }
         });

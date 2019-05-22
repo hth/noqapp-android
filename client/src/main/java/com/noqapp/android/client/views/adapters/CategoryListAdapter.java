@@ -1,5 +1,17 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.BookAppointmentActivity;
+import com.noqapp.android.client.views.activities.ManagerProfileActivity;
+import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.Formatter;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -8,25 +20,15 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.Formatter;
-
-import java.util.List;
-
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
     private final Context context;
@@ -41,7 +43,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         this.listener = listener;
     }
 
-    public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener,boolean isSingleEntry) {
+    public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener, boolean isSingleEntry) {
         this.dataSet = jsonQueues;
         this.context = context;
         this.listener = listener;
@@ -52,10 +54,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
         View view = null;
-        if(isSingleEntry){
+        if (isSingleEntry) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.rcv_single_entry_item, parent, false);
-        }else {
+        } else {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.rcv_item_category1, parent, false);
         }
@@ -191,7 +193,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.tv_status.setText("Closed");
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.button_color));
         }
-        AppUtilities.loadProfilePic(holder.iv_main, bizStoreElastic.getDisplayImage(),context);
+        AppUtilities.loadProfilePic(holder.iv_main, bizStoreElastic.getDisplayImage(), context);
         holder.tv_consult_fees.setVisibility(bizStoreElastic.getProductPrice() == 0 ? View.GONE : View.VISIBLE);
         if (bizStoreElastic.getProductPrice() == 0) {
             holder.tv_consult_fees.setVisibility(View.GONE);
@@ -218,13 +220,23 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                    Intent intent = new Intent(context, ManagerProfileActivity.class);
-                    intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
-                    intent.putExtra("managerName", bizStoreElastic.getDisplayName());
-                    intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
-                    intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
-                    context.startActivity(intent);
+                if (AppUtilities.isRelease()) {
+                    if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                        Intent intent = new Intent(context, ManagerProfileActivity.class);
+                        intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
+                        intent.putExtra("managerName", bizStoreElastic.getDisplayName());
+                        intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
+                        intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
+                        context.startActivity(intent);
+                    }
+                } else {
+                    if (UserUtils.isLogin()) {
+                        Intent in = new Intent(context, BookAppointmentActivity.class);
+                        in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
+                        context.startActivity(in);
+                    } else {
+                        Toast.makeText(context, "Please login to book an appointment", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -250,7 +262,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_store_timing;
         private TextView tv_time_label;
         private TextView tv_status;
-        private TextView tv_join;
+        private Button tv_join;
         private TextView tv_consult_fees;
         private TextView tv_consult_fees_header;
         private ImageView iv_main;

@@ -56,11 +56,11 @@ import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.pojos.MenuModel;
 import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
+import com.noqapp.android.client.views.pojos.MenuModel;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
@@ -1079,6 +1079,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         List<MenuModel> childModelsList = new ArrayList<>();
         childModelsList.add(new MenuModel(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
         childModelsList.add(new MenuModel(getString(R.string.medical_history), false, false, R.drawable.medical_history));
+        childModelsList.add(new MenuModel(getString(R.string.my_appointments), false, false, R.drawable.appointment));
         childList.put(headerList.get(0), childModelsList);
         List<MenuModel> childModelsList1 = new ArrayList<>();
         childModelsList1.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
@@ -1170,6 +1171,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                             if (UserUtils.isLogin()) {
                                 Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
                                 startActivity(in);
+                            } else {
+                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                            }
+                            break;
+                        }
+                        case R.drawable.appointment: {
+                            if (UserUtils.isLogin()) {
+//                                Intent in = new Intent(launchActivity, BookAppointmentActivity.class);
+//                                startActivity(in);
                             } else {
                                 Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
                             }

@@ -48,7 +48,7 @@
                 android:id="@+id/btn_submit"
                 android:layout_width="match_parent"
                 android:layout_alignParentBottom="true"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="submit"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -58,7 +58,9 @@
                 android:textAllCaps="true"
                 android:textColor="@color/btn_color"
                 android:textSize="@dimen/text_size_sixteen"
-                android:background="@drawable/grey_gradient"/>
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:background="@drawable/btn_bg_inactive"/>
 
     </RelativeLayout>
 

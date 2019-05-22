@@ -91,6 +91,7 @@ public interface StoreSettingApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PRODUCT_PRICE_CANNOT_BE_ZERO}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/m/ss/serviceCost.json")

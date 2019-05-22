@@ -9,7 +9,6 @@ import com.noqapp.android.merchant.utils.AppUtils;
 
 import com.squareup.picasso.Picasso;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +19,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewListAdapter.MyViewHolder> {
-    private final Context context;
     private final QueueReviewListAdapter.OnItemClickListener listener;
     private JsonReviewList jsonReviewList;
 
-    public QueueReviewListAdapter(JsonReviewList jsonReviewList, Context context, QueueReviewListAdapter.OnItemClickListener listener) {
+    public QueueReviewListAdapter(JsonReviewList jsonReviewList, QueueReviewListAdapter.OnItemClickListener listener) {
         this.jsonReviewList = jsonReviewList;
-        this.context = context;
         this.listener = listener;
     }
 

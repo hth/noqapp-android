@@ -43,6 +43,7 @@ public enum MobileSystemErrorCodeEnum {
     MAIL_OTP_FAILED("4020", ERROR),
     USER_MAX_DEPENDENT("4050", ALERT),
     CHANGE_USER_IN_QUEUE("4060", ALERT),
+    FAILED_FINDING_ADDRESS("4070", ALERT),
 
     /** Medical. */
     MEDICAL_RECORD_ENTRY_DENIED("4101", ERROR),
@@ -75,6 +76,7 @@ public enum MobileSystemErrorCodeEnum {
 
     /** Transaction. */
     TRANSACTION_GATEWAY_DEFAULT("4500", ALERT),
+    SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE("4501", ALERT),
 
     /** Mobile application related issue. */
     SEVERE("5000", ERROR),

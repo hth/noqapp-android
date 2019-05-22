@@ -116,7 +116,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     public interface PeopleInQAdapterClick {
         void peopleInQClick(int position);
 
-        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR);
+        void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed);
     }
 
     private PeopleInQAdapterClick peopleInQAdapterClick;
@@ -314,6 +314,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                     recordHolder.tv_payment_stat.setText("Payment Refunded");
                     recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
                     break;
+                case PC:
+                    recordHolder.tv_payment_stat.setText("Payment Cancelled");
+                    recordHolder.tv_payment_stat.setBackgroundResource(R.drawable.grey_background);
+                    break;
                 case PP:
                     if (jsonQueuedPerson.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.CO) {
                         recordHolder.tv_payment_stat.setText("No Payment Due");
@@ -344,9 +348,10 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
             @Override
             public void onClick(View v) {
                 if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson, qCodeQR);
+                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,false);
                 } else {
-                    Toast.makeText(context, "You do not have permission to accept payment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.payment_not_allowed), Toast.LENGTH_SHORT).show();
+                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,true);
                 }
             }
         });

@@ -10,6 +10,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
@@ -251,10 +252,11 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR) {
+    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed) {
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
+        in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, isPaymentNotAllowed);
         ((Activity) context).startActivity(in);
     }
 

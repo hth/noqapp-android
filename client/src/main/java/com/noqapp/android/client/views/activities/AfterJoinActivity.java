@@ -156,11 +156,9 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                                         break;
                                     case E:
                                         cancelQueue();
-                                        Toast.makeText(AfterJoinActivity.this, "You made the payment at counter. Please go to counter for refund or Cancel.", Toast.LENGTH_SHORT).show();
                                         break;
                                     case U:
                                         cancelQueue();
-                                        Toast.makeText(AfterJoinActivity.this, "Your payment mode is unknown. You cannot cancel the queue.", Toast.LENGTH_SHORT).show();
                                         break;
                                 }
                             }
@@ -555,7 +553,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tv_after.setText("You are:");
                 tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                ll_change_bg.setBackgroundResource(R.drawable.grey_gradient);
+                ll_change_bg.setBackgroundResource(R.drawable.btn_bg_inactive);
                 // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
                 break;
         }

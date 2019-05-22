@@ -6,13 +6,13 @@ import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
-import com.noqapp.android.merchant.model.VigyaapanApiCalls;
+import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
-import com.noqapp.android.merchant.presenter.VigyaapanPresenter;
+import com.noqapp.android.common.presenter.AdvertisementPresenter;
+import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.JsonVigyaapanTVList;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -56,7 +56,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements ClientInQueuePresenter, VigyaapanPresenter {
+public class MainActivity extends AppCompatActivity implements ClientInQueuePresenter, AdvertisementPresenter {
 
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private MediaRouter mediaRouter;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
-    private JsonVigyaapanTVList jsonVigyaapanTVList;
+    private JsonAdvertisementList jsonAdvertisementList;
     private boolean isNotification = false;
     private DetailFragment detailFragment;
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
@@ -129,9 +129,9 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(), queueDetail);
 
-            VigyaapanApiCalls vigyaapanApiCalls = new VigyaapanApiCalls();
-            vigyaapanApiCalls.setVigyaapanPresenter(this);
-            vigyaapanApiCalls.getAllVigyaapan(UserUtils.getDeviceId(),
+            AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
+            advertisementApiCalls.setAdvertisementPresenter(this);
+            advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
 
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
 
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
-                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapanList(jsonVigyaapanTVList, topicAndQueueTVList.size());
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList,true);
                 }
                 final Handler handler = new Handler();
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                         ft.commitAllowingStateLoss();
                         //Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
 //                        if (CastRemoteDisplayLocalService.getInstance() != null) {
-//                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setVigyaapanList(jsonVigyaapanTV, topicAndQueueTVList.size());
+//                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonVigyaapanTV, topicAndQueueTVList.size());
 //                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, currentPage);
 //                        }
                         currentPage++;
@@ -377,9 +377,9 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     }
 
     @Override
-    public void vigyaapanResponse(JsonVigyaapanTVList jsonVigyaapanTVList) {
-        Log.v("data", jsonVigyaapanTVList.toString());
-        this.jsonVigyaapanTVList = jsonVigyaapanTVList;
+    public void advertisementResponse(JsonAdvertisementList jsonAdvertisementList) {
+        Log.v("data", jsonAdvertisementList.toString());
+        this.jsonAdvertisementList = jsonAdvertisementList;
     }
 
     private void initProgress() {

@@ -16,6 +16,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
@@ -52,9 +53,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment
-        extends BaseMerchantDetailFragment
-        implements PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter, PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList, HCSMenuActivity.UpdateWholeList {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
+        PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
+        PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList,
+        HCSMenuActivity.UpdateWholeList {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -235,9 +237,10 @@ public class MerchantDetailFragment
     }
 
     @Override
-    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR) {
+    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed) {
 
     }
+
 
     @Override
     public void orderDoneClick(int position) {
@@ -287,10 +290,11 @@ public class MerchantDetailFragment
     }
 
     @Override
-    public void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder) {
+    public void viewOrderClick(JsonPurchaseOrder jsonPurchaseOrder, boolean isPaymentNotAllowed) {
         OrderDetailActivity.updateWholeList = this;
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+        in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, isPaymentNotAllowed);
         ((Activity) context).startActivity(in);
     }
 

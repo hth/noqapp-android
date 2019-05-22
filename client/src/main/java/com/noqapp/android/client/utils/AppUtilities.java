@@ -28,6 +28,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -66,6 +67,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 public class AppUtilities extends CommonHelper {
     private static final String TAG = AppUtilities.class.getSimpleName();
@@ -166,27 +168,6 @@ public class AppUtilities extends CommonHelper {
         for (JsonQueue jsonQueue : jsonQueues) {
             System.out.println(jsonQueue.getDisplayName());
         }
-    }
-
-    /**
-     * Calculate distance between two points in latitude and longitude. Uses Haversine
-     * method as its base.
-     * <p>
-     * lat1, lng1 Start point lat2, lng2
-     *
-     * @returns Distance in KMeters
-     */
-    public static String calculateDistanceInKm(float lat1, float lng1, float lat2, float lng2) {
-        double earthRadius = 6371000; //meters
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLng = Math.toRadians(lng2 - lng1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        float dist = (float) (earthRadius * c);
-
-        return String.valueOf(calculateDistance(lat1, lng1, lat2, lng2)) + " km";// distance in km
     }
 
     public static double calculateDistance(float lat1, float lng1, float lat2, float lng2) {
@@ -388,6 +369,7 @@ public class AppUtilities extends CommonHelper {
         }
         return name;
     }
+
     public static JsonProfile getJsonProfileQueueUserID(String queueUserID, List<JsonProfile> list) {
         JsonProfile name = null;
         if (!TextUtils.isEmpty(queueUserID)) {
@@ -415,6 +397,9 @@ public class AppUtilities extends CommonHelper {
             case BuildConfig.ACCREDITATION_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.ACCREDITATION_BUCKET + url;
                 break;
+            case BuildConfig.ADVERTISEMENT_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + url;
+                break;
             default:
                 Log.e(TAG, "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
@@ -422,29 +407,6 @@ public class AppUtilities extends CommonHelper {
         return location;
     }
 
-    public static void exportDatabase(Context context) {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if (sd.canWrite()) {
-                String currentDBPath = "/data/" + context.getPackageName() + "/databases/" + "noqueue.db" + "";
-                String backupDBPath = System.currentTimeMillis() + "-noQueue.db";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public String formatWeeklyTimings(Context context, List<JsonHour> jsonHoursList) {
         String output = "";
@@ -540,8 +502,7 @@ public class AppUtilities extends CommonHelper {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             Uri bitmapUri = null;
             try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
                 file.getParentFile().mkdirs();
                 FileOutputStream out = new FileOutputStream(file);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
@@ -570,7 +531,7 @@ public class AppUtilities extends CommonHelper {
         return BuildConfig.BUILD_TYPE.equalsIgnoreCase(Constants.RELEASE);
     }
 
-    public static void loadProfilePic(ImageView iv_profile, String imageUrl,Context context) {
+    public static void loadProfilePic(ImageView iv_profile, String imageUrl, Context context) {
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
         try {
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -585,4 +546,13 @@ public class AppUtilities extends CommonHelper {
         }
     }
 
+    public static int generateRandomColor() {
+        String[] colors = new String[]{
+                "#90C978", "#AFD5AA", "#83C6DD", "#5DB1D1", "#8DA290", "#BEC7B4", "#769ECB", "#9DBAD5",
+                "#C8D6B9", "#8FC1A9", "#7CAA98", "#58949C", "#DF9881", "#D4B59D", "#CE9C6F", "#D3EEFF",
+                "#836853", "#988270", "#4F9EC4", "#3A506B", "#606E79", "#804040", "#AF6E4D", "#567192"};
+
+        int rnd = new Random().nextInt(colors.length);
+        return Color.parseColor(colors[rnd]);
+    }
 }

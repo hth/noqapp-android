@@ -16,7 +16,7 @@ public interface StoreDetailApiUrls {
      * No Errors
      */
     @GET("open/store/{codeQR}.json")
-    Call<JsonStore> getStoreService(
+    Call<JsonStore> getStoreDetail(
             @Header("X-R-DID")
             String did,
 

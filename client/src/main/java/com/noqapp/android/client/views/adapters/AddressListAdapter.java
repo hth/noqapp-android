@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.common.beans.JsonUserAddress;
 
 import java.util.List;
@@ -18,14 +19,14 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
     private List<JsonUserAddress> list;
     private LayoutInflater inflator;
     private Activity context;
-    private RemoveListItem removeListItem;
+    private RemoveAddress removeAddress;
 
-    public AddressListAdapter(Activity context, List<JsonUserAddress> list, RemoveListItem removeListItem) {
+    public AddressListAdapter(Activity context, List<JsonUserAddress> list, RemoveAddress removeAddress) {
         super(context, R.layout.list_item_selected, list);
         this.list = list;
         inflator = context.getLayoutInflater();
         this.context = context;
-        this.removeListItem = removeListItem;
+        this.removeAddress = removeAddress;
     }
 
     @Override
@@ -46,19 +47,19 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-//                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-//                    @Override
-//                    public void btnPositiveClick() {
-//                        if(null != removeListItem)
-//                            removeListItem.removeItem(position);
-//                    }
-//                    @Override
-//                    public void btnNegativeClick() {
-//                        //Do nothing
-//                    }
-//                });
-//                showDialog.displayDialog("Delete from list", "Do you want to delete it from selected list?");
+                ShowCustomDialog showDialog = new ShowCustomDialog(context,true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if(null != removeAddress)
+                            removeAddress.removeAddress(list.get(position));
+                    }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Delete Address", "Do you want to delete address from address list?");
             }
         });
 
@@ -70,8 +71,8 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
         private ImageView iv_delete;
     }
 
-    public interface RemoveListItem {
-        void removeItem(int pos);
+    public interface RemoveAddress {
+        void removeAddress(JsonUserAddress jsonUserAddress);
     }
 
 }

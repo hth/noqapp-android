@@ -287,6 +287,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:background="@drawable/btn_bg_inactive"
+                                android:foreground="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
                                 android:fontFamily="sans-serif-medium"
                                 android:gravity="center"
                                 android:layout_gravity="right"

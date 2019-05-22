@@ -1,5 +1,11 @@
 package com.noqapp.android.merchant.utils;
 
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -13,19 +19,12 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-
-import java.util.List;
-import java.util.Locale;
-
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * User: hitender
@@ -125,8 +124,14 @@ public class AppUtils extends CommonHelper {
             case BuildConfig.SERVICE_BUCKET:
                 location = BuildConfig.AWSS3 + BuildConfig.SERVICE_BUCKET + url;
                 break;
+            case BuildConfig.ACCREDITATION_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.ACCREDITATION_BUCKET + url;
+                break;
+            case BuildConfig.ADVERTISEMENT_BUCKET:
+                location = BuildConfig.AWSS3 + BuildConfig.ADVERTISEMENT_BUCKET + url;
+                break;
             default:
-                Log.e("App Utils", "Un-supported bucketType=" + bucket_type);
+                Log.e(AppUtils.class.getSimpleName(), "Un-supported bucketType=" + bucket_type);
                 throw new UnsupportedOperationException("Reached unsupported condition");
         }
         return location;

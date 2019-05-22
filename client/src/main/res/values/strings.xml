@@ -148,9 +148,13 @@
     <string name="error_remote_join_not_available">Remote join not allowed. Please visit the store.</string>
     <string name="error_join">QJoin</string>
     <string name="login_hint">Phone no. without country code</string>
-
-
+    
     <string name="bullet">\u27A3</string>
+    <string name="circle_large_bullet">\u2B24</string>
+    <string name="circle_small_bullet">\u2022</string>
+    <string name="horizontal_ellipsis">\u2026</string>
+    <string name="triangular_bullet">\u2023</string>
+    <string name="right_pointing_angle_quotation">\u203A</string>
 
     <string name="btn_playstore">Open Play Store</string>
     <string name="playstore_title">Unsupported Version</string>
@@ -169,6 +173,7 @@
     <string name="home">Home</string>
     <string name="share">Share</string>
     <string name="medical_history">Past Doctor Visits</string>
+    <string name="my_appointments">My Appointments</string>
     <string name="medical_history_details">Case History</string>
 
 
@@ -310,6 +315,7 @@
     <string name="privacy_bydefault">Privacy by default and by design</string>
     <string name="transgender">Transgender</string>
     <string name="screen_all_feeds">All Feeds</string>
+    <string name="screen_all_events">Events &amp; Offers</string>
     <string name="total_amount_paid">Total Amount Paid:</string>
     <string name="total_amount_remaing">Total Amount Remaining:</string>
     <string name="pay_and_join">Pay &amp; Confirm Queue</string>
@@ -330,5 +336,8 @@
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>
     <string name="screen_addressbook">Manage address</string>
+    <string name="delivery_mode_home">Home Delivery</string>
+    <string name="delivery_mode_takeaway">Pick up</string>
+    <string name="delivery_mode">Delivery mode</string>
 
 </resources>

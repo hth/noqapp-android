@@ -21,7 +21,7 @@ import java.util.List;
  * hitender
  * 10/5/18 9:40 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
         "PMD.BeanMembersShouldSerialize",
         "PMD.LocalVariableCouldBeFinal",
         "PMD.MethodArgumentCouldBeFinal",
@@ -36,7 +36,7 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonPurchaseOrderHistorical extends AbstractDomain implements Serializable  {
+public class JsonPurchaseOrderHistorical extends AbstractDomain implements Serializable {
 
     @JsonProperty("qid")
     private String queueUserId;
@@ -65,34 +65,34 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain implements Seria
     @JsonProperty("ps")
     private PurchaseOrderStateEnum presentOrderState;
 
-    @JsonProperty ("bt")
+    @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
-    @JsonProperty ("ra")
+    @JsonProperty("ra")
     private int ratingCount;
 
-    @JsonProperty ("rv")
+    @JsonProperty("rv")
     private String review;
 
     /* Order Number. */
-    @JsonProperty ("tn")
+    @JsonProperty("tn")
     private int tokenNumber;
 
     /* Locked when being served. */
-    @JsonProperty ("sn")
+    @JsonProperty("sn")
     private String serverName;
 
-    @JsonProperty ("sb")
+    @JsonProperty("sb")
     private String serviceBeginTime;
 
-    @JsonProperty ("se")
+    @JsonProperty("se")
     private String serviceEndTime;
 
-    @JsonProperty ("ti")
+    @JsonProperty("ti")
     private String transactionId;
 
     /* This is business name. */
-    @JsonProperty ("dn")
+    @JsonProperty("dn")
     private String displayName;
 
     @JsonProperty("u")

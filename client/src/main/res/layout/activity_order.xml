@@ -16,8 +16,8 @@
         <RelativeLayout
                 android:id="@+id/layout"
                 android:layout_width="match_parent"
-                android:paddingBottom="10dp"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
 
             <ScrollView
                     android:layout_width="match_parent"
@@ -30,16 +30,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                     <TextView
                             android:id="@+id/tv_user_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
                             android:gravity="left"
                             android:maxLines="2"
                             android:text=""
@@ -56,13 +56,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/tv_change_address"
-                                android:layout_marginBottom="5dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="@string/deliver_address"
+                                android:layout_marginBottom="5dp"
+                                android:layout_toLeftOf="@+id/tv_change_address"
                                 android:drawableLeft="@drawable/ic_location"
                                 android:gravity="bottom"
+                                android:text="@string/deliver_address"
                                 android:textSize="@dimen/text_size_fourteen"/>
 
                         <TextView
@@ -107,9 +107,9 @@
                             android:id="@+id/tv_payment_mode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
                             android:gravity="left"
                             android:text="@string/payment_mode"
                             android:textSize="@dimen/store_info"/>
@@ -118,9 +118,9 @@
                             android:id="@+id/rg_payment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
@@ -135,9 +135,48 @@
                                 android:id="@+id/acrb_online"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:checked="true"
                                 android:text="@string/payment_mode_online"
                                 android:textSize="@dimen/text_size_twelve"
+                                app:buttonTint="@color/colorAccent"/>
+
+                    </RadioGroup>
+
+                    <TextView
+                            android:id="@+id/tv_delivery_mode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="left"
+                            android:text="@string/delivery_mode"
+                            android:textSize="@dimen/store_info"/>
+
+                    <RadioGroup
+                            android:id="@+id/rg_delivery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                                android:id="@+id/acrb_home_delivery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/delivery_mode_home"
+                                android:textSize="@dimen/text_size_twelve"
+                                app:buttonTint="@color/colorAccent"/>
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                                android:id="@+id/acrb_take_away"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:checked="true"
+                                android:text="@string/delivery_mode_takeaway"
+                                android:textSize="@dimen/text_size_twelve"
                                 app:buttonTint="@color/colorAccent"/>
 
                     </RadioGroup>
@@ -146,9 +185,9 @@
                             android:id="@+id/edt_optional"
                             style="@style/style_register_edt"
                             android:layout_width="match_parent"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
                             android:hint="@string/additional"
                             android:maxLength="64"
                             android:textSize="@dimen/text_size_fourteen"/>
@@ -157,9 +196,9 @@
                             android:id="@+id/card_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
                             card_view:cardBackgroundColor="@color/white"
                             card_view:cardCornerRadius="5dp"
                             card_view:cardElevation="2dp"
@@ -169,20 +208,20 @@
                                 android:id="@+id/ll_order_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:orientation="vertical"
                                 android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                android:orientation="vertical">
+                                android:paddingRight="10dp">
 
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="10dp"
                                     android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
                                     android:gravity="left"
                                     android:text="@string/order_details"
-                                    android:textStyle="bold"
                                     android:textColor="@android:color/black"
-                                    android:textSize="@dimen/store_info"/>
+                                    android:textSize="@dimen/store_info"
+                                    android:textStyle="bold"/>
 
                         </LinearLayout>
 
@@ -191,9 +230,9 @@
                     <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
 
                         <TextView
@@ -216,9 +255,9 @@
                     <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
                             android:orientation="horizontal">
 
                         <TextView
@@ -274,9 +313,11 @@
                     android:layout_height="@dimen/btn_standard_height"
                     android:layout_alignParentBottom="true"
                     android:layout_margin="10dp"
-                    android:paddingRight="10dp"
                     android:background="@drawable/btn_bg_enable"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     android:drawableRight="@drawable/order_arrow"
+                    android:paddingRight="10dp"
                     android:text="@string/order_now"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_fourteen"/>

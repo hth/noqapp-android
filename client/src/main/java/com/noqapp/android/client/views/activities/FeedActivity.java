@@ -1,5 +1,17 @@
 package com.noqapp.android.client.views.activities;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.JsonFeed;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.FabricEvents;
+import com.noqapp.android.client.utils.IBConstant;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.squareup.picasso.Picasso;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -10,17 +22,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonFeed;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.FabricEvents;
-import com.noqapp.android.client.utils.IBConstant;
-import com.squareup.picasso.Picasso;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -84,7 +85,7 @@ public class FeedActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        getMenuInflater().inflate(R.menu.menu_favourite, menu);
         return true;
     }
     @Override

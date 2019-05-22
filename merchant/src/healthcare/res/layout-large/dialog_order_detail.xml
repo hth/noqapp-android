@@ -144,7 +144,7 @@
                                 android:layout_marginTop="10dp"
                                 android:background="@android:color/darker_gray"/>
 
-                            <com.noqapp.android.merchant.utils.FixedHeightListView
+                            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
                                 android:id="@+id/listview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

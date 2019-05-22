@@ -12,11 +12,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.maps.model.LatLng;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
+import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
@@ -35,10 +39,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 /**
  * Created by chandra on 5/7/17.
  */
@@ -49,7 +49,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private String city = "";
     private String lat = "";
     private String longitude = "";
-    private SearchBusinessStoreApiCall searchBusinessStoreModel;
+    private SearchBusinessStoreApiCalls searchBusinessStoreModels;
     private EditText edt_search;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout ll_search;
@@ -65,7 +65,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
         ll_search = findViewById(R.id.ll_search);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_search));
-        searchBusinessStoreModel = new SearchBusinessStoreApiCall(this);
+        searchBusinessStoreModels = new SearchBusinessStoreApiCalls(this);
         city = getIntent().getStringExtra("city");
         lat = getIntent().getStringExtra("lat");
         longitude = getIntent().getStringExtra("long");
@@ -164,7 +164,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                         .setQuery(edt_search.getText().toString())
                         .setFilters("")
                         .setScrollId(""); //Scroll id - fresh search pass blank
-                searchBusinessStoreModel.search(UserUtils.getDeviceId(), searchStoreQuery);
+                searchBusinessStoreModels.search(UserUtils.getDeviceId(), searchStoreQuery);
             } else {
                 ShowAlertInformation.showNetworkDialog(SearchActivity.this);
             }

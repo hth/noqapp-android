@@ -142,6 +142,8 @@
                                     android:text="Order Now"
                                     android:layout_gravity="right"
                                     android:background="@drawable/btn_bg_enable"
+                                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                                    android:clickable="true"
                                     android:textAllCaps="true"
                                     android:textColor="@android:color/white"
                                     android:textSize="@dimen/text_size_fourteen"/>
