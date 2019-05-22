@@ -237,9 +237,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     }
 
     @Override
-    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, String qCodeQR) {
+    public void viewOrderClick(Context context, JsonQueuedPerson jsonQueuedPerson, boolean isPaymentNotAllowed) {
 
     }
+
 
     @Override
     public void orderDoneClick(int position) {

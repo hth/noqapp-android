@@ -1,5 +1,29 @@
 package com.noqapp.android.merchant.views.activities;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.ServicePaymentEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.StoreSettingApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -25,41 +49,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.StoreSettingApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalTime;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.cardview.widget.CardView;
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
@@ -83,6 +84,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private ServicePaymentEnum servicePaymentEnum;
     private LinearLayout ll_payment, ll_follow_up;
     private TextView tv_fee_after_discounted_followup;
+    private CardView cv_payment;
     private boolean isFollowUpAllow = false;
 
     @Override
@@ -121,6 +123,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         edt_limited_followup_days = findViewById(R.id.edt_limited_followup_days);
         ll_payment = findViewById(R.id.ll_payment);
         ll_follow_up = findViewById(R.id.ll_follow_up);
+        cv_payment = findViewById(R.id.cv_payment);
         codeQR = getIntent().getStringExtra("codeQR");
         toggleDayClosed.setOnClickListener(this);
         toggleTodayClosed.setOnClickListener(this);
@@ -128,9 +131,11 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         toggleStoreOffline.setOnClickListener(this);
         if (null != LaunchActivity.getLaunchActivity().getUserProfile() && BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
             ll_follow_up.setVisibility(View.VISIBLE);
+            cv_payment.setVisibility(View.VISIBLE);
             isFollowUpAllow = true;
         } else {
             ll_follow_up.setVisibility(View.GONE);
+            cv_payment.setVisibility(View.GONE);
             isFollowUpAllow = false;
         }
         pay_list.clear();
@@ -342,7 +347,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
-                   updateDiscountLabel();
+                    updateDiscountLabel();
                 } else {
                     tv_fee_after_discounted_followup.setText("");
                     tv_fee_after_discounted_followup.setVisibility(View.GONE);
@@ -548,15 +553,18 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                     new AppUtils().hideKeyBoard(this);
                 }
             }
-            ServicePaymentEnum servicePaymentEnum = storeSetting.getServicePayment();
-            sc_paid_user.setSelectedSegment(pay_list.indexOf(servicePaymentEnum.getDescription()));
-            edt_deduction_amount.setText(String.valueOf(storeSetting.getCancellationPrice() / 100));
-            edt_fees.setText(String.valueOf(storeSetting.getProductPrice() / 100));
 
-            edt_discounted_followup_price.setText(String.valueOf(storeSetting.getDiscountedFollowupProductPrice() / 100));
-            edt_follow_up_in_days.setText(String.valueOf(storeSetting.getFreeFollowupDays()));
-            edt_limited_followup_days.setText(String.valueOf(storeSetting.getDiscountedFollowupDays()));
-            updateDiscountLabel();
+            if (isFollowUpAllow) {
+                ServicePaymentEnum servicePaymentEnum = storeSetting.getServicePayment();
+                sc_paid_user.setSelectedSegment(pay_list.indexOf(servicePaymentEnum.getDescription()));
+                edt_deduction_amount.setText(String.valueOf(storeSetting.getCancellationPrice() / 100));
+                edt_fees.setText(String.valueOf(storeSetting.getProductPrice() / 100));
+
+                edt_discounted_followup_price.setText(String.valueOf(storeSetting.getDiscountedFollowupProductPrice() / 100));
+                edt_follow_up_in_days.setText(String.valueOf(storeSetting.getFreeFollowupDays()));
+                edt_limited_followup_days.setText(String.valueOf(storeSetting.getDiscountedFollowupDays()));
+                updateDiscountLabel();
+            }
         }
         dismissProgress();
     }
