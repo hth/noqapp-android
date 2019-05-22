@@ -18,13 +18,48 @@ public interface ScheduleApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/schedule/showSchedule/{codeQR}.json")
+    @GET("api/m/schedule/showSchedule/{month}/{codeQR}.json")
     Call<JsonScheduleList> showSchedule(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
             @Header("X-R-MAIL")
             String mail,
 
             @Header("X-R-AUTH")
             String auth,
+
+            @Path("month")
+            String month,
+
+            @Path("codeQR")
+            String codeQR
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/schedule/scheduleForDay/{day}/{codeQR}.json")
+    Call<JsonScheduleList> scheduleForDay(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Path("day")
+            String month,
 
             @Path("codeQR")
             String codeQR
