@@ -1,21 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.adapters.AppointmentDateAdapter;
-import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.android.client.views.pojos.AppointmentModel;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.utils.Formatter;
-
-import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
-import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
-
-import org.joda.time.DateTime;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,11 +8,35 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
+import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.AppointmentApiCalls;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.AppointmentDateAdapter;
+import com.noqapp.android.client.views.adapters.DependentAdapter;
+import com.noqapp.android.client.views.pojos.AppointmentModel;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.utils.Formatter;
+
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BookAppointmentActivity extends BaseActivity implements DatePickerListener, AppointmentDateAdapter.OnItemClickListener {
+public class BookAppointmentActivity extends BaseActivity implements DatePickerListener, AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
     private TextView tv_date_time;
     private RecyclerView rv_available_date;
@@ -69,8 +77,6 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         BizStoreElastic bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
             storeHourElastics = bizStoreElastic.getStoreHourElasticList();
-            StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(storeHourElastics);
-            setAppointmentSlots(storeHourElastic);
         }
 
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
@@ -89,6 +95,16 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                 }
             }
         });
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
+            appointmentApiCalls.setAppointmentPresenter(this);
+            appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(), "2019-05-22", "codeQR");
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
     }
 
     @Override
@@ -100,13 +116,13 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
             dayOfWeek = 7;
         }
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
-        setAppointmentSlots(storeHourElastic);
+        setAppointmentSlots(storeHourElastic, new ArrayList<>());
     }
 
     @Override
     public void onAppointmentSelected(AppointmentModel item, View view, int pos) {
-        if(null != dateTime)
-        tv_date_time.setText(item.getTime());
+        if (null != dateTime)
+            tv_date_time.setText(item.getTime());
     }
 
     private StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList, int day) {
@@ -120,15 +136,14 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         return null;
     }
 
-    private void setAppointmentSlots(StoreHourElastic storeHourElastic) {
+    private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getEndHour());
-        ArrayList<String> timeSlot = getTimeSlots(10, from, to);
-        boolean temp = true;
+        ArrayList<String> timeSlot = getTimeSlots(30, from, to);
+
         for (int i = 0; i < timeSlot.size(); i++) {
-            listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(temp));
-            temp = !temp;
+            listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
         AppointmentDateAdapter appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
@@ -164,6 +179,50 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         }
         return timeSlot;
     }
+
+    @Override
+    public void appointmentResponse(JsonScheduleList jsonScheduleList) {
+        Log.e("appointments", jsonScheduleList.toString());
+
+        ArrayList<String> filledTimes = new ArrayList<>();
+        if(null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size()>0){
+            for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
+                String str = jsonScheduleList.getJsonSchedules().get(i).getStartTime();
+                String input = String.format("%4s", str).replace(' ', '0');
+                int index = 1;
+                String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
+                Log.e("Check string----- ",input+"----------- "+outPut);
+                filledTimes.add(outPut);
+            }
+        }
+        StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(storeHourElastics);
+        setAppointmentSlots(storeHourElastic,filledTimes);
+        dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        if (errorCode == Constants.INVALID_BAR_CODE) {
+            ShowAlertInformation.showBarcodeErrorDialog(this);
+        } else {
+            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        }
+    }
+
 
 }
 
