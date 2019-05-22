@@ -58,5 +58,34 @@ public class ScheduleApiCalls {
         });
     }
 
+    public void scheduleForDay(String did, String mail, String auth, String day, String codeQR) {
+        scheduleApiUrls.scheduleForDay(did, Constants.DEVICE_TYPE, mail, auth, day, codeQR).enqueue(new Callback<JsonScheduleList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("scheduleForDay fetch", String.valueOf(response.body()));
+                        appointmentPresenter.appointmentResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch scheduleForDay");
+                        appointmentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        appointmentPresenter.authenticationFailure();
+                    } else {
+                        appointmentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
+                Log.e("failure scheduleForDay", t.getLocalizedMessage(), t);
+                appointmentPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
 }
 

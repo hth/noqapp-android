@@ -89,7 +89,10 @@ public class LaunchActivity extends BaseLaunchActivity {
             if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 drawerItem.add(2, new NavigationBean(R.drawable.case_history, getString(R.string.menu_preference)));
                 drawerItem.add(3, new NavigationBean(R.drawable.pharmacy, getString(R.string.menu_pref_store)));
-                drawerItem.add(4, new NavigationBean(R.drawable.appointment, getString(R.string.menu_appointments)));
+                if(!AppUtils.isRelease()) {
+                    // Currently supported only in debug mode
+                    drawerItem.add(4, new NavigationBean(R.drawable.appointment, getString(R.string.menu_appointments)));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,13 +2,14 @@ package com.noqapp.android.client.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.model.response.open.StoreDetailApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.StorePresenter;
 import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.utils.Constants;
 
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,12 +20,12 @@ import retrofit2.Response;
  * User: omkar
  * Date: 3/26/17 11:49 PM
  */
-public class StoreDetailApiCall {
-    private final String TAG = StoreDetailApiCall.class.getSimpleName();
+public class StoreDetailApiCalls {
+    private final String TAG = StoreDetailApiCalls.class.getSimpleName();
     private static final StoreDetailApiUrls storeDetailApiUrls;
     private StorePresenter storePresenter;
 
-    public StoreDetailApiCall(StorePresenter storePresenter) {
+    public StoreDetailApiCalls(StorePresenter storePresenter) {
         this.storePresenter = storePresenter;
     }
 

@@ -6,7 +6,7 @@ import com.noqapp.android.client.model.AdvertisementApiCalls;
 import com.noqapp.android.client.model.FeedApiCall;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.model.SearchBusinessStoreApiCall;
+import com.noqapp.android.client.model.SearchBusinessStoreApiCalls;
 import com.noqapp.android.client.model.database.DatabaseTable;
 import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
@@ -358,8 +358,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
                 pb_near.setVisibility(View.VISIBLE);
                 pb_health_care.setVisibility(View.VISIBLE);
             }
-            SearchBusinessStoreApiCall searchBusinessStoreApiCall = new SearchBusinessStoreApiCall(this);
-            searchBusinessStoreApiCall.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
+            SearchBusinessStoreApiCalls searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(this);
+            searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
             // searchBusinessStoreApiCall.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
