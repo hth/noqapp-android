@@ -3,6 +3,9 @@ package com.noqapp.android.merchant.views.activities;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +35,15 @@ public class AppointmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
+        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        ImageView actionbarBack = findViewById(R.id.actionbarBack);
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        tv_toolbar_title.setText(getString(R.string.menu_appointments));
         initProgress();
         // List<EventDay> events = new ArrayList<>();
 
