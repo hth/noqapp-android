@@ -51,7 +51,7 @@ public class AppointmentApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
-                Log.e(TAG, "failure scheduleForMonth " + t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure scheduleForMonth " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });
@@ -80,7 +80,7 @@ public class AppointmentApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
-                Log.e(TAG, "failure scheduleForDay " + t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure scheduleForDay " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });
