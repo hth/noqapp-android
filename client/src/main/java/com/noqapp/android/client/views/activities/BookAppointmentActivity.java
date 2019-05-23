@@ -174,7 +174,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         ArrayList<String> filledTimes = new ArrayList<>();
         if(null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size()>0){
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                String str = jsonScheduleList.getJsonSchedules().get(i).getStartTime();
+                String str = String.valueOf(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
                 String input = String.format("%4s", str).replace(' ', '0');
                 int index = 1;
                 String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);

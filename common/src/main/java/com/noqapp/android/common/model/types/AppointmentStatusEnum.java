@@ -5,6 +5,7 @@ package com.noqapp.android.common.model.types;
  * Date: 2019-05-23 17:02
  */
 public enum AppointmentStatusEnum {
+    U("U", "Un-Confirmed"),
     A("A", "Accept"),
     R("R", "Reject"),
     S("S", "Serviced");
