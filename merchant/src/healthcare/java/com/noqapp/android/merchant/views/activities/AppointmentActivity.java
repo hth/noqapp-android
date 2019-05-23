@@ -26,7 +26,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
@@ -184,7 +183,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         progressDialog.show();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
-        scheduleApiCalls.showSchedule(BaseLaunchActivity.getDeviceID(),
+        scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), "2019-05-22", "codeQR");
     }
