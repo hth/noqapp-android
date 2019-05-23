@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -239,12 +240,16 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             @Override
             public void onClick(View v) {
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                    Intent intent = new Intent(context, ManagerProfileActivity.class);
-                    intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
-                    intent.putExtra("managerName", bizStoreElastic.getDisplayName());
-                    intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
-                    intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
-                    context.startActivity(intent);
+                    if (TextUtils.isEmpty(bizStoreElastic.getWebProfileId())) {
+                        Toast.makeText(context, "Doctor profile is not available currently", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(context, ManagerProfileActivity.class);
+                        intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
+                        intent.putExtra("managerName", bizStoreElastic.getDisplayName());
+                        intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
+                        intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
+                        context.startActivity(intent);
+                    }
                 }
             }
         });
