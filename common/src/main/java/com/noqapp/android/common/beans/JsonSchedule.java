@@ -1,5 +1,7 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.AppointmentStatusEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,6 +46,9 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("qid")
     private String qid;
+
+    @JsonProperty("as")
+    private AppointmentStatusEnum appointmentStatus;
 
     public String getDay() {
         return day;
