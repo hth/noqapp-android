@@ -77,6 +77,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private TextView tv_token, tv_q_name, tv_customer_name;
     private OrderItemAdapter adapter;
     private long mLastClickTime = 0;
+    private TextView tv_payment_msg;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -111,6 +112,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_token = findViewById(R.id.tv_token);
         tv_q_name = findViewById(R.id.tv_q_name);
         tv_customer_name = findViewById(R.id.tv_customer_name);
+        tv_payment_msg = findViewById(R.id.tv_payment_msg);
         ListView listview = findViewById(R.id.listview);
         TextView tv_item_count = findViewById(R.id.tv_item_count);
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
@@ -407,12 +409,16 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             tv_payment_mode.setText("N/A");
             adapter.setClickEnable(false);
         }
-
+        tv_payment_msg.setVisibility(View.GONE);
         if (getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false)) {
             rl_payment.setVisibility(View.GONE);
             btn_update_price.setVisibility(View.GONE);
             rl_multiple.setVisibility(View.GONE);
             btn_refund.setVisibility(View.GONE);
+            tv_payment_msg.setVisibility(View.VISIBLE);
+            if(getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY,false)){
+                tv_payment_msg.setVisibility(View.GONE);
+            }
         }
     }
 

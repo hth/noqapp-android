@@ -66,6 +66,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private OrderItemAdapter adapter;
     private String currencySymbol;
     private long mLastClickTime = 0;
+    private TextView tv_payment_msg;
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -103,6 +104,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_token = findViewById(R.id.tv_token);
         tv_q_name = findViewById(R.id.tv_q_name);
         tv_customer_name = findViewById(R.id.tv_customer_name);
+        tv_payment_msg = findViewById(R.id.tv_payment_msg);
 
         tv_payment_mode = findViewById(R.id.tv_payment_mode);
         tv_payment_status = findViewById(R.id.tv_payment_status);
@@ -318,9 +320,14 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             rl_payment.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
         }
+        tv_payment_msg.setVisibility(View.GONE);
         if(getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED,false)){
             rl_payment.setVisibility(View.GONE);
             btn_refund.setVisibility(View.GONE);
+            tv_payment_msg.setVisibility(View.VISIBLE);
+            if(getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY,false)){
+                tv_payment_msg.setVisibility(View.GONE);
+            }
         }
     }
 
