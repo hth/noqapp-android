@@ -217,6 +217,8 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
 
     private void fetchAppointments(String day){
         if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Fetching appointments...");
+            progressDialog.show();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
