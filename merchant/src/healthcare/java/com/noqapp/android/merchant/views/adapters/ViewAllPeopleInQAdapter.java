@@ -99,6 +99,7 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
                 in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
+                in.putExtra(IBConstant.KEY_IS_HISTORY, true);
                 ((Activity) context).startActivity(in);
             }
         });

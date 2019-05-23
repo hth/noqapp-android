@@ -80,6 +80,7 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
                 Intent in = new Intent(context, OrderDetailActivity.class);
                 in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
                 in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
+                in.putExtra(IBConstant.KEY_IS_HISTORY, true);
                 ((Activity) context).startActivity(in);
             }
         });
