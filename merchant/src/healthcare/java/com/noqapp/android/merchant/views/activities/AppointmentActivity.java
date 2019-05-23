@@ -1,9 +1,11 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
@@ -37,6 +40,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     private FixedHeightListView fh_list_view;
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
+    public static EventListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,14 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
         calendarView = findViewById(R.id.calendarView);
         fh_list_view = findViewById(R.id.fh_list_view);
+        fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent in = new Intent(AppointmentActivity.this,AppointmentActivityNew.class);
+               // in.putParcelableArrayListExtra(IBConstant.KEY_OBJECT_LIST,new ArrayList<EventDay>(adapter.getEventDayList()));
+                startActivity(in);
+            }
+        });
 
         Calendar min = Calendar.getInstance();
         min.add(Calendar.MONTH, 0);
@@ -167,7 +179,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
     private void fetchEvents(int month) {
         progressDialog.show();
-        EventListAdapter adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>());
+        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>());
         fh_list_view.setAdapter(adapter);
         progressDialog.show();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
@@ -183,7 +195,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         Log.e("appointments", jsonScheduleList.toString());
         List<EventDay> events = parseEventList(jsonScheduleList);
         calendarView.setEvents(events);
-        EventListAdapter adapter = new EventListAdapter(AppointmentActivity.this, events);
+        adapter = new EventListAdapter(AppointmentActivity.this, events);
         fh_list_view.setAdapter(adapter);
         dismissProgress();
     }

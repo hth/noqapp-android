@@ -18,6 +18,11 @@ import java.util.List;
 
 public class EventListAdapter extends BaseAdapter {
     private Context context;
+
+    public List<EventDay> getEventDayList() {
+        return eventDayList;
+    }
+
     private List<EventDay> eventDayList;
 
     public EventListAdapter(Context context, List<EventDay> eventDayList) {
@@ -64,4 +69,6 @@ public class EventListAdapter extends BaseAdapter {
         RecordHolder() {
         }
     }
+
+
 }
