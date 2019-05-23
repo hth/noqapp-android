@@ -1,5 +1,23 @@
 package com.noqapp.android.client.views.adapters;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -11,22 +29,6 @@ import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
-
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -217,25 +219,41 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 }
             }
         });
+        if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+            holder.btn_book_appointment.setVisibility(View.VISIBLE);
+            if (AppUtilities.isRelease()) {
+                holder.btn_book_appointment.setVisibility(View.GONE);
+            } else {
+                holder.btn_book_appointment.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.btn_book_appointment.setVisibility(View.GONE);
+        }
+        holder.btn_book_appointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(context, BookAppointmentActivity.class);
+                    in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
+                    context.startActivity(in);
+                } else {
+                    Toast.makeText(context, "Please login to book an appointment", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         holder.iv_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AppUtilities.isRelease()) {
-                    if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                    if (TextUtils.isEmpty(bizStoreElastic.getWebProfileId())) {
+                        Toast.makeText(context, "Doctor profile is not available currently", Toast.LENGTH_SHORT).show();
+                    } else {
                         Intent intent = new Intent(context, ManagerProfileActivity.class);
                         intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
                         intent.putExtra("managerName", bizStoreElastic.getDisplayName());
                         intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
                         intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
                         context.startActivity(intent);
-                    }
-                } else {
-                    if (UserUtils.isLogin()) {
-                        Intent in = new Intent(context, BookAppointmentActivity.class);
-                        in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
-                        context.startActivity(in);
-                    } else {
-                        Toast.makeText(context, "Please login to book an appointment", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -263,6 +281,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         private TextView tv_time_label;
         private TextView tv_status;
         private Button tv_join;
+        private Button btn_book_appointment;
         private TextView tv_consult_fees;
         private TextView tv_consult_fees_header;
         private ImageView iv_main;
@@ -281,6 +300,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.tv_status = itemView.findViewById(R.id.tv_status);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.tv_join = itemView.findViewById(R.id.tv_join);
+            this.btn_book_appointment = itemView.findViewById(R.id.btn_book_appointment);
             this.tv_consult_fees = itemView.findViewById(R.id.tv_consult_fees);
             this.tv_consult_fees_header = itemView.findViewById(R.id.tv_consult_fees_header);
             this.card_view = itemView.findViewById(R.id.card_view);

@@ -46,11 +46,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BookAppointmentActivity extends BaseActivity implements DatePickerListener, AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
+public class BookAppointmentActivity extends BaseActivity implements DatePickerListener,
+        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
     private TextView tv_date_time;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
+    private BizStoreElastic bizStoreElastic;
     private DateTime dateTime;
 
     @Override
@@ -74,7 +76,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
 
-        BizStoreElastic bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
+        bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
             storeHourElastics = bizStoreElastic.getStoreHourElasticList();
         }
@@ -96,27 +98,13 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
             }
         });
 
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(), "2019-05-22", "codeQR");
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
-        }
     }
 
     @Override
     public void onDateSelected(@NonNull final DateTime dateSelected) {
         Log.i("HorizontalPicker", "Selected date is " + dateSelected.getDayOfWeek());
         dateTime = dateSelected;
-        int dayOfWeek = dateSelected.getDayOfWeek();
-        if (dayOfWeek == 0) {
-            dayOfWeek = 7;
-        }
-        StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
-        setAppointmentSlots(storeHourElastic, new ArrayList<>());
+        fetchAppointments("2019-05-22");
     }
 
     @Override
@@ -183,7 +171,6 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
-
         ArrayList<String> filledTimes = new ArrayList<>();
         if(null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size()>0){
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
@@ -195,7 +182,11 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                 filledTimes.add(outPut);
             }
         }
-        StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(storeHourElastics);
+        int dayOfWeek = dateTime.getDayOfWeek();
+        if (dayOfWeek == 0) {
+            dayOfWeek = 7;
+        }
+        StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
         setAppointmentSlots(storeHourElastic,filledTimes);
         dismissProgress();
     }
@@ -224,5 +215,18 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     }
 
 
+    private void fetchAppointments(String day){
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Fetching appointments...");
+            progressDialog.show();
+            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
+            appointmentApiCalls.setAppointmentPresenter(this);
+            appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(), day, bizStoreElastic.getCodeQR());
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
+    }
 }
 

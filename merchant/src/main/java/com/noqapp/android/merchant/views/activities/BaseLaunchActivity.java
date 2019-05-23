@@ -729,6 +729,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void updateMenuList(boolean showChart) {
         drawerItem.clear();
         drawerItem.add(new NavigationBean(R.drawable.profile_red, "Profile"));
+        drawerItem.add( new NavigationBean(R.drawable.ic_reviews, "Reviews"));
         drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
         drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
         drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
@@ -736,7 +737,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         drawerItem.add(new NavigationBean(R.drawable.logout, "Logout"));
         if (showChart) {
             drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Statistics"));
-            drawerItem.add(2, new NavigationBean(R.drawable.ic_reviews, "Reviews"));
         }
         drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
         mDrawerList.setAdapter(drawerAdapter);
