@@ -48,14 +48,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BookAppointmentActivity extends BaseActivity implements DatePickerListener,
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
+
+public class BookAppointmentActivity extends BaseActivity implements
         AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
     private TextView tv_date_time;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
     private BizStoreElastic bizStoreElastic;
-    private DateTime dateTime;
+    private Calendar selectedDate;
     private AppointmentDateAdapter appointmentDateAdapter;
     private int selectedPos = -1;
     private AppointmentApiCalls appointmentApiCalls;
@@ -69,7 +72,35 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         appointmentApiCalls = new AppointmentApiCalls();
         appointmentApiCalls.setAppointmentPresenter(this);
 
-        HorizontalPicker picker = findViewById(R.id.datePicker);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, 12);
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, 0);
+
+        HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(7)
+                .configure()
+                .formatBottomText("EEE")
+                .formatMiddleText("dd")
+                .formatTopText("MMM")
+                .textSize(14f, 24f, 14f)
+
+                .end()
+                .build();      //  .showTopText(true)              // show or hide TopText (default to true).
+        // .showBottomText(true)
+        // .showMonthName(true)
+        fetchAppointments("2019-05-24");
+        horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                //do something
+                //Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
+                selectedDate = date;
+                fetchAppointments("2019-05-24");
+            }
+        });
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
@@ -81,14 +112,12 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         profileList.add(0, new JsonProfile().setName("Select Patient"));
         DependentAdapter adapter = new DependentAdapter(this, profileList);
         sp_name_list.setAdapter(adapter);
-        picker.setListener(this).init();
-        picker.setDate(new DateTime());
+
 
         bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
             storeHourElastics = bizStoreElastic.getStoreHourElasticList();
         }
-
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,16 +154,9 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     }
 
     @Override
-    public void onDateSelected(@NonNull final DateTime dateSelected) {
-        Log.i("HorizontalPicker", "Selected date is " + dateSelected.getDayOfWeek());
-        dateTime = dateSelected;
-        fetchAppointments("2019-05-24");
-    }
-
-    @Override
     public void onAppointmentSelected(AppointmentModel item, int pos) {
         selectedPos = pos;
-        if (null != dateTime)
+        if (null != selectedDate)
             tv_date_time.setText(item.getTime());
     }
 
@@ -207,7 +229,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                 filledTimes.add(outPut);
             }
         }
-        int dayOfWeek = dateTime.getDayOfWeek();
+        int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == 0) {
             dayOfWeek = 7;
         }
@@ -218,7 +240,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
 
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
-        Log.e("Booking status",jsonSchedule.toString());
+        Log.e("Booking status", jsonSchedule.toString());
         dismissProgress();
     }
 
