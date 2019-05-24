@@ -9,14 +9,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
-import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -37,8 +34,6 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
-
-import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -72,7 +67,10 @@ public class BookAppointmentActivity extends BaseActivity implements
         appointmentApiCalls = new AppointmentApiCalls();
         appointmentApiCalls.setAppointmentPresenter(this);
 
-
+        bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
+        if (null != bizStoreElastic) {
+            storeHourElastics = bizStoreElastic.getStoreHourElasticList();
+        }
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.MONTH, 12);
         Calendar startDate = Calendar.getInstance();
@@ -91,7 +89,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .build();      //  .showTopText(true)              // show or hide TopText (default to true).
         // .showBottomText(true)
         // .showMonthName(true)
-        fetchAppointments("2019-05-24");
+
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
@@ -114,10 +112,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         sp_name_list.setAdapter(adapter);
 
 
-        bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
-        if (null != bizStoreElastic) {
-            storeHourElastics = bizStoreElastic.getStoreHourElasticList();
-        }
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +144,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                 }
             }
         });
+        selectedDate = Calendar.getInstance();
+        fetchAppointments("2019-05-24");
 
     }
 
