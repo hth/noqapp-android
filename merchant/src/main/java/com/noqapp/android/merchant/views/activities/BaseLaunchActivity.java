@@ -16,14 +16,23 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -33,7 +42,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -48,12 +56,13 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.views.adapters.NavigationDrawerAdapter;
+import com.noqapp.android.merchant.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.merchant.views.fragments.AccessDeniedFragment;
 import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
+import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -62,21 +71,13 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     private static SharedPreferences sharedpreferences;
+    protected List<MenuModel> headerList = new ArrayList<>();
 
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
         BaseLaunchActivity.merchantListFragment = merchantListFragment;
@@ -117,10 +118,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public static SharedPreferences languagepref;
     public static String language;
     protected DrawerLayout mDrawerLayout;
-    protected ListView mDrawerList;
+    protected ExpandableListView mDrawerList;
     protected ActionBarDrawerToggle mDrawerToggle;
-    protected NavigationDrawerAdapter drawerAdapter;
-    protected ArrayList<NavigationBean> drawerItem = new ArrayList<>();
+    //protected ArrayList<NavigationBean> drawerItem = new ArrayList<>();
 
     public void enableDisableDrawer(boolean isEnable) {
         mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -171,68 +171,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected void initDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerList = findViewById(R.id.drawer_list);
-        drawerItem.clear();
+        // drawerItem.clear();
         if (isLoggedIn()) {
             updateMenuList(getUserLevel() == UserLevelEnum.S_MANAGER);
         }
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int selectedPosition = drawerAdapter.getData().get(position).getIcon();
-                switch (selectedPosition) {
-                    case R.drawable.pie_chart:
-                        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
-                            Intent in1 = new Intent(launchActivity, ChartListActivity.class);
-                            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
-                            startActivity(in1);
-                        } else {
-                            Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
-                        }
-                        break;
-                    case R.drawable.profile_red:
-                        Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
-                        startActivity(in3);
-                        break;
-                    case R.drawable.logout:
-                        showLogoutDialog();
-                        break;
-                    case R.drawable.ic_menu_share:
-                        AppUtils.shareTheApp(launchActivity);
-                        break;
-                    case R.drawable.ic_star:
-                        AppUtils.openPlayStore(launchActivity);
-                        break;
-                    case R.drawable.language:
-                        showChangeLangDialog();
-                        break;
-                    case R.drawable.legal: {
-                        Intent in = new Intent(launchActivity, PrivacyActivity.class);
-                        startActivity(in);
-                        break;
-                    }
-                    case R.drawable.ic_reviews:
-                        if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
-                            Intent in1 = new Intent(launchActivity, ReviewListActivity.class);
-                            in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
-                            startActivity(in1);
-                        } else {
-                            Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
-                        }
-                        break;
-                    case R.drawable.case_history:
-                        callPreference();
-                        break;
-                    case R.drawable.pharmacy:
-                        callPreferredStore();
-                        break;
-                    case R.drawable.appointment:
-                        callAppointments();
-                        break;
-                    default:
-                }
-                mDrawerLayout.closeDrawer(GravityCompat.START);
-            }
-        });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             public void onDrawerClosed(View view) {
             }
@@ -290,6 +232,115 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
+    }
+
+    private void menuClick(int drawable) {
+        switch (drawable) {
+            case R.drawable.pie_chart:
+                if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+                    Intent in1 = new Intent(launchActivity, ChartListActivity.class);
+                    in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                    startActivity(in1);
+                } else {
+                    Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.drawable.profile_red:
+                Intent in3 = new Intent(launchActivity, ManagerProfileActivity.class);
+                startActivity(in3);
+                break;
+            case R.drawable.logout:
+                showLogoutDialog();
+                break;
+            case R.drawable.ic_menu_share:
+                AppUtils.shareTheApp(launchActivity);
+                break;
+            case R.drawable.ic_star:
+                AppUtils.openPlayStore(launchActivity);
+                break;
+            case R.drawable.language:
+                showChangeLangDialog();
+                break;
+            case R.drawable.legal: {
+                Intent in = new Intent(launchActivity, PrivacyActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_reviews:
+                if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
+                    Intent in1 = new Intent(launchActivity, ReviewListActivity.class);
+                    in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
+                    startActivity(in1);
+                } else {
+                    Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.drawable.case_history:
+                callPreference();
+                break;
+            case R.drawable.pharmacy:
+                callPreferredStore();
+                break;
+            case R.drawable.appointment:
+                callAppointments();
+                break;
+            default:
+
+        }
+    }
+
+    public void updateMenuList(boolean showChart) {
+        // Fill menu items
+        headerList.clear();
+        headerList.add(new MenuModel("Profile", true, false, R.drawable.profile_red));
+        headerList.add(new MenuModel("Reviews", true, false, R.drawable.ic_reviews));
+
+        List<MenuModel> settingList = new ArrayList<>();
+        settingList.add(new MenuModel("Share the app", false, false, R.drawable.ic_menu_share));
+        settingList.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
+        settingList.add(new MenuModel("Rate the app", false, false, R.drawable.ic_star));
+        settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
+        headerList.add(new MenuModel("Settings", true, true, R.drawable.settings_square, settingList));
+        headerList.add(new MenuModel("Logout", true, false, R.drawable.logout));
+        if (showChart) {
+            headerList.add(0, new MenuModel("Statistics", true, false, R.drawable.pie_chart));
+        }
+
+        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList);
+        mDrawerList.setAdapter(expandableListAdapter);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        mDrawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (headerList.get(groupPosition).isGroup()) {
+                    if (!headerList.get(groupPosition).isHasChildren()) {
+                        int drawableId = headerList.get(groupPosition).getIcon();
+                        menuClick(drawableId);
+                        mDrawerLayout.closeDrawer(GravityCompat.START);
+                    }
+                }
+                return false;
+            }
+        });
+
+        mDrawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                if (headerList.get(groupPosition).getChildList() != null) {
+                    MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
+                    int drawableId = model.getIcon();
+                    menuClick(drawableId);
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                }
+                return false;
+            }
+        });
+        ((TextView) findViewById(R.id.tv_version)).setText(
+                AppUtils.isRelease()
+                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
+                        : getString(R.string.version_no, "Not for release"));
     }
 
     public boolean isOnline() {
@@ -717,35 +768,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                          String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("pref_language")) {
             ((MyApplication) getApplication()).setLocale(this);
             this.recreate();
         }
     }
 
-
-    public void updateMenuList(boolean showChart) {
-        drawerItem.clear();
-        drawerItem.add(new NavigationBean(R.drawable.profile_red, "Profile"));
-        drawerItem.add( new NavigationBean(R.drawable.ic_reviews, "Reviews"));
-        drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
-        drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, "Share the app"));
-        drawerItem.add(new NavigationBean(R.drawable.ic_star, "Rate the app"));
-        drawerItem.add(new NavigationBean(R.drawable.language, "Change language"));
-        drawerItem.add(new NavigationBean(R.drawable.logout, "Logout"));
-        if (showChart) {
-            drawerItem.add(0, new NavigationBean(R.drawable.pie_chart, "Statistics"));
-        }
-        drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
-        mDrawerList.setAdapter(drawerAdapter);
-        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        ((TextView) findViewById(R.id.tv_version)).setText(
-                AppUtils.isRelease()
-                        ? getString(R.string.version_no, BuildConfig.VERSION_NAME)
-                        : getString(R.string.version_no, "Not for release"));
-    }
 
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
@@ -798,7 +827,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 updateListByNotification(intent);
             }
         }
-
     }
 
     @Override
