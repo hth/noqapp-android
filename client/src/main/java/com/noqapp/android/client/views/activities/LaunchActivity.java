@@ -1039,29 +1039,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-//    public void updateMenuList(boolean isLogin) {
-//        drawerItem.clear();
-//        drawerItem.add(new NavigationBean(R.drawable.medical_profile, getString(R.string.medical_profiles)));
-//        drawerItem.add(new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
-//        drawerItem.add(new NavigationBean(R.drawable.purchase_order, getString(R.string.order_history)));
-//        drawerItem.add(new NavigationBean(R.drawable.merchant_account, getString(R.string.merchant_account)));
-//        drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, getString(R.string.share)));
-//        drawerItem.add(new NavigationBean(R.drawable.invite, getString(R.string.invite)));
-//        drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
-//        drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
-//        drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
-//        drawerItem.add(new NavigationBean(R.drawable.contact_us, getString(R.string.title_activity_contact_us)));
-//        if (isLogin) {
-//            drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
-//        }
-////        drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
-////        mDrawerList.setAdapter(drawerAdapter);
-//        setUpExpandableList();
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        }
-//    }
-
     private void setUpExpandableList(boolean isLogin) {
         // Fill menu items
         headerList.clear();
@@ -1098,48 +1075,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (headerList.get(groupPosition).isGroup()) {
                     if (!headerList.get(groupPosition).isHasChildren()) {
                         int drawableId = headerList.get(groupPosition).getIcon();
-                        switch (drawableId) {
-                            case R.drawable.merchant_account:
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
-                                    in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
-                                    startActivity(in);
-                                } else {
-                                    ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
-                                }
-                                break;
-                            case R.drawable.purchase_order: {
-                                Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
-                                startActivity(in);
-                                break;
-                            }
-                            case R.id.nav_app_setting: {
-                                Intent in = new Intent(launchActivity, SettingsActivity.class);
-                                startActivity(in);
-                                break;
-                            }
-                            case R.id.nav_transaction:
-                                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
-                                break;
-                            case R.drawable.ic_logout:
-                                ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
-                                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                    @Override
-                                    public void btnPositiveClick() {
-                                        NoQueueBaseActivity.clearPreferences();
-                                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                                        startActivity(loginIntent);
-                                    }
-
-                                    @Override
-                                    public void btnNegativeClick() {
-                                        //Do nothing
-                                    }
-                                });
-                                showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
-
-                                break;
-                        }
+                        menuClick(drawableId);
                         drawer.closeDrawer(GravityCompat.START);
                     }
                 }
@@ -1153,68 +1089,112 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (headerList.get(groupPosition) != null) {
                     MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
                     int drawableId = model.getIcon();
-                    switch (drawableId) {
-                        case R.drawable.medical_history: {
-                            if (UserUtils.isLogin()) {
-                                Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
-                                startActivity(in);
-                            } else {
-                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        }
-                        case R.drawable.medical_profile: {
-                            if (UserUtils.isLogin()) {
-                                Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
-                                startActivity(in);
-                            } else {
-                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        }
-                        case R.drawable.appointment: {
-                            if (UserUtils.isLogin()) {
-//                                Intent in = new Intent(launchActivity, BookAppointmentActivity.class);
-//                                startActivity(in);
-                            } else {
-                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        }
-                        case R.drawable.language:
-                            showChangeLangDialog();
-                            break;
-                        case R.drawable.contact_us: {
-                            Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
-                            startActivity(in);
-                            break;
-                        }
-                        case R.drawable.ic_star:
-                            AppUtilities.openPlayStore(launchActivity);
-                            break;
-                        case R.drawable.ic_menu_share:
-                            if (isExternalStoragePermissionAllowed()) {
-                                AppUtilities.shareTheApp(launchActivity);
-                            } else {
-                                requestStoragePermission();
-                            }
-                            break;
-                        case R.drawable.legal: {
-                            Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
-                            startActivity(in);
-                            break;
-                        }
-                        case R.drawable.invite: {
-                            Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
-                            startActivity(in);
-                            break;
-                        }
-                    }
+                    menuClick(drawableId);
                     drawer.closeDrawer(GravityCompat.START);
                 }
                 return false;
             }
         });
+    }
+
+    private void menuClick(int drawable) {
+        switch (drawable) {
+            case R.drawable.merchant_account:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
+                    in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
+                    startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
+                }
+                break;
+            case R.drawable.purchase_order: {
+                Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_app_setting: {
+                Intent in = new Intent(launchActivity, SettingsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_transaction:
+                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
+                break;
+            case R.drawable.ic_logout:
+                ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        NoQueueBaseActivity.clearPreferences();
+                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
+
+                break;
+            case R.drawable.medical_history: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+                    startActivity(in);
+                } else {
+                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case R.drawable.medical_profile: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
+                    startActivity(in);
+                } else {
+                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case R.drawable.appointment: {
+                if (UserUtils.isLogin()) {
+//                                Intent in = new Intent(launchActivity, BookAppointmentActivity.class);
+//                                startActivity(in);
+                } else {
+                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case R.drawable.language:
+                showChangeLangDialog();
+                break;
+            case R.drawable.contact_us: {
+                Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_star:
+                AppUtilities.openPlayStore(launchActivity);
+                break;
+            case R.drawable.ic_menu_share:
+                if (isExternalStoragePermissionAllowed()) {
+                    AppUtilities.shareTheApp(launchActivity);
+                } else {
+                    requestStoragePermission();
+                }
+                break;
+            case R.drawable.legal: {
+                Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.invite: {
+                Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
+                startActivity(in);
+                break;
+            }
+        }
     }
 
     private boolean isExternalStoragePermissionAllowed() {
