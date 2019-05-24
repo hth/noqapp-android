@@ -56,7 +56,7 @@ public class EventListAdapter extends BaseAdapter {
             recordHolder = (RecordHolder) view.getTag();
         }
         JsonSchedule jsonSchedule = (JsonSchedule) eventDayList.get(position).getEventObject();
-        recordHolder.tv_date.setText(jsonSchedule.getDay());
+        recordHolder.tv_date.setText(jsonSchedule.getScheduleDate());
         recordHolder.tv_no_of_patient.setText(String.valueOf(jsonSchedule.getTotalAppointments()));
         return view;
     }
