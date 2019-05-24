@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -73,7 +74,7 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/appointment/bookAppointment.json")
+    @POST("api/c/appointment/bookAppointment.json")
     Call<JsonScheduleList> bookAppointment(
             @Header("X-R-DID")
             String did,
@@ -96,7 +97,7 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/appointment/cancelAppointment.json")
+    @POST("api/c/appointment/cancelAppointment.json")
     Call<JsonScheduleList> cancelAppointment(
             @Header("X-R-DID")
             String did,

@@ -32,6 +32,7 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.client.views.pojos.AppointmentModel;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
@@ -54,6 +55,9 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     private List<StoreHourElastic> storeHourElastics;
     private BizStoreElastic bizStoreElastic;
     private DateTime dateTime;
+    private AppointmentDateAdapter appointmentDateAdapter;
+    private int selectedPos = -1;
+    private AppointmentApiCalls appointmentApiCalls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +65,14 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
         tv_toolbar_title.setText("Book an Appointment");
+        appointmentApiCalls = new AppointmentApiCalls();
+        appointmentApiCalls.setAppointmentPresenter(this);
+
         HorizontalPicker picker = findViewById(R.id.datePicker);
         rv_available_date = findViewById(R.id.rv_available_date);
+        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
+        rv_available_date.setItemAnimator(new DefaultItemAnimator());
+
         sp_name_list = findViewById(R.id.sp_name_list);
         tv_date_time = findViewById(R.id.tv_date_time);
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
@@ -72,9 +82,6 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         sp_name_list.setAdapter(adapter);
         picker.setListener(this).init();
         picker.setDate(new DateTime());
-
-        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
-        rv_available_date.setItemAnimator(new DefaultItemAnimator());
 
         bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
@@ -94,6 +101,22 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                     Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
                 } else {
                     // Process
+
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.setMessage("Booking appointment...");
+                        progressDialog.show();
+                        JsonSchedule jsonSchedule = new JsonSchedule();
+                        jsonSchedule.setCodeQR(bizStoreElastic.getCodeQR());
+                        jsonSchedule.setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()));
+                        jsonSchedule.setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos+1).getTime()));
+                        jsonSchedule.setDay("2019-05-24");
+                        jsonSchedule.setQid(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
+                        appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(), jsonSchedule);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
+                    }
                 }
             }
         });
@@ -108,7 +131,8 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     }
 
     @Override
-    public void onAppointmentSelected(AppointmentModel item, View view, int pos) {
+    public void onAppointmentSelected(AppointmentModel item, int pos) {
+        selectedPos = pos;
         if (null != dateTime)
             tv_date_time.setText(item.getTime());
     }
@@ -133,7 +157,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         for (int i = 0; i < timeSlot.size(); i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
-        AppointmentDateAdapter appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
+        appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
     }
 
@@ -172,13 +196,13 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         ArrayList<String> filledTimes = new ArrayList<>();
-        if(null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size()>0){
+        if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
                 String str = String.valueOf(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
                 String input = String.format("%4s", str).replace(' ', '0');
                 int index = 1;
                 String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-                Log.e("Check string----- ",input+"----------- "+outPut);
+                Log.e("Check string----- ", input + "----------- " + outPut);
                 filledTimes.add(outPut);
             }
         }
@@ -187,7 +211,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
             dayOfWeek = 7;
         }
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
-        setAppointmentSlots(storeHourElastic,filledTimes);
+        setAppointmentSlots(storeHourElastic, filledTimes);
         dismissProgress();
     }
 
@@ -215,17 +239,26 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     }
 
 
-    private void fetchAppointments(String day){
+    private void fetchAppointments(String day) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching appointments...");
             progressDialog.show();
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
                     UserUtils.getAuth(), day, bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
+        }
+    }
+
+    private int removeColon(String input) {
+        try {
+            if (input.contains(":"))
+                return Integer.parseInt(input.replace(":", ""));
+            else return Integer.parseInt(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 }

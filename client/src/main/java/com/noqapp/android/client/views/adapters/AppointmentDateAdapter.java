@@ -1,16 +1,17 @@
 package com.noqapp.android.client.views.adapters;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.pojos.AppointmentModel;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.pojos.AppointmentModel;
 
 import java.util.List;
 
@@ -19,12 +20,15 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     private List<AppointmentModel> dataSet;
     private Context context;
 
+    public List<AppointmentModel> getDataSet() {
+        return dataSet;
+    }
+
     public AppointmentDateAdapter(List<AppointmentModel> data, OnItemClickListener listener, Context context) {
         this.dataSet = data;
         this.listener = listener;
         this.context = context;
     }
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,7 +57,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
                         // Do nothing
                     } else {
                         //Toast.makeText(context, "Book your appointment", Toast.LENGTH_SHORT).show();
-                        listener.onAppointmentSelected(dataSet.get(listPosition), v, listPosition);
+                        listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
                     }
                 }
             }
@@ -66,7 +70,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     }
 
     public interface OnItemClickListener {
-        void onAppointmentSelected(AppointmentModel item, View view, int pos);
+        void onAppointmentSelected(AppointmentModel item, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
