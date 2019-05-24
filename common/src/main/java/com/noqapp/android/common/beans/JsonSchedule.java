@@ -35,8 +35,8 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("dy")
-    private String day;
+    @JsonProperty("sd")
+    private String scheduleDate;
 
     @JsonProperty("ta")
     private int totalAppointments;
@@ -77,12 +77,12 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getDay() {
-        return day;
+    public String getScheduleDate() {
+        return scheduleDate;
     }
 
-    public JsonSchedule setDay(String day) {
-        this.day = day;
+    public JsonSchedule setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
         return this;
     }
 
@@ -152,7 +152,7 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @Override
     public String toString() {
         return "JsonSchedule{" +
-                "day='" + day + '\'' +
+                "scheduleDate='" + scheduleDate + '\'' +
                 ", totalAppointments=" + totalAppointments +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +

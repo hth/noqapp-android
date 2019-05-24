@@ -109,7 +109,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                         jsonSchedule.setCodeQR(bizStoreElastic.getCodeQR());
                         jsonSchedule.setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()));
                         jsonSchedule.setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos+1).getTime()));
-                        jsonSchedule.setDay("2019-05-24");
+                        jsonSchedule.setScheduleDate("2019-05-24");
                         jsonSchedule.setQid(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                         appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(),
                                 UserUtils.getEmail(),
