@@ -19,6 +19,7 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -26,6 +27,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
@@ -40,6 +42,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
     public static EventListAdapter adapter;
+    private String codeRQ = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,8 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         });
         tv_toolbar_title.setText(getString(R.string.menu_appointments));
         initProgress();
-
+        codeRQ = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
+        Log.e("CODE_QR",codeRQ);
         // Calendar calendar = Calendar.getInstance();
         // events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "Chand")));
 
@@ -185,7 +189,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), "2019-05-22", "codeQR");
+                LaunchActivity.getLaunchActivity().getAuth(), "2019-05-24", codeRQ);
     }
 
 
@@ -197,6 +201,16 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         adapter = new EventListAdapter(AppointmentActivity.this, events);
         fh_list_view.setAdapter(adapter);
         dismissProgress();
+    }
+
+    @Override
+    public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
+
+    }
+
+    @Override
+    public void appointmentCancelResponse(JsonResponse jsonResponse) {
+
     }
 
     @Override

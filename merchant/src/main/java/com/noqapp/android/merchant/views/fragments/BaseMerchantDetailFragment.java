@@ -92,7 +92,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected Button btn_skip;
     protected Button btn_next;
     protected Button btn_start;
-    protected ImageView iv_product_list;
+    protected ImageView iv_product_list,iv_appointment;
     protected boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     protected ManageQueueApiCalls manageQueueApiCalls;
@@ -146,6 +146,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         tv_skip = itemView.findViewById(R.id.tv_skip);
         ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
+        iv_appointment = itemView.findViewById(R.id.iv_appointment);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(new View.OnClickListener() {
             @Override

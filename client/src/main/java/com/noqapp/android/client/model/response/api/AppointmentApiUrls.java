@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.beans.body.UpdateProfile;

@@ -64,6 +64,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        iv_appointment.setVisibility(View.GONE);
         switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
             case RS:
             case GS:
@@ -71,7 +72,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 iv_product_list.setVisibility(View.VISIBLE);
                 break;
             default:
-                iv_product_list.setVisibility(View.INVISIBLE);
+                iv_product_list.setVisibility(View.GONE);
         }
 
         iv_product_list.setOnClickListener(new View.OnClickListener() {

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -120,7 +121,8 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     public void callAppointments() {
         super.callAppointments();
-        Intent intentAppointments = new Intent(launchActivity, AppointmentActivity.class);
-        startActivity(intentAppointments);
+        //Intent intentAppointments = new Intent(launchActivity, AppointmentActivity.class);
+       // startActivity(intentAppointments);
+        Toast.makeText(this, "Enable later", Toast.LENGTH_SHORT).show();
     }
 }

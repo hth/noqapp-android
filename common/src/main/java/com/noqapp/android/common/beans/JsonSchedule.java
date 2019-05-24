@@ -1,11 +1,10 @@
 package com.noqapp.android.common.beans;
 
-import com.noqapp.android.common.model.types.AppointmentStatusEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 
 import java.io.Serializable;
 
@@ -55,6 +54,9 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getScheduleAppointmentId() {
         return scheduleAppointmentId;
@@ -137,14 +139,28 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
     @Override
     public String toString() {
-        return "JsonSchedule{" +
-                "scheduleDate='" + scheduleDate + '\'' +
-                ", totalAppointments=" + totalAppointments +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", qid='" + qid + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonSchedule{");
+        sb.append("scheduleAppointmentId='").append(scheduleAppointmentId).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", scheduleDate='").append(scheduleDate).append('\'');
+        sb.append(", totalAppointments=").append(totalAppointments);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", qid='").append(qid).append('\'');
+        sb.append(", appointmentStatus=").append(appointmentStatus);
+        sb.append(", jsonProfile=").append(jsonProfile);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

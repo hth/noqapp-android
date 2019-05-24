@@ -32,6 +32,7 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.client.views.pojos.AppointmentModel;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -212,6 +213,17 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         }
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
         setAppointmentSlots(storeHourElastic, filledTimes);
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
+        Log.e("Booking status",jsonSchedule.toString());
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
 

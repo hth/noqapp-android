@@ -69,6 +69,4 @@ public class EventListAdapter extends BaseAdapter {
         RecordHolder() {
         }
     }
-
-
 }
