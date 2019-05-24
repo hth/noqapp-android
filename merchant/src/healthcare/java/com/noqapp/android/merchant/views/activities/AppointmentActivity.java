@@ -157,7 +157,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
                 try {
                     JsonSchedule jsonSchedule = jsonScheduleList.getJsonSchedules().get(i);
-                    String[] dd = jsonSchedule.getDay().split("-");
+                    String[] dd = jsonSchedule.getScheduleDate().split("-");
                     Calendar cal = Calendar.getInstance();
                     cal.set(Calendar.SECOND, 12);
                     cal.set(Calendar.MINUTE, 11);
