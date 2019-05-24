@@ -47,9 +47,6 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonProperty("et")
     private int endTime;
 
-    @JsonProperty("nm")
-    private String name;
-
     @JsonProperty("qid")
     private String qid;
 
@@ -113,15 +110,6 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public JsonSchedule setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getQid() {
         return qid;
     }
@@ -156,7 +144,6 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
                 ", totalAppointments=" + totalAppointments +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
-                ", name='" + name + '\'' +
                 ", qid='" + qid + '\'' +
                 '}';
     }

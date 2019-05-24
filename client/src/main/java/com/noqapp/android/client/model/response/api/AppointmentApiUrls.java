@@ -75,7 +75,7 @@ public interface AppointmentApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/appointment/bookAppointment.json")
-    Call<JsonScheduleList> bookAppointment(
+    Call<JsonSchedule> bookAppointment(
             @Header("X-R-DID")
             String did,
 
@@ -98,7 +98,7 @@ public interface AppointmentApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/c/appointment/cancelAppointment.json")
-    Call<JsonScheduleList> cancelAppointment(
+    Call<JsonResponse> cancelAppointment(
             @Header("X-R-DID")
             String did,
 
