@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -16,7 +17,7 @@ import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.pojos.MenuModel;
+
 
 import net.danlew.android.joda.JodaTimeAndroid;
 

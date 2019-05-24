@@ -108,7 +108,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
                         JsonSchedule jsonSchedule = new JsonSchedule();
                         jsonSchedule.setCodeQR(bizStoreElastic.getCodeQR());
                         jsonSchedule.setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()));
-                        jsonSchedule.setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos+1).getTime()));
+                        jsonSchedule.setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos + 1).getTime()));
                         jsonSchedule.setScheduleDate("2019-05-24");
                         jsonSchedule.setQid(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                         appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(),
@@ -127,7 +127,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     public void onDateSelected(@NonNull final DateTime dateSelected) {
         Log.i("HorizontalPicker", "Selected date is " + dateSelected.getDayOfWeek());
         dateTime = dateSelected;
-        fetchAppointments("2019-05-22");
+        fetchAppointments("2019-05-24");
     }
 
     @Override
