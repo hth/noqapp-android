@@ -1,22 +1,22 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.applandeo.materialcalendarview.EventDay;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.AppointmentListAdapter;
 
-public class AppointmentActivityNew extends AppCompatActivity {
+public class AppointmentActivityNew extends AppCompatActivity implements AppointmentListAdapter.OnItemClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,17 @@ public class AppointmentActivityNew extends AppCompatActivity {
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         TextView tv_header = findViewById(R.id.tv_header);
         tv_header.setText("Today ("+AppointmentActivity.adapter.getEventDayList().size()+" appointments)");
-        AppointmentListAdapter followupAllListAdapter = new AppointmentListAdapter(AppointmentActivity.adapter.getEventDayList(), this, null);
+        AppointmentListAdapter followupAllListAdapter = new AppointmentListAdapter(AppointmentActivity.adapter.getEventDayList(), this, this);
         rcv_appointments.setAdapter(followupAllListAdapter);
+    }
+
+    @Override
+    public void appointmentAccept(EventDay item, int pos) {
+        Toast.makeText(this, "We will accept appointment later", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void appointmentReject(EventDay item, int pos) {
+        Toast.makeText(this, "We will reject appointment later", Toast.LENGTH_SHORT).show();
     }
 }

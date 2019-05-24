@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -35,12 +36,20 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        final EventDay jsonQueuedPerson = dataSet.get(listPosition);
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
+        final EventDay eventDay = dataSet.get(listPosition);
+        holder.iv_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.currentItemClick(listPosition);
+                    listener.appointmentReject(eventDay,listPosition);
+                }
+            }
+        });
+        holder.iv_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != listener) {
+                    listener.appointmentAccept(eventDay,listPosition);
                 }
             }
         });
@@ -52,17 +61,22 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
     public interface OnItemClickListener {
-        void currentItemClick(int pos);
+        void appointmentAccept(EventDay item, int pos);
+        void appointmentReject(EventDay item, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title;
         private CardView card_view;
+        private ImageView iv_accept;
+        private ImageView iv_reject;
 
 
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.iv_accept = itemView.findViewById(R.id.iv_accept);
+            this.iv_reject = itemView.findViewById(R.id.iv_reject);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

@@ -18,16 +18,21 @@ import java.util.List;
 
 public class EventListAdapter extends BaseAdapter {
     private Context context;
-
+    private final OnItemClickListener listener;
+    public interface OnItemClickListener {
+        void appointmentAccept(EventDay item, View view, int pos);
+        void appointmentReject(EventDay item, View view, int pos);
+    }
     public List<EventDay> getEventDayList() {
         return eventDayList;
     }
 
     private List<EventDay> eventDayList;
 
-    public EventListAdapter(Context context, List<EventDay> eventDayList) {
+    public EventListAdapter(Context context, List<EventDay> eventDayList,OnItemClickListener onItemClickListener) {
         this.context = context;
         this.eventDayList = eventDayList;
+        this.listener = onItemClickListener;
     }
 
     public int getCount() {

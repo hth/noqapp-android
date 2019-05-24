@@ -37,7 +37,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class AppointmentActivity extends AppCompatActivity implements AppointmentPresenter {
+public class AppointmentActivity extends AppCompatActivity implements AppointmentPresenter, EventListAdapter.OnItemClickListener {
     private FixedHeightListView fh_list_view;
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
@@ -59,7 +59,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         tv_toolbar_title.setText(getString(R.string.menu_appointments));
         initProgress();
         codeRQ = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
-        Log.e("CODE_QR",codeRQ);
+        Log.e("CODE_QR", codeRQ);
         // Calendar calendar = Calendar.getInstance();
         // events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "Chand")));
 
@@ -84,8 +84,8 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent in = new Intent(AppointmentActivity.this,AppointmentActivityNew.class);
-               // in.putParcelableArrayListExtra(IBConstant.KEY_OBJECT_LIST,new ArrayList<EventDay>(adapter.getEventDayList()));
+                Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
+                // in.putParcelableArrayListExtra(IBConstant.KEY_OBJECT_LIST,new ArrayList<EventDay>(adapter.getEventDayList()));
                 startActivity(in);
             }
         });
@@ -167,7 +167,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                     cal.set(Calendar.MINUTE, 11);
                     cal.set(Calendar.HOUR, 12);
                     cal.set(Calendar.AM_PM, Calendar.AM);
-                    cal.set(Calendar.MONTH, Integer.parseInt(dd[1])-1);
+                    cal.set(Calendar.MONTH, Integer.parseInt(dd[1]) - 1);
                     cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dd[2]));
                     cal.set(Calendar.YEAR, Integer.parseInt(dd[0]));
                     events.add(new EventDay(cal, DrawableUtils.getThreeDots(this), jsonSchedule));
@@ -182,7 +182,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
     private void fetchEvents(int month) {
         progressDialog.show();
-        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>());
+        adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>(), this);
         fh_list_view.setAdapter(adapter);
         progressDialog.show();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
@@ -198,7 +198,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         Log.e("appointments", jsonScheduleList.toString());
         List<EventDay> events = parseEventList(jsonScheduleList);
         calendarView.setEvents(events);
-        adapter = new EventListAdapter(AppointmentActivity.this, events);
+        adapter = new EventListAdapter(AppointmentActivity.this, events, this);
         fh_list_view.setAdapter(adapter);
         dismissProgress();
     }
@@ -240,5 +240,15 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     protected void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    @Override
+    public void appointmentAccept(EventDay item, View view, int pos) {
+
+    }
+
+    @Override
+    public void appointmentReject(EventDay item, View view, int pos) {
+
     }
 }
