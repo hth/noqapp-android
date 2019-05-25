@@ -47,7 +47,10 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     private int endTime;
 
     @JsonProperty("qid")
-    private String qid;
+    private String queueUserId;
+
+    @JsonProperty ("gq")
+    private String guardianQid;
 
     @JsonProperty("as")
     private AppointmentStatusEnum appointmentStatus;
@@ -112,12 +115,21 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getQid() {
-        return qid;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public JsonSchedule setQid(String qid) {
-        this.qid = qid;
+    public JsonSchedule setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getGuardianQid() {
+        return guardianQid;
+    }
+
+    public JsonSchedule setGuardianQid(String guardianQid) {
+        this.guardianQid = guardianQid;
         return this;
     }
 
@@ -156,7 +168,7 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         sb.append(", totalAppointments=").append(totalAppointments);
         sb.append(", startTime=").append(startTime);
         sb.append(", endTime=").append(endTime);
-        sb.append(", qid='").append(qid).append('\'');
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
         sb.append(", appointmentStatus=").append(appointmentStatus);
         sb.append(", jsonProfile=").append(jsonProfile);
         sb.append(", error=").append(error);

@@ -63,7 +63,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
-        tv_toolbar_title.setText("Book an Appointment");
+        tv_toolbar_title.setText("Book Appointment");
         appointmentApiCalls = new AppointmentApiCalls();
         appointmentApiCalls.setAppointmentPresenter(this);
 
@@ -96,7 +96,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 //do something
                 //Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
                 selectedDate = date;
-                fetchAppointments("2019-05-24");
+                fetchAppointments("2019-05-26");
             }
         });
         rv_available_date = findViewById(R.id.rv_available_date);
@@ -111,41 +111,36 @@ public class BookAppointmentActivity extends BaseActivity implements
         DependentAdapter adapter = new DependentAdapter(this, profileList);
         sp_name_list.setAdapter(adapter);
 
-
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
-        btn_book_appointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv_date_time.setError(null);
-                sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
-                if (sp_name_list.getSelectedItemPosition() == 0) {
-                    Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
-                    sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
-                } else if (TextUtils.isEmpty(tv_date_time.getText().toString())) {
-                    Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
-                } else {
-                    // Process
+        btn_book_appointment.setOnClickListener(v -> {
+            tv_date_time.setError(null);
+            sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
+            if (sp_name_list.getSelectedItemPosition() == 0) {
+                Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
+            } else if (TextUtils.isEmpty(tv_date_time.getText().toString())) {
+                Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
+            } else {
+                // Process
 
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.setMessage("Booking appointment...");
-                        progressDialog.show();
-                        JsonSchedule jsonSchedule = new JsonSchedule();
-                        jsonSchedule.setCodeQR(bizStoreElastic.getCodeQR());
-                        jsonSchedule.setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()));
-                        jsonSchedule.setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos + 1).getTime()));
-                        jsonSchedule.setScheduleDate("2019-05-24");
-                        jsonSchedule.setQid(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
-                        appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(),
-                                UserUtils.getEmail(),
-                                UserUtils.getAuth(), jsonSchedule);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
-                    }
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.setMessage("Booking appointment...");
+                    progressDialog.show();
+
+                    JsonSchedule jsonSchedule = new JsonSchedule()
+                            .setCodeQR(bizStoreElastic.getCodeQR())
+                            .setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()))
+                            .setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos + 1).getTime()))
+                            .setScheduleDate("2019-05-26")
+                            .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
+                    appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                 }
             }
         });
         selectedDate = Calendar.getInstance();
-        fetchAppointments("2019-05-24");
+        fetchAppointments("2019-05-26");
 
     }
 
