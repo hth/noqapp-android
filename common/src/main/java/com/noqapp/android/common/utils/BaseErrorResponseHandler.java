@@ -96,6 +96,7 @@ public abstract class BaseErrorResponseHandler {
 
                     case CANNOT_BOOK_APPOINTMENT:
                     case FAILED_TO_CANCEL_APPOINTMENT:
+                    case FAILED_TO_FIND_APPOINTMENT:
                     case APPOINTMENT_ALREADY_EXISTS:
 
                     case SEVERE:
