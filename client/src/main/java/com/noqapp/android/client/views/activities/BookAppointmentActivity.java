@@ -1,5 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,30 +74,40 @@ public class BookAppointmentActivity extends BaseActivity implements
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.MONTH, 12);
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, 0);
+        Date dt = new Date();
+        startDate.setTime(dt);
+       // startDate.add(Calendar.DAY_OF_MONTH,-1);
+
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
                 .range(startDate, endDate)
-                .datesNumberOnScreen(7)
+                .datesNumberOnScreen(5)
                 .configure()
                 .formatBottomText("EEE")
                 .formatMiddleText("dd")
                 .formatTopText("MMM")
                 .textSize(14f, 24f, 14f)
                 .end()
-                .build();      //  .showTopText(true)              // show or hide TopText (default to true).
-        // .showBottomText(true)
-        // .showMonthName(true)
+               // .defaultSelectedDate(Calendar.getInstance())
+                .build();
+
 
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
                 //do something
-                //Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
                 selectedDate = date;
                 fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
+            @Override
+            public boolean onDateLongClicked(Calendar date, int position) {
+                selectedDate = date;
+                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
+                return true;
+            }
         });
+        horizontalCalendarView.refresh();
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
@@ -120,7 +131,6 @@ public class BookAppointmentActivity extends BaseActivity implements
                 Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
             } else {
                 // Process
-
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.setMessage("Booking appointment...");
                     progressDialog.show();
@@ -229,6 +239,11 @@ public class BookAppointmentActivity extends BaseActivity implements
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
         Log.e("Booking status", jsonSchedule.toString());
+        Intent intent = new Intent(this,AppointmentBookingDetailActivity.class);
+        intent.putExtra(IBConstant.KEY_DATA_OBJECT,jsonSchedule);
+        intent.putExtra(IBConstant.KEY_DATA,bizStoreElastic);
+        startActivity(intent);
+        finish();
         dismissProgress();
     }
 
@@ -284,4 +299,3 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
     }
 }
-
