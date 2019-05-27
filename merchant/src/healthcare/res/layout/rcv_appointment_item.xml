@@ -137,14 +137,14 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/accept" />
+                    android:background="@drawable/accept_empty" />
 
                 <ImageView
                     android:id="@+id/iv_reject"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:background="@drawable/reject" />
+                    android:background="@drawable/reject_empty" />
             </LinearLayout>
 
         </LinearLayout>

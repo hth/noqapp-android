@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
@@ -36,13 +37,11 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_appointment_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
         JsonSchedule jsonSchedule = (JsonSchedule) dataSet.get(position).getEventObject();
         holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
         holder.tv_gender_age.setText(new AppUtils().calculateAge(jsonSchedule.getJsonProfile().
@@ -55,11 +54,41 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
+        switch (jsonSchedule.getAppointmentStatus()) {
+            case U:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
+                break;
+            case A:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
+                break;
+            case R:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject));
+                break;
+            case S:
+                // Define what to do
+                break;
+        }
         holder.iv_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.appointmentReject(dataSet.get(position), position);
+                    switch (jsonSchedule.getAppointmentStatus()) {
+                        case U:
+                            listener.appointmentReject(dataSet.get(position), position);
+                            break;
+                        case A:
+                            listener.appointmentReject(dataSet.get(position), position);
+                            break;
+                        case R:
+                            break;
+                        case S:
+                            // Define what to do
+                            break;
+                    }
+
                 }
             }
         });
@@ -68,6 +97,18 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             public void onClick(View v) {
                 if (null != listener) {
                     listener.appointmentAccept(dataSet.get(position), position);
+                    switch (jsonSchedule.getAppointmentStatus()) {
+                        case U:
+                            listener.appointmentAccept(dataSet.get(position), position);
+                            break;
+                        case A:
+                            break;
+                        case R:
+                            break;
+                        case S:
+                            // Define what to do
+                            break;
+                    }
                 }
             }
         });

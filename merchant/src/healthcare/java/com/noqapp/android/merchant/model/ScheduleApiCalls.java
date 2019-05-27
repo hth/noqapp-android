@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.model.response.api.ScheduleApiUrls;
@@ -80,6 +81,35 @@ public class ScheduleApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
+                Log.e(TAG, "Failure scheduleForDay " + t.getLocalizedMessage(), t);
+                appointmentPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void changeAppointmentStatus(String did, String mail, String auth, JsonSchedule jsonSchedule) {
+        scheduleApiUrls.changeAppointmentStatus(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "scheduleForDay fetch " + String.valueOf(response.body()));
+                        appointmentPresenter.appointmentBookingResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch scheduleForDay");
+                        appointmentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        appointmentPresenter.authenticationFailure();
+                    } else {
+                        appointmentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonSchedule> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure scheduleForDay " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }

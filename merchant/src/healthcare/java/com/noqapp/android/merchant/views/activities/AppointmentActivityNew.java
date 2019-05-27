@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
@@ -38,6 +39,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     private RecyclerView rcv_appointments;
     private TextView tv_appointment_accepted, tv_total_appointment,
             tv_appointment_cancelled, tv_appointment_pending;
+    private ScheduleApiCalls scheduleApiCalls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             rcv_appointments.setHasFixedSize(true);
             rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
             rcv_appointments.setItemAnimator(new DefaultItemAnimator());
-
             progressDialog.show();
-            ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
+            scheduleApiCalls = new ScheduleApiCalls();
             scheduleApiCalls.setAppointmentPresenter(this);
             scheduleApiCalls.scheduleForDay(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
@@ -87,11 +88,25 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     @Override
     public void appointmentAccept(EventDay item, int pos) {
         Toast.makeText(this, "We will accept appointment later", Toast.LENGTH_SHORT).show();
+        progressDialog.setMessage("Accepting appointment...");
+        progressDialog.show();
+        JsonSchedule jsonSchedule = ((JsonSchedule) item.getEventObject());
+        jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
+        scheduleApiCalls.changeAppointmentStatus(BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
     }
 
     @Override
     public void appointmentReject(EventDay item, int pos) {
         Toast.makeText(this, "We will reject appointment later", Toast.LENGTH_SHORT).show();
+        progressDialog.setMessage("Rejecting appointment...");
+        progressDialog.show();
+        JsonSchedule jsonSchedule = ((JsonSchedule) item.getEventObject());
+        jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
+        scheduleApiCalls.changeAppointmentStatus(BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
     }
 
     @Override
