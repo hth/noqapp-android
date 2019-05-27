@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,38 +14,67 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.utils.DrawableUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.adapters.AppointmentListAdapter;
 
-public class AppointmentActivityNew extends AppCompatActivity implements AppointmentListAdapter.OnItemClickListener{
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+public class AppointmentActivityNew extends AppCompatActivity implements AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
+
+    private ProgressDialog progressDialog;
+    private TextView tv_header;
+    private RecyclerView rcv_appointments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appointment_new);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+        try {
+            setContentView(R.layout.activity_appointment_new);
+            initProgress();
+            tv_header = findViewById(R.id.tv_header);
+            TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+            ImageView actionbarBack = findViewById(R.id.actionbarBack);
+            actionbarBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            tv_toolbar_title.setText("Appointment List");
+            int count = 2;
+            if (new AppUtils().isTablet(getApplicationContext())) {
+                count = 4;
+            } else {
+                count = 2;
             }
-        });
-        tv_toolbar_title.setText("Appointment List");
-        RecyclerView rcv_appointments = findViewById(R.id.rcv_appointments);
-        rcv_appointments.setHasFixedSize(true);
-        int count = 2;
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            count = 4;
-        } else {
-            count = 2;
+            rcv_appointments = findViewById(R.id.rcv_appointments);
+            rcv_appointments.setHasFixedSize(true);
+            rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
+            rcv_appointments.setItemAnimator(new DefaultItemAnimator());
+
+            progressDialog.show();
+            ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
+            scheduleApiCalls.setAppointmentPresenter(this);
+            scheduleApiCalls.scheduleForDay(BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),
+                    getIntent().getStringExtra("selectedDate"),
+                    getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
-        rcv_appointments.setItemAnimator(new DefaultItemAnimator());
-        TextView tv_header = findViewById(R.id.tv_header);
-        tv_header.setText("Today ("+AppointmentActivity.adapter.getEventDayList().size()+" appointments)");
-        AppointmentListAdapter followupAllListAdapter = new AppointmentListAdapter(AppointmentActivity.adapter.getEventDayList(), this, this);
-        rcv_appointments.setAdapter(followupAllListAdapter);
     }
 
     @Override
@@ -54,5 +85,84 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     @Override
     public void appointmentReject(EventDay item, int pos) {
         Toast.makeText(this, "We will reject appointment later", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void appointmentResponse(JsonScheduleList jsonScheduleList) {
+        Log.e("appointments", jsonScheduleList.toString());
+        List<EventDay> events = parseEventList(jsonScheduleList);
+        tv_header.setText("Today (" + events.size() + " appointments)");
+        AppointmentListAdapter appointmentListAdapter = new AppointmentListAdapter(events, this, this);
+        rcv_appointments.setAdapter(appointmentListAdapter);
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentCancelResponse(JsonResponse jsonResponse) {
+        dismissProgress();
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        new ErrorResponseHandler().processError(this, eej);
+        dismissProgress();
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        dismissProgress();
+    }
+
+    @Override
+    public void authenticationFailure() {
+        AppUtils.authenticationProcessing();
+        dismissProgress();
+    }
+
+
+    private void initProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching appointments...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
+    }
+
+    protected void dismissProgress() {
+        if (null != progressDialog && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    private List<EventDay> parseEventList(JsonScheduleList jsonScheduleList) {
+        List<EventDay> events = new ArrayList<>();
+        if (null == jsonScheduleList.getJsonSchedules() || jsonScheduleList.getJsonSchedules().size() == 0) {
+            return events;
+        } else {
+            for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
+                try {
+                    JsonSchedule jsonSchedule = jsonScheduleList.getJsonSchedules().get(i);
+                    String[] dd = jsonSchedule.getScheduleDate().split("-");
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.SECOND, 12);
+                    cal.set(Calendar.MINUTE, 11);
+                    cal.set(Calendar.HOUR, 12);
+                    cal.set(Calendar.AM_PM, Calendar.AM);
+                    cal.set(Calendar.MONTH, Integer.parseInt(dd[1]) - 1);
+                    cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dd[2]));
+                    cal.set(Calendar.YEAR, Integer.parseInt(dd[0]));
+                    events.add(new EventDay(cal, DrawableUtils.getThreeDots(this), jsonSchedule));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            return events;
+        }
     }
 }

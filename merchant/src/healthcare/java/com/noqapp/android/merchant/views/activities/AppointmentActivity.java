@@ -41,7 +41,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     private FixedHeightListView fh_list_view;
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
-    public static EventListAdapter adapter;
+    public EventListAdapter adapter;
     private String codeRQ = "";
 
     @Override
@@ -66,7 +66,8 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
-                // in.putParcelableArrayListExtra(IBConstant.KEY_OBJECT_LIST,new ArrayList<EventDay>(adapter.getEventDayList()));
+                in.putExtra("selectedDate",((JsonSchedule)adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
+                in.putExtra(IBConstant.KEY_CODE_QR,codeRQ);
                 startActivity(in);
             }
         });

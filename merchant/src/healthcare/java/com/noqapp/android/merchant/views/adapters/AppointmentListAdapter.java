@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.merchant.R;
 
 import java.util.List;
@@ -35,13 +36,16 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        final EventDay eventDay = dataSet.get(listPosition);
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+        JsonSchedule jsonSchedule = (JsonSchedule) dataSet.get(position).getEventObject();
+        holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
+        //holder.tv_gender_age.setText("");
         holder.iv_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.appointmentReject(eventDay,listPosition);
+                    listener.appointmentReject(dataSet.get(position),position);
                 }
             }
         });
@@ -49,7 +53,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.appointmentAccept(eventDay,listPosition);
+                    listener.appointmentAccept(dataSet.get(position),position);
                 }
             }
         });
@@ -67,6 +71,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title;
+        private TextView tv_gender_age;
         private CardView card_view;
         private ImageView iv_accept;
         private ImageView iv_reject;
@@ -75,6 +80,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.tv_gender_age = itemView.findViewById(R.id.tv_gender_age);
             this.iv_accept = itemView.findViewById(R.id.iv_accept);
             this.iv_reject = itemView.findViewById(R.id.iv_reject);
             this.card_view = itemView.findViewById(R.id.card_view);
