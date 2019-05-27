@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.activities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -84,7 +83,6 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .formatMiddleText("dd")
                 .formatTopText("MMM")
                 .textSize(14f, 24f, 14f)
-
                 .end()
                 .build();      //  .showTopText(true)              // show or hide TopText (default to true).
         // .showBottomText(true)
@@ -96,7 +94,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 //do something
                 //Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
                 selectedDate = date;
-                fetchAppointments("2019-05-26");
+                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
         });
         rv_available_date = findViewById(R.id.rv_available_date);
@@ -126,12 +124,11 @@ public class BookAppointmentActivity extends BaseActivity implements
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.setMessage("Booking appointment...");
                     progressDialog.show();
-
                     JsonSchedule jsonSchedule = new JsonSchedule()
                             .setCodeQR(bizStoreElastic.getCodeQR())
                             .setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()))
                             .setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos + 1).getTime()))
-                            .setScheduleDate("2019-05-26")
+                            .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
                             .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                     appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
                 } else {
@@ -140,7 +137,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             }
         });
         selectedDate = Calendar.getInstance();
-        fetchAppointments("2019-05-26");
+        fetchAppointments(new AppUtilities().getTodayDateWithFormat());
 
     }
 

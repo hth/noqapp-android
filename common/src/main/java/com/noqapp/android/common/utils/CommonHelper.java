@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -214,5 +215,14 @@ public class CommonHelper {
         return (double) Math.round(value * scale) / scale;
     }
 
-    // Show offer msg section 
+    public String getTodayDateWithFormat() {
+        Calendar cal = Calendar.getInstance();
+        return getDateWithFormat(cal);
+    }
+
+    public String getDateWithFormat(Calendar cal) {
+        String output = SDF_YYYY_MM_DD.format(cal.getTime());
+        Log.e("Today date", output);
+        return output;
+    }
 }
