@@ -60,25 +60,6 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         initProgress();
         codeRQ = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         Log.e("CODE_QR", codeRQ);
-        // Calendar calendar = Calendar.getInstance();
-        // events.add(new EventDay(calendar, DrawableUtils.getCircleDrawableWithText(this, "Chand")));
-
-//        Calendar calendar1 = Calendar.getInstance();
-//        calendar1.add(Calendar.DAY_OF_MONTH, 2);
-//        events.add(new EventDay(calendar1, R.drawable.sample_icon_2));
-
-//        Calendar calendar2 = Calendar.getInstance();
-//        calendar2.add(Calendar.DAY_OF_MONTH, 5);
-//        events.add(new EventDay(calendar2, R.drawable.sample_icon_3));
-
-//        Calendar calendar3 = Calendar.getInstance();
-//        calendar3.add(Calendar.DAY_OF_MONTH, 7);
-//        events.add(new EventDay(calendar3, R.drawable.sample_four_icons));
-
-//        Calendar calendar4 = Calendar.getInstance();
-//        calendar4.add(Calendar.DAY_OF_MONTH, 13);
-//        events.add(new EventDay(calendar4, DrawableUtils.getThreeDots(this)));
-
         calendarView = findViewById(R.id.calendarView);
         fh_list_view = findViewById(R.id.fh_list_view);
         fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,19 +97,19 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         calendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
-                fetchEvents(calendarView.getCurrentPageDate().getTime().getMonth());
+                fetchEvents(calendarView.getCurrentPageDate());
             }
         });
 
         calendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
-                fetchEvents(calendarView.getCurrentPageDate().getTime().getMonth());
+                fetchEvents(calendarView.getCurrentPageDate());
             }
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            fetchEvents(Calendar.getInstance().get(Calendar.MONTH));
+            fetchEvents(Calendar.getInstance());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -180,16 +161,17 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         }
     }
 
-    private void fetchEvents(int month) {
+    private void fetchEvents(Calendar calendar) {
         progressDialog.show();
         adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>(), this);
         fh_list_view.setAdapter(adapter);
         progressDialog.show();
+
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), "2019-05-26", codeRQ);
+                LaunchActivity.getLaunchActivity().getAuth(), new AppUtils().getDateWithFormat(calendar), codeRQ);
     }
 
 
@@ -205,27 +187,30 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
-
+        dismissProgress();
     }
 
     @Override
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
-
+        dismissProgress();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         new ErrorResponseHandler().processError(this, eej);
+        dismissProgress();
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        dismissProgress();
     }
 
     @Override
     public void authenticationFailure() {
         AppUtils.authenticationProcessing();
+        dismissProgress();
     }
 
 
