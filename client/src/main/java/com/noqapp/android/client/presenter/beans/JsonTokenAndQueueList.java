@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonScheduleList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,8 +32,19 @@ public class JsonTokenAndQueueList implements Serializable {
     @JsonProperty("tqs")
     private List<JsonTokenAndQueue> tokenAndQueues = new ArrayList<>();
 
+    @JsonProperty ("jsl")
+    private JsonScheduleList jsonScheduleList = new JsonScheduleList();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public boolean isSinceBeginning() {
+        return sinceBeginning;
+    }
+
+    public void setSinceBeginning(boolean sinceBeginning) {
+        this.sinceBeginning = sinceBeginning;
+    }
 
     public List<JsonTokenAndQueue> getTokenAndQueues() {
         return tokenAndQueues;
@@ -42,12 +54,13 @@ public class JsonTokenAndQueueList implements Serializable {
         this.tokenAndQueues = tokenAndQueues;
     }
 
-    public boolean isSinceBeginning() {
-        return sinceBeginning;
+    public JsonScheduleList getJsonScheduleList() {
+        return jsonScheduleList;
     }
 
-    public void setSinceBeginning(boolean sinceBeginning) {
-        this.sinceBeginning = sinceBeginning;
+    public JsonTokenAndQueueList setJsonScheduleList(JsonScheduleList jsonScheduleList) {
+        this.jsonScheduleList = jsonScheduleList;
+        return this;
     }
 
     public ErrorEncounteredJson getError() {

@@ -1,10 +1,16 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
-import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
-import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
-import com.noqapp.android.merchant.utils.MyValueFormatter;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,16 +31,12 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.YearlyData;
+import com.noqapp.android.merchant.utils.MyAxisValueFormatter;
+import com.noqapp.android.merchant.utils.MyValueFormatter;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -51,6 +53,7 @@ public class ChartFragment extends Fragment {
     private ArrayList<String> mMonths1 = new ArrayList<>();
     private String[] months = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private YAxis leftAxis, rightAxis;
+    private CardView cv_earning;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
@@ -62,7 +65,7 @@ public class ChartFragment extends Fragment {
         tv1.setText(Html.fromHtml(tv1.getText().toString().replace("**", "<b>*</b>")));
         TextView tv2 = view.findViewById(R.id.tv2);
         tv2.setText(Html.fromHtml(tv2.getText().toString().replace("**", "<b>*</b>")));
-
+        cv_earning = view.findViewById(R.id.cv_earning);
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -245,7 +248,14 @@ public class ChartFragment extends Fragment {
             setData(entries, healthCareStat.getRepeatCustomers().getMonthOfYear());
             //set the bar data
             generateDataBar(healthCareStat.getTwelveMonths());
-            updateLineChart(healthCareStat.getTwelveMonths(),healthCareStat.getProductPrice());
+            switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+                case DO:
+                    updateLineChart(healthCareStat.getTwelveMonths(), healthCareStat.getProductPrice());
+                    cv_earning.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    cv_earning.setVisibility(View.GONE);
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.model.response.api.ScheduleApiUrls;
@@ -28,17 +29,16 @@ public class ScheduleApiCalls {
         scheduleApiUrls = RetrofitClient.getClient().create(ScheduleApiUrls.class);
     }
 
-
-    public void showSchedule(String did, String mail, String auth, String month, String codeQR) {
-        scheduleApiUrls.showSchedule(did, Constants.DEVICE_TYPE, mail, auth, month, codeQR).enqueue(new Callback<JsonScheduleList>() {
+    public void scheduleForMonth(String did, String mail, String auth, String month, String codeQR) {
+        scheduleApiUrls.scheduleForMonth(did, Constants.DEVICE_TYPE, mail, auth, month, codeQR).enqueue(new Callback<JsonScheduleList>() {
             @Override
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("showSchedule fetch", String.valueOf(response.body()));
+                        Log.d(TAG, String.valueOf(response.body()));
                         appointmentPresenter.appointmentResponse(response.body());
                     } else {
-                        Log.e(TAG, "Failed to fetch showSchedule");
+                        Log.e(TAG, "Failed to fetch scheduleForMonth");
                         appointmentPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -52,7 +52,7 @@ public class ScheduleApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
-                Log.e("failure showSchedule", t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure scheduleForMonth " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });
@@ -64,7 +64,7 @@ public class ScheduleApiCalls {
             public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("scheduleForDay fetch", String.valueOf(response.body()));
+                        Log.d(TAG, "scheduleForDay fetch " + String.valueOf(response.body()));
                         appointmentPresenter.appointmentResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to fetch scheduleForDay");
@@ -81,11 +81,39 @@ public class ScheduleApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
-                Log.e("failure scheduleForDay", t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure scheduleForDay " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });
     }
 
+    public void scheduleAction(String did, String mail, String auth, JsonSchedule jsonSchedule) {
+        scheduleApiUrls.scheduleAction(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "scheduleAction fetch " + String.valueOf(response.body()));
+                        appointmentPresenter.appointmentBookingResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch scheduleAction");
+                        appointmentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        appointmentPresenter.authenticationFailure();
+                    } else {
+                        appointmentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonSchedule> call, @NonNull Throwable t) {
+                Log.e(TAG, "Failure scheduleAction " + t.getLocalizedMessage(), t);
+                appointmentPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
 }
 

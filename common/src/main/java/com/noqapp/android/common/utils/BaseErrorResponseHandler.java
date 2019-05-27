@@ -94,6 +94,11 @@ public abstract class BaseErrorResponseHandler {
                     case TRANSACTION_GATEWAY_DEFAULT:
                     case SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE:
 
+                    case CANNOT_BOOK_APPOINTMENT:
+                    case FAILED_TO_CANCEL_APPOINTMENT:
+                    case FAILED_TO_FIND_APPOINTMENT:
+                    case APPOINTMENT_ALREADY_EXISTS:
+
                     case SEVERE:
                     case DEVICE_DETAIL_MISSING:
                     case ACCOUNT_INACTIVE:

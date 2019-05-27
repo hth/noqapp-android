@@ -1,10 +1,15 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.beans.body.UpdateProfile;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -17,8 +22,8 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/appointment/showSchedule/{month}/{codeQR}.json")
-    Call<JsonScheduleList> showSchedule(
+    @GET("api/c/appointment/scheduleForMonth/{month}/{codeQR}.json")
+    Call<JsonScheduleList> scheduleForMonth(
             @Header("X-R-DID")
             String did,
 
@@ -63,5 +68,52 @@ public interface AppointmentApiUrls {
 
             @Path("codeQR")
             String codeQR
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CANNOT_BOOK_APPOINTMENT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/c/appointment/bookAppointment.json")
+    Call<JsonSchedule> bookAppointment(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonSchedule jsonSchedule //Note: populate with codeQR, Day, Start and End Time to be populated (just use guardian)
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/c/appointment/cancelAppointment.json")
+    Call<JsonResponse> cancelAppointment(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            JsonSchedule jsonSchedule //Note: populate with scheduleAppointmentId & codeQR (just use guardian)
     );
 }

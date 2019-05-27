@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 
 import java.io.Serializable;
 
@@ -27,30 +28,63 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonSchedule extends AbstractDomain implements Serializable {
 
-    @JsonProperty("dy")
-    private String day;
+    @JsonProperty("id")
+    private String scheduleAppointmentId;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
+    @JsonProperty("sd")
+    private String scheduleDate;
 
     @JsonProperty("ta")
     private int totalAppointments;
 
     @JsonProperty("st")
-    private String startTime;
+    private int startTime;
 
     @JsonProperty("et")
-    private String endTime;
-
-    @JsonProperty("nm")
-    private String name;
+    private int endTime;
 
     @JsonProperty("qid")
-    private String qid;
+    private String queueUserId;
 
-    public String getDay() {
-        return day;
+    @JsonProperty ("gq")
+    private String guardianQid;
+
+    @JsonProperty("as")
+    private AppointmentStatusEnum appointmentStatus;
+
+    @JsonProperty("jp")
+    private JsonProfile jsonProfile;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
+    public String getScheduleAppointmentId() {
+        return scheduleAppointmentId;
     }
 
-    public JsonSchedule setDay(String day) {
-        this.day = day;
+    public JsonSchedule setScheduleAppointmentId(String scheduleAppointmentId) {
+        this.scheduleAppointmentId = scheduleAppointmentId;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonSchedule setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public JsonSchedule setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
         return this;
     }
 
@@ -63,51 +97,82 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public String getStartTime() {
+    public int getStartTime() {
         return startTime;
     }
 
-    public JsonSchedule setStartTime(String startTime) {
+    public JsonSchedule setStartTime(int startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public String getEndTime() {
+    public int getEndTime() {
         return endTime;
     }
 
-    public JsonSchedule setEndTime(String endTime) {
+    public JsonSchedule setEndTime(int endTime) {
         this.endTime = endTime;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getQueueUserId() {
+        return queueUserId;
     }
 
-    public JsonSchedule setName(String name) {
-        this.name = name;
+    public JsonSchedule setQueueUserId(String queueUserId) {
+        this.queueUserId = queueUserId;
         return this;
     }
 
-    public String getQid() {
-        return qid;
+    public String getGuardianQid() {
+        return guardianQid;
     }
 
-    public JsonSchedule setQid(String qid) {
-        this.qid = qid;
+    public JsonSchedule setGuardianQid(String guardianQid) {
+        this.guardianQid = guardianQid;
         return this;
+    }
+
+    public AppointmentStatusEnum getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public JsonSchedule setAppointmentStatus(AppointmentStatusEnum appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
+        return this;
+    }
+
+    public JsonProfile getJsonProfile() {
+        return jsonProfile;
+    }
+
+    public JsonSchedule setJsonProfile(JsonProfile jsonProfile) {
+        this.jsonProfile = jsonProfile;
+        return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
     }
 
     @Override
     public String toString() {
-        return "JsonSchedule{" +
-                "day='" + day + '\'' +
-                ", totalAppointments=" + totalAppointments +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", name='" + name + '\'' +
-                ", qid='" + qid + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonSchedule{");
+        sb.append("scheduleAppointmentId='").append(scheduleAppointmentId).append('\'');
+        sb.append(", codeQR='").append(codeQR).append('\'');
+        sb.append(", scheduleDate='").append(scheduleDate).append('\'');
+        sb.append(", totalAppointments=").append(totalAppointments);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", queueUserId='").append(queueUserId).append('\'');
+        sb.append(", appointmentStatus=").append(appointmentStatus);
+        sb.append(", jsonProfile=").append(jsonProfile);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

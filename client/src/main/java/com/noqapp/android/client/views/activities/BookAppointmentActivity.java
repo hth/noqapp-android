@@ -1,22 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
-import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -32,11 +29,11 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.client.views.pojos.AppointmentModel;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
-
-import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,23 +43,75 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BookAppointmentActivity extends BaseActivity implements DatePickerListener,
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
+
+public class BookAppointmentActivity extends BaseActivity implements
         AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
     private TextView tv_date_time;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
     private BizStoreElastic bizStoreElastic;
-    private DateTime dateTime;
+    private Calendar selectedDate;
+    private AppointmentDateAdapter appointmentDateAdapter;
+    private int selectedPos = -1;
+    private AppointmentApiCalls appointmentApiCalls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
-        tv_toolbar_title.setText("Book an Appointment");
-        HorizontalPicker picker = findViewById(R.id.datePicker);
+        tv_toolbar_title.setText("Book Appointment");
+        appointmentApiCalls = new AppointmentApiCalls();
+        appointmentApiCalls.setAppointmentPresenter(this);
+
+        bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
+        if (null != bizStoreElastic) {
+            storeHourElastics = bizStoreElastic.getStoreHourElasticList();
+        }
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, 12);
+        Calendar startDate = Calendar.getInstance();
+        Date dt = new Date();
+        startDate.setTime(dt);
+       // startDate.add(Calendar.DAY_OF_MONTH,-1);
+
+
+        HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .configure()
+                .formatBottomText("EEE")
+                .formatMiddleText("dd")
+                .formatTopText("MMM")
+                .textSize(14f, 24f, 14f)
+                .end()
+               // .defaultSelectedDate(Calendar.getInstance())
+                .build();
+
+
+        horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                //do something
+               // Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
+                selectedDate = date;
+                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
+            }
+            @Override
+            public boolean onDateLongClicked(Calendar date, int position) {
+                selectedDate = date;
+                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
+                return true;
+            }
+        });
+        horizontalCalendarView.refresh();
         rv_available_date = findViewById(R.id.rv_available_date);
+        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
+        rv_available_date.setItemAnimator(new DefaultItemAnimator());
+
         sp_name_list = findViewById(R.id.sp_name_list);
         tv_date_time = findViewById(R.id.tv_date_time);
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
@@ -70,46 +119,42 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         profileList.add(0, new JsonProfile().setName("Select Patient"));
         DependentAdapter adapter = new DependentAdapter(this, profileList);
         sp_name_list.setAdapter(adapter);
-        picker.setListener(this).init();
-        picker.setDate(new DateTime());
-
-        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
-        rv_available_date.setItemAnimator(new DefaultItemAnimator());
-
-        bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
-        if (null != bizStoreElastic) {
-            storeHourElastics = bizStoreElastic.getStoreHourElasticList();
-        }
 
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
-        btn_book_appointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv_date_time.setError(null);
-                sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
-                if (sp_name_list.getSelectedItemPosition() == 0) {
-                    Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
-                    sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
-                } else if (TextUtils.isEmpty(tv_date_time.getText().toString())) {
-                    Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
+        btn_book_appointment.setOnClickListener(v -> {
+            tv_date_time.setError(null);
+            sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
+            if (sp_name_list.getSelectedItemPosition() == 0) {
+                Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
+            } else if (TextUtils.isEmpty(tv_date_time.getText().toString())) {
+                Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
+            } else {
+                // Process
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.setMessage("Booking appointment...");
+                    progressDialog.show();
+                    JsonSchedule jsonSchedule = new JsonSchedule()
+                            .setCodeQR(bizStoreElastic.getCodeQR())
+                            .setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()))
+                            .setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos + 1).getTime()))
+                            .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
+                            .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
+                    appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
                 } else {
-                    // Process
+                    ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                 }
             }
         });
+        selectedDate = Calendar.getInstance();
+        fetchAppointments(new AppUtilities().getTodayDateWithFormat());
 
     }
 
     @Override
-    public void onDateSelected(@NonNull final DateTime dateSelected) {
-        Log.i("HorizontalPicker", "Selected date is " + dateSelected.getDayOfWeek());
-        dateTime = dateSelected;
-        fetchAppointments("2019-05-22");
-    }
-
-    @Override
-    public void onAppointmentSelected(AppointmentModel item, View view, int pos) {
-        if (null != dateTime)
+    public void onAppointmentSelected(AppointmentModel item, int pos) {
+        selectedPos = pos;
+        if (null != selectedDate)
             tv_date_time.setText(item.getTime());
     }
 
@@ -133,7 +178,7 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
         for (int i = 0; i < timeSlot.size(); i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
-        AppointmentDateAdapter appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
+        appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
     }
 
@@ -172,22 +217,38 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         ArrayList<String> filledTimes = new ArrayList<>();
-        if(null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size()>0){
+        if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                String str = jsonScheduleList.getJsonSchedules().get(i).getStartTime();
+                String str = String.valueOf(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
                 String input = String.format("%4s", str).replace(' ', '0');
                 int index = 1;
                 String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-                Log.e("Check string----- ",input+"----------- "+outPut);
+                Log.e("Check string----- ", input + "----------- " + outPut);
                 filledTimes.add(outPut);
             }
         }
-        int dayOfWeek = dateTime.getDayOfWeek();
+        int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
         if (dayOfWeek == 0) {
             dayOfWeek = 7;
         }
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
-        setAppointmentSlots(storeHourElastic,filledTimes);
+        setAppointmentSlots(storeHourElastic, filledTimes);
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
+        Log.e("Booking status", jsonSchedule.toString());
+        Intent intent = new Intent(this,AppointmentBookingDetailActivity.class);
+        intent.putExtra(IBConstant.KEY_DATA_OBJECT,jsonSchedule);
+        intent.putExtra(IBConstant.KEY_DATA,bizStoreElastic);
+        startActivity(intent);
+        finish();
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
 
@@ -215,12 +276,10 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
     }
 
 
-    private void fetchAppointments(String day){
+    private void fetchAppointments(String day) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching appointments...");
             progressDialog.show();
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
                     UserUtils.getAuth(), day, bizStoreElastic.getCodeQR());
@@ -228,5 +287,15 @@ public class BookAppointmentActivity extends BaseActivity implements DatePickerL
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
-}
 
+    private int removeColon(String input) {
+        try {
+            if (input.contains(":"))
+                return Integer.parseInt(input.replace(":", ""));
+            else return Integer.parseInt(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+}

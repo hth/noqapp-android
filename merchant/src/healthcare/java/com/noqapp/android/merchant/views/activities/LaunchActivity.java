@@ -6,10 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
-import com.noqapp.android.common.beans.NavigationBean;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -18,15 +19,17 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 
+
 import net.danlew.android.joda.JodaTimeAndroid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
 
 public class LaunchActivity extends BaseLaunchActivity {
-
     private TextView tv_badge;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,12 +90,14 @@ public class LaunchActivity extends BaseLaunchActivity {
         super.updateMenuList(showChart);
         try {
             if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                drawerItem.add(2, new NavigationBean(R.drawable.case_history, getString(R.string.menu_preference)));
-                drawerItem.add(3, new NavigationBean(R.drawable.pharmacy, getString(R.string.menu_pref_store)));
-                if(!AppUtils.isRelease()) {
+                List<MenuModel> childModelsList = new ArrayList<>();
+                childModelsList.add(new MenuModel(getString(R.string.menu_preference), false, false, R.drawable.case_history));
+                childModelsList.add(new MenuModel(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
+                if (!AppUtils.isRelease()) {
                     // Currently supported only in debug mode
-                    drawerItem.add(4, new NavigationBean(R.drawable.appointment, getString(R.string.menu_appointments)));
+                    childModelsList.add(new MenuModel(getString(R.string.menu_appointments), false, false, R.drawable.appointment));
                 }
+                headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings,childModelsList));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,7 +121,8 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     public void callAppointments() {
         super.callAppointments();
-        Intent intentAppointments = new Intent(launchActivity, AppointmentActivity.class);
-        startActivity(intentAppointments);
+        //Intent intentAppointments = new Intent(launchActivity, AppointmentActivity.class);
+       // startActivity(intentAppointments);
+        Toast.makeText(this, "Enable later", Toast.LENGTH_SHORT).show();
     }
 }

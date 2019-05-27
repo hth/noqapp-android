@@ -31,9 +31,18 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -60,7 +69,6 @@ import com.noqapp.android.client.views.adapters.DrawerExpandableListAdapter;
 import com.noqapp.android.client.views.fragments.ChangeLocationFragment;
 import com.noqapp.android.client.views.fragments.ScanQueueFragment;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-import com.noqapp.android.client.views.pojos.MenuModel;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
@@ -77,9 +85,9 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
-
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -87,20 +95,10 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
@@ -138,7 +136,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public double longitute = 0;
     public String cityName = "";
     private List<MenuModel> headerList = new ArrayList<>();
-    private HashMap<MenuModel, List<MenuModel>> childList = new HashMap<>();
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -1042,56 +1039,32 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-//    public void updateMenuList(boolean isLogin) {
-//        drawerItem.clear();
-//        drawerItem.add(new NavigationBean(R.drawable.medical_profile, getString(R.string.medical_profiles)));
-//        drawerItem.add(new NavigationBean(R.drawable.medical_history, getString(R.string.medical_history)));
-//        drawerItem.add(new NavigationBean(R.drawable.purchase_order, getString(R.string.order_history)));
-//        drawerItem.add(new NavigationBean(R.drawable.merchant_account, getString(R.string.merchant_account)));
-//        drawerItem.add(new NavigationBean(R.drawable.ic_menu_share, getString(R.string.share)));
-//        drawerItem.add(new NavigationBean(R.drawable.invite, getString(R.string.invite)));
-//        drawerItem.add(new NavigationBean(R.drawable.legal, getString(R.string.legal)));
-//        drawerItem.add(new NavigationBean(R.drawable.ic_star, getString(R.string.ratetheapp)));
-//        drawerItem.add(new NavigationBean(R.drawable.language, getString(R.string.language_setting)));
-//        drawerItem.add(new NavigationBean(R.drawable.contact_us, getString(R.string.title_activity_contact_us)));
-//        if (isLogin) {
-//            drawerItem.add(new NavigationBean(R.drawable.ic_logout, getString(R.string.logout)));
-//        }
-////        drawerAdapter = new NavigationDrawerAdapter(this, drawerItem);
-////        mDrawerList.setAdapter(drawerAdapter);
-//        setUpExpandableList();
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        }
-//    }
-
     private void setUpExpandableList(boolean isLogin) {
         // Fill menu items
         headerList.clear();
-        childList.clear();
-        headerList.add(new MenuModel(getString(R.string.health_care), true, true, R.drawable.health_care));
+
+        List<MenuModel> healthList = new ArrayList<>();
+        healthList.add(new MenuModel(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
+        healthList.add(new MenuModel(getString(R.string.medical_history), false, false, R.drawable.medical_history));
+        healthList.add(new MenuModel(getString(R.string.my_appointments), false, false, R.drawable.appointment));
+
+        headerList.add(new MenuModel(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
         headerList.add(new MenuModel(getString(R.string.order_history), true, false, R.drawable.purchase_order));
         headerList.add(new MenuModel(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
-        headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square));
+
+        List<MenuModel> settingList = new ArrayList<>();
+        settingList.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
+        settingList.add(new MenuModel(getString(R.string.invite), false, false, R.drawable.invite));
+        settingList.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
+        settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
+        settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
+        settingList.add(new MenuModel(getString(R.string.title_activity_contact_us), false, false, R.drawable.contact_us));
+        headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         if (isLogin) {
             headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));
         }
-        List<MenuModel> childModelsList = new ArrayList<>();
-        childModelsList.add(new MenuModel(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
-        childModelsList.add(new MenuModel(getString(R.string.medical_history), false, false, R.drawable.medical_history));
-        childModelsList.add(new MenuModel(getString(R.string.my_appointments), false, false, R.drawable.appointment));
-        childList.put(headerList.get(0), childModelsList);
-        List<MenuModel> childModelsList1 = new ArrayList<>();
-        childModelsList1.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
-        childModelsList1.add(new MenuModel(getString(R.string.invite), false, false, R.drawable.invite));
-        childModelsList1.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
-        childModelsList1.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
-        childModelsList1.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
-        childModelsList1.add(new MenuModel(getString(R.string.title_activity_contact_us), false, false, R.drawable.contact_us));
-        childList.put(headerList.get(3), childModelsList1);
-        //
 
-        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList, childList);
+        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList);
         expandable_drawer_listView.setAdapter(expandableListAdapter);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -1102,48 +1075,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 if (headerList.get(groupPosition).isGroup()) {
                     if (!headerList.get(groupPosition).isHasChildren()) {
                         int drawableId = headerList.get(groupPosition).getIcon();
-                        switch (drawableId) {
-                            case R.drawable.merchant_account:
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
-                                    in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
-                                    startActivity(in);
-                                } else {
-                                    ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
-                                }
-                                break;
-                            case R.drawable.purchase_order: {
-                                Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
-                                startActivity(in);
-                                break;
-                            }
-                            case R.id.nav_app_setting: {
-                                Intent in = new Intent(launchActivity, SettingsActivity.class);
-                                startActivity(in);
-                                break;
-                            }
-                            case R.id.nav_transaction:
-                                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
-                                break;
-                            case R.drawable.ic_logout:
-                                ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
-                                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                    @Override
-                                    public void btnPositiveClick() {
-                                        NoQueueBaseActivity.clearPreferences();
-                                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                                        startActivity(loginIntent);
-                                    }
-
-                                    @Override
-                                    public void btnNegativeClick() {
-                                        //Do nothing
-                                    }
-                                });
-                                showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
-
-                                break;
-                        }
+                        menuClick(drawableId);
                         drawer.closeDrawer(GravityCompat.START);
                     }
                 }
@@ -1154,71 +1086,115 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         expandable_drawer_listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (childList.get(headerList.get(groupPosition)) != null) {
-                    MenuModel model = childList.get(headerList.get(groupPosition)).get(childPosition);
+                if (headerList.get(groupPosition) != null) {
+                    MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
                     int drawableId = model.getIcon();
-                    switch (drawableId) {
-                        case R.drawable.medical_history: {
-                            if (UserUtils.isLogin()) {
-                                Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
-                                startActivity(in);
-                            } else {
-                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        }
-                        case R.drawable.medical_profile: {
-                            if (UserUtils.isLogin()) {
-                                Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
-                                startActivity(in);
-                            } else {
-                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        }
-                        case R.drawable.appointment: {
-                            if (UserUtils.isLogin()) {
-//                                Intent in = new Intent(launchActivity, BookAppointmentActivity.class);
-//                                startActivity(in);
-                            } else {
-                                Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
-                            }
-                            break;
-                        }
-                        case R.drawable.language:
-                            showChangeLangDialog();
-                            break;
-                        case R.drawable.contact_us: {
-                            Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
-                            startActivity(in);
-                            break;
-                        }
-                        case R.drawable.ic_star:
-                            AppUtilities.openPlayStore(launchActivity);
-                            break;
-                        case R.drawable.ic_menu_share:
-                            if (isExternalStoragePermissionAllowed()) {
-                                AppUtilities.shareTheApp(launchActivity);
-                            } else {
-                                requestStoragePermission();
-                            }
-                            break;
-                        case R.drawable.legal: {
-                            Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
-                            startActivity(in);
-                            break;
-                        }
-                        case R.drawable.invite: {
-                            Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
-                            startActivity(in);
-                            break;
-                        }
-                    }
+                    menuClick(drawableId);
                     drawer.closeDrawer(GravityCompat.START);
                 }
                 return false;
             }
         });
+    }
+
+    private void menuClick(int drawable) {
+        switch (drawable) {
+            case R.drawable.merchant_account:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
+                    in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
+                    startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
+                }
+                break;
+            case R.drawable.purchase_order: {
+                Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_app_setting: {
+                Intent in = new Intent(launchActivity, SettingsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_transaction:
+                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
+                break;
+            case R.drawable.ic_logout:
+                ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        NoQueueBaseActivity.clearPreferences();
+                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
+
+                break;
+            case R.drawable.medical_history: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+                    startActivity(in);
+                } else {
+                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case R.drawable.medical_profile: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
+                    startActivity(in);
+                } else {
+                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case R.drawable.appointment: {
+                if (UserUtils.isLogin()) {
+//                                Intent in = new Intent(launchActivity, BookAppointmentActivity.class);
+//                                startActivity(in);
+                } else {
+                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case R.drawable.language:
+                showChangeLangDialog();
+                break;
+            case R.drawable.contact_us: {
+                Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_star:
+                AppUtilities.openPlayStore(launchActivity);
+                break;
+            case R.drawable.ic_menu_share:
+                if (isExternalStoragePermissionAllowed()) {
+                    AppUtilities.shareTheApp(launchActivity);
+                } else {
+                    requestStoragePermission();
+                }
+                break;
+            case R.drawable.legal: {
+                Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.invite: {
+                Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
+                startActivity(in);
+                break;
+            }
+        }
     }
 
     private boolean isExternalStoragePermissionAllowed() {

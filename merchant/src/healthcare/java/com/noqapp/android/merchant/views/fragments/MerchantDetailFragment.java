@@ -13,6 +13,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.AppointmentActivity;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.FollowUpListActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -68,6 +69,23 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 } else {
                     ShowAlertInformation.showNetworkDialog(context);
                 }
+            }
+        });
+        iv_product_list.setVisibility(View.GONE);
+        switch (LaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+            case DO:
+            case HS:
+                iv_appointment.setVisibility(View.VISIBLE);
+                break;
+            default:
+                iv_appointment.setVisibility(View.GONE);
+        }
+        iv_appointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+                intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
+                ((Activity) context).startActivity(intent);
             }
         });
         return v;
