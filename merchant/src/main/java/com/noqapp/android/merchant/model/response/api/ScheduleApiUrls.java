@@ -77,7 +77,7 @@ public interface ScheduleApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#FAILED_TO_FIND_APPOINTMENT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/appointment/action.json")
+    @POST("api/m/schedule/action.json")
     Call<JsonSchedule> scheduleAction(
             @Header("X-R-DID")
             String did,
