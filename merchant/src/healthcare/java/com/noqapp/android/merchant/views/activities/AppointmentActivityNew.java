@@ -36,6 +36,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     private ProgressDialog progressDialog;
     private TextView tv_header;
     private RecyclerView rcv_appointments;
+    private TextView tv_appointment_accepted, tv_total_appointment,
+            tv_appointment_cancelled, tv_appointment_pending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,11 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             setContentView(R.layout.activity_appointment_new);
             initProgress();
             tv_header = findViewById(R.id.tv_header);
+
+            tv_appointment_accepted = findViewById(R.id.tv_appointment_accepted);
+            tv_total_appointment = findViewById(R.id.tv_total_appointment);
+            tv_appointment_cancelled = findViewById(R.id.tv_appointment_cancelled);
+            tv_appointment_pending = findViewById(R.id.tv_appointment_pending);
             TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
             ImageView actionbarBack = findViewById(R.id.actionbarBack);
             actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +99,30 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         Log.e("appointments", jsonScheduleList.toString());
         List<EventDay> events = parseEventList(jsonScheduleList);
         tv_header.setText("Today (" + events.size() + " appointments)");
+        int cancel = 0;
+        int pending = 0;
+        int accept = 0;
+        if (null != jsonScheduleList && jsonScheduleList.getJsonSchedules().size() > 0)
+            for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
+                JsonSchedule jsonSchedule = jsonScheduleList.getJsonSchedules().get(i);
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                        ++pending;
+                        break;
+                    case A:
+                        ++accept;
+                        break;
+                    case R:
+                        ++cancel;
+                        break;
+                    case S:
+                        break;
+                }
+            }
+        tv_appointment_accepted.setText(String.valueOf(accept));
+        tv_total_appointment.setText(String.valueOf(events.size()));
+        tv_appointment_cancelled.setText(String.valueOf(cancel));
+        tv_appointment_pending.setText(String.valueOf(pending));
         AppointmentListAdapter appointmentListAdapter = new AppointmentListAdapter(events, this, this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();
@@ -160,7 +191,6 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
             return events;
         }
