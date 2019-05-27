@@ -73,10 +73,12 @@ public interface ScheduleApiUrls {
     /**
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#FAILED_TO_FIND_APPOINTMENT}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/appointment/cancelAppointment.json")
-    Call<JsonSchedule> changeAppointmentStatus(
+    @POST("api/m/appointment/action.json")
+    Call<JsonSchedule> scheduleAction(
             @Header("X-R-DID")
             String did,
 
@@ -90,6 +92,6 @@ public interface ScheduleApiUrls {
             String auth,
 
             @Body
-            JsonSchedule jsonSchedule //Note: populate with scheduleAppointmentId & codeQR (just use guardian)
+            JsonSchedule jsonSchedule //Note: populate with scheduleAppointmentId & codeQR & QID & AppointmentStatus
     );
 }

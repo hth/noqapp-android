@@ -92,7 +92,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         progressDialog.show();
         JsonSchedule jsonSchedule = ((JsonSchedule) item.getEventObject());
         jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
-        scheduleApiCalls.changeAppointmentStatus(BaseLaunchActivity.getDeviceID(),
+        scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
     }
@@ -104,7 +104,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         progressDialog.show();
         JsonSchedule jsonSchedule = ((JsonSchedule) item.getEventObject());
         jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
-        scheduleApiCalls.changeAppointmentStatus(BaseLaunchActivity.getDeviceID(),
+        scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
     }

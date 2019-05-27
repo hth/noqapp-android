@@ -87,16 +87,16 @@ public class ScheduleApiCalls {
         });
     }
 
-    public void changeAppointmentStatus(String did, String mail, String auth, JsonSchedule jsonSchedule) {
-        scheduleApiUrls.changeAppointmentStatus(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
+    public void scheduleAction(String did, String mail, String auth, JsonSchedule jsonSchedule) {
+        scheduleApiUrls.scheduleAction(did, Constants.DEVICE_TYPE, mail, auth, jsonSchedule).enqueue(new Callback<JsonSchedule>() {
             @Override
             public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d(TAG, "scheduleForDay fetch " + String.valueOf(response.body()));
+                        Log.d(TAG, "scheduleAction fetch " + String.valueOf(response.body()));
                         appointmentPresenter.appointmentBookingResponse(response.body());
                     } else {
-                        Log.e(TAG, "Failed to fetch scheduleForDay");
+                        Log.e(TAG, "Failed to fetch scheduleAction");
                         appointmentPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -110,11 +110,10 @@ public class ScheduleApiCalls {
 
             @Override
             public void onFailure(@NonNull Call<JsonSchedule> call, @NonNull Throwable t) {
-                Log.e(TAG, "Failure scheduleForDay " + t.getLocalizedMessage(), t);
+                Log.e(TAG, "Failure scheduleAction " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });
     }
-
 }
 
