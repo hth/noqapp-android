@@ -15,6 +15,7 @@
     <string name="medical_profile">Medical Profile</string>
     <string name="medical_profiles">Medical Profiles</string>
     <string name="screen_view_all">View All</string>
+    <string name="screen_upcoming_appointment">My Appointments</string>
 
     <string name="action_settings">Settings</string>
     <string name="join">Confirm Queue</string>
@@ -332,6 +333,8 @@
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
     <string name="empty_review_title">Rate Us</string>
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
+    <string name="empty_my_appointment_title">Empty Appointments</string>
+    <string name="empty_my_appointment_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical appointments.</string>
     <string name="user_list">Users</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>

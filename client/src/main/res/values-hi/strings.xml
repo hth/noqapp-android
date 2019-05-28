@@ -105,7 +105,7 @@
     <string name="logout_msg">लॉग इन नहीं होने पर बनाए गए डेटा को हमेशा के लिए खो दिया जा सकता है</string>
     <string name="error_mobile_blank">कृपया फोन नंबर दर्ज करें</string>
     <string name="error_login">रिमोट जॉइन के लिए लॉग इन करें</string>
-     <string name="error_rateservice">कृपया सेवा को रेट करें</string>
+    <string name="error_rateservice">कृपया सेवा को रेट करें</string>
     <string name="review_thanks">प्रतिक्रिया के लिए धन्यवाद।</string>
     <string name="error_timesaved">आपके समय की बचत हुई</string>
     <string name="error_qrcode_scan">वैध NoQueue क्यूआर कोड नहीं है।</string>
@@ -289,6 +289,8 @@
     <string name="empty_queue_subtitle">You have yet to see the \n awesomeness of NoQueue. \n Join a queue to see it.</string>
     <string name="empty_medical_h_title">Empty Medical History</string>
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
+    <string name="empty_my_appointment_title">Empty Appointments</string>
+    <string name="empty_my_appointment_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical appointments.</string>
     <string name="empty_review_title">Rate Us</string>
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
