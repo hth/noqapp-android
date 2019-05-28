@@ -1,11 +1,10 @@
 package com.noqapp.android.common.beans;
 
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
 
@@ -209,5 +208,27 @@ public class JsonQueueDisplay extends AbstractDomain implements Serializable {
     public JsonQueueDisplay setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonQueueDisplay{");
+        sb.append("businessName='").append(businessName).append('\'');
+        sb.append(", displayName='").append(displayName).append('\'');
+        sb.append(", businessType=").append(businessType);
+        sb.append(", storeAddress='").append(storeAddress).append('\'');
+        sb.append(", area='").append(area).append('\'');
+        sb.append(", town='").append(town).append('\'');
+        sb.append(", countryShortName='").append(countryShortName).append('\'');
+        sb.append(", storePhone='").append(storePhone).append('\'');
+        sb.append(", tokenAvailableFrom=").append(tokenAvailableFrom);
+        sb.append(", startHour=").append(startHour);
+        sb.append(", tokenNotAvailableFrom=").append(tokenNotAvailableFrom);
+        sb.append(", endHour=").append(endHour);
+        sb.append(", delayedInMinutes=").append(delayedInMinutes);
+        sb.append(", preventJoining=").append(preventJoining);
+        sb.append(", dayClosed=").append(dayClosed);
+        sb.append('}');
+        return sb.toString();
     }
 }

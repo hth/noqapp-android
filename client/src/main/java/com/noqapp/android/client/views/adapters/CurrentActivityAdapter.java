@@ -51,7 +51,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             holder.card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.currentItemClick(jsonTokenAndQueue, v, listPosition);
+                    listener.currentQorOrderItemClick(jsonTokenAndQueue);
                 }
             });
             holder.tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
@@ -95,7 +95,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             holder.ll_queue.setVisibility(View.GONE);
             holder.ll_appointment.setVisibility(View.VISIBLE);
             holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
-           // holder.tv_degree.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            holder.tv_degree.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
                 holder.tv_schedule_time.setText(date + " at " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
@@ -105,7 +105,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             holder.card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //listener.currentItemClick(jsonTokenAndQueue, v, listPosition);
+                    listener.currentAppointmentClick(jsonSchedule);
                 }
             });
         }
@@ -118,7 +118,9 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
 
     public interface OnItemClickListener {
-        void currentItemClick(JsonTokenAndQueue item, View view, int pos);
+        void currentQorOrderItemClick(JsonTokenAndQueue item);
+
+        void currentAppointmentClick(JsonSchedule jsonSchedule);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

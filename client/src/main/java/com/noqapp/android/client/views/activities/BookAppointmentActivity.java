@@ -76,7 +76,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         Calendar startDate = Calendar.getInstance();
         Date dt = new Date();
         startDate.setTime(dt);
-        startDate.add(Calendar.DAY_OF_MONTH,1);
+        startDate.add(Calendar.DAY_OF_MONTH, 1);
 
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
@@ -94,8 +94,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                //do something
-               // Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
+                tv_date_time.setText("");
                 selectedDate = date;
                 fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
@@ -235,9 +234,9 @@ public class BookAppointmentActivity extends BaseActivity implements
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
         Log.e("Booking status", jsonSchedule.toString());
-        Intent intent = new Intent(this,AppointmentBookingDetailActivity.class);
-        intent.putExtra(IBConstant.KEY_DATA_OBJECT,jsonSchedule);
-        intent.putExtra(IBConstant.KEY_DATA,bizStoreElastic);
+        Intent intent = new Intent(this, AppointmentBookingDetailActivity.class);
+        intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
+        intent.putExtra(IBConstant.KEY_IMAGE_URL, bizStoreElastic.getDisplayImage());
         startActivity(intent);
         finish();
         dismissProgress();
