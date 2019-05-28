@@ -227,10 +227,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 filledTimes.add(outPut);
             }
         }
-        int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == 0) {
-            dayOfWeek = 7;
-        }
+        int dayOfWeek = AppUtilities.getDayOfWeek(selectedDate);
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
         setAppointmentSlots(storeHourElastic, filledTimes);
         dismissProgress();
