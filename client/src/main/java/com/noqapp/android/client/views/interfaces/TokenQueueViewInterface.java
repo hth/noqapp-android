@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.interfaces;
 
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 
 import java.util.List;
 

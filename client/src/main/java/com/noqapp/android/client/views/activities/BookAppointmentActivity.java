@@ -76,7 +76,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         Calendar startDate = Calendar.getInstance();
         Date dt = new Date();
         startDate.setTime(dt);
-       // startDate.add(Calendar.DAY_OF_MONTH,-1);
+        startDate.add(Calendar.DAY_OF_MONTH, 1);
 
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
@@ -88,24 +88,22 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .formatTopText("MMM")
                 .textSize(14f, 24f, 14f)
                 .end()
-               // .defaultSelectedDate(Calendar.getInstance())
                 .build();
 
 
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                //do something
-               // Toast.makeText(BookAppointmentActivity.this, "Value is : "+date.toString(), Toast.LENGTH_SHORT).show();
+                tv_date_time.setText("");
                 selectedDate = date;
                 fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
-            @Override
-            public boolean onDateLongClicked(Calendar date, int position) {
-                selectedDate = date;
-                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
-                return true;
-            }
+//            @Override
+//            public boolean onDateLongClicked(Calendar date, int position) {
+//                selectedDate = date;
+//                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
+//                return true;
+//            }
         });
         horizontalCalendarView.refresh();
         rv_available_date = findViewById(R.id.rv_available_date);
@@ -146,8 +144,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                 }
             }
         });
-        selectedDate = Calendar.getInstance();
-        fetchAppointments(new AppUtilities().getTodayDateWithFormat());
+        selectedDate = startDate;
+        fetchAppointments(new AppUtilities().getTomorrowDateWithFormat());
 
     }
 
@@ -227,10 +225,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 filledTimes.add(outPut);
             }
         }
-        int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == 0) {
-            dayOfWeek = 7;
-        }
+        int dayOfWeek = AppUtilities.getDayOfWeek(selectedDate);
         StoreHourElastic storeHourElastic = getStoreHourElastic(storeHourElastics, dayOfWeek);
         setAppointmentSlots(storeHourElastic, filledTimes);
         dismissProgress();
@@ -239,9 +234,9 @@ public class BookAppointmentActivity extends BaseActivity implements
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
         Log.e("Booking status", jsonSchedule.toString());
-        Intent intent = new Intent(this,AppointmentBookingDetailActivity.class);
-        intent.putExtra(IBConstant.KEY_DATA_OBJECT,jsonSchedule);
-        intent.putExtra(IBConstant.KEY_DATA,bizStoreElastic);
+        Intent intent = new Intent(this, AppointmentBookingDetailActivity.class);
+        intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
+        intent.putExtra(IBConstant.KEY_IMAGE_URL, bizStoreElastic.getDisplayImage());
         startActivity(intent);
         finish();
         dismissProgress();

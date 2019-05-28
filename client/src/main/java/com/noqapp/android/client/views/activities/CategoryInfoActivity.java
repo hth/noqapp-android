@@ -282,7 +282,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             ThumbnailGalleryAdapter adapter = new ThumbnailGalleryAdapter(this, storeServiceImages);
             rv_thumb_images.setAdapter(adapter);
             rcv_accreditation.setHasFixedSize(true);
-            rcv_accreditation.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rcv_accreditation.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
             List<String> accreditationImages = new ArrayList<>();
             if (bizStoreElastic.getAccreditation().size() > 0) {
                 for (int i = 0; i < bizStoreElastic.getAccreditation().size(); i++) {

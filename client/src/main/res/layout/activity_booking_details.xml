@@ -38,7 +38,7 @@
             android:paddingTop="5dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
-            android:text="Dr. Asthana"
+            android:text="Dr. Name"
             android:textColor="@android:color/black"
             android:textSize="22sp"
             android:textStyle="normal" />
@@ -54,7 +54,7 @@
             android:paddingTop="0dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
-            android:text="Dentist, 12 year of experience"
+            android:text="Dr Address"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="normal" />
@@ -86,7 +86,7 @@
             android:paddingTop="5dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
-            android:text="Mon, 12 June at 3:30 pm"
+            android:text="Set time : Mon, 12 June at 3:30 pm"
             android:textColor="@android:color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -100,6 +100,7 @@
             android:background="@drawable/appointment_booked" />
 
         <TextView
+            android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_booked"
@@ -109,6 +110,26 @@
             android:text="Your appointment is booked"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_standard_height"
+            android:layout_below="@+id/tv_msg"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/btn_bg_enable"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="Cancel Appointment"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_sixteen"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

@@ -255,8 +255,7 @@ public class AppUtilities extends CommonHelper {
         return additionalText;
     }
 
-    private static int getDayOfWeek() {
-        Calendar calendar = Calendar.getInstance();
+    public static int getDayOfWeek(Calendar calendar) {
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         if (dayOfWeek == 0) {
             dayOfWeek = 7;
@@ -266,7 +265,7 @@ public class AppUtilities extends CommonHelper {
 
     public static JsonHour getJsonHour(List<JsonHour> jsonHourList) {
         if (null != jsonHourList && jsonHourList.size() > 0) {
-            int todayDay = getDayOfWeek();
+            int todayDay = getDayOfWeek(Calendar.getInstance());
             for (int i = 0; i < jsonHourList.size(); i++) {
                 if (jsonHourList.get(i).getDayOfWeek() == todayDay) {
                     return jsonHourList.get(i);
@@ -278,7 +277,7 @@ public class AppUtilities extends CommonHelper {
 
     public static StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList) {
         if (null != jsonHourList && jsonHourList.size() > 0) {
-            int todayDay = getDayOfWeek();
+            int todayDay = getDayOfWeek(Calendar.getInstance());
             for (int i = 0; i < jsonHourList.size(); i++) {
                 if (jsonHourList.get(i).getDayOfWeek() == todayDay) {
                     return jsonHourList.get(i);

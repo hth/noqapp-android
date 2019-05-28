@@ -116,7 +116,7 @@ public class AppointmentApiCalls {
                     appointmentPresenter.responseErrorPresenter(null);
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -145,6 +145,36 @@ public class AppointmentApiCalls {
             @Override
             public void onFailure(@NonNull Call<JsonResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure cancelAppointment " + t.getLocalizedMessage(), t);
+                appointmentPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+
+    public void allAppointments(String did, String mail, String auth) {
+        appointmentApiUrls.allAppointments(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonScheduleList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonScheduleList> call, @NonNull Response<JsonScheduleList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "allAppointments fetch " + String.valueOf(response.body()));
+                        appointmentPresenter.appointmentResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch allAppointments");
+                        appointmentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        appointmentPresenter.authenticationFailure();
+                    } else {
+                        appointmentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonScheduleList> call, @NonNull Throwable t) {
+                Log.e(TAG, "Failure allAppointments " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });

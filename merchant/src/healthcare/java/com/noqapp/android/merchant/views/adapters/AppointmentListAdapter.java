@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -49,8 +50,18 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         holder.tv_customer_mobile.setText(
                 TextUtils.isEmpty(jsonSchedule.getJsonProfile().getPhoneRaw())
                         ? context.getString(R.string.unregister_user)
-                        : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(),
+                        : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().
+                                getUserProfile().getCountryShortName(),
                         jsonSchedule.getJsonProfile().getPhoneRaw()));
+        holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
+                            formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(),
+                                    jsonSchedule.getJsonProfile().getPhoneRaw()));
+            }
+        });
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
@@ -77,15 +88,16 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                 if (null != listener) {
                     switch (jsonSchedule.getAppointmentStatus()) {
                         case U:
-                            listener.appointmentReject(dataSet.get(position), position);
+                            listener.appointmentReject(jsonSchedule, position);
                             break;
                         case A:
-                            listener.appointmentReject(dataSet.get(position), position);
+                            listener.appointmentReject(jsonSchedule, position);
                             break;
                         case R:
+                            Toast.makeText(context, "Appointment already rejected. It cannot be reverse", Toast.LENGTH_SHORT).show();
                             break;
                         case S:
-                            // Define what to do
+                            Toast.makeText(context, "Appointment already serviced. It cannot be reverse", Toast.LENGTH_SHORT).show();
                             break;
                     }
 
@@ -96,17 +108,18 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.appointmentAccept(dataSet.get(position), position);
                     switch (jsonSchedule.getAppointmentStatus()) {
                         case U:
-                            listener.appointmentAccept(dataSet.get(position), position);
+                            listener.appointmentAccept(jsonSchedule, position);
                             break;
                         case A:
+                            Toast.makeText(context, "Appointment already accepted.", Toast.LENGTH_SHORT).show();
                             break;
                         case R:
+                            Toast.makeText(context, "Appointment already rejected. It cannot be reverse", Toast.LENGTH_SHORT).show();
                             break;
                         case S:
-                            // Define what to do
+                            Toast.makeText(context, "Appointment already serviced. It cannot be reverse", Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }
@@ -120,9 +133,9 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
     public interface OnItemClickListener {
-        void appointmentAccept(EventDay item, int pos);
+        void appointmentAccept(JsonSchedule jsonSchedule, int pos);
 
-        void appointmentReject(EventDay item, int pos);
+        void appointmentReject(JsonSchedule jsonSchedule, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

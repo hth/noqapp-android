@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:background="#FAFAFA"
             app:selectorColor="#c62828"
-            app:textColorNormal="#bababa"
+            app:textColorNormal="#333"
             app:textColorSelected="#c62828" />
 
         <TextView
