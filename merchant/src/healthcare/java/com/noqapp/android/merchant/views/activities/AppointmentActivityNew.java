@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -86,23 +85,20 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     }
 
     @Override
-    public void appointmentAccept(EventDay item, int pos) {
-        Toast.makeText(this, "We will accept appointment later", Toast.LENGTH_SHORT).show();
+    public void appointmentAccept(JsonSchedule jsonSchedule, int pos) {
         progressDialog.setMessage("Accepting appointment...");
         progressDialog.show();
-        JsonSchedule jsonSchedule = ((JsonSchedule) item.getEventObject());
         jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
         scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+
     }
 
     @Override
-    public void appointmentReject(EventDay item, int pos) {
-        Toast.makeText(this, "We will reject appointment later", Toast.LENGTH_SHORT).show();
+    public void appointmentReject(JsonSchedule jsonSchedule, int pos) {
         progressDialog.setMessage("Rejecting appointment...");
         progressDialog.show();
-        JsonSchedule jsonSchedule = ((JsonSchedule) item.getEventObject());
         jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
         scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
