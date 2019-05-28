@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -45,6 +46,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
+        AppUtilities.loadProfilePic(holder.iv_main,jsonSchedule.getJsonProfile().getProfileImage(),context);
     }
 
     @Override
@@ -63,6 +65,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
         private TextView tv_appointment_time;
         private TextView tv_appointment_date;
         private TextView tv_appointment_status;
+        private ImageView iv_main;
         private CardView card_view;
 
 
@@ -74,6 +77,7 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
             this.tv_appointment_date = itemView.findViewById(R.id.tv_appointment_date);
             this.tv_appointment_status = itemView.findViewById(R.id.tv_appointment_status);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
+            this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
