@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -92,7 +91,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
-                if (eventDay.isEnabled()) {
+                if (eventDay.isEnabled() && null != eventDay.getEventObject()) {
                     scrollInList((JsonSchedule) eventDay.getEventObject());
                 }
             }
@@ -131,7 +130,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                     //in case of tablet
                     fh_list_view.smoothScrollToPosition(i);
                 } else {
-                    scroll_view.scrollTo(0, calendarView.getBottom()+scrolly);
+                    scroll_view.scrollTo(0, calendarView.getBottom() + scrolly);
                 }
                 break;
             }
