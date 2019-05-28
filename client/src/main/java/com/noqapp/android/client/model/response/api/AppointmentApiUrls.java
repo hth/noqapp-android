@@ -91,7 +91,7 @@ public interface AppointmentApiUrls {
             String auth,
 
             @Body
-            JsonSchedule jsonSchedule //Note: populate with codeQR, Day, Start and End Time to be populated (just use guardian)
+            JsonSchedule jsonSchedule 
     );
 
     /**
@@ -114,6 +114,26 @@ public interface AppointmentApiUrls {
             String auth,
 
             @Body
-            JsonSchedule jsonSchedule //Note: populate with scheduleAppointmentId & codeQR (just use guardian)
+            JsonSchedule jsonSchedule
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/c/appointment/all.json")
+    Call<JsonScheduleList> allAppointments(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
     );
 }

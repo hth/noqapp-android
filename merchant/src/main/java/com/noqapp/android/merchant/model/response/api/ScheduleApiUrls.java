@@ -92,6 +92,6 @@ public interface ScheduleApiUrls {
             String auth,
 
             @Body
-            JsonSchedule jsonSchedule //Note: populate with scheduleAppointmentId & codeQR & QID & AppointmentStatus
+            JsonSchedule jsonSchedule
     );
 }
