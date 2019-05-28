@@ -91,7 +91,7 @@ public interface AppointmentApiUrls {
             String auth,
 
             @Body
-            JsonSchedule jsonSchedule 
+            JsonSchedule jsonSchedule
     );
 
     /**
