@@ -88,7 +88,6 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .formatTopText("MMM")
                 .textSize(14f, 24f, 14f)
                 .end()
-               // .defaultSelectedDate(Calendar.getInstance())
                 .build();
 
 

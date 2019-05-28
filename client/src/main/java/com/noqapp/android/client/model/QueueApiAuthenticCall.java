@@ -121,8 +121,8 @@ public class QueueApiAuthenticCall {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response all join queue", String.valueOf(response.body().getTokenAndQueues().size()));
                         Log.d("Response joinqueuevalue", response.body().getTokenAndQueues().toString());
-                        List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
-                        tokenAndQueuePresenter.currentQueueResponse(jsonTokenAndQueues);
+                        //List<JsonTokenAndQueue> jsonTokenAndQueues = response.body().getTokenAndQueues();
+                        tokenAndQueuePresenter.currentQueueResponse(response.body());
                     } else if (response.body() != null && response.body().getError() != null) {
                         Log.e(TAG, "Got error getAllJoinedQueue");
                         tokenAndQueuePresenter.responseErrorPresenter(response.body().getError());

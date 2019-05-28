@@ -1,5 +1,28 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AdvertisementApiCalls;
@@ -20,6 +43,7 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonFeed;
 import com.noqapp.android.client.presenter.beans.JsonFeedList;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.presenter.beans.body.SearchStoreQuery;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -54,37 +78,12 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import android.content.ContentValues;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -92,10 +91,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
         CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
-        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface, FeedPresenter, AdvertisementPresenter {
+        StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
+        FeedPresenter, AdvertisementPresenter {
 
     private final String TAG = ScanQueueFragment.class.getSimpleName();
     private RelativeLayout rl_scan;
@@ -137,6 +141,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     private static QueueHandler mHandler;
     private List<JsonFeed> jsonFeeds = new ArrayList<>();
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
+    private List<JsonSchedule> jsonSchedules = new ArrayList<>();
 
     public ScanQueueFragment() {
 
@@ -516,10 +521,11 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     }
 
     @Override
-    public void currentQueueResponse(List<JsonTokenAndQueue> tokenAndQueues) {
+    public void currentQueueResponse(JsonTokenAndQueueList jsonTokenAndQueueList) {
         NoQueueDBPresenter dbPresenter = new NoQueueDBPresenter();
         dbPresenter.tokenQueueViewInterface = this;
-        dbPresenter.saveCurrentTokenQueue(tokenAndQueues);
+        dbPresenter.saveCurrentTokenQueue(jsonTokenAndQueueList.getTokenAndQueues());
+        jsonSchedules = jsonTokenAndQueueList.getJsonScheduleList().getJsonSchedules();
         pb_current.setVisibility(View.GONE);
     }
 
@@ -610,7 +616,16 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
                     }
                 }
             });
-            CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(currentQueueList, getActivity(), currentClickListner);
+            List<Object> temp = new ArrayList<>();
+            for (int i = 0; i < currentQueueList.size(); i++) {
+                temp.add(currentQueueList.get(i));
+            }
+
+            for (int j = 0; j < jsonSchedules.size(); j++) {
+                temp.add(jsonSchedules.get(j));
+            }
+
+            CurrentActivityAdapter currentActivityAdapter = new CurrentActivityAdapter(temp, getActivity(), currentClickListner);
             rv_current_activity.setAdapter(currentActivityAdapter);
             tv_current_title.setText(getString(R.string.active_queue) + " (" + String.valueOf(currentQueueList.size()) + ")");
             currentActivityAdapter.notifyDataSetChanged();

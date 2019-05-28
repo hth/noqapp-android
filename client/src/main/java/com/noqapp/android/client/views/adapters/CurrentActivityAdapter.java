@@ -4,25 +4,29 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivityAdapter.MyViewHolder> {
     private final Context context;
     private final OnItemClickListener listener;
-    private List<JsonTokenAndQueue> dataSet;
+    private List<Object> dataSet;
 
-    public CurrentActivityAdapter(List<JsonTokenAndQueue> data, Context context, OnItemClickListener listener) {
+    public CurrentActivityAdapter(List<Object> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -37,51 +41,74 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        final JsonTokenAndQueue jsonTokenAndQueue = dataSet.get(listPosition);
-        holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
-        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(), jsonTokenAndQueue.getArea()));
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.currentItemClick(jsonTokenAndQueue, v, listPosition);
-            }
-        });
-
-        holder.tv_total_value.setText(String.valueOf(dataSet.get(listPosition).getServingNumber()));
-        if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
-            holder.tv_current_title.setText(context.getString(R.string.token));
-            if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
-                holder.tv_total.setText("It's your turn!!!");
-                holder.tv_total_value.setVisibility(View.GONE);
-            } else if (jsonTokenAndQueue.getServingNumber() == 0) {
-                holder.tv_total.setText("Queue not yet started");
-                holder.tv_total_value.setVisibility(View.GONE);
-            } else {
-                holder.tv_total.setText(context.getString(R.string.serving_now));
-                holder.tv_total_value.setVisibility(View.VISIBLE);
-            }
-        } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
-            holder.tv_current_title.setText(context.getString(R.string.order));
-            if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() <= 0) {
-                switch (jsonTokenAndQueue.getPurchaseOrderState()) {
-                    case OP:
-                        holder.tv_total.setText("Order being prepared");
-                        break;
-                    default:
-                        holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getFriendlyDescription());
-                        break;
+        Object object = dataSet.get(listPosition);
+        if (object instanceof JsonTokenAndQueue) {
+            holder.ll_queue.setVisibility(View.VISIBLE);
+            holder.ll_appointment.setVisibility(View.GONE);
+            final JsonTokenAndQueue jsonTokenAndQueue = (JsonTokenAndQueue) object;
+            holder.tv_name.setText(jsonTokenAndQueue.getDisplayName());
+            holder.tv_address.setText(AppUtilities.getStoreAddress(jsonTokenAndQueue.getTown(), jsonTokenAndQueue.getArea()));
+            holder.card_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.currentItemClick(jsonTokenAndQueue, v, listPosition);
                 }
-                holder.tv_total_value.setVisibility(View.GONE);
-            } else if (jsonTokenAndQueue.getServingNumber() == 0) {
-                holder.tv_total.setText("Queue not yet started");
-                holder.tv_total_value.setVisibility(View.GONE);
-            } else {
-                holder.tv_total.setText(context.getString(R.string.serving_now));
-                holder.tv_total_value.setVisibility(View.VISIBLE);
+            });
+            holder.tv_total_value.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+            if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
+                holder.tv_current_title.setText(context.getString(R.string.token));
+                if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() == 0) {
+                    holder.tv_total.setText("It's your turn!!!");
+                    holder.tv_total_value.setVisibility(View.GONE);
+                } else if (jsonTokenAndQueue.getServingNumber() == 0) {
+                    holder.tv_total.setText("Queue not yet started");
+                    holder.tv_total_value.setVisibility(View.GONE);
+                } else {
+                    holder.tv_total.setText(context.getString(R.string.serving_now));
+                    holder.tv_total_value.setVisibility(View.VISIBLE);
+                }
+            } else if (jsonTokenAndQueue.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+                holder.tv_current_title.setText(context.getString(R.string.order));
+                if (jsonTokenAndQueue.getToken() - jsonTokenAndQueue.getServingNumber() <= 0) {
+                    switch (jsonTokenAndQueue.getPurchaseOrderState()) {
+                        case OP:
+                            holder.tv_total.setText("Order being prepared");
+                            break;
+                        default:
+                            holder.tv_total.setText(jsonTokenAndQueue.getPurchaseOrderState().getFriendlyDescription());
+                            break;
+                    }
+                    holder.tv_total_value.setVisibility(View.GONE);
+                } else if (jsonTokenAndQueue.getServingNumber() == 0) {
+                    holder.tv_total.setText("Queue not yet started");
+                    holder.tv_total_value.setVisibility(View.GONE);
+                } else {
+                    holder.tv_total.setText(context.getString(R.string.serving_now));
+                    holder.tv_total_value.setVisibility(View.VISIBLE);
+                }
             }
-        }
 
-        holder.tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+            holder.tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+        } else if (object instanceof JsonSchedule) {
+            // update it
+            JsonSchedule jsonSchedule = (JsonSchedule) object;
+            holder.ll_queue.setVisibility(View.GONE);
+            holder.ll_appointment.setVisibility(View.VISIBLE);
+            holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
+           // holder.tv_degree.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+            try {
+                String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
+                holder.tv_schedule_time.setText(date + " at " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            holder.card_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //listener.currentItemClick(jsonTokenAndQueue, v, listPosition);
+                }
+            });
+        }
     }
 
     @Override
@@ -102,8 +129,13 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         private TextView tv_total_value;
         private TextView tv_current_value;
         private TextView tv_current_title;
-
         private TextView tv_total;
+        private LinearLayout ll_appointment;
+        private LinearLayout ll_queue;
+
+        private TextView tv_title;
+        private TextView tv_degree;
+        private TextView tv_schedule_time;
 
         private MyViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +146,12 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             this.tv_current_title = itemView.findViewById(R.id.tv_current);
             this.tv_total_value = itemView.findViewById(R.id.tv_total_value);
             this.tv_total = itemView.findViewById(R.id.tv_total);
+            this.ll_appointment = itemView.findViewById(R.id.ll_appointment);
+            this.ll_queue = itemView.findViewById(R.id.ll_queue);
+
+            tv_title = itemView.findViewById(R.id.tv_title);
+            tv_degree = itemView.findViewById(R.id.tv_degree);
+            tv_schedule_time = itemView.findViewById(R.id.tv_schedule_time);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

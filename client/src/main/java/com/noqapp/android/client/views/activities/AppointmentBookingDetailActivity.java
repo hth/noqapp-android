@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,12 @@ public class AppointmentBookingDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);
         tv_toolbar_title.setText("Booking Detail");
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              iv_home.performClick();
+            }
+        });
         JsonSchedule jsonSchedule = (JsonSchedule) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         BizStoreElastic bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA);
         ImageView iv_main = findViewById(R.id.iv_main);
@@ -36,5 +43,11 @@ public class AppointmentBookingDetailActivity extends BaseActivity {
             e.printStackTrace();
         }
         Log.e("data", jsonSchedule.toString());
+    }
+
+    @Override
+    public void onBackPressed() {
+       // super.onBackPressed();
+        iv_home.performClick();
     }
 }
