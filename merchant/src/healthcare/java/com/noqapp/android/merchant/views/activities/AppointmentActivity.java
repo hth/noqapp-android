@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     private CalendarView calendarView;
     public EventListAdapter adapter;
     private String codeRQ = "";
+    private ScrollView scroll_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,35 +64,36 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         Log.e("CODE_QR", codeRQ);
         calendarView = findViewById(R.id.calendarView);
         fh_list_view = findViewById(R.id.fh_list_view);
+        scroll_view = findViewById(R.id.scroll_view);
         fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
-                in.putExtra("selectedDate",((JsonSchedule)adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
-                in.putExtra(IBConstant.KEY_CODE_QR,codeRQ);
+                in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
+                in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
                 startActivity(in);
             }
         });
 
         Calendar min = Calendar.getInstance();
-        min.add(Calendar.MONTH, 0);
+        min.add(Calendar.MONTH, -1);
 
         Calendar max = Calendar.getInstance();
         max.add(Calendar.MONTH, 12);
 
         calendarView.setMinimumDate(min);
         calendarView.setMaximumDate(max);
-
-
+        try {
+            calendarView.setDate(Calendar.getInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // calendarView.setDisabledDays(getDisabledDays());
-
         calendarView.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(EventDay eventDay) {
                 if (eventDay.isEnabled()) {
-                    Toast.makeText(getApplicationContext(),
-                            (eventDay.getCalendar().getTime().toString()),
-                            Toast.LENGTH_SHORT).show();
+                    scrollInList((JsonSchedule) eventDay.getEventObject());
                 }
             }
         });
@@ -115,6 +118,24 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
             ShowAlertInformation.showNetworkDialog(this);
         }
 
+    }
+
+    private void scrollInList(JsonSchedule jsonSchedule) {
+        List<EventDay> temp = adapter.getEventDayList();
+        for (int i = 0; i < temp.size(); i++) {
+            JsonSchedule jsonSchedule1 = (JsonSchedule) temp.get(i).getEventObject();
+            if (jsonSchedule1.getScheduleDate().equals(jsonSchedule.getScheduleDate())) {
+                View c = fh_list_view.getChildAt(i);
+                int scrolly = -c.getTop() + fh_list_view.getFirstVisiblePosition() * c.getHeight();
+                if (null == scroll_view) {
+                    //in case of tablet
+                    fh_list_view.smoothScrollToPosition(i);
+                } else {
+                    scroll_view.scrollTo(0, calendarView.getBottom()+scrolly);
+                }
+                break;
+            }
+        }
     }
 
     private List<Calendar> getDisabledDays() {
