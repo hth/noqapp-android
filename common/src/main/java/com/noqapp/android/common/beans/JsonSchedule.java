@@ -58,6 +58,9 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
 
+    @JsonProperty("qd")
+    private JsonQueueDisplay jsonQueueDisplay;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -148,6 +151,15 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     public JsonSchedule setJsonProfile(JsonProfile jsonProfile) {
         this.jsonProfile = jsonProfile;
+        return this;
+    }
+
+    public JsonQueueDisplay getJsonQueueDisplay() {
+        return jsonQueueDisplay;
+    }
+
+    public JsonSchedule setJsonQueueDisplay(JsonQueueDisplay jsonQueueDisplay) {
+        this.jsonQueueDisplay = jsonQueueDisplay;
         return this;
     }
 
