@@ -1,12 +1,5 @@
 package com.noqapp.android.common.utils;
 
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Years;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -204,7 +204,7 @@ public class CommonHelper {
             } else {
                 return "";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
@@ -217,6 +217,12 @@ public class CommonHelper {
 
     public String getTodayDateWithFormat() {
         Calendar cal = Calendar.getInstance();
+        return getDateWithFormat(cal);
+    }
+
+    public String getTomorrowDateWithFormat() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, 1);
         return getDateWithFormat(cal);
     }
 

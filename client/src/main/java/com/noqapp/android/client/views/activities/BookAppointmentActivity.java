@@ -76,7 +76,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         Calendar startDate = Calendar.getInstance();
         Date dt = new Date();
         startDate.setTime(dt);
-       // startDate.add(Calendar.DAY_OF_MONTH,-1);
+        startDate.add(Calendar.DAY_OF_MONTH,1);
 
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
@@ -100,12 +100,12 @@ public class BookAppointmentActivity extends BaseActivity implements
                 selectedDate = date;
                 fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
-            @Override
-            public boolean onDateLongClicked(Calendar date, int position) {
-                selectedDate = date;
-                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
-                return true;
-            }
+//            @Override
+//            public boolean onDateLongClicked(Calendar date, int position) {
+//                selectedDate = date;
+//                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
+//                return true;
+//            }
         });
         horizontalCalendarView.refresh();
         rv_available_date = findViewById(R.id.rv_available_date);
@@ -146,8 +146,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                 }
             }
         });
-        selectedDate = Calendar.getInstance();
-        fetchAppointments(new AppUtilities().getTodayDateWithFormat());
+        selectedDate = startDate;
+        fetchAppointments(new AppUtilities().getTomorrowDateWithFormat());
 
     }
 
