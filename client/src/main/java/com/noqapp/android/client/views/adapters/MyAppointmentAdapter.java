@@ -17,13 +17,13 @@ import com.noqapp.android.common.utils.Formatter;
 import java.util.List;
 
 
-public class UpComingAppointmentAdapter extends RecyclerView.Adapter<UpComingAppointmentAdapter.MyViewHolder> {
+public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdapter.MyViewHolder> {
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
 
 
-    public UpComingAppointmentAdapter(List<JsonSchedule> data, Context context, OnItemClickListener listener) {
+    public MyAppointmentAdapter(List<JsonSchedule> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;

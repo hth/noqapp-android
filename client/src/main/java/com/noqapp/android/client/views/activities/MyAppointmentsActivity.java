@@ -17,7 +17,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.UpComingAppointmentAdapter;
+import com.noqapp.android.client.views.adapters.MyAppointmentAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
@@ -27,8 +27,8 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpComingAppointmentsActivity extends BaseActivity implements AppointmentPresenter,
-        UpComingAppointmentAdapter.OnItemClickListener {
+public class MyAppointmentsActivity extends BaseActivity implements AppointmentPresenter,
+        MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
@@ -76,7 +76,7 @@ public class UpComingAppointmentsActivity extends BaseActivity implements Appoin
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        UpComingAppointmentAdapter appointmentListAdapter = new UpComingAppointmentAdapter(
+        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(
                 jsonSchedules, this, this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();

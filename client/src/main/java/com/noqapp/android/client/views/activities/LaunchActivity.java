@@ -1159,7 +1159,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
             case R.drawable.appointment: {
                 if (UserUtils.isLogin()) {
-                    Intent in = new Intent(launchActivity, UpComingAppointmentsActivity.class);
+                    Intent in = new Intent(launchActivity, MyAppointmentsActivity.class);
                     startActivity(in);
                 } else {
                     Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
