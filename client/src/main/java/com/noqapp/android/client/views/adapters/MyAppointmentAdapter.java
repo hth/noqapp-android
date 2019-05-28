@@ -44,9 +44,16 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
                 getBirthday()) + ", " + jsonSchedule.getJsonProfile().getGender().name());
         holder.tv_customer_mobile.setText("");
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
-        holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+        holder.tv_appointment_time.setText(Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
         AppUtilities.loadProfilePic(holder.iv_main,jsonSchedule.getJsonProfile().getProfileImage(),context);
+        holder.card_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != listener)
+                    listener.appointmentDetails(dataSet.get(position));
+            }
+        });
     }
 
     @Override

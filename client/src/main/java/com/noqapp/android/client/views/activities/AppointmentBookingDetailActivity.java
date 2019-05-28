@@ -27,6 +27,8 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
 public class AppointmentBookingDetailActivity extends BaseActivity implements AppointmentPresenter {
+    private boolean isNavigateHome = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iv_home.performClick();
+                onBackPressed();
             }
         });
         try {
@@ -59,6 +61,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
             if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+                isNavigateHome = false;
                 iv_main.setVisibility(View.GONE);
                 Button btn_cancel = findViewById(R.id.btn_cancel);
                 btn_cancel.setVisibility(View.VISIBLE);
@@ -88,6 +91,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
                     }
                 });
             } else {
+                isNavigateHome = true;
                 iv_main.setVisibility(View.VISIBLE);
                 AppUtilities.loadProfilePic(iv_main, getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL), this);
             }
@@ -98,8 +102,11 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-        iv_home.performClick();
+        if (isNavigateHome) {
+            iv_home.performClick();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

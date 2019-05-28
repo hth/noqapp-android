@@ -122,7 +122,7 @@ public interface AppointmentApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/appointment/all.json")
+    @GET("api/c/appointment/all.json")
     Call<JsonScheduleList> allAppointments(
             @Header("X-R-DID")
             String did,
