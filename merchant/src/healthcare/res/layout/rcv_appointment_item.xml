@@ -21,6 +21,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:paddingTop="5dp"
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -28,7 +29,7 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:elevation="5dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/profile_blue"
@@ -134,9 +135,7 @@
                     android:id="@+id/iv_accept"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_margin="5dp"
                     android:background="@drawable/accept_empty" />
 
                 <ImageView

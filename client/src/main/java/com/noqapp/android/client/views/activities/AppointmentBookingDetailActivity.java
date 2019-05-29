@@ -64,7 +64,16 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
                 isNavigateHome = false;
                 iv_main.setVisibility(View.GONE);
                 Button btn_cancel = findViewById(R.id.btn_cancel);
-                btn_cancel.setVisibility(View.VISIBLE);
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                    case A:
+                        btn_cancel.setVisibility(View.VISIBLE);
+                        break;
+                    case R:
+                    case S:
+                        btn_cancel.setVisibility(View.GONE);
+                        break;
+                }
                 btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
