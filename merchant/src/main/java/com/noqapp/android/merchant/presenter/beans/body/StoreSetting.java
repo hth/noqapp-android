@@ -102,16 +102,13 @@ public class StoreSetting {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @JsonProperty("ae")
+    @JsonProperty("ea")
     private boolean appointmentEnable;
 
-    @JsonProperty("ad")
+    @JsonProperty("da")
     private int appointmentDuration;
 
-    @JsonProperty("aa")
-    private int availableAppointmentDaily;
-
-    @JsonProperty("ao")
+    @JsonProperty("ha")
     private int appointmentOpenHowFar;
     //******************************************/
     //*  Queue Appointment Setting Ends.       */
@@ -327,15 +324,6 @@ public class StoreSetting {
 
     public StoreSetting setAppointmentDuration(int appointmentDuration) {
         this.appointmentDuration = appointmentDuration;
-        return this;
-    }
-
-    public int getAvailableAppointmentDaily() {
-        return availableAppointmentDaily;
-    }
-
-    public StoreSetting setAvailableAppointmentDaily(int availableAppointmentDaily) {
-        this.availableAppointmentDaily = availableAppointmentDaily;
         return this;
     }
 

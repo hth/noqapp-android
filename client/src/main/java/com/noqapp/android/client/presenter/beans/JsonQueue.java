@@ -165,13 +165,13 @@ public class JsonQueue implements Serializable {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @JsonProperty("ae")
+    @JsonProperty("ea")
     private boolean appointmentEnable;
 
-    @JsonProperty("ad")
+    @JsonProperty("da")
     private int appointmentDuration;
 
-    @JsonProperty("ao")
+    @JsonProperty("ha")
     private int appointmentOpenHowFar;
     //******************************************/
     //*  Queue Appointment Setting Ends.       */
