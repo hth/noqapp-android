@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_main"
+                    android:id="@+id/iv_profile"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_alignParentLeft="true"
@@ -39,7 +39,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_main"
+                    android:layout_toRightOf="@+id/iv_profile"
                     android:orientation="vertical"
                     android:padding="5dp">
 

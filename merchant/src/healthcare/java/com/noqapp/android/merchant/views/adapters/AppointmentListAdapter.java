@@ -17,9 +17,11 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -62,6 +64,21 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                                     jsonSchedule.getJsonProfile().getPhoneRaw()));
             }
         });
+
+        try {
+            if (!TextUtils.isEmpty(jsonSchedule.getJsonProfile().getProfileImage())) {
+                Picasso.get()
+                        .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonSchedule.getJsonProfile().getProfileImage())
+                        .into(holder.iv_profile);
+
+            } else {
+                Picasso.get().load(R.drawable.profile_blue).into(holder.iv_profile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Picasso.get().load(R.drawable.profile_blue).into(holder.iv_profile);
+        }
+
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
@@ -148,6 +165,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         private CardView card_view;
         private ImageView iv_accept;
         private ImageView iv_reject;
+        private ImageView iv_profile;
 
 
         private MyViewHolder(View itemView) {
@@ -160,6 +178,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
             this.iv_accept = itemView.findViewById(R.id.iv_accept);
             this.iv_reject = itemView.findViewById(R.id.iv_reject);
+            this.iv_profile = itemView.findViewById(R.id.iv_profile);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
