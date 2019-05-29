@@ -39,9 +39,8 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         JsonSchedule jsonSchedule = dataSet.get(position);
-        holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
-        holder.tv_gender_age.setText(new AppUtilities().calculateAge(jsonSchedule.getJsonProfile().
-                getBirthday()) + ", " + jsonSchedule.getJsonProfile().getGender().name());
+        holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
+        holder.tv_gender_age.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
         holder.tv_customer_mobile.setText("");
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
