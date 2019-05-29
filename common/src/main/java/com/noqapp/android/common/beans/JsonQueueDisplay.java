@@ -73,7 +73,10 @@ public class JsonQueueDisplay extends AbstractDomain implements Serializable {
     private boolean preventJoining;
 
     @JsonProperty("dc")
-    private boolean dayClosed = false;
+    private boolean dayClosed;
+
+    @JsonProperty("bc")
+    private String bizCategoryId;
 
     public String getBusinessName() {
         return businessName;
@@ -210,6 +213,15 @@ public class JsonQueueDisplay extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonQueueDisplay setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("JsonQueueDisplay{");
@@ -228,6 +240,7 @@ public class JsonQueueDisplay extends AbstractDomain implements Serializable {
         sb.append(", delayedInMinutes=").append(delayedInMinutes);
         sb.append(", preventJoining=").append(preventJoining);
         sb.append(", dayClosed=").append(dayClosed);
+        sb.append(", bizCategoryId=").append(bizCategoryId);
         sb.append('}');
         return sb.toString();
     }
