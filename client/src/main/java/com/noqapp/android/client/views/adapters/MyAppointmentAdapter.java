@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
@@ -40,8 +41,8 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         JsonSchedule jsonSchedule = dataSet.get(position);
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
-        holder.tv_gender_age.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
-        holder.tv_customer_mobile.setText("");
+        holder.tv_customer_mobile.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
+        holder.tv_gender_age.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
         holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());

@@ -8,7 +8,7 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/scan_bg"
@@ -19,9 +19,9 @@
             android:id="@+id/iv_main"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:background="@drawable/empty_review"
+            android:background="@drawable/profile_theme"
             android:elevation="5dp"
             android:scaleType="centerCrop"
             app:civ_border_color="#FFFFFFFF"
@@ -31,8 +31,6 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_main"
-            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
@@ -47,8 +45,20 @@
             android:id="@+id/tv_degree"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="0dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            android:text="Dr type"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="0dp"
@@ -63,13 +73,11 @@
             android:id="@+id/tv_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_degree"
-            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:paddingLeft="10dp"
-            android:paddingTop="0dp"
+            android:paddingTop="5dp"
             android:paddingRight="10dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="0dp"
             android:text="Appointment Time"
             android:textColor="@android:color/black"
             android:textSize="16sp"
@@ -79,8 +87,6 @@
             android:id="@+id/tv_schedule_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_label"
-            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
@@ -95,16 +101,13 @@
             android:id="@+id/iv_booked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_schedule_time"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/appointment_booked" />
 
         <TextView
             android:id="@+id/tv_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_booked"
-            android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
             android:padding="10dp"
             android:text="Your appointment is booked"
@@ -115,7 +118,6 @@
             android:id="@+id/btn_cancel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_standard_height"
-            android:layout_below="@+id/tv_msg"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
@@ -131,6 +133,6 @@
             android:textStyle="normal"
             android:visibility="gone" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
