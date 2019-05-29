@@ -1,29 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
-import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.StoreSettingApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.LocalTime;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -49,18 +25,45 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.ServicePaymentEnum;
+import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.StoreSettingApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.utils.ViewAnimationUtils;
+import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
@@ -86,6 +89,13 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private TextView tv_fee_after_discounted_followup;
     private CardView cv_payment;
     private boolean isFollowUpAllow = false;
+    private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting, iv_payment_setting;
+    private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting, ll_payment_setting;
+    boolean is_today_settings_expand = true;
+    boolean is_token_timing = true;
+    boolean is_store_closing = true;
+    boolean is_permanent_setting = true;
+    boolean is_payment_setting = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +115,37 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
         initProgress();
+
+        if (!new AppUtils().isTablet(getApplicationContext())) {
+
+            iv_today_settings = findViewById(R.id.iv_today_settings);
+            ll_today_settings = findViewById(R.id.ll_today_settings);
+
+            iv_token_timing = findViewById(R.id.iv_token_timing);
+            ll_token_timing = findViewById(R.id.ll_token_timing);
+
+            iv_store_closing = findViewById(R.id.iv_store_closing);
+            ll_store_closing = findViewById(R.id.ll_store_closing);
+
+            iv_permanent_setting = findViewById(R.id.iv_permanent_setting);
+            ll_permanent_setting = findViewById(R.id.ll_permanent_setting);
+
+            iv_payment_setting = findViewById(R.id.iv_payment_setting);
+            ll_payment_setting = findViewById(R.id.ll_payment_setting);
+
+
+            iv_today_settings.setOnClickListener(this);
+            iv_token_timing.setOnClickListener(this);
+            iv_store_closing.setOnClickListener(this);
+            iv_permanent_setting.setOnClickListener(this);
+            iv_payment_setting.setOnClickListener(this);
+
+            iv_today_settings.performClick();
+            iv_token_timing.performClick();
+            iv_store_closing.performClick();
+            iv_permanent_setting.performClick();
+            iv_payment_setting.performClick();
+        }
 
         toggleDayClosed = findViewById(R.id.toggleDayClosed);
         toggleTodayClosed = findViewById(R.id.toggleTodayClosed);
@@ -608,26 +649,65 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
 
     }
 
+    private void expandCollapseViewWithArrow(boolean isExpand, LinearLayout linearLayout, ImageView imageView) {
+        if (isExpand) {
+            ViewAnimationUtils.expand(linearLayout);
+            imageView.setBackground(ContextCompat.getDrawable(SettingActivity.this, R.drawable.arrow_up));
+        } else {
+            ViewAnimationUtils.collapse(linearLayout);
+            imageView.setBackground(ContextCompat.getDrawable(SettingActivity.this, R.drawable.arrow_down));
+        }
+    }
+
     @Override
     public void onClick(View v) {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            updateQueueSettings();
-        } else {
-            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-            if (v.getId() == R.id.toggleDayClosed) {
-                toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
-                toggleDayClosedLabel.setText(toggleDayClosed.isChecked() ? YES : NO);
-            } else if (v.getId() == R.id.togglePreventJoin) {
-                togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
-                togglePreventJoinLabel.setText(togglePreventJoin.isChecked() ? YES : NO);
-            } else if (v.getId() == R.id.toggleTodayClosed) {
-                toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
-                toggleTodayClosedLabel.setText(toggleTodayClosed.isChecked() ? YES : NO);
-            } else if (v.getId() == R.id.toggleStoreOffline) {
-                toggleStoreOffline.setChecked(!toggleStoreOffline.isChecked());
-                toggleStoreOfflineLabel.setText(toggleStoreOffline.isChecked() ? YES : NO);
+        switch (v.getId()) {
+            case R.id.iv_today_settings: {
+                is_today_settings_expand = !is_today_settings_expand;
+                expandCollapseViewWithArrow(is_today_settings_expand, ll_today_settings, iv_today_settings);
             }
+            break;
+            case R.id.iv_token_timing: {
+                is_token_timing = !is_token_timing;
+                expandCollapseViewWithArrow(is_token_timing, ll_token_timing, iv_token_timing);
+            }
+            break;
+            case R.id.iv_store_closing: {
+                is_store_closing = !is_store_closing;
+                expandCollapseViewWithArrow(is_store_closing, ll_store_closing, iv_store_closing);
+            }
+            break;
+            case R.id.iv_permanent_setting: {
+                is_permanent_setting = !is_permanent_setting;
+                expandCollapseViewWithArrow(is_permanent_setting, ll_permanent_setting, iv_permanent_setting);
+            }
+            break;
+
+            case R.id.iv_payment_setting: {
+                is_payment_setting = !is_payment_setting;
+                expandCollapseViewWithArrow(is_payment_setting, ll_payment_setting, iv_payment_setting);
+            }
+            break;
+            default:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.show();
+                    updateQueueSettings();
+                } else {
+                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+                    if (v.getId() == R.id.toggleDayClosed) {
+                        toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
+                        toggleDayClosedLabel.setText(toggleDayClosed.isChecked() ? YES : NO);
+                    } else if (v.getId() == R.id.togglePreventJoin) {
+                        togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
+                        togglePreventJoinLabel.setText(togglePreventJoin.isChecked() ? YES : NO);
+                    } else if (v.getId() == R.id.toggleTodayClosed) {
+                        toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
+                        toggleTodayClosedLabel.setText(toggleTodayClosed.isChecked() ? YES : NO);
+                    } else if (v.getId() == R.id.toggleStoreOffline) {
+                        toggleStoreOffline.setChecked(!toggleStoreOffline.isChecked());
+                        toggleStoreOfflineLabel.setText(toggleStoreOffline.isChecked() ? YES : NO);
+                    }
+                }
         }
     }
 
