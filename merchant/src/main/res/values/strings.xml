@@ -209,11 +209,13 @@
     <string name="empty_price">Please enter product price</string>
     <string name="payment_service">Payment before service</string>
     <string name="payment_setting">Payment Settings</string>
+    <string name="appointment_setting">Appointment Settings</string>
     <string name="text_deduction">Cancellation Charge</string>
     <string name="today_setting">Today\'s Setting</string>
     <string name="permanent_setting">Permanent Settings</string>
     <string name="text_fees">Fee/Service Charge</string>
     <string name="enable_payment">Enable Payment Service</string>
+    <string name="enable_appointment">Enable Appointment Service</string>
     <string name="screen_all_review">Reviews</string>
 
 
@@ -234,5 +236,7 @@
     <string name="text_discounted_followup_price">Limited follow-up discounted price</string>
     <string name="screen_order_q_history">Order Queue History</string>
     <string name="payment_not_allowed">You do not have permission to accept or refund payment</string>
+    <string name="appointment_duration">Appointment duration</string>
+    <string name="appointment_accepting_week">Accept appointment till next</string>
 
 </resources>

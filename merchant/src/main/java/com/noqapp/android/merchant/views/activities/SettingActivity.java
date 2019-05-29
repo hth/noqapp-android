@@ -50,6 +50,7 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.utils.ViewAnimationUtils;
 import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -72,7 +73,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private String codeQR;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
-    private CheckBox cb_limit, cb_enable_payment;
+    private CheckBox cb_limit, cb_enable_payment, cb_enable_appointment;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
     private StoreSettingApiCalls storeSettingApiCalls;
@@ -82,6 +83,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private String NO = "No";
     private EditText edt_deduction_amount, edt_fees;
     private EditText edt_follow_up_in_days, edt_discounted_followup_price, edt_limited_followup_days;
+    private EditText edt_appointment_accepting_week, edt_appointment_duration;
     private SegmentedControl sc_paid_user;
     private List<String> pay_list = new ArrayList<>();
     private ServicePaymentEnum servicePaymentEnum;
@@ -89,13 +91,14 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private TextView tv_fee_after_discounted_followup;
     private CardView cv_payment;
     private boolean isFollowUpAllow = false;
-    private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting, iv_payment_setting;
-    private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting, ll_payment_setting;
+    private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting, iv_payment_setting, iv_appointment_setting;
+    private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting, ll_payment_setting, ll_appointment_setting;
     boolean is_today_settings_expand = true;
     boolean is_token_timing = true;
     boolean is_store_closing = true;
     boolean is_permanent_setting = true;
     boolean is_payment_setting = true;
+    boolean is_appointment_setting = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,18 +136,23 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             iv_payment_setting = findViewById(R.id.iv_payment_setting);
             ll_payment_setting = findViewById(R.id.ll_payment_setting);
 
+            iv_appointment_setting = findViewById(R.id.iv_appointment_setting);
+            ll_appointment_setting = findViewById(R.id.ll_appointment_setting);
+
 
             iv_today_settings.setOnClickListener(this);
             iv_token_timing.setOnClickListener(this);
             iv_store_closing.setOnClickListener(this);
             iv_permanent_setting.setOnClickListener(this);
             iv_payment_setting.setOnClickListener(this);
+            iv_appointment_setting.setOnClickListener(this);
 
             iv_today_settings.performClick();
             iv_token_timing.performClick();
             iv_store_closing.performClick();
             iv_permanent_setting.performClick();
             iv_payment_setting.performClick();
+            iv_appointment_setting.performClick();
         }
 
         toggleDayClosed = findViewById(R.id.toggleDayClosed);
@@ -162,6 +170,9 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         edt_follow_up_in_days = findViewById(R.id.edt_follow_up_in_days);
         edt_discounted_followup_price = findViewById(R.id.edt_discounted_followup_price);
         edt_limited_followup_days = findViewById(R.id.edt_limited_followup_days);
+
+        edt_appointment_accepting_week = findViewById(R.id.edt_appointment_accepting_week);
+        edt_appointment_duration = findViewById(R.id.edt_appointment_duration);
         ll_payment = findViewById(R.id.ll_payment);
         ll_follow_up = findViewById(R.id.ll_follow_up);
         cv_payment = findViewById(R.id.cv_payment);
@@ -227,6 +238,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         });
         tv_toolbar_title.setText(getString(R.string.screen_settings));
 
+        cb_enable_appointment = findViewById(R.id.cb_enable_appointment);
         cb_enable_payment = findViewById(R.id.cb_enable_payment);
         cb_enable_payment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -334,6 +346,23 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
         Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
+        Button btn_update_appointment = findViewById(R.id.btn_update_appointment);
+        btn_update_appointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    if (cb_enable_appointment.isChecked()) {
+                        if(validateAppointmentSetting()){
+                            updateAppointmentSettings();
+                        }
+                    } else {
+                        edt_appointment_accepting_week.setText("0");
+                        edt_appointment_duration.setText("0");
+                        updateAppointmentSettings();
+                    }
+
+            }
+        });
+
         btn_update_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -464,55 +493,44 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         }
     }
 
+
+    private boolean validateAppointmentSetting(){
+        boolean isValid = true;
+        if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
+            Toast.makeText(SettingActivity.this, "Appointment duration cannot be empty or 0", Toast.LENGTH_LONG).show();
+            isValid = false;
+        } else {
+            if (Integer.parseInt(edt_appointment_duration.getText().toString()) > 60 || Integer.parseInt(edt_appointment_duration.getText().toString()) < 10) {
+                Toast.makeText(SettingActivity.this, "Appointment duration should be greater than 10 & less than 60", Toast.LENGTH_LONG).show();
+                isValid = false;
+            }
+        }
+        if (TextUtils.isEmpty(edt_appointment_accepting_week.getText().toString())) {
+            Toast.makeText(SettingActivity.this, "Appointment week cannot be empty or 0", Toast.LENGTH_LONG).show();
+            isValid = false;
+        }else{
+            if (Integer.parseInt(edt_appointment_accepting_week.getText().toString()) > 52 || Integer.parseInt(edt_appointment_accepting_week.getText().toString()) < 1) {
+                Toast.makeText(SettingActivity.this, "Appointment week should be greater than 0 & less than or equal to 52 weeks", Toast.LENGTH_LONG).show();
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+
+
     private void updateDiscountLabel() {
         if (!TextUtils.isEmpty(edt_fees.getText().toString())) {
             tv_fee_after_discounted_followup.setVisibility(View.VISIBLE);
             try {
-                tv_fee_after_discounted_followup.setText("Service charge for limited follow-up until " + edt_limited_followup_days.getText().toString() + " days is " + (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
+                tv_fee_after_discounted_followup.setText("Service charge for limited follow-up until " +
+                        edt_limited_followup_days.getText().toString() + " days is " +
+                        (Integer.parseInt(edt_fees.getText().toString()) - Integer.parseInt(edt_discounted_followup_price.getText().toString())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             tv_fee_after_discounted_followup.setText("");
             tv_fee_after_discounted_followup.setVisibility(View.GONE);
-        }
-    }
-
-    private void updatePaymentSettings() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            StoreSetting storeSetting = storeSettingTemp;
-            if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
-                storeSetting.setCancellationPrice(0);
-            } else {
-                storeSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
-            }
-            if (TextUtils.isEmpty(edt_fees.getText().toString())) {
-                storeSetting.setProductPrice(0);
-            } else {
-                storeSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
-            }
-
-            if (TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                storeSetting.setFreeFollowupDays(0);
-            } else {
-                storeSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
-            }
-            if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
-                storeSetting.setDiscountedFollowupDays(0);
-            } else {
-                storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
-            }
-            if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
-                storeSetting.setDiscountedFollowupProductPrice(0);
-            } else {
-                storeSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
-            }
-            storeSetting.setServicePayment(servicePaymentEnum);
-            storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
-            storeSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
-        } else {
-            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
     }
 
@@ -562,6 +580,8 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             toggleStoreOffline.setChecked(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
             toggleStoreOfflineLabel.setText(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? YES : NO);
             cb_enable_payment.setChecked(storeSetting.isEnabledPayment());
+
+            cb_enable_appointment.setChecked(storeSetting.isAppointmentEnable());
             ll_payment.setVisibility(storeSetting.isEnabledPayment() ? View.VISIBLE : View.GONE);
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getTokenAvailableFrom()));
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getStartHour()));
@@ -594,6 +614,8 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                     new AppUtils().hideKeyBoard(this);
                 }
             }
+            edt_appointment_duration.setText(String.valueOf(storeSetting.getAppointmentDuration()));
+            edt_appointment_accepting_week.setText(String.valueOf(storeSetting.getAppointmentOpenHowFar()));
 
             if (isFollowUpAllow) {
                 ServicePaymentEnum servicePaymentEnum = storeSetting.getServicePayment();
@@ -682,10 +704,14 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                 expandCollapseViewWithArrow(is_permanent_setting, ll_permanent_setting, iv_permanent_setting);
             }
             break;
-
             case R.id.iv_payment_setting: {
                 is_payment_setting = !is_payment_setting;
                 expandCollapseViewWithArrow(is_payment_setting, ll_payment_setting, iv_payment_setting);
+            }
+            break;
+            case R.id.iv_appointment_setting: {
+                is_appointment_setting = !is_appointment_setting;
+                expandCollapseViewWithArrow(is_appointment_setting, ll_appointment_setting, iv_appointment_setting);
             }
             break;
             default:
@@ -766,6 +792,69 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         }
         storeSettingApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
     }
+
+
+    private void updatePaymentSettings() {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Updating payment settings...");
+            progressDialog.show();
+            StoreSetting storeSetting = SerializationUtils.clone(this.storeSettingTemp);
+            if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
+                storeSetting.setCancellationPrice(0);
+            } else {
+                storeSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
+            }
+            if (TextUtils.isEmpty(edt_fees.getText().toString())) {
+                storeSetting.setProductPrice(0);
+            } else {
+                storeSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
+            }
+
+            if (TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                storeSetting.setFreeFollowupDays(0);
+            } else {
+                storeSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
+                storeSetting.setDiscountedFollowupDays(0);
+            } else {
+                storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                storeSetting.setDiscountedFollowupProductPrice(0);
+            } else {
+                storeSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
+            }
+            storeSetting.setServicePayment(servicePaymentEnum);
+            storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
+            storeSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
+        } else {
+            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+        }
+    }
+
+    private void updateAppointmentSettings() {
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Updating appointment settings...");
+            progressDialog.show();
+            StoreSetting storeSetting = SerializationUtils.clone(this.storeSettingTemp);
+            if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
+                storeSetting.setAppointmentDuration(0);
+            } else {
+                storeSetting.setAppointmentDuration(Integer.parseInt(edt_appointment_duration.getText().toString()));
+            }
+            if (TextUtils.isEmpty(edt_appointment_accepting_week.getText().toString())) {
+                storeSetting.setAppointmentOpenHowFar(0);
+            } else {
+                storeSetting.setAppointmentOpenHowFar(Integer.parseInt(edt_appointment_accepting_week.getText().toString()));
+            }
+
+            storeSetting.setAppointmentEnable(cb_enable_appointment.isChecked());
+            storeSettingApiCalls.appointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
+        } else {
+            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+        }
+    } 
 
     private class TextViewClick implements View.OnClickListener {
         private TextView textView;

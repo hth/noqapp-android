@@ -394,6 +394,188 @@
                     </androidx.cardview.widget.CardView>
 
 
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_appointment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        card_view:cardCornerRadius="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:orientation="vertical"
+                            android:paddingBottom="5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="@string/appointment_setting"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/iv_appointment_setting"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/arrow_up"
+                                    android:padding="5dp"
+                                    android:visibility="invisible"/>
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_appointment_setting"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1">
+
+                                    <TextView
+
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.8"
+                                        android:gravity="center_vertical"
+                                        android:padding="5dp"
+                                        android:text="@string/enable_appointment"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen" />
+
+
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_weight="0.2"
+                                        android:gravity="center">
+
+                                        <CheckBox
+                                            android:id="@+id/cb_enable_appointment"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:buttonTint="@color/colorPrimaryDark"
+                                            android:gravity="center" />
+                                    </RelativeLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".8"
+                                        android:padding="5dp"
+                                        android:text="@string/appointment_duration"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen" />
+
+                                    <EditText
+                                        android:id="@+id/edt_appointment_duration"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".2"
+                                        android:background="@drawable/square_white_bg_drawable"
+                                        android:digits="0123456789"
+                                        android:gravity="center"
+                                        android:inputType="number"
+                                        android:hint="20 min."
+                                        android:maxLength="4"
+                                        android:maxLines="1"
+                                        android:minLines="1"
+                                        android:padding="5dp"
+                                        android:singleLine="true"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_fourteen" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".8"
+                                        android:padding="5dp"
+                                        android:text="@string/appointment_accepting_week"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen" />
+
+                                    <EditText
+                                        android:id="@+id/edt_appointment_accepting_week"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".2"
+                                        android:background="@drawable/square_white_bg_drawable"
+                                        android:digits="0123456789"
+                                        android:gravity="center"
+                                        android:inputType="number"
+                                        android:hint="1 weeks"
+                                        android:maxLength="4"
+                                        android:maxLines="1"
+                                        android:minLines="1"
+                                        android:padding="5dp"
+                                        android:singleLine="true"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_fourteen" />
+
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/btn_update_appointment"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/btn_height"
+                                    android:layout_gravity="right"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/bg_nogradient_round"
+                                    android:padding="5dp"
+                                    android:text="  Update  "
+                                    android:textAllCaps="false"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
                 <LinearLayout
@@ -719,359 +901,360 @@
 
                     </androidx.cardview.widget.CardView>
 
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_payment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    card_view:cardCornerRadius="4dp">
-
-                <LinearLayout
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_payment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".8"
-                                android:padding="5dp"
-                                android:text="@string/payment_setting"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_sixteen"
-                                android:textStyle="bold"/>
-
-                        <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/togglePaymentSetting"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight=".2"
-                                android:paddingEnd="@dimen/swith_padding"
-                                android:scaleX="1.25"
-                                android:scaleY="1.25"
-                                android:theme="@style/SettingSeekbarStyle"
-                                android:visibility="gone"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:background="@android:color/white"
-                            android:orientation="horizontal">
-
-                        <TextView
-
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.8"
-                                android:gravity="center_vertical"
-                                android:padding="5dp"
-                                android:text="@string/enable_payment"
-                                android:textColor="@color/color_total_val"
-                                android:textSize="@dimen/text_size_fourteen"/>
-
-
-                        <RelativeLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="0.2"
-                                android:gravity="center">
-
-                            <CheckBox
-                                    android:id="@+id/cb_enable_payment"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:gravity="center"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                            android:id="@+id/ll_payment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        card_view:cardCornerRadius="4dp">
 
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
-                            <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".5"
-                                    android:gravity="center_vertical"
-                                    android:padding="5dp"
-                                    android:text="@string/payment_service"
-                                    android:textColor="@color/color_total_val"
-                                    android:textSize="@dimen/text_size_fourteen"/>
-
-
-                            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
-                                                                                                           android:id="@+id/sc_paid_user"
-                                                                                                           android:layout_width="0dp"
-                                                                                                           android:layout_height="wrap_content"
-                                                                                                           android:layout_weight=".5"
-                                                                                                           segmentedcontrol:columnCount="3"
-                                                                                                           segmentedcontrol:distributeEvenly="true"
-                                                                                                           segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                                                                                                           segmentedcontrol:radius="6dp"
-                                                                                                           segmentedcontrol:radiusForEverySegment="false"
-                                                                                                           segmentedcontrol:segmentHorizontalMargin="0dp"
-                                                                                                           segmentedcontrol:segmentVerticalMargin="0dp"
-                                                                                                           segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                                                                                                           segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                                                                                                           segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                                                                                                           segmentedcontrol:strokeWidth="1dp"
-                                                                                                           segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                                                                                                           segmentedcontrol:textVerticalPadding="7dp"
-                                                                                                           segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                                                                                                           segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                                                                                                           segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:weightSum="1">
-
-                            <TextView
+                                <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".8"
                                     android:padding="5dp"
-                                    android:text="@string/text_fees"
-                                    android:textColor="@color/color_total_val"
-                                    android:textSize="@dimen/text_size_fourteen"/>
-
-                            <EditText
-                                    android:id="@+id/edt_fees"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".2"
-                                    android:background="@drawable/square_white_bg_drawable"
-                                    android:digits="0123456789"
-                                    android:gravity="center"
-                                    android:inputType="number"
-                                    android:maxLength="4"
-                                    android:maxLines="1"
-                                    android:minLines="1"
-                                    android:padding="5dp"
-                                    android:singleLine="true"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="@dimen/text_size_fourteen"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:weightSum="1">
-
-                            <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".8"
-                                    android:padding="5dp"
-                                    android:text="@string/text_deduction"
-                                    android:textColor="@color/color_total_val"
-                                    android:textSize="@dimen/text_size_fourteen"/>
-
-                            <EditText
-                                    android:id="@+id/edt_deduction_amount"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight=".2"
-                                    android:background="@drawable/square_white_bg_drawable"
-                                    android:digits="0123456789"
-                                    android:gravity="center"
-                                    android:inputType="number"
-                                    android:maxLength="4"
-                                    android:maxLines="1"
-                                    android:minLines="1"
-                                    android:padding="5dp"
-                                    android:singleLine="true"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="@dimen/text_size_fourteen"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                                android:id="@+id/ll_follow_up"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                            <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    android:text="@string/followup_setting"
+                                    android:text="@string/payment_setting"
                                     android:textColor="@android:color/black"
                                     android:textSize="@dimen/text_size_sixteen"
                                     android:textStyle="bold"/>
 
-                            <LinearLayout
-                                    android:layout_width="match_parent"
+                                <androidx.appcompat.widget.SwitchCompat
+                                    android:id="@+id/togglePaymentSetting"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:weightSum="1">
-
-                                <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".8"
-                                        android:padding="5dp"
-                                        android:text="@string/text_followup_in_days"
-                                        android:textColor="@color/color_total_val"
-                                        android:textSize="@dimen/text_size_fourteen"/>
-
-                                <EditText
-                                        android:id="@+id/edt_follow_up_in_days"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".2"
-                                        android:background="@drawable/square_white_bg_drawable"
-                                        android:digits="0123456789"
-                                        android:gravity="center"
-                                        android:inputType="number"
-                                        android:maxLength="4"
-                                        android:maxLines="1"
-                                        android:minLines="1"
-                                        android:padding="5dp"
-                                        android:singleLine="true"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="@dimen/text_size_fourteen"/>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:weightSum="1">
-
-                                <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".8"
-                                        android:padding="5dp"
-                                        android:text="@string/text_limited_followup_days"
-                                        android:textColor="@color/color_total_val"
-                                        android:textSize="@dimen/text_size_fourteen"/>
-
-                                <EditText
-                                        android:id="@+id/edt_limited_followup_days"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".2"
-                                        android:background="@drawable/square_white_bg_drawable"
-                                        android:digits="0123456789"
-                                        android:gravity="center"
-                                        android:inputType="number"
-                                        android:maxLength="4"
-                                        android:maxLines="1"
-                                        android:minLines="1"
-                                        android:padding="5dp"
-                                        android:singleLine="true"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="@dimen/text_size_fourteen"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:weightSum="1">
-
-                                <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".8"
-                                        android:padding="5dp"
-                                        android:text="@string/text_discounted_followup_price"
-                                        android:textColor="@color/color_total_val"
-                                        android:textSize="@dimen/text_size_fourteen"/>
-
-                                <EditText
-                                        android:id="@+id/edt_discounted_followup_price"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".2"
-                                        android:background="@drawable/square_white_bg_drawable"
-                                        android:digits="0123456789"
-                                        android:gravity="center"
-                                        android:inputType="number"
-                                        android:maxLength="4"
-                                        android:maxLines="1"
-                                        android:minLines="1"
-                                        android:padding="5dp"
-                                        android:singleLine="true"
-                                        android:textColor="@android:color/black"
-                                        android:textSize="@dimen/text_size_fourteen"/>
-
-                            </LinearLayout>
-
-                            <TextView
-                                    android:id="@+id/tv_fee_after_discounted_followup"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="left"
-                                    android:padding="10dp"
-                                    android:textColor="@android:color/holo_red_dark"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight=".2"
+                                    android:paddingEnd="@dimen/swith_padding"
+                                    android:scaleX="1.25"
+                                    android:scaleY="1.25"
+                                    android:theme="@style/SettingSeekbarStyle"
                                     android:visibility="gone"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@android:color/white"
+                                android:orientation="horizontal">
+
+                                <TextView
+
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.8"
+                                    android:gravity="center_vertical"
+                                    android:padding="5dp"
+                                    android:text="@string/enable_payment"
+                                    android:textColor="@color/color_total_val"
+                                    android:textSize="@dimen/text_size_fourteen"/>
+
+
+                                <RelativeLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="0.2"
+                                    android:gravity="center">
+
+                                    <CheckBox
+                                        android:id="@+id/cb_enable_payment"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:buttonTint="@color/colorPrimaryDark"
+                                        android:gravity="center"/>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ll_payment"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        android:gravity="center_vertical"
+                                        android:padding="5dp"
+                                        android:text="@string/payment_service"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen"/>
+
+
+                                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/sc_paid_user"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".5"
+                                        segmentedcontrol:columnCount="3"
+                                        segmentedcontrol:distributeEvenly="true"
+                                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:radius="6dp"
+                                        segmentedcontrol:radiusForEverySegment="false"
+                                        segmentedcontrol:segmentHorizontalMargin="0dp"
+                                        segmentedcontrol:segmentVerticalMargin="0dp"
+                                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                        segmentedcontrol:strokeWidth="1dp"
+                                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                        segmentedcontrol:textVerticalPadding="7dp"
+                                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color"/>
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".8"
+                                        android:padding="5dp"
+                                        android:text="@string/text_fees"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen"/>
+
+                                    <EditText
+                                        android:id="@+id/edt_fees"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".2"
+                                        android:background="@drawable/square_white_bg_drawable"
+                                        android:digits="0123456789"
+                                        android:gravity="center"
+                                        android:inputType="number"
+                                        android:maxLength="4"
+                                        android:maxLines="1"
+                                        android:minLines="1"
+                                        android:padding="5dp"
+                                        android:singleLine="true"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_fourteen"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".8"
+                                        android:padding="5dp"
+                                        android:text="@string/text_deduction"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen"/>
+
+                                    <EditText
+                                        android:id="@+id/edt_deduction_amount"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".2"
+                                        android:background="@drawable/square_white_bg_drawable"
+                                        android:digits="0123456789"
+                                        android:gravity="center"
+                                        android:inputType="number"
+                                        android:maxLength="4"
+                                        android:maxLines="1"
+                                        android:minLines="1"
+                                        android:padding="5dp"
+                                        android:singleLine="true"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_fourteen"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/ll_follow_up"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="@string/followup_setting"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_sixteen"
+                                        android:textStyle="bold"/>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
+                                        android:weightSum="1">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight=".8"
+                                            android:padding="5dp"
+                                            android:text="@string/text_followup_in_days"
+                                            android:textColor="@color/color_total_val"
+                                            android:textSize="@dimen/text_size_fourteen"/>
+
+                                        <EditText
+                                            android:id="@+id/edt_follow_up_in_days"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight=".2"
+                                            android:background="@drawable/square_white_bg_drawable"
+                                            android:digits="0123456789"
+                                            android:gravity="center"
+                                            android:inputType="number"
+                                            android:maxLength="4"
+                                            android:maxLines="1"
+                                            android:minLines="1"
+                                            android:padding="5dp"
+                                            android:singleLine="true"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="@dimen/text_size_fourteen"/>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
+                                        android:weightSum="1">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight=".8"
+                                            android:padding="5dp"
+                                            android:text="@string/text_limited_followup_days"
+                                            android:textColor="@color/color_total_val"
+                                            android:textSize="@dimen/text_size_fourteen"/>
+
+                                        <EditText
+                                            android:id="@+id/edt_limited_followup_days"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight=".2"
+                                            android:background="@drawable/square_white_bg_drawable"
+                                            android:digits="0123456789"
+                                            android:gravity="center"
+                                            android:inputType="number"
+                                            android:maxLength="4"
+                                            android:maxLines="1"
+                                            android:minLines="1"
+                                            android:padding="5dp"
+                                            android:singleLine="true"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="@dimen/text_size_fourteen"/>
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
+                                        android:weightSum="1">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight=".8"
+                                            android:padding="5dp"
+                                            android:text="@string/text_discounted_followup_price"
+                                            android:textColor="@color/color_total_val"
+                                            android:textSize="@dimen/text_size_fourteen"/>
+
+                                        <EditText
+                                            android:id="@+id/edt_discounted_followup_price"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight=".2"
+                                            android:background="@drawable/square_white_bg_drawable"
+                                            android:digits="0123456789"
+                                            android:gravity="center"
+                                            android:inputType="number"
+                                            android:maxLength="4"
+                                            android:maxLines="1"
+                                            android:minLines="1"
+                                            android:padding="5dp"
+                                            android:singleLine="true"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="@dimen/text_size_fourteen"/>
+
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/tv_fee_after_discounted_followup"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="left"
+                                        android:padding="10dp"
+                                        android:textColor="@android:color/holo_red_dark"
+                                        android:visibility="gone"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btn_update_deduction"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/btn_height"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/bg_nogradient_round"
+                                android:padding="5dp"
+                                android:text="  Update  "
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_fourteen"/>
                         </LinearLayout>
-                    </LinearLayout>
 
-                    <Button
-                            android:id="@+id/btn_update_deduction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/btn_height"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/bg_nogradient_round"
-                            android:padding="5dp"
-                            android:text="  Update  "
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen"/>
+                    </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
+            </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
