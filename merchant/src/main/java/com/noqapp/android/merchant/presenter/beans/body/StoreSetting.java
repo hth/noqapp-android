@@ -102,13 +102,13 @@ public class StoreSetting {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @JsonProperty("ea")
+    @JsonProperty("pe")
     private boolean appointmentEnable;
 
-    @JsonProperty("da")
+    @JsonProperty("pd")
     private int appointmentDuration;
 
-    @JsonProperty("ha")
+    @JsonProperty("pf")
     private int appointmentOpenHowFar;
     //******************************************/
     //*  Queue Appointment Setting Ends.       */
