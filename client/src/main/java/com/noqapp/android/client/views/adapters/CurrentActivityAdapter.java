@@ -15,6 +15,7 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -90,15 +91,16 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
 
             holder.tv_current_value.setText(String.valueOf(jsonTokenAndQueue.getToken()));
         } else if (object instanceof JsonSchedule) {
-            // update it
             JsonSchedule jsonSchedule = (JsonSchedule) object;
             holder.ll_queue.setVisibility(View.GONE);
             holder.ll_appointment.setVisibility(View.VISIBLE);
             holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
-            holder.tv_degree.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
+            holder.tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+            holder.tv_store_address.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
+            holder.tv_schedule_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
-                holder.tv_schedule_time.setText(date + " at " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+                holder.tv_schedule_date.setText(date);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -138,6 +140,8 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
         private TextView tv_title;
         private TextView tv_degree;
         private TextView tv_schedule_time;
+        private TextView tv_schedule_date;
+        private TextView tv_store_address;
 
         private MyViewHolder(View itemView) {
             super(itemView);
@@ -154,6 +158,8 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_degree = itemView.findViewById(R.id.tv_degree);
             tv_schedule_time = itemView.findViewById(R.id.tv_schedule_time);
+            tv_schedule_date = itemView.findViewById(R.id.tv_schedule_date);
+            tv_store_address = itemView.findViewById(R.id.tv_store_address);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
