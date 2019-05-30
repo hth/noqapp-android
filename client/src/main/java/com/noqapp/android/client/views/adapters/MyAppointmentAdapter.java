@@ -14,8 +14,10 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -41,12 +43,17 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         JsonSchedule jsonSchedule = dataSet.get(position);
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
-        holder.tv_customer_mobile.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
-        holder.tv_gender_age.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
-        holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
+        holder.tv_address.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
+        holder.tv_category.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+        try {
+            Date date = CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate());
+            holder.tv_appointment_date.setText(CommonHelper.SDF_DOB_FROM_UI.format(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
-        AppUtilities.loadProfilePic(holder.iv_main,jsonSchedule.getJsonProfile().getProfileImage(),context);
+        //  AppUtilities.loadProfilePic(holder.iv_main,jsonSchedule.getJsonProfile().getProfileImage(),context);
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,8 +74,8 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_title;
-        private TextView tv_gender_age;
-        private TextView tv_customer_mobile;
+        private TextView tv_category;
+        private TextView tv_address;
         private TextView tv_appointment_time;
         private TextView tv_appointment_date;
         private TextView tv_appointment_status;
@@ -79,11 +86,11 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_title = itemView.findViewById(R.id.tv_title);
-            this.tv_gender_age = itemView.findViewById(R.id.tv_gender_age);
+            this.tv_category = itemView.findViewById(R.id.tv_category);
             this.tv_appointment_time = itemView.findViewById(R.id.tv_appointment_time);
             this.tv_appointment_date = itemView.findViewById(R.id.tv_appointment_date);
             this.tv_appointment_status = itemView.findViewById(R.id.tv_appointment_status);
-            this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
+            this.tv_address = itemView.findViewById(R.id.tv_address);
             this.iv_main = itemView.findViewById(R.id.iv_main);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
