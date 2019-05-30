@@ -220,11 +220,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             }
         });
         if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-            holder.btn_book_appointment.setVisibility(View.VISIBLE);
-            if (AppUtilities.isRelease()) {
-                holder.btn_book_appointment.setVisibility(View.GONE);
-            } else {
+            if (bizStoreElastic.isAppointmentEnable()) {
                 holder.btn_book_appointment.setVisibility(View.VISIBLE);
+            } else {
+                holder.btn_book_appointment.setVisibility(View.GONE);
             }
         } else {
             holder.btn_book_appointment.setVisibility(View.GONE);

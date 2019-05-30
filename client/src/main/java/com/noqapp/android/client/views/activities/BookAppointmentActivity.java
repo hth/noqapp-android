@@ -175,10 +175,9 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
         List<AppointmentModel> listData = new ArrayList<>();
-        String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getStartHour());
-        String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getEndHour());
-        ArrayList<String> timeSlot = getTimeSlots(30, from, to);
-
+        String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
+        String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
+        ArrayList<String> timeSlot = getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to);
         for (int i = 0; i < timeSlot.size()-1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) +" - "+timeSlot.get(i+1)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
