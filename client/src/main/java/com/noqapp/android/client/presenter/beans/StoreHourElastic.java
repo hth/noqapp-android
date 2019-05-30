@@ -37,11 +37,17 @@ public class StoreHourElastic implements Serializable {
     @JsonProperty("SH")
     private int startHour;
 
+    @JsonProperty("AS")
+    private int appointmentStartHour;
+
     @JsonProperty("TE")
     private int tokenNotAvailableFrom;
 
     @JsonProperty("EH")
     private int endHour;
+
+    @JsonProperty("AE")
+    private int appointmentEndHour;
 
     @JsonProperty("DC")
     private boolean dayClosed = false;
@@ -73,6 +79,15 @@ public class StoreHourElastic implements Serializable {
         return this;
     }
 
+    public int getAppointmentStartHour() {
+        return appointmentStartHour;
+    }
+
+    public StoreHourElastic setAppointmentStartHour(int appointmentStartHour) {
+        this.appointmentStartHour = appointmentStartHour;
+        return this;
+    }
+
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
@@ -88,6 +103,15 @@ public class StoreHourElastic implements Serializable {
 
     public StoreHourElastic setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public int getAppointmentEndHour() {
+        return appointmentEndHour;
+    }
+
+    public StoreHourElastic setAppointmentEndHour(int appointmentEndHour) {
+        this.appointmentEndHour = appointmentEndHour;
         return this;
     }
 

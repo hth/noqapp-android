@@ -137,6 +137,15 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("PP")
     private int productPrice;
 
+    @JsonProperty("PE")
+    private boolean appointmentEnable;
+
+    @JsonProperty("PD")
+    private int appointmentDuration;
+
+    @JsonProperty("PF")
+    private int appointmentOpenHowFar;
+
     @JsonProperty("BI")
     private List<String> bizServiceImages = new LinkedList<>();
 
@@ -445,6 +454,33 @@ public class BizStoreElastic implements Serializable {
 
     public BizStoreElastic setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public BizStoreElastic setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public BizStoreElastic setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public BizStoreElastic setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 
