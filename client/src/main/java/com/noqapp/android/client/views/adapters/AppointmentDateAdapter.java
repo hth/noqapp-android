@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     private final OnItemClickListener listener;
     private List<AppointmentModel> dataSet;
     private Context context;
+    private int selectPos = -1;
 
     public List<AppointmentModel> getDataSet() {
         return dataSet;
@@ -28,6 +30,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
         this.dataSet = data;
         this.listener = listener;
         this.context = context;
+        selectPos = -1;
     }
 
     @Override
@@ -43,22 +46,32 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
         AppointmentModel item = dataSet.get(listPosition);
         holder.tv_time.setText(item.getTime());
         if (item.isBooked()) {
-            holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_red_round));
-            holder.tv_time.setTextColor(Color.WHITE);
+            holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_appointment_booked));
+            holder.tv_time.setTextColor(Color.parseColor("#474747"));
         } else {
-            holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_white_round));
-            holder.tv_time.setTextColor(Color.BLACK);
+            if (selectPos != -1 && selectPos == listPosition) {
+                holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_appointment_select));
+                holder.tv_time.setTextColor(Color.WHITE);
+            } else {
+                holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_appointment_available));
+                holder.tv_time.setTextColor(Color.BLACK);
+            }
+
         }
+
         holder.tv_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
                     if (item.isBooked()) {
-                        // Do nothing
+                        selectPos = -1;
+                        listener.onBookedAppointmentSelected();
+                        Toast.makeText(context, "This slot is already booked", Toast.LENGTH_SHORT).show();
                     } else {
-                        //Toast.makeText(context, "Book your appointment", Toast.LENGTH_SHORT).show();
+                        selectPos = listPosition;
                         listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
                     }
+                    notifyDataSetChanged();
                 }
             }
         });
@@ -71,6 +84,8 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
 
     public interface OnItemClickListener {
         void onAppointmentSelected(AppointmentModel item, int pos);
+        
+        void onBookedAppointmentSelected();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
