@@ -20,7 +20,7 @@ public class OrderQueueHistoryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_queue_history);
+        setContentView(R.layout.activity_tab);
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.history));
         viewPager = findViewById(R.id.viewpager);
