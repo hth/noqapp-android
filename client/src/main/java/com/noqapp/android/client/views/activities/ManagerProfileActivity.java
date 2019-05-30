@@ -3,7 +3,6 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 10/4/18.
  */
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfessionalProfileApiCall;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
@@ -40,7 +39,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
@@ -121,16 +119,13 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             tv_total_rating.setText(String.valueOf(AppUtilities.round(val)));
             tv_total_review.setText("Reviews");
             tv_total_review.setPaintFlags(tv_total_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            tv_total_review.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent in = new Intent(ManagerProfileActivity.this, ShowAllReviewsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("data", (Serializable) jsonReviews);
-                    bundle.putString("storeName", tv_name.getText().toString());
-                    in.putExtras(bundle);
-                    startActivity(in);
-                }
+            tv_total_review.setOnClickListener(v -> {
+                Intent in = new Intent(ManagerProfileActivity.this, ShowAllReviewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", (Serializable) jsonReviews);
+                bundle.putString("storeName", tv_name.getText().toString());
+                in.putExtras(bundle);
+                startActivity(in);
             });
         } else {
             Log.v("queueManagerResponse", "null data received");
