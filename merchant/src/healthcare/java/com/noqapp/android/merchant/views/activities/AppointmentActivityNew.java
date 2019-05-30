@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.model.types.AppointmentStatusEnum;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
@@ -31,6 +32,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+
 public class AppointmentActivityNew extends AppCompatActivity implements AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
 
     private ProgressDialog progressDialog;
@@ -39,7 +44,11 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     private TextView tv_appointment_accepted, tv_total_appointment,
             tv_appointment_cancelled, tv_appointment_pending;
     private ScheduleApiCalls scheduleApiCalls;
-
+    private SegmentedControl sc_filter;
+    private ArrayList<String> filter_data = new ArrayList<>();
+    private List<EventDay> events;
+    List<EventDay> eventsAccepted = new ArrayList<>();
+    List<EventDay> eventsPending = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +80,35 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             rcv_appointments.setHasFixedSize(true);
             rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
             rcv_appointments.setItemAnimator(new DefaultItemAnimator());
+
+
+            sc_filter = findViewById(R.id.sc_filter);
+            filter_data.clear();
+            filter_data.add("All");
+            filter_data.add("Accepted");
+
+            filter_data.add("Pending");
+            sc_filter.addSegments(filter_data);
+
+            sc_filter.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
+                @Override
+                public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
+                    int position = segmentViewHolder.getAbsolutePosition();
+                    switch (position)
+                    {
+                        case 0 :
+                            rcv_appointments.setAdapter(new AppointmentListAdapter(events, AppointmentActivityNew.this, AppointmentActivityNew.this));
+                            break;
+                        case 1:
+                            rcv_appointments.setAdapter(new AppointmentListAdapter(eventsAccepted, AppointmentActivityNew.this, AppointmentActivityNew.this));
+                            break;
+                        case 2:
+                            rcv_appointments.setAdapter(new AppointmentListAdapter(eventsPending, AppointmentActivityNew.this, AppointmentActivityNew.this));
+                            break;
+                    }
+                }
+            });
+
             progressDialog.show();
             scheduleApiCalls = new ScheduleApiCalls();
             scheduleApiCalls.setAppointmentPresenter(this);
@@ -108,20 +146,24 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
-        List<EventDay> events = parseEventList(jsonScheduleList);
+        events = parseEventList(jsonScheduleList);
         tv_header.setText("Today (" + events.size() + " appointments)");
         int cancel = 0;
         int pending = 0;
         int accept = 0;
+        eventsAccepted.clear();
+        eventsPending.clear();
         if (null != jsonScheduleList && jsonScheduleList.getJsonSchedules().size() > 0)
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
                 JsonSchedule jsonSchedule = jsonScheduleList.getJsonSchedules().get(i);
                 switch (jsonSchedule.getAppointmentStatus()) {
                     case U:
                         ++pending;
+                        eventsPending.add(events.get(i));
                         break;
                     case A:
                         ++accept;
+                        eventsAccepted.add(events.get(i));
                         break;
                     case R:
                         ++cancel;
@@ -134,8 +176,12 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         tv_total_appointment.setText(String.valueOf(events.size()));
         tv_appointment_cancelled.setText(String.valueOf(cancel));
         tv_appointment_pending.setText(String.valueOf(pending));
-        AppointmentListAdapter appointmentListAdapter = new AppointmentListAdapter(events, this, this);
-        rcv_appointments.setAdapter(appointmentListAdapter);
+        if( null == events || events.size() == 0){
+            sc_filter.setVisibility(View.GONE);
+        }else{
+            sc_filter.setVisibility(View.VISIBLE);
+        }
+        sc_filter.setSelectedSegment(0);
         dismissProgress();
     }
 
