@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
@@ -79,27 +79,27 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             Picasso.get().load(R.drawable.profile_blue).into(holder.iv_profile);
         }
 
-        holder.tv_appointment_date.setText(jsonSchedule.getScheduleDate());
-        holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+        holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime())
+                + " - " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getEndTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
-        switch (jsonSchedule.getAppointmentStatus()) {
-            case U:
-                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
-                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
-                break;
-            case A:
-                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept));
-                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
-                break;
-            case R:
-                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
-                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject));
-                break;
-            case S:
-                // Define what to do
-                break;
-        }
-        holder.iv_reject.setOnClickListener(new View.OnClickListener() {
+//        switch (jsonSchedule.getAppointmentStatus()) {
+//            case U:
+//                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
+//                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
+//                break;
+//            case A:
+//                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept));
+//                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
+//                break;
+//            case R:
+//                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
+//                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject));
+//                break;
+//            case S:
+//                // Define what to do
+//                break;
+//        }
+        holder.rl_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
@@ -117,11 +117,10 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                             Toast.makeText(context, "Appointment already serviced. It cannot be reverse", Toast.LENGTH_SHORT).show();
                             break;
                     }
-
                 }
             }
         });
-        holder.iv_accept.setOnClickListener(new View.OnClickListener() {
+        holder.rl_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != listener) {
@@ -160,12 +159,14 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         private TextView tv_gender_age;
         private TextView tv_customer_mobile;
         private TextView tv_appointment_time;
-        private TextView tv_appointment_date;
         private TextView tv_appointment_status;
+        private TextView tv_chief_complaints;
         private CardView card_view;
         private ImageView iv_accept;
         private ImageView iv_reject;
         private ImageView iv_profile;
+        private RelativeLayout rl_accept;
+        private RelativeLayout rl_reject;
 
 
         private MyViewHolder(View itemView) {
@@ -173,12 +174,14 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.tv_gender_age = itemView.findViewById(R.id.tv_gender_age);
             this.tv_appointment_time = itemView.findViewById(R.id.tv_appointment_time);
-            this.tv_appointment_date = itemView.findViewById(R.id.tv_appointment_date);
             this.tv_appointment_status = itemView.findViewById(R.id.tv_appointment_status);
             this.tv_customer_mobile = itemView.findViewById(R.id.tv_customer_mobile);
+            this.tv_chief_complaints = itemView.findViewById(R.id.tv_chief_complaints);
             this.iv_accept = itemView.findViewById(R.id.iv_accept);
             this.iv_reject = itemView.findViewById(R.id.iv_reject);
             this.iv_profile = itemView.findViewById(R.id.iv_profile);
+            this.rl_accept = itemView.findViewById(R.id.rl_accept);
+            this.rl_reject = itemView.findViewById(R.id.rl_reject);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }

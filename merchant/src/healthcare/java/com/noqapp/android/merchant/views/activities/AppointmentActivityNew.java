@@ -86,10 +86,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             filter_data.clear();
             filter_data.add("All");
             filter_data.add("Accepted");
-
             filter_data.add("Pending");
             sc_filter.addSegments(filter_data);
-
             sc_filter.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
                 @Override
                 public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
@@ -147,7 +145,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         events = parseEventList(jsonScheduleList);
-        tv_header.setText("Today (" + events.size() + " appointments)");
+        tv_header.setText("Date: "+getIntent().getStringExtra("selectedDate"));
         int cancel = 0;
         int pending = 0;
         int accept = 0;
