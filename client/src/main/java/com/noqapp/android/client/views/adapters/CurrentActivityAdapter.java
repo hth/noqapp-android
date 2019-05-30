@@ -94,7 +94,7 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
             JsonSchedule jsonSchedule = (JsonSchedule) object;
             holder.ll_queue.setVisibility(View.GONE);
             holder.ll_appointment.setVisibility(View.VISIBLE);
-            holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
+            holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
             holder.tv_degree.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));

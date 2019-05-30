@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.merchant.model.response.api.StoreSettingApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
@@ -9,8 +13,6 @@ import com.noqapp.android.merchant.views.interfaces.StoreSettingPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
-import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -99,7 +101,7 @@ public class StoreSettingApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
-                            Log.d(TAG, "Modify setting, response jsonToken" + response.body().toString());
+                            Log.d(TAG, "Modify setting, response " + response.body().toString());
                             storeSettingPresenter.queueSettingResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to modify setting");
@@ -134,7 +136,7 @@ public class StoreSettingApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
-                            Log.d(TAG, "serviceCost setting, response jsonToken" + response.body().toString());
+                            Log.d(TAG, "serviceCost setting, response" + response.body().toString());
                             storeSettingPresenter.queueSettingResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to serviceCost setting");
@@ -157,6 +159,41 @@ public class StoreSettingApiCalls {
             @Override
             public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
                 Log.e("fail serviceCost", t.getLocalizedMessage(), t);
+                storeSettingPresenter.queueSettingError();
+            }
+        });
+    }
+
+    public void appointment(String did, String mail, String auth, StoreSetting storeSetting) {
+        storeSettingApiUrls.appointment(did, Constants.DEVICE_TYPE, mail, auth, storeSetting).enqueue(new Callback<StoreSetting>() {
+            @Override
+            public void onResponse(@NonNull Call<StoreSetting> call, @NonNull Response<StoreSetting> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        if (StringUtils.isNotBlank(response.body().getCodeQR())) {
+                            Log.d(TAG, "appointment setting, response" + response.body().toString());
+                            storeSettingPresenter.queueSettingResponse(response.body());
+                        } else {
+                            Log.e(TAG, "Failed to appointment setting");
+                            storeSettingPresenter.queueSettingError();
+                        }
+                    } else if (response.body() != null && response.body().getError() != null) {
+                        ErrorEncounteredJson errorEncounteredJson = response.body().getError();
+                        Log.e(TAG, "Got error appointment" + errorEncounteredJson.getReason());
+                        storeSettingPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        storeSettingPresenter.authenticationFailure();
+                    } else {
+                        storeSettingPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<StoreSetting> call, @NonNull Throwable t) {
+                Log.e("fail appointment", t.getLocalizedMessage(), t);
                 storeSettingPresenter.queueSettingError();
             }
         });

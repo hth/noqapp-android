@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.io.Serializable;
+
 /**
  * Created by chandra on 7/15/17.
  */
@@ -26,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StoreSetting {
+public class StoreSetting implements Serializable {
 
     @JsonProperty("qr")
     private String codeQR;
@@ -72,6 +74,9 @@ public class StoreSetting {
     @JsonProperty ("scUn")
     private String scheduledUntilDay;
 
+    //*********************************/
+    //*  Queue Price Setting Starts.  */
+    //*********************************/
     @JsonProperty("ep")
     private boolean enabledPayment;
 
@@ -83,6 +88,9 @@ public class StoreSetting {
 
     @JsonProperty("sp")
     private ServicePaymentEnum servicePayment;
+    //*********************************/
+    //*  Queue Price Settings Ends.   */
+    //*********************************/
 
     @JsonProperty("fd")
     private int freeFollowupDays;
@@ -92,6 +100,21 @@ public class StoreSetting {
 
     @JsonProperty("dp")
     private int discountedFollowupProductPrice;
+
+    //******************************************/
+    //*  Queue Appointment Setting Starts.     */
+    //******************************************/
+    @JsonProperty("pe")
+    private boolean appointmentEnable;
+
+    @JsonProperty("pd")
+    private int appointmentDuration;
+
+    @JsonProperty("pf")
+    private int appointmentOpenHowFar;
+    //******************************************/
+    //*  Queue Appointment Setting Ends.       */
+    //******************************************/
 
     @JsonProperty("sa")
     private ActionTypeEnum storeActionType;
@@ -285,6 +308,33 @@ public class StoreSetting {
 
     public StoreSetting setDiscountedFollowupProductPrice(int discountedFollowupProductPrice) {
         this.discountedFollowupProductPrice = discountedFollowupProductPrice;
+        return this;
+    }
+
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public StoreSetting setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public StoreSetting setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public StoreSetting setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 

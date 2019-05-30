@@ -162,6 +162,21 @@ public class JsonQueue implements Serializable {
     //*  Queue Price Settings Ends.   */
     //*********************************/
 
+    //******************************************/
+    //*  Queue Appointment Setting Starts.     */
+    //******************************************/
+    @JsonProperty("pe")
+    private boolean appointmentEnable;
+
+    @JsonProperty("pd")
+    private int appointmentDuration;
+
+    @JsonProperty("pf")
+    private int appointmentOpenHowFar;
+    //******************************************/
+    //*  Queue Appointment Setting Ends.       */
+    //******************************************/
+
     @JsonProperty("bc")
     private String bizCategoryId;
 
@@ -472,6 +487,33 @@ public class JsonQueue implements Serializable {
 
     public JsonQueue setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public JsonQueue setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public JsonQueue setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public JsonQueue setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 

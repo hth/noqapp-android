@@ -65,7 +65,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             if (new AppUtils().isTablet(getApplicationContext())) {
                 count = 4;
             } else {
-                count = 2;
+                count = 1;
             }
             rcv_appointments = findViewById(R.id.rcv_appointments);
             rcv_appointments.setHasFixedSize(true);

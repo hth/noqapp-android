@@ -3,18 +3,6 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 10/4/18.
  */
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfessionalProfileApiCall;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
@@ -31,16 +19,26 @@ import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.google.android.material.tabs.TabLayout;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.viewpager.widget.ViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import androidx.viewpager.widget.ViewPager;
-
 
 public class ManagerProfileActivity extends ProfileActivity implements QueueManagerPresenter {
 
@@ -70,7 +68,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         tv_total_review = findViewById(R.id.tv_total_review);
         tv_total_rating = findViewById(R.id.tv_total_rating);
         tv_name.setText(managerName);
-        AppUtilities.loadProfilePic(iv_profile,managerImageUrl,this);
+        AppUtilities.loadProfilePic(iv_profile, managerImageUrl, this);
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         loadTabs = new LoadTabs();
@@ -112,7 +110,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
 
             float val = getReviewCountTotal(jsonProfessionalProfile.getReviews());
             if (val == 0) {
-
                 tv_total_rating.setVisibility(View.INVISIBLE);
                 tv_total_review.setVisibility(View.INVISIBLE);
             } else {
@@ -122,16 +119,13 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             tv_total_rating.setText(String.valueOf(AppUtilities.round(val)));
             tv_total_review.setText("Reviews");
             tv_total_review.setPaintFlags(tv_total_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            tv_total_review.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent in = new Intent(ManagerProfileActivity.this, ShowAllReviewsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("data", (Serializable) jsonReviews);
-                    bundle.putString("storeName", tv_name.getText().toString());
-                    in.putExtras(bundle);
-                    startActivity(in);
-                }
+            tv_total_review.setOnClickListener(v -> {
+                Intent in = new Intent(ManagerProfileActivity.this, ShowAllReviewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", (Serializable) jsonReviews);
+                bundle.putString("storeName", tv_name.getText().toString());
+                in.putExtras(bundle);
+                startActivity(in);
             });
         } else {
             Log.v("queueManagerResponse", "null data received");

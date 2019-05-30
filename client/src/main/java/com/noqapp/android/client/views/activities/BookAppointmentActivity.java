@@ -132,10 +132,11 @@ public class BookAppointmentActivity extends BaseActivity implements
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.setMessage("Booking appointment...");
                     progressDialog.show();
+                    String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
                     JsonSchedule jsonSchedule = new JsonSchedule()
                             .setCodeQR(bizStoreElastic.getCodeQR())
-                            .setStartTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos).getTime()))
-                            .setEndTime(removeColon(appointmentDateAdapter.getDataSet().get(selectedPos + 1).getTime()))
+                            .setStartTime(removeColon(temp[0].trim()))
+                            .setEndTime(removeColon(temp[1].trim()))
                             .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
                             .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                     appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
@@ -156,6 +157,11 @@ public class BookAppointmentActivity extends BaseActivity implements
             tv_date_time.setText(item.getTime());
     }
 
+    @Override
+    public void onBookedAppointmentSelected() {
+        tv_date_time.setText("");
+    }
+
     private StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList, int day) {
         if (null != jsonHourList && jsonHourList.size() > 0) {
             for (int i = 0; i < jsonHourList.size(); i++) {
@@ -173,8 +179,8 @@ public class BookAppointmentActivity extends BaseActivity implements
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getEndHour());
         ArrayList<String> timeSlot = getTimeSlots(30, from, to);
 
-        for (int i = 0; i < timeSlot.size(); i++) {
-            listData.add(new AppointmentModel().setTime(timeSlot.get(i)).setBooked(filledTimes.contains(timeSlot.get(i))));
+        for (int i = 0; i < timeSlot.size()-1; i++) {
+            listData.add(new AppointmentModel().setTime(timeSlot.get(i) +" - "+timeSlot.get(i+1)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
         appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);

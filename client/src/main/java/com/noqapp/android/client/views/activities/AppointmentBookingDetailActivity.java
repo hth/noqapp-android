@@ -22,6 +22,7 @@ import com.noqapp.android.common.beans.JsonQueueDisplay;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -48,9 +49,11 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
             ImageView iv_main = findViewById(R.id.iv_main);
             TextView tv_title = findViewById(R.id.tv_title);
             TextView tv_degree = findViewById(R.id.tv_degree);
+            TextView tv_address = findViewById(R.id.tv_address);
             TextView tv_schedule_time = findViewById(R.id.tv_schedule_time);
             tv_title.setText(jsonQueueDisplay.getDisplayName());
-            tv_degree.setText(AppUtilities.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
+            tv_address.setText(AppUtilities.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
+            tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
                 tv_schedule_time.setText(date + " at " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
@@ -64,7 +67,16 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
                 isNavigateHome = false;
                 iv_main.setVisibility(View.GONE);
                 Button btn_cancel = findViewById(R.id.btn_cancel);
-                btn_cancel.setVisibility(View.VISIBLE);
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                    case A:
+                        btn_cancel.setVisibility(View.VISIBLE);
+                        break;
+                    case R:
+                    case S:
+                        btn_cancel.setVisibility(View.GONE);
+                        break;
+                }
                 btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
