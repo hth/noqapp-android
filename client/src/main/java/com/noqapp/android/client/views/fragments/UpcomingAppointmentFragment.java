@@ -33,8 +33,7 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FutureAppointmentFragment extends Fragment implements AppointmentPresenter,
-        MyAppointmentAdapter.OnItemClickListener {
+public class UpcomingAppointmentFragment extends Fragment implements AppointmentPresenter, MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
@@ -47,8 +46,7 @@ public class FutureAppointmentFragment extends Fragment implements AppointmentPr
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         if (jsonSchedules.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -63,9 +61,7 @@ public class FutureAppointmentFragment extends Fragment implements AppointmentPr
             progressDialog.show();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth());
+            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

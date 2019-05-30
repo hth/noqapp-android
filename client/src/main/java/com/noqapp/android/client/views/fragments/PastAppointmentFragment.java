@@ -47,8 +47,7 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         if (jsonSchedules.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -81,8 +80,7 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(
-                jsonSchedules, getActivity(), this);
+        MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(jsonSchedules, getActivity(), this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();
     }

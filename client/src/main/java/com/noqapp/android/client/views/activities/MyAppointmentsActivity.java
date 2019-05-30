@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.client.views.fragments.FutureAppointmentFragment;
+import com.noqapp.android.client.views.fragments.UpcomingAppointmentFragment;
 import com.noqapp.android.client.views.fragments.PastAppointmentFragment;
 
 public class MyAppointmentsActivity extends BaseActivity {
@@ -31,7 +31,7 @@ public class MyAppointmentsActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FutureAppointmentFragment(), "Future");
+        adapter.addFragment(new UpcomingAppointmentFragment(), "Upcoming");
         adapter.addFragment(new PastAppointmentFragment(), "Past");
         viewPager.setAdapter(adapter);
     }
