@@ -59,13 +59,11 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
         }
         initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching appointments...");
+            progressDialog.setMessage("Fetching past appointments...");
             progressDialog.show();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allPastAppointments(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth());
+            appointmentApiCalls.allPastAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
