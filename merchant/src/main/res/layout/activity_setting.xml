@@ -59,11 +59,11 @@
 
                         <ImageView
                             android:id="@+id/iv_today_settings"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
-                            android:background="@drawable/arrow_up"
-                            android:padding="5dp" />
+                            android:background="@drawable/arrow_up" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -260,8 +260,9 @@
 
                         <ImageView
                             android:id="@+id/iv_token_timing"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
@@ -444,8 +445,9 @@
 
                         <ImageView
                             android:id="@+id/iv_store_closing"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
@@ -590,8 +592,9 @@
 
                         <ImageView
                             android:id="@+id/iv_permanent_setting"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
@@ -793,8 +796,9 @@
 
                         <ImageView
                             android:id="@+id/iv_payment_setting"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
@@ -1140,8 +1144,9 @@
 
                         <ImageView
                             android:id="@+id/iv_appointment_setting"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
