@@ -232,7 +232,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 @Override
                 public void onClick(View v) {
                     if (null != bizStoreElastic && reviewCount > 0) {
-                        Intent in = new Intent(CategoryInfoActivity.this, ShowAllReviewsActivity.class);
+                        Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
                         bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getBusinessName());

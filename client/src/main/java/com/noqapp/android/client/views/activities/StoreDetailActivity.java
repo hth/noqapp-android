@@ -108,7 +108,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tv_rating_review.setOnClickListener(v -> {
             if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
-                Intent in = new Intent(StoreDetailActivity.this, ShowAllReviewsActivity.class);
+                Intent in = new Intent(StoreDetailActivity.this, AllReviewsActivity.class);
                 Bundle bundle1 = new Bundle();
                 bundle1.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
                 bundle1.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());

@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -18,15 +21,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class ShowAllReviewsAdapter extends RecyclerView.Adapter<ShowAllReviewsAdapter.MyViewHolder> {
+public class AllReviewsAdapter extends RecyclerView.Adapter<AllReviewsAdapter.MyViewHolder> {
     private final Context context;
 
     private List<JsonReview> dataSet;
 
-    public ShowAllReviewsAdapter(List<JsonReview> data, Context context) {
+    public AllReviewsAdapter(List<JsonReview> data, Context context) {
         this.dataSet = data;
         this.context = context;
     }
