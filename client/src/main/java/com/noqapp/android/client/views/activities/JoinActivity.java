@@ -231,7 +231,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 public void onClick(View v) {
 
                     if (null != jsonQueue && jsonQueue.getReviewCount() > 0) {
-                        Intent in = new Intent(JoinActivity.this, ShowAllReviewsActivity.class);
+                        Intent in = new Intent(JoinActivity.this, AllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
                         bundle.putString(IBConstant.KEY_STORE_NAME, jsonQueue.getDisplayName());

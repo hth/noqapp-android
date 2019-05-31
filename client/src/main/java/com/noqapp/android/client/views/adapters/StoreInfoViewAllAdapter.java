@@ -20,7 +20,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
+import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -94,7 +94,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
 
                     if (bizStoreElastic.getReviewCount() > 0) {
-                        Intent in = new Intent(context, ShowAllReviewsActivity.class);
+                        Intent in = new Intent(context, AllReviewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                         bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());

@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -27,7 +26,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
@@ -69,7 +67,6 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack, iv_delete_scheduling;
-    private SwitchCompat toggleDayClosed, togglePreventJoin, toggleTodayClosed, toggleStoreOffline;
     private String codeQR;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
@@ -78,14 +75,18 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private boolean arrivalTextChange = false;
     private StoreSettingApiCalls storeSettingApiCalls;
     private StoreSetting storeSettingTemp;
-    private TextView togglePreventJoinLabel, toggleTodayClosedLabel, toggleDayClosedLabel, toggleStoreOfflineLabel;
     private String YES = "Yes";
     private String NO = "No";
     private EditText edt_deduction_amount, edt_fees;
     private EditText edt_follow_up_in_days, edt_discounted_followup_price, edt_limited_followup_days;
     private EditText edt_appointment_accepting_week, edt_appointment_duration;
-    private SegmentedControl sc_paid_user;
+
+
+    private SegmentedControl sc_paid_user, sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline;
+
+
     private List<String> pay_list = new ArrayList<>();
+    private List<String> yes_no_list = new ArrayList<>();
     private ServicePaymentEnum servicePaymentEnum;
     private LinearLayout ll_payment, ll_follow_up;
     private TextView tv_fee_after_discounted_followup;
@@ -155,15 +156,16 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             iv_appointment_setting.performClick();
         }
 
-        toggleDayClosed = findViewById(R.id.toggleDayClosed);
-        toggleTodayClosed = findViewById(R.id.toggleTodayClosed);
-        togglePreventJoin = findViewById(R.id.togglePreventJoin);
-        toggleStoreOffline = findViewById(R.id.toggleStoreOffline);
+
+        sc_day_closed = findViewById(R.id.sc_day_closed);
+        sc_today_closed = findViewById(R.id.sc_today_closed);
+        sc_store_offline = findViewById(R.id.sc_store_offline);
+        sc_prevent_join = findViewById(R.id.sc_prevent_join);
         sc_paid_user = findViewById(R.id.sc_paid_user);
-        togglePreventJoinLabel = findViewById(R.id.togglePreventJoinLabel);
-        toggleTodayClosedLabel = findViewById(R.id.toggleTodayClosedLabel);
-        toggleDayClosedLabel = findViewById(R.id.toggleDayClosedLabel);
-        toggleStoreOfflineLabel = findViewById(R.id.toggleStoreOfflineLabel);
+
+        View view_prevent_click = findViewById(R.id.view_prevent_click);
+        TextView tv_no_permission = findViewById(R.id.tv_no_permission);
+
         edt_deduction_amount = findViewById(R.id.edt_deduction_amount);
         edt_fees = findViewById(R.id.edt_fees);
         tv_fee_after_discounted_followup = findViewById(R.id.tv_fee_after_discounted_followup);
@@ -177,10 +179,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         ll_follow_up = findViewById(R.id.ll_follow_up);
         cv_payment = findViewById(R.id.cv_payment);
         codeQR = getIntent().getStringExtra("codeQR");
-        toggleDayClosed.setOnClickListener(this);
-        toggleTodayClosed.setOnClickListener(this);
-        togglePreventJoin.setOnClickListener(this);
-        toggleStoreOffline.setOnClickListener(this);
+
         if (null != LaunchActivity.getLaunchActivity().getUserProfile() && BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
             ll_follow_up.setVisibility(View.VISIBLE);
             cv_payment.setVisibility(View.VISIBLE);
@@ -192,6 +191,15 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         }
         pay_list.clear();
         pay_list.addAll(ServicePaymentEnum.asListOfDescription());
+        yes_no_list.clear();
+        yes_no_list.add(YES);
+        yes_no_list.add(NO);
+        sc_prevent_join.addSegments(yes_no_list);
+        sc_today_closed.addSegments(yes_no_list);
+        sc_day_closed.addSegments(yes_no_list);
+        sc_store_offline.addSegments(yes_no_list);
+
+
         sc_paid_user.addSegments(pay_list);
         sc_paid_user.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
@@ -323,42 +331,25 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             tv_token_not_available.setEnabled(false);
         }
 
-        if ((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)) {
-            toggleDayClosed.setClickable(false);
-            toggleDayClosed.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
-                    return false;
-                }
-            });
-            toggleStoreOffline.setClickable(false);
-            toggleStoreOffline.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
-                    return false;
-                }
-            });
-        }
 
         Button btn_update_deduction = findViewById(R.id.btn_update_deduction);
         Button btn_update_time = findViewById(R.id.btn_update_time);
         Button btn_update_delay = findViewById(R.id.btn_update_delay);
         Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
         Button btn_update_appointment = findViewById(R.id.btn_update_appointment);
+        Button btn_update_permanent_setting = findViewById(R.id.btn_update_permanent_setting);
         btn_update_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if (cb_enable_appointment.isChecked()) {
-                        if(validateAppointmentSetting()){
-                            updateAppointmentSettings();
-                        }
-                    } else {
-                        edt_appointment_accepting_week.setText("0");
-                        edt_appointment_duration.setText("0");
+                if (cb_enable_appointment.isChecked()) {
+                    if (validateAppointmentSetting()) {
                         updateAppointmentSettings();
                     }
+                } else {
+                    edt_appointment_accepting_week.setText("0");
+                    edt_appointment_duration.setText("0");
+                    updateAppointmentSettings();
+                }
 
             }
         });
@@ -404,6 +395,22 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                 callUpdate();
             }
         });
+        btn_update_permanent_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callUpdate();
+            }
+        });
+
+        if ((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)) {
+            view_prevent_click.setVisibility(View.VISIBLE);
+            tv_no_permission.setVisibility(View.VISIBLE);
+            btn_update_permanent_setting.setVisibility(View.GONE);
+        } else {
+            view_prevent_click.setVisibility(View.GONE);
+            tv_no_permission.setVisibility(View.GONE);
+            btn_update_permanent_setting.setVisibility(View.VISIBLE);
+        }
 
         edt_discounted_followup_price.addTextChangedListener(new TextWatcher() {
             @Override
@@ -494,7 +501,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     }
 
 
-    private boolean validateAppointmentSetting(){
+    private boolean validateAppointmentSetting() {
         boolean isValid = true;
         if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
             Toast.makeText(SettingActivity.this, "Appointment duration cannot be empty or 0", Toast.LENGTH_LONG).show();
@@ -508,7 +515,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         if (TextUtils.isEmpty(edt_appointment_accepting_week.getText().toString())) {
             Toast.makeText(SettingActivity.this, "Appointment week cannot be empty or 0", Toast.LENGTH_LONG).show();
             isValid = false;
-        }else{
+        } else {
             if (Integer.parseInt(edt_appointment_accepting_week.getText().toString()) > 52 || Integer.parseInt(edt_appointment_accepting_week.getText().toString()) < 1) {
                 Toast.makeText(SettingActivity.this, "Appointment week should be greater than 0 & less than or equal to 52 weeks", Toast.LENGTH_LONG).show();
                 isValid = false;
@@ -571,14 +578,10 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     public void queueSettingResponse(StoreSetting storeSetting) {
         if (null != storeSetting) {
             storeSettingTemp = storeSetting;
-            toggleDayClosed.setChecked(storeSetting.isDayClosed());
-            toggleDayClosedLabel.setText(storeSetting.isDayClosed() ? YES : NO);
-            togglePreventJoin.setChecked(storeSetting.isPreventJoining());
-            togglePreventJoinLabel.setText(storeSetting.isPreventJoining() ? YES : NO);
-            toggleTodayClosed.setChecked(storeSetting.isTempDayClosed());
-            toggleTodayClosedLabel.setText(storeSetting.isTempDayClosed() ? YES : NO);
-            toggleStoreOffline.setChecked(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE);
-            toggleStoreOfflineLabel.setText(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? YES : NO);
+            sc_day_closed.setSelectedSegment(storeSetting.isDayClosed() ? 0 : 1);
+            sc_prevent_join.setSelectedSegment(storeSetting.isPreventJoining() ? 0 : 1);
+            sc_today_closed.setSelectedSegment(storeSetting.isTempDayClosed() ? 0 : 1);
+            sc_store_offline.setSelectedSegment(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? 0 : 1);
             cb_enable_payment.setChecked(storeSetting.isEnabledPayment());
 
             cb_enable_appointment.setChecked(storeSetting.isAppointmentEnable());
@@ -720,19 +723,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                     updateQueueSettings();
                 } else {
                     ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-                    if (v.getId() == R.id.toggleDayClosed) {
-                        toggleDayClosed.setChecked(!toggleDayClosed.isChecked());
-                        toggleDayClosedLabel.setText(toggleDayClosed.isChecked() ? YES : NO);
-                    } else if (v.getId() == R.id.togglePreventJoin) {
-                        togglePreventJoin.setChecked(!togglePreventJoin.isChecked());
-                        togglePreventJoinLabel.setText(togglePreventJoin.isChecked() ? YES : NO);
-                    } else if (v.getId() == R.id.toggleTodayClosed) {
-                        toggleTodayClosed.setChecked(!toggleTodayClosed.isChecked());
-                        toggleTodayClosedLabel.setText(toggleTodayClosed.isChecked() ? YES : NO);
-                    } else if (v.getId() == R.id.toggleStoreOffline) {
-                        toggleStoreOffline.setChecked(!toggleStoreOffline.isChecked());
-                        toggleStoreOfflineLabel.setText(toggleStoreOffline.isChecked() ? YES : NO);
-                    }
                 }
         }
     }
@@ -741,10 +731,10 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         progressDialog.setMessage("Updating Queue Settings...");
         StoreSetting storeSetting = new StoreSetting();
         storeSetting.setCodeQR(codeQR);
-        storeSetting.setDayClosed(toggleDayClosed.isChecked());
-        storeSetting.setPreventJoining(togglePreventJoin.isChecked());
-        storeSetting.setTempDayClosed(toggleTodayClosed.isChecked());
-        storeSetting.setStoreActionType(toggleStoreOffline.isChecked() ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
+        storeSetting.setDayClosed(sc_day_closed.getSelectedAbsolutePosition() == 0 ? true : false);
+        storeSetting.setPreventJoining(sc_prevent_join.getSelectedAbsolutePosition() == 0 ? true : false);
+        storeSetting.setTempDayClosed(sc_today_closed.getSelectedAbsolutePosition() == 0 ? true : false);
+        storeSetting.setStoreActionType(sc_store_offline.getSelectedAbsolutePosition() == 0 ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
         storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
         if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
             storeSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
@@ -854,7 +844,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
-    } 
+    }
 
     private class TextViewClick implements View.OnClickListener {
         private TextView textView;

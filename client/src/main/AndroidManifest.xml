@@ -213,7 +213,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".views.activities.ShowAllReviewsActivity"
+            android:name=".views.activities.AllReviewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity

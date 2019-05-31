@@ -73,8 +73,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/iv_edit"
+                    android:layout_toLeftOf="@+id/frame"
                     android:background="@drawable/square_white_bg_drawable"
+                    android:drawableRight="@drawable/edit_new"
                     android:gravity="center"
                     android:hint="@string/counter_name"
                     android:paddingLeft="5dp"
@@ -82,16 +83,6 @@
                     android:textColor="@color/colorAddress"
                     android:textSize="@dimen/text_size_fourteen" />
 
-                <ImageView
-                    android:id="@+id/iv_edit"
-                    android:layout_width="@dimen/edit_icon_size"
-                    android:layout_height="@dimen/edit_icon_size"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toLeftOf="@+id/frame"
-                    android:background="@drawable/edit_new"
-                    android:gravity="center_vertical"
-                    android:padding="10dp" />
 
                 <FrameLayout
                     android:id="@+id/frame"

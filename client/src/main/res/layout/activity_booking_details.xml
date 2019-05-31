@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#efefef"
@@ -8,131 +9,245 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/scan_bg"
-        android:orientation="vertical"
-        android:padding="25dp">
+        android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_main"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/profile_theme"
-            android:elevation="5dp"
-            android:scaleType="centerCrop"
-            app:civ_border_color="#FFFFFFFF"
-            app:civ_border_width="3dp" />
-
-        <TextView
-            android:id="@+id/tv_title"
+        <LinearLayout
+            android:id="@+id/ll_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"
-            android:text="Dr. Name"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="normal" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_degree"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="0dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"
-            android:text="Dr type"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="normal" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp">
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="0dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"
-            android:text="Dr Address"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="normal" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@drawable/blue_gradient"
+                    android:orientation="horizontal" />
 
-        <TextView
-            android:id="@+id/tv_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="0dp"
-            android:text="Appointment Time"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="normal" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="10dp"
+                    card_view:cardBackgroundColor="@android:color/white"
+                    card_view:cardCornerRadius="4dp">
 
-        <TextView
-            android:id="@+id/tv_schedule_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"
-            android:text="Set time : Mon, 12 June at 3:30 pm"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp">
 
-        <ImageView
-            android:id="@+id/iv_booked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/appointment_booked" />
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_main"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/profile_theme"
+                            android:elevation="5dp"
+                            android:scaleType="centerCrop"
+                            app:civ_border_color="#FFFFFFFF"
+                            app:civ_border_width="0dp" />
 
-        <TextView
-            android:id="@+id/tv_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="10dp"
-            android:text="Your appointment is booked"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/iv_main"
+                            android:background="@android:color/transparent"
+                            android:orientation="vertical"
+                            android:padding="@dimen/list_item_margin">
 
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_standard_height"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/btn_bg_enable"
-            android:clickable="true"
-            android:fontFamily="sans-serif-medium"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:gravity="center"
-            android:text="Cancel Appointment"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_sixteen"
-            android:textStyle="normal"
-            android:visibility="gone" />
 
-    </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_title"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_size_sixteen"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_degree"
+                                style="@style/style_join_queue_tv"
+                                android:layout_marginBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:textColor="@color/colorAddress"
+                                android:textSize="@dimen/text_size_fourteen" />
+
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </FrameLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/style_join_queue_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Appointment Details"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_sixteen"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_patient_name"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:text="Appointment Status:"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_size_fourteen" />
+
+                        <TextView
+                            android:id="@+id/tv_appointment_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:text="Accepted"
+                            android:textColor="@color/btn_color"
+                            android:textSize="@dimen/text_size_fourteen" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_schedule_date"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="Date: MMM dd, yyyy"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
+                        android:id="@+id/tv_schedule_time"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="Time: hh:mm"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@drawable/map_icon"
+                        android:drawablePadding="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/colorAddress"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+                    <TextView
+                        android:id="@+id/tv_mobile"
+                        style="@style/style_join_queue_tv"
+                        android:layout_marginBottom="5dp"
+                        android:drawableLeft="@mipmap/phone"
+                        android:drawablePadding="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen" />
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="0dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_fourteen" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_standard_height"
+                    android:background="@drawable/btn_bg_enable"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:text="Cancel Appointment"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

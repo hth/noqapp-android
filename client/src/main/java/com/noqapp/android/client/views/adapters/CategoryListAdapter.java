@@ -26,7 +26,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.client.views.activities.ShowAllReviewsActivity;
+import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -88,7 +88,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             public void onClick(View v) {
 
                 if (bizStoreElastic.getReviewCount() > 0) {
-                    Intent in = new Intent(context, ShowAllReviewsActivity.class);
+                    Intent in = new Intent(context, AllReviewsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                     bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());

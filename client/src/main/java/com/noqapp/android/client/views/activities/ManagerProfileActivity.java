@@ -120,7 +120,7 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
             tv_total_review.setText("Reviews");
             tv_total_review.setPaintFlags(tv_total_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_total_review.setOnClickListener(v -> {
-                Intent in = new Intent(ManagerProfileActivity.this, ShowAllReviewsActivity.class);
+                Intent in = new Intent(ManagerProfileActivity.this, AllReviewsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("data", (Serializable) jsonReviews);
                 bundle.putString("storeName", tv_name.getText().toString());

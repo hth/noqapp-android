@@ -1,19 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
-import com.noqapp.android.common.presenter.AllReviewPresenter;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.NetworkUtils;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.ShowAllReviewsAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonReview;
-import com.noqapp.android.common.beans.JsonReviewList;
-
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -23,16 +9,31 @@ import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.NetworkUtils;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.AllReviewsAdapter;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.beans.JsonReviewList;
+import com.noqapp.android.common.presenter.AllReviewPresenter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPresenter {
+public class AllReviewsActivity extends BaseActivity implements AllReviewPresenter {
 
     private RecyclerView rv_all_review;
     private TextView tv_review_label;
@@ -71,7 +72,7 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
             } else {
                 jsonReviews = new ArrayList<>();
                 String codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
-                if (NetworkUtils.isConnectingToInternet(ShowAllReviewsActivity.this)) {
+                if (NetworkUtils.isConnectingToInternet(AllReviewsActivity.this)) {
                     ReviewApiUnAuthenticCall reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCall();
                     reviewApiUnAuthenticCall.setAllReviewPresenter(this);
                     if (bundle.getBooleanExtra("isLevelUp", false)) {
@@ -145,10 +146,10 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviewsOnlyText, ShowAllReviewsActivity.this);
+                        AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviewsOnlyText, AllReviewsActivity.this);
                         rv_all_review.setAdapter(showAllReviewsAdapter);
                     } else {
-                        ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, ShowAllReviewsActivity.this);
+                        AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviews, AllReviewsActivity.this);
                         rv_all_review.setAdapter(showAllReviewsAdapter);
                     }
                 }
@@ -167,11 +168,11 @@ public class ShowAllReviewsActivity extends BaseActivity implements AllReviewPre
         }
         if (jsonReviewsOnlyText.size() > 0) {
             toggleShowAll.setChecked(true);
-            ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviewsOnlyText, ShowAllReviewsActivity.this);
+            AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviewsOnlyText, AllReviewsActivity.this);
             rv_all_review.setAdapter(showAllReviewsAdapter);
         } else {
             toggleShowAll.setChecked(false);
-            ShowAllReviewsAdapter showAllReviewsAdapter = new ShowAllReviewsAdapter(jsonReviews, ShowAllReviewsActivity.this);
+            AllReviewsAdapter showAllReviewsAdapter = new AllReviewsAdapter(jsonReviews, AllReviewsActivity.this);
             rv_all_review.setAdapter(showAllReviewsAdapter);
         }
     }

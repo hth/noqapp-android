@@ -1,5 +1,36 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
@@ -34,36 +65,6 @@ import com.noqapp.android.merchant.views.interfaces.ManageQueuePresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -144,7 +145,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         tv_next = itemView.findViewById(R.id.tv_next);
         tv_start = itemView.findViewById(R.id.tv_start);
         tv_skip = itemView.findViewById(R.id.tv_skip);
-        ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
         iv_appointment = itemView.findViewById(R.id.iv_appointment);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
@@ -184,13 +184,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             }
         });
         iv_view_followup = itemView.findViewById(R.id.iv_view_followup);
-
-        iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCounterEditDialog(context, tv_counter_name, jsonTopic.getCodeQR());
-            }
-        });
         tv_counter_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
