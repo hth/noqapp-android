@@ -26,6 +26,7 @@ import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 public class AppointmentBookingDetailActivity extends BaseActivity implements AppointmentPresenter {
     private boolean isNavigateHome = false;
@@ -35,7 +36,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);
-        tv_toolbar_title.setText("Booking Detail");
+        tv_toolbar_title.setText("Appointment Detail");
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,22 +51,44 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
             TextView tv_title = findViewById(R.id.tv_title);
             TextView tv_degree = findViewById(R.id.tv_degree);
             TextView tv_address = findViewById(R.id.tv_address);
+            TextView tv_mobile = findViewById(R.id.tv_mobile);
             TextView tv_schedule_time = findViewById(R.id.tv_schedule_time);
+            TextView tv_schedule_date = findViewById(R.id.tv_schedule_date);
+            TextView tv_patient_name = findViewById(R.id.tv_patient_name);
+            TextView tv_appointment_status = findViewById(R.id.tv_appointment_status);
+            TextView tv_msg = findViewById(R.id.tv_msg);
             tv_title.setText(jsonQueueDisplay.getDisplayName());
             tv_address.setText(AppUtilities.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
+            tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
+            tv_mobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
+                }
+            });
+            tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
+            tv_address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress());
+                }
+            });
+
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
-                tv_schedule_time.setText(date + " at " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+                tv_schedule_date.setText("Date: " + date);
+                tv_schedule_time.setText("Time: " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
+            tv_msg.setText("* Please reach 30 min before the schedule time \n** Appointment can be cancel before 24hr of the appointment time.");
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
             if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 isNavigateHome = false;
-                iv_main.setVisibility(View.GONE);
+                //iv_main.setVisibility(View.GONE);
                 Button btn_cancel = findViewById(R.id.btn_cancel);
                 switch (jsonSchedule.getAppointmentStatus()) {
                     case U:
@@ -104,7 +127,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
                 });
             } else {
                 isNavigateHome = true;
-                iv_main.setVisibility(View.VISIBLE);
+                // iv_main.setVisibility(View.VISIBLE);
                 AppUtilities.loadProfilePic(iv_main, getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL), this);
             }
         } catch (Exception e) {

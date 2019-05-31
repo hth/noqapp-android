@@ -1,7 +1,24 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.google.common.cache.CacheBuilder.newBuilder;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.common.cache.Cache;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -28,27 +45,7 @@ import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.common.cache.Cache;
-
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,6 +54,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.google.common.cache.CacheBuilder.newBuilder;
 
 /**
  * Created by chandra on 5/7/17.
@@ -221,13 +220,13 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 }
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
-            tv_rating.setText(String.valueOf(AppUtilities.round(rating)) + " -");
+            tv_rating.setText(AppUtilities.round(rating) + " -");
             if (tv_rating.getText().toString().equals("0.0")) {
                 tv_rating.setVisibility(View.INVISIBLE);
             } else {
                 tv_rating.setVisibility(View.VISIBLE);
             }
-            tv_rating_review.setText(String.valueOf(reviewCount == 0 ? "No" : reviewCount) + " Reviews");
+            tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             tv_rating_review.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,11 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);

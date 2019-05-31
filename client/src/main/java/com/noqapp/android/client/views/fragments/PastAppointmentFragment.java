@@ -71,7 +71,7 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
 
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
-        Log.e("all appointments", jsonScheduleList.toString());
+        Log.e("all past appointments", jsonScheduleList.toString());
         jsonSchedules = jsonScheduleList.getJsonSchedules();
         if (jsonSchedules.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
