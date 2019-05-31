@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 public class BookAppointmentActivity extends BaseActivity implements
         AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
-    private TextView tv_date_time;
+    private TextView tv_date_time, tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
     private BizStoreElastic bizStoreElastic;
@@ -72,11 +73,11 @@ public class BookAppointmentActivity extends BaseActivity implements
             storeHourElastics = bizStoreElastic.getStoreHourElasticList();
         }
         Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.MONTH, 12);
+        endDate.add(Calendar.DAY_OF_MONTH, bizStoreElastic.getAppointmentOpenHowFar() * 7); // end date of appointment
         Calendar startDate = Calendar.getInstance();
         Date dt = new Date();
         startDate.setTime(dt);
-        startDate.add(Calendar.DAY_OF_MONTH, 1);
+        startDate.add(Calendar.DAY_OF_MONTH, 1); // start date of appointment
 
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
@@ -106,6 +107,7 @@ public class BookAppointmentActivity extends BaseActivity implements
 //            }
         });
         horizontalCalendarView.refresh();
+        tv_empty_slots = findViewById(R.id.tv_empty_slots);
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
@@ -178,11 +180,16 @@ public class BookAppointmentActivity extends BaseActivity implements
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
         ArrayList<String> timeSlot = getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to);
-        for (int i = 0; i < timeSlot.size()-1; i++) {
-            listData.add(new AppointmentModel().setTime(timeSlot.get(i) +" - "+timeSlot.get(i+1)).setBooked(filledTimes.contains(timeSlot.get(i))));
+        for (int i = 0; i < timeSlot.size() - 1; i++) {
+            listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
         appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
+        if (listData.size() == 0) {
+            tv_empty_slots.setVisibility(View.VISIBLE);
+        } else {
+            tv_empty_slots.setVisibility(View.GONE);
+        }
     }
 
     public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime) {
@@ -205,7 +212,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             calendar1.set(Calendar.HOUR_OF_DAY, toHour);
             calendar1.set(Calendar.MINUTE, toMinute);
             long endTime = calendar1.getTimeInMillis();
-            while (currentTime < endTime) {
+            while (currentTime <= endTime) {
                 DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 timeSlot.add(sdfTime.format(new Date(currentTime)));
                 currentTime = currentTime + slot;
@@ -239,7 +246,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
         Log.e("Booking status", jsonSchedule.toString());
-        Intent intent = new Intent(this, AppointmentBookingDetailActivity.class);
+        Intent intent = new Intent(this, AppointmentDetailActivity.class);
         intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
         intent.putExtra(IBConstant.KEY_IMAGE_URL, bizStoreElastic.getDisplayImage());
         startActivity(intent);
