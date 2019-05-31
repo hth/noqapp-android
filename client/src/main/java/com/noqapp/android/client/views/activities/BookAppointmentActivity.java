@@ -246,7 +246,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
         Log.e("Booking status", jsonSchedule.toString());
-        Intent intent = new Intent(this, AppointmentBookingDetailActivity.class);
+        Intent intent = new Intent(this, AppointmentDetailActivity.class);
         intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
         intent.putExtra(IBConstant.KEY_IMAGE_URL, bizStoreElastic.getDisplayImage());
         startActivity(intent);

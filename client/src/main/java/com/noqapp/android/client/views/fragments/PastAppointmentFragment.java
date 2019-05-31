@@ -21,7 +21,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.AppointmentBookingDetailActivity;
+import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.MyAppointmentAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -29,8 +29,11 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PastAppointmentFragment extends Fragment implements AppointmentPresenter,
@@ -80,6 +83,18 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
+
+        Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
+            public int compare(JsonSchedule o1, JsonSchedule o2) {
+                try {
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+
         MyAppointmentAdapter appointmentListAdapter = new MyAppointmentAdapter(jsonSchedules, getActivity(), this);
         rcv_appointments.setAdapter(appointmentListAdapter);
         dismissProgress();
@@ -117,9 +132,10 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
 
     @Override
     public void appointmentDetails(JsonSchedule jsonSchedule) {
-        Intent intent = new Intent(getActivity(), AppointmentBookingDetailActivity.class);
+        Intent intent = new Intent(getActivity(), AppointmentDetailActivity.class);
         intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
         intent.putExtra(IBConstant.KEY_FROM_LIST, true);
+        intent.putExtra("isPast", true);
         startActivity(intent);
     }
 

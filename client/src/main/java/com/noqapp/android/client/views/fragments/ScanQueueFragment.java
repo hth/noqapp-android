@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -58,7 +57,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.AllEventsActivity;
 import com.noqapp.android.client.views.activities.AllFeedsActivity;
-import com.noqapp.android.client.views.activities.AppointmentBookingDetailActivity;
+import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
@@ -485,7 +484,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
 
     @Override
     public void currentAppointmentClick(JsonSchedule jsonSchedule) {
-        Intent intent = new Intent(getActivity(), AppointmentBookingDetailActivity.class);
+        Intent intent = new Intent(getActivity(), AppointmentDetailActivity.class);
         intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
         intent.putExtra(IBConstant.KEY_FROM_LIST,true);
         startActivity(intent);

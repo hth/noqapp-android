@@ -28,7 +28,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
-public class AppointmentBookingDetailActivity extends BaseActivity implements AppointmentPresenter {
+public class AppointmentDetailActivity extends BaseActivity implements AppointmentPresenter {
     private boolean isNavigateHome = false;
 
     @Override
@@ -78,7 +78,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
             try {
                 String date = CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate()));
                 tv_schedule_date.setText("Date: " + date);
-                tv_schedule_time.setText("Time: " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime()));
+                tv_schedule_time.setText("Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -100,11 +100,14 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
                         btn_cancel.setVisibility(View.GONE);
                         break;
                 }
+                if (getIntent().getBooleanExtra("isPast", false)) {
+                    btn_cancel.setVisibility(View.GONE);
+                }
                 btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentBookingDetailActivity.this, true);
+                        ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentDetailActivity.this, true);
                         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                             @Override
                             public void btnPositiveClick() {
@@ -113,7 +116,7 @@ public class AppointmentBookingDetailActivity extends BaseActivity implements Ap
                                     progressDialog.show();
                                     appointmentApiCalls.cancelAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
                                 } else {
-                                    ShowAlertInformation.showNetworkDialog(AppointmentBookingDetailActivity.this);
+                                    ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
                                 }
                             }
 
