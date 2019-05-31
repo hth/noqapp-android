@@ -43,8 +43,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -61,8 +61,8 @@
                             android:id="@+id/iv_today_settings"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up" />
                     </RelativeLayout>
 
@@ -86,7 +86,7 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="0.8"
+                                android:layout_weight="0.7"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
@@ -98,29 +98,32 @@
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen" />
 
-                                <TextView
-                                    android:id="@+id/togglePreventJoinLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="center_vertical"
-                                    android:text=""
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="@dimen/text_size_twelve" />
 
                             </LinearLayout>
 
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/togglePreventJoin"
+                            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/sc_prevent_join"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_weight=".2"
-                                android:paddingEnd="@dimen/swith_padding"
-                                android:scaleX="1.0"
-                                android:scaleY="1.0"
-                                android:theme="@style/SettingSeekbarStyle" />
+                                android:layout_weight=".3"
+                                segmentedcontrol:columnCount="2"
+                                segmentedcontrol:distributeEvenly="true"
+                                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                segmentedcontrol:radius="6dp"
+                                segmentedcontrol:radiusForEverySegment="false"
+                                segmentedcontrol:segmentHorizontalMargin="0dp"
+                                segmentedcontrol:segmentVerticalMargin="0dp"
+                                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                segmentedcontrol:strokeWidth="1dp"
+                                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                segmentedcontrol:textVerticalPadding="7dp"
+                                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -136,7 +139,7 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="0.8"
+                                android:layout_weight="0.7"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
@@ -148,28 +151,31 @@
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen" />
 
-                                <TextView
-                                    android:id="@+id/toggleTodayClosedLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="center_vertical"
-                                    android:text=""
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="@dimen/text_size_twelve" />
-
                             </LinearLayout>
 
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/toggleTodayClosed"
+                            <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/sc_today_closed"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_weight=".2"
-                                android:paddingEnd="@dimen/swith_padding"
-                                android:scaleX="1.0"
-                                android:scaleY="1.0"
-                                android:theme="@style/SettingSeekbarStyle" />
+                                android:layout_weight=".3"
+                                segmentedcontrol:columnCount="2"
+                                segmentedcontrol:distributeEvenly="true"
+                                segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                segmentedcontrol:radius="6dp"
+                                segmentedcontrol:radiusForEverySegment="false"
+                                segmentedcontrol:segmentHorizontalMargin="0dp"
+                                segmentedcontrol:segmentVerticalMargin="0dp"
+                                segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                segmentedcontrol:strokeWidth="1dp"
+                                segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                segmentedcontrol:textVerticalPadding="7dp"
+                                segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -177,7 +183,8 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/white"
                             android:orientation="vertical"
-                            android:padding="10dp">
+                            android:paddingLeft="@dimen/screen_padding"
+                            android:paddingRight="@dimen/screen_padding">
 
 
                             <LinearLayout
@@ -246,8 +253,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -262,8 +269,8 @@
                             android:id="@+id/iv_token_timing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
                     </RelativeLayout>
@@ -431,8 +438,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -447,8 +454,8 @@
                             android:id="@+id/iv_store_closing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
                     </RelativeLayout>
@@ -578,8 +585,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -594,8 +601,8 @@
                             android:id="@+id/iv_permanent_setting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
                     </RelativeLayout>
@@ -604,160 +611,214 @@
                         android:id="@+id/ll_permanent_setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="5dp">
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/white"
-                            android:minHeight="@dimen/cell_size"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/screen_padding"
-                            android:paddingRight="@dimen/screen_padding">
-
-                            <TextView
-                                android:id="@+id/tv_limited_label"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="0.6"
-                                android:gravity="center_vertical"
-                                android:text="@string/unlimited_token"
-                                android:textColor="@color/color_total_val"
-                                android:textSize="@dimen/text_size_fourteen" />
-
-                            <EditText
-                                android:id="@+id/edt_token_no"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="0.20"
-                                android:background="@drawable/square_white_bg_drawable"
-                                android:gravity="center"
-                                android:imeOptions="actionDone"
-                                android:inputType="number"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/text_size_fourteen"
-                                android:visibility="invisible" />
-
-                            <RelativeLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="0.20"
-                                android:gravity="center">
-
-                                <CheckBox
-                                    android:id="@+id/cb_limit"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:buttonTint="@color/colorPrimaryDark"
-                                    android:gravity="center" />
-                            </RelativeLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/white"
-                            android:minHeight="@dimen/cell_size"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/screen_padding"
-                            android:paddingRight="@dimen/screen_padding">
+                            android:layout_height="wrap_content">
 
                             <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.8"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingBottom="5dp">
 
-                                <TextView
-                                    android:id="@+id/tv_close_day_of_week"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:text="@string/todayclosed"
-                                    android:textColor="@color/color_total_val"
+                                    android:background="@android:color/white"
+                                    android:minHeight="@dimen/cell_size"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="@dimen/screen_padding"
+                                    android:paddingRight="@dimen/screen_padding">
+
+                                    <TextView
+                                        android:id="@+id/tv_limited_label"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_weight="0.6"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/unlimited_token"
+                                        android:textColor="@color/color_total_val"
+                                        android:textSize="@dimen/text_size_fourteen" />
+
+                                    <EditText
+                                        android:id="@+id/edt_token_no"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_weight="0.20"
+                                        android:background="@drawable/square_white_bg_drawable"
+                                        android:gravity="center"
+                                        android:imeOptions="actionDone"
+                                        android:inputType="number"
+                                        android:paddingTop="5dp"
+                                        android:paddingBottom="5dp"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="@dimen/text_size_fourteen"
+                                        android:visibility="invisible" />
+
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_weight="0.20"
+                                        android:gravity="center">
+
+                                        <CheckBox
+                                            android:id="@+id/cb_limit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:buttonTint="@color/colorPrimaryDark"
+                                            android:gravity="center" />
+                                    </RelativeLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    android:minHeight="@dimen/cell_size"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="@dimen/screen_padding"
+                                    android:paddingRight="@dimen/screen_padding">
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.7"
+                                        android:gravity="center_vertical"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tv_close_day_of_week"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:text="@string/todayclosed"
+                                            android:textColor="@color/color_total_val"
+                                            android:textSize="@dimen/text_size_fourteen" />
+
+
+                                    </LinearLayout>
+
+
+                                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/sc_day_closed"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_weight=".3"
+                                        segmentedcontrol:columnCount="2"
+                                        segmentedcontrol:distributeEvenly="true"
+                                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:radius="6dp"
+                                        segmentedcontrol:radiusForEverySegment="false"
+                                        segmentedcontrol:segmentHorizontalMargin="0dp"
+                                        segmentedcontrol:segmentVerticalMargin="0dp"
+                                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                        segmentedcontrol:strokeWidth="1dp"
+                                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                        segmentedcontrol:textVerticalPadding="7dp"
+                                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    android:minHeight="@dimen/cell_size"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="@dimen/screen_padding"
+                                    android:paddingRight="@dimen/screen_padding">
+
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.7"
+                                        android:gravity="center_vertical"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tv_store_offline"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center_vertical"
+                                            android:text="@string/store_offline"
+                                            android:textColor="@color/color_total_val"
+                                            android:textSize="@dimen/text_size_fourteen" />
+
+
+                                    </LinearLayout>
+
+
+                                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/sc_store_offline"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_weight=".3"
+                                        segmentedcontrol:columnCount="2"
+                                        segmentedcontrol:distributeEvenly="true"
+                                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:radius="6dp"
+                                        segmentedcontrol:radiusForEverySegment="false"
+                                        segmentedcontrol:segmentHorizontalMargin="0dp"
+                                        segmentedcontrol:segmentVerticalMargin="0dp"
+                                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                        segmentedcontrol:strokeWidth="1dp"
+                                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                        segmentedcontrol:textVerticalPadding="7dp"
+                                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/btn_update_permanent_setting"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/btn_height"
+                                    android:layout_gravity="right"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="@drawable/bg_nogradient_round"
+                                    android:padding="5dp"
+                                    android:text="  Update  "
+                                    android:textAllCaps="false"
+                                    android:textColor="@android:color/white"
                                     android:textSize="@dimen/text_size_fourteen" />
 
                                 <TextView
-                                    android:id="@+id/toggleDayClosedLabel"
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/tv_no_permission"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="center_vertical"
-                                    android:text=""
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="@dimen/text_size_twelve" />
-
-                            </LinearLayout>
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/toggleDayClosed"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight=".2"
-                                android:paddingEnd="@dimen/swith_padding"
-                                android:scaleX="1.0"
-                                android:scaleY="1.0"
-                                android:theme="@style/SettingSeekbarStyle" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@android:color/white"
-                            android:minHeight="@dimen/cell_size"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/screen_padding"
-                            android:paddingRight="@dimen/screen_padding">
-
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.8"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tv_store_offline"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:text="@string/store_offline"
+                                    android:gravity="center_horizontal"
+                                    android:padding="@dimen/screen_padding"
+                                    android:text="You don't have permission to change this settings"
                                     android:textColor="@color/color_total_val"
-                                    android:textSize="@dimen/text_size_fourteen" />
-
-                                <TextView
-                                    android:id="@+id/toggleStoreOfflineLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="center_vertical"
-                                    android:text=""
-                                    android:textColor="@color/colorPrimaryDark"
-                                    android:textSize="@dimen/text_size_twelve" />
-
+                                    android:textSize="@dimen/text_size_fourteen"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/toggleStoreOffline"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight=".2"
-                                android:paddingEnd="@dimen/swith_padding"
-                                android:scaleX="1.0"
-                                android:scaleY="1.0"
-                                android:theme="@style/SettingSeekbarStyle" />
-                        </LinearLayout>
+                            <View
+                                android:id="@+id/view_prevent_click"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"/>
+
+                        </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -782,8 +843,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -798,8 +859,8 @@
                             android:id="@+id/iv_payment_setting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
                     </RelativeLayout>
@@ -1130,8 +1191,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1146,8 +1207,8 @@
                             android:id="@+id/iv_appointment_setting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
                     </RelativeLayout>
@@ -1222,8 +1283,8 @@
                                 android:background="@drawable/square_white_bg_drawable"
                                 android:digits="0123456789"
                                 android:gravity="center"
-                                android:inputType="number"
                                 android:hint="20 min."
+                                android:inputType="number"
                                 android:maxLength="4"
                                 android:maxLines="1"
                                 android:minLines="1"
@@ -1259,8 +1320,8 @@
                                 android:background="@drawable/square_white_bg_drawable"
                                 android:digits="0123456789"
                                 android:gravity="center"
-                                android:inputType="number"
                                 android:hint="1 weeks"
+                                android:inputType="number"
                                 android:maxLength="4"
                                 android:maxLines="1"
                                 android:minLines="1"
@@ -1286,7 +1347,6 @@
                             android:textSize="@dimen/text_size_fourteen" />
 
                     </LinearLayout>
-
 
 
                 </LinearLayout>
