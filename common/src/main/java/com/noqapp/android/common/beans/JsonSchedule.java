@@ -55,6 +55,9 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonProperty("as")
     private AppointmentStatusEnum appointmentStatus;
 
+    @JsonProperty("cc")
+    private String chiefComplain;
+
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
 
@@ -142,6 +145,15 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     public JsonSchedule setAppointmentStatus(AppointmentStatusEnum appointmentStatus) {
         this.appointmentStatus = appointmentStatus;
+        return this;
+    }
+
+    public String getChiefComplain() {
+        return chiefComplain;
+    }
+
+    public JsonSchedule setChiefComplain(String chiefComplain) {
+        this.chiefComplain = chiefComplain;
         return this;
     }
 
