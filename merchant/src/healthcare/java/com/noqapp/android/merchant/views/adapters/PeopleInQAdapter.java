@@ -11,7 +11,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.ChangeUserInQueue;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;

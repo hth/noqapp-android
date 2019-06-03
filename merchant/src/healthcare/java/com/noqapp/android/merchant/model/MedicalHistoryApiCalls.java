@@ -11,8 +11,8 @@ import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
-import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
-import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 

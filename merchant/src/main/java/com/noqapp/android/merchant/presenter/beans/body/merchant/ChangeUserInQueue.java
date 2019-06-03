@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans.body;
+package com.noqapp.android.merchant.presenter.beans.body.merchant;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 
