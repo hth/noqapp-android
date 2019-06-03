@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans.body.store;
+package com.noqapp.android.merchant.presenter.beans.body.merchant;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;

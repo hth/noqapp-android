@@ -5,8 +5,8 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
-import com.noqapp.android.merchant.presenter.beans.body.ChangeUserInQueue;
-import com.noqapp.android.merchant.presenter.beans.body.Served;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.ChangeUserInQueue;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.Served;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

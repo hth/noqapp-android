@@ -4,7 +4,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
 import com.noqapp.android.merchant.model.response.api.health.MedicalUserProfileApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
-import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.Constants;
 
 import android.util.Log;

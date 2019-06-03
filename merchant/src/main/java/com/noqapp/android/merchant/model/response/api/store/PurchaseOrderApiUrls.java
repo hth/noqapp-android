@@ -4,9 +4,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
-import com.noqapp.android.merchant.presenter.beans.body.store.OrderServed;
-import com.noqapp.android.merchant.views.pojos.Receipt;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.OrderServed;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

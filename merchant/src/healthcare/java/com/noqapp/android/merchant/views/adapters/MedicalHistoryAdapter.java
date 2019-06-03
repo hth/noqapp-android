@@ -12,7 +12,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;

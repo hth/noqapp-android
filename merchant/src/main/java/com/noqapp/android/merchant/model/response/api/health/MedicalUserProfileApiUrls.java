@@ -1,7 +1,7 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

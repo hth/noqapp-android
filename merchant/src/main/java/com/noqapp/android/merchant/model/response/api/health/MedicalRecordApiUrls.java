@@ -4,8 +4,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.presenter.beans.body.FindMedicalProfile;
-import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
