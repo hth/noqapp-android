@@ -231,4 +231,13 @@ public class CommonHelper {
         Log.e("Today date", output);
         return output;
     }
+
+    public static int getDayOfWeek(Calendar calendar) {
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (dayOfWeek == 0) {
+            dayOfWeek = 7;
+        }
+        return dayOfWeek;
+    }
+
 }

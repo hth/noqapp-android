@@ -108,9 +108,11 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "JsonScheduleList{" +
-                "jsonSchedules=" + jsonSchedules +
-                ", error=" + error +
-                '}';
+        final StringBuilder sb = new StringBuilder("JsonScheduleList{");
+        sb.append("jsonSchedules=").append(jsonSchedules);
+        sb.append(", jsonHours=").append(jsonHours);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

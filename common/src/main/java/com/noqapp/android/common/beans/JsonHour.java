@@ -147,4 +147,21 @@ public class JsonHour implements Serializable {
         this.delayedInMinutes = delayedInMinutes;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonHour{");
+        sb.append("dayOfWeek=").append(dayOfWeek);
+        sb.append(", tokenAvailableFrom=").append(tokenAvailableFrom);
+        sb.append(", startHour=").append(startHour);
+        sb.append(", appointmentStartHour=").append(appointmentStartHour);
+        sb.append(", tokenNotAvailableFrom=").append(tokenNotAvailableFrom);
+        sb.append(", endHour=").append(endHour);
+        sb.append(", appointmentEndHour=").append(appointmentEndHour);
+        sb.append(", preventJoining=").append(preventJoining);
+        sb.append(", dayClosed=").append(dayClosed);
+        sb.append(", delayedInMinutes=").append(delayedInMinutes);
+        sb.append('}');
+        return sb.toString();
+    }
 }

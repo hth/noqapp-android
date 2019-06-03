@@ -255,14 +255,6 @@ public class AppUtilities extends CommonHelper {
         return additionalText;
     }
 
-    public static int getDayOfWeek(Calendar calendar) {
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if (dayOfWeek == 0) {
-            dayOfWeek = 7;
-        }
-        return dayOfWeek;
-    }
-
     public static JsonHour getJsonHour(List<JsonHour> jsonHourList) {
         if (null != jsonHourList && jsonHourList.size() > 0) {
             int todayDay = getDayOfWeek(Calendar.getInstance());

@@ -7,47 +7,64 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             android:orientation="vertical">
 
-            <com.applandeo.materialcalendarview.CalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:eventsEnabled="true"
-                app:headerColor="@color/pressed_color"
-                app:selectionColor="@color/pressed_color"
-                app:selectionLabelColor="@android:color/white"
-                app:type="one_day_picker" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="No of patient Date wise"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                android:id="@+id/fh_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#efefef"
-                android:divider="@null" />
+                <com.applandeo.materialcalendarview.CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:eventsEnabled="true"
+                    app:headerColor="@color/pressed_color"
+                    app:selectionColor="@color/pressed_color"
+                    app:selectionLabelColor="@android:color/white"
+                    app:type="one_day_picker" />
 
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="No of patient Date wise"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                    android:id="@+id/fh_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#efefef"
+                    android:divider="@null" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="30dp"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="#ffffff"
+            app:elevation="4dp" />
+    </RelativeLayout>
 </LinearLayout>

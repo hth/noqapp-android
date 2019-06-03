@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.adapters;
+package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,8 +11,8 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.noqapp.android.client.R;
 import com.noqapp.android.common.pojos.AppointmentModel;
+import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
