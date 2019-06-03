@@ -1,37 +1,53 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
+import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.AppointmentDateAdapter;
+import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
+import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,8 +61,7 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity extends AppCompatActivity implements
-        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
-    private Spinner sp_name_list;
+        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter {
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<JsonHour> jsonHours;
@@ -56,7 +71,21 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private ScheduleApiCalls scheduleApiCalls;
     private ProgressDialog progressDialog;
     private JsonScheduleList jsonScheduleList;
-
+    protected TextView tv_create_token;
+    protected Button btn_create_token;
+    protected ImageView iv_banner;
+    protected TextView tvcount;
+    private Spinner sp_patient_list;
+    protected LinearLayout ll_mobile;
+    protected LinearLayout ll_main_section;
+    protected EditText edt_mobile;
+    private TextView tv_select_patient;
+    private String countryCode = "";
+    private String cid = "";
+    private CountryCodePicker ccp;
+    private long mLastClickTime = 0;
+    private Button btn_create_order;
+    private BusinessCustomerApiCalls businessCustomerApiCalls;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -78,7 +107,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         tv_toolbar_title.setText("Book Appointment");
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
-//
         jsonScheduleList = (JsonScheduleList) getIntent().getExtras().getSerializable("jsonScheduleList");
         jsonHours = jsonScheduleList.getJsonHours();
         Calendar endDate = Calendar.getInstance();
@@ -117,38 +145,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
 
-        sp_name_list = findViewById(R.id.sp_name_list);
-
-//        List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
-//        profileList.add(0, NoQueueBaseActivity.getUserProfile());
-//        profileList.add(0, new JsonProfile().setName("Select Patient"));
-//        DependentAdapter adapter = new DependentAdapter(this, profileList);
-//        sp_name_list.setAdapter(adapter);
-
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(v -> {
-            sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
-            if (sp_name_list.getSelectedItemPosition() == 0) {
-                //Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
-                // sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
-            } else if (selectedPos == -1) {
+            if (selectedPos == -1) {
                 Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
             } else {
                 // Process
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-//                    progressDialog.setMessage("Booking appointment...");
-//                    progressDialog.show();
-//                    String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
-//                    JsonSchedule jsonSchedule = new JsonSchedule()
-//                            .setCodeQR(bizStoreElastic.getCodeQR())
-//                            .setStartTime(removeColon(temp[0].trim()))
-//                            .setEndTime(removeColon(temp[1].trim()))
-//                            .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
-//                            .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
-//                    appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
-                }
+                showCreateTokenDialogWithMobile(BookAppointmentActivity.this,
+                        getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
             }
         });
         selectedDate = startDate;
@@ -192,6 +196,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         } else {
             tv_empty_slots.setVisibility(View.GONE);
         }
+        selectedPos = -1;
     }
 
     public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime) {
@@ -322,5 +327,179 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     protected void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+
+    private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
+        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
+        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
+        iv_banner = customDialogView.findViewById(R.id.iv_banner);
+        tvcount = customDialogView.findViewById(R.id.tvcount);
+        ll_main_section = customDialogView.findViewById(R.id.ll_main_section);
+        ll_mobile = customDialogView.findViewById(R.id.ll_mobile);
+        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
+        sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
+        tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
+
+
+        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
+        final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
+        final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
+        builder.setView(customDialogView);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_mobile) {
+                    ll_mobile.setVisibility(View.VISIBLE);
+                    edt_id.setVisibility(View.GONE);
+                    edt_id.setText("");
+                } else {
+                    edt_id.setVisibility(View.VISIBLE);
+                    ll_mobile.setVisibility(View.GONE);
+                    edt_mobile.setText("");
+                }
+            }
+        });
+        cid = "";
+        ccp = customDialogView.findViewById(R.id.ccp);
+        String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
+        int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
+        ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
+        btn_create_order = customDialogView.findViewById(R.id.btn_create_order);
+        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_token.setText("Search Patient");
+        btn_create_token.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                boolean isValid = true;
+                edt_mobile.setError(null);
+                edt_id.setError(null);
+                new AppUtils().hideKeyBoard(BookAppointmentActivity.this);
+                // get selected radio button from radioGroup
+                int selectedId = rg_user_id.getCheckedRadioButtonId();
+                if (selectedId == R.id.rb_mobile) {
+                    if (TextUtils.isEmpty(edt_mobile.getText())) {
+                        edt_mobile.setError(getString(R.string.error_mobile_blank));
+                        isValid = false;
+                    }
+                } else {
+                    if (TextUtils.isEmpty(edt_id.getText())) {
+                        edt_id.setError(getString(R.string.error_customer_id));
+                        isValid = false;
+                    }
+                }
+
+                if (isValid) {
+                   progressDialog.show();
+                   progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    String phone = "";
+                    cid = "";
+                    if (rb_mobile.isChecked()) {
+                        edt_id.setText("");
+                        countryCode = ccp.getSelectedCountryCode();
+                        phone = countryCode + edt_mobile.getText().toString();
+                        cid = "";
+                    } else {
+                        cid = edt_id.getText().toString();
+                        edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
+                    }
+                    businessCustomerApiCalls = new BusinessCustomerApiCalls();
+                    businessCustomerApiCalls.setFindCustomerPresenter(BookAppointmentActivity.this);
+                    businessCustomerApiCalls.findCustomer(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                    btn_create_token.setClickable(false);
+                    //  mAlertDialog.dismiss();
+                }
+            }
+        });
+
+        actionbarBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlertDialog.dismiss();
+            }
+        });
+        mAlertDialog.show();
+    }
+
+
+    @Override
+    public void findCustomerResponse(JsonProfile jsonProfile) {
+        dismissProgress();
+        LaunchActivity.getLaunchActivity().progressDialog.dismiss();
+        if (null != jsonProfile) {
+            List<JsonProfile> jsonProfileList = new ArrayList<>();
+            jsonProfileList.add(jsonProfile);
+            if (jsonProfile.getDependents().size() > 0) {
+                jsonProfileList.addAll(jsonProfile.getDependents());
+            }
+            JsonProfileAdapter adapter = new JsonProfileAdapter(this, jsonProfileList);
+            sp_patient_list.setAdapter(adapter);
+            sp_patient_list.setVisibility(View.VISIBLE);
+            edt_mobile.setEnabled(false);
+            tv_select_patient.setVisibility(View.VISIBLE);
+            btn_create_order.setText("Book Appointment");
+            btn_create_order.setVisibility(View.VISIBLE);
+            btn_create_token.setVisibility(View.GONE);
+            btn_create_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        btn_create_order.setEnabled(false);
+//                        progressDialog.show();
+//                        progressDialog.setCancelable(false);
+//                        progressDialog.setCanceledOnTouchOutside(false);
+//                        String phoneNoWithCode = "";
+//                        if (TextUtils.isEmpty(cid)) {
+//                            phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+//                        }
+//
+//                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
+//                                setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+//                        jsonBusinessCustomer
+//                                .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
+//                                .setCustomerPhone(phoneNoWithCode)
+//                                .setBusinessCustomerId(cid);
+
+
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.setMessage("Booking appointment...");
+                            progressDialog.show();
+                            String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                            JsonSchedule jsonSchedule = new JsonSchedule()
+                                    .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
+                                    .setStartTime(removeColon(temp[0].trim()))
+                                    .setEndTime(removeColon(temp[1].trim()))
+                                    .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate))
+                                    .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                           // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            Toast.makeText(BookAppointmentActivity.this, "Call API for booking appointment", Toast.LENGTH_SHORT).show();
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
+                        }
+
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
+                    }
+                }
+            });
+        }
     }
 }
