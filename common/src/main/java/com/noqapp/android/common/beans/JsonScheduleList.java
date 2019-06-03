@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -32,6 +33,9 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
     @JsonProperty("scs")
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
 
+    @JsonProperty("hours")
+    private List<JsonHour> jsonHours = new LinkedList<>();
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -46,6 +50,15 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
 
     public JsonScheduleList addJsonSchedule(JsonSchedule jsonSchedule) {
         this.jsonSchedules.add(jsonSchedule);
+        return this;
+    }
+
+    public List<JsonHour> getJsonHours() {
+        return jsonHours;
+    }
+
+    public JsonScheduleList setJsonHours(List<JsonHour> jsonHours) {
+        this.jsonHours = jsonHours;
         return this;
     }
 
