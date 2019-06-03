@@ -36,6 +36,15 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
     @JsonProperty("hours")
     private List<JsonHour> jsonHours = new LinkedList<>();
 
+    @JsonProperty("pe")
+    private boolean appointmentEnable;
+
+    @JsonProperty("pd")
+    private int appointmentDuration;
+
+    @JsonProperty("pf")
+    private int appointmentOpenHowFar;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -59,6 +68,33 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
 
     public JsonScheduleList setJsonHours(List<JsonHour> jsonHours) {
         this.jsonHours = jsonHours;
+        return this;
+    }
+
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public JsonScheduleList setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public JsonScheduleList setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public JsonScheduleList setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 
