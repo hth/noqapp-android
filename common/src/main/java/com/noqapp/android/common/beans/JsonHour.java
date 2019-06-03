@@ -36,11 +36,17 @@ public class JsonHour implements Serializable {
     @JsonProperty("sh")
     private int startHour;
 
+    @JsonProperty ("as")
+    private int appointmentStartHour;
+
     @JsonProperty("te")
     private int tokenNotAvailableFrom;
 
     @JsonProperty("eh")
     private int endHour;
+
+    @JsonProperty("ae")
+    private int appointmentEndHour;
 
     @JsonProperty("pj")
     private boolean preventJoining;
@@ -79,6 +85,15 @@ public class JsonHour implements Serializable {
         return this;
     }
 
+    public int getAppointmentStartHour() {
+        return appointmentStartHour;
+    }
+
+    public JsonHour setAppointmentStartHour(int appointmentStartHour) {
+        this.appointmentStartHour = appointmentStartHour;
+        return this;
+    }
+
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
@@ -94,6 +109,15 @@ public class JsonHour implements Serializable {
 
     public JsonHour setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public int getAppointmentEndHour() {
+        return appointmentEndHour;
+    }
+
+    public JsonHour setAppointmentEndHour(int appointmentEndHour) {
+        this.appointmentEndHour = appointmentEndHour;
         return this;
     }
 
@@ -122,5 +146,22 @@ public class JsonHour implements Serializable {
     public JsonHour setDelayedInMinutes(int delayedInMinutes) {
         this.delayedInMinutes = delayedInMinutes;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonHour{");
+        sb.append("dayOfWeek=").append(dayOfWeek);
+        sb.append(", tokenAvailableFrom=").append(tokenAvailableFrom);
+        sb.append(", startHour=").append(startHour);
+        sb.append(", appointmentStartHour=").append(appointmentStartHour);
+        sb.append(", tokenNotAvailableFrom=").append(tokenNotAvailableFrom);
+        sb.append(", endHour=").append(endHour);
+        sb.append(", appointmentEndHour=").append(appointmentEndHour);
+        sb.append(", preventJoining=").append(preventJoining);
+        sb.append(", dayClosed=").append(dayClosed);
+        sb.append(", delayedInMinutes=").append(delayedInMinutes);
+        sb.append('}');
+        return sb.toString();
     }
 }

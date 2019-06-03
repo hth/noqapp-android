@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.pojos;
+package com.noqapp.android.common.pojos;
 
 public class AppointmentModel {
     private String time;

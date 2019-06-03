@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,12 +26,13 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AppointmentDateAdapter;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.android.client.views.pojos.AppointmentModel;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -50,7 +50,7 @@ import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 public class BookAppointmentActivity extends BaseActivity implements
         AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
-    private TextView tv_date_time, tv_empty_slots;
+    private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
     private BizStoreElastic bizStoreElastic;
@@ -90,12 +90,14 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .textSize(14f, 24f, 14f)
                 .end()
                 .build();
-
+        TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
+        TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
+        tv_doctor_name.setText(bizStoreElastic.getDisplayName());
+        tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
 
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                tv_date_time.setText("");
                 selectedDate = date;
                 fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
@@ -113,7 +115,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
 
         sp_name_list = findViewById(R.id.sp_name_list);
-        tv_date_time = findViewById(R.id.tv_date_time);
+
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
         profileList.add(0, new JsonProfile().setName("Select Patient"));
@@ -122,12 +124,11 @@ public class BookAppointmentActivity extends BaseActivity implements
 
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(v -> {
-            tv_date_time.setError(null);
             sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
             if (sp_name_list.getSelectedItemPosition() == 0) {
                 Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
                 sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
-            } else if (TextUtils.isEmpty(tv_date_time.getText().toString())) {
+            } else if (selectedPos == -1) {
                 Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
             } else {
                 // Process
@@ -155,13 +156,11 @@ public class BookAppointmentActivity extends BaseActivity implements
     @Override
     public void onAppointmentSelected(AppointmentModel item, int pos) {
         selectedPos = pos;
-        if (null != selectedDate)
-            tv_date_time.setText(item.getTime());
     }
 
     @Override
     public void onBookedAppointmentSelected() {
-        tv_date_time.setText("");
+        selectedPos = -1;
     }
 
     private StoreHourElastic getStoreHourElastic(List<StoreHourElastic> jsonHourList, int day) {

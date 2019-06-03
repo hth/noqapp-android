@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +20,10 @@ import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -27,12 +31,14 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -45,6 +51,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     public EventListAdapter adapter;
     private String codeRQ = "";
     private ScrollView scroll_view;
+    private JsonScheduleList jsonScheduleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,15 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         calendarView = findViewById(R.id.calendarView);
         fh_list_view = findViewById(R.id.fh_list_view);
         scroll_view = findViewById(R.id.scroll_view);
+        FloatingActionButton fab_add_image = findViewById(R.id.fab_add_image);
+        fab_add_image.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
+                in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
+                in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+                startActivity(in);
+            }
+        });
         fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -206,6 +222,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         List<EventDay> events = parseEventList(jsonScheduleList);
+        this.jsonScheduleList =jsonScheduleList;
         calendarView.setEvents(events);
         adapter = new EventListAdapter(AppointmentActivity.this, events, this);
         fh_list_view.setAdapter(adapter);

@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.merchant.presenter.beans.body.StoreSetting;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -93,5 +94,30 @@ public interface ScheduleApiUrls {
 
             @Body
             JsonSchedule jsonSchedule
+    );
+
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#APPOINTMENT_ALREADY_EXISTS}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#CANNOT_BOOK_APPOINTMENT}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @POST("api/m/schedule/bookSchedule.json")
+    Call<JsonSchedule> bookSchedule(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            BookSchedule bookSchedule
     );
 }

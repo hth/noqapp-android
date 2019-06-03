@@ -9,6 +9,7 @@ import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.model.response.api.ScheduleApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 import com.noqapp.android.merchant.utils.Constants;
 
 import retrofit2.Call;
@@ -111,6 +112,35 @@ public class ScheduleApiCalls {
             @Override
             public void onFailure(@NonNull Call<JsonSchedule> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure scheduleAction " + t.getLocalizedMessage(), t);
+                appointmentPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void bookSchedule(String did, String mail, String auth, BookSchedule bookSchedule) {
+        scheduleApiUrls.bookSchedule(did, Constants.DEVICE_TYPE, mail, auth, bookSchedule).enqueue(new Callback<JsonSchedule>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonSchedule> call, @NonNull Response<JsonSchedule> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d(TAG, "bookSchedule fetch " + String.valueOf(response.body()));
+                        appointmentPresenter.appointmentBookingResponse(response.body());
+                    } else {
+                        Log.e(TAG, "Failed to fetch bookSchedule");
+                        appointmentPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        appointmentPresenter.authenticationFailure();
+                    } else {
+                        appointmentPresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonSchedule> call, @NonNull Throwable t) {
+                Log.e(TAG, "Failure bookSchedule " + t.getLocalizedMessage(), t);
                 appointmentPresenter.responseErrorPresenter(null);
             }
         });

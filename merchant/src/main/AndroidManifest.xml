@@ -84,6 +84,11 @@
             android:name="com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name="com.noqapp.android.merchant.views.activities.BookAppointmentActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.AppointmentActivity"
             android:theme="@style/BaseTheme"

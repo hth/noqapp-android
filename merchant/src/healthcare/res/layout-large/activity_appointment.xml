@@ -7,50 +7,67 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
-
-        <com.applandeo.materialcalendarview.CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".4"
-            app:eventsEnabled="true"
-            app:headerColor="@color/pressed_color"
-            app:selectionColor="@color/pressed_color"
-            app:selectionLabelColor="@android:color/white"
-            app:type="one_day_picker" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#efefef"
-            android:layout_weight=".6"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:orientation="horizontal">
 
+            <com.applandeo.materialcalendarview.CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".4"
+                app:eventsEnabled="true"
+                app:headerColor="@color/pressed_color"
+                app:selectionColor="@color/pressed_color"
+                app:selectionLabelColor="@android:color/white"
+                app:type="one_day_picker" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="13dp"
-                android:text="No of patient Date wise"
-                android:textColor="@android:color/black"
-                android:background="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <com.noqapp.android.merchant.views.customviews.FixedHeightListView
-                android:id="@+id/fh_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".6"
                 android:background="#efefef"
-                android:divider="@null" />
+                android:orientation="vertical">
 
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:padding="13dp"
+                    android:text="No of patient Date wise"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.noqapp.android.merchant.views.customviews.FixedHeightListView
+                    android:id="@+id/fh_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#efefef"
+                    android:divider="@null" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="30dp"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="#ffffff"
+            app:elevation="4dp" />
+    </RelativeLayout>
 </LinearLayout>
