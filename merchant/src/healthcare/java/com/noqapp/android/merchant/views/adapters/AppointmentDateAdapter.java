@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.merchant.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDateAdapter.MyViewHolder> {

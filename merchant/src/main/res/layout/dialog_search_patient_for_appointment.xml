@@ -204,35 +204,25 @@
                     android:orientation="horizontal"
                     android:weightSum="1">
 
-                    <EditText
-                        android:id="@+id/edt_start_time"
+                    <Spinner
+                        android:id="@+id/sp_start_time"
                         android:layout_width="0dp"
-                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/square_white_bg_drawable"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="5dp"
-                        android:hint="Start time"
-                        android:maxLength="15"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/text_size_twelve" />
-
-                    <EditText
-                        android:id="@+id/edt_end_time"
-                        android:layout_width="0dp"
                         android:layout_weight=".5"
+                        android:background="@drawable/sp_background"
+                        android:padding="5dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_end_time"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="5dp"
-                        android:hint="End time"
-                        android:background="@drawable/square_white_bg_drawable"
-                        android:maxLength="15"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:padding="10dp"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:layout_marginRight="10dp"
+                        android:layout_weight=".5"
+                        android:background="@drawable/sp_background"
+                        android:padding="5dp" />
 
                 </LinearLayout>
 
