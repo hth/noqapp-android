@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -41,6 +40,7 @@ import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
@@ -79,6 +79,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     protected LinearLayout ll_mobile;
     protected LinearLayout ll_main_section;
     protected EditText edt_mobile;
+    private EditText edt_start_time, edt_end_time;
     private TextView tv_select_patient;
     private String countryCode = "";
     private String cid = "";
@@ -86,6 +87,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private long mLastClickTime = 0;
     private Button btn_create_order;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
+    private String codeQR = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -108,6 +111,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         jsonScheduleList = (JsonScheduleList) getIntent().getExtras().getSerializable("jsonScheduleList");
+        codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         jsonHours = jsonScheduleList.getJsonHours();
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.DAY_OF_MONTH, jsonScheduleList.getAppointmentOpenHowFar() * 7); // end date of appointment
@@ -151,8 +155,11 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
             } else {
                 // Process
-                showCreateTokenDialogWithMobile(BookAppointmentActivity.this,
-                        getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
+                try {
+                    searchPatientWithMobileNoORCustomerId();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         selectedDate = startDate;
@@ -297,7 +304,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth(),
                     day,
-                    getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
+                    codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -330,11 +337,11 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     }
 
 
-    private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
+    private void searchPatientWithMobileNoORCustomerId() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
+        View customDialogView = inflater.inflate(R.layout.dialog_search_patient_for_appointment, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         tv_create_token = customDialogView.findViewById(R.id.tvtitle);
         iv_banner = customDialogView.findViewById(R.id.iv_banner);
@@ -342,10 +349,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         ll_main_section = customDialogView.findViewById(R.id.ll_main_section);
         ll_mobile = customDialogView.findViewById(R.id.ll_mobile);
         edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
+        edt_end_time = customDialogView.findViewById(R.id.edt_end_time);
+        edt_start_time = customDialogView.findViewById(R.id.edt_start_time);
         sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
         tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
 
-
+        String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+        edt_start_time.setText(temp[0].trim());
+        edt_end_time.setText(temp[1].trim());
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
         final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
         final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
@@ -399,8 +410,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 }
 
                 if (isValid) {
-                   progressDialog.show();
-                   progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    progressDialog.setCancelable(false);
                     progressDialog.setCanceledOnTouchOutside(false);
                     String phone = "";
                     cid = "";
@@ -463,38 +474,42 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         btn_create_order.setEnabled(false);
-//                        progressDialog.show();
-//                        progressDialog.setCancelable(false);
-//                        progressDialog.setCanceledOnTouchOutside(false);
-//                        String phoneNoWithCode = "";
-//                        if (TextUtils.isEmpty(cid)) {
-//                            phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
-//                        }
-//
-//                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
-//                                setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-//                        jsonBusinessCustomer
-//                                .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
-//                                .setCustomerPhone(phoneNoWithCode)
-//                                .setBusinessCustomerId(cid);
+                        progressDialog.show();
+                        progressDialog.setCancelable(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
+                        String phoneNoWithCode = "";
+                        if (TextUtils.isEmpty(cid)) {
+                            phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+                        }
 
+                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
+                                setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                        jsonBusinessCustomer
+                                .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
+                                .setCustomerPhone(phoneNoWithCode)
+                                .setBusinessCustomerId(cid);
+                        String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                        JsonSchedule jsonSchedule = new JsonSchedule()
+                                .setCodeQR(codeQR)
+                                .setStartTime(removeColon(temp[0].trim()))
+                                .setEndTime(removeColon(temp[1].trim()))
+                                .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate)).
+                                        setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
 
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.setMessage("Booking appointment...");
                             progressDialog.show();
-                            String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
-                            JsonSchedule jsonSchedule = new JsonSchedule()
-                                    .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
-                                    .setStartTime(removeColon(temp[0].trim()))
-                                    .setEndTime(removeColon(temp[1].trim()))
-                                    .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate))
-                                    .setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                           // appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            BookSchedule bookSchedule = new BookSchedule();
+                            bookSchedule.setBusinessCustomer(jsonBusinessCustomer);
+                            bookSchedule.setJsonSchedule(jsonSchedule);
+                            scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    bookSchedule);
                             Toast.makeText(BookAppointmentActivity.this, "Call API for booking appointment", Toast.LENGTH_SHORT).show();
                         } else {
                             ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
-
                     } else {
                         ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                     }
