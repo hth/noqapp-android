@@ -195,8 +195,10 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
         ArrayList<String> timeSlot = getTimeSlots(jsonScheduleList.getAppointmentDuration(), from, to);
+        times.clear();
         for (int i = 0; i < timeSlot.size() - 1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
+            times.add(timeSlot.get(i));
         }
         appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
@@ -250,7 +252,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 String input = String.format("%4s", str).replace(' ', '0');
                 int index = 1;
                 String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-                times.add(input.substring(0, index + 1));
                 Log.e("Check string----- ", input + "----------- " + outPut);
                 filledTimes.add(outPut);
             }
@@ -474,9 +475,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     try {
-//                        int start = Integer.parseInt((String) sp_start_time.getSelectedItem());
-//                        int end = Integer.parseInt((String)sp_end_time.getSelectedItem());
-//                        if (start < end) {
+                        int start = removeColon((String) sp_start_time.getSelectedItem());
+                        int end = removeColon((String) sp_end_time.getSelectedItem());
+                        if (start < end) {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                                     return;
@@ -522,9 +523,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                             } else {
                                 ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                             }
-//                        } else {
-//                            Toast.makeText(BookAppointmentActivity.this, "Booking start time to be less than end time", Toast.LENGTH_SHORT).show();
-//                        }
+                        } else {
+                            Toast.makeText(BookAppointmentActivity.this, "Booking start time to be less than end time", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
