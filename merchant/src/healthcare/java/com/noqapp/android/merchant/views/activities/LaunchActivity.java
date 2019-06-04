@@ -27,7 +27,6 @@ import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
-
 public class LaunchActivity extends BaseLaunchActivity {
     private TextView tv_badge;
     @Override

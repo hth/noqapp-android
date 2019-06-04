@@ -1,48 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -89,22 +46,62 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.Manifest;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import io.fabric.sdk.android.Fabric;
+import io.nlopez.smartlocation.SmartLocation;
+import io.nlopez.smartlocation.location.config.LocationAccuracy;
+import io.nlopez.smartlocation.location.config.LocationParams;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import io.fabric.sdk.android.Fabric;
-import io.nlopez.smartlocation.OnLocationUpdatedListener;
-import io.nlopez.smartlocation.SmartLocation;
-import io.nlopez.smartlocation.location.config.LocationAccuracy;
-import io.nlopez.smartlocation.location.config.LocationParams;
 
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
@@ -251,10 +248,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     private void callLocationManager() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{mPermission},
-                    LOCATION_PERMISSION_CODE);
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, new String[]{mPermission}, LOCATION_PERMISSION_CODE);
             return;
         }
 
@@ -271,16 +267,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 .location()
                 .continuous()
                 .config(builder.build())
-                .start(new OnLocationUpdatedListener() {
-                    @Override
-                    public void onLocationUpdated(Location location) {
-                        if (null != location) {
-                            latitute = location.getLatitude();
-                            longitute = location.getLongitude();
-                            Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
-                            getAddress(latitute, longitute);
-                            updateLocationUI();
-                        }
+                .start(location -> {
+                    if (null != location) {
+                        latitute = location.getLatitude();
+                        longitute = location.getLongitude();
+                        Log.e("Location found: ", "Location detected: Lat- " + location.getLatitude() + " Long- " + location.getLongitude());
+                        getAddress(latitute, longitute);
+                        updateLocationUI();
                     }
                 });
     }
@@ -309,12 +302,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey(Constants.QRCODE)
-                    && extras.containsKey(Constants.ISREVIEW)
-                    && extras.containsKey(Constants.TOKEN)
-            ) {
+            if (extras.containsKey(Constants.QRCODE) && extras.containsKey(Constants.ISREVIEW) && extras.containsKey(Constants.TOKEN)) {
                 String codeQR = extras.getString(Constants.QRCODE);
                 String token = extras.getString(Constants.TOKEN);
                 String qid = extras.getString(Constants.QID);
@@ -399,10 +390,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 //both remaining permission allowed
                 if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                     AppUtilities.shareTheApp(launchActivity);
-                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//one remaining permission allowed
+                }
+                //one remaining permission allowed
+                else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     AppUtilities.shareTheApp(launchActivity);
-                } else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    //No permission allowed
+                }
+                //No permission allowed
+                else if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     //Do nothing
                 }
             } catch (Exception e) {
@@ -410,12 +404,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
         }
         if (requestCode == LOCATION_PERMISSION_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted.
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     callLocationManager();
                 }
             } else {
@@ -433,13 +424,15 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     }
 
     public void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
+        if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
     }
 
     public void setProgressTitle(String msg) {
-        if (null != progressDialog && progressDialog.isShowing())
+        if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.setMessage(msg);
+        }
     }
 
     public boolean isOnline() {
@@ -456,8 +449,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
         // register new push message receiver
         // by doing this, the activity will be notified each time a new message arrives
-        if (null != fcmNotificationReceiver)
+        if (null != fcmNotificationReceiver) {
             fcmNotificationReceiver.register(this, new IntentFilter(Constants.PUSH_NOTIFICATION));
+        }
 
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
@@ -520,14 +514,14 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != fcmNotificationReceiver)
+        if (null != fcmNotificationReceiver) {
             fcmNotificationReceiver.unregister(this);
+        }
     }
 
 
     @Override
     public void onBackPressed() {
-
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (f instanceof ChangeLocationFragment) {
             updateLocationInfo(latitute, longitute, cityName);
@@ -553,8 +547,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     private void callReviewActivity(String codeQR, String token) {
         JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, token);
-        if (null == jtk)
+        if (null == jtk) {
             jtk = TokenAndQueueDB.getHistoryQueueObject(codeQR, token);
+        }
+
         if (null != jtk) {
             Intent in = new Intent(launchActivity, ReviewActivity.class);
             Bundle bundle = new Bundle();
@@ -608,7 +604,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public void appBlacklistError(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
-                ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+                Intent in = new Intent(launchActivity, AppUpdateActivity.class);
+                startActivity(in);
             } else {
                 new ErrorResponseHandler().processError(this, eej);
             }
@@ -623,13 +620,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
-//                        ShowAlertInformation.showThemePlayStoreDialog(
-//                                this,
-//                                getString(R.string.playstore_update_title),
-//                                getString(R.string.playstore_update_msg),
-//                                true);
-                        Intent in = new Intent(launchActivity, AppUpdateActivity.class);
-                        startActivity(in);
+                        ShowAlertInformation.showThemePlayStoreDialog(
+                                this,
+                                getString(R.string.playstore_update_title),
+                                getString(R.string.playstore_update_msg),
+                                true);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);
