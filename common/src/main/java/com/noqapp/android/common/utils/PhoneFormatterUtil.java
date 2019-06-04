@@ -29,7 +29,7 @@ public class PhoneFormatterUtil {
             return phoneUtil.isValidNumber(phoneNumber);
         } catch (NumberParseException e) {
             Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log("Parsing phone for validation " + rawPhoneNumber + " " + countryShortName);
+            Crashlytics.log(Log.ERROR, TAG, "Parsing phone for validation " + rawPhoneNumber + " " + countryShortName);
             return false;
         }
     }
@@ -46,7 +46,7 @@ public class PhoneFormatterUtil {
             return phoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
             Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log("Parsing phone " + rawPhoneNumber + " " + countryShortName);
+            Crashlytics.log(Log.ERROR, TAG, "Parsing phone " + rawPhoneNumber + " " + countryShortName);
             return "";
         }
     }
@@ -69,12 +69,11 @@ public class PhoneFormatterUtil {
             return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {
             Log.e(TAG, "Failed to parse phone=" + phone + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
-            Crashlytics.log("Failed parsing country code " + phone + " " + countryShortName);
+            Crashlytics.log(Log.ERROR, TAG, "Failed parsing country code " + phone + " " + countryShortName);
             throw new RuntimeException("Failed parsing country code");
         }
     }
-
-
+    
     public static int getCountryCodeFromRegion(String regionCode) {
         return phoneUtil.getCountryCodeForRegion(regionCode.toUpperCase());
     }
