@@ -1,14 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.noqapp.android.client.R;
+
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.beans.body.MigratePhone;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -16,8 +9,15 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.util.TimeZone;
 
+/**
+ * Created by chandra on 5/7/17.
+ */
 public class MigrateActivity extends OTPActivity {
 
     private final String TAG = MigrateActivity.class.getSimpleName();
@@ -51,6 +51,9 @@ public class MigrateActivity extends OTPActivity {
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
+        } else if (countryCode.equals("+91") && edt_phoneNo.getText().toString().length() != 10) {
+            edt_phoneNo.setError(getString(R.string.error_mobile_no_length));
+            isValid = false;
         } else {
             if (PhoneFormatterUtil.phoneNumberWithCountryCode(edt_phoneNo.getText().toString(), countryShortName).
                     equals(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()))) {
@@ -63,10 +66,10 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
-            Log.d(TAG, "profile :" + profile.toString());
-            NoQueueBaseActivity.commitProfile(profile, email, auth);
-            finish();//close the current activity
-            dismissProgress();
+        Log.d(TAG, "profile :" + profile.toString());
+        NoQueueBaseActivity.commitProfile(profile, email, auth);
+        finish();//close the current activity
+        dismissProgress();
     }
 
     @Override

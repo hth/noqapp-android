@@ -623,11 +623,13 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
-                        ShowAlertInformation.showThemePlayStoreDialog(
-                                this,
-                                getString(R.string.playstore_update_title),
-                                getString(R.string.playstore_update_msg),
-                                true);
+//                        ShowAlertInformation.showThemePlayStoreDialog(
+//                                this,
+//                                getString(R.string.playstore_update_title),
+//                                getString(R.string.playstore_update_msg),
+//                                true);
+                        Intent in = new Intent(launchActivity, AppUpdateActivity.class);
+                        startActivity(in);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Compare version check reason=" + e.getLocalizedMessage(), e);

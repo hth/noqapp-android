@@ -7,7 +7,7 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,7 +31,6 @@
                 style="@style/style_register_tv"
                 android:text="@string/phone" />
 
-
             <EditText
                 android:id="@+id/edt_phone"
                 style="@style/style_register_edt"
@@ -39,11 +38,9 @@
                 android:inputType="phone"
                 android:maxLength="15" />
 
-
             <TextView
                 style="@style/style_register_tv"
                 android:text="@string/name" />
-
 
             <EditText
                 android:id="@+id/edt_name"
@@ -53,7 +50,6 @@
             <TextView
                 style="@style/style_register_tv"
                 android:text="@string/mail" />
-
 
             <EditText
                 android:id="@+id/edt_email"
@@ -96,9 +92,7 @@
                         android:inputType="textPassword" />
 
                 </LinearLayout>
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,6 +123,7 @@
                     android:id="@+id/ll_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:weightSum="1">
 
                     <TextView
@@ -170,11 +165,9 @@
                 </LinearLayout>
             </LinearLayout>
 
-
             <TextView
                 style="@style/style_register_tv"
                 android:text="@string/invitecode" />
-
 
             <EditText
                 android:id="@+id/edt_inviteCode"

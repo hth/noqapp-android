@@ -152,6 +152,10 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
+            android:name="com.noqapp.android.merchant.views.activities.AppUpdateActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
             android:name="com.noqapp.android.merchant.views.activities.PrivacyActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden"/>

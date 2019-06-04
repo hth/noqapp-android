@@ -99,6 +99,13 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         btn_verify_phone = findViewById(R.id.btn_verify_phone);
         edt_verification_code = findViewById(R.id.edt_verification_code);
         ccp = findViewById(R.id.ccp);
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                countryCode = ccp.getSelectedCountryCodeWithPlus();
+                countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
+            }
+        });
         tv_detail = findViewById(R.id.tv_detail);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +138,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         countryShortName = c_codeValue.toUpperCase();
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
         countryCode = ccp.getSelectedCountryCodeWithPlus();
+        countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
         edt_phoneNo.setText(getIntent().getStringExtra("phone_no"));
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -197,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 progressDialog.show();
                 progressDialog.setMessage("Generating OTP");
                 countryCode = ccp.getSelectedCountryCodeWithPlus();
-                countryShortName = ccp.getSelectedCountryName().toUpperCase();
+                countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
 
                 Answers.getInstance().logLogin(new LoginEvent()

@@ -64,7 +64,9 @@ public class PhoneFormatterUtil {
     public static String phoneNumberWithCountryCode(String phone, String countryShortName) {
         try {
             Phonenumber.PhoneNumber phoneNumber = phoneUtil.parse(phone, countryShortName);
-            Log.i(TAG, "PhoneNumber with phone=" + phone + " countryShortName=" + countryShortName + " countryCode=" + phoneNumber.getCountryCode() + " nationalNumber=" + phoneNumber.getNationalNumber() + " leadingZeros=" + phoneNumber.getNumberOfLeadingZeros());
+            Log.i(TAG, "PhoneNumber with phone=" + phone + " countryShortName=" + countryShortName
+                    + " countryCode=" + phoneNumber.getCountryCode() + " nationalNumber=" + phoneNumber.getNationalNumber()
+                    + " leadingZeros=" + phoneNumber.getNumberOfLeadingZeros());
 
             return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {

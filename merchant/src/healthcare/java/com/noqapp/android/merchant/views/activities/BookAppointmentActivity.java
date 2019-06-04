@@ -343,7 +343,12 @@ public class BookAppointmentActivity extends AppCompatActivity implements
 
 
     private void searchPatientWithMobileNoORCustomerId() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder;
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            builder = new AlertDialog.Builder(this);
+        } else {
+            builder = new AlertDialog.Builder(this,R.style.FullScreenDialogTheme);
+        }
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_search_patient_for_appointment, null, false);
