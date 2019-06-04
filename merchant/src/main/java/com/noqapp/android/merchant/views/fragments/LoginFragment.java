@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -38,7 +39,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -122,7 +122,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             }
         } else {
             LaunchActivity.getLaunchActivity().dismissProgress();
-            Toast.makeText(getActivity(), getString(R.string.error_login), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), getString(R.string.error_login));
             btn_login.setBackgroundResource(R.drawable.button_drawable);
             btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         }
@@ -139,7 +139,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
         LaunchActivity.getLaunchActivity().dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(getActivity(), getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(getActivity(), getString(R.string.error_account_block));
                 LaunchActivity.getLaunchActivity().clearLoginData(false);
             } else {
                 new ErrorResponseHandler().processError(getActivity(), eej);

@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -33,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
@@ -265,14 +265,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
-            Toast.makeText(context, eej.getReason(), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, eej.getReason());
             Intent in = new Intent(getActivity(), LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
             context.startActivity(in);
             RegistrationActivity.registerCallBack = this;
             LoginActivity.loginCallBack = this;
         } else if (null != eej && eej.getSystemErrorCode().equals("350")) {
-            Toast.makeText(context, getString(R.string.error_client_just_acquired), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, getString(R.string.error_client_just_acquired));
             if (lastSelectedPos >= 0) {
                 jsonQueuedPersonArrayList.get(lastSelectedPos).setServerDeviceId("XXX-XXXX-XXXX");
                 lastSelectedPos = -1;
@@ -338,7 +338,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     for (int i = 0; i < jsonQueuedPersonArrayList.size(); i++) {
                         JsonQueuedPerson jt = jsonQueuedPersonArrayList.get(i);
                         if (jt.getToken() == token.getToken()) {
-                            Toast.makeText(context, "User already in Queue", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(context, "User already in Queue");
                             break;
                         }
                     }
@@ -541,7 +541,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             public void onClick(View v) {
                 mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (tv_counter_name.getText().toString().trim().equals("")) {
-                    Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                 } else {
                     chronometer.stop();
                     chronometer.setBase(SystemClock.elapsedRealtime());
@@ -572,7 +572,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
                     if (tv_counter_name.getText().toString().trim().equals("")) {
-                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                     } else {
                         ShowCustomDialog showDialog = new ShowCustomDialog(context);
                         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -607,9 +607,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         showDialog.displayDialog("Alert", "Do you really want to skip the user. Please confirm");
                     }
                 } else if (queueStatus == QueueStatusEnum.S) {
-                    Toast.makeText(context, context.getString(R.string.error_start), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.error_start));
                 } else if (queueStatus == QueueStatusEnum.D) {
-                    Toast.makeText(context, context.getString(R.string.error_done), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.error_done));
                 }
             }
         });
@@ -618,14 +618,14 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             public void onClick(View v) {
                 mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                 if (jsonTopic.getToken() == 0) {
-                    Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.error_empty));
                 } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
-                    Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.error_empty_wait));
                 } else if (queueStatus == QueueStatusEnum.D) {
-                    Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.error_done_next));
                 } else {
                     if (tv_counter_name.getText().toString().trim().equals("")) {
-                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                     } else {
                         if (tv_start.getText().equals(context.getString(R.string.pause))) {
                             ShowCustomDialog showDialog = new ShowCustomDialog(context);
@@ -712,7 +712,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     @Override
     public void peopleInQClick(int position) {
         if (jsonQueuedPersonArrayList.get(position).getQueueUserState() == QueueUserStateEnum.A) {
-            Toast.makeText(context, getString(R.string.error_client_left_queue), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, getString(R.string.error_client_left_queue));
         } else {
             if (TextUtils.isEmpty(jsonQueuedPersonArrayList.get(position).getServerDeviceId())) {
                 ShowCustomDialog showDialog = new ShowCustomDialog(context);
@@ -745,9 +745,9 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 });
                 showDialog.displayDialog("Alert", "Do you want to acquire it?");
             } else if (jsonQueuedPersonArrayList.get(position).getServerDeviceId().equals(UserUtils.getDeviceId())) {
-                Toast.makeText(context, getString(R.string.error_client_acquired_by_you), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(context, getString(R.string.error_client_acquired_by_you));
             } else {
-                Toast.makeText(context, getString(R.string.error_client_acquired), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(context, getString(R.string.error_client_acquired));
             }
         }
     }

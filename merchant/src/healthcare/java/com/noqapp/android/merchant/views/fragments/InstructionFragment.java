@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
@@ -22,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class InstructionFragment extends Fragment {
                         MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getInstructionList().add(edt_item.getText().toString());
                         MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     }
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     mAlertDialog.dismiss();
                 }
             }

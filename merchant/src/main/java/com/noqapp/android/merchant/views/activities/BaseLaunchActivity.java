@@ -42,6 +42,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -242,7 +243,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
                     startActivity(in1);
                 } else {
-                    Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "No queue available");
                 }
                 break;
             case R.drawable.profile_red:
@@ -272,7 +273,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                     in1.putExtra("jsonTopic", (Serializable) merchantListFragment.getTopics());
                     startActivity(in1);
                 } else {
-                    Toast.makeText(launchActivity, "No queue available", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "No queue available");
                 }
                 break;
             case R.drawable.case_history:
@@ -655,7 +656,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (fm.getBackStackEntryCount() == 0) {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastPress > 3000) {
-                backpressToast = Toast.makeText(launchActivity, getString(R.string.exit_the_app), Toast.LENGTH_LONG);
+                backpressToast = new CustomToast().getToast(launchActivity, getString(R.string.exit_the_app));
                 backpressToast.show();
                 lastPress = currentTime;
             } else {

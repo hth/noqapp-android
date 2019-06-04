@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -43,7 +44,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter {
@@ -195,7 +195,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
-                    Toast.makeText(OrderDetailActivity.this, "Payment not allowed on cancelled order.", Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(OrderDetailActivity.this, "Payment not allowed on cancelled order.");
                 } else {
                     if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q ||
                             jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
@@ -236,7 +236,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                         });
                         showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
                     } else {
-                        Toast.makeText(OrderDetailActivity.this, "Payment not allowed on Cancelled/Skipped order.", Toast.LENGTH_SHORT).show();
+                        new CustomToast().showToast(OrderDetailActivity.this, "Payment not allowed on Cancelled/Skipped order.");
                     }
                 }
             }
@@ -377,7 +377,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
             if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA) {
                 updateUI();
-                Toast.makeText(OrderDetailActivity.this, "Payment updated successfully", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(OrderDetailActivity.this, "Payment updated successfully");
                 if (null != updateWholeList) {
                     updateWholeList.updateWholeList();
                 }
@@ -392,7 +392,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
             if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PR) {
                 updateUI();
-                Toast.makeText(OrderDetailActivity.this, "Payment refund successfully", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(OrderDetailActivity.this, "Payment refund successfully");
                 if (null != updateWholeList) {
                     updateWholeList.updateWholeList();
                 }

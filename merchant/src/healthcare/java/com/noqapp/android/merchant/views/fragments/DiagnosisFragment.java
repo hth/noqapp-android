@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -127,7 +128,7 @@ public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNe
                     } else {
 
                     }
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     mAlertDialog.dismiss();
                 }
             }

@@ -23,7 +23,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -34,6 +33,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
@@ -153,7 +153,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.error_account_block));
                 LaunchActivity.getLaunchActivity().clearLoginData(false);
                 dismissProgress();
                 finish();//close the current activity
@@ -320,10 +320,10 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Profile image change successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Profile image change successfully! Change will be reflect after 5 min");
             tv_remove_image.setVisibility(View.VISIBLE);
         } else {
-            Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to update profile image");
         }
     }
 
@@ -335,9 +335,9 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
             Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             tv_remove_image.setVisibility(View.GONE);
             LaunchActivity.getLaunchActivity().setUserProfile( LaunchActivity.getLaunchActivity().getUserProfile().setProfileImage(""));
-            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
-            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to remove profile image");
         }
     }
 

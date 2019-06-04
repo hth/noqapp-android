@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -18,7 +19,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -60,7 +60,7 @@ public class AppUtils extends CommonHelper {
                 context.startActivity(callIntent);
             } catch (ActivityNotFoundException ex) {
                 Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
-                Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(context, "Please install a calling application");
             }
         }
     }

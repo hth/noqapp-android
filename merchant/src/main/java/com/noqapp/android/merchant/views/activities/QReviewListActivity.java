@@ -8,6 +8,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
@@ -27,7 +28,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -124,7 +124,7 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.error_account_block));
                 LaunchActivity.getLaunchActivity().clearLoginData(false);
                 dismissProgress();
                 finish();//close the current activity

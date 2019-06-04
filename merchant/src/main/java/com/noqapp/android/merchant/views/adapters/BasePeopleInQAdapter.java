@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -36,7 +37,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -350,7 +350,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
                 if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
                     peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,false);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.payment_not_allowed), Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
                     peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,true);
                 }
             }

@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -123,6 +123,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         super.callAppointments();
         //Intent intentAppointments = new Intent(launchActivity, AppointmentActivity.class);
        // startActivity(intentAppointments);
-        Toast.makeText(this, "Enable later", Toast.LENGTH_SHORT).show();
+        new CustomToast().showToast(this, "Enable later");
     }
 }

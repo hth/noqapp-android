@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.utils;
 
 
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -33,7 +34,6 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -214,12 +214,12 @@ public class PdfGenerator extends PdfHelper {
             document.add(p_sign);
             document.close();
 
-            Toast.makeText(mContext, "Report Generated", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(mContext, "Report Generated");
             openFile(mContext, new File(dest));
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
         } catch (ActivityNotFoundException ae) {
-            Toast.makeText(mContext, "No application found to open this file.", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(mContext, "No application found to open this file.");
         }
     }
 

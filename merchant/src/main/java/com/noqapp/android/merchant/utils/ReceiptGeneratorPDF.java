@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.utils;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
@@ -26,7 +27,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
@@ -127,13 +127,12 @@ public class ReceiptGeneratorPDF extends PdfHelper {
             p_sign.add(new Chunk(formattedDate, normalFont));
             document.add(p_sign);
             document.close();
-
-            Toast.makeText(mContext, "Invoice Generated", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(mContext, "Invoice Generated");
             openFile(mContext, dest);
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
         } catch (ActivityNotFoundException ae) {
-            Toast.makeText(mContext, "No application found to open this file.", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(mContext, "No application found to open this file.");
         } catch (Exception e) {
             e.printStackTrace();
         }

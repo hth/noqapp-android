@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -30,7 +31,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -92,7 +92,6 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     no_of_days = duration_data.get(segmentViewHolder.getAbsolutePosition());
-                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
                     tv_output.setText("Having " + dataObj.getShortName() + " since last " + no_of_days);
                     if (null != dataObj)
                         dataObj.setNoOfDays(no_of_days);
@@ -243,7 +242,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                     rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                     symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
                     rcv_gynac.setAdapter(symptomsAdapter);
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     mAlertDialog.dismiss();
                     MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSymptomsList().add(new DataObj(edt_item.getText().toString(), false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
@@ -285,7 +284,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         new AppUtils().hideKeyBoard(getActivity());
         if (!isEdit && isItemExist(temp.getShortName())) {
             ll_symptom_note.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "Symptom Already added in list", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Symptom Already added in list");
         } else {
             ll_symptom_note.setVisibility(isOpen ? View.VISIBLE : View.GONE);
         }
@@ -310,7 +309,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
                 new AppUtils().hideKeyBoard(getActivity());
                 dataObj.setNoOfDays(no_of_days);
                 if (TextUtils.isEmpty(no_of_days)) {
-                    Toast.makeText(getActivity(), "All fields are mandatory", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "All fields are mandatory");
                 } else {
                     dataObj.setAdditionalNotes(edt_output.getText().toString());
                     if (isEdit) {

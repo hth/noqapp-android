@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
@@ -37,7 +38,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -397,10 +397,10 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Medical History updated successfully", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Medical History updated successfully");
             this.finish();
         } else {
-            Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to update");
         }
     }
 
@@ -420,7 +420,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
     @Override
     public void medicalRecordError() {
         dismissProgress();
-        Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Failed to update");
     }
 
     @Override
