@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -41,6 +40,7 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
@@ -149,7 +149,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     progressDialog.setMessage("Order placing in progress..");
                     if (validateForm()) {
                         if (isProductWithoutPrice) {
-                            Toast.makeText(OrderActivity.this, "Cannot process as merchant has not set product price", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 progressDialog.show();
@@ -171,7 +171,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         dismissProgress();
                     }
                 } else {
-                    Toast.makeText(OrderActivity.this, "Please add email id to your profile, if not added & verify it", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(OrderActivity.this, "Please add email id to your profile, if not added & verify it");
                 }
             }
         });
@@ -219,7 +219,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             isValid = false;
         }
         if (!NoQueueBaseActivity.isEmailVerified()) {
-            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(this, "Email is mandatory. Please add and verify it");
             isValid = false;
         }
         if (isAddressRequired()) {
@@ -279,7 +279,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     clientProfileApiCall.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
-                Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Order failed.");
             }
         } else {
             //Show error
@@ -290,7 +290,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void payCashResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
-            Toast.makeText(this, "Order placed successfully. Pay the amount in cash at counter", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Order placed successfully. Pay the amount in cash at counter");
             Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
@@ -303,8 +303,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
         } else {
-            Toast.makeText(this, jsonPurchaseOrder.getTransactionMessage(), Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
     }
 
@@ -374,7 +373,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void onFailure(Map<String, String> map) {
         Log.d("CFSDKSample", "Payment Failure");
-        Toast.makeText(this, "Transaction failed", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Transaction failed");
         enableDisableOrderButton(false);
     }
 
@@ -395,12 +394,12 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     public void responsePresenterResponse(JsonResponse response) {
         if (null != response) {
             if (response.getResponse() == Constants.SUCCESS) {
-                Toast.makeText(this, getString(R.string.cancel_order), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.cancel_order));
             } else {
-                Toast.makeText(this, getString(R.string.fail_to_cancel_order), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.fail_to_cancel_order));
             }
         } else {
-            Toast.makeText(this, getString(R.string.fail_to_cancel_order), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, getString(R.string.fail_to_cancel_order));
         }
         NoQueueMessagingService.unSubscribeTopics(getIntent().getExtras().getString("topic"));
         if (null != jsonPurchaseOrderServer) {
@@ -453,7 +452,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     }
 
     private void triggerCashPayment() {
-        //Toast.makeText(this, "Call Cash API", Toast.LENGTH_LONG).show();
         jsonPurchaseOrderServer.setPaymentMode(PaymentModeEnum.CA);
         purchaseOrderApiCall.payCash(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
     }
@@ -461,7 +459,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void cashFreeNotifyResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-            Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Order placed successfully.");
             Intent in = new Intent(OrderActivity.this, OrderConfirmActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", jsonPurchaseOrder);
@@ -474,8 +472,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             startActivity(in);
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
         } else {
-            Toast.makeText(this, jsonPurchaseOrder.getTransactionMessage(), Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
 
     }

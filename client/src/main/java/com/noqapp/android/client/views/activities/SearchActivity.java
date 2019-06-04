@@ -124,7 +124,6 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String city_name = (String) parent.getItemAtPosition(position);
-                //Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                 LatLng latLng = AppUtilities.getLocationFromAddress(SearchActivity.this, city_name);
                 lat = String.valueOf(latLng.latitude);
                 longitude = String.valueOf(latLng.longitude);

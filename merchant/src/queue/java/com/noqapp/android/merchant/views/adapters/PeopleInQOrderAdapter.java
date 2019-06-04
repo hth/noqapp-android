@@ -13,9 +13,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -181,7 +181,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter<PeopleInQOrderAd
                 if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
                     peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,false);
                 } else {
-                    Toast.makeText(context, context.getString(R.string.payment_not_allowed), Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
                     peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,true);
                 }
             }

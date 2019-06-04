@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.PurchaseOrderApiCall;
@@ -26,6 +25,7 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -157,7 +157,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     @Override
     public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
         if (null != jsonPurchaseOrderHistorical) {
-            Toast.makeText(context, "Order activated successfully.", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, "Order activated successfully.");
             progressDialog.dismiss();
         }
     }

@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
@@ -38,7 +39,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
@@ -110,7 +110,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                                 ShowAlertInformation.showNetworkDialog(context);
                             }
                         } else {
-                            Toast.makeText(context, "Please select a patient name other than the current name", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(context, "Please select a patient name other than the current name");
                         }
                     }
 
@@ -124,10 +124,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 });
                 mAlertDialog.show();
             } else {
-                Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(context, context.getString(R.string.msg_client_already_acquired));
             }
         } else {
-            Toast.makeText(context, "This person is no longer in queue", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, "This person is no longer in queue");
         }
     }
 
@@ -274,11 +274,11 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         context.startActivity(intent);
                     }
                 } else {
-                    Toast.makeText(context, context.getString(R.string.msg_client_already_acquired), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, context.getString(R.string.msg_client_already_acquired));
                 }
 
             } else {
-                Toast.makeText(context, "Currently you are not serving this person", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(context, "Currently you are not serving this person");
             }
         }
     }

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
@@ -230,7 +231,7 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
 
         updateSuggestions();
         if (currentTime - lastPress > 3000) {
-            backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
+            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
             backPressToast.show();
             lastPress = currentTime;
         } else {

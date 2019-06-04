@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.OrderQueueHistoryApiCall;
@@ -22,6 +21,7 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
                 orderQueueHistoryModel.setQueueHistoryPresenter(this);
                 orderQueueHistoryModel.queues(UserUtils.getEmail(), UserUtils.getAuth());
             } else {
-                Toast.makeText(getActivity(), "Please login to see the details", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(getActivity(), "Please login to see the details");
             }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -96,7 +96,6 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(queueHistoryAdapter);
         if (null != listData && listData.size() == 0 && null != getActivity()) {
-            // Toast.makeText(getActivity(), "You havn't order yet :(", Toast.LENGTH_LONG).show();
             rl_empty.setVisibility(View.VISIBLE);
         }else{
             rl_empty.setVisibility(View.GONE);

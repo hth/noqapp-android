@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
@@ -197,7 +198,7 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
-            backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
+            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
             backPressToast.show();
             lastPress = currentTime;
         } else {

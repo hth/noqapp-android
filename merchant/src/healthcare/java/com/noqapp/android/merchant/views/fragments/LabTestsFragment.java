@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -186,7 +186,7 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
                     StaggeredGridAdapter customAdapter1 = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
                     rcv_pathology.setAdapter(customAdapter1);
 
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPathologyList().add(new DataObj(edt_item.getText().toString(), false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
@@ -218,8 +218,6 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     selectionPos = segmentViewHolder.getAbsolutePosition();
-                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
-
                 }
             }
         });
@@ -245,7 +243,7 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
                 } else if (selectionPos == -1) {
-                    Toast.makeText(getActivity(), "please select a category", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "please select a category");
                 } else {
                     if (selectionPos == 0) {
                         ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList();
@@ -294,7 +292,7 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
                         MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSpecList().add(new DataObj(edt_item.getText().toString(), false));
                     }
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast( getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     mAlertDialog.dismiss();
                 }
             }

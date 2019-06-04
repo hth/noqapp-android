@@ -23,13 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.ServicePaymentEnum;
@@ -287,7 +287,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
                         }
                     } else {
-                        Toast.makeText(SettingActivity.this, "Empty field is not allowed. For Un-Limited Tokens set value to '0'", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(SettingActivity.this, "Empty field is not allowed. For Un-Limited Tokens set value to '0'");
                     }
                 }
                 return false;
@@ -376,9 +376,9 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             @Override
             public void onClick(View view) {
                 if (TextUtils.isEmpty(tv_scheduling_from.getText().toString()) || TextUtils.isEmpty(tv_scheduling_ending.getText().toString())) {
-                    Toast.makeText(SettingActivity.this, "Both scheduling dates are required", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(SettingActivity.this, "Both scheduling dates are required");
                 } else if (isEndDateNotAfterStartDate()) {
-                    Toast.makeText(SettingActivity.this, "Until Date should be after From Date", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(SettingActivity.this, "Until Date should be after From Date");
                 } else {
                     if (isSpecificSettingEditAllowed()) {
                         callUpdate();
@@ -437,10 +437,10 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             public void onClick(View view) {
                 if (cb_enable_payment.isChecked()) {
                     if (TextUtils.isEmpty(edt_fees.getText().toString()) || Integer.parseInt(edt_fees.getText().toString()) == 0) {
-                        Toast.makeText(SettingActivity.this, "Service Charge cannot be zero", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(SettingActivity.this, "Service Charge cannot be zero");
                     } else {
                         if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && TextUtils.isEmpty(edt_fees.getText().toString())) {
-                            Toast.makeText(SettingActivity.this, "Cancellation Charge is not allowed without Service Charge", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(SettingActivity.this, "Cancellation Charge is not allowed without Service Charge");
                         } else {
                             if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && !TextUtils.isEmpty(edt_fees.getText().toString())) {
                                 if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
@@ -450,7 +450,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                                                 if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                     updatePaymentSettings();
                                                 } else {
-                                                    Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be less than free follow-up days", Toast.LENGTH_LONG).show();
+                                                    new CustomToast().showToast(SettingActivity.this, "Limited follow-up days cannot be less than free follow-up days");
                                                 }
                                             } else {
                                                 updatePaymentSettings();
@@ -461,20 +461,20 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                                                     if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                         updatePaymentSettings();
                                                     } else {
-                                                        Toast.makeText(SettingActivity.this, "Limited follow-up days cannot be less than free follow up days", Toast.LENGTH_LONG).show();
+                                                        new CustomToast().showToast(SettingActivity.this, "Limited follow-up days cannot be less than free follow up days");
                                                     }
                                                 } else {
                                                     updatePaymentSettings();
                                                 }
                                             } else {
-                                                Toast.makeText(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
+                                                new CustomToast().showToast(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge");
                                             }
                                         }
                                     } else {
                                         updatePaymentSettings();
                                     }
                                 } else {
-                                    Toast.makeText(SettingActivity.this, "Cancellation charge cannot be greater than Service Charge", Toast.LENGTH_LONG).show();
+                                    new CustomToast().showToast(SettingActivity.this, "Cancellation charge cannot be greater than Service Charge");
                                 }
                             } else {
                                 updatePaymentSettings();
@@ -504,20 +504,20 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private boolean validateAppointmentSetting() {
         boolean isValid = true;
         if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
-            Toast.makeText(SettingActivity.this, "Appointment duration cannot be empty or 0", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(SettingActivity.this, "Appointment duration cannot be empty or 0");
             isValid = false;
         } else {
             if (Integer.parseInt(edt_appointment_duration.getText().toString()) > 60 || Integer.parseInt(edt_appointment_duration.getText().toString()) < 10) {
-                Toast.makeText(SettingActivity.this, "Appointment duration should be greater than 10 & less than 60", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(SettingActivity.this, "Appointment duration should be greater than 10 & less than 60");
                 isValid = false;
             }
         }
         if (TextUtils.isEmpty(edt_appointment_accepting_week.getText().toString())) {
-            Toast.makeText(SettingActivity.this, "Appointment week cannot be empty or 0", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(SettingActivity.this, "Appointment week cannot be empty or 0");
             isValid = false;
         } else {
             if (Integer.parseInt(edt_appointment_accepting_week.getText().toString()) > 52 || Integer.parseInt(edt_appointment_accepting_week.getText().toString()) < 1) {
-                Toast.makeText(SettingActivity.this, "Appointment week should be greater than 0 & less than or equal to 52 weeks", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(SettingActivity.this, "Appointment week should be greater than 0 & less than or equal to 52 weeks");
                 isValid = false;
             }
         }
@@ -863,7 +863,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
-                        Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(SettingActivity.this, getString(R.string.error_time));
                     } else {
                         textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                     }
@@ -890,15 +890,15 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     if (selectedHour == 0 && selectedMinute == 0) {
-                        Toast.makeText(SettingActivity.this, getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(SettingActivity.this, getString(R.string.error_time));
                     } else {
                         LocalTime startTime = Formatter.parseLocalTime(tv_store_start.getText().toString().replace(":", ""));
                         LocalTime closeTime = Formatter.parseLocalTime(tv_store_close.getText().toString().replace(":", ""));
                         LocalTime arrivalTime = Formatter.parseLocalTime(String.format("%02d%02d", selectedHour, selectedMinute));
                         if (arrivalTime.isBefore(startTime)) {
-                            Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(SettingActivity.this, getString(R.string.error_delay_time));
                         } else if (closeTime.isBefore(arrivalTime)) {
-                            Toast.makeText(SettingActivity.this, getString(R.string.error_delay_time), Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(SettingActivity.this, getString(R.string.error_delay_time));
                         } else {
                             textView.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                             arrivalTextChange = true;
@@ -933,7 +933,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                 if (date_diff < 0) {
                     tv.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));
                 } else {
-                    Toast.makeText(SettingActivity.this, getString(R.string.error_past_date), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(SettingActivity.this, getString(R.string.error_past_date));
                     tv.setText("");
                 }
 

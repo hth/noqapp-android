@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
@@ -46,7 +47,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -118,7 +118,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     if (jsonMedicalRecordTemp.getImages().size() < Constants.MAX_IMAGE_UPLOAD_LIMIT) {
                         selectImage();
                     } else {
-                        Toast.makeText(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
+                       new CustomToast().showToast(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed");
                     }
                 } else {
                     selectImage();
@@ -153,7 +153,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.MEDICAL_RECORD_DOES_NOT_EXISTS.getCode())) {
-                Toast.makeText(this, "Please create medical record first to upload document", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Please create medical record first to upload document");
                 dismissProgress();
                 finish();//close the current activity
             } else {
@@ -197,13 +197,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse);
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Document upload successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Document upload successfully! Change will be reflect after 5 min");
             if (null == jsonMedicalRecordTemp.getImages())
                 jsonMedicalRecordTemp.setImages(new ArrayList<String>());
             jsonMedicalRecordTemp.getImages().add(jsonResponse.getData());
             jsonMedicalRecordResponse(jsonMedicalRecordTemp);
         } else {
-            Toast.makeText(this, "Failed to update document", Toast.LENGTH_LONG).show();
+           new CustomToast().showToast(this, "Failed to update document");
         }
 
     }
@@ -218,9 +218,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 jsonMedicalRecordResponse(jsonMedicalRecordTemp);
             }
             selectPos = -1;
-            Toast.makeText(this, "Document removed successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Document removed successfully!");
         } else {
-            Toast.makeText(this, "Failed to remove document", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to remove document");
         }
     }
 
@@ -416,7 +416,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 File file = new File(path);
                 String type = getMimeType(uri);
                 String displayName = file.getName();
-                //Toast.makeText(this, "Pdf Name is : " + displayName, Toast.LENGTH_LONG).show();
                 progressDialog.show();
                 progressDialog.setMessage("Uploading document");
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", displayName, RequestBody.create(MediaType.parse(type), file));
@@ -511,7 +510,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 isExpandScreenOpen = true;
             }
         } else {
-            Toast.makeText(this, "Document not available", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Document not available");
             frame_image.setVisibility(View.GONE);
             isExpandScreenOpen = false;
         }

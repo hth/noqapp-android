@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -17,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -53,7 +53,7 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
             public void onClick(View v) {
                 edt_item.setError(null);
                 if (selectionPos == -1) {
-                    Toast.makeText(getActivity(), "Please select medicine type", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "Please select medicine type");
                 } else if (TextUtils.isEmpty(edt_item.getText().toString())) {
                     edt_item.setError("Medicine name cann't be empty");
                 } else {
@@ -61,7 +61,7 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
                     String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
                     DataObj dataObj = new DataObj(medicineName, category, false);
                     if (selectedList.contains(dataObj)) {
-                        Toast.makeText(getActivity(), "Medicine already added", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(getActivity(), "Medicine already added");
                     } else {
                         listDataChild.get(category).add(dataObj);
                         selectedList.add(dataObj);
@@ -85,8 +85,6 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     selectionPos = segmentViewHolder.getAbsolutePosition();
-                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
-
                 }
             }
         });
@@ -122,7 +120,6 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
         listDataChild.get(dataObj.getCategory()).remove(pos);
         selectedList.remove(dataObj);
         listAdapter.notifyDataSetChanged();
-        Toast.makeText(getActivity(), "Record deleted from List", Toast.LENGTH_LONG).show();
-
+        new CustomToast().showToast(getActivity(), "Record deleted from List");
     }
 }

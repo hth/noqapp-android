@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.RegisterApiCall;
@@ -21,6 +20,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 
 public class LoginActivity extends OTPActivity {
@@ -99,7 +99,7 @@ public class LoginActivity extends OTPActivity {
                 dismissProgress();
                 finish();//close the current activity
             } else if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.error_account_block));
                 dismissProgress();
                 finish();//close the current activity
             } else {

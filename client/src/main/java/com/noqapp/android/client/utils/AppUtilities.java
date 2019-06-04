@@ -10,6 +10,7 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -41,13 +42,11 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,7 +54,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.channels.FileChannel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,7 +96,7 @@ public class AppUtilities extends CommonHelper {
                 context.startActivity(callIntent);
             } catch (ActivityNotFoundException ex) {
                 Log.w(TAG, "Failed calling reason=" + ex.getLocalizedMessage());
-                Toast.makeText(context, "Please install a calling application", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(context, "Please install a calling application");
             }
         }
     }
@@ -110,7 +108,7 @@ public class AppUtilities extends CommonHelper {
             context.startActivity(intent);
         } catch (ActivityNotFoundException ex) {
             Log.e(TAG, "Failed opening address reason=" + ex.getLocalizedMessage());
-            Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, "Please install a maps application");
         }
     }
 

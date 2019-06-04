@@ -96,7 +96,6 @@ public class FeedActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_favourite) {
-           // Toast.makeText(FeedActivity.this, "Hello", Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

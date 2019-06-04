@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -27,6 +26,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -214,8 +214,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
                     listener.onCategoryItemClick(bizStoreElastic, v, listPosition);
                 } else {
-                    //Do nothing
-                    Toast.makeText(context, "Please visit store to avail the service.", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, "Please visit store to avail the service.");
                 }
             }
         });
@@ -236,7 +235,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                     in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
                     context.startActivity(in);
                 } else {
-                    Toast.makeText(context, "Please login to book an appointment", Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(context, "Please login to book an appointment");
                 }
             }
         });
@@ -245,7 +244,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             public void onClick(View v) {
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                     if (TextUtils.isEmpty(bizStoreElastic.getWebProfileId())) {
-                        Toast.makeText(context, "Doctor profile is not available currently", Toast.LENGTH_SHORT).show();
+                        new CustomToast().showToast(context, "Doctor profile is not available currently");
                     } else {
                         Intent intent = new Intent(context, ManagerProfileActivity.class);
                         intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());

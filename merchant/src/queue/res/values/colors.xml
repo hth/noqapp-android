@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#b82d46</color>
     <color name="colorAccent">#CD334E</color>
     <color name="color_action_bar">#CD334E</color>
+    <color name="color_indigo_toast">#6e329b</color>
 
     <color name="btn_txt_color">#fff</color>
     <color name="radio_button_color">#CD334E</color>
@@ -18,5 +19,5 @@
     <color name="rating_select">@color/colorPrimaryDark</color>
     <color name="rating_unselect">@color/colorAccent</color>
 
-    <color name="toast_background">@color/colorAccent</color>
+    <color name="toast_background">@color/color_indigo_toast</color>
 </resources>

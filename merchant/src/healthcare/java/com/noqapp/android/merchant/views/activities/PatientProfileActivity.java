@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -98,7 +99,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
             @Override
             public void onClick(View v) {
                 if(null == jsonProfile || null == jsonMedicalRecordTemp){
-                    Toast.makeText(PatientProfileActivity.this,"Please wait while patient data is loading...",Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
                 }else {
                     Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
                     intent.putExtra("qCodeQR", codeQR);
@@ -299,7 +300,7 @@ public class PatientProfileActivity extends AppCompatActivity implements Patient
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
-            backPressToast = Toast.makeText(this, getString(R.string.exit_medical_screen), Toast.LENGTH_LONG);
+            backPressToast = new CustomToast().getToast(this, getString(R.string.exit_medical_screen));
             backPressToast.show();
             lastPress = currentTime;
         } else {

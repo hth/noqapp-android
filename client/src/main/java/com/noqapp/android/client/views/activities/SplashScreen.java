@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.crashlytics.android.Crashlytics;
@@ -25,6 +24,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 
@@ -112,7 +112,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.finish();
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
-            Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Device register error: ");
         }
     }
 

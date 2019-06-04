@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
@@ -33,7 +34,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
                     selectItemListAdapter.notifyDataSetChanged();
                     actv_search.setText("");
                 } else {
-                    Toast.makeText(getActivity(), "Already selected", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "Already selected");
                 }
                 new AppUtils().hideKeyBoard(getActivity());
             }
@@ -145,7 +145,7 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
                     selectedList.add(dataObj);
                     selectItemListAdapter.notifyDataSetChanged();
                     edt_add.setText("");
-                    Toast.makeText(getActivity(), "Test updated Successfully", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "Test updated Successfully");
                 }
             }
         });
@@ -255,13 +255,13 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     public void removeItem(int pos) {
         selectedList.remove(pos);
         selectItemListAdapter.notifyDataSetChanged();
-        Toast.makeText(getActivity(), "Record deleted from List", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(getActivity(), "Record deleted from List");
 
     }
 
     @Override
     public void flagItem(int pos) {
-        Toast.makeText(getActivity(), "Record flagged", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(getActivity(), "Record flagged");
         initProgress();
         progressDialog.show();
         MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
@@ -274,9 +274,9 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     @Override
     public void masterLabUploadResponse(JsonResponse jsonResponse) {
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(getActivity(), "Data flagged successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Data flagged successfully!");
         } else {
-            Toast.makeText(getActivity(), "Failed to flag data", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Failed to flag data");
         }
         dismissProgress();
     }

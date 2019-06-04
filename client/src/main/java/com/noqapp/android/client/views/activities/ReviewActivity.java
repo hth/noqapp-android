@@ -19,6 +19,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
 
 import com.crashlytics.android.answers.Answers;
@@ -214,7 +215,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         //super.onBackPressed();
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
-            backPressToast = Toast.makeText(this, "Please review the service, It is valuable to us.", Toast.LENGTH_LONG);
+            backPressToast = new CustomToast().getToast(this, "Please review the service, It is valuable to us.");
             backPressToast.show();
             lastPress = currentTime;
         } else {

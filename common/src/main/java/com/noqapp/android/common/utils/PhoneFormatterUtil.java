@@ -73,7 +73,7 @@ public class PhoneFormatterUtil {
             throw new RuntimeException("Failed parsing country code");
         }
     }
-    
+
     public static int getCountryCodeFromRegion(String regionCode) {
         return phoneUtil.getCountryCodeForRegion(regionCode.toUpperCase());
     }

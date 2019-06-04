@@ -1,9 +1,32 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -30,28 +53,6 @@ import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import java.math.BigDecimal;
 
@@ -201,13 +202,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (isProductWithoutPrice) {
-                    Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
                 } else {
                     if (TextUtils.isEmpty(edt_amount.getText().toString())) {
-                        Toast.makeText(OrderDetailActivity.this, "Please enter amount to pay.", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount to pay.");
                     } else {
                         if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
-                            Toast.makeText(OrderDetailActivity.this, "Please enter amount less or equal to order amount.", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount less or equal to order amount.");
                         } else {
 
                             ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
@@ -248,7 +249,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (isProductWithoutPrice) {
-                    Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
                 } else {
                     progressDialog.show();
                     progressDialog.setMessage("Updating price..");
@@ -269,7 +270,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (isProductWithoutPrice) {
-                    Toast.makeText(OrderDetailActivity.this, "Some product having 0 price. Please set price to them", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
                 } else {
                     ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -416,7 +417,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             rl_multiple.setVisibility(View.GONE);
             btn_refund.setVisibility(View.GONE);
             tv_payment_msg.setVisibility(View.VISIBLE);
-            if(getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY,false)){
+            if (getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY, false)) {
                 tv_payment_msg.setVisibility(View.GONE);
             }
         }
@@ -501,7 +502,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                     jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
                 this.jsonPurchaseOrder = jsonPurchaseOrder;
                 updateUI();
-                Toast.makeText(OrderDetailActivity.this, "Payment updated successfully", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(OrderDetailActivity.this, "Payment updated successfully");
                 if (null != updateWholeList) {
                     updateWholeList.updateWholeList();
                 }
@@ -546,7 +547,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             jsonPurchaseOrder = jsonPurchaseOrderList.getPurchaseOrders().get(0);
             if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PR) {
                 updateUI();
-                Toast.makeText(OrderDetailActivity.this, "Payment refund successfully", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(OrderDetailActivity.this, "Payment refund successfully");
                 if (null != updateWholeList) {
                     updateWholeList.updateWholeList();
                 }

@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.BuildConfig;
@@ -111,10 +111,10 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                             listener.appointmentReject(jsonSchedule, position);
                             break;
                         case R:
-                            Toast.makeText(context, "Appointment already rejected. It cannot be reverse", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be reverse");
                             break;
                         case S:
-                            Toast.makeText(context, "Appointment already serviced. It cannot be reverse", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be reverse");
                             break;
                     }
                 }
@@ -129,13 +129,13 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                             listener.appointmentAccept(jsonSchedule, position);
                             break;
                         case A:
-                            Toast.makeText(context, "Appointment already accepted.", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(context, "Appointment already accepted.");
                             break;
                         case R:
-                            Toast.makeText(context, "Appointment already rejected. It cannot be reverse", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be reverse");
                             break;
                         case S:
-                            Toast.makeText(context, "Appointment already serviced. It cannot be reverse", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be reverse");
                             break;
                     }
                 }

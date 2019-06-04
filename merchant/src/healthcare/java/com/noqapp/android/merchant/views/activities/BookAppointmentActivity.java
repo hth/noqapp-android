@@ -17,7 +17,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +31,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
@@ -154,7 +154,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(v -> {
             if (selectedPos == -1) {
-                Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
             } else {
                 // Process
                 try {
@@ -516,7 +516,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                             LaunchActivity.getLaunchActivity().getEmail(),
                                             LaunchActivity.getLaunchActivity().getAuth(),
                                             bookSchedule);
-                                    Toast.makeText(BookAppointmentActivity.this, "Call API for booking appointment", Toast.LENGTH_SHORT).show();
+                                    new CustomToast().showToast(BookAppointmentActivity.this, "Call API for booking appointment");
                                 } else {
                                     ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                                 }
@@ -524,7 +524,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                 ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                             }
                         } else {
-                            Toast.makeText(BookAppointmentActivity.this, "Booking start time to be less than end time", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(BookAppointmentActivity.this, "Booking start time to be less than end time");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

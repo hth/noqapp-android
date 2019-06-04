@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
@@ -22,6 +21,7 @@ import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,7 +141,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(StoreMenuActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder(), Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(StoreMenuActivity.this, "Minimum cart amount is " + jsonQueue.getMinimumDeliveryOrder());
                         }
                     } else {
                         ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);

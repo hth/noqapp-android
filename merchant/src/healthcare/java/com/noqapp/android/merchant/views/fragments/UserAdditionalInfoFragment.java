@@ -1,18 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
-
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -27,8 +14,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresenter;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -99,7 +100,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(edt_edu_name.getText().toString()) || TextUtils.isEmpty(tv_edu_date.getText().toString()))
-                    Toast.makeText(getActivity(), "Both fields are mandatory", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "Both fields are mandatory");
                 else {
                     JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
                     jsonNameDatePair.setName(edt_edu_name.getText().toString());
@@ -121,7 +122,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(edt_award_name.getText().toString()) || TextUtils.isEmpty(tv_award_date.getText().toString()))
-                    Toast.makeText(getActivity(), "Both fields are mandatory", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "Both fields are mandatory");
                 else {
                     JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
                     jsonNameDatePair.setName(edt_award_name.getText().toString());
@@ -145,7 +146,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(edt_license_name.getText().toString()) || TextUtils.isEmpty(tv_license_date.getText().toString()))
-                    Toast.makeText(getActivity(), "Both fields are mandatory", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "Both fields are mandatory");
                 else {
                     JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
                     jsonNameDatePair.setName(edt_license_name.getText().toString());
@@ -188,10 +189,11 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
                         public void btnPositiveClick() {
-                            Toast.makeText(getActivity(), "Deleted from Education list", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(getActivity(), "Deleted from Education list");
                             jsonProfessionalProfilePersonal.getEducation().remove(jsonNameDatePair);
                             ll_education.removeView(inflatedLayout);
                         }
+
                         @Override
                         public void btnNegativeClick() {
                             //Do nothing
@@ -222,10 +224,11 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
                         public void btnPositiveClick() {
-                            Toast.makeText(getActivity(), "Deleted from award list", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(getActivity(), "Deleted from award list");
                             jsonProfessionalProfilePersonal.getAwards().remove(jsonNameDatePair);
                             ll_experience.removeView(inflatedLayout);
                         }
+
                         @Override
                         public void btnNegativeClick() {
                             //Do nothing
@@ -252,16 +255,15 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                 public void onClick(View v) {
 
 
-
-
                     ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
                         public void btnPositiveClick() {
-                            Toast.makeText(getActivity(), "Deleted from license list", Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(getActivity(), "Deleted from license list");
                             jsonProfessionalProfilePersonal.getLicenses().remove(jsonNameDatePair);
                             ll_license.removeView(inflatedLayout);
                         }
+
                         @Override
                         public void btnNegativeClick() {
                             //Do nothing
@@ -279,7 +281,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
         MerchantProfileApiCalls merchantProfileApiCalls = new MerchantProfileApiCalls();
         merchantProfileApiCalls.setMerchantProfessionalPresenter(this);
         if (jsonProfessionalProfilePersonal.getLicenses().size() == 0 && jsonProfessionalProfilePersonal.getEducation().size() == 0) {
-            Toast.makeText(getActivity(), "Please add one record in education or License", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Please add one record in education or License");
         } else {
             progressDialog.show();
             jsonProfessionalProfilePersonal.setAboutMe(edt_about_me.getText().toString());
@@ -291,8 +293,8 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
 
     @Override
     public void merchantProfessionalResponse(JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal) {
-        Toast.makeText(getActivity(), "Professional profile updated", Toast.LENGTH_LONG).show();
-        if(null != jsonProfessionalProfilePersonal) {
+        new CustomToast().showToast(getActivity(), "Professional profile updated");
+        if (null != jsonProfessionalProfilePersonal) {
             Log.v("JsonProfessionalProfile", jsonProfessionalProfilePersonal.toString());
             LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonProfessionalProfilePersonal);
             updateUI(jsonProfessionalProfilePersonal);
@@ -303,7 +305,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     @Override
     public void merchantProfessionalError() {
         dismissProgress();
-        Toast.makeText(getActivity(), "Professional profile updated failed", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(getActivity(), "Professional profile updated failed");
     }
 
     @Override
@@ -346,7 +348,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                 int date_diff = new Date().compareTo(current);
 
                 if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), getString(R.string.error_invalid_date));
                     edt.setText("");
                 } else {
                     edt.setText(CommonHelper.SDF_YYYY_MM_DD.format(newDate.getTime()));

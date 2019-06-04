@@ -67,7 +67,6 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 if (isChecked) {
                     holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));
                     holder.name.setTextColor(Color.parseColor("#FFFFFF"));
-                    // Toast.makeText(context, "You click the button ", Toast.LENGTH_LONG).show();
                     if (null != staggeredClick)
                         staggeredClick.staggeredClick(true, dataObjArrayList.get(position).getShortName());
                 } else {

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +42,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.squareup.picasso.Picasso;
@@ -135,11 +135,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             case R.id.menu_favourite:
                 if (canAddItem) {
                     item.setIcon(R.drawable.heart_fill);
-                    Toast.makeText(this, "added to favourite", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(this, "added to favourite");
                     canAddItem = false;
                 } else {
                     item.setIcon(R.drawable.ic_heart);
-                    Toast.makeText(this, "remove from favourite", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(this, "remove from favourite");
                     canAddItem = true;
                 }
                 return true;
@@ -304,7 +304,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                     startActivity(in);
                 } else {
                     //Do nothing
-                    Toast.makeText(StoreDetailActivity.this, "Please visit store to purchase.", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(StoreDetailActivity.this, "Please visit store to purchase.");
                 }
             }
         });

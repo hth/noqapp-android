@@ -9,6 +9,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.FormVersionEnum;
@@ -42,7 +43,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
@@ -660,10 +660,10 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(getActivity(), "Medical History updated Successfully", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Medical History updated Successfully");
             getActivity().finish();
         } else {
-            Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Failed to update");
         }
     }
 
@@ -682,7 +682,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     @Override
     public void medicalRecordError() {
         dismissProgress();
-        Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(getActivity(), "Failed to update");
     }
 
     @Override

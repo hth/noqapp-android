@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
@@ -33,7 +34,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.UUID;
@@ -152,7 +152,7 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             splashScreen.finish();
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
-            Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Device register error: ");
         }
     }
 }

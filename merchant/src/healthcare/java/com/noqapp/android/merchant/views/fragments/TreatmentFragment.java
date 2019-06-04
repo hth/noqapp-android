@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
@@ -30,7 +31,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -99,7 +99,6 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     medicineDuration = duration_data.get(segmentViewHolder.getAbsolutePosition());
-                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
                     if (null != dataObj)
                         dataObj.setMedicineDuration(medicineDuration);
                 }
@@ -115,7 +114,6 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     medicineTiming = timing_data.get(segmentViewHolder.getAbsolutePosition());
-                    //Toast.makeText(getActivity(), medicineTiming, Toast.LENGTH_LONG).show();
                     if (null != dataObj)
                         dataObj.setMedicineTiming(medicineTiming);
                 }
@@ -130,7 +128,6 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     medicineFrequency = frequency_data.get(segmentViewHolder.getAbsolutePosition());
-                    //Toast.makeText(getActivity(), medicineFrequency, Toast.LENGTH_LONG).show();
                     if (null != dataObj)
                         dataObj.setMedicineFrequency(medicineFrequency);
                 }
@@ -248,7 +245,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     recyclerView_one.setAdapter(customAdapter);
                     MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(  getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     mAlertDialog.dismiss();
                 }
             }
@@ -276,8 +273,6 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
                 if (isSelected) {
                     selectionPos = segmentViewHolder.getAbsolutePosition();
-                    //Toast.makeText(getActivity(), medicineDuration, Toast.LENGTH_LONG).show();
-
                 }
             }
         });
@@ -303,7 +298,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                 if (edt_item.getText().toString().equals("")) {
                     edt_item.setError("Empty field not allowed");
                 } else if (selectionPos == -1) {
-                    Toast.makeText(getActivity(), "please select a category", Toast.LENGTH_LONG).show();
+                   new CustomToast().showToast(getActivity(), "please select a category");
                 } else {
                     String category = category_data.get(selectionPos);
                     String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
@@ -315,7 +310,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
                     StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), TreatmentFragment.this, false);
                     recyclerView.setAdapter(customAdapter);
 
-                    Toast.makeText(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                     MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getMedicineList().add(new DataObj(medicineName, category, false));
                     MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                     mAlertDialog.dismiss();
@@ -334,7 +329,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     public void staggeredMedicineClick(boolean isOpen, final boolean isEdit, DataObj temp, final int pos) {
         if (!isEdit && isItemExist(temp.getShortName())) {
             ll_medicine.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "Medicine Already added in list", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), "Medicine Already added in list");
         } else {
             ll_medicine.setVisibility(isOpen ? View.VISIBLE : View.GONE);
         }
@@ -358,7 +353,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(medicineDuration) || TextUtils.isEmpty(medicineTiming) || TextUtils.isEmpty(medicineFrequency)) {
-                    Toast.makeText(getActivity(), "All fields are mandatory", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), "All fields are mandatory");
                 } else {
                     // medicineAdapter.updateMedicine(medicine_name, medicineTiming, medicineDuration, medicineFrequency);
                     if (isEdit) {

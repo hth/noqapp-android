@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
@@ -26,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -107,7 +107,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 int date_diff = new Date().compareTo(current);
 
                 if (date_diff < 0) {
-                    Toast.makeText(getActivity(), getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(getActivity(), getString(R.string.error_invalid_date));
                     edt_birthday.setText("");
                 } else {
                     edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
@@ -174,7 +174,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
         // NoQueueBaseActivity.commitProfile(profile, email, auth);
-        Toast.makeText(getActivity(), "Profile updated", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(getActivity(), "Profile updated");
         dismissProgress();
         //updateUI();
     }

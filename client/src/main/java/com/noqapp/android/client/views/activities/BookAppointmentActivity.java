@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -31,6 +30,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -126,10 +126,10 @@ public class BookAppointmentActivity extends BaseActivity implements
         btn_book_appointment.setOnClickListener(v -> {
             sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background));
             if (sp_name_list.getSelectedItemPosition() == 0) {
-                Toast.makeText(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(BookAppointmentActivity.this, getString(R.string.error_patient_name_missing));
                 sp_name_list.setBackground(ContextCompat.getDrawable(BookAppointmentActivity.this, R.drawable.sp_background_red));
             } else if (selectedPos == -1) {
-                Toast.makeText(BookAppointmentActivity.this, "Please select appointment date & time", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
             } else {
                 // Process
                 if (LaunchActivity.getLaunchActivity().isOnline()) {

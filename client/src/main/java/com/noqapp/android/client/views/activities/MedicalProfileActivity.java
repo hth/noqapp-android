@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -31,6 +30,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.BloodTypeEnum;
 import com.noqapp.android.common.model.types.medical.OccupationEnum;
 
@@ -142,7 +142,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 progressDialog.setMessage("fetching medical profile...");
                 progressDialog.show();
             } else {
-                Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Please login to see the details");
             }
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -299,7 +299,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 break;
             case R.id.tv_update_occupation:
                 if (-1 == sc_occupation_type.getSelectedAbsolutePosition()) {
-                    Toast.makeText(this, "Please select occupation type to update ", Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(this, "Please select occupation type to update ");
                 } else {
                     if (NetworkUtils.isConnectingToInternet(this)) {
                         try {
@@ -340,7 +340,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                         && TextUtils.isEmpty(edt_family_history.getText().toString())
                         && TextUtils.isEmpty(edt_past_history.getText().toString())
                         && TextUtils.isEmpty(edt_known_allergy.getText().toString())) {
-                    Toast.makeText(this, "Edit at least one field", Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(this, "Edit at least one field");
                 } else {
                     JsonUserMedicalProfile jump;
                     if (null == jsonMedicalProfile) {
@@ -377,7 +377,7 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 break;
             case R.id.tv_update_blood_type: {
                 if (-1 == sc_blood_type.getSelectedAbsolutePosition()) {
-                    Toast.makeText(this, "Please select blood type to update ", Toast.LENGTH_SHORT).show();
+                    new CustomToast().showToast(this, "Please select blood type to update ");
                 } else {
                     if (NetworkUtils.isConnectingToInternet(this)) {
                         ShowCustomDialog showDialog = new ShowCustomDialog(MedicalProfileActivity.this, true);

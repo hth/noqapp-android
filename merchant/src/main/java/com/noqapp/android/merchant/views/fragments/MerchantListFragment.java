@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.R;
@@ -44,7 +45,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -430,7 +430,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                         temp_adapter = new AutocompleteAdapter(getActivity(), R.layout.auto_text_item, topics);
                         auto_complete_search.setAdapter(temp_adapter);
                     }
-                    Toast.makeText(context, "Customer is acquired ", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(context, "Customer is acquired ");
                 }
             }
         } catch (Exception e) {
@@ -476,7 +476,7 @@ public class MerchantListFragment extends Fragment implements TopicPresenter, Fr
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
         } else {
-            Toast.makeText(getActivity(), getString(R.string.networkerror), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(getActivity(), getString(R.string.networkerror));
             swipeRefreshLayout.setRefreshing(false);
         }
     }

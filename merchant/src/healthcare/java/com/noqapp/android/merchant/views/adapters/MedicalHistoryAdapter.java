@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.beans.medical.JsonMedicalRadiologyList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
@@ -37,7 +38,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -327,10 +327,10 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
             PatientProfileActivity.getPatientProfileActivity().pb_history.setVisibility(View.GONE);
         Log.v(" updateObservation", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(context, "Observation updated successfully", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, "Observation updated successfully");
             PatientProfileActivity.getPatientProfileActivity().updateList();
         } else {
-            Toast.makeText(context, "Failed to update Observation", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, "Failed to update Observation");
         }
     }
 

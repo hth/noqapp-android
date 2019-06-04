@@ -7,6 +7,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterApiCalls;
@@ -36,7 +37,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -112,7 +112,7 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
                 int date_diff = new Date().compareTo(current);
 
                 if (date_diff < 0) {
-                    Toast.makeText(RegistrationActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(RegistrationActivity.this, getString(R.string.error_invalid_date));
                     tv_birthday.setText("");
                 } else {
                     tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
@@ -292,8 +292,9 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
             isValid = false;
         }
 
-        if (!TextUtils.isEmpty(errorMsg))
-            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(errorMsg)) {
+            new CustomToast().showToast(this, errorMsg);
+        }
         return isValid;
     }
 
