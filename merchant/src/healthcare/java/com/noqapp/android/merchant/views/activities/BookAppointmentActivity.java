@@ -72,14 +72,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private ScheduleApiCalls scheduleApiCalls;
     private ProgressDialog progressDialog;
     private JsonScheduleList jsonScheduleList;
-    protected TextView tv_create_token;
-    protected Button btn_create_token;
-    protected ImageView iv_banner;
-    protected TextView tvcount;
+    private TextView tv_create_token;
+    private Button btn_create_token;
+    private ImageView iv_banner;
+    private TextView tvcount;
     private Spinner sp_patient_list;
-    protected LinearLayout ll_mobile;
-    protected LinearLayout ll_main_section;
-    protected EditText edt_mobile;
+    private LinearLayout ll_mobile;
+    private LinearLayout ll_main_section;
+    private EditText edt_mobile;
     private Spinner sp_start_time, sp_end_time;
     private TextView tv_select_patient;
     private String countryCode = "";
@@ -89,7 +89,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private Button btn_create_order;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
     private String codeQR = "";
-    ArrayList<String> times = new ArrayList<>();
+    private ArrayList<String> times = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,7 +336,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         progressDialog.setCancelable(false);
     }
 
-    protected void dismissProgress() {
+    private void dismissProgress() {
         if (null != progressDialog && progressDialog.isShowing())
             progressDialog.dismiss();
     }
