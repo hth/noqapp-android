@@ -682,7 +682,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     @Override
     public void medicalRecordError() {
         dismissProgress();
-        Toast.makeText(getActivity(), "Failed to update", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(getActivity(), "Failed to update");
     }
 
     @Override
