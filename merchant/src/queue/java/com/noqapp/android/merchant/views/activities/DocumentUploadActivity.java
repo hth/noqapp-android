@@ -1,28 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.common.utils.FileUtils;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.PermissionUtils;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
-import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -44,19 +21,42 @@ import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.FileUtils;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionUtils;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
+import com.noqapp.android.merchant.views.interfaces.LabFilePresenter;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 
 public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, LabFilePresenter, ImageUploadAdapter.OnItemClickListener {
@@ -77,6 +77,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private int selectPos;
     private FloatingActionButton fab_add_image;
     private boolean isExpandScreenOpen = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int columnCount = 1;
@@ -117,7 +118,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     if (labFileTemp.getFiles().size() < Constants.MAX_IMAGE_UPLOAD_LIMIT) {
                         selectImage();
                     } else {
-                        Toast.makeText(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed");
                     }
                 } else {
                     selectImage();
@@ -152,7 +153,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.MEDICAL_RECORD_DOES_NOT_EXISTS.getCode())) {
-                Toast.makeText(this, "Please create medical record first to upload document", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Please create medical record first to upload document");
                 dismissProgress();
                 finish();//close the current activity
             } else {
@@ -193,9 +194,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 labFileTemp.setFiles(new ArrayList<String>());
             labFileTemp.getFiles().add(jsonResponse.getData());
             showAttachmentResponse(labFileTemp);
-            Toast.makeText(this, "Document upload successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Document upload successfully! Change will be reflect after 5 min");
         } else {
-            Toast.makeText(this, "Failed to update document", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to update document");
         }
 
     }
@@ -210,9 +211,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 showAttachmentResponse(labFileTemp);
             }
             selectPos = -1;
-            Toast.makeText(this, "Document removed successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Document removed successfully!");
         } else {
-            Toast.makeText(this, "Failed to remove document", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to remove document");
         }
     }
 
@@ -261,6 +262,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         LaunchActivity.getLaunchActivity().getAuth(), labFile);
 
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing
@@ -394,7 +396,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private void onSelectFromGalleryResult(Intent data) {
         if (data != null) {
             try {
-               // Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                // Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 try {
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
@@ -425,7 +427,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             progressDialogImage.setContentView(R.layout.progress_lay);
             Picasso.get()
                     .load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + labFileTemp.getRecordReferenceId() + "/" + imageUrl)
-                    .into(iv_large,new Callback() {
+                    .into(iv_large, new Callback() {
                         @Override
                         public void onSuccess() {
                             progressDialogImage.dismiss();
@@ -441,7 +443,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             frame_image.setVisibility(View.VISIBLE);
             isExpandScreenOpen = true;
         } else {
-            Toast.makeText(this, "Image not available", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Image not available");
             frame_image.setVisibility(View.GONE);
             isExpandScreenOpen = false;
         }
@@ -468,10 +470,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        if(isExpandScreenOpen){
+        if (isExpandScreenOpen) {
             frame_image.setVisibility(View.GONE);
             isExpandScreenOpen = false;
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

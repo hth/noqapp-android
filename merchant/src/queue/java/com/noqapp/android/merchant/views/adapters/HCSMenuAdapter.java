@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +65,7 @@ public class HCSMenuAdapter extends RecyclerView.Adapter<HCSMenuAdapter.MyViewHo
                         public void btnPositiveClick() {
                             if (null != staggeredClick) {
                                 staggeredClick.staggeredClick(isRemove, hcsMenuObjects.get(position), position);
-                                Toast.makeText(context, "Deleted from Test List", Toast.LENGTH_LONG).show();
+                                new CustomToast().showToast(context, "Deleted from Test List");
                             }
                         }
                         @Override

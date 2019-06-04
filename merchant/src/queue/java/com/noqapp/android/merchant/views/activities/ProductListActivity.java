@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
@@ -39,7 +40,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -339,11 +339,11 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             @Override
             public void onClick(View v) {
                 if (sp_category_type.getSelectedItemPosition() == 0) {
-                    Toast.makeText(ProductListActivity.this, "Please select product category", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(ProductListActivity.this, "Please select product category");
                 } else if (sp_product_type.getSelectedItemPosition() == 0) {
-                    Toast.makeText(ProductListActivity.this, "Please select product type", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(ProductListActivity.this, "Please select product type");
                 } else if (sp_unit.getSelectedItemPosition() == 0) {
-                    Toast.makeText(ProductListActivity.this, "Please select product unit", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
                 } else {
                     if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount,edt_prod_unit_value,edt_prod_pack_size)) {
                         jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
@@ -376,7 +376,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     public void actionOnProductResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Action perform successfully", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Action perform successfully");
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 progressDialog.show();
                 StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
@@ -386,7 +386,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
                 ShowAlertInformation.showNetworkDialog(this);
             }
         } else {
-            Toast.makeText(this, "Failed to perform action", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to perform action");
         }
     }
 
@@ -408,7 +408,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
             }
         }
         if (!TextUtils.isEmpty(errorMsg))
-            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+           new CustomToast().showToast(this, errorMsg);
         return isValid;
     }
 

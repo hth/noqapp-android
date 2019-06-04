@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.fragments;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
@@ -45,7 +46,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
@@ -127,7 +127,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderAcceptClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
-            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -246,7 +246,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderDoneClick(int position) {
         if (tv_counter_name.getText().toString().trim().equals("")) {
-            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -421,7 +421,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 public void onClick(View v) {
                     mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                     if (tv_counter_name.getText().toString().trim().equals("")) {
-                        Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             LaunchActivity.getLaunchActivity().progressDialog.show();
@@ -443,14 +443,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 public void onClick(View v) {
                     mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
                     if (jsonTopic.getToken() == 0) {
-                        Toast.makeText(context, context.getString(R.string.error_empty), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, context.getString(R.string.error_empty));
                     } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
-                        Toast.makeText(context, context.getString(R.string.error_empty_wait), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, context.getString(R.string.error_empty_wait));
                     } else if (queueStatus == QueueStatusEnum.D) {
-                        Toast.makeText(context, context.getString(R.string.error_done_next), Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, context.getString(R.string.error_done_next));
                     } else {
                         if (tv_counter_name.getText().toString().trim().equals("")) {
-                            Toast.makeText(context, context.getString(R.string.error_counter_empty), Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                         } else {
                             if (tv_start.getText().equals(context.getString(R.string.pause))) {
                                 ShowCustomDialog showDialog = new ShowCustomDialog(context);

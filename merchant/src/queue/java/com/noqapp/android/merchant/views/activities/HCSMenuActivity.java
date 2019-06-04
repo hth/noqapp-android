@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
@@ -240,7 +241,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
-            backPressToast = Toast.makeText(this, "Press back to exit", Toast.LENGTH_LONG);
+            backPressToast = new CustomToast().getToast(this, "Press back to exit");
             backPressToast.show();
             lastPress = currentTime;
         } else {
@@ -461,7 +462,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         dismissProgress();
         if (null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
             btn_create_token.setClickable(true);
-            Toast.makeText(this, eej.getReason(), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, eej.getReason());
             Intent in = new Intent(this, LoginActivity.class);
             in.putExtra("phone_no", edt_mobile.getText().toString());
             in.putExtra("countryCode", countryCode);
@@ -527,7 +528,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 rcv_menu_select.setAdapter(hcsMenuSelectAdapter);
             } else {
                 if (isItemExist(hcsMenuObject.getSortName())) {
-                    Toast.makeText(this, "Test Already added in list", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(this, "Test Already added in list");
                 } else {
                     menuSelectData.add(hcsMenuObject);
                     view_test.setVisibility(menuSelectData.size() > 0 ? View.VISIBLE : View.GONE);
@@ -781,7 +782,6 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         jsonPurchaseOrder.setCustomized(true);
 
                         purchaseOrderApiCalls.medicalPurchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                        // Toast.makeText(HCSMenuActivity.this,"Waiting for procedure...",Toast.LENGTH_LONG).show();
                     } else {
                         ShowAlertInformation.showNetworkDialog(HCSMenuActivity.this);
                     }

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -18,7 +19,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -98,7 +98,7 @@ public class MenuAdapter extends BaseAdapter {
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
-                        Toast.makeText(context, "Deleted from Menu Item List", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(context, "Deleted from Menu Item List");
                         menuItemUpdate.menuItemUpdate(jsonStoreProduct, ActionTypeEnum.REMOVE);
                     }
                     @Override
