@@ -35,6 +35,7 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter, View.OnClickListener {
@@ -110,30 +111,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             edt_phoneNo.setEnabled(false);
             edt_phoneNo.setText(phno);
         }
-
-        edt_Mail.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() == 0) {
-                    ll_pwd.setVisibility(View.GONE);
-                    edt_pwd.setText("");
-                    edt_confirm_pwd.setText("");
-                } else {
-                    ll_pwd.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        edt_pwd.setText(generatePassword());
+        edt_confirm_pwd.setText(edt_pwd.getText().toString());
     }
 
     private void actionRegistration() {
@@ -145,6 +124,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             btnRegistration.setBackgroundResource(R.drawable.blue_gradient_or);
             btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.setMessage("Registration in progress...");
                 progressDialog.show();
                 progressDialog.setCancelable(false);
                 progressDialog.setCanceledOnTouchOutside(false);
@@ -261,31 +241,16 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                 errorMsg = getString(R.string.error_name_length);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText().toString())) {
-
+        if (TextUtils.isEmpty(edt_Mail.getText().toString())) {
+            edt_Mail.setError(getString(R.string.error_email_blank));
+            errorMsg = getString(R.string.error_email_blank);
+            isValid = false;
+        }else{
             if (!new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
                 if (TextUtils.isEmpty(errorMsg))
                     errorMsg = getString(R.string.error_invalid_email);
                 isValid = false;
-            }
-            if (TextUtils.isEmpty(edt_pwd.getText().toString())) {
-                edt_pwd.setError(getString(R.string.error_pwd_blank));
-                if (TextUtils.isEmpty(errorMsg))
-                    errorMsg = getString(R.string.error_pwd_blank);
-                isValid = false;
-            } else {
-                if (edt_pwd.getText().toString().length() < 6) {
-                    edt_pwd.setError(getString(R.string.error_pwd_length));
-                    if (TextUtils.isEmpty(errorMsg))
-                        errorMsg = getString(R.string.error_pwd_length);
-                    isValid = false;
-                } else if (!edt_pwd.getText().toString().equals(edt_confirm_pwd.getText().toString())) {
-                    edt_pwd.setError(getString(R.string.error_pwd_not_match));
-                    if (TextUtils.isEmpty(errorMsg))
-                        errorMsg = getString(R.string.error_pwd_not_match);
-                    isValid = false;
-                }
             }
         }
         if (TextUtils.isEmpty(tv_birthday.getText().toString())) {
@@ -320,6 +285,12 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         registration.setCountryShortName(getIntent().getStringExtra("countryShortName"));
         registration.setInviteCode("");
         new RegisterApiCall(this).register(UserUtils.getDeviceId(), registration);
+    }
+
+    private String generatePassword(){
+        Random rnd = new Random();
+        int n = 100000 + rnd.nextInt(900000);
+        return String.valueOf(n);
     }
 
 }
