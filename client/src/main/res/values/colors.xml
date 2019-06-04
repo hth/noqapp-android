@@ -15,6 +15,7 @@
     <color name="color_me_bg">#E7E7E7</color>
     <color name="color_tab">#F8F9F9</color>
     <color name="white">#ffffff</color>
+    <color name="color_indigo_toast">#6e329b</color>
     <color name="progress_unselect">#4de92270</color>
     <color name="open_queue">@android:color/black</color>
     <color name="before_opening_queue">@android:color/black</color>
@@ -52,6 +53,5 @@
     <color name="segment_text_color1">@android:color/black</color>
     <color name="segment_text_color_select">@android:color/white</color>
 
-    <color name="toast_background">#963cbd</color>
-
+    <color name="toast_background">@color/color_indigo_toast</color>
 </resources>

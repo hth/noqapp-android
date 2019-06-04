@@ -253,12 +253,16 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         AppUtilities.authenticationProcessing(this);
     }
 
-
     private void updateUI() {
-        if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-            tv_info.setText("Max 10 allowed");
+        if (NoQueueBaseActivity.getUserProfile() != null && NoQueueBaseActivity.getUserProfile().getUserLevel() != null) {
+            if (NoQueueBaseActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+                tv_info.setText("Max 10 allowed");
+            } else {
+                tv_info.setText("Max 5 allowed");
+            }
         } else {
-            tv_info.setText("Max 5 allowed");
+            /* Force logout when User Profile is null. */
+            authenticationFailure();
         }
 
         edt_Name.setText(NoQueueBaseActivity.getUserName());
@@ -278,7 +282,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         tv_birthday.setEnabled(false);
         edt_address.setEnabled(false);
         edt_address.setText(NoQueueBaseActivity.getAddress());
-        int id = 0;
+        int id;
         if (NoQueueBaseActivity.getGender().equals("M")) {
             id = R.id.tv_male;
         } else if (NoQueueBaseActivity.getGender().equals("T")) {
@@ -335,15 +339,12 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 ImageView iv_edit = listitem_dependent.findViewById(R.id.iv_edit);
                 TextView tv_title = listitem_dependent.findViewById(R.id.tv_title);
                 tv_title.setText(jsonProfile.getName());
-                iv_edit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
-                        in.putExtra(IBConstant.IS_DEPENDENT, true);
-                        in.putExtra(IBConstant.DEPENDENT_PROFILE, jsonProfile);
-                        in.putStringArrayListExtra("nameList", nameList);
-                        startActivity(in);
-                    }
+                iv_edit.setOnClickListener(v -> {
+                    Intent in = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
+                    in.putExtra(IBConstant.IS_DEPENDENT, true);
+                    in.putExtra(IBConstant.DEPENDENT_PROFILE, jsonProfile);
+                    in.putStringArrayListExtra("nameList", nameList);
+                    startActivity(in);
                 });
                 ll_dependent.addView(listitem_dependent);
                 nameList.add(jsonProfile.getName().toUpperCase());
@@ -358,6 +359,4 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         super.onResume();
         updateUI();
     }
-
 }
-
