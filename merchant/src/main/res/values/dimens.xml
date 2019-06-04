@@ -20,6 +20,7 @@
     <dimen name="text_size_twelve">12sp</dimen>
     <dimen name="text_size_fourteen">14sp</dimen>
     <dimen name="text_size_sixteen">16sp</dimen>
+    <dimen name="text_size_eighteen">18sp</dimen>
     <dimen name="nav_image_size">30dp</dimen>
     <dimen name="action_image_size">25dp</dimen>
     <dimen name="value_text_size">22sp</dimen>

@@ -74,6 +74,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
@@ -185,12 +186,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         if (isLoggedIn()) {
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -574,7 +570,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void appBlacklistError(ErrorEncounteredJson eej) {
         if (null != eej) {
             if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
-                ShowAlertInformation.showThemePlayStoreDialog(launchActivity, getString(R.string.playstore_title), getString(R.string.playstore_msg), false);
+                Intent in = new Intent(launchActivity, AppUpdateActivity.class);
+                startActivity(in);
             } else {
                 new ErrorResponseHandler().processError(this, eej);
             }
@@ -600,13 +597,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 try {
                     String currentVersion = Constants.appVersion();
                     if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
-//                        ShowAlertInformation.showThemePlayStoreDialog(
-//                                this,
-//                                getString(R.string.playstore_update_title),
-//                                getString(R.string.playstore_update_msg),
-//                                true);
-                        Intent in = new Intent(launchActivity, AppUpdateActivity.class);
-                        startActivity(in);
+                        ShowAlertInformation.showThemePlayStoreDialog(
+                                this,
+                                getString(R.string.playstore_update_title),
+                                getString(R.string.playstore_update_msg),
+                                true);
                     }
                 } catch (Exception e) {
                     Log.e(BaseLaunchActivity.class.getSimpleName(), "Compare version check reason=" + e.getLocalizedMessage(), e);
@@ -683,6 +678,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.containsKey(Constants.MESSAGE) && extras.containsKey(Constants.QRCODE)) {
@@ -712,7 +708,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     public void setActionBarTitle(String title) {
         tv_toolbar_title.setText(title);
     }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -753,19 +748,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
-        ll_hindi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtils.changeLanguage("hi");
-                dialog.dismiss();
-            }
+        ll_hindi.setOnClickListener(v -> {
+            AppUtils.changeLanguage("hi");
+            dialog.dismiss();
         });
-        ll_english.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtils.changeLanguage("en");
-                dialog.dismiss();
-            }
+        ll_english.setOnClickListener(v -> {
+            AppUtils.changeLanguage("en");
+            dialog.dismiss();
         });
         dialog.show();
     }
@@ -777,7 +766,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             this.recreate();
         }
     }
-
 
     public static void clearPreferences() {
         // Clear all data except DID & FCM Token
@@ -807,7 +795,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             try {
                 if (!isRegistered) {
                     LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-                    Log.e("FCM Reciver: ", "register");
+                    Log.e("FCM Receiver: ", "register");
                     isRegistered = true;
                 }
             } catch (Exception e) {
@@ -835,8 +823,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != fcmNotificationReceiver)
+        if (null != fcmNotificationReceiver) {
             fcmNotificationReceiver.unregister(this);
+        }
     }
-
 }

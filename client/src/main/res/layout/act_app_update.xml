@@ -12,7 +12,7 @@
         android:padding="10dp"
         android:text="Update NoQApp"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/text_size_sixteen"
+        android:textSize="@dimen/text_size_eighteen"
         android:textStyle="bold" />
 
     <RelativeLayout
@@ -26,8 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/down_bg_circle" />
-
-
     </RelativeLayout>
 
 

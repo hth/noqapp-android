@@ -68,8 +68,6 @@
     <string name="error_client_acquired_by_you">Client is acquired by you</string>
 
     <string name="btn_playstore">Open Play Store</string>
-    <string name="playstore_title">Unsupported Version</string>
-    <string name="playstore_msg">This version of the NoQApp Merchant is no longer supported. Please update app to latest version.\n</string>
     <string name="playstore_update_title">Newer App Version Available</string>
     <string name="playstore_update_msg">New version of NoQApp Merchant is available on play store. Please update your app to latest version.\n</string>
     <string name="create_token">Create Token</string>
