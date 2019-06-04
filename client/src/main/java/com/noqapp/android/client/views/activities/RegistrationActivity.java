@@ -292,5 +292,4 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         int n = 100000 + rnd.nextInt(900000);
         return String.valueOf(n);
     }
-
 }

@@ -51,7 +51,10 @@ public class MigrateActivity extends OTPActivity {
         if (TextUtils.isEmpty(edt_phoneNo.getText())) {
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
-        } else {
+        } else if (countryCode.equals("+91") && edt_phoneNo.getText().toString().length() != 10) {
+            edt_phoneNo.setError(getString(R.string.error_mobile_no_length));
+            isValid = false;
+        }else {
             if (PhoneFormatterUtil.phoneNumberWithCountryCode(edt_phoneNo.getText().toString(), countryShortName).
                     equals(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueBaseActivity.getPhoneNo(), NoQueueBaseActivity.getCountryShortName()))) {
                 edt_phoneNo.setError(getString(R.string.error_mobile_no_same));

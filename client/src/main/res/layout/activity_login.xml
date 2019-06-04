@@ -39,7 +39,6 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:background="#e2e2e2"
-                    android:onClick="onCountryPickerClick"
                     android:paddingStart="5dp"
                     android:layout_marginRight="5dp"
                     app:ccp_textSize="14sp"

@@ -73,7 +73,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     protected LinearLayout ll_otp;
     protected TextView tv_detail;
     protected CountryCodePicker ccp;
-    protected String selected_country_code = "";
 
     protected abstract void callApi(String phoneNumber);
 
@@ -98,6 +97,13 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         ll_otp = findViewById(R.id.ll_otp);
         tv_detail = findViewById(R.id.tv_detail);
         ccp = findViewById(R.id.ccp);
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                countryCode = ccp.getSelectedCountryCodeWithPlus();
+                countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
+            }
+        });
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +131,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         countryCode = "+" + c_code;
         countryShortName = c_codeValue.toUpperCase();
         countryCode = ccp.getSelectedCountryCodeWithPlus();
-        countryShortName = ccp.getDefaultCountryName().toUpperCase();
+        countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
        // edt_phone_code.setText(countryCode);
         addTextWatcher(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -186,16 +192,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             }
         };
     }
-    public void onCountryPickerClick(View view) {
-        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                //Alert.showMessage(RegistrationActivity.this, ccp.getSelectedCountryCodeWithPlus());
-                selected_country_code = ccp.getSelectedCountryCodeWithPlus();
-                new CustomToast().showToast(OTPActivity.this,selected_country_code);
-            }
-        });
-    }
+
     protected void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         progressDialog.setMessage("Validating OTP");
         progressDialog.show();
