@@ -25,4 +25,6 @@
     <color name="rating_select">@color/colorPrimaryDark</color>
     <color name="rating_unselect">@color/colorAccent</color>
 
+    <color name="toast_background">#4691b2</color>
+
 </resources>
