@@ -27,5 +27,5 @@
     <color name="rating_unselect">@color/colorAccent</color>
 
     <color name="toast_background">@color/color_indigo_toast</color>
-
+    <color name="download_circle_bg">@color/colorAccent</color>
 </resources>
