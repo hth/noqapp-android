@@ -7,7 +7,7 @@ import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.body.store.LabFile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
