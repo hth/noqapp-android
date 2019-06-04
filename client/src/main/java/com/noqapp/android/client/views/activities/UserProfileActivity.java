@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -29,6 +28,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
@@ -128,9 +128,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Profile image change successful!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Profile image change successful!");
         } else {
-            Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to update profile image");
         }
     }
 
@@ -141,9 +141,9 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
             NoQueueBaseActivity.setUserProfileUri("");
-            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
-            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to remove profile image");
         }
     }
 
@@ -231,7 +231,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
-                Toast.makeText(this, getString(R.string.error_account_block), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.error_account_block));
                 NoQueueBaseActivity.clearPreferences();
                 dismissProgress();
                 finish();//close the current activity

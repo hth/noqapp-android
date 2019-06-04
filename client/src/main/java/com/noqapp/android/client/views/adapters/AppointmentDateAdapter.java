@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.pojos.AppointmentModel;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
                     if (item.isBooked()) {
                         selectPos = -1;
                         listener.onBookedAppointmentSelected();
-                        Toast.makeText(context, "This slot is already booked", Toast.LENGTH_SHORT).show();
+                        new CustomToast().showToast(context, "This slot is already booked");
                     } else {
                         selectPos = listPosition;
                         listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -23,6 +22,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 
 public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter, ProfilePresenter {
@@ -99,7 +99,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
             edt_email.setVisibility(View.GONE);
             btn_verify_email.setVisibility(View.GONE);
             tv_header.setText("Verification code");
-            Toast.makeText(this, "Verification code is sent to above email address", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Verification code is sent to above email address");
         } else {
             //Rejected from  server
             ErrorEncounteredJson eej = jsonResponse.getError();

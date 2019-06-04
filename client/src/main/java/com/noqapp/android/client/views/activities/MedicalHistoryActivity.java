@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiCall;
@@ -27,6 +26,7 @@ import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
                     progressDialog.show();
                 }
             } else {
-                Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Please login to see the details");
             }
         } else {
             ShowAlertInformation.showNetworkDialog(this);

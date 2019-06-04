@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
@@ -22,6 +21,7 @@ import com.noqapp.android.common.beans.JsonQueueDisplay;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -165,10 +165,10 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         Log.v("appointmentCancelResp", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Appointment cancelled successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Appointment cancelled successfully!");
             finish();
         } else {
-            Toast.makeText(this, "Failed to cancel appointment", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to cancel appointment");
         }
         dismissProgress();
     }

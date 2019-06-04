@@ -16,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
@@ -40,6 +39,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FileUtils;
@@ -131,7 +131,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 int date_diff = new Date().compareTo(current);
 
                 if (date_diff < 0) {
-                    Toast.makeText(UserProfileEditActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(UserProfileEditActivity.this, getString(R.string.error_invalid_date));
                     tv_birthday.setText("");
                 } else {
                     tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
@@ -166,10 +166,10 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         dismissProgress();
         Log.v("Image upload", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Profile image change successfully! Change will be reflect after 5 min", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Profile image change successfully! Change will be reflect after 5 min");
             tv_remove_image.setVisibility(View.VISIBLE);
         } else {
-            Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to update profile image");
         }
     }
 
@@ -185,9 +185,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             } else {
                 NoQueueBaseActivity.setUserProfileUri("");
             }
-            Toast.makeText(this, "Profile image removed successfully!", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
-            Toast.makeText(this, "Failed to remove profile image", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to remove profile image");
         }
     }
 
@@ -352,7 +352,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         Log.v("JsonProfile", profile.toString());
         NoQueueBaseActivity.commitProfile(profile, email, auth);
         dismissProgress();
-        Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Profile updated successfully");
         finish();
     }
 
@@ -369,7 +369,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         NoQueueBaseActivity.setUserProfile(profile);
         dependentProfile = profile;
         dismissProgress();
-        Toast.makeText(this, "Dependent added successfully", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Dependent added successfully");
         // updateUI();
         finish();
     }

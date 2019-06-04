@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -20,6 +19,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
 
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
@@ -51,7 +51,7 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             btn_submit.setEnabled(false);
             edt_body.setEnabled(false);
             edt_subject.setEnabled(false);
-            Toast.makeText(this, "Please login to contact us", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Please login to contact us");
         }
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,10 +80,10 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
     @Override
     public void feedbackResponse(JsonResponse jsonResponse) {
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            Toast.makeText(this, "Feedback submitted successfully", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Feedback submitted successfully");
             finish();
         } else {
-            Toast.makeText(this, "Failed to submit feedback", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Failed to submit feedback");
             //Rejected from  server
             ErrorEncounteredJson eej = jsonResponse.getError();
             if (null != eej) {

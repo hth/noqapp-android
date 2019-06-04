@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
@@ -37,6 +36,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -192,7 +192,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             public void onCountrySelected() {
                 //Alert.showMessage(RegistrationActivity.this, ccp.getSelectedCountryCodeWithPlus());
                 selected_country_code = ccp.getSelectedCountryCodeWithPlus();
-                Toast.makeText(OTPActivity.this,selected_country_code,Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(OTPActivity.this,selected_country_code);
             }
         });
     }
@@ -215,7 +215,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
-                                Toast.makeText(activity, "Invalid code.", Toast.LENGTH_LONG).show();
+                                new CustomToast().showToast(activity, "Invalid code.");
                             }
                             // Update UI
                             updateUI(STATE_SIGN_IN_FAILED);

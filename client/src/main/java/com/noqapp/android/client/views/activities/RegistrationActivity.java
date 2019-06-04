@@ -1,19 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.RegisterApiCall;
-import com.noqapp.android.client.model.database.utils.NotificationDB;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
-import com.noqapp.android.client.presenter.ProfilePresenter;
-import com.noqapp.android.client.presenter.beans.body.Registration;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.utils.CommonHelper;
-
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,8 +15,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.RegisterApiCall;
+import com.noqapp.android.client.model.database.utils.NotificationDB;
+import com.noqapp.android.client.model.database.utils.ReviewDB;
+import com.noqapp.android.client.presenter.ProfilePresenter;
+import com.noqapp.android.client.presenter.beans.body.Registration;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -93,7 +94,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                 int date_diff = new Date().compareTo(current);
 
                 if (date_diff < 0) {
-                    Toast.makeText(RegistrationActivity.this, getString(R.string.error_invalid_date), Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(RegistrationActivity.this, getString(R.string.error_invalid_date));
                     tv_birthday.setText("");
                 } else {
                     tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
@@ -225,7 +226,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             tv_female.setTextColor(Color.WHITE);
             tv_transgender.setTextColor(Color.BLACK);
             tv_female.setText(getString(R.string.female));
-        }else if (v == tv_transgender) {
+        } else if (v == tv_transgender) {
             gender = "T";
             tv_transgender.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
@@ -294,8 +295,9 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             isValid = false;
         }
 
-        if (!TextUtils.isEmpty(errorMsg))
-            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(errorMsg)) {
+            new CustomToast().showToast(this, errorMsg);
+        }
         return isValid;
     }
 

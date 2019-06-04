@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -34,6 +33,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -100,7 +100,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             public void onClick(View v) {
                 if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
                     if (isProductWithoutPrice) {
-                        Toast.makeText(OrderConfirmActivity.this, "Merchant have not set the price of the product.Hence payment cann't be proceed", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(OrderConfirmActivity.this, "Merchant have not set the price of the product." +
+                                "Hence payment cann't be proceed");
                     } else {
                         if (NoQueueBaseActivity.isEmailVerified()) {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -112,7 +113,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                                 isPayClick = true;
                             }
                         } else {
-                            Toast.makeText(OrderConfirmActivity.this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+                            new CustomToast().showToast(OrderConfirmActivity.this, "Email is mandatory. Please add and verify it");
                         }
                     }
                 }
@@ -157,7 +158,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         btn_cancel_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(OrderConfirmActivity.this,true);
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderConfirmActivity.this, true);
                 showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                     @Override
                     public void btnPositiveClick() {
@@ -254,7 +255,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())+ " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {
                 //added for  Pharmacy order place from merchant side directly
@@ -332,10 +333,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     public void purchaseOrderCancelResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         if (null != jsonPurchaseOrder) {
             if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
-                Toast.makeText(this, "Order cancelled successfully", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Order cancelled successfully");
                 iv_home.performClick();
             } else {
-                Toast.makeText(this, "Failed to cancel order", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Failed to cancel order");
             }
         } else {
             //Show error
@@ -454,14 +455,14 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     public void onFailure(Map<String, String> map) {
         Log.d("CFSDKSample", "Payment Failure");
-        Toast.makeText(this, "Transaction Failed", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Transaction Failed");
         isPayClick = false;
     }
 
     @Override
     public void onNavigateBack() {
         Log.e("User Navigate Back", "Back without payment");
-        Toast.makeText(this, "Cancelled transaction. Please try again.", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Cancelled transaction. Please try again.");
         isPayClick = false;
     }
 
@@ -471,10 +472,10 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         oldjsonPurchaseOrder = jsonPurchaseOrder;
         updateUI();
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-            Toast.makeText(this, "Order placed successfully.", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Order placed successfully.");
             NoQueueMessagingService.subscribeTopics(getIntent().getExtras().getString("topic"));
         } else {
-            Toast.makeText(this, jsonPurchaseOrder.getTransactionMessage(), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
 
     }

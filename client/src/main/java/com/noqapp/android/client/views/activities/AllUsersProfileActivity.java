@@ -2,13 +2,13 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ProfileAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
             ProfileAdapter profileAdapter = new ProfileAdapter(this, profileList, this);
             rv_user_profile.setAdapter(profileAdapter);
         } else {
-            Toast.makeText(this, "Please login to see the details", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Please login to see the details");
         }
     }
 

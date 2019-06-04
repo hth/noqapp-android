@@ -39,6 +39,7 @@ import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -67,7 +68,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
@@ -343,7 +343,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
                 if (SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()) {
-                    Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(this, "You are already in the Queue");
                     queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                     tokenPresenterResponse(jsonToken);
                 } else {
@@ -364,12 +364,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                     }
                 }
             } else if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
-                Toast.makeText(this, "You are already in the Queue", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "You are already in the Queue");
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
                 tokenPresenterResponse(jsonToken);
                 btn_pay.setVisibility(View.GONE);
             } else {
-                Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Order failed.");
             }
         } else {
             //Show error
@@ -388,7 +388,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
                 tokenPresenterResponse(jsonToken);
                 btn_pay.setVisibility(View.GONE);
             } else {
-                Toast.makeText(this, "Order failed.", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Order failed.");
             }
         } else {
             //Show error
@@ -400,12 +400,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void responsePresenterResponse(JsonResponse response) {
         if (null != response) {
             if (response.getResponse() == Constants.SUCCESS) {
-                Toast.makeText(this, getString(R.string.cancel_queue), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.cancel_queue));
             } else {
-                Toast.makeText(this, getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
             }
         } else {
-            Toast.makeText(this, getString(R.string.fail_to_cancel), Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
         }
         NoQueueMessagingService.unSubscribeTopics(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
@@ -687,7 +687,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void onFailure(Map<String, String> map) {
         Log.d("CFSDKSample", "Payment Failure");
-        Toast.makeText(this, "Transaction Failed", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Transaction Failed");
         // enableDisableOrderButton(false);
         finish();
     }
@@ -695,7 +695,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     @Override
     public void onNavigateBack() {
         Log.e("User Navigate Back", "Back without payment");
-        Toast.makeText(this, "Cancelled transaction. Please try again.", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(this, "Cancelled transaction. Please try again.");
         //enableDisableOrderButton(false);
         // finish();
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
@@ -732,7 +732,7 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
             params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
             cfPaymentService.doPayment(this, params, token, this, stage);
         } else {
-            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(this, "Email is mandatory. Please add and verify it");
         }
     }
 
@@ -742,13 +742,12 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
         if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
             if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 // show only when it comes from join screen
-                Toast.makeText(this, "Token generated successfully.", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "Token generated successfully.");
             }
             queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
             tokenPresenterResponse(jsonToken);
         } else {
-            Toast.makeText(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage(), Toast.LENGTH_LONG).show();
-            //Toast.makeText(this, "Failed to notify server.", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage());
         }
     }
 

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.InviteEvent;
@@ -21,6 +20,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.WebViewActivity;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -81,7 +81,7 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
                         .putMethod("Invite")
                         .putCustomAttribute("Code", selectedText));
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(getActivity(), getString(R.string.app_missing), Toast.LENGTH_SHORT).show();
+                new CustomToast().showToast(getActivity(), getString(R.string.app_missing));
             }
         }
     }
@@ -90,10 +90,11 @@ public class InviteFragment extends NoQueueBaseFragment implements View.OnClickL
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", selectedText);
         clipboard.setPrimaryClip(clip);
-        if (selectedText.equals(""))
-            Toast.makeText(getActivity(), "Nothing to copy", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(getActivity(), "copied", Toast.LENGTH_SHORT).show();
+        if (selectedText.equals("")) {
+            new CustomToast().showToast(getActivity(), "Nothing to copy");
+        }else {
+            new CustomToast().showToast(getActivity(), "copied");
+        }
     }
 
     public void howItWorks() {

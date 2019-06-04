@@ -18,6 +18,7 @@ import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import com.crashlytics.android.answers.Answers;
@@ -35,7 +36,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -128,7 +128,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                     Intent loginIntent = new Intent(JoinActivity.this, UserProfileActivity.class);
                     startActivity(loginIntent);
                 } else {
-                    Toast.makeText(JoinActivity.this, "Please login to add dependents", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(JoinActivity.this, "Please login to add dependents");
                 }
             }
         });
@@ -314,7 +314,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
     private void joinQueue(boolean isPayBeforeJoin) {
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
-            Toast.makeText(this, joinErrorMsg, Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, joinErrorMsg);
             if (joinErrorMsg.startsWith("Please login to join")) {
                 // login required
                 Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
@@ -325,14 +325,14 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
                 if (jsonQueue.isAllowLoggedInUser()) {//Only login user to be allowed for join
                     if (UserUtils.isLogin()) {
                         if (sp_name_list.getSelectedItemPosition() == 0) {
-                            Toast.makeText(this, getString(R.string.error_patient_name_missing), Toast.LENGTH_LONG).show();
+                            new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
                             sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
                         } else {
                             callAfterJoin(isPayBeforeJoin);
                         }
                     } else {
                         // please login to avail this feature
-                        Toast.makeText(JoinActivity.this, "please login to avail this feature", Toast.LENGTH_LONG).show();
+                        new CustomToast().showToast(JoinActivity.this, "please login to avail this feature");
                         // Navigate to login screen
                         Intent loginIntent = new Intent(JoinActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
@@ -349,7 +349,7 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
 
     private void callAfterJoin(boolean isPayBeforeJoin) {
         if(isPayBeforeJoin && !NoQueueBaseActivity.isEmailVerified()){
-            Toast.makeText(this, "Email is mandatory. Please add and verify it", Toast.LENGTH_SHORT).show();
+            new CustomToast().showToast(this, "Email is mandatory. Please add and verify it");
         }else {
             Intent in = new Intent(this, AfterJoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());

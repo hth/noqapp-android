@@ -13,6 +13,10 @@ import com.noqapp.android.common.R;
 public class CustomToast {
 
     public void showToast(Context context, String msg) {
+        getToast(context,msg).show();
+    }
+
+    public Toast getToast(Context context, String msg) {
         View layout = LayoutInflater.from(context).inflate(R.layout.custom_toast, null);
         TextView toastMessage = layout.findViewById(R.id.tv_toast_msg);
         toastMessage.setText(msg);
@@ -22,6 +26,6 @@ public class CustomToast {
         Toast toast = new Toast(context);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
-        toast.show();
+       return toast;
     }
 }

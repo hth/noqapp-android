@@ -73,6 +73,7 @@ import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
@@ -163,7 +164,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             if (!TextUtils.isEmpty(getIntent().getStringExtra("deviceId"))) {
                 NoQueueBaseActivity.setDeviceID(getIntent().getStringExtra("deviceId"));
             }
-            // Toast.makeText(this,"Device ID: "+UserUtils.getDeviceId(),Toast.LENGTH_LONG).show();
         }
         Log.v("device id check", getDeviceID());
         setReviewShown(false);//Reset the flag when app is killed
@@ -351,7 +351,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Intent intent = new Intent(launchActivity, UserProfileActivity.class);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(launchActivity, "Please login to view profile", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "Please login to view profile");
                     Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
                     loginIntent.putExtra("fromLogin", true);
                     startActivity(loginIntent);
@@ -420,7 +420,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 }
             } else {
                 // Permission denied, Disable the functionality that depends on this permission.
-                Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(this, "permission denied");
             }
             return;
         }
@@ -472,7 +472,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // shown only one time if it is skipped
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
             ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
-            Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(launchActivity, "You were Skip");
         }
     }
 
@@ -535,7 +535,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastPress > 3000) {
-            backPressToast = Toast.makeText(launchActivity, getString(R.string.exit_app), Toast.LENGTH_LONG);
+            backPressToast = new CustomToast().getToast(launchActivity, getString(R.string.exit_app));
             backPressToast.show();
             lastPress = currentTime;
         } else {
@@ -591,7 +591,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             cv.put(DatabaseTable.Review.KEY_GOTO, "");
             ReviewDB.insert(cv);
         }
-        Toast.makeText(launchActivity, "You were Skip", Toast.LENGTH_LONG).show();
+        new CustomToast().showToast(launchActivity, "You were Skip");
         // Clear all activity from stack then launch skip(Join) Screen
         Intent in1 = new Intent(this, LaunchActivity.class);
         in1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -879,7 +879,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                         updateNotification(object, codeQR);
                     }
                 } else {
-                    Toast.makeText(launchActivity, "UnSupported Notification reached: " + payload, Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "UnSupported Notification reached: " + payload);
                 }
             }
         }
@@ -1035,7 +1035,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             Log.e("Device register", "deviceRegister Success");
         } else {
             Log.e("Device register error: ", deviceRegistered.toString());
-            Toast.makeText(this, "Device register error: ", Toast.LENGTH_LONG).show();
+            new CustomToast().showToast(this, "Device register error: ");
         }
     }
 
@@ -1119,7 +1119,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
             }
             case R.id.nav_transaction:
-                Toast.makeText(launchActivity, "Coming soon... ", Toast.LENGTH_LONG).show();
+                new CustomToast().showToast(launchActivity, "Coming soon... ");
                 break;
             case R.drawable.ic_logout:
                 ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
@@ -1144,7 +1144,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
                     startActivity(in);
                 } else {
-                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "Please login to see the details");
                 }
                 break;
             }
@@ -1153,7 +1153,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
                     startActivity(in);
                 } else {
-                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "Please login to see the details");
                 }
                 break;
             }
@@ -1162,7 +1162,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Intent in = new Intent(launchActivity, MyAppointmentsActivity.class);
                     startActivity(in);
                 } else {
-                    Toast.makeText(launchActivity, "Please login to see the details", Toast.LENGTH_LONG).show();
+                    new CustomToast().showToast(launchActivity, "Please login to see the details");
                 }
                 break;
             }
