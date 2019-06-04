@@ -107,11 +107,11 @@
     <string name="prompt_gender">Gender</string>
     <string name="prompt_marital_status">marital status</string>
     <string name="action_update">Update Profile</string>
-    <string name="phone">Phone <font color='red'>\u2731</font></string>
-    <string name="name">Name <font color='red'>\u2731</font></string>
-    <string name="birthday">Birthday <font color='red'>\u2731</font></string>
+    <string name="phone">Phone <font color='red'>\u002A</font></string>
+    <string name="name">Name <font color='red'>\u002A</font></string>
+    <string name="birthday">Birthday <font color='red'>\u002A</font></string>
     <string name="mail">Mail </string>
-    <string name="gender">Gender <font color='red'>\u2731</font></string>
+    <string name="gender">Gender <font color='red'>\u002A</font></string>
     <string name="prompt_address_status">Address</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -144,7 +144,7 @@
     <string name="invitecode">Invite code</string>
     <string name="btnregister">Continue Register</string>
     <string name="error_pwd_not_match">Both password should match</string>
-    <string name="password">Password <font color='red'>\u2731</font></string>
+    <string name="password">Password <font color='red'>\u002A</font></string>
     <string name="update_medical_history">Submit Case History</string>
     <string name="change_name">Change \nPatient</string>
     <string name="update_details">Update Details</string>
