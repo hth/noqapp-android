@@ -7,13 +7,14 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import com.crashlytics.android.Crashlytics;
+
 import android.util.Log;
 
 /**
  * User: hitender
  * Date: 5/1/17 12:08 PM
  */
-
 public class PhoneFormatterUtil {
     private static final String TAG = PhoneFormatterUtil.class.getSimpleName();
     private static PhoneNumberUtil phoneUtil;
@@ -27,7 +28,8 @@ public class PhoneFormatterUtil {
             PhoneNumber phoneNumber = phoneUtil.parse(rawPhoneNumber, countryShortName);
             return phoneUtil.isValidNumber(phoneNumber);
         } catch (NumberParseException e) {
-            Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " CS=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            Crashlytics.log("Parsing phone for validation " + rawPhoneNumber + " " + countryShortName);
             return false;
         }
     }
@@ -43,7 +45,8 @@ public class PhoneFormatterUtil {
             PhoneNumber phoneNumber = phoneUtil.parse(rawPhoneNumber, countryShortName);
             return phoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
-            Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " CS=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Parsing phone=" + rawPhoneNumber + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            Crashlytics.log("Parsing phone " + rawPhoneNumber + " " + countryShortName);
             return "";
         }
     }
@@ -65,7 +68,8 @@ public class PhoneFormatterUtil {
 
             return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {
-            Log.e(TAG, "Failed to parse phone= " + phone + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            Log.e(TAG, "Failed to parse phone=" + phone + " countryShortName=" + countryShortName + " reason=" + e.getLocalizedMessage(), e);
+            Crashlytics.log("Failed parsing country code " + phone + " " + countryShortName);
             throw new RuntimeException("Failed parsing country code");
         }
     }
