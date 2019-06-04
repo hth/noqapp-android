@@ -41,7 +41,7 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:padding="10dp"
-        android:text="This version of NoQApp became out of date. Tap Download below to get the latest version from the Google Play Store"
+        android:text="@string/outdated_app"
         android:textColor="#333"
         android:textSize="@dimen/text_size_fourteen" />
 
