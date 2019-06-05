@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -72,13 +74,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private ScheduleApiCalls scheduleApiCalls;
     private ProgressDialog progressDialog;
     private JsonScheduleList jsonScheduleList;
-    private TextView tv_create_token;
     private Button btn_create_token;
-    private ImageView iv_banner;
-    private TextView tvcount;
     private Spinner sp_patient_list;
     private LinearLayout ll_mobile;
-    private LinearLayout ll_main_section;
     private EditText edt_mobile;
     private Spinner sp_start_time, sp_end_time;
     private TextView tv_select_patient;
@@ -264,12 +262,16 @@ public class BookAppointmentActivity extends AppCompatActivity implements
 
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
-        Log.e("Booking status", jsonSchedule.toString());
-        //  Intent intent = new Intent(this, AppointmentDetailActivity.class);
-//        intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
-//        intent.putExtra(IBConstant.KEY_IMAGE_URL, bizStoreElastic.getDisplayImage());
-//        startActivity(intent);
-//        finish();
+        if(null != jsonSchedule ){
+            Log.e("Booking status", jsonSchedule.toString());
+            new CustomToast().showToast(this, "Appointment booked successfully!!!");
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }else{
+           // Do nothing
+            new CustomToast().showToast(this, "Appointment booking failed");
+        }
         dismissProgress();
     }
 
@@ -295,7 +297,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-
     }
 
 
@@ -313,8 +314,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-
-
     }
 
     private int removeColon(String input) {
@@ -347,16 +346,12 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         if (new AppUtils().isTablet(getApplicationContext())) {
             builder = new AlertDialog.Builder(this);
         } else {
-            builder = new AlertDialog.Builder(this,R.style.FullScreenDialogTheme);
+            builder = new AlertDialog.Builder(this, R.style.FullScreenDialogTheme);
         }
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_search_patient_for_appointment, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = customDialogView.findViewById(R.id.iv_banner);
-        tvcount = customDialogView.findViewById(R.id.tvcount);
-        ll_main_section = customDialogView.findViewById(R.id.ll_main_section);
         ll_mobile = customDialogView.findViewById(R.id.ll_mobile);
         edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
         sp_end_time = customDialogView.findViewById(R.id.sp_end_time);
@@ -365,7 +360,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
 
         ArrayAdapter<String> sp_adapter = new ArrayAdapter<String>(BookAppointmentActivity.this,
-                android.R.layout.simple_spinner_item, times);
+                R.layout.spinner_item, times);
         sp_end_time.setAdapter(sp_adapter);
         sp_start_time.setAdapter(sp_adapter);
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
@@ -521,7 +516,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                             LaunchActivity.getLaunchActivity().getEmail(),
                                             LaunchActivity.getLaunchActivity().getAuth(),
                                             bookSchedule);
-                                    new CustomToast().showToast(BookAppointmentActivity.this, "Call API for booking appointment");
                                 } else {
                                     ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                                 }

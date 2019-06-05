@@ -44,20 +44,11 @@
         android:layout_marginTop="10dp"
         android:padding="20dp">
 
-        <ImageView
-            android:id="@+id/iv_banner"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/token_banner_image_height"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:background="@drawable/before_token_generated" />
 
         <LinearLayout
             android:id="@+id/ll_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_banner"
             android:layout_marginBottom="25dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -68,21 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
-                android:text="Click button to create token"
+                android:text="Search patient by Mobile No. or Customer ID"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_twelve" />
+                android:textSize="@dimen/text_size_sixteen" />
 
-            <TextView
-                android:id="@+id/tvcount"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/bg_gradient_round"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="30sp"
-                android:visibility="invisible" />
 
             <LinearLayout
                 android:id="@+id/ll_main_section"
@@ -106,7 +86,7 @@
                         android:layout_weight="1"
                         android:checked="true"
                         android:text="Mobile No"
-                        android:textSize="@dimen/text_size_twelve"
+                        android:textSize="@dimen/text_size_fourteen"
                         app:buttonTint="@color/radio_button_color" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -117,7 +97,7 @@
                         android:layout_weight="1"
                         android:checked="false"
                         android:text="Customer ID"
-                        android:textSize="@dimen/text_size_twelve"
+                        android:textSize="@dimen/text_size_fourteen"
                         app:buttonTint="@color/radio_button_color" />
                 </RadioGroup>
 
@@ -155,7 +135,7 @@
                         android:maxLines="1"
                         android:minLines="1"
                         android:padding="10dp"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_fourteen" />
                 </LinearLayout>
 
                 <EditText
@@ -182,7 +162,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="Select patient name for test"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_size_twelve"
+                    android:textSize="@dimen/text_size_fourteen"
                     android:visibility="gone" />
 
 
@@ -201,16 +181,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
                     android:weightSum="1">
 
                     <Spinner
                         android:id="@+id/sp_start_time"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight=".5"
                         android:background="@drawable/sp_background"
@@ -221,7 +201,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="15dp"
                         android:layout_weight=".5"
                         android:background="@drawable/sp_background"
                         android:padding="5dp" />
@@ -232,15 +212,16 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:layout_marginTop="10dp">
 
 
                     <Button
                         android:id="@+id/btn_create_order"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/bg_gradient_round"
                         android:text="@string/create_token"
@@ -253,15 +234,15 @@
                         android:id="@+id/btn_create_token"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/bg_gradient_round"
                         android:text="@string/create_token"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_twelve" />
-
 
                 </FrameLayout>
             </LinearLayout>
