@@ -41,7 +41,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/btn_bg_inactive"
                 android:gravity="center"
-                android:text="@string/verify_phone_auth"
+                android:text="@string/request_email_otp"
                 android:textAllCaps="false"
                 android:textColor="@color/colorMobile"
                 android:textSize="@dimen/text_size_fourteen"/>

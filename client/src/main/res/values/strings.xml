@@ -341,4 +341,6 @@
     <string name="delivery_mode_home">Home Delivery</string>
     <string name="delivery_mode_takeaway">Pick up</string>
     <string name="delivery_mode">Delivery mode</string>
+    <string name="request_email_otp">Request email OTP</string>
+    <string name="verify_email">Verify Email</string>
 </resources>
