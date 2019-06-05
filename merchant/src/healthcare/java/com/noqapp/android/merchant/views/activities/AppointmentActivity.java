@@ -27,6 +27,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -39,6 +40,8 @@ import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -229,8 +232,19 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
-        List<EventDay> events = parseEventList(jsonScheduleList);
         this.jsonScheduleList =jsonScheduleList;
+        Collections.sort(jsonScheduleList.getJsonSchedules(), new Comparator<JsonSchedule>() {
+            public int compare(JsonSchedule o1, JsonSchedule o2) {
+                try {
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+        List<EventDay> events = parseEventList(jsonScheduleList);
+
         calendarView.setEvents(events);
         adapter = new EventListAdapter(AppointmentActivity.this, events, this);
         fh_list_view.setAdapter(adapter);
