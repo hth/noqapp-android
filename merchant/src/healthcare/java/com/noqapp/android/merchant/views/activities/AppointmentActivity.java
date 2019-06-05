@@ -50,6 +50,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     private String codeRQ = "";
     private ScrollView scroll_view;
     private JsonScheduleList jsonScheduleList;
+    private final int BOOKING_SUCCESS = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
                 in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
-                startActivity(in);
+                startActivityForResult(in,BOOKING_SUCCESS);
             }
         });
         fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,6 +138,15 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
             ShowAlertInformation.showNetworkDialog(this);
         }
 
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BOOKING_SUCCESS) {
+            if (resultCode == RESULT_OK) {
+                fetchEvents(calendarView.getCurrentPageDate());
+            }
+        }
     }
 
     private void scrollInList(JsonSchedule jsonSchedule) {

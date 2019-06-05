@@ -45,7 +45,14 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         btn_verify_email = findViewById(R.id.btn_verify_email);
         btn_validate_otp = findViewById(R.id.btn_validate_otp);
         initActionsViews(true);
-        tv_toolbar_title.setText(getString(R.string.change_email));
+        if (getIntent().getBooleanExtra("isValidated", false)) {
+            tv_toolbar_title.setText(getString(R.string.change_email));
+            btn_verify_email.setText("Start email migration");
+        }else {
+            tv_toolbar_title.setText(getString(R.string.verify_email));
+            edt_email.setText(getIntent().getStringExtra("email"));
+            edt_email.setEnabled(false);
+        }
         btn_verify_email.setOnClickListener(this);
         btn_validate_otp.setOnClickListener(this);
     }
@@ -73,7 +80,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 if (TextUtils.isEmpty(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_email_blank));
                 } else if (new CommonHelper().isValidEmail(edt_email.getText())) {
-                    progressDialog.setMessage("Email migration in progress...");
+                    progressDialog.setMessage("Request OTP in progress...");
                     progressDialog.show();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();

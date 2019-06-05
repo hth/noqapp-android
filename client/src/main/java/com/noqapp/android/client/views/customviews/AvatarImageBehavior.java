@@ -6,13 +6,14 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.common.customviews.CircularImageView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
+
 
 @SuppressWarnings("unused")
-public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageView> {
+public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircularImageView> {
 
     private final static float MIN_AVATAR_PERCENTAGE_SIZE = 0.3f;
     private final static int EXTRA_FINAL_AVATAR_PADDING = 80;
@@ -66,12 +67,12 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, CircleImageView child, View dependency) {
+    public boolean layoutDependsOn(CoordinatorLayout parent, CircularImageView child, View dependency) {
         return dependency instanceof Toolbar;
     }
 
     @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, CircleImageView child, View dependency) {
+    public boolean onDependentViewChanged(CoordinatorLayout parent, CircularImageView child, View dependency) {
         maybeInitProperties(child, dependency);
 
         final int maxScrollDistance = (int) (mStartToolbarPosition);
@@ -109,7 +110,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         return true;
     }
 
-    private void maybeInitProperties(CircleImageView child, View dependency) {
+    private void maybeInitProperties(CircularImageView child, View dependency) {
         if (mStartYPosition == 0)
             mStartYPosition = (int) (dependency.getY());
 

@@ -10,15 +10,13 @@
 
               android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.noqapp.android.common.customviews.CircularImageView
             android:id="@+id/iv_profile"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:clickable="true"
             android:elevation="5dp"
-            android:src="@drawable/user_profile_big"
-            app:civ_border_color="#FFFFFFFF"
-            app:civ_border_width="3dp"/>
+            android:src="@drawable/user_profile_big" />
 
     <TextView
             android:id="@+id/tv_name"
