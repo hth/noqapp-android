@@ -22,7 +22,7 @@
             android:background="@android:color/transparent"
             android:padding="@dimen/list_item_margin">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.noqapp.android.common.customviews.CircularImageView
                 android:id="@+id/iv_profile"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
@@ -34,9 +34,7 @@
                 android:layout_marginBottom="5dp"
                 android:elevation="5dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_theme"
-                app:civ_border_color="@android:color/white"
-                app:civ_border_width="3dp" />
+                android:src="@drawable/profile_theme" />
 
             <TextView
                 android:id="@+id/tv_name"

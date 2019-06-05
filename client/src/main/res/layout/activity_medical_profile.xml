@@ -44,14 +44,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp">
 
-                        <ImageView
+                        <com.noqapp.android.common.customviews.CircularImageView
                             android:id="@+id/iv_profile"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_alignParentLeft="true"
                             android:layout_marginRight="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:visibility="visible" />
+                            android:layout_marginBottom="5dp" />
 
 
                         <LinearLayout
