@@ -303,7 +303,7 @@
     <string name="order_items">Order Items</string>
     <string name="history">History</string>
     <string name="empty_review">No one has reviewed. Be the first to review.</string>
-    <string name="check_your_email">Please check your email to get the code</string>
+    <string name="check_your_email">Please check your email to get the OTP</string>
     <string name="rejoin">Rejoin</string>
     <string name="reorder">Reorder</string>
     <string name="additional">Specify delivery/order instruction, If any</string>
@@ -341,6 +341,6 @@
     <string name="delivery_mode_home">Home Delivery</string>
     <string name="delivery_mode_takeaway">Pick up</string>
     <string name="delivery_mode">Delivery mode</string>
-    <string name="request_email_otp">Request email OTP</string>
+    <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
 </resources>
