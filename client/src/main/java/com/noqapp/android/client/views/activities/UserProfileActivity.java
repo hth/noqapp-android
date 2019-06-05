@@ -175,6 +175,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
                 changeEmail.putExtra("email",edt_Mail.getText().toString());
+                changeEmail.putExtra("isValidated",NoQueueBaseActivity.getUserProfile().isAccountValidated());
                 startActivity(changeEmail);
                 break;
 
