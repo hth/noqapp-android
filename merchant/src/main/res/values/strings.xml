@@ -242,6 +242,5 @@
     <string name="payment_not_allowed">You do not have permission to accept or refund payment</string>
     <string name="appointment_duration">Appointment duration</string>
     <string name="appointment_accepting_week">Accept appointment till next</string>
-    <string name="outdated_app">This version of NoQApp became out of date. Tap Download below to get the latest version from the Google Play Store</string>
 
 </resources>

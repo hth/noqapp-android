@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NoQLibrary</string>
+    <string name="outdated_app">This version of NoQApp became out of date. Tap Download below to get the latest version from the Google Play Store</string>
+
 </resources>

@@ -255,7 +255,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".views.activities.AppUpdateActivity"
+            android:name="com.noqapp.android.common.views.activities.AppUpdateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity

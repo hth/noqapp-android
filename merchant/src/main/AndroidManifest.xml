@@ -60,17 +60,17 @@
             android:name="com.noqapp.android.merchant.views.activities.SettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.PhysicalActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.QReviewListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.PhysicalDialogActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -142,28 +142,28 @@
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ProductListActivity"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ScribbleActivity"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.SliderActivity"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.AppUpdateActivity"
+            android:name="com.noqapp.android.common.views.activities.AppUpdateActivity"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.PrivacyActivity"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.WebViewActivity"
             android:exported="false"
             android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity"
             android:theme="@style/BaseTheme"
