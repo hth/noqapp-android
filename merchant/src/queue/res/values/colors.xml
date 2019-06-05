@@ -21,4 +21,5 @@
 
     <color name="toast_background">@color/color_indigo_toast</color>
     <color name="download_circle_bg">@color/colorAccent</color>
+    <color name="pressed_color">#dc7083</color>
 </resources>
