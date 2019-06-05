@@ -1,27 +1,22 @@
-package com.noqapp.android.merchant.views.activities;
+package com.noqapp.android.common.views.activities;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.common.R;
+import com.noqapp.android.common.utils.CommonHelper;
 
 
 public class AppUpdateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -31,7 +26,7 @@ public class AppUpdateActivity extends AppCompatActivity {
         btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppUtils.openPlayStore(AppUpdateActivity.this);
+                CommonHelper.openPlayStore(AppUpdateActivity.this);
             }
         });
     }

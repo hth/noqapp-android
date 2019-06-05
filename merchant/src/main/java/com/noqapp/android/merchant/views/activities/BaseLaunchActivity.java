@@ -46,6 +46,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
@@ -74,7 +75,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
@@ -122,7 +122,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected DrawerLayout mDrawerLayout;
     protected ExpandableListView mDrawerList;
     protected ActionBarDrawerToggle mDrawerToggle;
-    //protected ArrayList<NavigationBean> drawerItem = new ArrayList<>();
 
     public void enableDisableDrawer(boolean isEnable) {
         mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -173,7 +172,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected void initDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerList = findViewById(R.id.drawer_list);
-        // drawerItem.clear();
         if (isLoggedIn()) {
             updateMenuList(getUserLevel() == UserLevelEnum.S_MANAGER);
         }

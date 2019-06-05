@@ -49,6 +49,7 @@ import com.noqapp.android.common.utils.NetworkUtil;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;

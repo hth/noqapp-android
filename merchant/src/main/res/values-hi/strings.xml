@@ -154,5 +154,4 @@
     <string name="text_limited_followup_days">Limited follow-up until days</string>
     <string name="text_discounted_followup_price">Limited follow-up discounted price</string>
     <string name="screen_order_q_history">Order Queue History</string>
-    <string name="outdated_app">This version of NoQApp became out of date. Tap Download below to get the latest version from the Google Play Store</string>
 </resources>
