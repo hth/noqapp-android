@@ -36,6 +36,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
@@ -539,9 +540,12 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                                     progressDialog.setMessage("Booking appointment...");
                                     progressDialog.show();
-                                    BookSchedule bookSchedule = new BookSchedule();
-                                    bookSchedule.setBusinessCustomer(jsonBusinessCustomer);
-                                    bookSchedule.setJsonSchedule(jsonSchedule);
+
+                                    BookSchedule bookSchedule = new BookSchedule()
+                                            .setBusinessCustomer(jsonBusinessCustomer)
+                                            .setJsonSchedule(jsonSchedule)
+                                            .setBookActionType(ActionTypeEnum.ADD);
+
                                     scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
                                             LaunchActivity.getLaunchActivity().getEmail(),
                                             LaunchActivity.getLaunchActivity().getAuth(),
