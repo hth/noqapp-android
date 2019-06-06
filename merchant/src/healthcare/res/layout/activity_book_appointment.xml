@@ -25,12 +25,13 @@
                 android:id="@+id/tv_doctor_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:layout_marginLeft="5dp"
+                android:padding="10dp"
                 android:text="Dr. X"
                 android:textColor="#333"
                 android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_doctor_category"
@@ -40,7 +41,8 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="10dp"
                 android:textColor="#333"
-                android:textSize="@dimen/text_size_sixteen" />
+                android:textSize="@dimen/text_size_sixteen"
+                android:visibility="gone" />
 
             <devs.mulham.horizontalcalendar.HorizontalCalendarView
                 android:id="@+id/horizontalCalendarView"
@@ -98,6 +100,7 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical"
             android:paddingBottom="10dp">
+
             <Button
                 android:id="@+id/btn_book_appointment"
                 android:layout_width="match_parent"

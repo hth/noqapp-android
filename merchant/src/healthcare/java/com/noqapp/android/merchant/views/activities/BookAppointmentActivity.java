@@ -212,6 +212,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         }
         appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
+        appointmentDateAdapter.notifyDataSetChanged();
         if (listData.size() == 0) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {

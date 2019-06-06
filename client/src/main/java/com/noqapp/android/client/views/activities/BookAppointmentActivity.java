@@ -184,6 +184,8 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
         appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
+        appointmentDateAdapter.notifyDataSetChanged();
+        selectedPos = -1;
         if (listData.size() == 0) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
