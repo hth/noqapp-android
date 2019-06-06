@@ -104,7 +104,7 @@ public interface ScheduleApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
     @POST("api/m/schedule/bookSchedule.json")
-    Call<JsonScheduleList> bookSchedule(
+    Call<JsonSchedule> bookSchedule(
             @Header("X-R-DID")
             String did,
 
