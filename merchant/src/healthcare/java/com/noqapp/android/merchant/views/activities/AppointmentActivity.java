@@ -1,13 +1,17 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -19,13 +23,12 @@ import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
-
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
@@ -36,6 +39,7 @@ import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
+import com.noqapp.android.merchant.views.utils.OnFlingGestureListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +49,8 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class AppointmentActivity extends AppCompatActivity implements AppointmentPresenter, EventListAdapter.OnItemClickListener {
+public class AppointmentActivity extends AppCompatActivity implements AppointmentPresenter,
+        EventListAdapter.OnItemClickListener {
     private FixedHeightListView fh_list_view;
     private ProgressDialog progressDialog;
     private CalendarView calendarView;
@@ -54,6 +59,8 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     private ScrollView scroll_view;
     private JsonScheduleList jsonScheduleList;
     private final int BOOKING_SUCCESS = 101;
+    private int weight = 5;
+    private boolean isOpen = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +84,155 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         codeRQ = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         Log.e("CODE_QR", codeRQ);
         calendarView = findViewById(R.id.calendarView);
+        calendarView.setSwipeEnabled(false);
         fh_list_view = findViewById(R.id.fh_list_view);
         scroll_view = findViewById(R.id.scroll_view);
+        if (new AppUtils().isTablet(getApplicationContext())) {
+            RelativeLayout rl_parent = findViewById(R.id.rl_parent);
+            rl_parent.setOnTouchListener(new OnFlingGestureListener(this) {
+
+                @Override
+                public void onTopToBottom() {
+                    new CustomToast().showToast(AppointmentActivity.this, "TOp swipe");
+                }
+
+                @Override
+                public void onRightToLeft() {
+                    new CustomToast().showToast(AppointmentActivity.this, "Right swipe");
+                    //close it
+                    if (isOpen) {
+                        ValueAnimator m1 = ValueAnimator.ofFloat(weight, 0); //fromWeight, toWeight
+                        m1.setDuration(400);
+                        m1.setStartDelay(100); //Optional Delay
+                        m1.setInterpolator(new LinearInterpolator());
+                        m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                                calendarView.requestLayout();
+                            }
+
+                        });
+                        m1.start();
+                        isOpen = false;
+                    }
+                }
+
+                @Override
+                public void onLeftToRight() {
+                    //open it
+                    if (!isOpen) {
+                        new CustomToast().showToast(AppointmentActivity.this, "Left swipe");
+                        ValueAnimator m1 = ValueAnimator.ofFloat(0, 5); //fromWeight, toWeight
+                        m1.setDuration(400);
+                        m1.setStartDelay(100); //Optional Delay
+                        m1.setInterpolator(new LinearInterpolator());
+                        m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                                calendarView.requestLayout();
+                            }
+
+                        });
+                        m1.start();
+                        isOpen = true;
+                    }
+                }
+
+                @Override
+                public void onBottomToTop() {
+                    new CustomToast().showToast(AppointmentActivity.this, "bottom swipe");
+                }
+            });
+        }
         FloatingActionButton fab_add_image = findViewById(R.id.fab_add_image);
         fab_add_image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
                 in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
-                startActivityForResult(in,BOOKING_SUCCESS);
+                startActivityForResult(in, BOOKING_SUCCESS);
             }
         });
+        FloatingActionButton fab_decrease = findViewById(R.id.fab_decrease);
+        FloatingActionButton fab_increase = findViewById(R.id.fab_increase);
+        fab_decrease.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //
+                if (weight > 2 && weight <= 5) {
+                    // --weight;
+
+
+                    ValueAnimator m1 = ValueAnimator.ofFloat(weight, --weight); //fromWeight, toWeight
+                    m1.setDuration(400);
+                    m1.setStartDelay(100); //Optional Delay
+                    m1.setInterpolator(new LinearInterpolator());
+                    m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                            calendarView.requestLayout();
+                        }
+
+                    });
+                    m1.start();
+
+
+//                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+//                    lp.weight = weight;
+//                    calendarView.setLayoutParams(lp);
+//
+//                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+//                    lp1.weight = 10-weight;
+//                    ll_right.setLayoutParams(lp1);
+                    fab_increase.show();
+                    if (weight == 2) {
+                        fab_decrease.hide();
+                    }
+//
+                }
+            }
+        });
+
+        fab_increase.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //
+                if (weight >= 2 && weight < 5) {
+                    //++weight;
+
+
+                    ValueAnimator m1 = ValueAnimator.ofFloat(weight, ++weight); //fromWeight, toWeight
+                    m1.setDuration(400);
+                    m1.setStartDelay(100); //Optional Delay
+                    m1.setInterpolator(new LinearInterpolator());
+                    m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                            calendarView.requestLayout();
+                        }
+
+                    });
+                    m1.start();
+//                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+//                    lp.weight = weight;
+//                    calendarView.setLayoutParams(lp);
+//
+//                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+//                    lp1.weight = 10-weight;
+//                    ll_right.setLayoutParams(lp1);
+                    fab_decrease.show();
+                    if (weight == 5) {
+                        fab_increase.hide();
+                    }
+//
+                }
+            }
+        });
+        fab_increase.hide();
+        fab_decrease.hide();
+
         fh_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -232,7 +377,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
-        this.jsonScheduleList =jsonScheduleList;
+        this.jsonScheduleList = jsonScheduleList;
         Collections.sort(jsonScheduleList.getJsonSchedules(), new Comparator<JsonSchedule>() {
             public int compare(JsonSchedule o1, JsonSchedule o2) {
                 try {
@@ -302,4 +447,6 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     public void appointmentReject(EventDay item, View view, int pos) {
 
     }
+
+
 }
