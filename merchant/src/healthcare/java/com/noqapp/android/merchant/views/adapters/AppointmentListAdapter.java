@@ -101,7 +101,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         holder.rl_edit_complaints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddComplaintsDialog(context,holder.tv_chief_complaints);
+                showAddComplaintsDialog(context,holder.tv_chief_complaints,jsonSchedule,position);
             }
         });
 //        switch (jsonSchedule.getAppointmentStatus()) {
@@ -174,6 +174,8 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         void appointmentAccept(JsonSchedule jsonSchedule, int pos);
 
         void appointmentReject(JsonSchedule jsonSchedule, int pos);
+
+        void appointmentEdit(JsonSchedule jsonSchedule, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -211,7 +213,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
 
-    private void showAddComplaintsDialog(final Context mContext, TextView textView) {
+    private void showAddComplaintsDialog(final Context mContext, TextView textView, JsonSchedule jsonSchedule, int position) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_edit_complaint);
@@ -241,9 +243,9 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                     actv_chief_complaints.setError("Cheif complaints can not be empty");
                 } else {
                     new AppUtils().hideKeyBoard((Activity) mContext);
-                    textView.setText(actv_chief_complaints.getText().toString());
-
-
+                    //textView.setText(actv_chief_complaints.getText().toString());
+                    jsonSchedule.setChiefComplain(actv_chief_complaints.getText().toString());
+                    listener.appointmentEdit(jsonSchedule,position);
                     dialog.dismiss();
                 }
             }

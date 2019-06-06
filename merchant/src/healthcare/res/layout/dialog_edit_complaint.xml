@@ -39,9 +39,9 @@
             android:gravity="left|center_vertical"
             android:padding="5dp"
             android:inputType="textNoSuggestions|textCapSentences"
-            android:maxLength="20"
-            android:maxLines="1"
-            android:minLines="1"
+            android:maxLength="256"
+            android:maxLines="2"
+            android:minLines="2"
             android:singleLine="true"
             android:textSize="@dimen/text_size_sixteen" />
 

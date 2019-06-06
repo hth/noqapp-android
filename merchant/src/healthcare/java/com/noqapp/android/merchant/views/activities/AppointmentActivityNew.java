@@ -19,10 +19,12 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
@@ -141,6 +143,20 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
                 LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+    }
+
+    @Override
+    public void appointmentEdit(JsonSchedule jsonSchedule, int pos) {
+        progressDialog.setMessage("Editing appointment...");
+        progressDialog.show();
+        BookSchedule bookSchedule = new BookSchedule()
+                .setBusinessCustomer(null)
+                .setJsonSchedule(jsonSchedule)
+                .setBookActionType(ActionTypeEnum.EDIT);
+        scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
+                LaunchActivity.getLaunchActivity().getEmail(),
+                LaunchActivity.getLaunchActivity().getAuth(),
+                bookSchedule);
     }
 
     @Override

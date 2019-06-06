@@ -51,6 +51,7 @@
                 android:background="#FAFAFA"
                 app:selectorColor="@color/colorAccent"
                 app:textColorNormal="#333"
+                android:paddingTop="5dp"
                 app:textColorSelected="@color/colorAccent" />
 
             <TextView
