@@ -353,7 +353,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
-        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : jsonPurchaseOrder.getTransactionId());
+        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 

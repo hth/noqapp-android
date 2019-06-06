@@ -305,7 +305,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
 
         }
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
-        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : jsonPurchaseOrder.getTransactionId());
+        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
         } else {
