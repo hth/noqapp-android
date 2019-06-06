@@ -10,5 +10,7 @@ public interface AppointmentPresenter extends ResponseErrorPresenter {
 
     void appointmentBookingResponse(JsonSchedule jsonSchedule);
 
+    void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule);
+
     void appointmentCancelResponse(JsonResponse jsonResponse);
 }

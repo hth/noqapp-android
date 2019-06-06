@@ -113,6 +113,11 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             }
         });
 
+      fetchData();
+
+    }
+
+    private void fetchData() {
         progressDialog.show();
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
@@ -121,7 +126,6 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 LaunchActivity.getLaunchActivity().getAuth(),
                 getIntent().getStringExtra("selectedDate"),
                 getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
-
     }
 
     @Override
@@ -204,6 +208,12 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
         dismissProgress();
+    }
+
+    @Override
+    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
+        dismissProgress();
+        fetchData();
     }
 
     @Override

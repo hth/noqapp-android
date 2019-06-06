@@ -295,6 +295,11 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
+        dismissProgress();
+    }
+
+    @Override
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
