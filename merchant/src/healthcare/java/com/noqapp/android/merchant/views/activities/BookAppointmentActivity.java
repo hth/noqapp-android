@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
@@ -51,6 +54,8 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.AppointmentDateAdapter;
 import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,7 +69,8 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity extends AppCompatActivity implements
-        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter {
+        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter
+        , RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<JsonHour> jsonHours;
@@ -80,6 +86,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private EditText edt_mobile;
     private Spinner sp_start_time, sp_end_time;
     private TextView tv_select_patient;
+    private AutoCompleteTextView actv_chief_complaints;
     private String countryCode = "";
     private String cid = "";
     private CountryCodePicker ccp;
@@ -262,14 +269,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements
 
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
-        if(null != jsonSchedule ){
+        if (null != jsonSchedule) {
             Log.e("Booking status", jsonSchedule.toString());
             new CustomToast().showToast(this, "Appointment booked successfully!!!");
             Intent intent = new Intent();
             setResult(Activity.RESULT_OK, intent);
             finish();
-        }else{
-           // Do nothing
+        } else {
+            // Do nothing
             new CustomToast().showToast(this, "Appointment booking failed");
         }
         dismissProgress();
@@ -289,8 +296,18 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
+        if (null != eej) {
+            if (eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
+                new CustomToast().showToast(this, eej.getReason());
+                Intent in = new Intent(this, LoginActivity.class);
+                in.putExtra("phone_no", edt_mobile.getText().toString());
+                startActivity(in);
+                RegistrationActivity.registerCallBack = this;
+                LoginActivity.loginCallBack = this;
+            } else {
+                new ErrorResponseHandler().processError(this, eej);
+            }
+        }
     }
 
     @Override
@@ -358,6 +375,18 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         sp_start_time = customDialogView.findViewById(R.id.sp_start_time);
         sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
         tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
+        actv_chief_complaints = customDialogView.findViewById(R.id.actv_chief_complaints);
+        final ArrayList<String> data = new ArrayList<>();
+        ArrayList<DataObj> temp = MedicalDataStatic.Pediatrician.getSymptoms();
+        if (temp.size() > 0) {
+            for (int i = 0; i < temp.size(); i++) {
+                data.add(temp.get(i).getShortName());
+            }
+        }
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
+        actv_chief_complaints.setAdapter(adapter1);
+        actv_chief_complaints.setThreshold(1);
+        actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
 
         ArrayAdapter<String> sp_adapter = new ArrayAdapter<String>(BookAppointmentActivity.this,
                 R.layout.spinner_item, times);
@@ -503,6 +532,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                         .setCodeQR(codeQR)
                                         .setStartTime(removeColon(temp[0].trim()))
                                         .setEndTime(removeColon(temp[1].trim()))
+                                        .setChiefComplain(actv_chief_complaints.getText().toString())
                                         .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate)).
                                                 setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
 
@@ -531,5 +561,10 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 }
             });
         }
+    }
+
+    @Override
+    public void passPhoneNo(JsonProfile jsonProfile) {
+        findCustomerResponse(jsonProfile);
     }
 }
