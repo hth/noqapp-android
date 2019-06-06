@@ -50,7 +50,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
-    private TextView tv_cost, tv_order_state;
+    private TextView tv_cost, tv_order_state, tv_transaction_id;
     private Spinner sp_payment_mode;
     private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
@@ -114,6 +114,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_address = findViewById(R.id.tv_address);
         tv_cost = findViewById(R.id.tv_cost);
         tv_order_state = findViewById(R.id.tv_order_state);
+        tv_transaction_id = findViewById(R.id.tv_transaction_id);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -304,6 +305,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
 
         }
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : jsonPurchaseOrder.getTransactionId());
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
         } else {

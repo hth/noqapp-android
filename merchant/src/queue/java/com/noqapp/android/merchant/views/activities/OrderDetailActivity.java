@@ -71,7 +71,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private CardView cv_notes;
     private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via, tv_order_state;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via, tv_order_state, tv_transaction_id;
     private Button btn_pay_partial, btn_refund;
     public static UpdateWholeList updateWholeList;
     private RelativeLayout rl_multiple;
@@ -124,6 +124,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_multiple_payment = findViewById(R.id.tv_multiple_payment);
         tv_transaction_via = findViewById(R.id.tv_transaction_via);
         tv_order_state = findViewById(R.id.tv_order_state);
+        tv_transaction_id = findViewById(R.id.tv_transaction_id);
         rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
@@ -352,6 +353,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
         tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
         tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : jsonPurchaseOrder.getTransactionId());
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
 
