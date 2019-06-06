@@ -200,7 +200,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = getTimeSlots(jsonScheduleList.getAppointmentDuration(), from, to);
+        ArrayList<String> timeSlot = getTimeSlots(jsonScheduleList.getAppointmentDuration(), from, to,true);
         times.clear();
         for (int i = 0; i < timeSlot.size() - 1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
@@ -216,8 +216,10 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         selectedPos = -1;
     }
 
-    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime) {
+    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
         ArrayList<String> timeSlot = new ArrayList<String>();
+        if(slotMinute == 0)
+            return timeSlot;
         try {
             int fromHour, fromMinute, toHour, toMinute;
             fromHour = Integer.parseInt(strFromTime.split(":")[0]);
@@ -236,10 +238,18 @@ public class BookAppointmentActivity extends AppCompatActivity implements
             calendar1.set(Calendar.HOUR_OF_DAY, toHour);
             calendar1.set(Calendar.MINUTE, toMinute);
             long endTime = calendar1.getTimeInMillis();
-            while (currentTime <= endTime) {
-                DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                timeSlot.add(sdfTime.format(new Date(currentTime)));
-                currentTime = currentTime + slot;
+            if(isEqual) {
+                while (currentTime <= endTime) {
+                    DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    timeSlot.add(sdfTime.format(new Date(currentTime)));
+                    currentTime = currentTime + slot;
+                }
+            }else{
+                while (currentTime < endTime) {
+                    DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                    timeSlot.add(sdfTime.format(new Date(currentTime)));
+                    currentTime = currentTime + slot;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -250,16 +260,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
+        this.jsonScheduleList = jsonScheduleList;
         ArrayList<String> filledTimes = new ArrayList<>();
         times.clear();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                String str = String.valueOf(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
-                String input = String.format("%4s", str).replace(' ', '0');
-                int index = 1;
-                String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-                Log.e("Check string----- ", input + "----------- " + outPut);
-                filledTimes.add(outPut);
+               // getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
+                filledTimes.addAll(getTimeSlots(20,AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()),false));
             }
         }
         int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);
@@ -446,6 +454,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 }
 
                 if (isValid) {
+                    progressDialog.setMessage("Searching patient...");
                     progressDialog.show();
                     progressDialog.setCancelable(false);
                     progressDialog.setCanceledOnTouchOutside(false);
@@ -514,6 +523,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
                                 btn_create_order.setEnabled(false);
+                                progressDialog.setMessage("Booking appointment...");
                                 progressDialog.show();
                                 progressDialog.setCancelable(false);
                                 progressDialog.setCanceledOnTouchOutside(false);
@@ -531,28 +541,19 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                 String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
                                 JsonSchedule jsonSchedule = new JsonSchedule()
                                         .setCodeQR(codeQR)
-                                        .setStartTime(removeColon(temp[0].trim()))
-                                        .setEndTime(removeColon(temp[1].trim()))
+                                        .setStartTime(start)
+                                        .setEndTime(end)
                                         .setChiefComplain(actv_chief_complaints.getText().toString())
                                         .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate)).
                                                 setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    progressDialog.setMessage("Booking appointment...");
-                                    progressDialog.show();
-
-                                    BookSchedule bookSchedule = new BookSchedule()
-                                            .setBusinessCustomer(jsonBusinessCustomer)
-                                            .setJsonSchedule(jsonSchedule)
-                                            .setBookActionType(ActionTypeEnum.ADD);
-
-                                    scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
-                                            LaunchActivity.getLaunchActivity().getEmail(),
-                                            LaunchActivity.getLaunchActivity().getAuth(),
-                                            bookSchedule);
-                                } else {
-                                    ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
-                                }
+                                BookSchedule bookSchedule = new BookSchedule()
+                                        .setBusinessCustomer(jsonBusinessCustomer)
+                                        .setJsonSchedule(jsonSchedule)
+                                        .setBookActionType(ActionTypeEnum.ADD);
+                                scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
+                                        LaunchActivity.getLaunchActivity().getEmail(),
+                                        LaunchActivity.getLaunchActivity().getAuth(),
+                                        bookSchedule);
                             } else {
                                 ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                             }

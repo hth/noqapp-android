@@ -240,4 +240,13 @@ public class CommonHelper {
         return dayOfWeek;
     }
 
+
+    public static String getTimeFourDigitWithColon(int time ){
+        String str = String.valueOf(time);
+        String input = String.format("%4s", str).replace(' ', '0');
+        int index = 1;
+        String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
+        Log.e("Check string----- ", input + "----------- " + outPut);
+        return outPut;
+    }
 }
