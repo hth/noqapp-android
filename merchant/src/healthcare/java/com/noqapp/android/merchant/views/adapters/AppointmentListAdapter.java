@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
@@ -104,23 +105,24 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                 showAddComplaintsDialog(context,holder.tv_chief_complaints,jsonSchedule,position);
             }
         });
-//        switch (jsonSchedule.getAppointmentStatus()) {
-//            case U:
-//                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
-//                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
-//                break;
-//            case A:
-//                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept));
-//                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_empty));
-//                break;
-//            case R:
-//                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_empty));
-//                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject));
-//                break;
-//            case S:
-//                // Define what to do
-//                break;
-//        }
+        switch (jsonSchedule.getAppointmentStatus()) {
+            case U:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_allowed));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_allowed));
+                break;
+            case A:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accepted));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_allowed));
+                break;
+            case R:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_not_allowed));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.rejected));
+                break;
+            case S:
+                holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_not_allowed));
+                holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_not_allowed));
+                break;
+        }
         holder.rl_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
