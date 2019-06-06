@@ -37,8 +37,7 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_YYYY_MM_DD_KK_MM = new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.getDefault());
     public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.getDefault());
     public static final SimpleDateFormat SDF_ISO8601_FMT = new SimpleDateFormat(ISO8601_FMT, Locale.getDefault());
-    public static String CURRENCY_SYMBOL = "currencySymbol";
-
+    public static final String CURRENCY_SYMBOL = "currencySymbol";
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
     public static String convertDOBToValidFormat(String dob) {
@@ -114,7 +113,6 @@ public class CommonHelper {
             DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(dob));
             DateTime now = DateTime.now();
             int years = Years.yearsBetween(dateTime, now).getYears();
-
             if (years <= 1) {
                 int months = Months.monthsBetween(dateTime, now).getMonths();
                 if (months <= 1) {
@@ -162,7 +160,6 @@ public class CommonHelper {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return new Date();
     }
 
@@ -239,7 +236,6 @@ public class CommonHelper {
         }
         return dayOfWeek;
     }
-
 
     public static String getTimeFourDigitWithColon(int time ){
         String str = String.valueOf(time);

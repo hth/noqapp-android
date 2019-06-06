@@ -178,7 +178,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to,true);
+        ArrayList<String> timeSlot = getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
         for (int i = 0; i < timeSlot.size() - 1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
@@ -191,7 +191,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
     }
 
-    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual ) {
+    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
         ArrayList<String> timeSlot = new ArrayList<String>();
         try {
             int fromHour, fromMinute, toHour, toMinute;
@@ -211,13 +211,13 @@ public class BookAppointmentActivity extends BaseActivity implements
             calendar1.set(Calendar.HOUR_OF_DAY, toHour);
             calendar1.set(Calendar.MINUTE, toMinute);
             long endTime = calendar1.getTimeInMillis();
-            if(isEqual) {
+            if (isEqual) {
                 while (currentTime <= endTime) {
                     DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     timeSlot.add(sdfTime.format(new Date(currentTime)));
                     currentTime = currentTime + slot;
                 }
-            }else{
+            } else {
                 while (currentTime < endTime) {
                     DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     timeSlot.add(sdfTime.format(new Date(currentTime)));
@@ -236,16 +236,9 @@ public class BookAppointmentActivity extends BaseActivity implements
         ArrayList<String> filledTimes = new ArrayList<>();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-//                String str = String.valueOf(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
-//                String input = String.format("%4s", str).replace(' ', '0');
-//                int index = 1;
-//                String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-//                Log.e("Check string----- ", input + "----------- " + outPut);
-//                filledTimes.add(outPut);
                 filledTimes.addAll(getTimeSlots(bizStoreElastic.getAppointmentDuration(),
                         AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()),false));
-
+                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), false));
             }
         }
         int dayOfWeek = AppUtilities.getDayOfWeek(selectedDate);
