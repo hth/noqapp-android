@@ -117,4 +117,8 @@ public class Formatter {
     public static String duration(int startHour, int endHour) {
         return Formatter.convertMilitaryTo12HourFormat(startHour) + " - " + Formatter.convertMilitaryTo12HourFormat(endHour);
     }
+
+    public static LocalTime getLocalTime(int hourAndMinute) {
+        return parseLocalTime(String.format(Locale.US, "%04d", hourAndMinute));
+    }
 }

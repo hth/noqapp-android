@@ -95,7 +95,7 @@ public class ScheduleApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "scheduleAction fetch " + String.valueOf(response.body()));
-                        appointmentPresenter.appointmentBookingResponse(response.body());
+                        appointmentPresenter.appointmentAcceptRejectResponse(response.body());
                     } else {
                         Log.e(TAG, "Failed to fetch scheduleAction");
                         appointmentPresenter.responseErrorPresenter(response.body().getError());

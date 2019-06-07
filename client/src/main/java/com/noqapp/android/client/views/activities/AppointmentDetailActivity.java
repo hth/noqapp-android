@@ -162,6 +162,11 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
     }
 
     @Override
+    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
+        dismissProgress();
+    }
+
+    @Override
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         Log.v("appointmentCancelResp", "" + jsonResponse.getResponse());
         if (Constants.SUCCESS == jsonResponse.getResponse()) {

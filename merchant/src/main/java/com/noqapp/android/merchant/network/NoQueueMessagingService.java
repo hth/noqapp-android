@@ -1,14 +1,5 @@
 package com.noqapp.android.merchant.network;
 
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.database.utils.NotificationDB;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.firebase.messaging.RemoteMessage;
-
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -22,12 +13,34 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.util.Log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
+import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
+import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.database.utils.NotificationDB;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.List;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
@@ -69,13 +82,94 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
             clearNotifications(this);
+            Log.e("M-Notification: ",remoteMessage.getData().toString());
 
             // add notification to DB
 
             if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                 NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
             }
+            MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
 
+            Object object = null;
+            switch (messageOrigin) {
+                case QA:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
+                        Log.e("FCM", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case Q:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicQueueData.class);
+                        Log.e("FCM", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case CQO:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        // Do nothing here
+                        Log.e("FCM", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(LaunchActivity.getLaunchActivity(), "Parsing exception", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case QR:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientData.class);
+                        Log.e("FCM Queue Review", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case OR:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonClientOrderData.class);
+                        Log.e("FCM Order Review", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case O:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicOrderData.class);
+                        Log.e("FCM order ", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case A:
+                case D:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonAlertData.class);
+                        Log.e("FCM Review store", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case MF:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonMedicalFollowUp.class);
+                        Log.e("FCM Medical Followup", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    // object = null;
+            }
 
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
@@ -86,6 +180,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra(Constants.CURRENT_SERVING, remoteMessage.getData().get(Constants.CurrentlyServing));
                 pushNotification.putExtra(Constants.LASTNO, remoteMessage.getData().get(Constants.LastNumber));
                 pushNotification.putExtra(Constants.Firebase_Type, remoteMessage.getData().get(Constants.Firebase_Type));
+                pushNotification.putExtra("object", (Serializable) object);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
                 // app is in background, show the notification in notification tray

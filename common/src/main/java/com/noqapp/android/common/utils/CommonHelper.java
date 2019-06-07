@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -37,8 +38,7 @@ public class CommonHelper {
     public static final SimpleDateFormat SDF_YYYY_MM_DD_KK_MM = new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.getDefault());
     public static final SimpleDateFormat SDF_DD_MMM_YY_HH_MM_A = new SimpleDateFormat("dd MMM yy, hh:mm a", Locale.getDefault());
     public static final SimpleDateFormat SDF_ISO8601_FMT = new SimpleDateFormat(ISO8601_FMT, Locale.getDefault());
-    public static String CURRENCY_SYMBOL = "currencySymbol";
-
+    public static final String CURRENCY_SYMBOL = "currencySymbol";
     private static SimpleDateFormat MMM_YYYY = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
 
     public static String convertDOBToValidFormat(String dob) {
@@ -114,7 +114,6 @@ public class CommonHelper {
             DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(dob));
             DateTime now = DateTime.now();
             int years = Years.yearsBetween(dateTime, now).getYears();
-
             if (years <= 1) {
                 int months = Months.monthsBetween(dateTime, now).getMonths();
                 if (months <= 1) {
@@ -162,7 +161,6 @@ public class CommonHelper {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return new Date();
     }
 
@@ -238,6 +236,69 @@ public class CommonHelper {
             dayOfWeek = 7;
         }
         return dayOfWeek;
+    }
+
+    public static String getTimeFourDigitWithColon(int time) {
+        String str = String.valueOf(time);
+        String input = String.format("%4s", str).replace(' ', '0');
+        int index = 1;
+        String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
+        Log.e("Check string----- ", input + "----------- " + outPut);
+        return outPut;
+    }
+
+    public static ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
+        ArrayList<String> timeSlot = new ArrayList<String>();
+        if (slotMinute == 0) {
+            return timeSlot;
+        } else {
+            try {
+                int fromHour, fromMinute, toHour, toMinute;
+                fromHour = Integer.parseInt(strFromTime.split(":")[0]);
+                fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
+
+                toHour = Integer.parseInt(strToTime.split(":")[0]);
+                toMinute = Integer.parseInt(strToTime.split(":")[1]);
+
+                long slot = slotMinute * 60 * 1000;
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
+                calendar2.set(Calendar.MINUTE, fromMinute);
+
+                long currentTime = calendar2.getTimeInMillis();
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.HOUR_OF_DAY, toHour);
+                calendar1.set(Calendar.MINUTE, toMinute);
+                long endTime = calendar1.getTimeInMillis();
+                if (isEqual) {
+                    while (currentTime <= endTime) {
+                        DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        timeSlot.add(sdfTime.format(new Date(currentTime)));
+                        currentTime = currentTime + slot;
+                    }
+                } else {
+                    while (currentTime < endTime) {
+                        DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        timeSlot.add(sdfTime.format(new Date(currentTime)));
+                        currentTime = currentTime + slot;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return timeSlot;
+        }
+    }
+
+    public static int removeColon(String input) {
+        try {
+            if (input.contains(":"))
+                return Integer.parseInt(input.replace(":", ""));
+            else return Integer.parseInt(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

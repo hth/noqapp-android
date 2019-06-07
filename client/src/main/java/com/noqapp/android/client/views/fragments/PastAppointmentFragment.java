@@ -106,6 +106,11 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
     }
 
     @Override
+    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
+        dismissProgress();
+    }
+
+    @Override
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }

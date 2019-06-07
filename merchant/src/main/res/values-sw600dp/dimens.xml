@@ -21,4 +21,6 @@
     <dimen name="play_btn_size">50dp</dimen>
 
     <dimen name="ppq_width">200dp</dimen>
+
+    <dimen name="appointment_card_height">170dp</dimen>
 </resources>

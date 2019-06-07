@@ -89,20 +89,35 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         scroll_view = findViewById(R.id.scroll_view);
         if (new AppUtils().isTablet(getApplicationContext())) {
             RelativeLayout rl_parent = findViewById(R.id.rl_parent);
+            LinearLayout ll_right = findViewById(R.id.ll_right);
             rl_parent.setOnTouchListener(new OnFlingGestureListener(this) {
 
                 @Override
                 public void onTopToBottom() {
-                    new CustomToast().showToast(AppointmentActivity.this, "TOp swipe");
+                    new CustomToast().showToast(AppointmentActivity.this, "Top swipe");
                 }
 
                 @Override
                 public void onRightToLeft() {
-                    new CustomToast().showToast(AppointmentActivity.this, "Right swipe");
+                    // new CustomToast().showToast(AppointmentActivity.this, "Right swipe");
                     //close it
                     if (isOpen) {
-                        ValueAnimator m1 = ValueAnimator.ofFloat(weight, 0); //fromWeight, toWeight
-                        m1.setDuration(400);
+
+                        ValueAnimator m2 = ValueAnimator.ofFloat(6, 10); //fromWeight, toWeight
+                        m2.setDuration(200);
+                        m2.setStartDelay(100); //Optional Delay
+                        m2.setInterpolator(new LinearInterpolator());
+                        m2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                ((LinearLayout.LayoutParams) ll_right.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                                ll_right.requestLayout();
+                            }
+
+                        });
+                        m2.start();
+                        ValueAnimator m1 = ValueAnimator.ofFloat(4, 0); //fromWeight, toWeight
+                        m1.setDuration(100);
                         m1.setStartDelay(100); //Optional Delay
                         m1.setInterpolator(new LinearInterpolator());
                         m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -122,9 +137,23 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 public void onLeftToRight() {
                     //open it
                     if (!isOpen) {
-                        new CustomToast().showToast(AppointmentActivity.this, "Left swipe");
-                        ValueAnimator m1 = ValueAnimator.ofFloat(0, 5); //fromWeight, toWeight
-                        m1.setDuration(400);
+                        // new CustomToast().showToast(AppointmentActivity.this, "Left swipe");
+                        ValueAnimator m2 = ValueAnimator.ofFloat(10, 6); //fromWeight, toWeight
+                        m2.setDuration(100);
+                        m2.setStartDelay(100); //Optional Delay
+                        m2.setInterpolator(new LinearInterpolator());
+                        m2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                ((LinearLayout.LayoutParams) ll_right.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                                ll_right.requestLayout();
+                            }
+
+                        });
+                        m2.start();
+
+                        ValueAnimator m1 = ValueAnimator.ofFloat(0, 4); //fromWeight, toWeight
+                        m1.setDuration(200);
                         m1.setStartDelay(100); //Optional Delay
                         m1.setInterpolator(new LinearInterpolator());
                         m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -152,6 +181,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
                 in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+                in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
                 startActivityForResult(in, BOOKING_SUCCESS);
             }
         });
@@ -239,6 +269,10 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
                 in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+                in.putExtra("appointmentDuration",jsonScheduleList.getAppointmentDuration());
+                in.putExtra("displayName",getIntent().getStringExtra("displayName"));
+                in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+                in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 startActivity(in);
             }
         });
@@ -398,6 +432,11 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
     @Override
     public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
         dismissProgress();
     }
 

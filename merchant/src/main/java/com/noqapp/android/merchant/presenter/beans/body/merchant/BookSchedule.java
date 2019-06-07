@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.presenter.beans.body.merchant;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -37,6 +38,9 @@ public class BookSchedule  implements Serializable {
     @JsonProperty("bc")
     private JsonBusinessCustomer businessCustomer;
 
+    @JsonProperty("ba")
+    private ActionTypeEnum bookActionType;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -55,6 +59,15 @@ public class BookSchedule  implements Serializable {
 
     public BookSchedule setBusinessCustomer(JsonBusinessCustomer businessCustomer) {
         this.businessCustomer = businessCustomer;
+        return this;
+    }
+
+    public ActionTypeEnum getBookActionType() {
+        return bookActionType;
+    }
+
+    public BookSchedule setBookActionType(ActionTypeEnum bookActionType) {
+        this.bookActionType = bookActionType;
         return this;
     }
 

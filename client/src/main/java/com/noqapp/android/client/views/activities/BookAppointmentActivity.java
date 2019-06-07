@@ -36,13 +36,10 @@ import com.noqapp.android.common.pojos.AppointmentModel;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -138,8 +135,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                     String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
                     JsonSchedule jsonSchedule = new JsonSchedule()
                             .setCodeQR(bizStoreElastic.getCodeQR())
-                            .setStartTime(removeColon(temp[0].trim()))
-                            .setEndTime(removeColon(temp[1].trim()))
+                            .setStartTime(AppUtilities.removeColon(temp[0].trim()))
+                            .setEndTime(AppUtilities.removeColon(temp[1].trim()))
                             .setScheduleDate(new AppUtilities().getDateWithFormat(selectedDate))
                             .setQueueUserId(((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());
                     appointmentApiCalls.bookAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
@@ -178,12 +175,14 @@ public class BookAppointmentActivity extends BaseActivity implements
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to);
+        ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
         for (int i = 0; i < timeSlot.size() - 1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
         }
         appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
         rv_available_date.setAdapter(appointmentDateAdapter);
+        appointmentDateAdapter.notifyDataSetChanged();
+        selectedPos = -1;
         if (listData.size() == 0) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
@@ -191,36 +190,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
     }
 
-    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime) {
-        ArrayList<String> timeSlot = new ArrayList<String>();
-        try {
-            int fromHour, fromMinute, toHour, toMinute;
-            fromHour = Integer.parseInt(strFromTime.split(":")[0]);
-            fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
 
-            toHour = Integer.parseInt(strToTime.split(":")[0]);
-            toMinute = Integer.parseInt(strToTime.split(":")[1]);
-
-            long slot = slotMinute * 60 * 1000;
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
-            calendar2.set(Calendar.MINUTE, fromMinute);
-
-            long currentTime = calendar2.getTimeInMillis();
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.set(Calendar.HOUR_OF_DAY, toHour);
-            calendar1.set(Calendar.MINUTE, toMinute);
-            long endTime = calendar1.getTimeInMillis();
-            while (currentTime <= endTime) {
-                DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                timeSlot.add(sdfTime.format(new Date(currentTime)));
-                currentTime = currentTime + slot;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return timeSlot;
-    }
 
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
@@ -228,12 +198,9 @@ public class BookAppointmentActivity extends BaseActivity implements
         ArrayList<String> filledTimes = new ArrayList<>();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                String str = String.valueOf(jsonScheduleList.getJsonSchedules().get(i).getStartTime());
-                String input = String.format("%4s", str).replace(' ', '0');
-                int index = 1;
-                String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-                Log.e("Check string----- ", input + "----------- " + outPut);
-                filledTimes.add(outPut);
+                filledTimes.addAll(AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(),
+                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
+                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), false));
             }
         }
         int dayOfWeek = AppUtilities.getDayOfWeek(selectedDate);
@@ -250,6 +217,11 @@ public class BookAppointmentActivity extends BaseActivity implements
         intent.putExtra(IBConstant.KEY_IMAGE_URL, bizStoreElastic.getDisplayImage());
         startActivity(intent);
         finish();
+        dismissProgress();
+    }
+
+    @Override
+    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
         dismissProgress();
     }
 
@@ -291,17 +263,6 @@ public class BookAppointmentActivity extends BaseActivity implements
                     UserUtils.getAuth(), day, bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
-        }
-    }
-
-    private int removeColon(String input) {
-        try {
-            if (input.contains(":"))
-                return Integer.parseInt(input.replace(":", ""));
-            else return Integer.parseInt(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
         }
     }
 }
