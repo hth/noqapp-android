@@ -6,6 +6,7 @@ package com.noqapp.android.common.model.types;
  */
 public enum MessageOriginEnum {
     Q,  //Queued                    (NOT In App DB)
+    QA, //Queue Appointment         (In App DB)
     QR, //Queue Review              (In App DB)
     O,  //Order                     (NOT In App DB)
     OR, //Order Review              (In App DB)
