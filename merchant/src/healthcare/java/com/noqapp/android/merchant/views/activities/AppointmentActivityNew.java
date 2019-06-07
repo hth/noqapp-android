@@ -92,8 +92,10 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             count = 1;
         }
         appointmentDuration = getIntent().getIntExtra("appointmentDuration", 0);
-        tv_date.setText( getIntent().getStringExtra("selectedDate"));
+        tv_date.setText(getIntent().getStringExtra("selectedDate"));
         tv_header.setText(getIntent().getStringExtra("displayName"));
+        String bizCategoryId = getIntent().getStringExtra("bizCategoryId");
+
         rcv_appointments = findViewById(R.id.rcv_appointments);
         rcv_appointments.setHasFixedSize(true);
         rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
@@ -112,13 +114,13 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 int position = segmentViewHolder.getAbsolutePosition();
                 switch (position) {
                     case 0:
-                        rcv_appointments.setAdapter(new AppointmentListAdapter(events, AppointmentActivityNew.this, AppointmentActivityNew.this));
+                        rcv_appointments.setAdapter(new AppointmentListAdapter(events, AppointmentActivityNew.this, AppointmentActivityNew.this,bizCategoryId));
                         break;
                     case 1:
-                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsAccepted, AppointmentActivityNew.this, AppointmentActivityNew.this));
+                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsAccepted, AppointmentActivityNew.this, AppointmentActivityNew.this,bizCategoryId));
                         break;
                     case 2:
-                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsPending, AppointmentActivityNew.this, AppointmentActivityNew.this));
+                        rcv_appointments.setAdapter(new AppointmentListAdapter(eventsPending, AppointmentActivityNew.this, AppointmentActivityNew.this,bizCategoryId));
                         break;
                 }
             }

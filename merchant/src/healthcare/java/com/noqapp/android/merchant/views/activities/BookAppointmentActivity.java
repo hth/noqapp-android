@@ -345,7 +345,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
         actv_chief_complaints = customDialogView.findViewById(R.id.actv_chief_complaints);
         final ArrayList<String> data = new ArrayList<>();
-        ArrayList<DataObj> temp = MedicalDataStatic.Pediatrician.getSymptoms();
+        ArrayList<DataObj> temp = MedicalDataStatic.getSymptomsOnCategoryType(getIntent().getStringExtra("bizCategoryId"));
         if (temp.size() > 0) {
             for (int i = 0; i < temp.size(); i++) {
                 data.add(temp.get(i).getShortName());

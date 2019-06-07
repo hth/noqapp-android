@@ -43,12 +43,14 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     private final Context context;
     private final OnItemClickListener listener;
     private List<EventDay> dataSet;
+    private String bizCategoryId;
 
 
-    public AppointmentListAdapter(List<EventDay> data, Context context, OnItemClickListener listener) {
+    public AppointmentListAdapter(List<EventDay> data, Context context, OnItemClickListener listener, String bizCategoryId) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
+        this.bizCategoryId = bizCategoryId;
     }
 
     @Override
@@ -229,7 +231,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
 
         final AutoCompleteTextView actv_chief_complaints = dialog.findViewById(R.id.actv_chief_complaints);
         final ArrayList<String> data = new ArrayList<>();
-        ArrayList<DataObj> temp = MedicalDataStatic.Pediatrician.getSymptoms();
+        ArrayList<DataObj> temp = MedicalDataStatic.getSymptomsOnCategoryType(bizCategoryId);
         if (temp.size() > 0) {
             for (int i = 0; i < temp.size(); i++) {
                 data.add(temp.get(i).getShortName());

@@ -181,6 +181,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
                 in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+                in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
                 startActivityForResult(in, BOOKING_SUCCESS);
             }
         });
@@ -270,6 +271,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
                 in.putExtra("appointmentDuration",jsonScheduleList.getAppointmentDuration());
                 in.putExtra("displayName",getIntent().getStringExtra("displayName"));
+                in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
                 startActivity(in);
             }
         });

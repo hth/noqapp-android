@@ -86,6 +86,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 Intent intent = new Intent(getActivity(), AppointmentActivity.class);
                 intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
                 intent.putExtra("displayName",jsonTopic.getDisplayName());
+                intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
                 ((Activity) context).startActivity(intent);
             }
         });

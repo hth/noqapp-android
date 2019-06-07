@@ -1,6 +1,10 @@
 package com.noqapp.android.merchant.views.utils;
 
+import com.google.gson.Gson;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.DataObj;
+import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import java.util.ArrayList;
 
@@ -579,6 +583,33 @@ public class MedicalDataStatic {
             dataObjs.add(new DataObj("SORE THROAT", "", false));
             return dataObjs;
         }
+    }
+
+
+    public static ArrayList<DataObj> getSymptomsOnCategoryType(String bizCategoryId) {
+        ArrayList<DataObj> tempList = new ArrayList<>();
+        PreferenceObjects preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
+        if (null != preferenceObjects && preferenceObjects.getSymptomsList().size() > 0) {
+            tempList.addAll(preferenceObjects.getSymptomsList());
+        }
+        switch (MedicalDepartmentEnum.valueOf(bizCategoryId)) {
+            case OGY: {
+                tempList.addAll(MedicalDataStatic.Gynae.getSymptoms());
+            }
+            break;
+            case PAE: {
+                tempList.addAll(MedicalDataStatic.Pediatrician.getSymptoms());
+            }
+            break;
+            case ORT: {
+                tempList.addAll(MedicalDataStatic.Ortho.getSymptoms());
+            }
+            break;
+            case GSR: {
+                tempList.addAll(MedicalDataStatic.Surgeon.getSymptoms());
+            }
+        }
+        return tempList;
     }
 }
 
