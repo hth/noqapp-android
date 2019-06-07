@@ -43,8 +43,14 @@ import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.noqapp.android.merchant.BuildConfig;
@@ -64,7 +70,6 @@ import com.noqapp.android.merchant.views.fragments.LoginFragment;
 import com.noqapp.android.merchant.views.fragments.MerchantListFragment;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -558,8 +563,24 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                             + "\n" + "lastno : " + lastno
                             + "\n" + "payload : " + payload
             );
-            if (fragmentCommunicator != null) {
-                fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
+
+            Object object = intent.getSerializableExtra("object");
+            if (object instanceof JsonTopicQueueData) {
+                Log.e("onReceiveJsonTopicQdata", ((JsonTopicQueueData) object).toString());
+                if (fragmentCommunicator != null) {
+                    fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
+                }
+            } else if (object instanceof JsonClientData) {
+                Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
+            } else if (object instanceof JsonAlertData) {
+                Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
+            } else if (object instanceof JsonTopicOrderData) {
+                Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
+                if (fragmentCommunicator != null) {
+                    fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
+                }
+            }  else if (object instanceof JsonClientOrderData) {
+                Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
             }
         }
     }

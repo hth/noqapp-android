@@ -20,6 +20,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -42,6 +47,7 @@ import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
 import com.noqapp.android.common.fcm.data.JsonMedicalFollowUp;
+import com.noqapp.android.common.fcm.data.JsonTopicAppointmentData;
 import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -62,11 +68,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static com.noqapp.android.client.utils.Constants.CodeQR;
 import static com.noqapp.android.client.utils.Constants.Firebase_Type;
@@ -122,6 +123,15 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             Object object = null;
             switch (messageOrigin) {
+                case QA:
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        object = mapper.readValue(new JSONObject(remoteMessage.getData()).toString(), JsonTopicAppointmentData.class);
+                        Log.e("FCM", object.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 case Q:
                     try {
                         ObjectMapper mapper = new ObjectMapper();
@@ -246,7 +256,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ((JsonAlertData) object).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(),imageUrl);
+                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(), imageUrl);
 
                                 sendNotification(title, body, false, imageUrl);
                             } else if (object instanceof JsonClientData) {
@@ -306,7 +316,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 NotificationDB.insertNotification(
                                         NotificationDB.KEY_NOTIFY,
                                         ((JsonClientTokenAndQueueData) object).getCodeQR(), ((JsonClientTokenAndQueueData) object).getBody(),
-                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName(),imageUrl);
+                                        ((JsonClientTokenAndQueueData) object).getTitle(), BusinessTypeEnum.PA.getName(), imageUrl);
 
                                 for (int i = 0; i < jsonTokenAndQueueList.size(); i++) {
                                     NoQueueMessagingService.subscribeTopics(jsonTokenAndQueueList.get(i).getTopic());
@@ -329,7 +339,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                         ((JsonAlertData) object).getCodeQR(),
                                         body,
                                         title,
-                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(),imageUrl);
+                                        ((JsonAlertData) object).getBusinessType() == null ? BusinessTypeEnum.PA.getName() : ((JsonAlertData) object).getBusinessType().getName(), imageUrl);
                             }
                         }
                     } else if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.C.getName())) {
@@ -389,7 +399,13 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
                                 ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
-                                ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(),imageUrl);
+                                ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(), imageUrl);
+                    }else if (object instanceof JsonTopicAppointmentData) {
+                        Log.e("JsonTopicAppointData", ((JsonTopicAppointmentData) object).toString());
+                        NotificationDB.insertNotification(
+                                NotificationDB.KEY_NOTIFY,
+                                "", ((JsonTopicAppointmentData) object).getBody(),
+                                ((JsonTopicAppointmentData) object).getTitle(), BusinessTypeEnum.PA.getName(), ((JsonTopicAppointmentData) object).getImageURL());
                     }
                 }
             } catch (Exception e) {

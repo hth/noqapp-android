@@ -1,14 +1,12 @@
 package com.noqapp.android.common.fcm.data;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.common.model.types.MessageOriginEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.MessageOriginEnum;
 
 /**
  * User: hitender
@@ -65,5 +63,14 @@ public class JsonTopicAppointmentData extends JsonData {
     public JsonTopicAppointmentData setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonTopicAppointmentData{" +
+                "messageOrigin=" + messageOrigin +
+                ", message='" + message + '\'' +
+                ", error=" + error +
+                '}';
     }
 }

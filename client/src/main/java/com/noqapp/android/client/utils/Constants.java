@@ -27,7 +27,7 @@ public class Constants extends BaseConstants{
     public static final String TOKEN = "t";
     public static final String QID = "qid";
     public static final String MESSAGE_ID = "mi";
-    public static final String MESSAGE_ORIGIN = "mo";
+
     public static final String ACTIVITY_TO_CLOSE = "activity_status";
 
     //error codes

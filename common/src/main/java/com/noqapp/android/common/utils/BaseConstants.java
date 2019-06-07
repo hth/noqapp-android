@@ -19,5 +19,7 @@ public class BaseConstants {
     public static  String RELEASE = "release";;
     public static  String DEBUG = "debug";;
 
+    public static final String MESSAGE_ORIGIN = "mo";
+
 
 }
