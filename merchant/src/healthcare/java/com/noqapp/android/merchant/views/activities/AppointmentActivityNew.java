@@ -28,10 +28,14 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.adapters.AppointmentListAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -112,8 +116,12 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 }
             }
         });
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            fetchData();
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
 
-      fetchData();
 
     }
 
@@ -130,23 +138,56 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
 
     @Override
     public void appointmentAccept(JsonSchedule jsonSchedule, int pos) {
-        progressDialog.setMessage("Accepting appointment...");
-        progressDialog.show();
-        jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
-        scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            ShowCustomDialog showDialog = new ShowCustomDialog(this);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    progressDialog.setMessage("Accepting appointment...");
+                    progressDialog.show();
+                    jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
+                    scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+                }
+
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Accept Appointment", "Do you want to accept appointment?");
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
 
     }
 
     @Override
     public void appointmentReject(JsonSchedule jsonSchedule, int pos) {
-        progressDialog.setMessage("Rejecting appointment...");
-        progressDialog.show();
-        jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
-        scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
-                LaunchActivity.getLaunchActivity().getEmail(),
-                LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            ShowCustomDialog showDialog = new ShowCustomDialog(this);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    progressDialog.setMessage("Rejecting appointment...");
+                    progressDialog.show();
+                    jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
+                    scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(), jsonSchedule);
+                }
+
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Reject Appointment", "Do you want to reject appointment?");
+        } else {
+            ShowAlertInformation.showNetworkDialog(this);
+        }
     }
 
     @Override
@@ -167,6 +208,19 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         events = parseEventList(jsonScheduleList);
+        Collections.sort(events, new Comparator<EventDay>() {
+            public int compare(EventDay o1, EventDay o2) {
+                try {
+                    int time1 = ((JsonSchedule) o2.getEventObject()).getStartTime();
+                    int time2 = ((JsonSchedule) o1.getEventObject()).getStartTime();
+                    /*For descending order*/
+                    return time2 - time1;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
         tv_header.setText("Date: " + getIntent().getStringExtra("selectedDate"));
         int cancel = 0;
         int pending = 0;
@@ -201,7 +255,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         } else {
             sc_filter.setVisibility(View.VISIBLE);
         }
-        sc_filter.setSelectedSegment(0);
+        sc_filter.setSelectedSegment(0); // to set adapter
         dismissProgress();
     }
 

@@ -98,13 +98,19 @@ public class BookAppointmentActivity extends AppCompatActivity implements
 
     private int appointmentDuration;
     private int appointmentOpenHowFar;
+    private int count = 3;
+   // private int no_of_date = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            count = 6;
+            //no_of_date = 7;
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            count = 3;
+            //no_of_date = 5;
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
@@ -158,7 +164,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         horizontalCalendarView.refresh();
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
         rv_available_date = findViewById(R.id.rv_available_date);
-        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
+        rv_available_date.setLayoutManager(new GridLayoutManager(this, count));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
 
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);

@@ -93,7 +93,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
                 @Override
                 public void onTopToBottom() {
-                    new CustomToast().showToast(AppointmentActivity.this, "TOp swipe");
+                    new CustomToast().showToast(AppointmentActivity.this, "Top swipe");
                 }
 
                 @Override
