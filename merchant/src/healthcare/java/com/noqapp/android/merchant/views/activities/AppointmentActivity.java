@@ -99,7 +99,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
 
                 @Override
                 public void onRightToLeft() {
-                   // new CustomToast().showToast(AppointmentActivity.this, "Right swipe");
+                    // new CustomToast().showToast(AppointmentActivity.this, "Right swipe");
                     //close it
                     if (isOpen) {
 
@@ -137,7 +137,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 public void onLeftToRight() {
                     //open it
                     if (!isOpen) {
-                       // new CustomToast().showToast(AppointmentActivity.this, "Left swipe");
+                        // new CustomToast().showToast(AppointmentActivity.this, "Left swipe");
                         ValueAnimator m2 = ValueAnimator.ofFloat(10, 6); //fromWeight, toWeight
                         m2.setDuration(100);
                         m2.setStartDelay(100); //Optional Delay
@@ -268,6 +268,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
                 in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+                in.putExtra("appointmentDuration",jsonScheduleList.getAppointmentDuration());
                 startActivity(in);
             }
         });

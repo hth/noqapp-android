@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="@dimen/appointment_card_height"
     android:layout_margin="5dp"
     android:background="@android:color/white">
 
@@ -131,14 +131,18 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="5dp"
                         android:text="Chief Complaints:" />
+
                     <TextView
                         android:id="@+id/tv_chief_complaints"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/tv_chief_complaints_title"
                         android:layout_toLeftOf="@+id/iv_edit_complaints"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="10dp"
+                        android:layout_toRightOf="@+id/tv_chief_complaints_title"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:minLines="2"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="5dp"
                         android:text="N/A" />
 
                     <ImageView

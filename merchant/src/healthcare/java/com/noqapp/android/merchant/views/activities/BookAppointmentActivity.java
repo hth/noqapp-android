@@ -58,13 +58,10 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -210,7 +207,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = getTimeSlots(appointmentDuration, from, to,true);
+        ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to,true);
         times.clear();
         for (int i = 0; i < timeSlot.size() - 1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
@@ -227,47 +224,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         selectedPos = -1;
     }
 
-    public ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
-        ArrayList<String> timeSlot = new ArrayList<String>();
-        if(slotMinute == 0)
-            return timeSlot;
-        try {
-            int fromHour, fromMinute, toHour, toMinute;
-            fromHour = Integer.parseInt(strFromTime.split(":")[0]);
-            fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
-
-            toHour = Integer.parseInt(strToTime.split(":")[0]);
-            toMinute = Integer.parseInt(strToTime.split(":")[1]);
-
-            long slot = slotMinute * 60 * 1000;
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
-            calendar2.set(Calendar.MINUTE, fromMinute);
-
-            long currentTime = calendar2.getTimeInMillis();
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.set(Calendar.HOUR_OF_DAY, toHour);
-            calendar1.set(Calendar.MINUTE, toMinute);
-            long endTime = calendar1.getTimeInMillis();
-            if(isEqual) {
-                while (currentTime <= endTime) {
-                    DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                    timeSlot.add(sdfTime.format(new Date(currentTime)));
-                    currentTime = currentTime + slot;
-                }
-            }else{
-                while (currentTime < endTime) {
-                    DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                    timeSlot.add(sdfTime.format(new Date(currentTime)));
-                    currentTime = currentTime + slot;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return timeSlot;
-    }
-
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
@@ -275,7 +231,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         times.clear();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                filledTimes.addAll(getTimeSlots(appointmentDuration,AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
+                filledTimes.addAll(AppUtils.getTimeSlots(appointmentDuration,AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
                         AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()),false));
             }
         }
@@ -353,17 +309,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                     codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
-        }
-    }
-
-    private int removeColon(String input) {
-        try {
-            if (input.contains(":"))
-                return Integer.parseInt(input.replace(":", ""));
-            else return Integer.parseInt(input);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
         }
     }
 
@@ -528,8 +473,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View v) {
                     try {
-                        int start = removeColon((String) sp_start_time.getSelectedItem());
-                        int end = removeColon((String) sp_end_time.getSelectedItem());
+                        int start = AppUtils.removeColon((String) sp_start_time.getSelectedItem());
+                        int end = AppUtils.removeColon((String) sp_end_time.getSelectedItem());
                         if (start < end) {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {

@@ -32,6 +32,8 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.adapters.AppointmentListAdapter;
 
+import org.apache.commons.lang3.SerializationUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -52,9 +54,10 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     private ScheduleApiCalls scheduleApiCalls;
     private SegmentedControl sc_filter;
     private ArrayList<String> filter_data = new ArrayList<>();
-    private List<EventDay> events;
-    List<EventDay> eventsAccepted = new ArrayList<>();
-    List<EventDay> eventsPending = new ArrayList<>();
+    private List<EventDay> events = new ArrayList<>();
+    private List<EventDay> eventsAccepted = new ArrayList<>();
+    private List<EventDay> eventsPending = new ArrayList<>();
+    private int appointmentDuration = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         } else {
             count = 1;
         }
+        appointmentDuration = getIntent().getIntExtra("appointmentDuration", 0);
         rcv_appointments = findViewById(R.id.rcv_appointments);
         rcv_appointments.setHasFixedSize(true);
         rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
@@ -207,7 +211,35 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
-        events = parseEventList(jsonScheduleList);
+        events.clear();
+        List<EventDay> temp = parseEventList(jsonScheduleList);
+        for (int i = 0; i < temp.size(); i++) { //List<EventDay> temp
+            JsonSchedule js = (JsonSchedule) temp.get(i).getEventObject();
+            ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
+                    AppUtils.getTimeFourDigitWithColon(js.getEndTime()), false);
+            Log.e("no of time slots", "" + timeSlot.size());
+            if (timeSlot.size() == 0 || timeSlot.size() == 1) {
+                events.add(temp.get(i));
+            } else {
+                for (int j = 0; j < timeSlot.size(); j++) {
+                    EventDay eventDay = new EventDay(temp.get(i).getCalendar(), DrawableUtils.getThreeDots(this), SerializationUtils.clone(js));
+                    ((JsonSchedule) eventDay.getEventObject()).setStartTime(AppUtils.removeColon(timeSlot.get(j)));
+                    if (j == timeSlot.size() - 1) {
+                        ((JsonSchedule) eventDay.getEventObject()).setEndTime(js.getEndTime());
+                    } else {
+                        ((JsonSchedule) eventDay.getEventObject()).setEndTime(AppUtils.removeColon(timeSlot.get(j + 1)));
+                    }
+                    if (((JsonSchedule) eventDay.getEventObject()).getStartTime() != ((JsonSchedule) eventDay.getEventObject()).getEndTime()) {
+                        events.add(eventDay);
+                    }else{
+                        Log.e("Error: ","Start end time same, Do not add data");
+                        for (int k = 0; k < timeSlot.size(); k++) {
+                            Log.e("time: ", k+" "+timeSlot.get(k));
+                        }
+                    }
+                }
+            }
+        }
         Collections.sort(events, new Comparator<EventDay>() {
             public int compare(EventDay o1, EventDay o2) {
                 try {
@@ -227,17 +259,31 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         int accept = 0;
         eventsAccepted.clear();
         eventsPending.clear();
+        if (null != events && events.size() > 0)
+            for (int i = 0; i < events.size(); i++) {
+                JsonSchedule jsonSchedule = (JsonSchedule) events.get(i).getEventObject();
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                        eventsPending.add(events.get(i));
+                        break;
+                    case A:
+                        eventsAccepted.add(events.get(i));
+                        break;
+                    case R:
+                        break;
+                    case S:
+                        break;
+                }
+            }
         if (null != jsonScheduleList && jsonScheduleList.getJsonSchedules().size() > 0)
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
                 JsonSchedule jsonSchedule = jsonScheduleList.getJsonSchedules().get(i);
                 switch (jsonSchedule.getAppointmentStatus()) {
                     case U:
                         ++pending;
-                        eventsPending.add(events.get(i));
                         break;
                     case A:
                         ++accept;
-                        eventsAccepted.add(events.get(i));
                         break;
                     case R:
                         ++cancel;
@@ -247,7 +293,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 }
             }
         tv_appointment_accepted.setText(String.valueOf(accept));
-        tv_total_appointment.setText(String.valueOf(events.size()));
+        tv_total_appointment.setText(String.valueOf(jsonScheduleList.getJsonSchedules().size()));
         tv_appointment_cancelled.setText(String.valueOf(cancel));
         tv_appointment_pending.setText(String.valueOf(pending));
         if (null == events || events.size() == 0) {

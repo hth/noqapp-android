@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -237,7 +238,7 @@ public class CommonHelper {
         return dayOfWeek;
     }
 
-    public static String getTimeFourDigitWithColon(int time ){
+    public static String getTimeFourDigitWithColon(int time) {
         String str = String.valueOf(time);
         String input = String.format("%4s", str).replace(' ', '0');
         int index = 1;
@@ -245,4 +246,59 @@ public class CommonHelper {
         Log.e("Check string----- ", input + "----------- " + outPut);
         return outPut;
     }
+
+    public static ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
+        ArrayList<String> timeSlot = new ArrayList<String>();
+        if (slotMinute == 0) {
+            return timeSlot;
+        } else {
+            try {
+                int fromHour, fromMinute, toHour, toMinute;
+                fromHour = Integer.parseInt(strFromTime.split(":")[0]);
+                fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
+
+                toHour = Integer.parseInt(strToTime.split(":")[0]);
+                toMinute = Integer.parseInt(strToTime.split(":")[1]);
+
+                long slot = slotMinute * 60 * 1000;
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
+                calendar2.set(Calendar.MINUTE, fromMinute);
+
+                long currentTime = calendar2.getTimeInMillis();
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.HOUR_OF_DAY, toHour);
+                calendar1.set(Calendar.MINUTE, toMinute);
+                long endTime = calendar1.getTimeInMillis();
+                if (isEqual) {
+                    while (currentTime <= endTime) {
+                        DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        timeSlot.add(sdfTime.format(new Date(currentTime)));
+                        currentTime = currentTime + slot;
+                    }
+                } else {
+                    while (currentTime < endTime) {
+                        DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        timeSlot.add(sdfTime.format(new Date(currentTime)));
+                        currentTime = currentTime + slot;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return timeSlot;
+        }
+    }
+
+    public static int removeColon(String input) {
+        try {
+            if (input.contains(":"))
+                return Integer.parseInt(input.replace(":", ""));
+            else return Integer.parseInt(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }

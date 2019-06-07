@@ -24,7 +24,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
-import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.Formatter;
@@ -34,7 +33,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.DataObj;
-import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 import com.squareup.picasso.Picasso;
 
@@ -105,6 +103,9 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                 showAddComplaintsDialog(context,holder.tv_chief_complaints,jsonSchedule,position);
             }
         });
+        holder.card_view.setCardBackgroundColor(Color.WHITE);
+        holder.rl_accept.setBackgroundColor(Color.WHITE);
+        holder.rl_reject.setBackgroundColor(Color.WHITE);
         switch (jsonSchedule.getAppointmentStatus()) {
             case U:
                 holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_allowed));
@@ -117,6 +118,9 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
             case R:
                 holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_not_allowed));
                 holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.rejected));
+                holder.card_view.setCardBackgroundColor(Color.parseColor("#cccccc"));
+                holder.rl_accept.setBackgroundColor(Color.parseColor("#cccccc"));
+                holder.rl_reject.setBackgroundColor(Color.parseColor("#cccccc"));
                 break;
             case S:
                 holder.iv_accept.setBackground(ContextCompat.getDrawable(context, R.drawable.accept_not_allowed));
