@@ -1,5 +1,25 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.hbb20.CountryCodePicker;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -21,26 +41,6 @@ import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 import com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity;
 import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
-
-import com.hbb20.CountryCodePicker;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +85,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AppointmentActivity.class);
                 intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
+                intent.putExtra("displayName",jsonTopic.getDisplayName());
                 ((Activity) context).startActivity(intent);
             }
         });

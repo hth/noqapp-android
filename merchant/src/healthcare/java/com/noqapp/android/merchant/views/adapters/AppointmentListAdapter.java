@@ -96,11 +96,12 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         holder.tv_appointment_time.setText(Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getStartTime())
                 + " - " + Formatter.convertMilitaryTo24HourFormat(jsonSchedule.getEndTime()));
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
-        holder.tv_chief_complaints.setText(jsonSchedule.getChiefComplain());
+        holder.tv_chief_complaints.setText(TextUtils.isEmpty(jsonSchedule.getChiefComplain())
+                ? context.getString(R.string.unregister_user) : jsonSchedule.getChiefComplain());
         holder.rl_edit_complaints.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddComplaintsDialog(context,holder.tv_chief_complaints,jsonSchedule,position);
+                showAddComplaintsDialog(context, holder.tv_chief_complaints, jsonSchedule, position);
             }
         });
         holder.card_view.setCardBackgroundColor(Color.WHITE);
@@ -229,8 +230,8 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         final AutoCompleteTextView actv_chief_complaints = dialog.findViewById(R.id.actv_chief_complaints);
         final ArrayList<String> data = new ArrayList<>();
         ArrayList<DataObj> temp = MedicalDataStatic.Pediatrician.getSymptoms();
-        if(temp.size() > 0){
-            for (int i = 0; i <temp.size() ; i++) {
+        if (temp.size() > 0) {
+            for (int i = 0; i < temp.size(); i++) {
                 data.add(temp.get(i).getShortName());
             }
         }
@@ -238,7 +239,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         actv_chief_complaints.setAdapter(adapter1);
         actv_chief_complaints.setThreshold(1);
         actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
-       // AppUtils.setAutoCompleteText(actv_chief_complaints, textView.getText().toString().trim());
+        // AppUtils.setAutoCompleteText(actv_chief_complaints, textView.getText().toString().trim());
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
         btnPositive.setOnClickListener(new View.OnClickListener() {
@@ -251,7 +252,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                     new AppUtils().hideKeyBoard((Activity) mContext);
                     //textView.setText(actv_chief_complaints.getText().toString());
                     jsonSchedule.setChiefComplain(actv_chief_complaints.getText().toString());
-                    listener.appointmentEdit(jsonSchedule,position);
+                    listener.appointmentEdit(jsonSchedule, position);
                     dialog.dismiss();
                 }
             }

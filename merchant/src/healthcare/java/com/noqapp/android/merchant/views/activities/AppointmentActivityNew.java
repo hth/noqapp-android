@@ -47,7 +47,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 public class AppointmentActivityNew extends AppCompatActivity implements AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
 
     private ProgressDialog progressDialog;
-    private TextView tv_header;
+    private TextView tv_header, tv_date;
     private RecyclerView rcv_appointments;
     private TextView tv_appointment_accepted, tv_total_appointment,
             tv_appointment_cancelled, tv_appointment_pending;
@@ -70,6 +70,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         setContentView(R.layout.activity_appointment_new);
         initProgress();
         tv_header = findViewById(R.id.tv_header);
+        tv_date = findViewById(R.id.tv_date);
 
         tv_appointment_accepted = findViewById(R.id.tv_appointment_accepted);
         tv_total_appointment = findViewById(R.id.tv_total_appointment);
@@ -91,6 +92,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             count = 1;
         }
         appointmentDuration = getIntent().getIntExtra("appointmentDuration", 0);
+        tv_date.setText( getIntent().getStringExtra("selectedDate"));
+        tv_header.setText(getIntent().getStringExtra("displayName"));
         rcv_appointments = findViewById(R.id.rcv_appointments);
         rcv_appointments.setHasFixedSize(true);
         rcv_appointments.setLayoutManager(new GridLayoutManager(this, count));
@@ -231,10 +234,10 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                     }
                     if (((JsonSchedule) eventDay.getEventObject()).getStartTime() != ((JsonSchedule) eventDay.getEventObject()).getEndTime()) {
                         events.add(eventDay);
-                    }else{
-                        Log.e("Error: ","Start end time same, Do not add data");
+                    } else {
+                        Log.e("Error: ", "Start end time same, Do not add data");
                         for (int k = 0; k < timeSlot.size(); k++) {
-                            Log.e("time: ", k+" "+timeSlot.get(k));
+                            Log.e("time: ", k + " " + timeSlot.get(k));
                         }
                     }
                 }
@@ -253,7 +256,6 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 }
             }
         });
-        tv_header.setText("Date: " + getIntent().getStringExtra("selectedDate"));
         int cancel = 0;
         int pending = 0;
         int accept = 0;

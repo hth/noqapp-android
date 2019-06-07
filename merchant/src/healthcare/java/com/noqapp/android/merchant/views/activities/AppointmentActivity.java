@@ -269,6 +269,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
                 in.putExtra("appointmentDuration",jsonScheduleList.getAppointmentDuration());
+                in.putExtra("displayName",getIntent().getStringExtra("displayName"));
                 startActivity(in);
             }
         });
