@@ -272,6 +272,7 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
                 in.putExtra("appointmentDuration",jsonScheduleList.getAppointmentDuration());
                 in.putExtra("displayName",getIntent().getStringExtra("displayName"));
                 in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+                in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 startActivity(in);
             }
         });

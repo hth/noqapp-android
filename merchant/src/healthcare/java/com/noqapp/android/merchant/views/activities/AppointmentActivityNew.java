@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     private List<EventDay> eventsAccepted = new ArrayList<>();
     private List<EventDay> eventsPending = new ArrayList<>();
     private int appointmentDuration = 0;
+    private final int BOOKING_SUCCESS = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +214,19 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 LaunchActivity.getLaunchActivity().getAuth(),
                 bookSchedule);
     }
+
+    @Override
+    public void appointmentReschedule(JsonSchedule jsonSchedule, int pos) {
+        Intent in = new Intent(AppointmentActivityNew.this, BookAppointmentActivity.class);
+        in.putExtra("jsonScheduleList", getIntent().getExtras().getSerializable("jsonScheduleList"));
+        in.putExtra(IBConstant.KEY_CODE_QR, getIntent().getStringExtra(IBConstant.KEY_CODE_QR));
+        in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+        in.putExtra("displayName",getIntent().getStringExtra("displayName"));
+        in.putExtra("jsonSchedule",jsonSchedule);
+        in.putExtra("isEdit",true);
+        startActivityForResult(in, BOOKING_SUCCESS);
+    }
+
 
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
@@ -380,6 +395,15 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
                 }
             }
             return events;
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BOOKING_SUCCESS) {
+            if (resultCode == RESULT_OK) {
+                fetchData();
+            }
         }
     }
 }

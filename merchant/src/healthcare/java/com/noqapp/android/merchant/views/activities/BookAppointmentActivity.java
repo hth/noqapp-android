@@ -96,7 +96,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private int appointmentDuration;
     private int appointmentOpenHowFar;
     private int count = 3;
-   // private int no_of_date = 5;
+    // private int no_of_date = 5;
+    private boolean isEdit = false;
+    private JsonSchedule jsonScheduleTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,12 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         appointmentOpenHowFar = jsonScheduleList.getAppointmentOpenHowFar();
         codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         jsonHours = jsonScheduleList.getJsonHours();
+
+        isEdit = getIntent().getBooleanExtra("isEdit", false);
+        if (isEdit) {
+            jsonScheduleTemp = (JsonSchedule) getIntent().getExtras().getSerializable("jsonSchedule");
+        }
+
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.DAY_OF_MONTH, appointmentOpenHowFar * 7); // end date of appointment
         Calendar startDate = Calendar.getInstance();
@@ -169,12 +177,35 @@ public class BookAppointmentActivity extends AppCompatActivity implements
             if (selectedPos == -1) {
                 new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
             } else {
-                // Process
-                try {
+                if (isEdit) {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        progressDialog.setMessage("Booking appointment...");
+                        progressDialog.show();
+                        progressDialog.setCancelable(false);
+                        progressDialog.setCanceledOnTouchOutside(false);
+                        String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                        jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
+                        jsonScheduleTemp.setEndTime(AppUtils.removeColon(temp[1].trim()));
+                        jsonScheduleTemp.setScheduleDate(new AppUtils().getDateWithFormat(selectedDate));
+                        BookSchedule bookSchedule = new BookSchedule()
+                                .setBusinessCustomer(null)
+                                .setJsonSchedule(jsonScheduleTemp)
+                                .setBookActionType(ActionTypeEnum.EDIT);
+                        scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                bookSchedule);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
+                    }
+                } else {
                     searchPatientWithMobileNoORCustomerId();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+
             }
         });
         selectedDate = startDate;
@@ -207,7 +238,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         List<AppointmentModel> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to,true);
+        ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
         times.clear();
         for (int i = 0; i < timeSlot.size() - 1; i++) {
             listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
@@ -231,8 +262,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         times.clear();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                filledTimes.addAll(AppUtils.getTimeSlots(appointmentDuration,AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()),false));
+                filledTimes.addAll(AppUtils.getTimeSlots(appointmentDuration, AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), false));
             }
         }
         int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);

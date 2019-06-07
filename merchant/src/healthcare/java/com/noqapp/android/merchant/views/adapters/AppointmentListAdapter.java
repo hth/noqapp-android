@@ -172,6 +172,13 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                 }
             }
         });
+
+        holder.tv_appointment_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.appointmentReschedule(jsonSchedule,position);
+            }
+        });
     }
 
     @Override
@@ -185,6 +192,8 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         void appointmentReject(JsonSchedule jsonSchedule, int pos);
 
         void appointmentEdit(JsonSchedule jsonSchedule, int pos);
+
+        void appointmentReschedule(JsonSchedule jsonSchedule, int pos);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
