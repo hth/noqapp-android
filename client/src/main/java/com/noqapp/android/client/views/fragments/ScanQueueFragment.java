@@ -536,6 +536,18 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveCurrentTokenQueue(jsonTokenAndQueueList.getTokenAndQueues());
         jsonSchedules = jsonTokenAndQueueList.getJsonScheduleList().getJsonSchedules();
+        Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
+            public int compare(JsonSchedule o1, JsonSchedule o2) {
+                try {
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+
+
         pb_current.setVisibility(View.GONE);
     }
 
