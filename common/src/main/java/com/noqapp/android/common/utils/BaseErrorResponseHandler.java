@@ -105,6 +105,8 @@ public abstract class BaseErrorResponseHandler {
                     case DEVICE_DETAIL_MISSING:
                     case ACCOUNT_INACTIVE:
 
+                    case PROMOTION_ACCESS_DENIED:
+
                     case WEB_APPLICATION:
                         break;
                     default:
