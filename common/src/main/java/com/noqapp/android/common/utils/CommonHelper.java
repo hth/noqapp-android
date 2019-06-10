@@ -191,7 +191,7 @@ public class CommonHelper {
     }
 
     public static String transactionForDisplayOnly(String transactionId) {
-        return transactionId.substring(transactionId.substring(0, transactionId.lastIndexOf("-")).lastIndexOf("-") + 1);
+        return transactionId.substring(transactionId.substring(0, transactionId.lastIndexOf("-")).lastIndexOf("-") + 1).toUpperCase();
     }
 
     public static String getPriceWithUnits(JsonStoreProduct jsonStoreProduct) {

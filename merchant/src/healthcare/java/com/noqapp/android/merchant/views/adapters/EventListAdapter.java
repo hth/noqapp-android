@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +12,30 @@ import androidx.cardview.widget.CardView;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.noqapp.android.common.beans.JsonSchedule;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 
 public class EventListAdapter extends BaseAdapter {
     private Context context;
     private final OnItemClickListener listener;
+
     public interface OnItemClickListener {
         void appointmentAccept(EventDay item, View view, int pos);
+
         void appointmentReject(EventDay item, View view, int pos);
     }
+
     public List<EventDay> getEventDayList() {
         return eventDayList;
     }
 
     private List<EventDay> eventDayList;
 
-    public EventListAdapter(Context context, List<EventDay> eventDayList,OnItemClickListener onItemClickListener) {
+    public EventListAdapter(Context context, List<EventDay> eventDayList, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.eventDayList = eventDayList;
         this.listener = onItemClickListener;
@@ -63,6 +69,17 @@ public class EventListAdapter extends BaseAdapter {
         JsonSchedule jsonSchedule = (JsonSchedule) eventDayList.get(position).getEventObject();
         recordHolder.tv_date.setText(jsonSchedule.getScheduleDate());
         recordHolder.tv_no_of_patient.setText(String.valueOf(jsonSchedule.getTotalAppointments()));
+
+        try {
+            if (CommonHelper.SDF_YYYY_MM_DD.parse(new CommonHelper().getDateWithFormat(Calendar.getInstance())).compareTo(
+                    CommonHelper.SDF_YYYY_MM_DD.parse(jsonSchedule.getScheduleDate())) < 0) {
+                recordHolder.card_view.setCardBackgroundColor(Color.WHITE);
+            } else {
+                recordHolder.card_view.setCardBackgroundColor(Color.LTGRAY);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
