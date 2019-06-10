@@ -3,8 +3,8 @@ package com.noqapp.android.merchant.model.response.api;
 import com.noqapp.android.merchant.presenter.beans.JsonDiscountList;
 
 import retrofit2.Call;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -20,7 +20,7 @@ public interface DiscountApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PROMOTION_ACCESS_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/m/discount/available/{codeQR}.json")
+    @GET("api/m/discount/available/{codeQR}.json")
     Call<JsonDiscountList> availableDiscount(
             @Header("X-R-DID")
             String did,

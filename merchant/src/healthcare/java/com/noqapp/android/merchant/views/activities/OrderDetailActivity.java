@@ -1,34 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.QueueUserStateEnum;
-import com.noqapp.android.common.model.types.order.PaymentModeEnum;
-import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
-import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueApiCalls;
-import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.IBConstant;
-import com.noqapp.android.merchant.utils.PermissionHelper;
-import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
-import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
-import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
-import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
-import com.noqapp.android.merchant.views.pojos.Receipt;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,7 +18,38 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.DiscountTypeEnum;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
+import com.noqapp.android.common.model.types.order.PaymentModeEnum;
+import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
+import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonDiscount;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.utils.PermissionHelper;
+import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
+import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
+import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
+import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
+import com.noqapp.android.merchant.views.pojos.Receipt;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter {
     private ProgressDialog progressDialog;
@@ -67,6 +72,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private String currencySymbol;
     private long mLastClickTime = 0;
     private TextView tv_payment_msg;
+    private TextView tv_discount_value;
+
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -115,7 +122,16 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_cost = findViewById(R.id.tv_cost);
         tv_order_state = findViewById(R.id.tv_order_state);
         tv_transaction_id = findViewById(R.id.tv_transaction_id);
+        tv_discount_value = findViewById(R.id.tv_discount_value);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
+        tv_discount_value.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(OrderDetailActivity.this,DiscountActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
+                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            }
+        });
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_payment_mode.setAdapter(aa);
@@ -412,5 +428,20 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             e.printStackTrace();
         }
         dismissProgress();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+            if (resultCode == RESULT_OK) {
+                JsonDiscount jsonDiscount = (JsonDiscount) data.getSerializableExtra(IBConstant.KEY_OBJECT);
+                Log.e("data recieve", jsonDiscount.toString());
+                if(jsonDiscount.getDiscountType() == DiscountTypeEnum.F){
+                    tv_discount_value.setText(currencySymbol + " " +jsonDiscount.getDiscountAmount());
+                }else{
+                    tv_discount_value.setText(jsonDiscount.getDiscountAmount()+"% discount");
+                }
+            }
+        }
     }
 }

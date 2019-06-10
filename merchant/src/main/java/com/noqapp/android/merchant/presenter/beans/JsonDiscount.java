@@ -1,12 +1,15 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.io.Serializable;
 
 /**
  * User: hitender
@@ -26,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonDiscount extends AbstractDomain {
+public class JsonDiscount extends AbstractDomain implements Serializable {
 
     @JsonProperty("di")
     private String discountId;
@@ -46,6 +49,9 @@ public class JsonDiscount extends AbstractDomain {
     @JsonProperty("dt")
     private DiscountTypeEnum discountType;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public String getDiscountId() {
         return discountId;
     }
@@ -54,6 +60,7 @@ public class JsonDiscount extends AbstractDomain {
         this.discountId = discountId;
         return this;
     }
+
 
     public String getBizNameId() {
         return bizNameId;
@@ -98,5 +105,25 @@ public class JsonDiscount extends AbstractDomain {
     public JsonDiscount setDiscountType(DiscountTypeEnum discountType) {
         this.discountType = discountType;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonDiscount{" +
+                "bizNameId='" + bizNameId + '\'' +
+                ", discountName='" + discountName + '\'' +
+                ", discountDescription='" + discountDescription + '\'' +
+                ", discountAmount=" + discountAmount +
+                ", discountType=" + discountType +
+                ", error=" + error +
+                '}';
     }
 }
