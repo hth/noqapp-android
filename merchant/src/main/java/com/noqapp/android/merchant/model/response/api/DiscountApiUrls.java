@@ -1,10 +1,14 @@
 package com.noqapp.android.merchant.model.response.api;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.merchant.presenter.beans.JsonDiscountList;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.DiscountOnOrder;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -36,5 +40,23 @@ public interface DiscountApiUrls {
 
             @Path("codeQR")
             String codeQR
+    );
+    
+    @POST("api/m/discount/apply.json")
+    Call<JsonPurchaseOrder> apply(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            DiscountOnOrder discountOnOrder
     );
 }
