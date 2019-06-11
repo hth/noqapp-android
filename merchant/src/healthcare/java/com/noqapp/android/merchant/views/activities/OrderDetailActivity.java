@@ -69,7 +69,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private JsonQueuedPerson jsonQueuedPerson;
     private ManageQueueApiCalls manageQueueApiCalls;
     private String qCodeQR;
-    private Button btn_refund, btn_pay_now;
+    private Button btn_refund, btn_pay_now,btn_discount;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
     private TextView tv_token, tv_q_name, tv_customer_name;
     private OrderItemAdapter adapter;
@@ -158,6 +158,15 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         rl_payment = findViewById(R.id.rl_payment);
         btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_refund = findViewById(R.id.btn_refund);
+        btn_discount = findViewById(R.id.btn_discount);
+        btn_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(OrderDetailActivity.this,DiscountActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
+                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            }
+        });
         btn_refund.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,8 +318,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
+            btn_discount.setVisibility(View.VISIBLE);
         } else {
             rl_payment.setVisibility(View.GONE);
+            btn_discount.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
@@ -340,11 +351,13 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
 
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
+            btn_discount.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
         }
         tv_payment_msg.setVisibility(View.GONE);
         if(getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED,false)){
             rl_payment.setVisibility(View.GONE);
+            btn_discount.setVisibility(View.GONE);
             btn_refund.setVisibility(View.GONE);
             tv_payment_msg.setVisibility(View.VISIBLE);
             if(getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY,false)){

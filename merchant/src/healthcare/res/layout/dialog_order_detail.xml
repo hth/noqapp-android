@@ -403,6 +403,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:visibility="gone"
                         android:padding="5dp">
 
 
@@ -512,7 +513,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-
                         <Button
                             android:id="@+id/btn_refund"
                             android:layout_width="wrap_content"
@@ -542,7 +542,20 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen" />
                     </RelativeLayout>
-
+                    <Button
+                        android:id="@+id/btn_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/bg_nogradient_round"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="Apply discounnt"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_fourteen" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
