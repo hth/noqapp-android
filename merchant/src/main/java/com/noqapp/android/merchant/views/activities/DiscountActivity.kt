@@ -88,7 +88,7 @@ class DiscountActivity : AppCompatActivity(), DiscountAdapter.OnItemClickListene
                 val tv_queue_name = findViewById<TextView>(R.id.tv_queue_name)
                 val rl_empty = findViewById<RelativeLayout>(R.id.rl_empty)
             } else {
-                val discountAdapter = DiscountAdapter(jsonDiscountList.discounts, this)
+                val discountAdapter = DiscountAdapter(this,jsonDiscountList.discounts, this)
                 val rcv_review = findViewById<RecyclerView>(R.id.rcv_review)
                 rcv_review.setHasFixedSize(true)
                 if (AppUtils().isTablet(applicationContext)) {

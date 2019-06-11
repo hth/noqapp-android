@@ -1,11 +1,13 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
@@ -17,10 +19,12 @@ import java.util.List;
 public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyViewHolder> {
     private final DiscountAdapter.OnItemClickListener listener;
     private List<JsonDiscount> jsonDiscounts;
+    private Context context;
 
-    public DiscountAdapter(List<JsonDiscount> jsonDiscounts, DiscountAdapter.OnItemClickListener listener) {
+    public DiscountAdapter(Context context, List<JsonDiscount> jsonDiscounts, DiscountAdapter.OnItemClickListener listener) {
         this.jsonDiscounts = jsonDiscounts;
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -35,15 +39,17 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyView
         holder.tv_discount_name.setText(jsonDiscount.getDiscountName());
         holder.tv_discount_description.setText(jsonDiscount.getDiscountDescription());
 
-        if(jsonDiscount.getDiscountType() == DiscountTypeEnum.F){
-            holder.tv_discount_amount.setText("Rs "+String.valueOf(jsonDiscount.getDiscountAmount())+"available");
-        }else{
-            holder.tv_discount_amount.setText(String.valueOf(jsonDiscount.getDiscountAmount())+"% dicount available");
+        if (jsonDiscount.getDiscountType() == DiscountTypeEnum.F) {
+            holder.tv_discount_amount.setText("Rs " + String.valueOf(jsonDiscount.getDiscountAmount()));
+        } else {
+            holder.tv_discount_amount.setText(String.valueOf(jsonDiscount.getDiscountAmount()) + "% off");
         }
+        holder.card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
+        holder.tv_apply_coupon.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         holder.tv_apply_coupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(null != listener){
+                if (null != listener) {
                     listener.discountItemClick(jsonDiscount);
                 }
             }
