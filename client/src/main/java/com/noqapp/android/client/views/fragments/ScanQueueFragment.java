@@ -541,7 +541,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
                 try {
                     String two = o2.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o2.getStartTime());
                     String one = o1.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o1.getStartTime());
-                    return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one));
+                    return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
