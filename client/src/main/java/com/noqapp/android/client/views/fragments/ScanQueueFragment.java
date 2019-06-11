@@ -539,7 +539,9 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
             public int compare(JsonSchedule o1, JsonSchedule o2) {
                 try {
-                    return CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()));
+                    String two = o2.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o2.getStartTime());
+                    String one = o1.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o1.getStartTime());
+                    return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
