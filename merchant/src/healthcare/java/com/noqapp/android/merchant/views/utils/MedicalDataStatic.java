@@ -400,6 +400,38 @@ public class MedicalDataStatic {
         }
     }
 
+    public static class Dental {
+
+        public static ArrayList<DataObj> getDiagnosis() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("FILLINGS", "", false));
+            dataObjs.add(new DataObj("CROWNS", "", false));
+            dataObjs.add(new DataObj("FLUORIDE TREATMENTS", "", false));
+            dataObjs.add(new DataObj("ROOT CANALS", "", false));
+            dataObjs.add(new DataObj("TOOTH EXTRACTIONS", "", false));
+            return dataObjs;
+        }
+
+        public static ArrayList<DataObj> getProvisionalDiagnosis() {
+            return getDiagnosis();
+        }
+
+        public static ArrayList<DataObj> getSymptoms() {
+            ArrayList<DataObj> dataObjs = new ArrayList<>();
+            dataObjs.add(new DataObj("TOOTHACHE", "", false));
+            dataObjs.add(new DataObj("SENSITIVE TEETH", "", false));
+            dataObjs.add(new DataObj("BLEEDING OR SORE GUMS", "", false));
+            dataObjs.add(new DataObj("MOUTH SORES", "", false));
+            dataObjs.add(new DataObj("BAD BREATH", "", false));
+            dataObjs.add(new DataObj("JAW PAIN OR POPPING/CLICKING IN THE JAW", "", false));
+            dataObjs.add(new DataObj("DRY MOUTH", "", false));
+            dataObjs.add(new DataObj("ORAL PIERCING INFECTION", "", false));
+            dataObjs.add(new DataObj("CRACKED OR BROKEN TOOTH", "", false));
+            dataObjs.add(new DataObj("STAINED OR DISCOLORED TEETH", "", false));
+            return dataObjs;
+        }
+    }
+
     public static class Physician {
 
         public static ArrayList<DataObj> getDiagnosis() {
@@ -603,6 +635,10 @@ public class MedicalDataStatic {
             break;
             case ORT: {
                 tempList.addAll(MedicalDataStatic.Ortho.getSymptoms());
+            }
+            break;
+            case DNT: {
+                tempList.addAll(MedicalDataStatic.Dental.getSymptoms());
             }
             break;
             case GSR: {
