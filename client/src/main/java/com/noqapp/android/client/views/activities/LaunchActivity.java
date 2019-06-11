@@ -737,7 +737,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     Log.e("JsonClientTokenAndQData", ((JsonClientTokenAndQueueData) object).toString());
                 } else if (object instanceof JsonClientOrderData) {
                     Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
-                }else if (object instanceof JsonTopicAppointmentData) {
+                } else if (object instanceof JsonTopicAppointmentData) {
                     Log.e("JsonTopicAppointData", ((JsonTopicAppointmentData) object).toString());
                     NotificationDB.insertNotification(
                             NotificationDB.KEY_NOTIFY,
@@ -1057,6 +1057,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         headerList.add(new MenuModel(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
         headerList.add(new MenuModel(getString(R.string.order_history), true, false, R.drawable.purchase_order));
         headerList.add(new MenuModel(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
+        headerList.add(new MenuModel(getString(R.string.offers), true, false, R.drawable.offers));
 
         List<MenuModel> settingList = new ArrayList<>();
         settingList.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
@@ -1124,6 +1125,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 startActivity(in);
                 break;
             }
+            case R.drawable.offers: {
+                Intent in = new Intent(launchActivity, OffersActivity.class);
+                startActivity(in);
+                break;
+            }
             case R.id.nav_transaction:
                 new CustomToast().showToast(launchActivity, "Coming soon... ");
                 break;
@@ -1143,7 +1149,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     }
                 });
                 showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
-
                 break;
             case R.drawable.medical_history: {
                 if (UserUtils.isLogin()) {

@@ -100,6 +100,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
+            android:name=".views.activities.OffersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme" />
+        <activity
             android:name=".views.activities.ViewAllListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
