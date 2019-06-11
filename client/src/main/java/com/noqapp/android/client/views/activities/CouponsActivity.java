@@ -9,10 +9,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.client.views.fragments.AllOffersFragment;
-import com.noqapp.android.client.views.fragments.MyOffersFragment;
+import com.noqapp.android.client.views.fragments.AllCouponsFragment;
+import com.noqapp.android.client.views.fragments.MyCouponsFragment;
 
-public class OffersActivity extends BaseActivity {
+public class CouponsActivity extends BaseActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -32,9 +32,9 @@ public class OffersActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AllOffersFragment(), "New Offers");
+        adapter.addFragment(new AllCouponsFragment(), "New Coupons");
         if (UserUtils.isLogin()) {
-            adapter.addFragment(new MyOffersFragment(), "My Offers");
+            adapter.addFragment(new MyCouponsFragment(), "My Coupons");
         }
         viewPager.setAdapter(adapter);
     }

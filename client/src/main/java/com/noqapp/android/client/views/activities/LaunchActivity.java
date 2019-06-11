@@ -1126,7 +1126,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 break;
             }
             case R.drawable.offers: {
-                Intent in = new Intent(launchActivity, OffersActivity.class);
+                Intent in = new Intent(launchActivity, CouponsActivity.class);
                 startActivity(in);
                 break;
             }

@@ -21,7 +21,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.adapters.OffersAdapter;
+import com.noqapp.android.client.views.adapters.MyCouponsAdapter;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
@@ -31,7 +31,7 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllOffersFragment extends Fragment implements AppointmentPresenter, OffersAdapter.OnItemClickListener {
+public class MyCouponsFragment extends Fragment implements AppointmentPresenter, MyCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonDiscount> jsonDiscountList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class AllOffersFragment extends Fragment implements AppointmentPresenter,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.frag_all_offers, container, false);
+        View view = inflater.inflate(R.layout.frag_mycoupons, container, false);
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
@@ -69,6 +69,7 @@ public class AllOffersFragment extends Fragment implements AppointmentPresenter,
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("all appointments", jsonScheduleList.toString());
+        //jsonSchedules = jsonScheduleList.getJsonSchedules();
         jsonDiscountList.add(new JsonDiscount());
         jsonDiscountList.add(new JsonDiscount());
         jsonDiscountList.add(new JsonDiscount());
@@ -84,9 +85,9 @@ public class AllOffersFragment extends Fragment implements AppointmentPresenter,
         }
 
 
-        OffersAdapter offersAdapter = new OffersAdapter(
+        MyCouponsAdapter myOffersAdapter = new MyCouponsAdapter(
                 getActivity(), jsonDiscountList, this);
-        rcv_appointments.setAdapter(offersAdapter);
+        rcv_appointments.setAdapter(myOffersAdapter);
         dismissProgress();
     }
 

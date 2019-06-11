@@ -16,14 +16,14 @@ import com.noqapp.android.client.presenter.beans.JsonDiscount;
 
 import java.util.List;
 
-public class MyOffersAdapter extends RecyclerView.Adapter {
+public class MyCouponsAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
     private List<JsonDiscount> jsonDiscountList;
     private Context context;
 
-    public MyOffersAdapter(Context context, List<JsonDiscount> jsonDiscountList,
-                           OnItemClickListener listener) {
+    public MyCouponsAdapter(Context context, List<JsonDiscount> jsonDiscountList,
+                            OnItemClickListener listener) {
         this.jsonDiscountList = jsonDiscountList;
         this.context = context;
         this.listener = listener;
@@ -31,7 +31,7 @@ public class MyOffersAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rcv_item_myoffers, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rcv_item_mycoupons, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
