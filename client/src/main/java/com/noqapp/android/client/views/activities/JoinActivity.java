@@ -9,14 +9,12 @@ import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.wrapper.JoinQueueState;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.JoinQueueUtil;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -175,33 +173,10 @@ public class JoinActivity extends BaseActivity implements QueuePresenter {
         }
     }
 
-
     @Override
     public void queueError() {
         Log.d(TAG, "Queue=Error");
         dismissProgress();
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(this);
-        } else {
-            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-        }
     }
 
     @Override

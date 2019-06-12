@@ -30,8 +30,6 @@ import com.noqapp.android.client.presenter.beans.BizStoreElasticList;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -42,7 +40,6 @@ import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -170,32 +167,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         dismissProgress();
     }
 
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(this);
-        } else {
-            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-        }
-    }
 
     @Override
     public void queueResponse(JsonQueue jsonQueue) {
         dismissProgress();
     }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
 
     @Override
     public void queueResponse(BizStoreElasticList bizStoreElasticList) {

@@ -20,12 +20,10 @@ import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
@@ -147,27 +145,6 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-    }
-
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej) {
-            new ErrorResponseHandler().processError(this, eej);
-        }
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
 

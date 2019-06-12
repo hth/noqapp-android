@@ -22,14 +22,12 @@ import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.body.OrderDetail;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
@@ -347,26 +345,6 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
 
-    }
-
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

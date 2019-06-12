@@ -8,12 +8,10 @@ import com.noqapp.android.client.model.ProfessionalProfileApiCall;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.UserAdditionalInfoFragment;
 import com.noqapp.android.client.views.fragments.UserProfileFragment;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
@@ -133,26 +131,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         dismissProgress();
     }
 
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         userProfileFragment = new UserProfileFragment();
         userAdditionalInfoFragment = new UserAdditionalInfoFragment();
@@ -168,12 +146,6 @@ public class ManagerProfileActivity extends ProfileActivity implements QueueMana
         if (null != loadTabs) {
             loadTabs.cancel(true);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //tv_name.setText(managerName);
     }
 
     private class LoadTabs extends AsyncTask<String, String, String> {

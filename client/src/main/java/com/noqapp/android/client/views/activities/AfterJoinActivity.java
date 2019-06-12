@@ -24,7 +24,6 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
@@ -32,7 +31,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.body.JoinQueue;
@@ -417,31 +415,6 @@ public class AfterJoinActivity extends BaseActivity implements TokenPresenter, R
     public void responsePresenterError() {
         Log.d("", "responsePresenterError");
         dismissProgress();
-    }
-
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej) {
-            new ErrorResponseHandler().processError(this, eej);
-        }
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(this);
-        } else {
-            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-        }
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
     }
 
     private void cancelQueue() {

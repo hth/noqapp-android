@@ -17,13 +17,10 @@ import android.widget.RelativeLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.MedicalRecordApiCall;
 import com.noqapp.android.client.presenter.MedicalRecordPresenter;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.MedicalHistoryAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -111,24 +108,5 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
             }
         });
         dismissProgress();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 }

@@ -7,12 +7,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noqapp.android.client.R;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.client.utils.ErrorResponseHandler;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
-public class BaseActivity extends AppCompatActivity {
+
+public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter {
 
     protected ProgressDialog progressDialog;
     protected ImageView iv_home;
@@ -55,5 +61,28 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(goToA);
             }
         });
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtilities.authenticationProcessing(this);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        if (errorCode == Constants.INVALID_BAR_CODE) {
+            ShowAlertInformation.showBarcodeErrorDialog(this);
+        } else {
+            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+        }
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        if (null != eej)
+            new ErrorResponseHandler().processError(this, eej);
     }
 }

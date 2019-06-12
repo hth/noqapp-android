@@ -58,8 +58,6 @@ public class PrivacyActivity extends BaseActivity implements View.OnClickListene
                     ShowAlertInformation.showNetworkDialog(PrivacyActivity.this);
                 }
                 break;
-
         }
     }
-
 }
