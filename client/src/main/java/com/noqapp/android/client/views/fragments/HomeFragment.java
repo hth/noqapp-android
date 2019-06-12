@@ -96,13 +96,13 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener,
+public class HomeFragment extends ScannerFragment implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
         CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
         StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
         FeedPresenter, AdvertisementPresenter {
 
-    private final String TAG = ScanQueueFragment.class.getSimpleName();
+    private final String TAG = HomeFragment.class.getSimpleName();
     private RelativeLayout rl_scan;
     private RecyclerView rv_health_care;
     private RecyclerView rv_current_activity;
@@ -144,7 +144,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
 
-    public ScanQueueFragment() {
+    public HomeFragment() {
 
     }
 
