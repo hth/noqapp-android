@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,11 +29,11 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllCouponsFragment extends Fragment implements AppointmentPresenter, AllCouponsAdapter.OnItemClickListener {
+public class AllCouponsFragment extends BaseFragment implements AppointmentPresenter,
+        AllCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonDiscount> jsonDiscountList = new ArrayList<>();
-    protected ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +42,8 @@ public class AllCouponsFragment extends Fragment implements AppointmentPresenter
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
+                RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         if (jsonDiscountList.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -53,13 +52,13 @@ public class AllCouponsFragment extends Fragment implements AppointmentPresenter
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching offers...");
+            progressDialog.setMessage("Fetching all coupons...");
             progressDialog.show();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(),
+                    UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -122,17 +121,6 @@ public class AllCouponsFragment extends Fragment implements AppointmentPresenter
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override

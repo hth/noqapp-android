@@ -6,6 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -16,11 +21,6 @@ import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 
 import java.util.ArrayList;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by chandra on 5/7/17.
@@ -34,7 +34,6 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
     public CategoryListFragment(ArrayList<BizStoreElastic> jsonQueues) {
         this.jsonQueues = jsonQueues;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

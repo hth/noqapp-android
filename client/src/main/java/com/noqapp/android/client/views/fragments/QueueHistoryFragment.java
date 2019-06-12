@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.OrderQueueHistoryApiCall;
 import com.noqapp.android.client.presenter.QueueHistoryPresenter;
@@ -25,12 +29,8 @@ import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
+public class QueueHistoryFragment extends BaseFragment implements
+        QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
     private RecyclerView rcv_order_history;
     private ArrayList<JsonQueueHistorical> listData;
     private RelativeLayout rl_empty;
@@ -43,6 +43,8 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         rl_empty = view.findViewById(R.id.rl_empty);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             if (UserUtils.isLogin()) {
+                progressDialog.setMessage("Fetching Queue history...");
+                progressDialog.show();
                 OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
                 orderQueueHistoryModel.setQueueHistoryPresenter(this);
                 orderQueueHistoryModel.queues(UserUtils.getEmail(), UserUtils.getAuth());
@@ -56,8 +58,6 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         rcv_order_history.setHasFixedSize(true);
         rcv_order_history.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_order_history.setItemAnimator(new DefaultItemAnimator());
-        // rcv_order_history.addItemDecoration(new VerticalSpaceItemDecoration(2));
-
         return view;
     }
 
@@ -73,18 +73,20 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
         if (null != eej)
             new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
     public void authenticationFailure() {
-        //dismissProgress();
+        dismissProgress();
         AppUtilities.authenticationProcessing(getActivity());
     }
 
@@ -97,10 +99,10 @@ public class QueueHistoryFragment extends Fragment implements QueueHistoryAdapte
         rcv_order_history.setAdapter(queueHistoryAdapter);
         if (null != listData && listData.size() == 0 && null != getActivity()) {
             rl_empty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             rl_empty.setVisibility(View.GONE);
         }
+        dismissProgress();
     }
-
 
 }

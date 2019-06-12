@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,11 +29,10 @@ import com.noqapp.android.common.presenter.AppointmentPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCouponsFragment extends Fragment implements AppointmentPresenter, MyCouponsAdapter.OnItemClickListener {
+public class MyCouponsFragment extends BaseFragment implements AppointmentPresenter, MyCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonDiscount> jsonDiscountList = new ArrayList<>();
-    protected ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,9 +50,8 @@ public class MyCouponsFragment extends Fragment implements AppointmentPresenter,
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching offers...");
+            progressDialog.setMessage("Fetching coupons...");
             progressDialog.show();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
@@ -125,16 +121,7 @@ public class MyCouponsFragment extends Fragment implements AppointmentPresenter,
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
 
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 
     @Override
     public void onDiscountItemClick(int pos, JsonDiscount jsonDiscount) {

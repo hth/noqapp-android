@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,12 +34,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class PastAppointmentFragment extends Fragment implements AppointmentPresenter,
+public class PastAppointmentFragment extends BaseFragment implements AppointmentPresenter,
         MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
-    protected ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +56,6 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching past appointments...");
             progressDialog.show();
@@ -142,16 +138,5 @@ public class PastAppointmentFragment extends Fragment implements AppointmentPres
         intent.putExtra(IBConstant.KEY_FROM_LIST, true);
         intent.putExtra("isPast", true);
         startActivity(intent);
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 }

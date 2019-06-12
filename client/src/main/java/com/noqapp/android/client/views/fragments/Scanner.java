@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 
 import org.apache.commons.lang3.StringUtils;
-
-import androidx.core.content.ContextCompat;
 
 public abstract class Scanner extends NoQueueBaseFragment {
     private static final int RC_BARCODE_CAPTURE = 9001;
