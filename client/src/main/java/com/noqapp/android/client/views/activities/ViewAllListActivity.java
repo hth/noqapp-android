@@ -21,21 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by chandra on 5/7/17.
  */
-public class ViewAllListActivity extends AppCompatActivity implements StoreInfoViewAllAdapter.OnItemClickListener {
+public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAllAdapter.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         RecyclerView rv_merchant_around_you = findViewById(R.id.rv_merchant_around_you);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         tv_toolbar_title.setText(getString(R.string.screen_view_all));
         ArrayList<BizStoreElastic> listData = (ArrayList<BizStoreElastic>) getIntent().getExtras().getSerializable("list");
         if (null == listData)

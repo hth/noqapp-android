@@ -22,7 +22,6 @@ import com.noqapp.android.client.utils.IBConstant;
 public class WebViewActivity extends BaseActivity {
     private WebView webView;
     private String url = "";
-    private ProgressDialog progressDialog;
     private boolean isPdf = false;
     private Handler handler = new Handler() {
         @Override
