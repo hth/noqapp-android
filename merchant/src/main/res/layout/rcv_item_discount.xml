@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="Validity period: 14-06-2019"
+                    android:text="Validity period: N/A"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_fourteen" />
 

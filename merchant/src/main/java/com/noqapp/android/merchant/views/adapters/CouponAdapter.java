@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonCoupon;
 
@@ -43,6 +44,8 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
         } else {
             holder.tv_discount_amount.setText(String.valueOf(jsonCoupon.getDiscountAmount()) + "% off");
         }
+        holder.tv_offer_validity.setText("Validity period: "+
+                CommonHelper.formatStringDate(CommonHelper.SDF_YYYY_MM_DD,jsonCoupon.getCouponEndDate()));
         holder.card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
         holder.tv_apply_coupon.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         holder.tv_apply_coupon.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +72,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
         private TextView tv_discount_description;
         private TextView tv_discount_amount;
         private TextView tv_apply_coupon;
+        private TextView tv_offer_validity;
         private CardView card_view;
 
 
@@ -78,6 +82,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
             this.tv_discount_description = itemView.findViewById(R.id.tv_discount_description);
             this.tv_discount_amount = itemView.findViewById(R.id.tv_discount_amount);
             this.tv_apply_coupon = itemView.findViewById(R.id.tv_apply_coupon);
+            this.tv_offer_validity = itemView.findViewById(R.id.tv_offer_validity);
             this.card_view = itemView.findViewById(R.id.card_view);
         }
     }
