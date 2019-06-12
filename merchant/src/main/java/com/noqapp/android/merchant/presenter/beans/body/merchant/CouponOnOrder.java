@@ -36,6 +36,9 @@ public class CouponOnOrder extends AbstractDomain {
     @JsonProperty("qid")
     private String queueUserId;
 
+    @JsonProperty("qr")
+    private String codeQR;
+
     public String getCouponId() {
         return couponId;
     }
@@ -60,6 +63,15 @@ public class CouponOnOrder extends AbstractDomain {
 
     public CouponOnOrder setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public CouponOnOrder setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 }
