@@ -14,15 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.MyAppointmentAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -110,26 +107,6 @@ public class PastAppointmentFragment extends BaseFragment implements Appointment
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
     }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(getActivity());
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
 
     @Override
     public void appointmentDetails(JsonSchedule jsonSchedule) {

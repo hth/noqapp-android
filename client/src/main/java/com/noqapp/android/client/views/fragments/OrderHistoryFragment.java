@@ -16,15 +16,12 @@ import com.noqapp.android.client.model.OrderQueueHistoryApiCall;
 import com.noqapp.android.client.presenter.OrderHistoryPresenter;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistoricalList;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.OrderHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
@@ -70,26 +67,6 @@ public class OrderHistoryFragment extends BaseFragment implements
         bundle.putSerializable(IBConstant.KEY_DATA, item);
         intent.putExtras(bundle);
         startActivity(intent);
-    }
-
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(getActivity());
     }
 
     @Override
