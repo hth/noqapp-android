@@ -25,10 +25,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DiscountOnOrder extends AbstractDomain {
+public class CouponOnOrder extends AbstractDomain {
 
-    @JsonProperty("di")
-    private String discountId;
+    @JsonProperty("ci")
+    private String couponId;
 
     @JsonProperty ("ti")
     private String transactionId;
@@ -36,12 +36,12 @@ public class DiscountOnOrder extends AbstractDomain {
     @JsonProperty("qid")
     private String queueUserId;
 
-    public String getDiscountId() {
-        return discountId;
+    public String getCouponId() {
+        return couponId;
     }
 
-    public DiscountOnOrder setDiscountId(String discountId) {
-        this.discountId = discountId;
+    public CouponOnOrder setCouponId(String couponId) {
+        this.couponId = couponId;
         return this;
     }
 
@@ -49,7 +49,7 @@ public class DiscountOnOrder extends AbstractDomain {
         return transactionId;
     }
 
-    public DiscountOnOrder setTransactionId(String transactionId) {
+    public CouponOnOrder setTransactionId(String transactionId) {
         this.transactionId = transactionId;
         return this;
     }
@@ -58,7 +58,7 @@ public class DiscountOnOrder extends AbstractDomain {
         return queueUserId;
     }
 
-    public DiscountOnOrder setQueueUserId(String queueUserId) {
+    public CouponOnOrder setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
         return this;
     }

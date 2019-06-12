@@ -1,48 +1,47 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import com.noqapp.android.common.model.types.DiscountTypeEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonCoupon;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.noqapp.android.common.model.types.DiscountTypeEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonDiscount;
-
 import java.util.List;
 
-public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyViewHolder> {
-    private final DiscountAdapter.OnItemClickListener listener;
-    private List<JsonDiscount> jsonDiscounts;
+public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHolder> {
+    private final CouponAdapter.OnItemClickListener listener;
+    private List<JsonCoupon> jsonCoupons;
     private Context context;
 
-    public DiscountAdapter(Context context, List<JsonDiscount> jsonDiscounts, DiscountAdapter.OnItemClickListener listener) {
-        this.jsonDiscounts = jsonDiscounts;
+    public CouponAdapter(Context context, List<JsonCoupon> jsonCoupons, CouponAdapter.OnItemClickListener listener) {
+        this.jsonCoupons = jsonCoupons;
         this.listener = listener;
         this.context = context;
     }
 
     @Override
-    public DiscountAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CouponAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_discount, parent, false);
-        return new DiscountAdapter.MyViewHolder(view);
+        return new CouponAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final DiscountAdapter.MyViewHolder holder, final int listPosition) {
-        final JsonDiscount jsonDiscount = jsonDiscounts.get(listPosition);
-        holder.tv_discount_name.setText(jsonDiscount.getDiscountName());
-        holder.tv_discount_description.setText(jsonDiscount.getDiscountDescription());
+    public void onBindViewHolder(final CouponAdapter.MyViewHolder holder, final int listPosition) {
+        final JsonCoupon jsonCoupon = jsonCoupons.get(listPosition);
+        holder.tv_discount_name.setText(jsonCoupon.getDiscountName());
+        holder.tv_discount_description.setText(jsonCoupon.getDiscountDescription());
 
-        if (jsonDiscount.getDiscountType() == DiscountTypeEnum.F) {
-            holder.tv_discount_amount.setText("Rs " + String.valueOf(jsonDiscount.getDiscountAmount()));
+        if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
+            holder.tv_discount_amount.setText("Rs " + String.valueOf(jsonCoupon.getDiscountAmount()));
         } else {
-            holder.tv_discount_amount.setText(String.valueOf(jsonDiscount.getDiscountAmount()) + "% off");
+            holder.tv_discount_amount.setText(String.valueOf(jsonCoupon.getDiscountAmount()) + "% off");
         }
         holder.card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
         holder.tv_apply_coupon.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
@@ -50,7 +49,7 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyView
             @Override
             public void onClick(View v) {
                 if (null != listener) {
-                    listener.discountItemClick(jsonDiscount);
+                    listener.discountItemClick(jsonCoupon);
                 }
             }
         });
@@ -58,11 +57,11 @@ public class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return jsonDiscounts.size();
+        return jsonCoupons.size();
     }
 
     public interface OnItemClickListener {
-        void discountItemClick(JsonDiscount jsonDiscount);
+        void discountItemClick(JsonCoupon jsonCoupon);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

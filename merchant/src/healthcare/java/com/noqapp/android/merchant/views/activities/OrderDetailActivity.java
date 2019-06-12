@@ -31,12 +31,13 @@ import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.DiscountApiCalls;
+import com.noqapp.android.merchant.model.CouponApiCalls;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonCoupon;
 import com.noqapp.android.merchant.presenter.beans.JsonDiscount;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.presenter.beans.body.merchant.DiscountOnOrder;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CouponOnOrder;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
@@ -46,7 +47,7 @@ import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
-import com.noqapp.android.merchant.views.interfaces.DiscountOnOrderPresenter;
+import com.noqapp.android.merchant.views.interfaces.CouponOnOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
@@ -55,7 +56,7 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 import org.apache.commons.lang3.StringUtils;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter,
-        QueueRefundPaymentPresenter, ReceiptInfoPresenter, DiscountOnOrderPresenter {
+        QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponOnOrderPresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -131,7 +132,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_discount_value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(OrderDetailActivity.this,DiscountActivity.class);
+                Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
                 startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
             }
@@ -162,7 +163,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         btn_discount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(OrderDetailActivity.this,DiscountActivity.class);
+                Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
                 startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
             }
@@ -465,12 +466,12 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
-                JsonDiscount jsonDiscount = (JsonDiscount) data.getSerializableExtra(IBConstant.KEY_OBJECT);
-                Log.e("data recieve", jsonDiscount.toString());
-                if(jsonDiscount.getDiscountType() == DiscountTypeEnum.F){
-                    tv_discount_value.setText(currencySymbol + " " +jsonDiscount.getDiscountAmount());
+                JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
+                Log.e("data recieve", jsonCoupon.toString());
+                if(jsonCoupon.getDiscountType() == DiscountTypeEnum.F){
+                    tv_discount_value.setText(currencySymbol + " " +jsonCoupon.getDiscountAmount());
                 }else{
-                    tv_discount_value.setText(jsonDiscount.getDiscountAmount()+"% discount");
+                    tv_discount_value.setText(jsonCoupon.getDiscountAmount()+"% discount");
                 }
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -478,18 +479,18 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     progressDialog.setMessage("Applying discount..");
                    // progressDialog.setCancelable(false);
                    // progressDialog.setCanceledOnTouchOutside(false);
-                    DiscountApiCalls discountApiCalls = new DiscountApiCalls();
-                    discountApiCalls.setDiscountOnOrderPresenter(this);
+                    CouponApiCalls couponApiCalls = new CouponApiCalls();
+                    couponApiCalls.setCouponOnOrderPresenter(this);
 
-                    DiscountOnOrder discountOnOrder = new DiscountOnOrder()
+                    CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
-                            .setDiscountId(jsonDiscount.getDiscountId())
+                            .setCouponId(jsonCoupon.getCouponId())
                             .setTransactionId(jsonQueuedPerson.getTransactionId());
 
-                    discountApiCalls.apply(BaseLaunchActivity.getDeviceID(),
+                    couponApiCalls.apply(BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
                             LaunchActivity.getLaunchActivity().getAuth(),
-                            discountOnOrder);
+                            couponOnOrder);
                 } else {
                     ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                 }

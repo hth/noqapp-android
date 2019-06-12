@@ -1,12 +1,12 @@
 package com.noqapp.android.merchant.presenter.beans;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * User: hitender
- * Date: 2019-06-10 13:07
+ * Date: 2019-06-12 06:49
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -30,25 +30,25 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonDiscountList extends AbstractDomain implements Serializable {
+public class JsonCouponList extends AbstractDomain implements Serializable {
 
-    @JsonProperty("ds")
-    private List<JsonDiscount> discounts = new ArrayList<>();
+    @JsonProperty("cs")
+    private List<JsonCoupon> coupons = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public List<JsonDiscount> getDiscounts() {
-        return discounts;
+    public List<JsonCoupon> getCoupons() {
+        return coupons;
     }
 
-    public JsonDiscountList setDiscounts(List<JsonDiscount> discounts) {
-        this.discounts = discounts;
+    public JsonCouponList setCoupons(List<JsonCoupon> coupons) {
+        this.coupons = coupons;
         return this;
     }
 
-    public JsonDiscountList addDiscount(JsonDiscount discount) {
-        this.discounts.add(discount);
+    public JsonCouponList addCoupon(JsonCoupon coupon) {
+        this.coupons.add(coupon);
         return this;
     }
 
@@ -56,15 +56,8 @@ public class JsonDiscountList extends AbstractDomain implements Serializable {
         return error;
     }
 
-    public void setError(ErrorEncounteredJson error) {
+    public JsonCouponList setError(ErrorEncounteredJson error) {
         this.error = error;
-    }
-
-    @Override
-    public String toString() {
-        return "JsonDiscountList{" +
-                "discounts=" + discounts +
-                ", error=" + error +
-                '}';
+        return this;
     }
 }

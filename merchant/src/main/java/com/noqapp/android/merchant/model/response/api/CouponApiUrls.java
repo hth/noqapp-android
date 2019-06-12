@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.model.response.api;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.merchant.presenter.beans.JsonDiscountList;
-import com.noqapp.android.merchant.presenter.beans.body.merchant.DiscountOnOrder;
+import com.noqapp.android.merchant.presenter.beans.JsonCouponList;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.CouponOnOrder;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,7 +15,7 @@ import retrofit2.http.Path;
  * User: hitender
  * Date: 2019-06-10 13:33
  */
-public interface DiscountApiUrls {
+public interface CouponApiUrls {
 
     /**
      * Errors
@@ -24,8 +24,8 @@ public interface DiscountApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PROMOTION_ACCESS_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/discount/available/{codeQR}.json")
-    Call<JsonDiscountList> availableDiscount(
+    @GET("api/m/coupon/available/{codeQR}.json")
+    Call<JsonCouponList> availableCoupon(
             @Header("X-R-DID")
             String did,
 
@@ -42,7 +42,7 @@ public interface DiscountApiUrls {
             String codeQR
     );
     
-    @POST("api/m/discount/apply.json")
+    @POST("api/m/coupon/apply.json")
     Call<JsonPurchaseOrder> apply(
             @Header("X-R-DID")
             String did,
@@ -57,6 +57,6 @@ public interface DiscountApiUrls {
             String auth,
 
             @Body
-            DiscountOnOrder discountOnOrder
+            CouponOnOrder couponOnOrder
     );
 }

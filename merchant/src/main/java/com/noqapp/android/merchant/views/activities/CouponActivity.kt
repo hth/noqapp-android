@@ -20,21 +20,21 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.merchant.R
-import com.noqapp.android.merchant.model.DiscountApiCalls
-import com.noqapp.android.merchant.presenter.beans.JsonDiscount
-import com.noqapp.android.merchant.presenter.beans.JsonDiscountList
+import com.noqapp.android.merchant.model.CouponApiCalls
+import com.noqapp.android.merchant.presenter.beans.JsonCoupon
+import com.noqapp.android.merchant.presenter.beans.JsonCouponList
 import com.noqapp.android.merchant.utils.AppUtils
 import com.noqapp.android.merchant.utils.ErrorResponseHandler
 import com.noqapp.android.merchant.utils.IBConstant
 import com.noqapp.android.merchant.utils.UserUtils
-import com.noqapp.android.merchant.views.adapters.DiscountAdapter
-import com.noqapp.android.merchant.views.interfaces.DiscountPresenter
+import com.noqapp.android.merchant.views.adapters.CouponAdapter
+import com.noqapp.android.merchant.views.interfaces.CouponPresenter
 
 
-class DiscountActivity : AppCompatActivity(), DiscountAdapter.OnItemClickListener, DiscountPresenter {
+class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, CouponPresenter {
 
     private var progressDialog: ProgressDialog? = null
-    private var discountApiCalls: DiscountApiCalls? = null
+    private var couponApiCalls: CouponApiCalls? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (AppUtils().isTablet(applicationContext)) {
@@ -44,8 +44,8 @@ class DiscountActivity : AppCompatActivity(), DiscountAdapter.OnItemClickListene
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discount)
-        discountApiCalls = DiscountApiCalls()
-        discountApiCalls!!.setDiscountPresenter(this)
+        couponApiCalls = CouponApiCalls()
+        couponApiCalls!!.setCouponPresenter(this)
 
         initProgress()
 
@@ -57,7 +57,7 @@ class DiscountActivity : AppCompatActivity(), DiscountAdapter.OnItemClickListene
         tv_toolbar_title.text = getString(R.string.activity_discount)
 
         progressDialog!!.show()
-        discountApiCalls!!.availableDiscount(UserUtils.getDeviceId(), UserUtils.getEmail(),
+        couponApiCalls!!.availableDiscount(UserUtils.getDeviceId(), UserUtils.getEmail(),
                 UserUtils.getAuth(), intent.getStringExtra(IBConstant.KEY_CODE_QR))
     }
 
@@ -72,23 +72,23 @@ class DiscountActivity : AppCompatActivity(), DiscountAdapter.OnItemClickListene
             progressDialog!!.dismiss()
     }
 
-    override fun discountItemClick(jsonDiscount: JsonDiscount?) {
+    override fun discountItemClick(jsonCoupon: JsonCoupon?) {
         val intent = Intent()
-        intent.putExtra(IBConstant.KEY_OBJECT,jsonDiscount)
+        intent.putExtra(IBConstant.KEY_OBJECT,jsonCoupon)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
 
-    override fun discountResponse(jsonDiscountList: JsonDiscountList?) {
+    override fun couponResponse(jsonCouponList: JsonCouponList?) {
         dismissProgress()
-        if (null != jsonDiscountList) {
+        if (null != jsonCouponList) {
             // call api
-            Log.e("discountResponse", jsonDiscountList.toString())
-            if (jsonDiscountList.discounts.size == 0) {
+            Log.e("couponResponse", jsonCouponList.toString())
+            if (jsonCouponList.coupons.size == 0) {
                 val tv_queue_name = findViewById<TextView>(R.id.tv_queue_name)
                 val rl_empty = findViewById<RelativeLayout>(R.id.rl_empty)
             } else {
-                val discountAdapter = DiscountAdapter(this,jsonDiscountList.discounts, this)
+                val couponAdapter = CouponAdapter(this, jsonCouponList.coupons, this)
                 val rcv_review = findViewById<RecyclerView>(R.id.rcv_review)
                 rcv_review.setHasFixedSize(true)
                 if (AppUtils().isTablet(applicationContext)) {
@@ -98,7 +98,7 @@ class DiscountActivity : AppCompatActivity(), DiscountAdapter.OnItemClickListene
                 }
 
                 rcv_review.itemAnimator = DefaultItemAnimator()
-                rcv_review.adapter = discountAdapter
+                rcv_review.adapter = couponAdapter
             }
         }
     }
