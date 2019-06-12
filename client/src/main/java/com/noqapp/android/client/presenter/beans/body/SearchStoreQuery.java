@@ -97,4 +97,17 @@ public class SearchStoreQuery {
         this.scrollId = scrollId;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SearchStoreQuery{");
+        sb.append("query='").append(query).append('\'');
+        sb.append(", cityName='").append(cityName).append('\'');
+        sb.append(", latitude='").append(latitude).append('\'');
+        sb.append(", longitude='").append(longitude).append('\'');
+        sb.append(", scrollId='").append(scrollId).append('\'');
+        sb.append(", filters='").append(filters).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

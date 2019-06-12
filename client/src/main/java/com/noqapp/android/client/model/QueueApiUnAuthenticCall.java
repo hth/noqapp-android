@@ -33,7 +33,16 @@ public class QueueApiUnAuthenticCall {
     private TokenPresenter tokenPresenter;
     private ResponsePresenter responsePresenter;
     private TokenAndQueuePresenter tokenAndQueuePresenter;
+    public BizStoreElasticList bizStoreElasticList;
+    private boolean responseReceived = false;
 
+    public boolean isResponseReceived() {
+        return responseReceived;
+    }
+
+    public void setResponseReceived(boolean responseReceived) {
+        this.responseReceived = responseReceived;
+    }
     public void setQueuePresenter(QueuePresenter queuePresenter) {
         this.queuePresenter = queuePresenter;
     }
@@ -134,6 +143,7 @@ public class QueueApiUnAuthenticCall {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("getAllQueueStateLevelUp", String.valueOf(response.body()));
                         queuePresenter.queueResponse(response.body());
+                        bizStoreElasticList = response.body();
                     } else {
                         Log.e(TAG, "error getAllQueueStateLevelUp");
                         queuePresenter.responseErrorPresenter(response.body().getError());
@@ -145,6 +155,7 @@ public class QueueApiUnAuthenticCall {
                         queuePresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override

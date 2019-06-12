@@ -283,6 +283,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
             city = LaunchActivity.getLaunchActivity().cityName;
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         }
+//        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
+//        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
     }
 
     @Override
