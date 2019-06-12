@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -19,8 +21,6 @@ import com.noqapp.android.client.views.customviews.TouchImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * Created by chandra on 3/26/18.

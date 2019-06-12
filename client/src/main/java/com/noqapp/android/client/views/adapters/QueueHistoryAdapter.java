@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -20,10 +24,6 @@ import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class QueueHistoryAdapter extends RecyclerView.Adapter {
     private final Context context;

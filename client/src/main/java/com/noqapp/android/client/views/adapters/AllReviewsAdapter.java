@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class AllReviewsAdapter extends RecyclerView.Adapter<AllReviewsAdapter.MyViewHolder> {
+public class AllReviewsAdapter extends RecyclerView.Adapter {
     private final Context context;
 
     private List<JsonReview> dataSet;
@@ -32,20 +32,21 @@ public class AllReviewsAdapter extends RecyclerView.Adapter<AllReviewsAdapter.My
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_show_all_review, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         final JsonReview jsonReview = dataSet.get(listPosition);
         holder.tv_name.setText(jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());
-        holder.tv_review_detail.setVisibility(jsonReview.isReviewShow()? View.VISIBLE: View.GONE);
+        holder.tv_review_detail.setVisibility(jsonReview.isReviewShow() ? View.VISIBLE : View.GONE);
         holder.tv_rating.setText(String.valueOf(jsonReview.getRatingCount()));
-        holder.tv_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,jsonReview.getCreated()));
+        holder.tv_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonReview.getCreated()));
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(holder.iv_main);
         try {
             if (!TextUtils.isEmpty(jsonReview.getProfileImage())) {

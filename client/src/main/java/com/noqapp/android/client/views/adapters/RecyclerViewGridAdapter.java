@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -20,11 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
-public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGridAdapter.ViewHolder> {
+public class RecyclerViewGridAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
     private List<JsonCategory> categories;
@@ -40,7 +40,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     }
 
     @Override
-    public RecyclerViewGridAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.grid_item_category, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
@@ -48,7 +48,8 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder Vholder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        ViewHolder Vholder = (ViewHolder) holder;
         final JsonCategory jsonCategory = categories.get(position);
         List<BizStoreElastic> jsonQueues = queueMap.get(jsonCategory.getBizCategoryId());
         BizStoreElastic jsonQueue = null;

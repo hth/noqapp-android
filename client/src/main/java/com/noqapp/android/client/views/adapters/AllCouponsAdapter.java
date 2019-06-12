@@ -53,7 +53,6 @@ public class AllCouponsAdapter extends RecyclerView.Adapter {
     }
 
 
-
     public interface OnItemClickListener {
         void onDiscountItemClick(int pos, JsonDiscount jsonDiscount);
     }
