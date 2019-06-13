@@ -61,6 +61,9 @@ public class JsonCoupon extends AbstractDomain implements Serializable {
     @JsonProperty("mu")
     private boolean multiUse;
 
+    @JsonProperty("qid")
+    private String qid;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -151,6 +154,15 @@ public class JsonCoupon extends AbstractDomain implements Serializable {
 
     public JsonCoupon setMultiUse(boolean multiUse) {
         this.multiUse = multiUse;
+        return this;
+    }
+
+    public String getQid() {
+        return qid;
+    }
+
+    public JsonCoupon setQid(String qid) {
+        this.qid = qid;
         return this;
     }
 
