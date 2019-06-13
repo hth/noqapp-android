@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -121,6 +122,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private JsonProfile jsonProfile;
     private RelativeLayout rl_apply_coupon,rl_coupon_applied;
     private String currencySymbol = "Rs.";
+    private  TextView tv_remove_coupon;
+    private FrameLayout frame_coupon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +157,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_name = findViewById(R.id.tv_name);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
+        frame_coupon = findViewById(R.id.frame_coupon);
         rl_apply_coupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +167,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
             }
         });
-        TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
+        tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
         tv_remove_coupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -788,6 +792,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
             btn_pay.setVisibility(View.GONE);
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1.0f
+            );
+            btn_cancel_queue.setLayoutParams(param);
+            frame_coupon.setVisibility(View.GONE);
+            rl_apply_coupon.setClickable(false);
         } else {
             tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
             btn_pay.setVisibility(View.VISIBLE);
