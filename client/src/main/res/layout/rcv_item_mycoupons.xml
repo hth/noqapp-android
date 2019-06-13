@@ -36,7 +36,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_offer_title"
+                        android:id="@+id/tv_discount_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -49,7 +49,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_offer_detail"
+                        android:id="@+id/tv_discount_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -78,7 +78,7 @@
 
 
                     <TextView
-                        android:id="@+id/tv_discount_value"
+                        android:id="@+id/tv_discount_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -98,9 +98,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="-8dip"
-                    android:background="@drawable/semi_circle"
-                    android:layout_centerVertical="true" />
+                    android:background="@drawable/semi_circle" />
 
                 <View
                     android:layout_width="match_parent"
@@ -134,12 +134,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="Validity period: 14-06-2019"
+                    android:text="Validity period: N/A"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_fourteen" />
 
                 <TextView
-                    android:id="@+id/tv_apply"
+                    android:id="@+id/tv_apply_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -158,3 +158,4 @@
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>
+

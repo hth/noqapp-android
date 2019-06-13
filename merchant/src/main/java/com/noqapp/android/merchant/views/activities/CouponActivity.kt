@@ -28,7 +28,7 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler
 import com.noqapp.android.merchant.utils.IBConstant
 import com.noqapp.android.merchant.utils.UserUtils
 import com.noqapp.android.merchant.views.adapters.CouponAdapter
-import com.noqapp.android.merchant.views.interfaces.CouponPresenter
+import com.noqapp.android.common.presenter.CouponPresenter
 
 
 class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, CouponPresenter {

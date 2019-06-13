@@ -57,4 +57,13 @@ public class JsonCouponList extends AbstractDomain implements Serializable {
         this.error = error;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonCouponList{");
+        sb.append("coupons=").append(coupons);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
+    }
 }

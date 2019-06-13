@@ -63,6 +63,7 @@ import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.ImageViewerActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
@@ -341,7 +342,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             in.putExtra("bundle", b);
             getActivity().startActivity(in);
         } else {
-            Intent in = new Intent(getActivity(), JoinActivity.class);
+            Intent in = new Intent(getActivity(), BeforeJoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
             in.putExtra(IBConstant.KEY_FROM_LIST, false);
             in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
@@ -462,7 +463,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void currentQorOrderItemClick(JsonTokenAndQueue item) {
         if (null != item) {
             if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
-                Intent in = new Intent(getActivity(), AfterJoinActivity.class);
+                Intent in = new Intent(getActivity(), JoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra("qUserId", item.getQueueUserId());
                 in.putExtra(IBConstant.KEY_FROM_LIST, true);

@@ -595,7 +595,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         Intent in1 = new Intent(this, LaunchActivity.class);
         in1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in1);
-        Intent in = new Intent(this, JoinActivity.class);
+        Intent in = new Intent(this, BeforeJoinActivity.class);
         in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
         in.putExtra(IBConstant.KEY_IS_REJOIN, true);

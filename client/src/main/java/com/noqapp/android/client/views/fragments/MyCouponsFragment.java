@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,24 +14,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.AppointmentApiCalls;
-import com.noqapp.android.client.presenter.beans.JsonDiscount;
+import com.noqapp.android.client.model.CouponApiCalls;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.MyCouponsAdapter;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.JsonSchedule;
-import com.noqapp.android.common.beans.JsonScheduleList;
-import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.beans.JsonCoupon;
+import com.noqapp.android.common.beans.JsonCouponList;
+import com.noqapp.android.common.presenter.CouponPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCouponsFragment extends BaseFragment implements AppointmentPresenter, MyCouponsAdapter.OnItemClickListener {
+public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
+        MyCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
-    private List<JsonDiscount> jsonDiscountList = new ArrayList<>();
+    private List<JsonCoupon> jsonCoupons = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,9 +40,10 @@ public class MyCouponsFragment extends BaseFragment implements AppointmentPresen
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
+                RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
-        if (jsonDiscountList.size() <= 0) {
+        if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
         } else {
@@ -50,58 +53,42 @@ public class MyCouponsFragment extends BaseFragment implements AppointmentPresen
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching coupons...");
             progressDialog.show();
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            CouponApiCalls couponApiCalls = new CouponApiCalls();
+            couponApiCalls.setCouponPresenter(this);
+            couponApiCalls.availableCoupon(UserUtils.getDeviceId(),
+                    UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
         return view;
     }
 
+
+
     @Override
-    public void appointmentResponse(JsonScheduleList jsonScheduleList) {
-        Log.e("all appointments", jsonScheduleList.toString());
-        //jsonSchedules = jsonScheduleList.getJsonSchedules();
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        if (jsonDiscountList.size() <= 0) {
+    public void couponResponse(JsonCouponList jsonCouponList) {
+        Log.e("all appointments", jsonCouponList.toString());
+        jsonCoupons.clear();
+        jsonCoupons.addAll(jsonCouponList.getCoupons());
+        if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
         } else {
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-
-
-        MyCouponsAdapter myOffersAdapter = new MyCouponsAdapter(
-                getActivity(), jsonDiscountList, this);
-        rcv_appointments.setAdapter(myOffersAdapter);
+        MyCouponsAdapter myCouponsAdapter = new MyCouponsAdapter(
+                getActivity(), jsonCoupons, this);
+        rcv_appointments.setAdapter(myCouponsAdapter);
         dismissProgress();
     }
 
     @Override
-    public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
-        dismissProgress();
-    }
-
-    @Override
-    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
-        dismissProgress();
-    }
-
-    @Override
-    public void appointmentCancelResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-    }
-
-    @Override
-    public void onDiscountItemClick(int pos, JsonDiscount jsonDiscount) {
-
+    public void discountItemClick(JsonCoupon jsonCoupon) {
+        Intent intent = new Intent();
+        intent.putExtra(IBConstant.KEY_DATA_OBJECT,jsonCoupon);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        getActivity().finish();
     }
 }
 

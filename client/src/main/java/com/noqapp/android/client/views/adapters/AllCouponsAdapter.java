@@ -10,19 +10,20 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.JsonDiscount;
+import com.noqapp.android.common.beans.JsonCoupon;
+
 
 import java.util.List;
 
 public class AllCouponsAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
-    private List<JsonDiscount> jsonDiscountList;
+    private List<JsonCoupon> jsonCoupons;
     private Context context;
 
-    public AllCouponsAdapter(Context context, List<JsonDiscount> jsonDiscountList,
+    public AllCouponsAdapter(Context context, List<JsonCoupon> JsonCouponList,
                              OnItemClickListener listener) {
-        this.jsonDiscountList = jsonDiscountList;
+        this.jsonCoupons = JsonCouponList;
         this.context = context;
         this.listener = listener;
     }
@@ -37,24 +38,24 @@ public class AllCouponsAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, final int position) {
         ViewHolder holder = (ViewHolder) Vholder;
-        final JsonDiscount jsonDiscount = jsonDiscountList.get(position);
+        final JsonCoupon JsonCoupon = jsonCoupons.get(position);
 //        holder.tv_menu_header.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                listener.onDiscountItemClick(position, jsonDiscount);
+//                listener.onDiscountItemClick(position, JsonCoupon);
 //            }
 //        });
-//        holder.tv_menu_header.setText(jsonDiscount.getDiscountName());
+//        holder.tv_menu_header.setText(JsonCoupon.getDiscountName());
     }
 
     @Override
     public int getItemCount() {
-        return jsonDiscountList.size();
+        return jsonCoupons.size();
     }
 
 
     public interface OnItemClickListener {
-        void onDiscountItemClick(int pos, JsonDiscount jsonDiscount);
+        void onDiscountItemClick(int pos, JsonCoupon JsonCoupon);
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {

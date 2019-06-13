@@ -383,7 +383,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
         switch (bizStoreElastic.getBusinessType()) {
             case BK:
-                Intent in = new Intent(this, JoinActivity.class);
+                Intent in = new Intent(this, BeforeJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
@@ -450,7 +450,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             case BK:
             case HS:
                 // open hospital profile
-                Intent in = new Intent(this, JoinActivity.class);
+                Intent in = new Intent(this, BeforeJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);

@@ -16,7 +16,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.activities.JoinActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.client.views.adapters.CategoryListAdapter;
 
@@ -67,7 +67,7 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
             case BK:
             case HS:
                 // open hospital profile
-                Intent in = new Intent(getActivity(), JoinActivity.class);
+                Intent in = new Intent(getActivity(), BeforeJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IS_CATEGORY, false);

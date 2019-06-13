@@ -49,7 +49,7 @@ public class Constants extends BaseConstants {
 
     public static final int MAX_IMAGE_UPLOAD_LIMIT = 25;
 
-    public static final int ACTIVITTY_RESULT_BACK = 23;
+
 
     /**
      * Computes App version.

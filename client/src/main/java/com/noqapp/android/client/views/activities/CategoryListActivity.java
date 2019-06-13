@@ -52,7 +52,7 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
         switch (item.getBusinessType()) {
             case DO:
                 // open hospital profile
-                Intent in = new Intent(this, JoinActivity.class);
+                Intent in = new Intent(this, BeforeJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
                 in.putExtra(IBConstant.KEY_IMAGE_URL, AppUtilities.getImageUrls(BuildConfig.PROFILE_BUCKET, item.getDisplayImage()));

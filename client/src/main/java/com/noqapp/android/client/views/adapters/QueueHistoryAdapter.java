@@ -19,7 +19,7 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.activities.JoinActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.StoreDetailActivity;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -64,7 +64,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                     case DO:
                     case BK:
                         // open hospital/Bank profile
-                        Intent in = new Intent(context, JoinActivity.class);
+                        Intent in = new Intent(context, BeforeJoinActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                         in.putExtra(IBConstant.KEY_FROM_LIST, true);
                         in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
