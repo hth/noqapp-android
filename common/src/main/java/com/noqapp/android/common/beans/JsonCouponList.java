@@ -1,7 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans;
-
-import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

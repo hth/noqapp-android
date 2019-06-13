@@ -3,7 +3,7 @@ package com.noqapp.android.merchant.views.adapters;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonCoupon;
+import com.noqapp.android.common.beans.JsonCoupon;
 
 import android.content.Context;
 import android.view.LayoutInflater;
