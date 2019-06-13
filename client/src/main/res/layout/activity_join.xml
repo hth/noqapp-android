@@ -440,7 +440,7 @@
                                     android:id="@+id/tv_coupon_name"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="SSD Health Care"
+                                    android:text="Sample Coupon"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_sixteen"
                                     android:textStyle="bold" />
@@ -467,7 +467,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:text="Rs -50"
+                                    android:text="Rs -00"
                                     android:textSize="@dimen/text_size_sixteen" />
 
                                 <TextView

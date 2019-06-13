@@ -43,7 +43,7 @@ public class MyCouponsAdapter extends RecyclerView.Adapter {
         holder.tv_discount_description.setText(jsonCoupon.getDiscountDescription());
 
         if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
-            holder.tv_discount_amount.setText("Rs " + String.valueOf(jsonCoupon.getDiscountAmount()));
+            holder.tv_discount_amount.setText("Rs " + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
         } else {
             holder.tv_discount_amount.setText(String.valueOf(jsonCoupon.getDiscountAmount()) + "% off");
         }

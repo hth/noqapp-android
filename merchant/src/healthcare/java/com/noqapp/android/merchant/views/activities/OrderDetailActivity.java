@@ -78,6 +78,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private TextView tv_payment_msg;
     private TextView tv_discount_value;
 
+    private TextView tv_grand_total_amt;
+    private TextView tv_coupon_discount_amt;
+
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -128,6 +131,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_transaction_id = findViewById(R.id.tv_transaction_id);
         tv_discount_value = findViewById(R.id.tv_discount_value);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
+        tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
+        tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         tv_discount_value.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -344,11 +349,13 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         }
         try {
             tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+            tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
             e.printStackTrace();
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
+            tv_grand_total_amt.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
-
+        tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
@@ -484,6 +491,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())
+                            .setCodeQR(qCodeQR)
                             .setTransactionId(jsonQueuedPerson.getTransactionId());
 
                     couponApiCalls.apply(BaseLaunchActivity.getDeviceID(),
