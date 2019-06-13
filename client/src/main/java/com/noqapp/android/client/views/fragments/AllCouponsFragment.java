@@ -12,25 +12,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.AppointmentApiCalls;
-import com.noqapp.android.client.presenter.beans.JsonDiscount;
+import com.noqapp.android.client.model.CouponApiCalls;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.AllCouponsAdapter;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.JsonSchedule;
-import com.noqapp.android.common.beans.JsonScheduleList;
-import com.noqapp.android.common.presenter.AppointmentPresenter;
+import com.noqapp.android.common.beans.JsonCoupon;
+import com.noqapp.android.common.beans.JsonCouponList;
+import com.noqapp.android.common.presenter.CouponPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllCouponsFragment extends BaseFragment implements AppointmentPresenter,
+public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
         AllCouponsAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
-    private List<JsonDiscount> jsonDiscountList = new ArrayList<>();
+    private List<JsonCoupon> jsonCoupons = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +40,7 @@ public class AllCouponsFragment extends BaseFragment implements AppointmentPrese
         rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
                 RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
-        if (jsonDiscountList.size() <= 0) {
+        if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
         } else {
@@ -52,9 +50,9 @@ public class AllCouponsFragment extends BaseFragment implements AppointmentPrese
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching all coupons...");
             progressDialog.show();
-            AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
-            appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(),
+            CouponApiCalls couponApiCalls = new CouponApiCalls();
+            couponApiCalls.setCouponPresenter(this);
+            couponApiCalls.availableCoupon(UserUtils.getDeviceId(),
                     UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -63,47 +61,26 @@ public class AllCouponsFragment extends BaseFragment implements AppointmentPrese
     }
 
     @Override
-    public void appointmentResponse(JsonScheduleList jsonScheduleList) {
-        Log.e("all appointments", jsonScheduleList.toString());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        jsonDiscountList.add(new JsonDiscount());
-        if (jsonDiscountList.size() <= 0) {
+    public void onDiscountItemClick(int pos, JsonCoupon JsonCoupon) {
+
+    }
+
+    @Override
+    public void couponResponse(JsonCouponList jsonCouponList) {
+        Log.e("all coupons", jsonCouponList.toString());
+        jsonCoupons.clear();
+        jsonCoupons.addAll(jsonCouponList.getCoupons());
+        if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
         } else {
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-
-
         AllCouponsAdapter offersAdapter = new AllCouponsAdapter(
-                getActivity(), jsonDiscountList, this);
+                getActivity(), jsonCoupons, this);
         rcv_appointments.setAdapter(offersAdapter);
         dismissProgress();
-    }
-
-    @Override
-    public void appointmentBookingResponse(JsonSchedule jsonSchedule) {
-        dismissProgress();
-    }
-
-    @Override
-    public void appointmentAcceptRejectResponse(JsonSchedule jsonSchedule) {
-        dismissProgress();
-    }
-
-    @Override
-    public void appointmentCancelResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-    }
-
-    @Override
-    public void onDiscountItemClick(int pos, JsonDiscount jsonDiscount) {
-
     }
 }
 

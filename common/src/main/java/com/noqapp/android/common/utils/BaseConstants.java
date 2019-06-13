@@ -21,5 +21,5 @@ public class BaseConstants {
 
     public static final String MESSAGE_ORIGIN = "mo";
 
-
+    public static final int ACTIVITTY_RESULT_BACK = 23;
 }

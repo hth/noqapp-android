@@ -1,7 +1,4 @@
-package com.noqapp.android.merchant.presenter.beans;
-
-import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+package com.noqapp.android.common.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -59,5 +56,14 @@ public class JsonCouponList extends AbstractDomain implements Serializable {
     public JsonCouponList setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonCouponList{");
+        sb.append("coupons=").append(coupons);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

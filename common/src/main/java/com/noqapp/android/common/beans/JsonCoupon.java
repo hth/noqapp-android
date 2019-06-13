@@ -1,7 +1,5 @@
-package com.noqapp.android.merchant.presenter.beans;
+package com.noqapp.android.common.beans;
 
-import com.noqapp.android.common.beans.AbstractDomain;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -173,5 +171,24 @@ public class JsonCoupon extends AbstractDomain implements Serializable {
     public JsonCoupon setError(ErrorEncounteredJson error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonCoupon{");
+        sb.append("couponId='").append(couponId).append('\'');
+        sb.append(", bizNameId='").append(bizNameId).append('\'');
+        sb.append(", couponCode='").append(couponCode).append('\'');
+        sb.append(", discountName='").append(discountName).append('\'');
+        sb.append(", discountDescription='").append(discountDescription).append('\'');
+        sb.append(", discountAmount=").append(discountAmount);
+        sb.append(", discountType=").append(discountType);
+        sb.append(", couponStartDate='").append(couponStartDate).append('\'');
+        sb.append(", couponEndDate='").append(couponEndDate).append('\'');
+        sb.append(", multiUse=").append(multiUse);
+        sb.append(", qid='").append(qid).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

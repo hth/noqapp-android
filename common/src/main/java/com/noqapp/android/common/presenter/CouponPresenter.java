@@ -1,7 +1,7 @@
-package com.noqapp.android.merchant.views.interfaces;
+package com.noqapp.android.common.presenter;
 
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
-import com.noqapp.android.merchant.presenter.beans.JsonCouponList;
+import com.noqapp.android.common.beans.JsonCouponList;
 
 public interface CouponPresenter extends ResponseErrorPresenter {
 

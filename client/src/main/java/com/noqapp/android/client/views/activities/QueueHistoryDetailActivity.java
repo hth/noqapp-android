@@ -65,7 +65,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
                     case DO:
                     case BK:
                         // open hospital/Bank profile
-                        Intent in = new Intent(QueueHistoryDetailActivity.this, JoinActivity.class);
+                        Intent in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
                         in.putExtra(IBConstant.KEY_FROM_LIST, true);
                         in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
