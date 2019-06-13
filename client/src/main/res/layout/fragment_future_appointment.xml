@@ -8,13 +8,14 @@
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#efefef">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_appointments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:background="#efefef" />
 
         <RelativeLayout

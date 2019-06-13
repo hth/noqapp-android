@@ -23,16 +23,16 @@ import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<BizStoreElastic> dataSet;
@@ -53,8 +53,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
         View view = null;
         if (isSingleEntry) {
             view = LayoutInflater.from(parent.getContext())
@@ -68,7 +68,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         holder.tv_name.setText(bizStoreElastic.getDisplayName());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));

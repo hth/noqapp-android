@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.pojos.MenuModel;
 
-import java.util.HashMap;
 import java.util.List;
 
 

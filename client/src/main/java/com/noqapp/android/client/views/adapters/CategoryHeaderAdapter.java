@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
 
 import java.util.List;
-
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryHeaderAdapter extends RecyclerView.Adapter {
 

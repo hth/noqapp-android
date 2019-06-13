@@ -242,5 +242,6 @@
     <string name="payment_not_allowed">You do not have permission to accept or refund payment</string>
     <string name="appointment_duration">Appointment duration</string>
     <string name="appointment_accepting_week">Accept appointment till next</string>
+    <string name="activity_discount">Discounts</string>
 
 </resources>

@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdapter.MyViewHolder> {
+public class MyAppointmentAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonSchedule> dataSet;
@@ -34,13 +34,14 @@ public class MyAppointmentAdapter extends RecyclerView.Adapter<MyAppointmentAdap
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_appointment_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int position) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         JsonSchedule jsonSchedule = dataSet.get(position);
         holder.tv_title.setText(jsonSchedule.getJsonQueueDisplay().getDisplayName());
         holder.tv_address.setText(AppUtilities.getStoreAddress(jsonSchedule.getJsonQueueDisplay().getTown(), jsonSchedule.getJsonQueueDisplay().getArea()));

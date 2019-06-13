@@ -32,123 +32,118 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label,android:allowBackup">
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/notification_icon" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-     notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+     notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.SplashScreen"
+            android:name=".views.activities.SplashScreen"
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.LaunchActivity"
+            android:name=".views.activities.LaunchActivity"
             android:launchMode="singleTask"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
-
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.SettingActivity"
+            android:name=".views.activities.SettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.PhysicalActivity"
+            android:name=".views.activities.PhysicalActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.QReviewListActivity"
+            android:name=".views.activities.QReviewListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.PhysicalDialogActivity"
+            android:name=".views.activities.PhysicalDialogActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"
             android:theme="@style/myDialog"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.NotificationActivity"
+            android:name=".views.activities.NotificationActivity"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.MedicalHistoryDetailActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.BookAppointmentActivity"
+            android:name=".views.activities.MedicalHistoryDetailActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.AppointmentActivity"
+            android:name=".views.activities.CouponActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".views.activities.BookAppointmentActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.AppointmentActivityNew"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.PreferenceActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.MedicalCaseActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.PatientProfileActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.ManagerProfileActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.RegistrationActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.LoginActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.ChartListActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.ReviewListActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.ProductListActivity"
+            android:name=".views.activities.AppointmentActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.ScribbleActivity"
+            android:name=".views.activities.AppointmentActivityNew"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.SliderActivity"
+            android:name=".views.activities.PreferenceActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.MedicalCaseActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.PatientProfileActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.ManagerProfileActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.RegistrationActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.LoginActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.ChartListActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.ReviewListActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.ProductListActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.ScribbleActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.SliderActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
@@ -156,32 +151,29 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.PrivacyActivity"
+            android:name=".views.activities.PrivacyActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.WebViewActivity"
+            android:name=".views.activities.WebViewActivity"
             android:exported="false"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.ViewAllPeopleInQActivity"
+            android:name=".views.activities.ViewAllPeopleInQActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.ViewAllPeopleInQOrderActivity"
+            android:name=".views.activities.ViewAllPeopleInQOrderActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.FollowUpListActivity"
+            android:name=".views.activities.FollowUpListActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
 
         <service
-            android:name="com.noqapp.android.merchant.network.NoQueueMessagingService"
+            android:name=".network.NoQueueMessagingService"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -199,11 +191,11 @@
             android:value="@integer/google_play_services_version" />
 
         <service
-            android:name="com.noqapp.android.merchant.views.activities.PresentationService"
+            android:name=".views.activities.PresentationService"
             android:exported="false" />
 
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.MainActivity"
+            android:name=".views.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -211,30 +203,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.DocumentUploadActivity"
-            android:theme="@style/BaseTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity
-            android:name="com.noqapp.android.merchant.views.activities.PreferredStoreActivity"
+            android:name=".views.activities.DocumentUploadActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.StoreMenuActivity"
+            android:name=".views.activities.PreferredStoreActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.HCSMenuActivity"
+            android:name=".views.activities.StoreMenuActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.noqapp.android.merchant.views.activities.OrderDetailActivity"
+            android:name=".views.activities.HCSMenuActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
-
-        <!-- File Provider -->
+        <activity
+            android:name=".views.activities.OrderDetailActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- File Provider -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="@string/content_provider"
@@ -244,7 +231,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

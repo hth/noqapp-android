@@ -9,14 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
 
 public class MedicalHistoryAdapter extends BaseAdapter {
     private Context context;

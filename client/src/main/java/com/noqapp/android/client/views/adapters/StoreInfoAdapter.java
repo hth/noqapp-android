@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
@@ -19,11 +22,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
-
-public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyViewHolder> {
+public class StoreInfoAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private ArrayList<BizStoreElastic> dataSet;
@@ -38,8 +38,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_item_recent_activity, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
@@ -47,7 +47,8 @@ public class StoreInfoAdapter extends RecyclerView.Adapter<StoreInfoAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         BizStoreElastic item = dataSet.get(listPosition);
         switch (item.getBusinessType()) {
             case DO:

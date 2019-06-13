@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-/**
- * Created by chandra on 10/4/18.
- */
-
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,20 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
-
 
 public class UserAdditionalInfoFragment extends Fragment {
-
     private TextView tv_education;
     private TextView tv_experience;
-
     private JsonProfessionalProfile jsonProfessionalProfile;
 
     @Override

@@ -154,4 +154,5 @@
     <string name="text_limited_followup_days">Limited follow-up until days</string>
     <string name="text_discounted_followup_price">Limited follow-up discounted price</string>
     <string name="screen_order_q_history">Order Queue History</string>
+    <string name="activity_discount">Discounts</string>
 </resources>

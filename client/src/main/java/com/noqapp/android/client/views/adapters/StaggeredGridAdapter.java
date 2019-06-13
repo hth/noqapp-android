@@ -6,15 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.R;
 
 import java.util.Collections;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 
-
-public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.MyViewHolder> {
+public class StaggeredGridAdapter extends RecyclerView.Adapter {
 
     private List<String> dataList;
 
@@ -26,14 +26,15 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int position) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         holder.name.setText(dataList.get(position));
     }
 

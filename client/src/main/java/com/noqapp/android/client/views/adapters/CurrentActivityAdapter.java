@@ -22,7 +22,7 @@ import com.noqapp.android.common.utils.Formatter;
 import java.util.List;
 
 
-public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivityAdapter.MyViewHolder> {
+public class CurrentActivityAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<Object> dataSet;
@@ -34,14 +34,15 @@ public class CurrentActivityAdapter extends RecyclerView.Adapter<CurrentActivity
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_current_activity, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         Object object = dataSet.get(listPosition);
         if (object instanceof JsonTokenAndQueue) {
             holder.ll_queue.setVisibility(View.VISIBLE);

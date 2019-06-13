@@ -23,9 +23,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
 
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
-
     private Feedback feedback = new Feedback();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,25 +89,5 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             }
         }
         dismissProgress();
-    }
-
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
     }
 }

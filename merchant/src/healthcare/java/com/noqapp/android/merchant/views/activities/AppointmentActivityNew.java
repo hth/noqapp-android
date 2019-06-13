@@ -233,7 +233,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         Log.e("appointments", jsonScheduleList.toString());
         events.clear();
         List<EventDay> temp = parseEventList(jsonScheduleList);
-        for (int i = 0; i < temp.size(); i++) { //List<EventDay> temp
+        for (int i = 0; i < temp.size(); i++) {
             JsonSchedule js = (JsonSchedule) temp.get(i).getEventObject();
             ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
                     AppUtils.getTimeFourDigitWithColon(js.getEndTime()), false);

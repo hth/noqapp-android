@@ -11,6 +11,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.maps.model.LatLng;
@@ -21,8 +23,6 @@ import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.GPSTracker;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
-
-import androidx.fragment.app.Fragment;
 
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, log;

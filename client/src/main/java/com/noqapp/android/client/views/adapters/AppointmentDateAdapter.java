@@ -16,7 +16,7 @@ import com.noqapp.android.common.pojos.AppointmentModel;
 
 import java.util.List;
 
-public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDateAdapter.MyViewHolder> {
+public class AppointmentDateAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<AppointmentModel> dataSet;
     private Context context;
@@ -34,7 +34,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_appointment_date, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
@@ -42,7 +42,8 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         AppointmentModel item = dataSet.get(listPosition);
         holder.tv_time.setText(item.getTime());
         if (item.isBooked()) {
@@ -84,7 +85,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
 
     public interface OnItemClickListener {
         void onAppointmentSelected(AppointmentModel item, int pos);
-        
+
         void onBookedAppointmentSelected();
     }
 

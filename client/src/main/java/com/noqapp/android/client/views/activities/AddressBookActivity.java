@@ -4,17 +4,13 @@ package com.noqapp.android.client.views.activities;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfileAddressPresenter;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AddressListAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.JsonUserAddressList;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -36,7 +32,6 @@ import java.util.List;
 
 
 public class AddressBookActivity extends BaseActivity implements ProfileAddressPresenter, AddressListAdapter.RemoveAddress {
-    private ProgressDialog progressDialog;
     private RadioGroup rg_address;
     private EditText edt_add_address;
     private Button btn_add_address;
@@ -56,7 +51,6 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
             }
         });
         lv_address = findViewById(R.id.listview_address);
-        initProgress();
         tv_toolbar_title.setText(getString(R.string.screen_addressbook));
         rg_address = findViewById(R.id.rg_address);
         edt_add_address = findViewById(R.id.edt_add_address);
@@ -207,36 +201,6 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
         // resultIntent.putExtra("jsonUserAddress", "");
         setResult(78, resultIntent);
         finish();
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(this);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override

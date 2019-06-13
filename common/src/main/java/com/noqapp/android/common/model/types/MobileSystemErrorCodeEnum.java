@@ -91,8 +91,12 @@ public enum MobileSystemErrorCodeEnum {
     DEVICE_DETAIL_MISSING("5010", ERROR),
     ACCOUNT_INACTIVE("5015", ERROR),
 
+    /** Promotions. */
+    PROMOTION_ACCESS_DENIED("7001", ALERT),
+    COUPON_NOT_APPLICABLE("7003", ALERT),
+
     /** Not mobile web application. */
-    WEB_APPLICATION("6000", ERROR);
+    WEB_APPLICATION("9000", ERROR);
 
     private String code;
     private ErrorTypeEnum errorType;

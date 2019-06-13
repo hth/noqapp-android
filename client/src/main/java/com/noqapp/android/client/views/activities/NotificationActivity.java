@@ -18,24 +18,14 @@ import com.noqapp.android.common.beans.NotificationBeans;
 
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class NotificationActivity extends BaseActivity {
 
-public class NotificationActivity extends AppCompatActivity {
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+        initActionsViews(false);
         ListView listview = findViewById(R.id.listview);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         RelativeLayout rl_empty = findViewById(R.id.rl_empty);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         tv_toolbar_title.setText(getString(R.string.screen_notification));
         List<NotificationBeans> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList);

@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,22 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.AppointmentApiCalls;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.adapters.MyAppointmentAdapter;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -36,11 +31,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class UpcomingAppointmentFragment extends Fragment implements AppointmentPresenter, MyAppointmentAdapter.OnItemClickListener {
+public class UpcomingAppointmentFragment extends BaseFragment implements AppointmentPresenter,
+        MyAppointmentAdapter.OnItemClickListener {
     private RecyclerView rcv_appointments;
     private RelativeLayout rl_empty;
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
-    protected ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +44,8 @@ public class UpcomingAppointmentFragment extends Fragment implements Appointment
         rcv_appointments = view.findViewById(R.id.rcv_appointments);
         rl_empty = view.findViewById(R.id.rl_empty);
         rcv_appointments.setHasFixedSize(true);
-        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
+                RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
         if (jsonSchedules.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
@@ -58,13 +54,13 @@ public class UpcomingAppointmentFragment extends Fragment implements Appointment
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
-        initProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching appointments...");
             progressDialog.show();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
-            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
+            appointmentApiCalls.allAppointments(UserUtils.getDeviceId(),
+                    UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -86,7 +82,8 @@ public class UpcomingAppointmentFragment extends Fragment implements Appointment
         Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
             public int compare(JsonSchedule o1, JsonSchedule o2) {
                 try {
-                    return CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()).compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
+                    return CommonHelper.SDF_YYYY_MM_DD.parse(o1.getScheduleDate()).
+                            compareTo(CommonHelper.SDF_YYYY_MM_DD.parse(o2.getScheduleDate()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     return 0;
@@ -116,41 +113,10 @@ public class UpcomingAppointmentFragment extends Fragment implements Appointment
     }
 
     @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(getActivity());
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-
-    @Override
     public void appointmentDetails(JsonSchedule jsonSchedule) {
         Intent intent = new Intent(getActivity(), AppointmentDetailActivity.class);
         intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
         intent.putExtra(IBConstant.KEY_FROM_LIST, true);
         startActivity(intent);
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 }

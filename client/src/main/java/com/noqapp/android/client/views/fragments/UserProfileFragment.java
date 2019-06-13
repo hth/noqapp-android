@@ -1,9 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-/**
- * Created by chandra on 10/4/18.
- */
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonProfessionalProfile;
 import com.noqapp.android.client.presenter.beans.JsonStore;
@@ -20,10 +18,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
-
 public class UserProfileFragment extends Fragment {
-
     private LinearLayout ll_multiple_store;
     private TextView tv_about_me;
 

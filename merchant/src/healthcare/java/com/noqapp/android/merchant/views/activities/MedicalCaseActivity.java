@@ -375,6 +375,23 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
                 formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
             }
             break;
+            case DNT: {
+                formDataObj.getSymptomsList().clear();
+                formDataObj.getSymptomsList().addAll(MedicalDataStatic.Dental.getSymptoms());
+                formDataObj.getSymptomsList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getSymptomsList()));
+
+                formDataObj.getObstreticsList().clear();
+                // formDataObj.getObstreticsList().addAll(MedicalDataStatic.Gynae.getObstretics());
+
+                formDataObj.getDiagnosisList().clear();
+                formDataObj.getDiagnosisList().addAll(MedicalDataStatic.Dental.getDiagnosis());
+                formDataObj.getDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getDiagnosisList()));
+
+                formDataObj.getProvisionalDiagnosisList().clear();
+                formDataObj.getProvisionalDiagnosisList().addAll(MedicalDataStatic.Dental.getProvisionalDiagnosis());
+                formDataObj.getProvisionalDiagnosisList().addAll(preferenceObjects.clearListSelection(preferenceObjects.getProDiagnosisList()));
+            }
+            break;
             default: { // General Physician is default
                 formDataObj.getSymptomsList().clear();
                 formDataObj.getSymptomsList().addAll(MedicalDataStatic.Physician.getSymptoms());

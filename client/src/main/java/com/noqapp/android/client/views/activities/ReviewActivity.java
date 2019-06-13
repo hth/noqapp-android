@@ -11,12 +11,10 @@ import com.noqapp.android.client.presenter.beans.body.OrderReview;
 import com.noqapp.android.client.presenter.beans.body.QueueReview;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -35,27 +33,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ReviewActivity extends AppCompatActivity implements ReviewPresenter {
+public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
     private TextView tv_rating_value;
     private RatingBar ratingBar;
     private TextView tv_hr_saved;
     private EditText edt_review;
     private JsonTokenAndQueue jtk;
-    private ProgressDialog progressDialog;
     private RadioButton rb_1, rb_2, rb_3, rb_4, rb_5;
     private RadioGroup rg_save_time;
     private int selectedRadio = 1;
@@ -66,8 +61,7 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         TextView tv_address = findViewById(R.id.tv_address);
@@ -239,29 +233,9 @@ public class ReviewActivity extends AppCompatActivity implements ReviewPresenter
         ReviewDB.deleteReview(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         TokenAndQueueDB.deleteTokenQueue(jtk.getCodeQR(), String.valueOf(jtk.getToken()));
         finish();
-        progressDialog.dismiss();
+        dismissProgress();
     }
 
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        progressDialog.dismiss();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        progressDialog.dismiss();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        progressDialog.dismiss();
-        AppUtilities.authenticationProcessing(this);
-    }
-    
     private void returnResultBack() {
         NoQueueBaseActivity.setReviewShown(true);
         Intent intent = new Intent();

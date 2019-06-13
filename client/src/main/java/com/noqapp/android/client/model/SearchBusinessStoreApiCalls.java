@@ -25,6 +25,16 @@ import static com.noqapp.android.client.utils.Constants.DEVICE_TYPE;
 public class SearchBusinessStoreApiCalls {
     private static final SearchBusinessStoreApiUrls searchBusinessStoreApiUrls;
     private SearchBusinessStorePresenter searchBusinessStorePresenter;
+    public BizStoreElasticList bizStoreElasticList;
+    private boolean responseReceived = false;
+
+    public boolean isResponseReceived() {
+        return responseReceived;
+    }
+
+    public void setResponseReceived(boolean responseReceived) {
+        this.responseReceived = responseReceived;
+    }
 
     public SearchBusinessStoreApiCalls(SearchBusinessStorePresenter searchBusinessStorePresenter) {
         this.searchBusinessStorePresenter = searchBusinessStorePresenter;
@@ -46,6 +56,7 @@ public class SearchBusinessStoreApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response NearMe", String.valueOf(response.body()));
                         searchBusinessStorePresenter.nearMeResponse(response.body());
+                        bizStoreElasticList = response.body();
                     } else {
                         searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
                     }
@@ -56,6 +67,7 @@ public class SearchBusinessStoreApiCalls {
                         searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override
@@ -106,6 +118,7 @@ public class SearchBusinessStoreApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Response search", String.valueOf(response.body()));
                         searchBusinessStorePresenter.nearMeResponse(response.body());
+                        bizStoreElasticList = response.body();
                     } else {
                         searchBusinessStorePresenter.responseErrorPresenter(response.body().getError());
                     }
@@ -116,6 +129,7 @@ public class SearchBusinessStoreApiCalls {
                         searchBusinessStorePresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override

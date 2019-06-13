@@ -24,6 +24,16 @@ public class StoreDetailApiCalls {
     private final String TAG = StoreDetailApiCalls.class.getSimpleName();
     private static final StoreDetailApiUrls storeDetailApiUrls;
     private StorePresenter storePresenter;
+    private boolean responseReceived = false;
+    public JsonStore jsonStore;
+
+    public boolean isResponseReceived() {
+        return responseReceived;
+    }
+
+    public void setResponseReceived(boolean responseReceived) {
+        this.responseReceived = responseReceived;
+    }
 
     public StoreDetailApiCalls(StorePresenter storePresenter) {
         this.storePresenter = storePresenter;
@@ -47,6 +57,7 @@ public class StoreDetailApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("jsonStore response", String.valueOf(response.body()));
                         storePresenter.storeResponse(response.body());
+                        jsonStore = response.body();
                     } else {
                         Log.e(TAG, "jsonStore error");
                         storePresenter.responseErrorPresenter(response.body().getError());
@@ -58,6 +69,7 @@ public class StoreDetailApiCalls {
                         storePresenter.responseErrorPresenter(response.code());
                     }
                 }
+                responseReceived = true;
             }
 
             @Override

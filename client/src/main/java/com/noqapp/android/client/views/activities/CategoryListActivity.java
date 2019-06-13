@@ -26,7 +26,6 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
-
         initActionsViews(true);
         CategoryListAdapter.OnItemClickListener listener = this;
         String categoryName = getIntent().getStringExtra("categoryName");

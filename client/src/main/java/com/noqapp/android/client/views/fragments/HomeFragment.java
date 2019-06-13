@@ -96,13 +96,13 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-public class ScanQueueFragment extends Scanner implements View.OnClickListener,
+public class HomeFragment extends ScannerFragment implements View.OnClickListener,
         FeedAdapter.OnItemClickListener, EventsAdapter.OnItemClickListener,
         CurrentActivityAdapter.OnItemClickListener, SearchBusinessStorePresenter,
         StoreInfoAdapter.OnItemClickListener, TokenAndQueuePresenter, TokenQueueViewInterface,
         FeedPresenter, AdvertisementPresenter {
 
-    private final String TAG = ScanQueueFragment.class.getSimpleName();
+    private final String TAG = HomeFragment.class.getSimpleName();
     private RelativeLayout rl_scan;
     private RecyclerView rv_health_care;
     private RecyclerView rv_current_activity;
@@ -144,7 +144,7 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
     private List<JsonAdvertisement> jsonAdvertisements = new ArrayList<>();
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
 
-    public ScanQueueFragment() {
+    public HomeFragment() {
 
     }
 
@@ -283,6 +283,8 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
             city = LaunchActivity.getLaunchActivity().cityName;
             getNearMeInfo(city, String.valueOf(lat), String.valueOf(log));
         }
+//        Log.e("Did","Auth "+UserUtils.getAuth()+" \n Email ID "+UserUtils.getEmail()+"\n DID "+UserUtils.getDeviceId());
+//        Log.e("quserid",LaunchActivity.getUserProfile().getQueueUserId());
     }
 
     @Override
@@ -536,6 +538,20 @@ public class ScanQueueFragment extends Scanner implements View.OnClickListener,
         dbPresenter.tokenQueueViewInterface = this;
         dbPresenter.saveCurrentTokenQueue(jsonTokenAndQueueList.getTokenAndQueues());
         jsonSchedules = jsonTokenAndQueueList.getJsonScheduleList().getJsonSchedules();
+        Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
+            public int compare(JsonSchedule o1, JsonSchedule o2) {
+                try {
+                    String two = o2.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o2.getStartTime());
+                    String one = o1.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o1.getStartTime());
+                    return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
+
+
         pb_current.setVisibility(View.GONE);
     }
 

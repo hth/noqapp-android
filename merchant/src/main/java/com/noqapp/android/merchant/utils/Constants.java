@@ -1,12 +1,12 @@
 package com.noqapp.android.merchant.utils;
 
+import android.util.Log;
+
 import com.noqapp.android.common.model.types.DeviceTypeEnum;
 import com.noqapp.android.common.utils.BaseConstants;
 import com.noqapp.android.merchant.BuildConfig;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.util.Log;
 
 /**
  * User: hitender
@@ -48,6 +48,8 @@ public class Constants extends BaseConstants {
     public static final String PREFERRED_STORE = "PREFERRED_STORE";
 
     public static final int MAX_IMAGE_UPLOAD_LIMIT = 25;
+
+    public static final int ACTIVITTY_RESULT_BACK = 23;
 
     /**
      * Computes App version.

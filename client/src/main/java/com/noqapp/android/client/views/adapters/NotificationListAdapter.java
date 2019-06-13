@@ -11,6 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.GetTimeAgoUtils;
@@ -20,9 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 public class NotificationListAdapter extends BaseAdapter {
     private Context context;
