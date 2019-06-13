@@ -107,6 +107,7 @@ public abstract class BaseErrorResponseHandler {
 
                     case PROMOTION_ACCESS_DENIED:
                     case COUPON_NOT_APPLICABLE:
+                    case COUPON_REMOVAL_FAILED:
 
                     case WEB_APPLICATION:
                         break;

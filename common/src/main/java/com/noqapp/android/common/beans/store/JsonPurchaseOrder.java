@@ -74,11 +74,14 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("py")
     private PaymentStatusEnum paymentStatus;
 
-    @JsonProperty("dn")
-    private String displayName;
-
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
+
+    @JsonProperty("ci")
+    private String couponId;
+
+    @JsonProperty("dn")
+    private String displayName;
 
     @JsonProperty("pop")
     private List<JsonPurchaseOrderProduct> purchaseOrderProducts = new LinkedList<>();
@@ -240,6 +243,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public JsonPurchaseOrder setCouponId(String couponId) {
+        this.couponId = couponId;
         return this;
     }
 
