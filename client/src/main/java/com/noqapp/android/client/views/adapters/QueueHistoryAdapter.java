@@ -42,8 +42,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
                                                       int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_queue_history, parent, false);
-        RecyclerView.ViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override

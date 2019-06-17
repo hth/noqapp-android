@@ -1,5 +1,11 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueueHistorical;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
@@ -11,12 +17,6 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -42,6 +42,8 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         TextView tv_payment_status = findViewById(R.id.tv_payment_status);
         TextView tv_due_amt = findViewById(R.id.tv_due_amt);
         TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
+        TextView tv_discount_amount = findViewById(R.id.tv_discount_amount);
+        TextView tv_grand_total = findViewById(R.id.tv_grand_total);
 
         final JsonQueueHistorical jsonQueueHistorical = (JsonQueueHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         tv_support.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +141,9 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         if(null != jsonQueueHistorical.getJsonPurchaseOrder()){
             String currencySymbol = AppUtilities.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());;
-            tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()));
+            tv_total_order_amt.setText(currencySymbol + jsonQueueHistorical.getJsonPurchaseOrder().computeFinalAmountWithDiscount());
+            tv_grand_total.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()));
+            tv_discount_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getStoreDiscount()));
             if (PaymentStatusEnum.PA == jsonQueueHistorical.getJsonPurchaseOrder().getPaymentStatus()) {
                 tv_payment_status.setText("Paid via: " + jsonQueueHistorical.getJsonPurchaseOrder().getPaymentMode().getDescription());
             } else {
