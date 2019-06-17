@@ -24,7 +24,7 @@ public interface CouponApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PROMOTION_ACCESS_DENIED}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/m/coupon/available/{codeQR}.json")
+    @GET("api/m/coupon/available.json")
     Call<JsonCouponList> availableCoupon(
             @Header("X-R-DID")
             String did,
@@ -36,10 +36,29 @@ public interface CouponApiUrls {
             String mail,
 
             @Header("X-R-AUTH")
-            String auth,
+            String auth
+    );
 
-            @Path("codeQR")
-            String codeQR
+    /**
+     * Errors
+     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE_JSON}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PROMOTION_ACCESS_DENIED}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     */
+    @GET("api/m/coupon/global.json")
+    Call<JsonCouponList> globalCoupon(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
     );
 
     /**
