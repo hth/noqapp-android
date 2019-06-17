@@ -29,18 +29,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     android:weightSum="1">
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="140dp">
+                        android:layout_height="100dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
+                            android:layout_height="50dp"
                             android:background="@drawable/blue_gradient"
                             android:orientation="horizontal" />
 
@@ -49,7 +49,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="25dp"
-                            android:layout_marginTop="30dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginRight="25dp"
                             android:padding="10dp"
                             card_view:cardBackgroundColor="@android:color/white"
@@ -58,7 +58,10 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp">
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp">
 
                                 <com.noqapp.android.common.customviews.CircularImageView
                                     android:id="@+id/iv_profile"
@@ -161,12 +164,13 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/theme_color_red"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -178,20 +182,20 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="63dp"
-                                android:layout_height="60.3dp"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="30dp"
+                                android:layout_width="53dp"
+                                android:layout_height="50.3dp"
+                                android:layout_gravity="left|center_vertical"
+                                android:layout_marginLeft="25dp"
                                 android:background="@drawable/stethoscope" />
 
                             <LinearLayout
-                                android:layout_width="106.9dp"
-                                android:layout_height="75.7dp"
-                                android:layout_gravity="right"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_width="96.9dp"
+                                android:layout_height="65.7dp"
+                                android:layout_gravity="center_vertical|left"
+                                android:layout_marginLeft="50dp"
+                                android:layout_marginTop="5dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:background="@drawable/blue_gradient_round"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
@@ -222,20 +226,20 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="63dp"
-                                android:layout_height="60.3dp"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="30dp"
+                                android:layout_width="53dp"
+                                android:layout_height="50.3dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:layout_marginRight="25dp"
                                 android:background="@drawable/medicine" />
 
                             <LinearLayout
-                                android:layout_width="106.9dp"
-                                android:layout_height="75.7dp"
-                                android:layout_gravity="left"
+                                android:layout_width="96.9dp"
+                                android:layout_height="65.7dp"
+                                android:layout_gravity="center_vertical|right"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="20dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="50dp"
+                                android:layout_marginBottom="5dp"
                                 android:background="@drawable/orange_gradient"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
@@ -265,10 +269,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginBottom="0dp"
                         android:gravity="center"
                         android:text=""
                         android:textColor="#80000000"
+                        android:visibility="gone"
                         android:textSize="@dimen/text_size_twelve" />
 
 
@@ -281,8 +286,8 @@
                         android:background="@drawable/square_bg_drawable"
                         android:gravity="center_horizontal|center_vertical"
                         android:orientation="vertical"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
 
                         <TextView
                             android:id="@+id/tv_after"
@@ -640,13 +645,12 @@
             android:orientation="vertical">
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
@@ -656,7 +660,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_standard_height"
                     android:layout_marginRight="5dp"
-                    android:layout_weight=".5"
+                    android:layout_weight="0.0"
                     android:background="@drawable/btn_bg_enable"
                     android:clickable="true"
                     android:fontFamily="sans-serif-medium"
@@ -674,7 +678,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_standard_height"
                     android:layout_marginLeft="5dp"
-                    android:layout_weight=".5"
+                    android:layout_weight="1.0"
                     android:background="@drawable/btn_bg_inactive"
                     android:clickable="true"
                     android:fontFamily="sans-serif-medium"

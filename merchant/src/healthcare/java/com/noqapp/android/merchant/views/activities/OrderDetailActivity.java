@@ -348,7 +348,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_transaction_via.setText(jsonPurchaseOrder.getTransactionVia().getDescription());
         }
         try {
-            tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+            tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
             tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
             e.printStackTrace();
