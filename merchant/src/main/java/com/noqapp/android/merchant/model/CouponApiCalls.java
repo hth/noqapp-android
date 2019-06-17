@@ -34,8 +34,8 @@ public class CouponApiCalls {
         couponApiUrls = RetrofitClient.getClient().create(CouponApiUrls.class);
     }
 
-    public void availableDiscount(String did, String mail, String auth) {
-        couponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
+    public void availableDiscount(String did, String mail, String auth, String codeQR) {
+        couponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth, codeQR).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
