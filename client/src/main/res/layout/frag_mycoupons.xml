@@ -33,16 +33,16 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/empty_icons"
-                    android:layout_height="@dimen/empty_icons"
-                    android:background="@drawable/empty_medical_history" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/empty_coupon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="10dp"
-                    android:text="@string/empty_my_appointment_title"
+                    android:text="@string/empty_my_coupon_title"
                     android:textSize="@dimen/empty_title_size"
                     android:textStyle="bold" />
 
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/empty_my_appointment_subtitle"
+                    android:text="@string/empty_my_coupon_subtitle"
                     android:textSize="@dimen/empty_subtitle_size" />
             </LinearLayout>
         </RelativeLayout>
