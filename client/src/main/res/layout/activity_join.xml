@@ -440,7 +440,7 @@
                                     android:id="@+id/tv_coupon_name"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Sample Coupon"
+                                    android:text="----- -----"
                                     android:textColor="#333"
                                     android:textSize="@dimen/text_size_sixteen"
                                     android:textStyle="bold" />
@@ -475,7 +475,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:text="Change"
+                                    android:text="Remove"
                                     android:textColor="@color/btn_color"
                                     android:textSize="@dimen/text_size_sixteen" />
 
