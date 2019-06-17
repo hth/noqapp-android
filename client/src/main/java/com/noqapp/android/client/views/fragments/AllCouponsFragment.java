@@ -61,7 +61,7 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
     }
 
     @Override
-    public void onDiscountItemClick(int pos, JsonCoupon JsonCoupon) {
+    public void discountItemClick(JsonCoupon JsonCoupon) {
 
     }
 

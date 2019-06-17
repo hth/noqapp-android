@@ -639,25 +639,15 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_vibrator_off"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="5dp"
-                android:background="#BF000000"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/msg_vibrator_off"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="bold"
-                android:visibility="gone" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
@@ -697,6 +687,20 @@
                     android:textStyle="normal" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_vibrator_off"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#BF000000"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/msg_vibrator_off"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_sixteen"
+                android:textStyle="bold"
+                android:visibility="gone" />
         </LinearLayout>
 
     </RelativeLayout>
