@@ -855,6 +855,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         btn_pay.setLayoutParams(params);
         btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
         this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
+        this.jsonTokenAndQueue.setTransactionId(jsonPurchaseOrder.getTransactionId());
         if (null == jsonToken) {
             jsonToken = new JsonToken();
         }
@@ -877,7 +878,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             btn_pay.setVisibility(View.VISIBLE);
             btn_pay.setLayoutParams(params);
             btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
-            if (jsonPurchaseOrder.getStoreDiscount() == 0) {
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
                 rl_apply_coupon.setVisibility(View.VISIBLE);
                 rl_coupon_applied.setVisibility(View.GONE);
             } else {

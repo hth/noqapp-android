@@ -85,10 +85,14 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
 
     @Override
     public void discountItemClick(JsonCoupon jsonCoupon) {
-        Intent intent = new Intent();
-        intent.putExtra(IBConstant.KEY_DATA_OBJECT,jsonCoupon);
-        getActivity().setResult(Activity.RESULT_OK, intent);
-        getActivity().finish();
+        if(null != getActivity().getCallingActivity()) {
+            Intent intent = new Intent();
+            intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonCoupon);
+            getActivity().setResult(Activity.RESULT_OK, intent);
+            getActivity().finish();
+        }else{
+            // Do nothing right now
+        }
     }
 }
 
