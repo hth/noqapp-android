@@ -4,6 +4,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,6 +47,9 @@ public class JsonToken implements Serializable {
 
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
+
+    @JsonProperty("qs")
+    private QueueUserStateEnum queueUserState;
 
     @JsonProperty("s")
     private int servingNumber;
@@ -111,6 +115,15 @@ public class JsonToken implements Serializable {
 
     public void setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+    }
+
+    public QueueUserStateEnum getQueueUserState() {
+        return queueUserState;
+    }
+
+    public JsonToken setQueueUserState(QueueUserStateEnum queueUserState) {
+        this.queueUserState = queueUserState;
+        return this;
     }
 
     public int getServingNumber() {
