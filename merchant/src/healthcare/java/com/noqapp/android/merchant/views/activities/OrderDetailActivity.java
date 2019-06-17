@@ -29,6 +29,7 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.CouponApiCalls;
@@ -46,7 +47,6 @@ import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.adapters.OrderItemAdapter;
-import com.noqapp.android.merchant.views.interfaces.CouponOnOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueueRefundPaymentPresenter;
 import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
@@ -55,7 +55,7 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 import org.apache.commons.lang3.StringUtils;
 
 public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter,
-        QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponOnOrderPresenter {
+        QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -69,10 +69,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
     private JsonQueuedPerson jsonQueuedPerson;
     private ManageQueueApiCalls manageQueueApiCalls;
     private String qCodeQR;
-    private Button btn_refund, btn_pay_now,btn_discount;
+    private Button btn_refund, btn_pay_now, btn_discount, btn_remove_discount;
     private TextView tv_paid_amount_value, tv_remaining_amount_value;
     private TextView tv_token, tv_q_name, tv_customer_name;
-    private OrderItemAdapter adapter;
     private String currencySymbol;
     private long mLastClickTime = 0;
     private TextView tv_payment_msg;
@@ -163,6 +162,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         rl_payment = findViewById(R.id.rl_payment);
         btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_refund = findViewById(R.id.btn_refund);
+        btn_remove_discount = findViewById(R.id.btn_remove_discount);
         btn_discount = findViewById(R.id.btn_discount);
         btn_discount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +170,44 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
                 startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            }
+        });
+        btn_remove_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Removing discount..");
+                            // progressDialog.setCancelable(false);
+                            // progressDialog.setCanceledOnTouchOutside(false);
+                            CouponApiCalls couponApiCalls = new CouponApiCalls();
+                            couponApiCalls.setCouponApplyRemovePresenter(OrderDetailActivity.this);
+
+                            CouponOnOrder couponOnOrder = new CouponOnOrder()
+                                    .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())
+                                    .setCouponId(jsonPurchaseOrder.getCouponId())
+                                    .setCodeQR(qCodeQR)
+                                    .setTransactionId(jsonQueuedPerson.getTransactionId());
+
+                            couponApiCalls.remove(BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    couponOnOrder);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
             }
         });
         btn_refund.setOnClickListener(new View.OnClickListener() {
@@ -288,9 +326,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this,false);
+                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, false);
                     showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
-                }else{
+                } else {
                     if (permissionHelper.isStoragePermissionAllowed()) {
                         progressDialog.show();
                         progressDialog.setMessage("Fetching receipt info...");
@@ -309,7 +347,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
             }
         });
-        adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol);
+        OrderItemAdapter adapter = new OrderItemAdapter(this, jsonPurchaseOrder.getPurchaseOrderProducts(), currencySymbol);
         listview.setAdapter(adapter);
     }
 
@@ -323,10 +361,18 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             rl_payment.setVisibility(View.VISIBLE);
-            btn_discount.setVisibility(View.VISIBLE);
+
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
+                btn_remove_discount.setVisibility(View.GONE);
+                btn_discount.setVisibility(View.VISIBLE);
+            } else {
+                btn_remove_discount.setVisibility(View.VISIBLE);
+                btn_discount.setVisibility(View.GONE);
+            }
         } else {
             rl_payment.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
+            btn_remove_discount.setVisibility(View.GONE);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
@@ -348,7 +394,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             tv_transaction_via.setText(jsonPurchaseOrder.getTransactionVia().getDescription());
         }
         try {
-            tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
+            tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
             tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
             e.printStackTrace();
@@ -359,15 +405,17 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
+            btn_remove_discount.setVisibility(View.GONE);
             tv_payment_mode.setText("N/A");
         }
         tv_payment_msg.setVisibility(View.GONE);
-        if(getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED,false)){
+        if (getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false)) {
             rl_payment.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
+            btn_remove_discount.setVisibility(View.GONE);
             btn_refund.setVisibility(View.GONE);
             tv_payment_msg.setVisibility(View.VISIBLE);
-            if(getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY,false)){
+            if (getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY, false)) {
                 tv_payment_msg.setVisibility(View.GONE);
             }
         }
@@ -448,20 +496,42 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             Log.e("Data", receipt.toString());
             ReceiptGeneratorPDF receiptGeneratorPDF = new ReceiptGeneratorPDF(OrderDetailActivity.this);
             receiptGeneratorPDF.createPdf(receipt);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         dismissProgress();
     }
 
     @Override
-    public void discountOnOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-        if(null != jsonPurchaseOrder){
+    public void couponApplyResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (null != jsonPurchaseOrder) {
             this.jsonPurchaseOrder = jsonPurchaseOrder;
             updateUI();
+            new CustomToast().showToast(OrderDetailActivity.this, "Coupon applied successfully");
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
+            }
             Log.e("Resp: JsonPurchaseOrder", jsonPurchaseOrder.toString());
-        }else{
-            new CustomToast().showToast(this,"JsonPurchaseOrder is NULL");
+        } else {
+            new CustomToast().showToast(this, "JsonPurchaseOrder is NULL");
+        }
+
+        dismissProgress();
+
+    }
+
+    @Override
+    public void couponRemoveResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (null != jsonPurchaseOrder) {
+            this.jsonPurchaseOrder = jsonPurchaseOrder;
+            updateUI();
+            new CustomToast().showToast(OrderDetailActivity.this, "Coupon removed successfully");
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
+            }
+            Log.e("Resp: JsonPurchaseOrder", jsonPurchaseOrder.toString());
+        } else {
+            new CustomToast().showToast(this, "JsonPurchaseOrder is NULL");
         }
 
         dismissProgress();
@@ -474,19 +544,19 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
                 Log.e("data recieve", jsonCoupon.toString());
-                if(jsonCoupon.getDiscountType() == DiscountTypeEnum.F){
-                    tv_discount_value.setText(currencySymbol + " " +jsonCoupon.getDiscountAmount());
-                }else{
-                    tv_discount_value.setText(jsonCoupon.getDiscountAmount()+"% discount");
+                if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
+                    tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
+                } else {
+                    tv_discount_value.setText(jsonCoupon.getDiscountAmount() + "% discount");
                 }
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
                     progressDialog.setMessage("Applying discount..");
-                   // progressDialog.setCancelable(false);
-                   // progressDialog.setCanceledOnTouchOutside(false);
+                    // progressDialog.setCancelable(false);
+                    // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();
-                    couponApiCalls.setCouponOnOrderPresenter(this);
+                    couponApiCalls.setCouponApplyRemovePresenter(this);
 
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonQueuedPerson.getJsonPurchaseOrder().getQueueUserId())

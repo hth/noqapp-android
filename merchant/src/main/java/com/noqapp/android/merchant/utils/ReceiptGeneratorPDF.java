@@ -1,11 +1,15 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.pojos.Receipt;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+
+import androidx.core.content.FileProvider;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -19,15 +23,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.util.Log;
-import androidx.core.content.FileProvider;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -176,6 +177,14 @@ public class ReceiptGeneratorPDF extends PdfHelper {
                 table.addCell(pdfPCellWithoutBorder(String.valueOf(jpop.getProductQuantity()), normalFont));
                 table.addCell(pdfPCellWithoutBorder(currencySymbol + " " + CommonHelper.displayPrice(jpop.getProductPrice()), urFontName));
                 table.addCell(pdfPCellWithoutBorder(currencySymbol + " " + CommonHelper.displayPrice(new BigDecimal(jpop.getProductPrice()).multiply(new BigDecimal(jpop.getProductQuantity())).toString()), urFontName));
+            }
+            //Add discount info in receipt
+            if(!TextUtils.isEmpty(receipt.getJsonPurchaseOrder().getCouponId())){
+                table.addCell(pdfPCellWithoutBorder(String.valueOf(receipt.getJsonPurchaseOrder().getPurchaseOrderProducts().size()+ 1), normalFont));
+                table.addCell(pdfPCellWithoutBorder("Discount", normalFont));
+                table.addCell(pdfPCellWithoutBorder("1", normalFont));
+                table.addCell(pdfPCellWithoutBorder(currencySymbol + " -" + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
+                table.addCell(pdfPCellWithoutBorder(currencySymbol + " -" + CommonHelper.displayPrice(receipt.getJsonPurchaseOrder().getStoreDiscount()), urFontName));
             }
             table.setTotalWidth(PageSize.A4.getWidth() - 80);
             table.setLockedWidth(true);

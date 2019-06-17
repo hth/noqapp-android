@@ -38,8 +38,7 @@ public class AccreditionAdapter extends RecyclerView.Adapter {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View photoView = inflater.inflate(R.layout.layout_image_accred, parent, false);
-        AccreditionAdapter.MyViewHolder viewHolder = new AccreditionAdapter.MyViewHolder(photoView);
-        return viewHolder;
+        return new AccreditionAdapter.MyViewHolder(photoView);
     }
 
     @Override

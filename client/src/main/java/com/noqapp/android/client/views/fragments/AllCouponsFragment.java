@@ -1,5 +1,7 @@
 package com.noqapp.android.client.views.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.CouponApiCalls;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.LaunchActivity;
@@ -52,7 +55,7 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             progressDialog.show();
             CouponApiCalls couponApiCalls = new CouponApiCalls();
             couponApiCalls.setCouponPresenter(this);
-            couponApiCalls.availableCoupon(UserUtils.getDeviceId(),
+            couponApiCalls.globalCoupon(UserUtils.getDeviceId(),
                     UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
@@ -61,8 +64,15 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
     }
 
     @Override
-    public void onDiscountItemClick(int pos, JsonCoupon JsonCoupon) {
-
+    public void discountItemClick(JsonCoupon jsonCoupon) {
+        if (null != getActivity().getCallingActivity()) {
+            Intent intent = new Intent();
+            intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonCoupon);
+            getActivity().setResult(Activity.RESULT_OK, intent);
+            getActivity().finish();
+        }else{
+            // Do nothing right now
+        }
     }
 
     @Override

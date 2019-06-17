@@ -334,6 +334,11 @@
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
     <string name="empty_my_appointment_title">Empty Appointments</string>
     <string name="empty_my_appointment_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical appointments.</string>
+
+    <string name="empty_my_coupon_title">Empty Coupons</string>
+    <string name="empty_my_coupon_subtitle">Sorry, You don\'t have any coupon right now.</string>
+    <string name="empty_all_coupon_title">Empty Coupons</string>
+    <string name="empty_all_coupon_subtitle">There is currently no coupons available.</string>
     <string name="user_list">Users</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>
     <string name="share_medical_profile_info">To provide better service your medical profile is shared with doctor &amp; hospital. Please keep your medical profile up-to-date.</string>

@@ -1,10 +1,12 @@
 package com.noqapp.android.client.model;
 
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.model.response.api.CouponApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.CouponApplyPresenter;
+import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
@@ -20,10 +22,10 @@ public class CouponApiCalls {
 
     private static final CouponApiUrls couponApiUrls;
     private CouponPresenter couponPresenter;
-    private CouponApplyPresenter couponApplyPresenter;
+    private CouponApplyRemovePresenter couponApplyRemovePresenter;
 
-    public void setCouponApplyPresenter(CouponApplyPresenter couponApplyPresenter) {
-        this.couponApplyPresenter = couponApplyPresenter;
+    public void setCouponApplyRemovePresenter(CouponApplyRemovePresenter couponApplyRemovePresenter) {
+        this.couponApplyRemovePresenter = couponApplyRemovePresenter;
     }
 
     public void setCouponPresenter(CouponPresenter couponPresenter) {
@@ -32,6 +34,36 @@ public class CouponApiCalls {
 
     static {
         couponApiUrls = RetrofitClient.getClient().create(CouponApiUrls.class);
+    }
+
+    public void globalCoupon(String did, String mail, String auth) {
+        couponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        couponPresenter.couponResponse(response.body());
+                        Log.d("globalCoupon", String.valueOf(response.body()));
+                    } else {
+                        Log.d(TAG, "Empty globalCoupon");
+                        couponPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        couponPresenter.authenticationFailure();
+                    } else {
+                        couponPresenter.responseErrorPresenter(response.code());
+                        Log.e(TAG, "" + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonCouponList> call, @NonNull Throwable t) {
+                Log.e("onFailure globalCoupon", t.getLocalizedMessage(), t);
+                couponPresenter.responseErrorPresenter(null);
+            }
+        });
     }
 
     public void availableCoupon(String did, String mail, String auth) {
@@ -65,22 +97,22 @@ public class CouponApiCalls {
     }
 
     public void apply(String did, String mail, String auth, CouponOnOrder couponOnOrder) {
-        couponApiUrls.apply(did, Constants.DEVICE_TYPE, mail, auth,couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        couponApiUrls.apply(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        couponApplyPresenter.couponApplyResponse(response.body());
+                        couponApplyRemovePresenter.couponApplyResponse(response.body());
                         Log.d("availableCoupon", String.valueOf(response.body()));
                     } else {
                         Log.d(TAG, "Empty availableCoupon");
-                        couponApplyPresenter.responseErrorPresenter(response.body().getError());
+                        couponApplyRemovePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        couponApplyPresenter.authenticationFailure();
+                        couponApplyRemovePresenter.authenticationFailure();
                     } else {
-                        couponApplyPresenter.responseErrorPresenter(response.code());
+                        couponApplyRemovePresenter.responseErrorPresenter(response.code());
                         Log.e(TAG, "" + response.code());
                     }
                 }
@@ -89,7 +121,37 @@ public class CouponApiCalls {
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("onFailure availcoupon", t.getLocalizedMessage(), t);
-                couponPresenter.responseErrorPresenter(null);
+                couponApplyRemovePresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void remove(String did, String mail, String auth, CouponOnOrder couponOnOrder) {
+        couponApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        couponApplyRemovePresenter.couponRemoveResponse(response.body());
+                        Log.d("removeCoupon", String.valueOf(response.body()));
+                    } else {
+                        Log.d(TAG, "Empty removeCoupon");
+                        couponApplyRemovePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        couponApplyRemovePresenter.authenticationFailure();
+                    } else {
+                        couponApplyRemovePresenter.responseErrorPresenter(response.code());
+                        Log.e(TAG, "" + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
+                Log.e("onFailure removeCoupon", t.getLocalizedMessage(), t);
+                couponApplyRemovePresenter.responseErrorPresenter(null);
             }
         });
     }

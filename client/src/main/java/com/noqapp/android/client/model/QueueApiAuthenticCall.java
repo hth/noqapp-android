@@ -2,6 +2,8 @@ package com.noqapp.android.client.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.TokenQueueApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -13,7 +15,6 @@ import com.noqapp.android.client.presenter.TokenAndQueuePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -23,9 +24,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
-import java.util.List;
-
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -360,10 +358,10 @@ public class QueueApiAuthenticCall {
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Res: cancelPayBeforeQ", String.valueOf(response.body()));
+                        Log.d("Res: purchaseOrder", String.valueOf(response.body()));
                         queueJsonPurchaseOrderPresenter.queueJsonPurchaseOrderResponse(response.body());
                     } else {
-                        Log.e(TAG, "Fail cancelPayBeforeQueue");
+                        Log.e(TAG, "Fail purchaseOrder");
                         queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -377,7 +375,7 @@ public class QueueApiAuthenticCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
-                Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
+                Log.e("purchaseOrder fail", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }
         });
@@ -389,10 +387,10 @@ public class QueueApiAuthenticCall {
             public void onResponse(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Response<JsonResponseWithCFToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Res: cancelPayBeforeQ", String.valueOf(response.body()));
+                        Log.d("Res: paymentInitiate", String.valueOf(response.body()));
                         queueJsonPurchaseOrderPresenter.paymentInitiateResponse(response.body());
                     } else {
-                        Log.e(TAG, "Fail cancelPayBeforeQueue");
+                        Log.e(TAG, "Fail paymentInitiate");
                         queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -406,7 +404,7 @@ public class QueueApiAuthenticCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Throwable t) {
-                Log.e("cancelPayBeforeQ fail", t.getLocalizedMessage(), t);
+                Log.e("paymentInitiate fail", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }
         });

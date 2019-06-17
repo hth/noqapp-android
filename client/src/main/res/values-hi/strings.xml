@@ -288,6 +288,11 @@
     <string name="empty_medical_h_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical history.</string>
     <string name="empty_my_appointment_title">Empty Appointments</string>
     <string name="empty_my_appointment_subtitle">Congratulation!!! \nYou are healthy. \n You don\'t have any medical appointments.</string>
+
+    <string name="empty_my_coupon_title">Empty Coupons</string>
+    <string name="empty_my_coupon_subtitle">Sorry, You don\'t have any coupon right now.</string>
+    <string name="empty_all_coupon_title">Empty Coupons</string>
+    <string name="empty_all_coupon_subtitle">There is currently no coupons available.</string>
     <string name="empty_review_title">Rate Us</string>
     <string name="empty_review_subtitle">We are waiting for your valuable review</string>
     <string name="update_via_front_desk">To modify blood type contact medical practitioner</string>

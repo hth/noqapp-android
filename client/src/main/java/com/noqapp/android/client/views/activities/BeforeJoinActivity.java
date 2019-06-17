@@ -1,5 +1,21 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
@@ -18,23 +34,7 @@ import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
@@ -195,6 +195,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 int minutes = jsonQueue.getDelayedInMinutes() % 60;
                 String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
                 tv_delay_in_time.setText(Html.fromHtml(red));
+                tv_delay_in_time.setVisibility(View.VISIBLE);
             }else{
                 tv_delay_in_time.setVisibility(View.GONE);
             }
@@ -269,7 +270,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     break;
                 case O:
                     btn_joinQueue.setVisibility(View.VISIBLE);
-                    btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
+                    btn_pay_and_joinQueue.setVisibility(View.GONE);
                     break;
             }
             if(!jsonQueue.isEnabledPayment()){
