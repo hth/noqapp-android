@@ -459,6 +459,10 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
         if(null != jsonPurchaseOrder){
             this.jsonPurchaseOrder = jsonPurchaseOrder;
             updateUI();
+            new CustomToast().showToast(OrderDetailActivity.this, "Coupon apply successfully");
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
+            }
             Log.e("Resp: JsonPurchaseOrder", jsonPurchaseOrder.toString());
         }else{
             new CustomToast().showToast(this,"JsonPurchaseOrder is NULL");

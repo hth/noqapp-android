@@ -311,9 +311,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
                 tv_name.setText(jsonProfile.getName());
                 tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-                if (isVibratorOff()) {
-                    ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
-                }
+//                if (isVibratorOff()) {
+//                    ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
+//                }
 
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     progressDialog.setMessage("Fetching Queue data..");
@@ -376,9 +376,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-        if (isVibratorOff()) {
-            ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
-        }
+//        if (isVibratorOff()) {
+//            ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
+//        }
         dismissProgress();
     }
 
