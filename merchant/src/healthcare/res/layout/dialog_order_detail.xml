@@ -596,6 +596,17 @@
                                 android:text="Apply discount"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/text_size_fourteen" />
+
+                            <Button
+                                android:id="@+id/btn_remove_discount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_nogradient_round"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="Remove discount"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_fourteen" />
                         </FrameLayout>
 
                         <Button

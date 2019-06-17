@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.model.response.api.CouponApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.CouponApplyRemovePresenter;
+import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
