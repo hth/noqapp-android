@@ -52,7 +52,7 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             progressDialog.show();
             CouponApiCalls couponApiCalls = new CouponApiCalls();
             couponApiCalls.setCouponPresenter(this);
-            couponApiCalls.availableCoupon(UserUtils.getDeviceId(),
+            couponApiCalls.globalCoupon(UserUtils.getDeviceId(),
                     UserUtils.getEmail(), UserUtils.getAuth());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());

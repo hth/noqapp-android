@@ -36,6 +36,36 @@ public class CouponApiCalls {
         couponApiUrls = RetrofitClient.getClient().create(CouponApiUrls.class);
     }
 
+    public void globalCoupon(String did, String mail, String auth) {
+        couponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        couponPresenter.couponResponse(response.body());
+                        Log.d("globalCoupon", String.valueOf(response.body()));
+                    } else {
+                        Log.d(TAG, "Empty globalCoupon");
+                        couponPresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        couponPresenter.authenticationFailure();
+                    } else {
+                        couponPresenter.responseErrorPresenter(response.code());
+                        Log.e(TAG, "" + response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonCouponList> call, @NonNull Throwable t) {
+                Log.e("onFailure globalCoupon", t.getLocalizedMessage(), t);
+                couponPresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
     public void availableCoupon(String did, String mail, String auth) {
         couponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
             @Override
