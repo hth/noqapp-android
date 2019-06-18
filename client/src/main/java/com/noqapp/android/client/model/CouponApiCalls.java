@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.noqapp.android.client.model.response.api.CouponApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
+import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonCouponList;
@@ -36,8 +37,8 @@ public class CouponApiCalls {
         couponApiUrls = RetrofitClient.getClient().create(CouponApiUrls.class);
     }
 
-    public void globalCoupon(String did, String mail, String auth) {
-        couponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
+    public void globalCoupon(String did, String mail, String auth, Location location) {
+        couponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth,location).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {

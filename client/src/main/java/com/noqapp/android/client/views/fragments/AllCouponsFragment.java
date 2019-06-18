@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.CouponApiCalls;
+import com.noqapp.android.client.presenter.beans.body.Location;
+import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -55,8 +57,12 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             progressDialog.show();
             CouponApiCalls couponApiCalls = new CouponApiCalls();
             couponApiCalls.setCouponPresenter(this);
+            Location location = new Location();
+            location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
+            location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
+            location.setCityName(Constants.DEFAULT_CITY);
             couponApiCalls.globalCoupon(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth());
+                    UserUtils.getEmail(), UserUtils.getAuth(),location);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
