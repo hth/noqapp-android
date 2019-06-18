@@ -18,7 +18,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewListAdapter.MyViewHolder> {
+public class QueueReviewListAdapter extends RecyclerView.Adapter {
     private final QueueReviewListAdapter.OnItemClickListener listener;
     private JsonReviewList jsonReviewList;
 
@@ -28,14 +28,14 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter<QueueReviewList
     }
 
     @Override
-    public QueueReviewListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_show_all_review, parent, false);
-        QueueReviewListAdapter.MyViewHolder myViewHolder = new QueueReviewListAdapter.MyViewHolder(view);
-        return myViewHolder;
+        return new QueueReviewListAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final QueueReviewListAdapter.MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonReview jsonReview = jsonReviewList.getJsonReviews().get(listPosition);
         holder.tv_name.setText(TextUtils.isEmpty(jsonReview.getName()) ? "Customer Name - N/A" : jsonReview.getName());
         holder.tv_review_detail.setText(jsonReview.getReview());

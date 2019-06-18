@@ -584,7 +584,6 @@
 
                             </RelativeLayout>
 
-
                             <Button
                                 android:id="@+id/btn_update_price"
                                 android:layout_width="match_parent"

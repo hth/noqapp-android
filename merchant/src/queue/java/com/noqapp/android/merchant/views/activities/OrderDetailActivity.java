@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,19 +24,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonCoupon;
+import com.noqapp.android.common.beans.body.CouponOnOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.DiscountTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.CouponApiCalls;
 import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionHelper;
@@ -56,7 +63,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 
-public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter {
+public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter,
+        PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter,
+        CouponApplyRemovePresenter {
     private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
@@ -79,6 +88,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private OrderItemAdapter adapter;
     private long mLastClickTime = 0;
     private TextView tv_payment_msg;
+    private TextView tv_grand_total_amt;
+    private TextView tv_coupon_discount_amt;
+    private Button btn_discount, btn_remove_discount;
+    private TextView tv_discount_value;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -127,6 +140,57 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_transaction_id = findViewById(R.id.tv_transaction_id);
         rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
+        tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
+        tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
+        btn_discount = findViewById(R.id.btn_discount);
+        btn_remove_discount = findViewById(R.id.btn_remove_discount);
+        tv_discount_value = findViewById(R.id.tv_discount_value);
+        btn_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
+                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            }
+        });
+        btn_remove_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Removing discount..");
+                            // progressDialog.setCancelable(false);
+                            // progressDialog.setCanceledOnTouchOutside(false);
+                            CouponApiCalls couponApiCalls = new CouponApiCalls();
+                            couponApiCalls.setCouponApplyRemovePresenter(OrderDetailActivity.this);
+
+                            CouponOnOrder couponOnOrder = new CouponOnOrder()
+                                    .setQueueUserId(jsonPurchaseOrder.getQueueUserId())
+                                    .setCouponId(jsonPurchaseOrder.getCouponId())
+                                    .setCodeQR(jsonPurchaseOrder.getCodeQR())
+                                    .setTransactionId(jsonPurchaseOrder.getTransactionId());
+
+                            couponApiCalls.remove(BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    couponOnOrder);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
+            }
+        });
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_payment_mode.setAdapter(aa);
@@ -356,7 +420,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
-
+        btn_remove_discount.setVisibility(View.GONE);
+        btn_discount.setVisibility(View.GONE);
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
                 PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
             if (isProductWithoutPrice) {
@@ -365,10 +430,19 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             } else {
                 rl_payment.setVisibility(View.VISIBLE);
                 btn_update_price.setVisibility(View.GONE);
+                if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
+                    if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
+                        btn_remove_discount.setVisibility(View.GONE);
+                        btn_discount.setVisibility(View.VISIBLE);
+                    } else {
+                        btn_remove_discount.setVisibility(View.VISIBLE);
+                        btn_discount.setVisibility(View.GONE);
+                    }
+                }
             }
             if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-                btn_pay_partial.setVisibility(View.INVISIBLE);
-                edt_amount.setVisibility(View.INVISIBLE);
+                btn_pay_partial.setVisibility(View.GONE);
+                edt_amount.setVisibility(View.GONE);
                 rl_multiple.setVisibility(View.VISIBLE);
                 tv_multiple_payment.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
             } else {
@@ -377,6 +451,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             }
         } else {
             rl_payment.setVisibility(View.GONE);
+            btn_discount.setVisibility(View.GONE);
+            btn_remove_discount.setVisibility(View.GONE);
         }
 
 
@@ -393,12 +469,15 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         } else {
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
         }
-
         try {
-            tv_cost.setText(currencySymbol + " " + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+            tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
+            tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
         } catch (Exception e) {
+            e.printStackTrace();
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
+            tv_grand_total_amt.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
+        tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
 
         if (null == jsonPurchaseOrder.getTransactionVia()) {
             tv_transaction_via.setText("N/A");
@@ -572,5 +651,78 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             e.printStackTrace();
         }
         dismissProgress();
+    }
+
+    @Override
+    public void couponApplyResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (null != jsonPurchaseOrder) {
+            this.jsonPurchaseOrder = jsonPurchaseOrder;
+            updateUI();
+            new CustomToast().showToast(OrderDetailActivity.this, "Coupon applied successfully");
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
+            }
+            Log.e("Resp: JsonPurchaseOrder", jsonPurchaseOrder.toString());
+        } else {
+            new CustomToast().showToast(this, "JsonPurchaseOrder is NULL");
+        }
+
+        dismissProgress();
+
+    }
+
+    @Override
+    public void couponRemoveResponse(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (null != jsonPurchaseOrder) {
+            this.jsonPurchaseOrder = jsonPurchaseOrder;
+            updateUI();
+            new CustomToast().showToast(OrderDetailActivity.this, "Coupon removed successfully");
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
+            }
+            Log.e("Resp: JsonPurchaseOrder", jsonPurchaseOrder.toString());
+        } else {
+            new CustomToast().showToast(this, "JsonPurchaseOrder is NULL");
+        }
+
+        dismissProgress();
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+            if (resultCode == RESULT_OK) {
+                JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
+                Log.e("data recieve", jsonCoupon.toString());
+                if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
+                    tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
+                } else {
+                    tv_discount_value.setText(jsonCoupon.getDiscountAmount() + "% discount");
+                }
+
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.show();
+                    progressDialog.setMessage("Applying discount..");
+                    // progressDialog.setCancelable(false);
+                    // progressDialog.setCanceledOnTouchOutside(false);
+                    CouponApiCalls couponApiCalls = new CouponApiCalls();
+                    couponApiCalls.setCouponApplyRemovePresenter(this);
+
+                    CouponOnOrder couponOnOrder = new CouponOnOrder()
+                            .setQueueUserId(jsonPurchaseOrder.getQueueUserId())
+                            .setCouponId(jsonCoupon.getCouponId())
+                            .setCodeQR(jsonPurchaseOrder.getCodeQR())
+                            .setTransactionId(jsonPurchaseOrder.getTransactionId());
+
+                    couponApiCalls.apply(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            couponOnOrder);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                }
+            }
+        }
     }
 }

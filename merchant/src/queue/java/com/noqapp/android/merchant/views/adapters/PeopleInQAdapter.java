@@ -8,6 +8,8 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import android.content.Context;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class PeopleInQAdapter extends BasePeopleInQAdapter {
@@ -42,8 +44,9 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder recordHolder, int position) {
-        super.onBindViewHolder(recordHolder, position);
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        super.onBindViewHolder(viewHolder, position);
+        MyViewHolder recordHolder = (MyViewHolder) viewHolder;
         recordHolder.tv_create_case.setVisibility(View.GONE);
         recordHolder.tv_change_name.setVisibility(View.GONE);
         recordHolder.tv_upload_document.setVisibility(View.GONE);

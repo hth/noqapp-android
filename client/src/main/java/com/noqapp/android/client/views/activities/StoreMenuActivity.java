@@ -125,6 +125,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                                     .setBizStoreId(jsonQueue.getBizStoreId())
                                     .setBusinessType(jsonQueue.getBusinessType())
+                                    .setCodeQR(jsonQueue.getCodeQR())
                                     .setOrderPrice(String.valueOf(price));
                             jsonPurchaseOrder.setPurchaseOrderProducts(ll);
 

@@ -66,6 +66,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     private String codeQR;
     private int currentServing = -1;
     private TextView tv_payment_status, tv_total_amt_paid, tv_total_amt_paid_label, tv_total_amt_remain;
+    private TextView tv_grand_total_amt;
+    private TextView tv_coupon_discount_amt;
     private Button btn_pay_now;
     private boolean isPayClick = false;
     private RelativeLayout rl_amount_remaining;
@@ -88,6 +90,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_total_amt_paid_label = findViewById(R.id.tv_total_amt_paid_label);
         tv_total_amt_remain = findViewById(R.id.tv_total_amt_remain);
         rl_amount_remaining = findViewById(R.id.rl_amount_remaining);
+        tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
+        tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
 
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_address = findViewById(R.id.tv_address);
@@ -227,6 +231,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         }
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
         } else {
@@ -245,7 +251,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             tv_total_amt_paid_label.setText("Total Amount Paid (In Cash):");
         } else {
             tv_total_amt_paid.setText(currencySymbol + "0.00");
-            rl_amount_remaining.setVisibility(View.VISIBLE);
+            rl_amount_remaining.setVisibility(View.GONE);
         }
         for (int i = 0; i < oldjsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = oldjsonPurchaseOrder.getPurchaseOrderProducts().get(i);
