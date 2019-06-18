@@ -245,6 +245,62 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left"
+                                android:text="Coupon discount"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/store_info" />
+
+                            <TextView
+                                android:id="@+id/tv_coupon_discount_amt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right"
+                                android:text="- Rs 0"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/store_info" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:gravity="left"
+                                android:text="Grand Total"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/store_info"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_grand_total_amt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/store_info" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"

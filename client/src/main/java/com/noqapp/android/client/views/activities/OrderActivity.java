@@ -10,8 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.gocashfree.cashfreesdk.CFClientInterface;
 import com.gocashfree.cashfreesdk.CFPaymentService;
@@ -30,7 +34,9 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonUserAddress;
@@ -53,8 +59,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
-import androidx.appcompat.widget.AppCompatRadioButton;
 
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
@@ -79,15 +83,24 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private AppCompatRadioButton acrb_home_delivery, acrb_take_away;
     private boolean isProductWithoutPrice = false;
     private JsonUserAddress jsonUserAddress;
+    private FrameLayout frame_coupon;
+    private RelativeLayout rl_apply_coupon, rl_coupon_applied;
+    private TextView tv_coupon_amount;
+    private TextView tv_coupon_name;
+    private JsonCoupon jsonCoupon;
+    private TextView tv_grand_total_amt;
+    private TextView tv_coupon_discount_amt;
+    private TextView tv_total_order_amt;
+    private TextView tv_due_amt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         TextView tv_user_name = findViewById(R.id.tv_user_name);
-        TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
+        tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_tax_amt = findViewById(R.id.tv_tax_amt);
-        TextView tv_due_amt = findViewById(R.id.tv_due_amt);
+        tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_address = findViewById(R.id.tv_address);
 
         acrb_cash = findViewById(R.id.acrb_cash);
@@ -108,6 +121,50 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         edt_optional = findViewById(R.id.edt_optional);
         tv_place_order = findViewById(R.id.tv_place_order);
         LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
+        tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
+        tv_coupon_name = findViewById(R.id.tv_coupon_name);
+        rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
+        rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
+        frame_coupon = findViewById(R.id.frame_coupon);
+        tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
+        tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
+        // frame_coupon.setVisibility(View.GONE);
+        rl_apply_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // new CustomToast().showToast(JoinActivity.this,"Apply Coupon");
+                Intent in = new Intent(OrderActivity.this, CouponsActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
+                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            }
+        });
+        TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
+        tv_remove_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderActivity.this, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        jsonCoupon = null;
+                        rl_apply_coupon.setVisibility(View.VISIBLE);
+                        rl_coupon_applied.setVisibility(View.GONE);
+                        tv_coupon_amount.setText("");
+                        tv_coupon_name.setText("");
+                        jsonPurchaseOrder.setStoreDiscount(0);
+                        jsonPurchaseOrder.setCouponId("");
+                        updateDiscountUI();
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
+            }
+        });
         initActionsViews(true);
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
@@ -121,14 +178,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         clientProfileApiCall.setProfilePresenter(this);
         tv_tax_amt.setText(currencySymbol + "0.00");
         tv_due_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
+        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())+ "  " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + "  " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             ll_order_details.addView(inflatedLayout);
         }
@@ -185,6 +245,29 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 }
             }
         }
+        if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
+            if (resultCode == RESULT_OK) {
+                jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
+                Log.e("data recieve", jsonCoupon.toString());
+                rl_coupon_applied.setVisibility(View.VISIBLE);
+                rl_apply_coupon.setVisibility(View.GONE);
+                tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonCoupon.getDiscountAmount()));
+                tv_coupon_name.setText(jsonCoupon.getDiscountName());
+                jsonPurchaseOrder.setStoreDiscount(jsonCoupon.getDiscountAmount());
+                jsonPurchaseOrder.setCouponId(jsonCoupon.getCouponId());
+                updateDiscountUI();
+            }
+        }
+    }
+
+    private void updateDiscountUI() {
+
+        tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+        tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
+        // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText("- "+currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_due_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
+
     }
 
     public void checkProductWithZeroPrice() {
@@ -200,7 +283,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         }
     }
 
-    private boolean isAddressRequired(){
+    private boolean isAddressRequired() {
         return !(acrb_cash.isChecked() || acrb_take_away.isChecked());
     }
 
