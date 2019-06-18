@@ -404,11 +404,35 @@ public class MedicalDataStatic {
 
         public static ArrayList<DataObj> getDiagnosis() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
-            dataObjs.add(new DataObj("FILLINGS", "", false));
-            dataObjs.add(new DataObj("CROWNS", "", false));
-            dataObjs.add(new DataObj("FLUORIDE TREATMENTS", "", false));
-            dataObjs.add(new DataObj("ROOT CANALS", "", false));
-            dataObjs.add(new DataObj("TOOTH EXTRACTIONS", "", false));
+            dataObjs.add(new DataObj(" CONSULTATION ", "", false));
+            dataObjs.add(new DataObj(" OPG REVIEWW ", "", false));
+            dataObjs.add(new DataObj(" IOPA (XRAYS) ", "", false));
+            dataObjs.add(new DataObj(" SCALING ", "", false));
+            dataObjs.add(new DataObj(" SCALING + POLISHING ", "", false));
+            dataObjs.add(new DataObj(" SCALING + FLUORIDE ", "", false));
+            dataObjs.add(new DataObj(" SEALNTS ", "", false));
+            dataObjs.add(new DataObj(" LDD ", "", false));
+            dataObjs.add(new DataObj(" RESTORATION ", "", false));
+            dataObjs.add(new DataObj(" CORE ", "", false));
+            dataObjs.add(new DataObj(" GIC FILLING ", "", false));
+            dataObjs.add(new DataObj(" RCX ", "", false));
+            dataObjs.add(new DataObj(" RCX+ SSC ", "", false));
+            dataObjs.add(new DataObj(" PULPECTOMY ", "", false));
+            dataObjs.add(new DataObj(" CALCIFIED TOOTH RCX ", "", false));
+            dataObjs.add(new DataObj(" EXTRACTION ", "", false));
+            dataObjs.add(new DataObj(" IMPACTION SURGERY ", "", false));
+            dataObjs.add(new DataObj(" ALVEOLECTOMY ", "", false));
+            dataObjs.add(new DataObj(" OPERCULECTOMY ", "", false));
+            dataObjs.add(new DataObj(" PARTIAL DENTURE ", "", false));
+            dataObjs.add(new DataObj(" COMPLETE DENTURE ", "", false));
+            dataObjs.add(new DataObj(" IMPLANT ", "", false));
+            dataObjs.add(new DataObj(" CROWN ", "", false));
+            dataObjs.add(new DataObj(" BRIDGE ", "", false));
+            dataObjs.add(new DataObj(" ORTHO BRACES ", "", false));
+            dataObjs.add(new DataObj(" SPACE MAINTAINER ", "", false));
+            dataObjs.add(new DataObj(" RETAINER PLATE ", "", false));
+            dataObjs.add(new DataObj(" SPLINT ", "", false));
+            dataObjs.add(new DataObj(" NTI ", "", false));
             return dataObjs;
         }
 
@@ -418,16 +442,35 @@ public class MedicalDataStatic {
 
         public static ArrayList<DataObj> getSymptoms() {
             ArrayList<DataObj> dataObjs = new ArrayList<>();
-            dataObjs.add(new DataObj("TOOTHACHE", "", false));
-            dataObjs.add(new DataObj("SENSITIVE TEETH", "", false));
-            dataObjs.add(new DataObj("BLEEDING OR SORE GUMS", "", false));
-            dataObjs.add(new DataObj("MOUTH SORES", "", false));
-            dataObjs.add(new DataObj("BAD BREATH", "", false));
-            dataObjs.add(new DataObj("JAW PAIN OR POPPING/CLICKING IN THE JAW", "", false));
-            dataObjs.add(new DataObj("DRY MOUTH", "", false));
-            dataObjs.add(new DataObj("ORAL PIERCING INFECTION", "", false));
-            dataObjs.add(new DataObj("CRACKED OR BROKEN TOOTH", "", false));
-            dataObjs.add(new DataObj("STAINED OR DISCOLORED TEETH", "", false));
+            dataObjs.add(new DataObj(" CONSULTATION ", "", false));
+            dataObjs.add(new DataObj(" OPG REVIEWW ", "", false));
+            dataObjs.add(new DataObj(" IOPA (XRAYS) ", "", false));
+            dataObjs.add(new DataObj(" SCALING ", "", false));
+            dataObjs.add(new DataObj(" SCALING + POLISHING ", "", false));
+            dataObjs.add(new DataObj(" SCALING + FLUORIDE ", "", false));
+            dataObjs.add(new DataObj(" SEALNTS ", "", false));
+            dataObjs.add(new DataObj(" LDD ", "", false));
+            dataObjs.add(new DataObj(" RESTORATION ", "", false));
+            dataObjs.add(new DataObj(" CORE ", "", false));
+            dataObjs.add(new DataObj(" GIC FILLING ", "", false));
+            dataObjs.add(new DataObj(" RCX ", "", false));
+            dataObjs.add(new DataObj(" RCX+ SSC ", "", false));
+            dataObjs.add(new DataObj(" PULPECTOMY ", "", false));
+            dataObjs.add(new DataObj(" CALCIFIED TOOTH RCX ", "", false));
+            dataObjs.add(new DataObj(" EXTRACTION ", "", false));
+            dataObjs.add(new DataObj(" IMPACTION SURGERY ", "", false));
+            dataObjs.add(new DataObj(" ALVEOLECTOMY ", "", false));
+            dataObjs.add(new DataObj(" OPERCULECTOMY ", "", false));
+            dataObjs.add(new DataObj(" PARTIAL DENTURE ", "", false));
+            dataObjs.add(new DataObj(" COMPLETE DENTURE ", "", false));
+            dataObjs.add(new DataObj(" IMPLANT ", "", false));
+            dataObjs.add(new DataObj(" CROWN ", "", false));
+            dataObjs.add(new DataObj(" BRIDGE ", "", false));
+            dataObjs.add(new DataObj(" ORTHO BRACES ", "", false));
+            dataObjs.add(new DataObj(" SPACE MAINTAINER ", "", false));
+            dataObjs.add(new DataObj(" RETAINER PLATE ", "", false));
+            dataObjs.add(new DataObj(" SPLINT ", "", false));
+            dataObjs.add(new DataObj(" NTI ", "", false));
             return dataObjs;
         }
     }
