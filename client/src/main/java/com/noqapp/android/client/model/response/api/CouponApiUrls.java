@@ -1,5 +1,6 @@
 package com.noqapp.android.client.model.response.api;
 
+import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -41,7 +42,7 @@ public interface CouponApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/coupon/global.json")
+    @POST("api/c/coupon/global.json")
     Call<JsonCouponList> globalCoupon(
             @Header("X-R-DID")
             String did,
@@ -53,7 +54,10 @@ public interface CouponApiUrls {
             String mail,
 
             @Header("X-R-AUTH")
-            String auth
+            String auth,
+
+            @Body
+            Location location
     );
 
     /**
