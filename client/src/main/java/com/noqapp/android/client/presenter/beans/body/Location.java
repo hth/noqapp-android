@@ -34,29 +34,29 @@ public class Location {
     @JsonProperty("lng")
     private String longitude;
 
-    public ScrubbedInput getCityName() {
+    public String getCityName() {
         return cityName;
     }
 
-    public Location setCityName(ScrubbedInput cityName) {
+    public Location setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
 
-    public ScrubbedInput getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public Location setLatitude(ScrubbedInput latitude) {
+    public Location setLatitude(String latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public ScrubbedInput getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public Location setLongitude(ScrubbedInput longitude) {
+    public Location setLongitude(String longitude) {
         this.longitude = longitude;
         return this;
     }
