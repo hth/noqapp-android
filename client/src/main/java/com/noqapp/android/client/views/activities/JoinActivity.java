@@ -34,6 +34,7 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
+import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
@@ -266,7 +267,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 }
             }
         });
-        initActionsViews(true);
+        initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_qdetails));
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
         queueApiAuthenticCall = new QueueApiAuthenticCall();
@@ -435,6 +436,12 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonTokenAndQueue.setToken(token.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
         updateEstimatedTime();
+        if(jsonToken.getQueueUserState() == QueueUserStateEnum.I){
+            ll_change_bg.setVisibility(View.GONE);
+            tv_token.setText("N/A");
+        }else {
+            ll_change_bg.setVisibility(View.VISIBLE);
+        }
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
