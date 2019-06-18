@@ -187,14 +187,16 @@ public class JsonToken {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("JsonToken{");
+        final StringBuilder sb = new StringBuilder("JsonToken{");
         sb.append("codeQR='").append(codeQR).append('\'');
         sb.append(", displayName='").append(displayName).append('\'');
         sb.append(", queueStatus=").append(queueStatus);
+        sb.append(", queueUserState=").append(queueUserState);
         sb.append(", servingNumber=").append(servingNumber);
         sb.append(", token=").append(token);
         sb.append(", customerName='").append(customerName).append('\'');
         sb.append(", expectedServiceBegin='").append(expectedServiceBegin).append('\'');
+        sb.append(", transactionId='").append(transactionId).append('\'');
         sb.append(", clientVisitedThisStore=").append(clientVisitedThisStore);
         sb.append(", jsonPurchaseOrder=").append(jsonPurchaseOrder);
         sb.append(", error=").append(error);
