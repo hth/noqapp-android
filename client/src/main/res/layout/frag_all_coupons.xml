@@ -10,12 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_appointments"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#99ffffff"
-            android:padding="5dp" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_appointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tv_location_enable"
+                android:layout_alignParentTop="true"
+                android:background="#99ffffff"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/tv_location_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:background="@android:color/black"
+                android:text=" Gps is disabled, in order to get coupon/offer for your city you need to enable GPS of your device"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_empty"

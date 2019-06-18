@@ -3,11 +3,13 @@ package com.noqapp.android.client.views.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +47,8 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
         rcv_appointments.setLayoutManager(new LinearLayoutManager(getActivity(),
                 RecyclerView.VERTICAL, false));
         rcv_appointments.setItemAnimator(new DefaultItemAnimator());
+
+
         if (jsonCoupons.size() <= 0) {
             rcv_appointments.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
@@ -52,17 +56,26 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             rcv_appointments.setVisibility(View.VISIBLE);
             rl_empty.setVisibility(View.GONE);
         }
+        TextView tv_location_enable = view.findViewById(R.id.tv_location_enable);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             progressDialog.setMessage("Fetching all coupons...");
             progressDialog.show();
             CouponApiCalls couponApiCalls = new CouponApiCalls();
             couponApiCalls.setCouponPresenter(this);
             Location location = new Location();
-            location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
-            location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
-            location.setCityName(Constants.DEFAULT_CITY);
+            if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+                location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
+                location.setLongitude(String.valueOf(Constants.DEFAULT_LONGITUDE));
+                location.setCityName(Constants.DEFAULT_CITY);
+                tv_location_enable.setVisibility(View.VISIBLE);
+            } else {
+                location.setLatitude(String.valueOf(LaunchActivity.getLaunchActivity().latitute));
+                location.setLongitude(String.valueOf(LaunchActivity.getLaunchActivity().longitute));
+                location.setCityName(LaunchActivity.getLaunchActivity().cityName);
+                tv_location_enable.setVisibility(View.GONE);
+            }
             couponApiCalls.globalCoupon(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth(),location);
+                    UserUtils.getEmail(), UserUtils.getAuth(), location);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -76,7 +89,7 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
             intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonCoupon);
             getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
-        }else{
+        } else {
             // Do nothing right now
         }
     }
