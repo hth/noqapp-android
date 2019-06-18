@@ -92,6 +92,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private TextView tv_coupon_discount_amt;
     private Button btn_discount, btn_remove_discount;
     private TextView tv_discount_value;
+
     public interface UpdateWholeList {
         void updateWholeList();
     }
@@ -440,8 +441,8 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
                 }
             }
             if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-                btn_pay_partial.setVisibility(View.INVISIBLE);
-                edt_amount.setVisibility(View.INVISIBLE);
+                btn_pay_partial.setVisibility(View.GONE);
+                edt_amount.setVisibility(View.GONE);
                 rl_multiple.setVisibility(View.VISIBLE);
                 tv_multiple_payment.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
             } else {
