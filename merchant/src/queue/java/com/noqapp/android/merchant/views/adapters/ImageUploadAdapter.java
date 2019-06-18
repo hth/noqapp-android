@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import java.util.List;
 
 
-public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.MyViewHolder> {
+public class ImageUploadAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<String> imageUrls;
     private Context context;
@@ -31,16 +31,16 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
                                            int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_item_upload_pic, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

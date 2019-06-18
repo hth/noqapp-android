@@ -1,22 +1,23 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-import com.noqapp.android.merchant.R;
-
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.merchant.R;
+
 import java.util.List;
 
 
-public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.MyViewHolder> {
+public class MenuHeaderAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonStoreCategory> dataSet;
@@ -34,16 +35,15 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.menu_header_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.tv_menu_header.setText(dataSet.get(listPosition).getCategoryName());
         if (selected_pos == listPosition) {
             holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.color_action_bar));

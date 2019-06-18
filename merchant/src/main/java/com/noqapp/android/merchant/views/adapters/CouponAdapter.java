@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHolder> {
+public class CouponAdapter extends RecyclerView.Adapter {
     private final CouponAdapter.OnItemClickListener listener;
     private List<JsonCoupon> jsonCoupons;
     private Context context;
@@ -29,13 +29,14 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
     }
 
     @Override
-    public CouponAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_discount, parent, false);
         return new CouponAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final CouponAdapter.MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder)vholder;
         final JsonCoupon jsonCoupon = jsonCoupons.get(listPosition);
         holder.tv_discount_name.setText(jsonCoupon.getDiscountName());
         holder.tv_discount_description.setText(jsonCoupon.getDiscountDescription());

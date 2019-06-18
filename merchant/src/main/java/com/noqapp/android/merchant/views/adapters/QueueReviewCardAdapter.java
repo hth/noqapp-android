@@ -15,7 +15,7 @@ import java.util.List;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class QueueReviewCardAdapter extends RecyclerView.Adapter<QueueReviewCardAdapter.MyViewHolder> {
+public class QueueReviewCardAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final QueueReviewCardAdapter.OnItemClickListener listener;
     private List<JsonReviewList> reviews;
@@ -27,14 +27,14 @@ public class QueueReviewCardAdapter extends RecyclerView.Adapter<QueueReviewCard
     }
 
     @Override
-    public QueueReviewCardAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_q_review_item, parent, false);
-        QueueReviewCardAdapter.MyViewHolder myViewHolder = new QueueReviewCardAdapter.MyViewHolder(view);
-        return myViewHolder;
+        return new QueueReviewCardAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final QueueReviewCardAdapter.MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder vholder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder)vholder;
         holder.tv_customer_name.setText(TextUtils.isEmpty(reviews.get(listPosition).getDisplayName()) ? "N/A" : reviews.get(listPosition).getDisplayName());
         if (0 == reviews.get(listPosition).getJsonReviews().size()) {
             holder.tv_business_customer_id.setText("No Rating ");

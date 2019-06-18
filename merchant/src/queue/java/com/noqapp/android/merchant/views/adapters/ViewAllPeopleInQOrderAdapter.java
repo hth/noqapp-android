@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPeopleInQOrderAdapter.MyViewHolder> {
+public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter {
     private final Context context;
     private List<JsonPurchaseOrder> dataSet;
     private boolean visibility;
@@ -38,14 +38,14 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter<ViewAllPe
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_order_history_q_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder recordHolder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder recordHolder = (MyViewHolder) viewHolder;
         final JsonPurchaseOrder jsonPurchaseOrder = dataSet.get(listPosition);
         final String phoneNo = jsonPurchaseOrder.getCustomerPhone();
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonPurchaseOrder.getCreated()));

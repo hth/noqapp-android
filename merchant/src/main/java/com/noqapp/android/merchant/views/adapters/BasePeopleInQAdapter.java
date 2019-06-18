@@ -43,7 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeopleInQAdapter.MyViewHolder> implements QueuePersonListPresenter {
+public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implements QueuePersonListPresenter {
     private static final String TAG = BasePeopleInQAdapter.class.getSimpleName();
 
     private final Context context;
@@ -205,12 +205,12 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter<BasePeop
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_people_queue_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder recordHolder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder recordHolder = (MyViewHolder) viewHolder;
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(position);
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
 
