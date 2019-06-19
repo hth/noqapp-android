@@ -803,7 +803,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     .setCodeQR(codeQR)
                     .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                     .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
-            queueApiAuthenticCall.paymentInitiate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+            queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }
 

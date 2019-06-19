@@ -349,16 +349,16 @@ public class QueueApiAuthenticCall {
         });
     }
 
-    public void paymentInitiate(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        tokenQueueApiUrls.paymentInitiate(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponseWithCFToken>() {
+    public void payNow(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
+        tokenQueueApiUrls.payNow(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonResponseWithCFToken>() {
             @Override
             public void onResponse(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Response<JsonResponseWithCFToken> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Res: paymentInitiate", String.valueOf(response.body()));
+                        Log.d("Res: payNow", String.valueOf(response.body()));
                         queueJsonPurchaseOrderPresenter.paymentInitiateResponse(response.body());
                     } else {
-                        Log.e(TAG, "Fail paymentInitiate");
+                        Log.e(TAG, "Fail payNow");
                         queueJsonPurchaseOrderPresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
@@ -372,7 +372,7 @@ public class QueueApiAuthenticCall {
 
             @Override
             public void onFailure(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Throwable t) {
-                Log.e("paymentInitiate fail", t.getLocalizedMessage(), t);
+                Log.e("payNow fail", t.getLocalizedMessage(), t);
                 responsePresenter.responsePresenterError();
             }
         });
