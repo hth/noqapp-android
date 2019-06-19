@@ -93,19 +93,15 @@ public class SearchAdapter extends RecyclerView.Adapter {
             }
             StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(bizStoreElastic.getStoreHourElasticList());
             holder.tv_store_timing.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
-            holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (bizStoreElastic.getReviewCount() > 0) {
-                        Intent in = new Intent(context, AllReviewsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                        bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
-                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, holder.tv_address.getText().toString());
-                        in.putExtras(bundle);
-                        context.startActivity(in);
-                    }
+            holder.tv_store_review.setOnClickListener((View v) -> {
+                if (bizStoreElastic.getReviewCount() > 0) {
+                    Intent in = new Intent(context, AllReviewsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, holder.tv_address.getText().toString());
+                    in.putExtras(bundle);
+                    context.startActivity(in);
                 }
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage())) {
@@ -117,11 +113,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
-            holder.card_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
-                }
+            holder.card_view.setOnClickListener((View v) -> {
+                listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
             });
             if (holder.tv_store_rating.getText().toString().equals("0.0")) {
                 holder.tv_store_rating.setVisibility(View.INVISIBLE);

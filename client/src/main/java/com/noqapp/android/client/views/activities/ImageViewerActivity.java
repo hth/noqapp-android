@@ -1,17 +1,17 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.views.customviews.TouchImageView;
-
-import com.squareup.picasso.Picasso;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.views.customviews.TouchImageView;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by chandra on 3/26/18.
@@ -34,11 +34,8 @@ public class ImageViewerActivity extends AppCompatActivity {
         }
         Picasso.get().load(url).into(im_slider);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        actionbarBack.setOnClickListener((View v) -> {
+            finish();
         });
     }
 

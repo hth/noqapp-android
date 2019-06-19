@@ -171,31 +171,9 @@ public interface TokenQueueApiUrls {
             JoinQueue joinQueue
     );
 
-    /**
-     * Errors
-     * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
-     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_FOUND} - HTTP STATUS 404
-     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
-     */
-    @POST("api/c/token/skipPayBeforeQueue.json")
-    Call<JsonToken> skipPayBeforeQueue(
-            @Header("X-R-DID")
-            String did,
-
-            @Header("X-R-DT")
-            String dt,
-
-            @Header("X-R-MAIL")
-            String mail,
-
-            @Header("X-R-AUTH")
-            String auth,
-
-            @Body
-            JoinQueue joinQueue
-    );
 
     /**
+     * When Purchase Order State is PurchaseOrderStateEnum.VB and Price is 0, this is called on .
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#PURCHASE_ORDER_NOT_FOUND}
@@ -229,8 +207,8 @@ public interface TokenQueueApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#QUEUE_NO_SERVICE_NO_PAY}
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @POST("api/c/token/paymentInitiate.json")
-    Call<JsonResponseWithCFToken> paymentInitiate(
+    @POST("api/c/token/payNow.json")
+    Call<JsonResponseWithCFToken> payNow(
             @Header("X-R-DID")
             String did,
 

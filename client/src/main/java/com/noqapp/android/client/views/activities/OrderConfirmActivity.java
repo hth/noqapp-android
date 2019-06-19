@@ -97,26 +97,23 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         TextView tv_address = findViewById(R.id.tv_address);
         btn_cancel_order = findViewById(R.id.btn_cancel_order);
         btn_pay_now = findViewById(R.id.btn_pay_now);
-        btn_pay_now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
-                    if (isProductWithoutPrice) {
-                        new CustomToast().showToast(OrderConfirmActivity.this, "Merchant have not set the price of the product." +
-                                "Hence payment cann't be proceed");
-                    } else {
-                        if (NoQueueBaseActivity.isEmailVerified()) {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                progressDialog.show();
-                                progressDialog.setMessage("Starting payment process..");
-                                progressDialog.setCancelable(false);
-                                progressDialog.setCanceledOnTouchOutside(false);
-                                purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                                isPayClick = true;
-                            }
-                        } else {
-                            new CustomToast().showToast(OrderConfirmActivity.this, "Email is mandatory. Please add and verify it");
+        btn_pay_now.setOnClickListener((View v) -> {
+            if (null != jsonPurchaseOrder && (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB || jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.PO)) {
+                if (isProductWithoutPrice) {
+                    new CustomToast().showToast(OrderConfirmActivity.this, "Merchant have not set the price of the product." +
+                            "Hence payment cann't be proceed");
+                } else {
+                    if (NoQueueBaseActivity.isEmailVerified()) {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Starting payment process..");
+                            progressDialog.setCancelable(false);
+                            progressDialog.setCanceledOnTouchOutside(false);
+                            purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            isPayClick = true;
                         }
+                    } else {
+                        new CustomToast().showToast(OrderConfirmActivity.this, "Email is mandatory. Please add and verify it");
                     }
                 }
             }
@@ -150,46 +147,40 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             oldjsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getExtras().getSerializable("oldData");
             updateUI();
         }
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                iv_home.performClick();
-            }
+        actionbarBack.setOnClickListener((View v) -> {
+            LaunchActivity.getLaunchActivity().activityCommunicator = null;
+            iv_home.performClick();
         });
-        btn_cancel_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(OrderConfirmActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (null != jsonPurchaseOrder) {
-                            if (null == jsonPurchaseOrder.getTransactionVia()) {
-                                cancelOrder();
-                            } else {
-                                switch (jsonPurchaseOrder.getTransactionVia()) {
-                                    case I:
-                                        cancelOrder();
-                                        break;
-                                    case E:
-                                        cancelOrder();
-                                        break;
-                                    case U:
-                                        cancelOrder();
-                                        break;
-                                }
+        btn_cancel_order.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(OrderConfirmActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != jsonPurchaseOrder) {
+                        if (null == jsonPurchaseOrder.getTransactionVia()) {
+                            cancelOrder();
+                        } else {
+                            switch (jsonPurchaseOrder.getTransactionVia()) {
+                                case I:
+                                    cancelOrder();
+                                    break;
+                                case E:
+                                    cancelOrder();
+                                    break;
+                                case U:
+                                    cancelOrder();
+                                    break;
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
         });
     }
 

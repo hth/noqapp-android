@@ -36,6 +36,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -51,9 +54,6 @@ import com.noqapp.android.client.barcode.camera.CameraSourcePreview;
 import com.noqapp.android.client.barcode.camera.GraphicOverlay;
 
 import java.io.IOException;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -104,11 +104,8 @@ public final class BarcodeCaptureActivity extends Activity implements BarcodeGra
         Button btnClose = findViewById(R.id.btnClose);
 
         if (null != btnClose) {
-            btnClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
+            btnClose.setOnClickListener((View v) -> {
+                finish();
             });
         }
 

@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.SliderPagerAdapter;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by chandra on 3/26/18.
@@ -41,11 +41,8 @@ public class SliderActivity extends AppCompatActivity {
         page_position = getIntent().getIntExtra("pos", 0);
         init();
         addBottomDots(page_position);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        actionbarBack.setOnClickListener((View v) -> {
                 finish();
-            }
         });
 
 

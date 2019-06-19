@@ -1,5 +1,25 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ReviewApiAuthenticCalls;
 import com.noqapp.android.client.model.ReviewApiUnAuthenticCall;
@@ -19,26 +39,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueOrderTypeEnum;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -136,11 +136,8 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             //Do nothing as of now
         }
         //actionbarBack.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        actionbarBack.setOnClickListener((View v) -> {
                 onBackPressed();
-            }
         });
         ratingBar.setRating(4.0f);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -150,9 +147,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_review));
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_submit.setOnClickListener((View v) -> {
                 if (ratingBar.getRating() == 0) {
                     Toast.makeText(ReviewActivity.this, getString(R.string.error_rateservice), Toast.LENGTH_LONG).show();
                 }
@@ -200,7 +195,6 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                         ShowAlertInformation.showNetworkDialog(ReviewActivity.this);
                     }
                 }
-            }
         });
     }
 

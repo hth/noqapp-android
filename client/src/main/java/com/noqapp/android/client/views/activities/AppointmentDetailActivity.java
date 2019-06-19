@@ -35,11 +35,8 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);
         tv_toolbar_title.setText("Appointment Detail");
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        actionbarBack.setOnClickListener((View v) -> {
+            onBackPressed();
         });
         try {
             JsonSchedule jsonSchedule = (JsonSchedule) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
@@ -59,18 +56,12 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             tv_address.setText(AppUtilities.getStoreAddress(jsonQueueDisplay.getTown(), jsonQueueDisplay.getArea()));
             tv_degree.setText(MedicalDepartmentEnum.valueOf(jsonSchedule.getJsonQueueDisplay().getBizCategoryId()).getDescription());
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonSchedule.getJsonQueueDisplay().getCountryShortName(), jsonSchedule.getJsonQueueDisplay().getStorePhone()));
-            tv_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
-                }
+            tv_mobile.setOnClickListener((View v) -> {
+                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
             });
             tv_patient_name.setText(jsonSchedule.getJsonProfile().getName());
-            tv_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress());
-                }
+            tv_address.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), jsonQueueDisplay.getStoreAddress());
             });
 
             try {
@@ -105,30 +96,26 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                 if (getIntent().getBooleanExtra("isPast", false)) {
                     btn_cancel.setVisibility(View.GONE);
                 }
-                btn_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentDetailActivity.this, true);
-                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                            @Override
-                            public void btnPositiveClick() {
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    progressDialog.setMessage("Canceling appointment...");
-                                    progressDialog.show();
-                                    appointmentApiCalls.cancelAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
-                                } else {
-                                    ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
-                                }
+                btn_cancel.setOnClickListener((View v) -> {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentDetailActivity.this, true);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                        @Override
+                        public void btnPositiveClick() {
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                progressDialog.setMessage("Canceling appointment...");
+                                progressDialog.show();
+                                appointmentApiCalls.cancelAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
                             }
+                        }
 
-                            @Override
-                            public void btnNegativeClick() {
-                                //Do nothing
-                            }
-                        });
-                        showDialog.displayDialog("Cancel Appointment", "Do you want to cancel the appointment?");
-                    }
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
+                    });
+                    showDialog.displayDialog("Cancel Appointment", "Do you want to cancel the appointment?");
                 });
             } else {
                 isNavigateHome = true;

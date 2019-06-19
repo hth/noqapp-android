@@ -94,6 +94,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private TextView tv_grand_total_amt;
     private TextView tv_coupon_discount_amt;
     private RelativeLayout rl_discount;
+    private String currencySymbol = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,39 +126,36 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
 
         ImageView iv_profile = findViewById(R.id.iv_profile);
-        btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (null != jsonTokenAndQueue) {
-                            if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                cancelQueue();
-                            } else {
-                                switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                    case I:
-                                        cancelQueue();
-                                        break;
-                                    case E:
-                                        cancelQueue();
-                                        break;
-                                    case U:
-                                        cancelQueue();
-                                        break;
-                                }
+        btn_cancel_queue.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != jsonTokenAndQueue) {
+                        if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                            cancelQueue();
+                        } else {
+                            switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                                case I:
+                                    cancelQueue();
+                                    break;
+                                case E:
+                                    cancelQueue();
+                                    break;
+                                case U:
+                                    cancelQueue();
+                                    break;
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
         });
 
         initActionsViews(true);
@@ -171,6 +169,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             jsonQueue = (JsonQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_QUEUE);
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
+            if (null != jsonQueue) {
+                currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
+            } else if (null != jsonTokenAndQueue) {
+                currencySymbol = AppUtilities.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
+            }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
             tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
@@ -196,20 +199,14 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            actionbarBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    iv_home.performClick();
-                }
+            actionbarBack.setOnClickListener((View v) -> {
+                iv_home.performClick();
             });
-            iv_home.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                    Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
-                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(goToA);
-                }
+            iv_home.setOnClickListener((View v) -> {
+                LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
+                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(goToA);
             });
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
@@ -232,30 +229,21 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
-            tv_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
-                }
+            tv_mobile.setOnClickListener((View v) -> {
+                AppUtilities.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
             });
-            tv_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
-                }
+            tv_address.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-            if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-                tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
-                tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
-                setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-                tv_name.setText(jsonProfile.getName());
-                tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-//                if (isVibratorOff()) {
-//                    ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
-//                }
+            tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+            tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+            tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+            setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
+            tv_name.setText(jsonProfile.getName());
+            tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
 
+            if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     progressDialog.setMessage("Fetching Queue data..");
                     progressDialog.show();
@@ -493,7 +481,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             jsonToken = new JsonToken();
         }
         jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
-        String currencySymbol = "Rs.";//AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());;
         card_amount.setVisibility(View.VISIBLE);
         // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
@@ -503,6 +490,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         } else {
             tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         }
+        ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);

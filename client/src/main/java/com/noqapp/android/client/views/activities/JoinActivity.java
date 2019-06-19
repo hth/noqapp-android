@@ -55,7 +55,6 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ServicePaymentEnum;
-import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -99,7 +98,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
     private Button btn_pay;
-    private TextView tv_payment_status, tv_due_amt;
     private CardView card_amount;
     private TextView tv_total_order_amt;
     private TextView tv_grand_total_amt;
@@ -109,8 +107,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private CFPaymentService cfPaymentService;
     private JsonProfile jsonProfile;
     private RelativeLayout rl_apply_coupon, rl_coupon_applied;
-    private String currencySymbol = "Rs.";
-    // private  TextView tv_remove_coupon;
+    private String currencySymbol = "";
     private FrameLayout frame_coupon;
     private LinearLayout ll_order_details;
     private RelativeLayout rl_discount;
@@ -128,8 +125,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         ll_order_details = findViewById(R.id.ll_order_details);
         rl_discount = findViewById(R.id.rl_discount);
         btn_pay = findViewById(R.id.btn_pay);
-        tv_payment_status = findViewById(R.id.tv_payment_status);
-        tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
         tv_coupon_name = findViewById(R.id.tv_coupon_name);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
@@ -143,111 +138,121 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
         frame_coupon = findViewById(R.id.frame_coupon);
         frame_coupon.setVisibility(View.GONE);
-        rl_apply_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
-            }
+        rl_apply_coupon.setOnClickListener((View v) -> {
+            Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+            startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
-        tv_remove_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_remove_coupon.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Removing discount..");
+                        // progressDialog.setCancelable(false);
+                        // progressDialog.setCanceledOnTouchOutside(false);
+                        CouponApiCalls couponApiCalls = new CouponApiCalls();
+                        couponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
 
-                ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Removing discount..");
-                            // progressDialog.setCancelable(false);
-                            // progressDialog.setCanceledOnTouchOutside(false);
-                            CouponApiCalls couponApiCalls = new CouponApiCalls();
-                            couponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
+                        CouponOnOrder couponOnOrder = new CouponOnOrder()
+                                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                                // .setCouponId(jsonCoupon.getCouponId())
+                                .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                            CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                    .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                                    // .setCouponId(jsonCoupon.getCouponId())
-                                    .setTransactionId(jsonTokenAndQueue.getTransactionId());
-
-                            couponApiCalls.remove(UserUtils.getDeviceId(),
-                                    UserUtils.getEmail(),
-                                    UserUtils.getAuth(),
-                                    couponOnOrder);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(JoinActivity.this);
-                        }
+                        couponApiCalls.remove(UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                couponOnOrder);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(JoinActivity.this);
                     }
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
         });
         ImageView iv_profile = findViewById(R.id.iv_profile);
-        btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (null != jsonTokenAndQueue) {
-                            if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                cancelQueue();
-                            } else {
-                                switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                    case I:
-                                        cancelQueue();
-                                        break;
-                                    case E:
-                                        cancelQueue();
-                                        break;
-                                    case U:
-                                        cancelQueue();
-                                        break;
-                                }
+        btn_cancel_queue.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != jsonTokenAndQueue) {
+                        if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                            cancelQueue();
+                        } else {
+                            switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                                case I:
+                                    cancelQueue();
+                                    break;
+                                case E:
+                                    cancelQueue();
+                                    break;
+                                case U:
+                                    cancelQueue();
+                                    break;
                             }
                         }
                     }
-
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
-            }
-        });
-        btn_pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
-                    if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
-                        triggerOnlinePayment();
-                    } else {
-                        queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
-                        JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
-                        jsonCashfreeNotification.setTxMsg(null);
-                        jsonCashfreeNotification.setTxTime(null);
-                        jsonCashfreeNotification.setReferenceId(null);
-                        jsonCashfreeNotification.setPaymentMode(null);  // cash
-                        jsonCashfreeNotification.setSignature(null);
-                        jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
-                        jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
-                        jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
-                        queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
-                    }
-                } else {
-                    pay();
                 }
+
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
+        });
+        btn_pay.setOnClickListener((View v) -> {
+//            if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
+//                if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
+//                    triggerOnlinePayment();
+//                } else {
+//                    queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
+//                    JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+//                    jsonCashfreeNotification.setTxMsg(null);
+//                    jsonCashfreeNotification.setTxTime(null);
+//                    jsonCashfreeNotification.setReferenceId(null);
+//                    jsonCashfreeNotification.setPaymentMode(null);  // cash
+//                    jsonCashfreeNotification.setSignature(null);
+//                    jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
+//                    jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+//                    jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
+//                    queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+//                }
+//            } else {
+//                pay();
+//            }
+
+
+            if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
+                //triggerOnlinePayment();
+                pay();
+            } else {
+                progressDialog.setMessage("Starting token process...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
+                queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
+                JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+                jsonCashfreeNotification.setTxMsg(null);
+                jsonCashfreeNotification.setTxTime(null);
+                jsonCashfreeNotification.setReferenceId(null);
+                jsonCashfreeNotification.setPaymentMode(null);  // cash
+                jsonCashfreeNotification.setSignature(null);
+                jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
+                jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+                jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
+                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
             }
+
         });
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_qconfirm));
@@ -290,20 +295,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            actionbarBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    iv_home.performClick();
-                }
+            actionbarBack.setOnClickListener((View v) -> {
+                iv_home.performClick();
             });
-            iv_home.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                    Intent goToA = new Intent(JoinActivity.this, LaunchActivity.class);
-                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(goToA);
-                }
+            iv_home.setOnClickListener((View v) -> {
+                LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                Intent goToA = new Intent(JoinActivity.this, LaunchActivity.class);
+                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(goToA);
             });
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
@@ -318,17 +317,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
-            tv_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.makeCall(JoinActivity.this, tv_mobile.getText().toString());
-                }
+            tv_mobile.setOnClickListener((View v) -> {
+                AppUtilities.makeCall(JoinActivity.this, tv_mobile.getText().toString());
             });
-            tv_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
-                }
+            tv_address.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -400,14 +393,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-                if (SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()) {
-                    new CustomToast().showToast(this, "You are already in the Queue");
-                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
-                    tokenPresenterResponse(jsonToken);
-                } else {
-                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
-                    tokenPresenterResponse(jsonToken);
-                }
+//                if (SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()) {
+//                    new CustomToast().showToast(this, "You are already in the Queue, ALERT ");
+//                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+//                    tokenPresenterResponse(jsonToken);
+//                } else {
+                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+                tokenPresenterResponse(jsonToken);
+                //  }
             } else if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 new CustomToast().showToast(this, "You are already in the Queue");
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
@@ -507,13 +500,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     guardianId = jp.getQueueUserId();
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
-
                 if (jsonQueue.isEnabledPayment()) {
-                    if (getIntent().getBooleanExtra("isPayBeforeJoin", false)) {
-                        queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
-                    } else {
-                        queueApiAuthenticCall.skipPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
-                    }
+                    queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 }
@@ -697,15 +685,27 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         btn_pay.setVisibility(View.GONE);
         btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
         if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
-            if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                // show only when it comes from join screen
-                new CustomToast().showToast(this, "Token generated successfully.");
-            }
-            queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
-            tokenPresenterResponse(jsonToken);
+            new CustomToast().showToast(this, "Token generated successfully.");
+            jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
+            jsonTokenAndQueue.setToken(jsonToken.getToken());
+            jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
+            jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
+            Intent in = new Intent(this, AfterJoinActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+            in.putExtra(IBConstant.KEY_FROM_LIST, false);
+            in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+            in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
+            in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+            in.putExtra("qUserId", queueUserId);
+            in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+            startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+
+            //queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
+            //tokenPresenterResponse(jsonToken);
         } else {
             new CustomToast().showToast(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage());
         }
+        dismissProgress();
     }
 
     @Override
@@ -730,6 +730,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         // tv_coupon_name.setText(jsonCoupon.getDiscountName());
+        ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -741,13 +742,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             ll_order_details.addView(inflatedLayout);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-            tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
             btn_pay.setVisibility(View.GONE);
             btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
             frame_coupon.setVisibility(View.GONE);
             rl_apply_coupon.setClickable(false);
         } else {
-            tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
             btn_pay.setVisibility(View.VISIBLE);
             btn_pay.setLayoutParams(params);
             btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
@@ -762,25 +761,32 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 rl_discount.setVisibility(View.VISIBLE);
             }
         }
+
+        if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) ||
+                Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) == 0) {
+            frame_coupon.setVisibility(View.GONE);
+            rl_discount.setVisibility(View.GONE);
+            btn_pay.setText("Confirm");
+        }
         dismissProgress();
 
-        //  if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-            if (new BigDecimal(jsonPurchaseOrder.getOrderPrice()).intValue() == 0) {
-                queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
-                JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
-                jsonCashfreeNotification.setTxMsg(null);
-                jsonCashfreeNotification.setTxTime(null);
-                jsonCashfreeNotification.setReferenceId(null);
-                jsonCashfreeNotification.setPaymentMode(null);  // cash
-                jsonCashfreeNotification.setSignature(null);
-                jsonCashfreeNotification.setOrderAmount(jsonPurchaseOrder.getOrderPrice()); // amount
-                jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
-                jsonCashfreeNotification.setOrderId(jsonPurchaseOrder.getTransactionId());   // transactionID
-                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
-            }
-        }
-        // }
+//        //  if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+//        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+//            if (new BigDecimal(jsonPurchaseOrder.getOrderPrice()).intValue() == 0) {
+//                queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
+//                JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+//                jsonCashfreeNotification.setTxMsg(null);
+//                jsonCashfreeNotification.setTxTime(null);
+//                jsonCashfreeNotification.setReferenceId(null);
+//                jsonCashfreeNotification.setPaymentMode(null);  // cash
+//                jsonCashfreeNotification.setSignature(null);
+//                jsonCashfreeNotification.setOrderAmount(jsonPurchaseOrder.getOrderPrice()); // amount
+//                jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+//                jsonCashfreeNotification.setOrderId(jsonPurchaseOrder.getTransactionId());   // transactionID
+//                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+//            }
+//        }
+//        // }
     }
 
     private LinearLayout.LayoutParams setLayoutWidthParams(boolean isMatchParent) {
@@ -813,7 +819,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     .setCodeQR(codeQR)
                     .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                     .setTransactionId(jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionId());
-            queueApiAuthenticCall.paymentInitiate(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+            queueApiAuthenticCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
         }
     }
 
@@ -823,10 +829,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("data recieve", jsonCoupon.toString());
-//                rl_coupon_applied.setVisibility(View.VISIBLE);
-//                rl_apply_coupon.setVisibility(View.GONE);
-//                tv_coupon_amount.setText(currencySymbol + String.valueOf(jsonCoupon.getDiscountAmount()));
-//                tv_coupon_name.setText(jsonCoupon.getDiscountName());
+
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
                     progressDialog.setMessage("Applying discount..");
@@ -834,7 +837,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();
                     couponApiCalls.setCouponApplyRemovePresenter(this);
-
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())

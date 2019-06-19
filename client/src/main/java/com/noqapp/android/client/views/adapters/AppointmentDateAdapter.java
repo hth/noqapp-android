@@ -59,20 +59,17 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter {
 
         }
 
-        holder.tv_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    if (item.isBooked()) {
-                        selectPos = -1;
-                        listener.onBookedAppointmentSelected();
-                        new CustomToast().showToast(context, "This slot is already booked");
-                    } else {
-                        selectPos = listPosition;
-                        listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
-                    }
-                    notifyDataSetChanged();
+        holder.tv_time.setOnClickListener((View v) -> {
+            if (null != listener) {
+                if (item.isBooked()) {
+                    selectPos = -1;
+                    listener.onBookedAppointmentSelected();
+                    new CustomToast().showToast(context, "This slot is already booked");
+                } else {
+                    selectPos = listPosition;
+                    listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
                 }
+                notifyDataSetChanged();
             }
         });
     }

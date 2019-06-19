@@ -34,16 +34,13 @@ public class BlinkerActivity extends Activity {
         view.getSettings().setUseWideViewPort(true);
         RelativeLayout rl_blinker = findViewById(R.id.rl_blinker);
         TextView tv_close = findViewById(R.id.tv_close);
-        tv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopVibrate = true;
-                if (null != vibrator)
-                    vibrator.cancel();
-                if (null != thread)
-                    thread.interrupt();
-                finish();
-            }
+        tv_close.setOnClickListener((View v) -> {
+            stopVibrate = true;
+            if (null != vibrator)
+                vibrator.cancel();
+            if (null != thread)
+                thread.interrupt();
+            finish();
         });
         Animation animation = new AlphaAnimation(1, 0); // Change alpha
         // from fully visible to invisible

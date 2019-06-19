@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,7 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
 
-import androidx.appcompat.app.AppCompatActivity;
 import io.fabric.sdk.android.Fabric;
 
 ///https://blog.xamarin.com/bring-stunning-animations-to-your-apps-with-lottie/
@@ -79,12 +80,9 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
             final AlertDialog mAlertDialog = builder.create();
             mAlertDialog.setCanceledOnTouchOutside(false);
             Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-            btn_yes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            btn_yes.setOnClickListener((View v) -> {
                     mAlertDialog.dismiss();
                     finish();
-                }
             });
             mAlertDialog.show();
         }

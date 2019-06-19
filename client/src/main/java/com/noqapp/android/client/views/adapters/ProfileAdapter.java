@@ -40,13 +40,10 @@ public class ProfileAdapter extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) Vholder;
         final JsonProfile jsonProfile = jsonProfiles.get(position);
         holder.tv_name.setText(jsonProfile.getName());
-        AppUtilities.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(),context);
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener)
-                    listener.onProfileItemClick(position, jsonProfile);
-            }
+        AppUtilities.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(), context);
+        holder.cardview.setOnClickListener((View v) -> {
+            if (null != listener)
+                listener.onProfileItemClick(position, jsonProfile);
         });
     }
 

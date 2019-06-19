@@ -61,7 +61,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
             default:
                 holder.tv_name.setText(item.getDisplayName());
                 holder.tv_status.setText(AppUtilities.getStoreOpenStatus(item));
-                StoreHourElastic storeHourElastic =  AppUtilities.getStoreHourElastic(item.getStoreHourElasticList());
+                StoreHourElastic storeHourElastic = AppUtilities.getStoreHourElastic(item.getStoreHourElasticList());
                 holder.tv_detail.setText(new AppUtilities().formatTodayStoreTiming(context, storeHourElastic));
         }
         if (!TextUtils.isEmpty(item.getDisplayImage())) {
@@ -70,11 +70,10 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                     .placeholder(ImageUtils.getThumbPlaceholder(context))
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(holder.iv_main);
-        }
-        else {
+        } else {
             Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
         }
-        holder.tv_address.setText(AppUtilities.getStoreAddress(item.getTown(),item.getArea()));
+        holder.tv_address.setText(AppUtilities.getStoreAddress(item.getTown(), item.getArea()));
         holder.tv_distance.setText(String.valueOf(AppUtilities.calculateDistance(
                 (float) lat,
                 (float) log,
@@ -82,15 +81,12 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                 (float) GeoHashUtils.decodeLongitude(item.getGeoHash()))));
 
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(item.getRating())));
-        if(holder.tv_store_rating.getText().toString().equals("0.0"))
+        if (holder.tv_store_rating.getText().toString().equals("0.0"))
             holder.tv_store_rating.setVisibility(View.INVISIBLE);
         else
             holder.tv_store_rating.setVisibility(View.VISIBLE);
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
-            }
+        holder.card_view.setOnClickListener((View v) -> {
+            listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
         });
 
 

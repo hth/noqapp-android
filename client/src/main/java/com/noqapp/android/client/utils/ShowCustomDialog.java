@@ -46,7 +46,8 @@ public class ShowCustomDialog {
     public ShowCustomDialog(Context context) {
         this.context = context;
     }
-    public ShowCustomDialog(Context context,boolean showNegativeBtn) {
+
+    public ShowCustomDialog(Context context, boolean showNegativeBtn) {
         this.context = context;
         this.showNegativeBtn = showNegativeBtn;
     }
@@ -70,27 +71,21 @@ public class ShowCustomDialog {
 
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        if(showNegativeBtn)
+        if (showNegativeBtn)
             btnNegative.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(btnPositiveText))
             btnPositive.setText(btnPositiveText);
         if (!TextUtils.isEmpty(btnNegativeText))
             btnNegative.setText(btnNegativeText);
-        btnPositive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                if (null != dialogClickListener)
-                    dialogClickListener.btnPositiveClick();
-            }
+        btnPositive.setOnClickListener((View v) -> {
+            dialog.dismiss();
+            if (null != dialogClickListener)
+                dialogClickListener.btnPositiveClick();
         });
-        btnNegative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                if (null != dialogClickListener)
-                    dialogClickListener.btnNegativeClick();
-            }
+        btnNegative.setOnClickListener((View v) -> {
+            dialog.dismiss();
+            if (null != dialogClickListener)
+                dialogClickListener.btnNegativeClick();
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

@@ -27,6 +27,7 @@ import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter;
 public class ChangeLocationFragment extends Fragment implements GPSTracker.LocationCommunicator {
     private double lat, log;
     private String city = "";
+
     public ChangeLocationFragment() {
 
     }
@@ -44,35 +45,29 @@ public class ChangeLocationFragment extends Fragment implements GPSTracker.Locat
 
         TextView tv_auto = view.findViewById(R.id.tv_auto);
         ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                    lat = Constants.DEFAULT_LATITUDE;
-                    log = Constants.DEFAULT_LONGITUDE;
-                    city = Constants.DEFAULT_CITY;
-                } else {
-                    lat = LaunchActivity.getLaunchActivity().latitute;
-                    log = LaunchActivity.getLaunchActivity().longitute;
-                    city = LaunchActivity.getLaunchActivity().cityName;
-                    new AppUtilities().hideKeyBoard(getActivity());
-                }
-                LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city);
+        actionbarBack.setOnClickListener((View v) -> {
+            if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+                lat = Constants.DEFAULT_LATITUDE;
+                log = Constants.DEFAULT_LONGITUDE;
+                city = Constants.DEFAULT_CITY;
+            } else {
+                lat = LaunchActivity.getLaunchActivity().latitute;
+                log = LaunchActivity.getLaunchActivity().longitute;
+                city = LaunchActivity.getLaunchActivity().cityName;
+                new AppUtilities().hideKeyBoard(getActivity());
             }
+            LaunchActivity.getLaunchActivity().updateLocationInfo(lat, log, city);
         });
-        tv_auto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
-                    lat = Constants.DEFAULT_LATITUDE;
-                    log = Constants.DEFAULT_LONGITUDE;
-                    city = Constants.DEFAULT_CITY;
-                } else {
-                    lat = LaunchActivity.getLaunchActivity().latitute;
-                    log = LaunchActivity.getLaunchActivity().longitute;
-                    city = LaunchActivity.getLaunchActivity().cityName;
-                    new AppUtilities().hideKeyBoard(getActivity());
-                }
+        tv_auto.setOnClickListener((View v) -> {
+            if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
+                lat = Constants.DEFAULT_LATITUDE;
+                log = Constants.DEFAULT_LONGITUDE;
+                city = Constants.DEFAULT_CITY;
+            } else {
+                lat = LaunchActivity.getLaunchActivity().latitute;
+                log = LaunchActivity.getLaunchActivity().longitute;
+                city = LaunchActivity.getLaunchActivity().cityName;
+                new AppUtilities().hideKeyBoard(getActivity());
             }
         });
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);

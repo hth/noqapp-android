@@ -85,11 +85,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
             default:
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
         }
-        holder.iv_details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
-            }
+        holder.iv_details.setOnClickListener((View v) -> {
+            listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
+
         });
         if (jsonPurchaseOrderHistorical.getBusinessType() == BusinessTypeEnum.PH && (jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.PO ||
                 jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.OP)) {
@@ -99,35 +97,33 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
             holder.btn_activate.setVisibility(View.GONE);
             holder.btn_reorder.setVisibility(View.VISIBLE);
         }
-        holder.btn_reorder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BizStoreElastic bizStoreElastic = new BizStoreElastic();
-                bizStoreElastic.setRating(jsonPurchaseOrderHistorical.getRatingCount());
-                bizStoreElastic.setDisplayImage("");
-                bizStoreElastic.setBusinessName(jsonPurchaseOrderHistorical.getDisplayName());
-                bizStoreElastic.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
-                bizStoreElastic.setBusinessType(jsonPurchaseOrderHistorical.getBusinessType());
-                Intent intent = new Intent(context, StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", bizStoreElastic);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
+        holder.btn_reorder.setOnClickListener((View v) -> {
+            BizStoreElastic bizStoreElastic = new BizStoreElastic();
+            bizStoreElastic.setRating(jsonPurchaseOrderHistorical.getRatingCount());
+            bizStoreElastic.setDisplayImage("");
+            bizStoreElastic.setBusinessName(jsonPurchaseOrderHistorical.getDisplayName());
+            bizStoreElastic.setCodeQR(jsonPurchaseOrderHistorical.getCodeQR());
+            bizStoreElastic.setBusinessType(jsonPurchaseOrderHistorical.getBusinessType());
+            Intent intent = new Intent(context, StoreDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("BizStoreElastic", bizStoreElastic);
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+
         });
-        holder.btn_activate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog = new ProgressDialog(context);
-                    progressDialog.setIndeterminate(true);
-                    progressDialog.setMessage("Activating order in progress...");
-                    progressDialog.show();
-                    new PurchaseOrderApiCall(OrderHistoryAdapter.this).activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderHistorical);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(context);
-                }
+        holder.btn_activate.setOnClickListener((View v) -> {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Activating order in progress...");
+                progressDialog.show();
+                new PurchaseOrderApiCall(OrderHistoryAdapter.this).
+                        activateOrder(UserUtils.getDeviceId(), UserUtils.getEmail(),
+                                UserUtils.getAuth(), jsonPurchaseOrderHistorical);
+            } else {
+                ShowAlertInformation.showNetworkDialog(context);
             }
+
         });
     }
 

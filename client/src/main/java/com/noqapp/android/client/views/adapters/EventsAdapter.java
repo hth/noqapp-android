@@ -69,12 +69,9 @@ public class EventsAdapter extends RecyclerView.Adapter {
         }
         holder.tv_title.setText(item.getTitle());
         holder.tv_subtitle.setText(item.getShortDescription());
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener)
-                    listener.onEventItemClick(dataSet.get(listPosition));
-            }
+        holder.card_view.setOnClickListener((View v) -> {
+            if (null != listener)
+                listener.onEventItemClick(dataSet.get(listPosition));
         });
     }
 

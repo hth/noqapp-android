@@ -39,7 +39,7 @@ public class SliderPagerAdapter extends PagerAdapter {
         this.image_arraylist = image_arraylist;
     }
 
-    public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist,String bucket) {
+    public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist, String bucket) {
         this.activity = activity;
         this.image_arraylist = image_arraylist;
         this.bucket = bucket;
@@ -64,16 +64,13 @@ public class SliderPagerAdapter extends PagerAdapter {
                 Picasso.get()
                         .load(R.drawable.pdf_thumb)
                         .into(im_slider);
-                im_slider.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (image_arraylist.get(position).endsWith(".pdf")) {
-                            Intent in = new Intent(activity, WebViewActivity.class);
-                            in.putExtra(IBConstant.KEY_URL, BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
-                            in.putExtra("title", "Pdf Document");
-                            in.putExtra(IBConstant.KEY_IS_PDF, true);
-                            activity.startActivity(in);
-                        }
+                im_slider.setOnClickListener((View v) -> {
+                    if (image_arraylist.get(position).endsWith(".pdf")) {
+                        Intent in = new Intent(activity, WebViewActivity.class);
+                        in.putExtra(IBConstant.KEY_URL, BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
+                        in.putExtra("title", "Pdf Document");
+                        in.putExtra(IBConstant.KEY_IS_PDF, true);
+                        activity.startActivity(in);
                     }
                 });
             } else {
@@ -86,7 +83,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
             Picasso.get()
-                    .load(AppUtilities.getImageUrls(TextUtils.isEmpty(bucket)?BuildConfig.SERVICE_BUCKET:bucket, url))
+                    .load(AppUtilities.getImageUrls(TextUtils.isEmpty(bucket) ? BuildConfig.SERVICE_BUCKET : bucket, url))
                     .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
                     .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
                     .into(im_slider);

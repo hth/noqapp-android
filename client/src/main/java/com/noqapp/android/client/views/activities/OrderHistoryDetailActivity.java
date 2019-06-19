@@ -1,5 +1,14 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonPurchaseOrderHistorical;
@@ -16,15 +25,6 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -77,35 +77,29 @@ public class OrderHistoryDetailActivity extends BaseActivity {
                 tv_patient_label.setText("Customer Name:");
         }
         String currencySymbol = AppUtilities.getCurrencySymbol(jsonPurchaseOrder.getCountryShortName());
-        tv_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Feedback feedback = new Feedback();
-                feedback.setMessageOrigin(MessageOriginEnum.O);
-                feedback.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                feedback.setToken(jsonPurchaseOrder.getTokenNumber());
-                Intent in = new Intent(OrderHistoryDetailActivity.this, ContactUsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
-                in.putExtras(bundle);
-                startActivity(in);
-            }
+        tv_support.setOnClickListener((View v) -> {
+            Feedback feedback = new Feedback();
+            feedback.setMessageOrigin(MessageOriginEnum.O);
+            feedback.setCodeQR(jsonPurchaseOrder.getCodeQR());
+            feedback.setToken(jsonPurchaseOrder.getTokenNumber());
+            Intent in = new Intent(OrderHistoryDetailActivity.this, ContactUsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
+            in.putExtras(bundle);
+            startActivity(in);
         });
-        btn_reorder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BizStoreElastic bizStoreElastic = new BizStoreElastic();
-                bizStoreElastic.setRating(jsonPurchaseOrder.getRatingCount());
-                bizStoreElastic.setDisplayImage("");
-                bizStoreElastic.setBusinessName(jsonPurchaseOrder.getDisplayName());
-                bizStoreElastic.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                bizStoreElastic.setBusinessType(jsonPurchaseOrder.getBusinessType());
-                Intent intent = new Intent(OrderHistoryDetailActivity.this, StoreDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("BizStoreElastic", bizStoreElastic);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        btn_reorder.setOnClickListener((View v) -> {
+            BizStoreElastic bizStoreElastic = new BizStoreElastic();
+            bizStoreElastic.setRating(jsonPurchaseOrder.getRatingCount());
+            bizStoreElastic.setDisplayImage("");
+            bizStoreElastic.setBusinessName(jsonPurchaseOrder.getDisplayName());
+            bizStoreElastic.setCodeQR(jsonPurchaseOrder.getCodeQR());
+            bizStoreElastic.setBusinessType(jsonPurchaseOrder.getBusinessType());
+            Intent intent = new Intent(OrderHistoryDetailActivity.this, StoreDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("BizStoreElastic", bizStoreElastic);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
         if (0 == jsonPurchaseOrder.getRatingCount()) {
             tv_add_review.setVisibility(View.VISIBLE);
@@ -117,22 +111,19 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             tv_add_review.setVisibility(View.GONE);
             tv_store_rating.setVisibility(View.VISIBLE);
         }
-        tv_add_review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
-                jsonTokenAndQueue.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
-                jsonTokenAndQueue.setDisplayName(jsonPurchaseOrder.getDisplayName());
-                jsonTokenAndQueue.setStoreAddress(jsonPurchaseOrder.getStoreAddress());
-                jsonTokenAndQueue.setBusinessType(jsonPurchaseOrder.getBusinessType());
-                jsonTokenAndQueue.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                jsonTokenAndQueue.setToken(jsonPurchaseOrder.getTokenNumber());
-                Intent in = new Intent(OrderHistoryDetailActivity.this, ReviewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("object", jsonTokenAndQueue);
-                in.putExtras(bundle);
-                startActivity(in);
-            }
+        tv_add_review.setOnClickListener((View v) -> {
+            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+            jsonTokenAndQueue.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+            jsonTokenAndQueue.setDisplayName(jsonPurchaseOrder.getDisplayName());
+            jsonTokenAndQueue.setStoreAddress(jsonPurchaseOrder.getStoreAddress());
+            jsonTokenAndQueue.setBusinessType(jsonPurchaseOrder.getBusinessType());
+            jsonTokenAndQueue.setCodeQR(jsonPurchaseOrder.getCodeQR());
+            jsonTokenAndQueue.setToken(jsonPurchaseOrder.getTokenNumber());
+            Intent in = new Intent(OrderHistoryDetailActivity.this, ReviewActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("object", jsonTokenAndQueue);
+            in.putExtras(bundle);
+            startActivity(in);
         });
         tv_store_rating.setText(String.valueOf(jsonPurchaseOrder.getRatingCount()));
         tv_tax_amt.setText(currencySymbol + "0.00");
@@ -144,7 +135,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
             View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
             TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
             TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct())+ " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
             tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
             ll_order_details.addView(inflatedLayout);
         }

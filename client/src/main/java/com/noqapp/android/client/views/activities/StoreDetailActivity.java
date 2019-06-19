@@ -247,14 +247,11 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         ThumbnailGalleryAdapter interiorAdapter = new ThumbnailGalleryAdapter(this, storeInteriorImages);
         rv_photos.setAdapter(interiorAdapter);
         if (null != storeInteriorImages && storeInteriorImages.size() > 0) {
-            iv_category_banner.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            iv_category_banner.setOnClickListener((View v) -> {
                     Intent intent = new Intent(StoreDetailActivity.this, SliderActivity.class);
                     intent.putExtra("pos", 0);
                     intent.putExtra("imageurls", storeInteriorImages);
                     startActivity(intent);
-                }
             });
         }
         //
@@ -288,9 +285,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
         }
 
-        tv_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_menu.setOnClickListener((View v) -> {
                 if (isOrderNow()) {
                     Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
                     Bundle bundle = new Bundle();
@@ -303,7 +298,6 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                     //Do nothing
                     new CustomToast().showToast(StoreDetailActivity.this, "Please visit store to purchase.");
                 }
-            }
         });
         if (isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);

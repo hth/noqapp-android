@@ -1,16 +1,6 @@
 package com.noqapp.android.client.views.activities;
 
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.ClientProfileApiCall;
-import com.noqapp.android.client.presenter.ProfileAddressPresenter;
-import com.noqapp.android.client.utils.ShowAlertInformation;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.AddressListAdapter;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonUserAddress;
-import com.noqapp.android.common.beans.JsonUserAddressList;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,9 +14,20 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatRadioButton;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.model.ClientProfileApiCall;
+import com.noqapp.android.client.presenter.ProfileAddressPresenter;
+import com.noqapp.android.client.utils.ShowAlertInformation;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.adapters.AddressListAdapter;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.JsonUserAddress;
+import com.noqapp.android.common.beans.JsonUserAddressList;
 
 import java.util.List;
 
@@ -44,39 +45,31 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
 
         setContentView(R.layout.activity_addressbook);
         initActionsViews(true);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+        actionbarBack.setOnClickListener((View v) -> {
+            onBackPressed();
         });
         lv_address = findViewById(R.id.listview_address);
         tv_toolbar_title.setText(getString(R.string.screen_addressbook));
         rg_address = findViewById(R.id.rg_address);
         edt_add_address = findViewById(R.id.edt_add_address);
         btn_add_address = findViewById(R.id.btn_add_address);
-        btn_add_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_add_address.setError(null);
-                if (TextUtils.isEmpty(edt_add_address.getText().toString())) {
-                    edt_add_address.setError(getString(R.string.error_field_required));
-                } else {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Adding address in progress..");
-                        clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
-                    }
+        btn_add_address.setOnClickListener((View v) -> {
+            edt_add_address.setError(null);
+            if (TextUtils.isEmpty(edt_add_address.getText().toString())) {
+                edt_add_address.setError(getString(R.string.error_field_required));
+            } else {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    progressDialog.show();
+                    progressDialog.setMessage("Adding address in progress..");
+                    clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),
+                            new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                 }
             }
         });
         TextView tv_add_address = findViewById(R.id.tv_add_address);
-        tv_add_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_add_address.setVisibility(View.VISIBLE);
-                btn_add_address.setVisibility(View.VISIBLE);
-            }
+        tv_add_address.setOnClickListener((View v) -> {
+            edt_add_address.setVisibility(View.VISIBLE);
+            btn_add_address.setVisibility(View.VISIBLE);
         });
         clientProfileApiCall = new ClientProfileApiCall();
         clientProfileApiCall.setProfileAddressPresenter(this);
@@ -146,26 +139,19 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
                             View separator = customDialogView.findViewById(R.id.seperator);
                             btn_no.setVisibility(View.VISIBLE);
                             separator.setVisibility(View.VISIBLE);
-                            btn_yes.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        progressDialog.show();
-                                        progressDialog.setMessage("Deleting address..");
-                                        clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
-                                    } else {
-                                        ShowAlertInformation.showNetworkDialog(AddressBookActivity.this);
-                                    }
-                                    mAlertDialog.dismiss();
+                            btn_yes.setOnClickListener((View view) -> {
+                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    progressDialog.show();
+                                    progressDialog.setMessage("Deleting address..");
+                                    clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
+                                } else {
+                                    ShowAlertInformation.showNetworkDialog(AddressBookActivity.this);
                                 }
+                                mAlertDialog.dismiss();
+
                             });
-                            btn_no.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-
-                                    mAlertDialog.dismiss();
-                                }
+                            btn_no.setOnClickListener((View view) -> {
+                                mAlertDialog.dismiss();
                             });
                             mAlertDialog.show();
                             return true;
