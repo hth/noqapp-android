@@ -99,7 +99,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
     private Button btn_pay;
-    private TextView tv_payment_status, tv_due_amt;
     private CardView card_amount;
     private TextView tv_total_order_amt;
     private TextView tv_grand_total_amt;
@@ -109,8 +108,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private CFPaymentService cfPaymentService;
     private JsonProfile jsonProfile;
     private RelativeLayout rl_apply_coupon, rl_coupon_applied;
-    private String currencySymbol = "Rs.";
-    // private  TextView tv_remove_coupon;
+    private String currencySymbol = "";
     private FrameLayout frame_coupon;
     private LinearLayout ll_order_details;
     private RelativeLayout rl_discount;
@@ -128,8 +126,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         ll_order_details = findViewById(R.id.ll_order_details);
         rl_discount = findViewById(R.id.rl_discount);
         btn_pay = findViewById(R.id.btn_pay);
-        tv_payment_status = findViewById(R.id.tv_payment_status);
-        tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
         tv_coupon_name = findViewById(R.id.tv_coupon_name);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
@@ -507,13 +503,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     guardianId = jp.getQueueUserId();
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
-
                 if (jsonQueue.isEnabledPayment()) {
-                    if (getIntent().getBooleanExtra("isPayBeforeJoin", false)) {
-                        queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
-                    } else {
-                        queueApiAuthenticCall.skipPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
-                    }
+                    queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 }
@@ -730,6 +721,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         // tv_coupon_name.setText(jsonCoupon.getDiscountName());
+        ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -741,13 +733,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             ll_order_details.addView(inflatedLayout);
         }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-            tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
             btn_pay.setVisibility(View.GONE);
             btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
             frame_coupon.setVisibility(View.GONE);
             rl_apply_coupon.setClickable(false);
         } else {
-            tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
             btn_pay.setVisibility(View.VISIBLE);
             btn_pay.setLayoutParams(params);
             btn_cancel_queue.setLayoutParams(setLayoutWidthParams(false));
@@ -823,10 +813,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
                 Log.e("data recieve", jsonCoupon.toString());
-//                rl_coupon_applied.setVisibility(View.VISIBLE);
-//                rl_apply_coupon.setVisibility(View.GONE);
-//                tv_coupon_amount.setText(currencySymbol + String.valueOf(jsonCoupon.getDiscountAmount()));
-//                tv_coupon_name.setText(jsonCoupon.getDiscountName());
+
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     progressDialog.show();
                     progressDialog.setMessage("Applying discount..");
@@ -834,7 +821,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();
                     couponApiCalls.setCouponApplyRemovePresenter(this);
-
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())

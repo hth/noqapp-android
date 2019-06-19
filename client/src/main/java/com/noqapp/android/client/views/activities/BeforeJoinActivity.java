@@ -81,14 +81,14 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
-                    joinQueue(false);
+                    joinQueue();
             }
         });
         btn_pay_and_joinQueue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (null != jsonQueue)
-                    joinQueue(true);
+                    joinQueue();
             }
         });
         tv_rating = findViewById(R.id.tv_rating);
@@ -287,7 +287,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
     }
 
 
-    private void joinQueue(boolean isPayBeforeJoin) {
+    private void joinQueue() {
         sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background));
         if (isJoinNotPossible) {
             new CustomToast().showToast(this, joinErrorMsg);
@@ -304,7 +304,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                             new CustomToast().showToast(this, getString(R.string.error_patient_name_missing));
                             sp_name_list.setBackground(ContextCompat.getDrawable(this, R.drawable.sp_background_red));
                         } else {
-                            callAfterJoin(isPayBeforeJoin);
+                            callAfterJoin();
                         }
                     } else {
                         // please login to avail this feature
@@ -315,7 +315,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     }
                 } else {
                     // any user can join
-                    callAfterJoin(isPayBeforeJoin);
+                    callAfterJoin();
                 }
             } else {
                 ShowAlertInformation.showThemeDialog(this, getString(R.string.error_join), getString(R.string.error_remote_join_not_available), true);
@@ -323,8 +323,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
         }
     }
 
-    private void callAfterJoin(boolean isPayBeforeJoin) {
-        if(isPayBeforeJoin && !NoQueueBaseActivity.isEmailVerified()){
+    private void callAfterJoin( ) {
+        if(jsonQueue.isEnabledPayment() && !NoQueueBaseActivity.isEmailVerified()){
             new CustomToast().showToast(this, "Email is mandatory. Please add and verify it");
         }else {
             Intent in = new Intent(this, JoinActivity.class);
@@ -335,7 +335,6 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             in.putExtra("qUserId", ((JsonProfile)sp_name_list.getSelectedItem()).getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
-            in.putExtra("isPayBeforeJoin", isPayBeforeJoin);
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
             if (AppUtilities.isRelease()) {

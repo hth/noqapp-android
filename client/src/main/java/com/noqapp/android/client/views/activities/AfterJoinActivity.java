@@ -94,6 +94,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private TextView tv_grand_total_amt;
     private TextView tv_coupon_discount_amt;
     private RelativeLayout rl_discount;
+    private String currencySymbol = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +172,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             jsonQueue = (JsonQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_QUEUE);
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
+            if (null != jsonQueue) {
+                currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
+            } else if (null != jsonTokenAndQueue) {
+                currencySymbol = AppUtilities.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
+            }
             codeQR = bundle.getStringExtra(IBConstant.KEY_CODE_QR);
             topic = jsonTokenAndQueue.getTopic();
             tokenValue = String.valueOf(jsonTokenAndQueue.getToken());
@@ -493,7 +499,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             jsonToken = new JsonToken();
         }
         jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
-        String currencySymbol = "Rs.";//AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());;
         card_amount.setVisibility(View.VISIBLE);
         // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
         tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
@@ -503,6 +508,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         } else {
             tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         }
+        ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
             LayoutInflater inflater = LayoutInflater.from(this);
