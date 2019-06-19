@@ -55,7 +55,6 @@ import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ServicePaymentEnum;
-import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -212,25 +211,48 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
         });
         btn_pay.setOnClickListener((View v) -> {
-            if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
-                if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
-                    triggerOnlinePayment();
-                } else {
-                    queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
-                    JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
-                    jsonCashfreeNotification.setTxMsg(null);
-                    jsonCashfreeNotification.setTxTime(null);
-                    jsonCashfreeNotification.setReferenceId(null);
-                    jsonCashfreeNotification.setPaymentMode(null);  // cash
-                    jsonCashfreeNotification.setSignature(null);
-                    jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
-                    jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
-                    jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
-                    queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
-                }
-            } else {
+//            if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
+//                if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
+//                    triggerOnlinePayment();
+//                } else {
+//                    queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
+//                    JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+//                    jsonCashfreeNotification.setTxMsg(null);
+//                    jsonCashfreeNotification.setTxTime(null);
+//                    jsonCashfreeNotification.setReferenceId(null);
+//                    jsonCashfreeNotification.setPaymentMode(null);  // cash
+//                    jsonCashfreeNotification.setSignature(null);
+//                    jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
+//                    jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+//                    jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
+//                    queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+//                }
+//            } else {
+//                pay();
+//            }
+
+
+            if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
+                //triggerOnlinePayment();
                 pay();
+            } else {
+                progressDialog.setMessage("Starting token process...");
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
+                queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
+                JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+                jsonCashfreeNotification.setTxMsg(null);
+                jsonCashfreeNotification.setTxTime(null);
+                jsonCashfreeNotification.setReferenceId(null);
+                jsonCashfreeNotification.setPaymentMode(null);  // cash
+                jsonCashfreeNotification.setSignature(null);
+                jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
+                jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+                jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
+                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
             }
+
         });
         initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_qconfirm));
@@ -371,14 +393,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (null != token) {
             Log.d(TAG, token.toString());
             if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-                if (SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()) {
-                    new CustomToast().showToast(this, "You are already in the Queue");
-                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
-                    tokenPresenterResponse(jsonToken);
-                } else {
-                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
-                    tokenPresenterResponse(jsonToken);
-                }
+//                if (SkipPaymentGatewayEnum.YES == token.getJsonPurchaseOrder().getJsonResponseWithCFToken().getSkipPaymentGateway()) {
+//                    new CustomToast().showToast(this, "You are already in the Queue, ALERT ");
+//                    queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+//                    tokenPresenterResponse(jsonToken);
+//                } else {
+                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+                tokenPresenterResponse(jsonToken);
+                //  }
             } else if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 new CustomToast().showToast(this, "You are already in the Queue");
                 queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
@@ -663,15 +685,27 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         btn_pay.setVisibility(View.GONE);
         btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
         if (PaymentStatusEnum.PA == jsonToken.getJsonPurchaseOrder().getPaymentStatus()) {
-            if (!getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                // show only when it comes from join screen
-                new CustomToast().showToast(this, "Token generated successfully.");
-            }
-            queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
-            tokenPresenterResponse(jsonToken);
+            new CustomToast().showToast(this, "Token generated successfully.");
+            jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
+            jsonTokenAndQueue.setToken(jsonToken.getToken());
+            jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
+            jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
+            Intent in = new Intent(this, AfterJoinActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+            in.putExtra(IBConstant.KEY_FROM_LIST, false);
+            in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+            in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
+            in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+            in.putExtra("qUserId", queueUserId);
+            in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+            startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+
+            //queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
+            //tokenPresenterResponse(jsonToken);
         } else {
             new CustomToast().showToast(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage());
         }
+        dismissProgress();
     }
 
     @Override
@@ -727,25 +761,32 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 rl_discount.setVisibility(View.VISIBLE);
             }
         }
+
+        if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) ||
+                Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) == 0) {
+            frame_coupon.setVisibility(View.GONE);
+            rl_discount.setVisibility(View.GONE);
+            btn_pay.setText("Confirm");
+        }
         dismissProgress();
 
-        //  if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
-            if (new BigDecimal(jsonPurchaseOrder.getOrderPrice()).intValue() == 0) {
-                queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
-                JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
-                jsonCashfreeNotification.setTxMsg(null);
-                jsonCashfreeNotification.setTxTime(null);
-                jsonCashfreeNotification.setReferenceId(null);
-                jsonCashfreeNotification.setPaymentMode(null);  // cash
-                jsonCashfreeNotification.setSignature(null);
-                jsonCashfreeNotification.setOrderAmount(jsonPurchaseOrder.getOrderPrice()); // amount
-                jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
-                jsonCashfreeNotification.setOrderId(jsonPurchaseOrder.getTransactionId());   // transactionID
-                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
-            }
-        }
-        // }
+//        //  if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
+//        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.VB) {
+//            if (new BigDecimal(jsonPurchaseOrder.getOrderPrice()).intValue() == 0) {
+//                queueApiAuthenticCall.setCashFreeNotifyQPresenter(this);
+//                JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+//                jsonCashfreeNotification.setTxMsg(null);
+//                jsonCashfreeNotification.setTxTime(null);
+//                jsonCashfreeNotification.setReferenceId(null);
+//                jsonCashfreeNotification.setPaymentMode(null);  // cash
+//                jsonCashfreeNotification.setSignature(null);
+//                jsonCashfreeNotification.setOrderAmount(jsonPurchaseOrder.getOrderPrice()); // amount
+//                jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+//                jsonCashfreeNotification.setOrderId(jsonPurchaseOrder.getTransactionId());   // transactionID
+//                queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+//            }
+//        }
+//        // }
     }
 
     private LinearLayout.LayoutParams setLayoutWidthParams(boolean isMatchParent) {

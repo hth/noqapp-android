@@ -236,14 +236,14 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-            if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-                tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
-                tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
-                setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-                tv_name.setText(jsonProfile.getName());
-                tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
+            tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
+            tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
+            tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
+            setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
+            tv_name.setText(jsonProfile.getName());
+            tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
 
+            if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     progressDialog.setMessage("Fetching Queue data..");
                     progressDialog.show();
