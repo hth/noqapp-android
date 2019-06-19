@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.common.model.types.QueueUserStateEnum;
 
 /**
  * User: hitender
@@ -41,9 +40,6 @@ public class JsonToken {
 
     @JsonProperty("q")
     private QueueStatusEnum queueStatus;
-
-    @JsonProperty("qs")
-    private QueueUserStateEnum queueUserState;
 
     @JsonProperty("s")
     private int servingNumber;
@@ -94,15 +90,6 @@ public class JsonToken {
 
     public void setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
-    }
-
-    public QueueUserStateEnum getQueueUserState() {
-        return queueUserState;
-    }
-
-    public JsonToken setQueueUserState(QueueUserStateEnum queueUserState) {
-        this.queueUserState = queueUserState;
-        return this;
     }
 
     public int getServingNumber() {
