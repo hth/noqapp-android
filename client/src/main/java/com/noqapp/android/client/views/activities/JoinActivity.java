@@ -1,15 +1,12 @@
 package com.noqapp.android.client.views.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -34,8 +30,6 @@ import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
-import com.noqapp.android.common.model.types.QueueUserStateEnum;
-import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
@@ -45,7 +39,6 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.FabricEvents;
-import com.noqapp.android.client.utils.GetTimeAgoUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
@@ -59,13 +52,14 @@ import com.noqapp.android.common.beans.body.JoinQueue;
 import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ServicePaymentEnum;
 import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
+import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -91,15 +85,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private static final String TAG = JoinActivity.class.getSimpleName();
     private TextView tv_address;
     private TextView tv_mobile;
-    private TextView tv_serving_no;
-    private TextView tv_token;
-    private TextView tv_how_long;
     private Button btn_cancel_queue;
-    private TextView tv_after;
-    private TextView tv_estimated_time;
     private TextView tv_name;
-    private TextView tv_vibrator_off;
-    private LinearLayout ll_change_bg;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
     private JsonQueue jsonQueue;
@@ -125,6 +112,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private String currencySymbol = "Rs.";
     // private  TextView tv_remove_coupon;
     private FrameLayout frame_coupon;
+    private LinearLayout ll_order_details;
+    private RelativeLayout rl_discount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,14 +123,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         TextView tv_store_name = findViewById(R.id.tv_store_name);
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         tv_address = findViewById(R.id.tv_address);
-        TextView tv_delay_in_time = findViewById(R.id.tv_delay_in_time);
         tv_mobile = findViewById(R.id.tv_mobile);
-        tv_serving_no = findViewById(R.id.tv_serving_no);
-        tv_token = findViewById(R.id.tv_token);
-        tv_how_long = findViewById(R.id.tv_how_long);
         btn_cancel_queue = findViewById(R.id.btn_cancel_queue);
+        ll_order_details = findViewById(R.id.ll_order_details);
+        rl_discount = findViewById(R.id.rl_discount);
         btn_pay = findViewById(R.id.btn_pay);
-        tv_after = findViewById(R.id.tv_after);
         tv_payment_status = findViewById(R.id.tv_payment_status);
         tv_due_amt = findViewById(R.id.tv_due_amt);
         tv_coupon_amount = findViewById(R.id.tv_coupon_amount);
@@ -150,10 +136,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         TextView tv_hour_saved = findViewById(R.id.tv_hour_saved);
-        tv_estimated_time = findViewById(R.id.tv_estimated_time);
         TextView tv_add = findViewById(R.id.add_person);
-        tv_vibrator_off = findViewById(R.id.tv_vibrator_off);
-        ll_change_bg = findViewById(R.id.ll_change_bg);
         card_amount = findViewById(R.id.card_amount);
         tv_name = findViewById(R.id.tv_name);
         rl_apply_coupon = findViewById(R.id.rl_apply_coupon);
@@ -163,7 +146,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         rl_apply_coupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // new CustomToast().showToast(JoinActivity.this,"Apply Coupon");
                 Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
                 startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
@@ -268,7 +250,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
         });
         initActionsViews(false);
-        tv_toolbar_title.setText(getString(R.string.screen_qdetails));
+        tv_toolbar_title.setText(getString(R.string.screen_qconfirm));
         queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
         queueApiAuthenticCall = new QueueApiAuthenticCall();
         queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
@@ -333,15 +315,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     tv_add.setVisibility(View.GONE);
                     tv_name.setVisibility(View.GONE);
             }
-            if (jsonTokenAndQueue.getDelayedInMinutes() > 0) {
-                int hours = jsonTokenAndQueue.getDelayedInMinutes() / 60;
-                int minutes = jsonTokenAndQueue.getDelayedInMinutes() % 60;
-                String red = "<b>Delayed by " + hours + " Hrs " + minutes + " minutes.</b>";
-                tv_delay_in_time.setText(Html.fromHtml(red));
-                tv_delay_in_time.setVisibility(View.VISIBLE);
-            } else {
-                tv_delay_in_time.setVisibility(View.GONE);
-            }
             String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
@@ -358,45 +331,26 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 }
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-            if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-                tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
-                tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
-                setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
-                tv_name.setText(jsonProfile.getName());
-                tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-//                if (isVibratorOff()) {
-//                    ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
-//                }
-
-                if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
-                    progressDialog.setMessage("Fetching Queue data..");
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                if (isResumeFirst) {
+                    progressDialog.setMessage("Joining Queue..");
                     progressDialog.show();
-                    queueApiAuthenticCall.purchaseOrder(
-                            UserUtils.getDeviceId(),
-                            UserUtils.getEmail(),
-                            UserUtils.getAuth(),
-                            String.valueOf(jsonTokenAndQueue.getToken()),
-                            codeQR);
+                    callQueue();
                 }
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    if (isResumeFirst) {
-                        progressDialog.setMessage("Joining Queue..");
-                        progressDialog.show();
-                        callQueue();
-                    }
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
+                ShowAlertInformation.showNetworkDialog(this);
             }
+
         }
     }
 
     @Override
     public void couponApplyResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         Log.e("coupon apply data: ", jsonPurchaseOrder.toString());
-        queueJsonPurchaseOrderResponse(jsonPurchaseOrder);
+        jsonToken.getJsonPurchaseOrder().setOrderPrice(jsonPurchaseOrder.getOrderPrice());
+        jsonToken.getJsonPurchaseOrder().setStoreDiscount(jsonPurchaseOrder.getStoreDiscount());
+        jsonToken.getJsonPurchaseOrder().setCouponId(jsonPurchaseOrder.getCouponId());
+        queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
         dismissProgress();
     }
 
@@ -404,7 +358,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     public void couponRemoveResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         Log.e("coupon remove data: ", jsonPurchaseOrder.toString());
         new CustomToast().showToast(this, "Coupon removed successfully");
-        queueJsonPurchaseOrderResponse(jsonPurchaseOrder);
+        jsonToken.getJsonPurchaseOrder().setOrderPrice(jsonPurchaseOrder.getOrderPrice());
+        jsonToken.getJsonPurchaseOrder().setStoreDiscount(jsonPurchaseOrder.getStoreDiscount());
+        jsonToken.getJsonPurchaseOrder().setCouponId(jsonPurchaseOrder.getCouponId());
+        queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
         dismissProgress();
     }
 
@@ -426,28 +383,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
         this.jsonToken = token;
-        tv_serving_no.setText(String.valueOf(token.getServingNumber()));
-        tv_token.setText(String.valueOf(token.getToken()));
         tokenValue = String.valueOf(token.getToken());
-        tv_how_long.setText(String.valueOf(token.afterHowLong()));
-        setBackGround(token.afterHowLong() > 0 ? token.afterHowLong() : 0);
+        btn_cancel_queue.setEnabled(true);
         NoQueueMessagingService.subscribeTopics(topic);
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
-        updateEstimatedTime();
-        if(jsonToken.getQueueUserState() == QueueUserStateEnum.I){
-            ll_change_bg.setVisibility(View.GONE);
-            tv_token.setText("N/A");
-        }else {
-            ll_change_bg.setVisibility(View.VISIBLE);
-        }
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
-        tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-//        if (isVibratorOff()) {
-//            ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
-//        }
         dismissProgress();
     }
 
@@ -581,6 +524,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -602,81 +546,13 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         return codeQR;
     }
 
-    public void setBackGround(int pos) {
-        tv_after.setTextColor(Color.WHITE);
-        tv_how_long.setTextColor(Color.WHITE);
-        // tv_estimated_time.setTextColor(Color.WHITE);
-        tv_after.setText("Soon is your turn! You are:");
-        btn_cancel_queue.setEnabled(true);
-        switch (pos) {
-            case 0:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                tv_after.setText("It's your turn!!!");
-                tv_how_long.setText(gotoPerson);
-                btn_cancel_queue.setVisibility(View.GONE);
-                break;
-            case 1:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                tv_after.setText("Next is your turn! You are:");
-                break;
-            case 2:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
-            case 3:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
-            case 4:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
-            case 5:
-                ll_change_bg.setBackgroundResource(R.drawable.blue_gradient);
-                break;
-            default:
-                tv_after.setText("You are:");
-                tv_after.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                tv_how_long.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                ll_change_bg.setBackgroundResource(R.drawable.btn_bg_inactive);
-                // tv_estimated_time.setTextColor(ContextCompat.getColor(this, R.color.colorActionbar));
-                break;
-        }
-    }
 
     public void setObject(JsonTokenAndQueue jq, String go_to) {
         gotoPerson = go_to;
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
-        tv_serving_no.setText(String.valueOf(jsonTokenAndQueue.getServingNumber()));
-        tv_token.setText(String.valueOf(jsonTokenAndQueue.getToken()));
-        tv_how_long.setText(String.valueOf(jsonTokenAndQueue.afterHowLong()));
-        updateEstimatedTime();
-        setBackGround(jq.afterHowLong() > 0 ? jq.afterHowLong() : 0);
-    }
-
-    private void updateEstimatedTime() {
-        try {
-            if (!TextUtils.isEmpty(jsonToken.getExpectedServiceBegin())) {
-                tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
-                tv_estimated_time.setVisibility(View.VISIBLE);
-            } else {
-                if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
-                    String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
-                    if (null == output) {
-                        tv_estimated_time.setVisibility(View.INVISIBLE);
-                    } else {
-                        tv_estimated_time.setText(String.format(getString(R.string.estimated_time), output));
-                        tv_estimated_time.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    tv_estimated_time.setVisibility(View.INVISIBLE);
-                }
-            }
-        } catch (Exception e) {
-            Log.e("", "Error setting data reason=" + e.getLocalizedMessage(), e);
-            tv_estimated_time.setVisibility(View.INVISIBLE);
-        }
-        tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
-        tv_estimated_time.setVisibility(View.VISIBLE);
+        btn_cancel_queue.setEnabled(true);
     }
 
 
@@ -711,7 +587,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
-        if(null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R){
+        if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
             if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 // do nothing
                 iv_home.performClick();
@@ -726,7 +602,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     ShowAlertInformation.showNetworkDialog(this);
                 }
             }
-        }else {
+        } else {
             iv_home.performClick();
         }
     }
@@ -740,27 +616,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             } else {
                 getParent().setResult(Activity.RESULT_OK, intent);
             }
-        }
-    }
-
-    private boolean isVibratorOff() {
-        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        if (null != am) {
-            switch (am.getRingerMode()) {
-                case AudioManager.RINGER_MODE_SILENT:
-                    Log.e(TAG, "Silent mode");
-                    return true;
-                case AudioManager.RINGER_MODE_VIBRATE:
-                    Log.e(TAG, "Vibrate mode");
-                    return false;
-                case AudioManager.RINGER_MODE_NORMAL:
-                    Log.e(TAG, "Normal mode");
-                    return false;
-                default:
-                    return true;
-            }
-        } else {
-            return true;
         }
     }
 
@@ -818,6 +673,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String appId = BuildConfig.CASHFREE_APP_ID;
             String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
             String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
+            // String orderAmount = CommonHelper.displayPrice(String.valueOf(Double.parseDouble(jsonToken.getJsonPurchaseOrder().getOrderPrice())));
             String orderNote = "Order: " + queueUserId;
             String customerName = LaunchActivity.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
             String customerPhone = LaunchActivity.getOfficePhoneNo();
@@ -874,6 +730,16 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         // tv_coupon_name.setText(jsonCoupon.getDiscountName());
+        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
+            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
+            TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
+            TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
+            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+            tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+            ll_order_details.addView(inflatedLayout);
+        }
         if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
             tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
             btn_pay.setVisibility(View.GONE);
@@ -888,9 +754,12 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
                 rl_apply_coupon.setVisibility(View.VISIBLE);
                 rl_coupon_applied.setVisibility(View.GONE);
+                rl_discount.setVisibility(View.GONE);
+
             } else {
                 rl_apply_coupon.setVisibility(View.GONE);
                 rl_coupon_applied.setVisibility(View.VISIBLE);
+                rl_discount.setVisibility(View.VISIBLE);
             }
         }
         dismissProgress();

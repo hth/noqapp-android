@@ -58,13 +58,12 @@ import com.noqapp.android.client.views.activities.AfterJoinActivity;
 import com.noqapp.android.client.views.activities.AllEventsActivity;
 import com.noqapp.android.client.views.activities.AllFeedsActivity;
 import com.noqapp.android.client.views.activities.AppointmentDetailActivity;
+import com.noqapp.android.client.views.activities.BeforeJoinActivity;
 import com.noqapp.android.client.views.activities.BlinkerActivity;
 import com.noqapp.android.client.views.activities.CategoryInfoActivity;
 import com.noqapp.android.client.views.activities.EventsDetailActivity;
 import com.noqapp.android.client.views.activities.FeedActivity;
 import com.noqapp.android.client.views.activities.ImageViewerActivity;
-import com.noqapp.android.client.views.activities.BeforeJoinActivity;
-import com.noqapp.android.client.views.activities.JoinActivity;
 import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.activities.OrderConfirmActivity;
@@ -463,7 +462,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void currentQorOrderItemClick(JsonTokenAndQueue item) {
         if (null != item) {
             if (item.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.Q) {
-                Intent in = new Intent(getActivity(), JoinActivity.class);
+                Intent in = new Intent(getActivity(), AfterJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, item.getCodeQR());
                 in.putExtra("qUserId", item.getQueueUserId());
                 in.putExtra(IBConstant.KEY_FROM_LIST, true);

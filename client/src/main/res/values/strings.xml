@@ -349,4 +349,5 @@
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
     <string name="offers">Coupons</string>
+    <string name="screen_qconfirm">Confirm Queue</string>
 </resources>
