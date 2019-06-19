@@ -178,7 +178,6 @@ public class JsonToken {
         sb.append("codeQR='").append(codeQR).append('\'');
         sb.append(", displayName='").append(displayName).append('\'');
         sb.append(", queueStatus=").append(queueStatus);
-        sb.append(", queueUserState=").append(queueUserState);
         sb.append(", servingNumber=").append(servingNumber);
         sb.append(", token=").append(token);
         sb.append(", customerName='").append(customerName).append('\'');
