@@ -303,5 +303,6 @@
     <string name="delivery_mode">Delivery mode</string>
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
+    <string name="screen_qconfirm">Confirm Queue</string>
 
 </resources>

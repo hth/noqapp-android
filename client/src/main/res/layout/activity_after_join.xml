@@ -15,7 +15,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tv_vibrator_off"
+            android:layout_above="@+id/ll_btm"
             android:layout_alignParentTop="true"
             android:fillViewport="true">
 
@@ -29,18 +29,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="0dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     android:weightSum="1">
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="140dp">
+                        android:layout_height="100dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
+                            android:layout_height="50dp"
                             android:background="@drawable/blue_gradient"
                             android:orientation="horizontal" />
 
@@ -49,7 +49,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="25dp"
-                            android:layout_marginTop="30dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginRight="25dp"
                             android:padding="10dp"
                             card_view:cardBackgroundColor="@android:color/white"
@@ -58,7 +58,10 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="10dp">
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp">
 
                                 <com.noqapp.android.common.customviews.CircularImageView
                                     android:id="@+id/iv_profile"
@@ -161,12 +164,13 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/theme_color_red"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal"
                         android:weightSum="1">
 
@@ -178,20 +182,20 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="63dp"
-                                android:layout_height="60.3dp"
-                                android:layout_gravity="center"
-                                android:layout_marginRight="30dp"
+                                android:layout_width="53dp"
+                                android:layout_height="50.3dp"
+                                android:layout_gravity="left|center_vertical"
+                                android:layout_marginLeft="25dp"
                                 android:background="@drawable/stethoscope" />
 
                             <LinearLayout
-                                android:layout_width="106.9dp"
-                                android:layout_height="75.7dp"
-                                android:layout_gravity="right"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_width="96.9dp"
+                                android:layout_height="65.7dp"
+                                android:layout_gravity="center_vertical|left"
+                                android:layout_marginLeft="50dp"
+                                android:layout_marginTop="5dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:background="@drawable/blue_gradient_round"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
@@ -222,20 +226,20 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="63dp"
-                                android:layout_height="60.3dp"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="30dp"
+                                android:layout_width="53dp"
+                                android:layout_height="50.3dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:layout_marginRight="25dp"
                                 android:background="@drawable/medicine" />
 
                             <LinearLayout
-                                android:layout_width="106.9dp"
-                                android:layout_height="75.7dp"
-                                android:layout_gravity="left"
+                                android:layout_width="96.9dp"
+                                android:layout_height="65.7dp"
+                                android:layout_gravity="center_vertical|right"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginRight="20dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="50dp"
+                                android:layout_marginBottom="5dp"
                                 android:background="@drawable/orange_gradient"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
@@ -265,11 +269,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginBottom="0dp"
                         android:gravity="center"
                         android:text=""
                         android:textColor="#80000000"
-                        android:textSize="@dimen/text_size_twelve" />
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="gone" />
 
 
                     <LinearLayout
@@ -281,8 +286,8 @@
                         android:background="@drawable/square_bg_drawable"
                         android:gravity="center_horizontal|center_vertical"
                         android:orientation="vertical"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
 
                         <TextView
                             android:id="@+id/tv_after"
@@ -391,6 +396,16 @@
                                 android:text="@string/order_details"
                                 android:textSize="@dimen/store_info" />
 
+                            <LinearLayout
+                                android:id="@+id/ll_order_details"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="vertical"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"/>
+
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -412,6 +427,65 @@
 
                                 <TextView
                                     android:id="@+id/tv_total_order_amt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/rl_discount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:gravity="left"
+                                    android:text="Coupon discount"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info" />
+
+                                <TextView
+                                    android:id="@+id/tv_coupon_discount_amt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:gravity="right"
+                                    android:text="- Rs 0"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:gravity="left"
+                                    android:text="Grand Total"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="@dimen/store_info"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_grand_total_amt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
@@ -450,61 +524,54 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                    <Button
-                        android:id="@+id/btn_pay"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/btn_standard_height"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/btn_bg_enable"
-                        android:clickable="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        android:text="Pay"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_sixteen"
-                        android:textStyle="normal"
-                        android:visibility="gone" />
-
-                    <Button
-                        android:id="@+id/btn_cancel_queue"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/btn_standard_height"
-                        android:layout_margin="20dp"
-                        android:background="@drawable/btn_bg_inactive"
-                        android:clickable="true"
-                        android:fontFamily="sans-serif-medium"
-                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        android:text="@string/cancel"
-                        android:textAllCaps="true"
-                        android:textColor="@color/btn_color"
-                        android:textSize="@dimen/text_size_sixteen"
-                        android:textStyle="normal" />
-
                 </LinearLayout>
             </LinearLayout>
 
 
         </ScrollView>
 
-        <TextView
-            android:id="@+id/tv_vibrator_off"
+        <LinearLayout
+            android:id="@+id/ll_btm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="5dp"
-            android:background="#BF000000"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="@string/msg_vibrator_off"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_sixteen"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btn_cancel_queue"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_standard_height"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_bg_inactive"
+                android:clickable="true"
+                android:fontFamily="sans-serif-medium"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textAllCaps="true"
+                android:textColor="@color/btn_color"
+                android:textSize="@dimen/text_size_sixteen"
+                android:textStyle="normal" />
+
+
+            <TextView
+                android:id="@+id/tv_vibrator_off"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#BF000000"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/msg_vibrator_off"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_sixteen"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </LinearLayout>
 
     </RelativeLayout>
 </LinearLayout>
