@@ -22,12 +22,14 @@ public class FeedAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<JsonFeed> dataSet;
     private boolean increaseCardWidth;
+
     public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
 
     }
+
     public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener, boolean increaseCardWidth) {
         this.dataSet = data;
         this.context = context;
@@ -46,7 +48,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
         MyViewHolder holder = (MyViewHolder) Vholder;
-        if(increaseCardWidth) {
+        if (increaseCardWidth) {
             holder.card_view.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
             LinearLayout.MarginLayoutParams params = (LinearLayout.MarginLayoutParams) holder.card_view.getLayoutParams();
             params.leftMargin = 20;
@@ -55,12 +57,9 @@ public class FeedAdapter extends RecyclerView.Adapter {
         JsonFeed item = dataSet.get(listPosition);
         Picasso.get().load(item.getImageUrl()).into(holder.iv_bg);
         holder.tv_title.setText(item.getTitle());
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(null != listener)
+        holder.card_view.setOnClickListener((View v) -> {
+            if (null != listener)
                 listener.onFeedItemClick(dataSet.get(listPosition), v, listPosition);
-            }
         });
     }
 

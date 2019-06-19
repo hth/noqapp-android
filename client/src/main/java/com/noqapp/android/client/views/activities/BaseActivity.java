@@ -47,19 +47,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         actionbarBack = findViewById(R.id.actionbarBack);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        actionbarBack.setOnClickListener((View v) -> {
+            finish();
         });
-        iv_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
-                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(goToA);
-            }
+        iv_home.setOnClickListener((View v) -> {
+            Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
+            goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(goToA);
         });
     }
 

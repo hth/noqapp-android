@@ -58,11 +58,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         setContentView(R.layout.activity_registration);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        actionbarBack.setOnClickListener((View v) -> {
                 finish();
-            }
         });
         tv_toolbar_title.setText(getString(R.string.register));
         edt_phoneNo = findViewById(R.id.edt_phone);

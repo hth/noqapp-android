@@ -72,11 +72,8 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter {
                     .error(ImageUtils.getThumbErrorPlaceholder(context))
                     .into(Vholder.iv_main);
         }
-        Vholder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onCategoryItemClick(position, jsonCategory);
-            }
+        Vholder.card_view.setOnClickListener((View v) -> {
+            listener.onCategoryItemClick(position, jsonCategory);
         });
     }
 

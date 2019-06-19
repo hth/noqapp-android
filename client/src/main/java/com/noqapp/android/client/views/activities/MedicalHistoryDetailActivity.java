@@ -1,5 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
@@ -16,19 +30,6 @@ import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +87,9 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             ThumbnailGalleryAdapter thumbnailGalleryAdapter = new ThumbnailGalleryAdapter(this, jsonMedicalRecord.getImages(), true, jsonMedicalRecord.getRecordReferenceId());
             rv_thumb_images.setAdapter(thumbnailGalleryAdapter);
         }
-        if(BusinessTypeEnum.DO == jsonMedicalRecord.getBusinessType()){
+        if (BusinessTypeEnum.DO == jsonMedicalRecord.getBusinessType()) {
             iv_profile.setImageResource(R.drawable.doctor);
-        }else{
+        } else {
             iv_profile.setImageResource(R.drawable.lab);
         }
         tv_complaints.setText(parseCheifComplanits(jsonMedicalRecord.getChiefComplain()));
@@ -105,7 +106,7 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
         } else {
             tv_diagnosed_by.setText(jsonMedicalRecord.getDiagnosedByDisplayName());
         }
-        tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jsonMedicalRecord.getDiagnosedByDisplayName())?View.GONE:View.VISIBLE);
+        tv_diagnosed_by.setVisibility(TextUtils.isEmpty(jsonMedicalRecord.getDiagnosedByDisplayName()) ? View.GONE : View.VISIBLE);
         tv_business_name.setText(jsonMedicalRecord.getBusinessName());
         tv_business_category_name.setText(jsonMedicalRecord.getBizCategoryName());
         try {
@@ -252,11 +253,8 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
             } else {
                 tv_observation_pathology_label.setText(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation());
             }
-            tv_attachment_pathology.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callSliderScreen(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(), jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId());
-                }
+            tv_attachment_pathology.setOnClickListener((View v) -> {
+                callSliderScreen(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(), jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId());
             });
             ll_path.setVisibility(View.VISIBLE);
         } else {
@@ -286,33 +284,24 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
                 switch (labCategory) {
                     case SPEC:
                         tv_attachment_spec.setText(value);
-                        tv_attachment_spec.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
+                        tv_attachment_spec.setOnClickListener((View v) -> {
+                            callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
                         });
                         tv_observation_spec_label.setText(observation);
                         ll_spec.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     case SONO:
                         tv_attachment_sono.setText(value);
-                        tv_attachment_sono.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
+                        tv_attachment_sono.setOnClickListener((View v) -> {
+                            callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
                         });
                         tv_observation_sono_label.setText(observation);
                         ll_sono.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     case XRAY:
                         tv_attachment_xray.setText(value);
-                        tv_attachment_xray.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
+                        tv_attachment_xray.setOnClickListener((View v) -> {
+                            callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
                         });
                         tv_observation_xray_label.setText(observation);
                         ll_xray.setVisibility(showLayout ? View.VISIBLE : View.GONE);
@@ -330,22 +319,16 @@ public class MedicalHistoryDetailActivity extends BaseActivity {
 //                        break;
                     case MRI:
                         tv_attachment_mri.setText(value);
-                        tv_attachment_mri.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
+                        tv_attachment_mri.setOnClickListener((View v) -> {
+                            callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
                         });
                         tv_observation_mri_label.setText(observation);
                         ll_mri.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     case SCAN:
                         tv_attachment_scan.setText(value);
-                        tv_attachment_scan.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
+                        tv_attachment_scan.setOnClickListener((View v) -> {
+                            callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
                         });
                         tv_observation_scan_label.setText(observation);
                         ll_scan.setVisibility(showLayout ? View.VISIBLE : View.GONE);

@@ -105,16 +105,13 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
                 return false;
             }
         });
-        tv_auto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_auto.setOnClickListener((View v) -> {
                 lat = String.valueOf(LaunchActivity.getLaunchActivity().latitute);
                 longitude = String.valueOf(LaunchActivity.getLaunchActivity().longitute);
                 city = LaunchActivity.getLaunchActivity().cityName;
                 AppUtilities.setAutoCompleteText(autoCompleteTextView, city);
 
                 new AppUtilities().hideKeyBoard(SearchActivity.this);
-            }
         });
 
         autoCompleteTextView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));

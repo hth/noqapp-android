@@ -92,7 +92,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
                         + " "
-                        + + childData.getFinalDiscountedPrice());
+                        + +childData.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -107,47 +107,41 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
-        childViewHolder.btn_increase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String val = childViewHolder.tv_value.getText().toString();
-                int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-                childViewHolder.tv_value.setText("" + number);
-                listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).setChildInput(number);
-                if (number <= 0) {
-                    orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                            .get(childPosition).getJsonStoreProduct().getProductId());
-                    cartUpdate.updateCartInfo(showCartAmount());
-                } else {
-                    orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                            .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                            .get(childPosition));
-                    cartUpdate.updateCartInfo(showCartAmount());
-                }
-                notifyDataSetChanged();
+        childViewHolder.btn_increase.setOnClickListener((View v) -> {
+            String val = childViewHolder.tv_value.getText().toString();
+            int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
+            childViewHolder.tv_value.setText("" + number);
+            listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                    .get(childPosition).setChildInput(number);
+            if (number <= 0) {
+                orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                        .get(childPosition).getJsonStoreProduct().getProductId());
+                cartUpdate.updateCartInfo(showCartAmount());
+            } else {
+                orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                        .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                        .get(childPosition));
+                cartUpdate.updateCartInfo(showCartAmount());
             }
+            notifyDataSetChanged();
         });
-        childViewHolder.btn_decrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String val = childViewHolder.tv_value.getText().toString();
-                int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
-                childViewHolder.tv_value.setText("" + number);
-                listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                        .get(childPosition).setChildInput(number);
-                if (number <= 0) {
-                    orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                            .get(childPosition).getJsonStoreProduct().getProductId());
-                    cartUpdate.updateCartInfo(showCartAmount());
-                } else {
-                    orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                            .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
-                            .get(childPosition));
-                    cartUpdate.updateCartInfo(showCartAmount());
-                }
-                notifyDataSetChanged();
+        childViewHolder.btn_decrease.setOnClickListener((View v) -> {
+            String val = childViewHolder.tv_value.getText().toString();
+            int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
+            childViewHolder.tv_value.setText("" + number);
+            listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                    .get(childPosition).setChildInput(number);
+            if (number <= 0) {
+                orders.remove(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                        .get(childPosition).getJsonStoreProduct().getProductId());
+                cartUpdate.updateCartInfo(showCartAmount());
+            } else {
+                orders.put(listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                        .get(childPosition).getJsonStoreProduct().getProductId(), listDataChild.get(listDataHeader.get(groupPosition).getCategoryId())
+                        .get(childPosition));
+                cartUpdate.updateCartInfo(showCartAmount());
             }
+            notifyDataSetChanged();
         });
 
         return convertView;
@@ -209,7 +203,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         for (ChildData value : getOrders().values()) {
             price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
-        return price ;
+        return price;
     }
 
     public interface CartUpdate {

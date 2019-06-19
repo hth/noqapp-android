@@ -83,19 +83,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
             holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
         }
 
-        holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (bizStoreElastic.getReviewCount() > 0) {
-                    Intent in = new Intent(context, AllReviewsActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
-                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
-                    in.putExtras(bundle);
-                    context.startActivity(in);
-                }
+        holder.tv_store_review.setOnClickListener((View v) -> {
+            if (bizStoreElastic.getReviewCount() > 0) {
+                Intent in = new Intent(context, AllReviewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
+                bundle.putString(IBConstant.KEY_STORE_ADDRESS, AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
+                in.putExtras(bundle);
+                context.startActivity(in);
             }
         });
         holder.tv_specialization.setText(bizStoreElastic.getCompleteEducation());
@@ -208,14 +204,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
             holder.tv_consult_fees_header.setVisibility(View.VISIBLE);
         }
         holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
-        holder.tv_join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
-                    listener.onCategoryItemClick(bizStoreElastic, v, listPosition);
-                } else {
-                    new CustomToast().showToast(context, "Please visit store to avail the service.");
-                }
+        holder.tv_join.setOnClickListener((View v) -> {
+            if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
+                listener.onCategoryItemClick(bizStoreElastic, v, listPosition);
+            } else {
+                new CustomToast().showToast(context, "Please visit store to avail the service.");
             }
         });
         if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
@@ -227,32 +220,26 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
         } else {
             holder.btn_book_appointment.setVisibility(View.GONE);
         }
-        holder.btn_book_appointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UserUtils.isLogin()) {
-                    Intent in = new Intent(context, BookAppointmentActivity.class);
-                    in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
-                    context.startActivity(in);
-                } else {
-                    new CustomToast().showToast(context, "Please login to book an appointment");
-                }
+        holder.btn_book_appointment.setOnClickListener((View v) -> {
+            if (UserUtils.isLogin()) {
+                Intent in = new Intent(context, BookAppointmentActivity.class);
+                in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
+                context.startActivity(in);
+            } else {
+                new CustomToast().showToast(context, "Please login to book an appointment");
             }
         });
-        holder.iv_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-                    if (TextUtils.isEmpty(bizStoreElastic.getWebProfileId())) {
-                        new CustomToast().showToast(context, "Doctor profile is not available currently");
-                    } else {
-                        Intent intent = new Intent(context, ManagerProfileActivity.class);
-                        intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
-                        intent.putExtra("managerName", bizStoreElastic.getDisplayName());
-                        intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
-                        intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
-                        context.startActivity(intent);
-                    }
+        holder.iv_main.setOnClickListener((View v) -> {
+            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+                if (TextUtils.isEmpty(bizStoreElastic.getWebProfileId())) {
+                    new CustomToast().showToast(context, "Doctor profile is not available currently");
+                } else {
+                    Intent intent = new Intent(context, ManagerProfileActivity.class);
+                    intent.putExtra("webProfileId", bizStoreElastic.getWebProfileId());
+                    intent.putExtra("managerName", bizStoreElastic.getDisplayName());
+                    intent.putExtra("managerImage", bizStoreElastic.getDisplayImage());
+                    intent.putExtra("bizCategoryId", bizStoreElastic.getBizCategoryId());
+                    context.startActivity(intent);
                 }
             }
         });

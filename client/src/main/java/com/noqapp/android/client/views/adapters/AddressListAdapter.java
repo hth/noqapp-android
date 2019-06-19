@@ -44,23 +44,21 @@ public class AddressListAdapter extends ArrayAdapter<JsonUserAddress> {
         }
 
         holder.title.setText(list.get(position).getAddress());
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(context,true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if(null != removeAddress)
-                            removeAddress.removeAddress(list.get(position));
-                    }
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Delete Address", "Do you want to delete address from address list?");
-            }
+        holder.iv_delete.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(context, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != removeAddress)
+                        removeAddress.removeAddress(list.get(position));
+                }
+
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Delete Address", "Do you want to delete address from address list?");
         });
 
         return convertView;

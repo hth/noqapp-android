@@ -39,7 +39,7 @@ public class RateTheAppManager {
             dateFirstLaunch = System.currentTimeMillis();
             editor.putLong("dateFirstLaunch", dateFirstLaunch);
         }
-       // Log.e("Update", "launchCount "+launchCount+" dateFirstLaunch"+dateFirstLaunch);
+        // Log.e("Update", "launchCount "+launchCount+" dateFirstLaunch"+dateFirstLaunch);
         // Wait at least n days before opening
         if (launchCount >= LAUNCHES_UNTIL_PROMPT) {
             if (System.currentTimeMillis() >= dateFirstLaunch +
@@ -61,29 +61,23 @@ public class RateTheAppManager {
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.rate_app_prompt, null);
         TextView tv_rate_app = dialogView.findViewById(R.id.tv_rate_app);
-        tv_rate_app.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                editor.putLong("launchCount", 0).apply();
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getPackageName())));
-                dialog.dismiss();
-            }
+        tv_rate_app.setOnClickListener((View v) -> {
+            editor.putLong("launchCount", 0).apply();
+            mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getPackageName())));
+            dialog.dismiss();
         });
         TextView tv_remind_later = dialogView.findViewById(R.id.tv_remind_later);
-        tv_remind_later.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                editor.putLong("launchCount", 0).apply();
-                dialog.dismiss();
-            }
+        tv_remind_later.setOnClickListener((View v) -> {
+            editor.putLong("launchCount", 0).apply();
+            dialog.dismiss();
         });
         TextView tv_no_thanks = dialogView.findViewById(R.id.tv_no_thanks);
-        tv_no_thanks.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (editor != null) {
-                    editor.putBoolean("dontshowagain", true);
-                    editor.commit();
-                }
-                dialog.dismiss();
+        tv_no_thanks.setOnClickListener((View v) -> {
+            if (editor != null) {
+                editor.putBoolean("dontshowagain", true);
+                editor.commit();
             }
+            dialog.dismiss();
         });
         dialog.setContentView(dialogView);
         dialog.show();

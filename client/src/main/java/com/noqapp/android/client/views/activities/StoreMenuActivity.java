@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -26,11 +31,6 @@ import com.noqapp.android.common.customviews.CustomToast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 public class StoreMenuActivity extends BaseActivity implements CustomExpandableListAdapter.CartUpdate, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.CartOrderUpdate {
@@ -99,9 +99,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
 
             }
         });
-        tv_place_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_place_order.setOnClickListener((View v) -> {
                 if (UserUtils.isLogin()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
@@ -152,7 +150,6 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                     Intent loginIntent = new Intent(StoreMenuActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
                 }
-            }
         });
 
     }

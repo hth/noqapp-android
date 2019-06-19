@@ -664,26 +664,20 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             rb_en.setChecked(true);
             rb_hi.setChecked(false);
         }
-        ll_hindi.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.changeLanguage("hi");
-                dialog.dismiss();
-                if (AppUtilities.isRelease()) {
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                            .putCustomAttribute("Language", "HINDI"));
-                }
+        ll_hindi.setOnClickListener((View v) -> {
+            AppUtilities.changeLanguage("hi");
+            dialog.dismiss();
+            if (AppUtilities.isRelease()) {
+                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                        .putCustomAttribute("Language", "HINDI"));
             }
         });
-        ll_english.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.changeLanguage("en");
-                dialog.dismiss();
-                if (AppUtilities.isRelease()) {
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
-                            .putCustomAttribute("Language", "ENGLISH"));
-                }
+        ll_english.setOnClickListener((View v) -> {
+            AppUtilities.changeLanguage("en");
+            dialog.dismiss();
+            if (AppUtilities.isRelease()) {
+                Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CHANGE_LANGUAGE)
+                        .putCustomAttribute("Language", "ENGLISH"));
             }
         });
         dialog.show();

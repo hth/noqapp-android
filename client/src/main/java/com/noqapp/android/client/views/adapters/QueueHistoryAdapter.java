@@ -50,41 +50,35 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonQueueHistorical jsonQueueHistorical = dataSet.get(listPosition);
         holder.tv_name.setText(jsonQueueHistorical.getDisplayName());
-       // holder.tv_address.setText(AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
+        // holder.tv_address.setText(AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
         // holder.tv_store_rating.setText(String.valueOf(jsonQueueHistorical.getRatingCount()));
-        holder.tv_business_name_address.setText(jsonQueueHistorical.getBusinessName()+" "+AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
+        holder.tv_business_name_address.setText(jsonQueueHistorical.getBusinessName() + " " + AppUtilities.getStoreAddress(jsonQueueHistorical.getTown(), jsonQueueHistorical.getArea()));
         holder.tv_queue_join_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
         holder.tv_queue_status.setText(jsonQueueHistorical.getQueueUserState().getDescription());
         holder.tv_business_category.setText(jsonQueueHistorical.getBizCategoryName());
-        holder.btn_rejoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (jsonQueueHistorical.getBusinessType()) {
-                    case DO:
-                    case BK:
-                        // open hospital/Bank profile
-                        Intent in = new Intent(context, BeforeJoinActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
-                        in.putExtra(IBConstant.KEY_FROM_LIST, true);
-                        in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                        context.startActivity(in);
-                        break;
-                    default:
-                        // open order screen
-                        Intent intent = new Intent(context, StoreDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("BizStoreElastic", null);
-                        intent.putExtras(bundle);
-                        context.startActivity(intent);
-                }
+        holder.btn_rejoin.setOnClickListener((View v) -> {
+            switch (jsonQueueHistorical.getBusinessType()) {
+                case DO:
+                case BK:
+                    // open hospital/Bank profile
+                    Intent in = new Intent(context, BeforeJoinActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
+                    in.putExtra(IBConstant.KEY_FROM_LIST, true);
+                    in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                    context.startActivity(in);
+                    break;
+                default:
+                    // open order screen
+                    Intent intent = new Intent(context, StoreDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("BizStoreElastic", null);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
             }
         });
-        holder.iv_details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //navigate to detail screen
-                listener.onStoreItemClick(jsonQueueHistorical);
-            }
+        holder.iv_details.setOnClickListener((View v) -> {
+            //navigate to detail screen
+            listener.onStoreItemClick(jsonQueueHistorical);
         });
 
         switch (jsonQueueHistorical.getQueueUserState()) {
@@ -142,7 +136,7 @@ public class QueueHistoryAdapter extends RecyclerView.Adapter {
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
-        //    this.tv_support = itemView.findViewById(R.id.tv_support);
+            //    this.tv_support = itemView.findViewById(R.id.tv_support);
             this.tv_address = itemView.findViewById(R.id.tv_address);
             this.tv_queue_join_date = itemView.findViewById(R.id.tv_queue_join_date);
             this.tv_queue_status = itemView.findViewById(R.id.tv_queue_status);

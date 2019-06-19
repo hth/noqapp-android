@@ -57,7 +57,8 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
 /**
  * Created by chandra on 5/7/17.
  */
-public class CategoryInfoActivity extends BaseActivity implements QueuePresenter, RecyclerViewGridAdapter.OnItemClickListener,CategoryListAdapter.OnItemClickListener {
+public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
+        RecyclerViewGridAdapter.OnItemClickListener, CategoryListAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -89,7 +90,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
     private View view_loader;
-    private RecyclerView rcv_accreditation,rcv_single_queue;
+    private RecyclerView rcv_accreditation, rcv_single_queue;
     private LinearLayout ll_top_header;
 
     @Override
@@ -115,17 +116,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
         listener = this;
-        tv_mobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
-            }
+        tv_mobile.setOnClickListener((View v) -> {
+            AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
-        btn_join_queues.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                joinClick();
-            }
+
+        btn_join_queues.setOnClickListener((View v) -> {
+            joinClick();
         });
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle) {
@@ -184,17 +180,12 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
-            tv_complete_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
-                }
+            tv_complete_address.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
+
             });
-            tv_address_title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
-                }
+            tv_address_title.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(LaunchActivity.getLaunchActivity(), tv_complete_address.getText().toString());
             });
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(bizStoreElastic.getCountryShortName(), bizStoreElastic.getPhone()));
             tv_rating.setText(AppUtilities.round(rating) + " -");
@@ -205,19 +196,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             }
             tv_rating_review.setText(reviewCount == 0 ? "No" : reviewCount + " Reviews");
             tv_rating_review.setPaintFlags(tv_rating_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            tv_rating_review.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != bizStoreElastic && reviewCount > 0) {
-                        Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
-                        bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getBusinessName());
-                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, tv_address.getText().toString());
-                        bundle.putBoolean("isLevelUp", true);
-                        in.putExtras(bundle);
-                        startActivity(in);
-                    }
+            tv_rating_review.setOnClickListener((View v) -> {
+                if (null != bizStoreElastic && reviewCount > 0) {
+                    Intent in = new Intent(CategoryInfoActivity.this, AllReviewsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IBConstant.KEY_CODE_QR, codeQR);
+                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getBusinessName());
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, tv_address.getText().toString());
+                    bundle.putBoolean("isLevelUp", true);
+                    in.putExtras(bundle);
+                    startActivity(in);
                 }
             });
             codeQR = bizStoreElastic.getCodeQR();
@@ -268,14 +256,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             AccreditionAdapter accreditionAdapter = new AccreditionAdapter(this, accreditationImages);
             rcv_accreditation.setAdapter(accreditionAdapter);
             if (null != storeServiceImages && storeServiceImages.size() > 0) {
-                iv_category_banner.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(CategoryInfoActivity.this, SliderActivity.class);
-                        intent.putExtra("pos", 0);
-                        intent.putExtra("imageurls", (ArrayList<String>) bizStoreElastic.getBizServiceImages());
-                        startActivity(intent);
-                    }
+                iv_category_banner.setOnClickListener((View v) -> {
+                    Intent intent = new Intent(CategoryInfoActivity.this, SliderActivity.class);
+                    intent.putExtra("pos", 0);
+                    intent.putExtra("imageurls", (ArrayList<String>) bizStoreElastic.getBizServiceImages());
+                    startActivity(intent);
                 });
             }
             Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
@@ -409,17 +394,17 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         }
     }
 
-    private void checkForSingleEntry(){
+    private void checkForSingleEntry() {
         rcv_single_queue.setVisibility(View.GONE);
         ll_top_header.setVisibility(View.VISIBLE);
 
-        if ((null != getCategoryThatArePopulated() && getCategoryThatArePopulated().size()==1) &&
-                (null != cacheQueue.getIfPresent("queue") && cacheQueue.getIfPresent("queue").size()==1)){
+        if ((null != getCategoryThatArePopulated() && getCategoryThatArePopulated().size() == 1) &&
+                (null != cacheQueue.getIfPresent("queue") && cacheQueue.getIfPresent("queue").size() == 1)) {
 
             Map.Entry<String, ArrayList<BizStoreElastic>> entry = cacheQueue.getIfPresent("queue").entrySet().iterator().next();
             ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
-            if(bizStoreElastics.size() == 1){
-                CategoryListAdapter categoryListAdapter = new CategoryListAdapter(bizStoreElastics, this, this,true);
+            if (bizStoreElastics.size() == 1) {
+                CategoryListAdapter categoryListAdapter = new CategoryListAdapter(bizStoreElastics, this, this, true);
                 rcv_single_queue.setHasFixedSize(true);
                 rcv_single_queue.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
                 rcv_single_queue.setItemAnimator(new DefaultItemAnimator());
@@ -427,15 +412,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                 rcv_single_queue.setVisibility(View.VISIBLE);
                 btn_join_queues.setVisibility(View.GONE);
                 ll_top_header.setVisibility(View.GONE);
-            }else{
+            } else {
                 // Do nothing
             }
-        }else {
+        } else {
             // Do nothing
         }
 
     }
-   public FlexboxLayoutManager getFlexBoxLayoutManager() {
+
+    public FlexboxLayoutManager getFlexBoxLayoutManager() {
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);

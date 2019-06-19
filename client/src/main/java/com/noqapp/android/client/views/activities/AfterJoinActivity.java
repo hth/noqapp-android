@@ -126,39 +126,36 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
 
         ImageView iv_profile = findViewById(R.id.iv_profile);
-        btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (null != jsonTokenAndQueue) {
-                            if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                cancelQueue();
-                            } else {
-                                switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                    case I:
-                                        cancelQueue();
-                                        break;
-                                    case E:
-                                        cancelQueue();
-                                        break;
-                                    case U:
-                                        cancelQueue();
-                                        break;
-                                }
+        btn_cancel_queue.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(AfterJoinActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != jsonTokenAndQueue) {
+                        if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                            cancelQueue();
+                        } else {
+                            switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                                case I:
+                                    cancelQueue();
+                                    break;
+                                case E:
+                                    cancelQueue();
+                                    break;
+                                case U:
+                                    cancelQueue();
+                                    break;
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
         });
 
         initActionsViews(true);
@@ -202,20 +199,14 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            actionbarBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    iv_home.performClick();
-                }
+            actionbarBack.setOnClickListener((View v) -> {
+                iv_home.performClick();
             });
-            iv_home.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                    Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
-                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(goToA);
-                }
+            iv_home.setOnClickListener((View v) -> {
+                LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
+                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(goToA);
             });
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
@@ -238,17 +229,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
-            tv_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
-                }
+            tv_mobile.setOnClickListener((View v) -> {
+                AppUtilities.makeCall(AfterJoinActivity.this, tv_mobile.getText().toString());
             });
-            tv_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
-                }
+            tv_address.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(AfterJoinActivity.this, tv_address.getText().toString());
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
@@ -258,9 +243,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 setBackGround(jsonTokenAndQueue.afterHowLong() > 0 ? jsonTokenAndQueue.afterHowLong() : 0);
                 tv_name.setText(jsonProfile.getName());
                 tv_vibrator_off.setVisibility(isVibratorOff() ? View.VISIBLE : View.GONE);
-//                if (isVibratorOff()) {
-//                    ShowAlertInformation.showThemeDialog(this, "Vibrator off", getString(R.string.msg_vibrator_off));
-//                }
 
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
                     progressDialog.setMessage("Fetching Queue data..");

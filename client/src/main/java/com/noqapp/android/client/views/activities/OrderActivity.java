@@ -68,7 +68,8 @@ import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
 import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter, ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
+public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
+        ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
     private TextView tv_address;
     private EditText edt_phone;
     private EditText edt_optional;
@@ -110,12 +111,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
         TextView tv_add_address = findViewById(R.id.tv_add_address);
         TextView tv_change_address = findViewById(R.id.tv_change_address);
-        tv_change_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
-                startActivityForResult(in, 78);
-            }
+        tv_change_address.setOnClickListener((View v) -> {
+            Intent in = new Intent(OrderActivity.this, AddressBookActivity.class);
+            startActivityForResult(in, 78);
         });
         edt_phone = findViewById(R.id.edt_phone);
         edt_optional = findViewById(R.id.edt_optional);
@@ -129,41 +127,34 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         // frame_coupon.setVisibility(View.GONE);
-        rl_apply_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // new CustomToast().showToast(JoinActivity.this,"Apply Coupon");
-                Intent in = new Intent(OrderActivity.this, CouponsActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
-            }
+        rl_apply_coupon.setOnClickListener((View v) -> {
+            // new CustomToast().showToast(JoinActivity.this,"Apply Coupon");
+            Intent in = new Intent(OrderActivity.this, CouponsActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
+            startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
-        tv_remove_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_remove_coupon.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(OrderActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    jsonCoupon = null;
+                    rl_apply_coupon.setVisibility(View.VISIBLE);
+                    rl_coupon_applied.setVisibility(View.GONE);
+                    tv_coupon_amount.setText("");
+                    tv_coupon_name.setText("");
+                    jsonPurchaseOrder.setStoreDiscount(0);
+                    jsonPurchaseOrder.setCouponId("");
+                    updateDiscountUI();
+                }
 
-                ShowCustomDialog showDialog = new ShowCustomDialog(OrderActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        jsonCoupon = null;
-                        rl_apply_coupon.setVisibility(View.VISIBLE);
-                        rl_coupon_applied.setVisibility(View.GONE);
-                        tv_coupon_amount.setText("");
-                        tv_coupon_name.setText("");
-                        jsonPurchaseOrder.setStoreDiscount(0);
-                        jsonPurchaseOrder.setCouponId("");
-                        updateDiscountUI();
-                    }
-
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
         });
         initActionsViews(true);
         purchaseOrderApiCall = new PurchaseOrderApiCall(this);
@@ -193,44 +184,41 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             ll_order_details.addView(inflatedLayout);
         }
         checkProductWithZeroPrice();
-        tv_place_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NoQueueBaseActivity.getUserProfile().isAccountValidated()) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    progressDialog.show();
-                    progressDialog.setCancelable(false);
-                    progressDialog.setCanceledOnTouchOutside(false);
-                    progressDialog.setMessage("Order placing in progress..");
-                    if (validateForm()) {
-                        if (isProductWithoutPrice) {
-                            new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
-                        } else {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                progressDialog.show();
-                                progressDialog.setMessage("Order placing in progress..");
-
-                                jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
-                                        .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
-                                        .setPaymentMode(null) //not required here
-                                        .setCustomerPhone(edt_phone.getText().toString())
-                                        .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
-                                purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                                enableDisableOrderButton(false);
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(OrderActivity.this);
-                                dismissProgress();
-                            }
-                        }
+        tv_place_order.setOnClickListener((View v) -> {
+            if (NoQueueBaseActivity.getUserProfile().isAccountValidated()) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setMessage("Order placing in progress..");
+                if (validateForm()) {
+                    if (isProductWithoutPrice) {
+                        new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
                     } else {
-                        dismissProgress();
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            progressDialog.show();
+                            progressDialog.setMessage("Order placing in progress..");
+
+                            jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
+                                    .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
+                                    .setPaymentMode(null) //not required here
+                                    .setCustomerPhone(edt_phone.getText().toString())
+                                    .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
+                            purchaseOrderApiCall.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                            enableDisableOrderButton(false);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderActivity.this);
+                            dismissProgress();
+                        }
                     }
                 } else {
-                    new CustomToast().showToast(OrderActivity.this, "Please add email id to your profile, if not added & verify it");
+                    dismissProgress();
                 }
+            } else {
+                new CustomToast().showToast(OrderActivity.this, "Please add email id to your profile, if not added & verify it");
             }
         });
     }
@@ -265,7 +253,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_total_order_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_grand_total_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
         // tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        tv_coupon_discount_amt.setText("- "+currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+        tv_coupon_discount_amt.setText("- " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_due_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscountOffline());
 
     }

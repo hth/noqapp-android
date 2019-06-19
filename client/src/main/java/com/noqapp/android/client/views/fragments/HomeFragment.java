@@ -160,22 +160,16 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             } else {
                 // LaunchActivity.getLaunchActivity().tv_location.setText(city);
                 cv_update_location.setVisibility(View.VISIBLE);
-                tv_update.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getNearMeInfo(cityName, "" + latitude, "" + longitude);
-                        lat = latitude;
-                        log = longitude;
-                        city = cityName;
-                        LaunchActivity.getLaunchActivity().tv_location.setText(cityName);
-                        cv_update_location.setVisibility(View.GONE);
-                    }
+                tv_update.setOnClickListener((View v) -> {
+                    getNearMeInfo(cityName, "" + latitude, "" + longitude);
+                    lat = latitude;
+                    log = longitude;
+                    city = cityName;
+                    LaunchActivity.getLaunchActivity().tv_location.setText(cityName);
+                    cv_update_location.setVisibility(View.GONE);
                 });
-                tv_no_thanks.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cv_update_location.setVisibility(View.GONE);
-                    }
+                tv_no_thanks.setOnClickListener((View v) -> {
+                    cv_update_location.setVisibility(View.GONE);
                 });
             }
         } else {
@@ -488,7 +482,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void currentAppointmentClick(JsonSchedule jsonSchedule) {
         Intent intent = new Intent(getActivity(), AppointmentDetailActivity.class);
         intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonSchedule);
-        intent.putExtra(IBConstant.KEY_FROM_LIST,true);
+        intent.putExtra(IBConstant.KEY_FROM_LIST, true);
         startActivity(intent);
     }
 
@@ -541,8 +535,8 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
         Collections.sort(jsonSchedules, new Comparator<JsonSchedule>() {
             public int compare(JsonSchedule o1, JsonSchedule o2) {
                 try {
-                    String two = o2.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o2.getStartTime());
-                    String one = o1.getScheduleDate()+" "+AppUtilities.getTimeFourDigitWithColon(o1.getStartTime());
+                    String two = o2.getScheduleDate() + " " + AppUtilities.getTimeFourDigitWithColon(o2.getStartTime());
+                    String one = o1.getScheduleDate() + " " + AppUtilities.getTimeFourDigitWithColon(o1.getStartTime());
                     return CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(one).compareTo(CommonHelper.SDF_YYYY_MM_DD_KK_MM.parse(two));
                 } catch (Exception e) {
                     e.printStackTrace();

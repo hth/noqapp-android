@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,8 +40,6 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
 
 public abstract class OTPActivity extends BaseActivity implements ProfilePresenter {
     protected String TAG = LoginActivity.class.getSimpleName();
@@ -102,23 +102,14 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
             }
         });
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_login.setOnClickListener((View v) -> {
                 actionLogin();
-            }
         });
-        btn_verify_phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_verify_phone.setOnClickListener((View v) -> {
                 btnVerifyClick();
-            }
         });
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        actionbarBack.setOnClickListener((View v) -> {
                 finish();
-            }
         });
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);

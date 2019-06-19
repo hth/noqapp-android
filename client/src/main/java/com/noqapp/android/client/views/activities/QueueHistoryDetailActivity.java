@@ -46,41 +46,35 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         TextView tv_grand_total = findViewById(R.id.tv_grand_total);
 
         final JsonQueueHistorical jsonQueueHistorical = (JsonQueueHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
-        tv_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Feedback feedback = new Feedback();
-                feedback.setMessageOrigin(MessageOriginEnum.Q);
-                feedback.setCodeQR(jsonQueueHistorical.getCodeQR());
-                feedback.setToken(jsonQueueHistorical.getTokenNumber());
-                Intent in = new Intent(QueueHistoryDetailActivity.this, ContactUsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
-                in.putExtras(bundle);
-                startActivity(in);
-            }
+        tv_support.setOnClickListener((View v) -> {
+            Feedback feedback = new Feedback();
+            feedback.setMessageOrigin(MessageOriginEnum.Q);
+            feedback.setCodeQR(jsonQueueHistorical.getCodeQR());
+            feedback.setToken(jsonQueueHistorical.getTokenNumber());
+            Intent in = new Intent(QueueHistoryDetailActivity.this, ContactUsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, feedback);
+            in.putExtras(bundle);
+            startActivity(in);
         });
-        btn_rejoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (jsonQueueHistorical.getBusinessType()) {
-                    case DO:
-                    case BK:
-                        // open hospital/Bank profile
-                        Intent in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
-                        in.putExtra(IBConstant.KEY_FROM_LIST, true);
-                        in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                        startActivity(in);
-                        break;
-                    default:
-                        // open order screen
-                        Intent intent = new Intent(QueueHistoryDetailActivity.this, StoreDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("BizStoreElastic", null);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                }
+        btn_rejoin.setOnClickListener((View v) -> {
+            switch (jsonQueueHistorical.getBusinessType()) {
+                case DO:
+                case BK:
+                    // open hospital/Bank profile
+                    Intent in = new Intent(QueueHistoryDetailActivity.this, BeforeJoinActivity.class);
+                    in.putExtra(IBConstant.KEY_CODE_QR, jsonQueueHistorical.getCodeQR());
+                    in.putExtra(IBConstant.KEY_FROM_LIST, true);
+                    in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
+                    startActivity(in);
+                    break;
+                default:
+                    // open order screen
+                    Intent intent = new Intent(QueueHistoryDetailActivity.this, StoreDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("BizStoreElastic", null);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
             }
         });
         if (0 == jsonQueueHistorical.getRatingCount()) {
@@ -105,22 +99,19 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             default:
                 tv_patient_label.setText("Customer Name:");
         }
-        tv_add_review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
-                jsonTokenAndQueue.setQueueUserId(jsonQueueHistorical.getQueueUserId());
-                jsonTokenAndQueue.setDisplayName(jsonQueueHistorical.getDisplayName());
-                jsonTokenAndQueue.setStoreAddress(jsonQueueHistorical.getStoreAddress());
-                jsonTokenAndQueue.setBusinessType(jsonQueueHistorical.getBusinessType());
-                jsonTokenAndQueue.setCodeQR(jsonQueueHistorical.getCodeQR());
-                jsonTokenAndQueue.setToken(jsonQueueHistorical.getTokenNumber());
-                Intent in = new Intent(QueueHistoryDetailActivity.this, ReviewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jsonTokenAndQueue);
-                in.putExtras(bundle);
-                startActivity(in);
-            }
+        tv_add_review.setOnClickListener((View v) -> {
+            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue();
+            jsonTokenAndQueue.setQueueUserId(jsonQueueHistorical.getQueueUserId());
+            jsonTokenAndQueue.setDisplayName(jsonQueueHistorical.getDisplayName());
+            jsonTokenAndQueue.setStoreAddress(jsonQueueHistorical.getStoreAddress());
+            jsonTokenAndQueue.setBusinessType(jsonQueueHistorical.getBusinessType());
+            jsonTokenAndQueue.setCodeQR(jsonQueueHistorical.getCodeQR());
+            jsonTokenAndQueue.setToken(jsonQueueHistorical.getTokenNumber());
+            Intent in = new Intent(QueueHistoryDetailActivity.this, ReviewActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(IBConstant.KEY_DATA_OBJECT, jsonTokenAndQueue);
+            in.putExtras(bundle);
+            startActivity(in);
         });
         tv_store_rating.setText(String.valueOf(jsonQueueHistorical.getRatingCount()));
         tv_store_name.setText(jsonQueueHistorical.getDisplayName());
@@ -139,8 +130,9 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         }
         tv_order_number.setText("TOKEN NO.  " + String.valueOf(jsonQueueHistorical.getTokenNumber()));
         tv_order_date.setText(CommonHelper.formatStringDate(CommonHelper.SDF_DD_MMM_YY_HH_MM_A, jsonQueueHistorical.getCreated()));
-        if(null != jsonQueueHistorical.getJsonPurchaseOrder()){
-            String currencySymbol = AppUtilities.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());;
+        if (null != jsonQueueHistorical.getJsonPurchaseOrder()) {
+            String currencySymbol = AppUtilities.getCurrencySymbol(jsonQueueHistorical.getCountryShortName());
+            ;
             tv_total_order_amt.setText(currencySymbol + jsonQueueHistorical.getJsonPurchaseOrder().computeFinalAmountWithDiscount());
             tv_grand_total.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getOrderPrice()));
             tv_discount_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonQueueHistorical.getJsonPurchaseOrder().getStoreDiscount()));

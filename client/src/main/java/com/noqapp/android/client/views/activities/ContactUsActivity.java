@@ -24,6 +24,7 @@ import com.noqapp.android.common.presenter.FeedbackPresenter;
 
 public class ContactUsActivity extends BaseActivity implements FeedbackPresenter {
     private Feedback feedback = new Feedback();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,23 +52,21 @@ public class ContactUsActivity extends BaseActivity implements FeedbackPresenter
             edt_subject.setEnabled(false);
             new CustomToast().showToast(this, "Please login to contact us");
         }
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AppUtilities().hideKeyBoard(ContactUsActivity.this);
-                edt_body.setError(null);
-                edt_subject.setError(null);
-                if (TextUtils.isEmpty(edt_subject.getText().toString())) {
-                    edt_subject.setError(getString(R.string.error_subject_blank));
-                } else if (TextUtils.isEmpty(edt_body.getText().toString())) {
-                    edt_body.setError(getString(R.string.error_feedback_blank));
-                } else {
-                    progressDialog.setMessage("Sending feedback..");
-                    progressDialog.show();
-                    new FeedbackApiCall(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
-                            feedback.setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
-                }
+        btn_submit.setOnClickListener((View v) -> {
+            new AppUtilities().hideKeyBoard(ContactUsActivity.this);
+            edt_body.setError(null);
+            edt_subject.setError(null);
+            if (TextUtils.isEmpty(edt_subject.getText().toString())) {
+                edt_subject.setError(getString(R.string.error_subject_blank));
+            } else if (TextUtils.isEmpty(edt_body.getText().toString())) {
+                edt_body.setError(getString(R.string.error_feedback_blank));
+            } else {
+                progressDialog.setMessage("Sending feedback..");
+                progressDialog.show();
+                new FeedbackApiCall(ContactUsActivity.this).review(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(),
+                        feedback.setBody(edt_body.getText().toString()).setSubject(edt_subject.getText().toString()));
             }
+
         });
 
         if (AppUtilities.isRelease()) {

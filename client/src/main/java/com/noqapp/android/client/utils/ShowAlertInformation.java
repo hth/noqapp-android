@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.noqapp.android.client.R;
-
-import androidx.core.content.ContextCompat;
 
 public class ShowAlertInformation {
 
@@ -31,8 +31,9 @@ public class ShowAlertInformation {
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
             public void btnPositiveClick() {
-               //Do nothing
+                //Do nothing
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing
@@ -52,8 +53,9 @@ public class ShowAlertInformation {
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
             public void btnPositiveClick() {
-                ((Activity)context).finish();
+                ((Activity) context).finish();
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing
@@ -85,21 +87,15 @@ public class ShowAlertInformation {
             mAlertDialog.setCanceledOnTouchOutside(true);
             mAlertDialog.setCancelable(true);
         }
-        btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
+        btn_no.setOnClickListener((View v) -> {
+            mAlertDialog.dismiss();
         });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtilities.openPlayStore(context);
-            }
+        btn_yes.setOnClickListener((View v) -> {
+            AppUtilities.openPlayStore(context);
         });
         try {
             mAlertDialog.show();
-        } catch(Exception e){
+        } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
         }
@@ -115,7 +111,7 @@ public class ShowAlertInformation {
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
         ImageView iv_icon = customDialogView.findViewById(R.id.iv_icon);
-        iv_icon.setBackground(ContextCompat.getDrawable(context,icon));
+        iv_icon.setBackground(ContextCompat.getDrawable(context, icon));
         tvtitle.setText(title);
         tv_msg.setText(message);
         if (isGravityLeft)
@@ -125,32 +121,27 @@ public class ShowAlertInformation {
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
+        btn_no.setOnClickListener((View v) -> {
+            mAlertDialog.dismiss();
         });
-        btn_yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
+        btn_yes.setOnClickListener((View v) -> {
+            mAlertDialog.dismiss();
         });
         mAlertDialog.show();
     }
 
     public static void showThemeDialog(Context context, String title, String message, int icon) {
-        showThemeDialogWithIcon(context, title, message, false,  icon);
+        showThemeDialogWithIcon(context, title, message, false, icon);
     }
 
     public static void showInfoDisplayDialog(Context context, String title, String message) {
-        ShowCustomDialog showDialog = new ShowCustomDialog(context,true);
+        ShowCustomDialog showDialog = new ShowCustomDialog(context, true);
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
             @Override
             public void btnPositiveClick() {
 
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing

@@ -37,7 +37,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private ArrayList<BizStoreElastic> dataSet;
     private double lat, log;
-    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener,double lat, double log) {
+
+    public StoreInfoViewAllAdapter(ArrayList<BizStoreElastic> data, Context context, OnItemClickListener listener, double lat, double log) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -81,27 +82,23 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                     (float) log,
                     (float) GeoHashUtils.decodeLatitude(bizStoreElastic.getGeoHash()),
                     (float) GeoHashUtils.decodeLongitude(bizStoreElastic.getGeoHash()))));
-            if(bizStoreElastic.getReviewCount() > 0){
+            if (bizStoreElastic.getReviewCount() > 0) {
                 holder.tv_store_review.setText(String.valueOf(bizStoreElastic.getReviewCount()) + " Reviews");
                 holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            }else{
+            } else {
                 holder.tv_store_review.setText("No Reviews");
-                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+                holder.tv_store_review.setPaintFlags(holder.tv_store_review.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             }
 
-            holder.tv_store_review.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (bizStoreElastic.getReviewCount() > 0) {
-                        Intent in = new Intent(context, AllReviewsActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
-                        bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
-                        bundle.putString(IBConstant.KEY_STORE_ADDRESS, holder.tv_address.getText().toString());
-                        in.putExtras(bundle);
-                        context.startActivity(in);
-                    }
+            holder.tv_store_review.setOnClickListener((View v) -> {
+                if (bizStoreElastic.getReviewCount() > 0) {
+                    Intent in = new Intent(context, AllReviewsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
+                    bundle.putString(IBConstant.KEY_STORE_NAME, bizStoreElastic.getDisplayName());
+                    bundle.putString(IBConstant.KEY_STORE_ADDRESS, holder.tv_address.getText().toString());
+                    in.putExtras(bundle);
+                    context.startActivity(in);
                 }
             });
             if (!TextUtils.isEmpty(bizStoreElastic.getDisplayImage()))
@@ -113,11 +110,8 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
             else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
-            holder.card_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
-                }
+            holder.card_view.setOnClickListener((View v) -> {
+                listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
             });
             if (holder.tv_store_rating.getText().toString().equals("0.0")) {
                 holder.tv_store_rating.setVisibility(View.INVISIBLE);

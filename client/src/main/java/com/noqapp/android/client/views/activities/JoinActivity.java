@@ -139,110 +139,97 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         rl_coupon_applied = findViewById(R.id.rl_coupon_applied);
         frame_coupon = findViewById(R.id.frame_coupon);
         frame_coupon.setVisibility(View.GONE);
-        rl_apply_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
-            }
+        rl_apply_coupon.setOnClickListener((View v) -> {
+            Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+            startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
-        tv_remove_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_remove_coupon.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        progressDialog.show();
+                        progressDialog.setMessage("Removing discount..");
+                        // progressDialog.setCancelable(false);
+                        // progressDialog.setCanceledOnTouchOutside(false);
+                        CouponApiCalls couponApiCalls = new CouponApiCalls();
+                        couponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
 
-                ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Removing discount..");
-                            // progressDialog.setCancelable(false);
-                            // progressDialog.setCanceledOnTouchOutside(false);
-                            CouponApiCalls couponApiCalls = new CouponApiCalls();
-                            couponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
+                        CouponOnOrder couponOnOrder = new CouponOnOrder()
+                                .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
+                                // .setCouponId(jsonCoupon.getCouponId())
+                                .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                            CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                    .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
-                                    // .setCouponId(jsonCoupon.getCouponId())
-                                    .setTransactionId(jsonTokenAndQueue.getTransactionId());
-
-                            couponApiCalls.remove(UserUtils.getDeviceId(),
-                                    UserUtils.getEmail(),
-                                    UserUtils.getAuth(),
-                                    couponOnOrder);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(JoinActivity.this);
-                        }
+                        couponApiCalls.remove(UserUtils.getDeviceId(),
+                                UserUtils.getEmail(),
+                                UserUtils.getAuth(),
+                                couponOnOrder);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(JoinActivity.this);
                     }
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
         });
         ImageView iv_profile = findViewById(R.id.iv_profile);
-        btn_cancel_queue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (null != jsonTokenAndQueue) {
-                            if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                cancelQueue();
-                            } else {
-                                switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
-                                    case I:
-                                        cancelQueue();
-                                        break;
-                                    case E:
-                                        cancelQueue();
-                                        break;
-                                    case U:
-                                        cancelQueue();
-                                        break;
-                                }
+        btn_cancel_queue.setOnClickListener((View v) -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(JoinActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != jsonTokenAndQueue) {
+                        if (null == jsonTokenAndQueue.getJsonPurchaseOrder() || null == jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                            cancelQueue();
+                        } else {
+                            switch (jsonTokenAndQueue.getJsonPurchaseOrder().getTransactionVia()) {
+                                case I:
+                                    cancelQueue();
+                                    break;
+                                case E:
+                                    cancelQueue();
+                                    break;
+                                case U:
+                                    cancelQueue();
+                                    break;
                             }
                         }
                     }
-
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
-            }
-        });
-        btn_pay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
-                    if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
-                        triggerOnlinePayment();
-                    } else {
-                        queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
-                        JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
-                        jsonCashfreeNotification.setTxMsg(null);
-                        jsonCashfreeNotification.setTxTime(null);
-                        jsonCashfreeNotification.setReferenceId(null);
-                        jsonCashfreeNotification.setPaymentMode(null);  // cash
-                        jsonCashfreeNotification.setSignature(null);
-                        jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
-                        jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
-                        jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
-                        queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
-                    }
-                } else {
-                    pay();
                 }
+
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
+        });
+        btn_pay.setOnClickListener((View v) -> {
+            if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
+                if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
+                    triggerOnlinePayment();
+                } else {
+                    queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
+                    JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
+                    jsonCashfreeNotification.setTxMsg(null);
+                    jsonCashfreeNotification.setTxTime(null);
+                    jsonCashfreeNotification.setReferenceId(null);
+                    jsonCashfreeNotification.setPaymentMode(null);  // cash
+                    jsonCashfreeNotification.setSignature(null);
+                    jsonCashfreeNotification.setOrderAmount(jsonToken.getJsonPurchaseOrder().getOrderPrice()); // amount
+                    jsonCashfreeNotification.setTxStatus("SUCCESS");   //SUCCESS
+                    jsonCashfreeNotification.setOrderId(jsonToken.getJsonPurchaseOrder().getTransactionId());   // transactionID
+                    queueApiAuthenticCall.cashFreeQNotify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonCashfreeNotification);
+                }
+            } else {
+                pay();
             }
         });
         initActionsViews(false);
@@ -286,20 +273,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            actionbarBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    iv_home.performClick();
-                }
+            actionbarBack.setOnClickListener((View v) -> {
+                iv_home.performClick();
             });
-            iv_home.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LaunchActivity.getLaunchActivity().activityCommunicator = null;
-                    Intent goToA = new Intent(JoinActivity.this, LaunchActivity.class);
-                    goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(goToA);
-                }
+            iv_home.setOnClickListener((View v) -> {
+                LaunchActivity.getLaunchActivity().activityCommunicator = null;
+                Intent goToA = new Intent(JoinActivity.this, LaunchActivity.class);
+                goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(goToA);
             });
             switch (jsonTokenAndQueue.getBusinessType()) {
                 case DO:
@@ -314,17 +295,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             String time = new AppUtilities().formatTodayStoreTiming(this, jsonTokenAndQueue.getStartHour(), jsonTokenAndQueue.getEndHour());
             tv_hour_saved.setText(time);
             tv_mobile.setText(PhoneFormatterUtil.formatNumber(jsonTokenAndQueue.getCountryShortName(), jsonTokenAndQueue.getStorePhone()));
-            tv_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.makeCall(JoinActivity.this, tv_mobile.getText().toString());
-                }
+            tv_mobile.setOnClickListener((View v) -> {
+                AppUtilities.makeCall(JoinActivity.this, tv_mobile.getText().toString());
             });
-            tv_address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
-                }
+            tv_address.setOnClickListener((View v) -> {
+                AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             });
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (LaunchActivity.getLaunchActivity().isOnline()) {
