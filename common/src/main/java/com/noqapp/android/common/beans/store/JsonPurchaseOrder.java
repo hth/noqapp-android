@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.noqapp.android.common.beans.AbstractDomain;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.TransactionViaEnum;
@@ -119,6 +120,9 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     @JsonProperty("cft")
     private JsonResponseWithCFToken jsonResponseWithCFToken;
+
+    @JsonProperty("cp")
+    private JsonCoupon jsonCoupon;
 
     @JsonProperty("cz")
     private boolean customized;
@@ -365,6 +369,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setJsonResponseWithCFToken(JsonResponseWithCFToken jsonResponseWithCFToken) {
         this.jsonResponseWithCFToken = jsonResponseWithCFToken;
+        return this;
+    }
+
+    public JsonCoupon getJsonCoupon() {
+        return jsonCoupon;
+    }
+
+    public JsonPurchaseOrder setJsonCoupon(JsonCoupon jsonCoupon) {
+        this.jsonCoupon = jsonCoupon;
         return this;
     }
 
