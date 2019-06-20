@@ -54,7 +54,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -385,6 +384,37 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         dismissProgress();
+
+
+
+        if (UserUtils.isLogin()) {
+            if (jsonQueue.isEnabledPayment()) {
+               // do nothing
+            } else {
+                //navigate to after join screen
+                navigateToAfterJoinScreen(token);
+            }
+        } else {
+            //navigate to after join screen
+            navigateToAfterJoinScreen(token);
+        }
+    }
+
+    private void navigateToAfterJoinScreen(JsonToken jsonToken) {
+        jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
+        jsonTokenAndQueue.setToken(jsonToken.getToken());
+        jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
+        jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
+        jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());
+        Intent in = new Intent(this, AfterJoinActivity.class);
+        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+        in.putExtra(IBConstant.KEY_FROM_LIST, false);
+        in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+        in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
+        in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+        in.putExtra("qUserId", queueUserId);
+        in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
     @Override
@@ -403,10 +433,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 //  }
             } else if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 new CustomToast().showToast(this, "You are already in the Queue");
-                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
-                tokenPresenterResponse(jsonToken);
-                btn_pay.setVisibility(View.GONE);
-                btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
+//                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+//                tokenPresenterResponse(jsonToken);
+//                btn_pay.setVisibility(View.GONE);
+//                btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
+                navigateToAfterJoinScreen(jsonToken);
             } else {
                 new CustomToast().showToast(this, "Order failed.");
             }
@@ -575,20 +606,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
-        if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
-            if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                // do nothing
-                iv_home.performClick();
+        if (null != jsonQueue) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.setMessage("Canceling token...");
+                progressDialog.show();
+                queueApiAuthenticCall.setResponsePresenter(this);
+                queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setMessage("Canceling token...");
-                    progressDialog.show();
-                    queueApiAuthenticCall.setResponsePresenter(this);
-                    queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
-                            UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
+                ShowAlertInformation.showNetworkDialog(this);
             }
         } else {
             iv_home.performClick();
