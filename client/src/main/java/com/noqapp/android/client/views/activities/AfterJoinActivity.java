@@ -254,6 +254,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                             String.valueOf(jsonTokenAndQueue.getToken()),
                             codeQR);
                 }
+            }else{
+                queueJsonPurchaseOrderResponse(jsonTokenAndQueue.getJsonPurchaseOrder());
             }
         }
     }
@@ -475,36 +477,41 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     @Override
     public void queueJsonPurchaseOrderResponse(JsonPurchaseOrder jsonPurchaseOrder) {
-        Log.e("respo: ", jsonPurchaseOrder.toString());
-        this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
-        if (null == jsonToken) {
-            jsonToken = new JsonToken();
-        }
-        jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
-        card_amount.setVisibility(View.VISIBLE);
-        // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
-        tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
-        tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
-        if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
-            rl_discount.setVisibility(View.GONE);
-        } else {
-            tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        }
-        ll_order_details.removeAllViews();
-        for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
-            JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
-            TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
-            TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
-            tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
-            tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
-            ll_order_details.addView(inflatedLayout);
-        }
-        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
-            tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
-        } else {
-            tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+        try {
+            Log.e("respo: ", jsonPurchaseOrder.toString());
+            this.jsonTokenAndQueue.setJsonPurchaseOrder(jsonPurchaseOrder);
+            if (null == jsonToken) {
+                jsonToken = new JsonToken();
+            }
+            jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
+            card_amount.setVisibility(View.VISIBLE);
+            // tv_due_amt.setText(currencySymbol + "" + Double.parseDouble(jsonPurchaseOrder.getOrderPrice()) / 100);
+            tv_total_order_amt.setText(currencySymbol + jsonPurchaseOrder.computeFinalAmountWithDiscount());
+            tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
+                rl_discount.setVisibility(View.GONE);
+            } else {
+                tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
+            }
+            ll_order_details.removeAllViews();
+            for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
+                JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
+                LayoutInflater inflater = LayoutInflater.from(this);
+                View inflatedLayout = inflater.inflate(R.layout.order_summary_item, null, false);
+                TextView tv_title = inflatedLayout.findViewById(R.id.tv_title);
+                TextView tv_total_price = inflatedLayout.findViewById(R.id.tv_total_price);
+                tv_title.setText(jsonPurchaseOrderProduct.getProductName() + " " + AppUtilities.getPriceWithUnits(jsonPurchaseOrderProduct.getJsonStoreProduct()) + " " + currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrderProduct.getProductPrice()) + " x " + String.valueOf(jsonPurchaseOrderProduct.getProductQuantity()));
+                tv_total_price.setText(currencySymbol + CommonHelper.displayPrice(new BigDecimal(jsonPurchaseOrderProduct.getProductPrice()).multiply(new BigDecimal(jsonPurchaseOrderProduct.getProductQuantity())).toString()));
+                ll_order_details.addView(inflatedLayout);
+            }
+            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()) {
+                tv_payment_status.setText("Paid via: " + jsonPurchaseOrder.getPaymentMode().getDescription());
+            } else {
+                tv_payment_status.setText("Payment status: " + jsonPurchaseOrder.getPaymentStatus().getDescription());
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
         }
         dismissProgress();
     }

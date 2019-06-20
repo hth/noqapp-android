@@ -54,7 +54,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -575,20 +574,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
-        if (null != jsonQueue && jsonQueue.getServicePayment() == ServicePaymentEnum.R) {
-            if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
-                // do nothing
-                iv_home.performClick();
+        if (null != jsonQueue) {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                progressDialog.setMessage("Canceling token...");
+                progressDialog.show();
+                queueApiAuthenticCall.setResponsePresenter(this);
+                queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
             } else {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setMessage("Canceling token...");
-                    progressDialog.show();
-                    queueApiAuthenticCall.setResponsePresenter(this);
-                    queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
-                            UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(this);
-                }
+                ShowAlertInformation.showNetworkDialog(this);
             }
         } else {
             iv_home.performClick();
