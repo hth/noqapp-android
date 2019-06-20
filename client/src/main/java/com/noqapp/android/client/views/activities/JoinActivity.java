@@ -410,6 +410,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 jsonTokenAndQueue.setToken(jsonToken.getToken());
                 jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
                 jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
+                jsonTokenAndQueue.setJsonPurchaseOrder(token.getJsonPurchaseOrder());
                 Intent in = new Intent(this, AfterJoinActivity.class);
                 in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
                 in.putExtra(IBConstant.KEY_FROM_LIST, false);
