@@ -384,6 +384,37 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         //save data to DB
         TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
         dismissProgress();
+
+
+
+        if (UserUtils.isLogin()) {
+            if (jsonQueue.isEnabledPayment()) {
+               // do nothing
+            } else {
+                //navigate to after join screen
+                navigateToAfterJoinScreen(token);
+            }
+        } else {
+            //navigate to after join screen
+            navigateToAfterJoinScreen(token);
+        }
+    }
+
+    private void navigateToAfterJoinScreen(JsonToken jsonToken) {
+        jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
+        jsonTokenAndQueue.setToken(jsonToken.getToken());
+        jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
+        jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
+        jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());
+        Intent in = new Intent(this, AfterJoinActivity.class);
+        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+        in.putExtra(IBConstant.KEY_FROM_LIST, false);
+        in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+        in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
+        in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+        in.putExtra("qUserId", queueUserId);
+        in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+        startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
     }
 
     @Override
@@ -406,20 +437,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 //                tokenPresenterResponse(jsonToken);
 //                btn_pay.setVisibility(View.GONE);
 //                btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
-                jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
-                jsonTokenAndQueue.setToken(jsonToken.getToken());
-                jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
-                jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
-                jsonTokenAndQueue.setJsonPurchaseOrder(token.getJsonPurchaseOrder());
-                Intent in = new Intent(this, AfterJoinActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
-                in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
-                in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
-                in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-                in.putExtra("qUserId", queueUserId);
-                in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
-                startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
+                navigateToAfterJoinScreen(jsonToken);
             } else {
                 new CustomToast().showToast(this, "Order failed.");
             }
