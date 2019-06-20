@@ -402,10 +402,23 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 //  }
             } else if (token.getJsonPurchaseOrder().getPresentOrderState() == PurchaseOrderStateEnum.PO) {
                 new CustomToast().showToast(this, "You are already in the Queue");
-                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
-                tokenPresenterResponse(jsonToken);
-                btn_pay.setVisibility(View.GONE);
-                btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
+//                queueJsonPurchaseOrderResponse(token.getJsonPurchaseOrder());
+//                tokenPresenterResponse(jsonToken);
+//                btn_pay.setVisibility(View.GONE);
+//                btn_cancel_queue.setLayoutParams(setLayoutWidthParams(true));
+                jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
+                jsonTokenAndQueue.setToken(jsonToken.getToken());
+                jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
+                jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
+                Intent in = new Intent(this, AfterJoinActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+                in.putExtra(IBConstant.KEY_FROM_LIST, false);
+                in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+                in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
+                in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
+                in.putExtra("qUserId", queueUserId);
+                in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
+                startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
             } else {
                 new CustomToast().showToast(this, "Order failed.");
             }
