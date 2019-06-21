@@ -1,13 +1,12 @@
 package com.noqapp.android.common.beans.payment.cashfree;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.SkipPaymentGatewayEnum;
 
 import java.io.Serializable;
 
@@ -42,9 +41,6 @@ public class JsonResponseWithCFToken extends AbstractDomain implements Serializa
 
     @JsonProperty("orderAmount")
     private String orderAmount;
-
-    @JsonProperty("spg")
-    private SkipPaymentGatewayEnum skipPaymentGateway = SkipPaymentGatewayEnum.NO;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -85,15 +81,6 @@ public class JsonResponseWithCFToken extends AbstractDomain implements Serializa
         return this;
     }
 
-    public SkipPaymentGatewayEnum getSkipPaymentGateway() {
-        return skipPaymentGateway;
-    }
-
-    public JsonResponseWithCFToken setSkipPaymentGateway(SkipPaymentGatewayEnum skipPaymentGateway) {
-        this.skipPaymentGateway = skipPaymentGateway;
-        return this;
-    }
-
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -109,7 +96,6 @@ public class JsonResponseWithCFToken extends AbstractDomain implements Serializa
                 ", message='" + message + '\'' +
                 ", cftoken='" + cftoken + '\'' +
                 ", orderAmount='" + orderAmount + '\'' +
-                ", skipPaymentGateway=" + skipPaymentGateway +
                 ", error=" + error +
                 '}';
     }
