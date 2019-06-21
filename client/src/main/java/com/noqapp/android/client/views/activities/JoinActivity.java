@@ -33,7 +33,6 @@ import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
 import com.noqapp.android.client.presenter.QueueJsonPurchaseOrderPresenter;
 import com.noqapp.android.client.presenter.ResponsePresenter;
 import com.noqapp.android.client.presenter.TokenPresenter;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
 import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -87,7 +86,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private TextView tv_name;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
-    private JsonQueue jsonQueue;
+    //  private JsonQueue jsonQueue;
     private String codeQR;
     private String tokenValue;
     private String topic;
@@ -110,6 +109,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private FrameLayout frame_coupon;
     private LinearLayout ll_order_details;
     private RelativeLayout rl_discount;
+    private boolean isEnabledPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,11 +239,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
-            jsonQueue = (JsonQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_QUEUE);
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
-            if (null != jsonQueue) {
-                currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
-            } else if (null != jsonTokenAndQueue) {
+            isEnabledPayment = bundle.getBooleanExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, false);
+            if (null != jsonTokenAndQueue) {
                 currencySymbol = AppUtilities.getCurrencySymbol(jsonTokenAndQueue.getCountryShortName());
             }
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
@@ -309,6 +307,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
+
         }
     }
 
@@ -362,7 +361,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         dismissProgress();
 
         if (UserUtils.isLogin()) {
-            if (jsonQueue.isEnabledPayment()) {
+            if (isEnabledPayment) {
                 // do nothing
             } else {
                 //navigate to after join screen
@@ -381,9 +380,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
         jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());
         Intent in = new Intent(this, AfterJoinActivity.class);
-        in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
+        in.putExtra(IBConstant.KEY_CODE_QR, jsonTokenAndQueue.getCodeQR());
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
-        in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
         in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonTokenAndQueue);
         in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
         in.putExtra("qUserId", queueUserId);
@@ -471,7 +469,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
             if (AppUtilities.isRelease()) {
                 try {
-                    String displayName = null != jsonQueue ? jsonQueue.getDisplayName() : (null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A");
+                    String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
                     Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE)
                             .putCustomAttribute("Queue Name", displayName));
                 } catch (NullPointerException e) {
@@ -496,7 +494,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     guardianId = jp.getQueueUserId();
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
-                if (jsonQueue.isEnabledPayment()) {
+                if (isEnabledPayment) {
                     queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
@@ -571,18 +569,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
-        if (null != jsonQueue) {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.setMessage("Canceling token...");
-                progressDialog.show();
-                queueApiAuthenticCall.setResponsePresenter(this);
-                queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
-                        UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
-            } else {
-                ShowAlertInformation.showNetworkDialog(this);
-            }
+        if (LaunchActivity.getLaunchActivity().isOnline()) {
+            progressDialog.setMessage("Canceling token...");
+            progressDialog.show();
+            queueApiAuthenticCall.setResponsePresenter(this);
+            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
+                    UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
         } else {
-            iv_home.performClick();
+            ShowAlertInformation.showNetworkDialog(this);
         }
     }
 
