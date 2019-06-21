@@ -86,7 +86,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private TextView tv_name;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
-    //  private JsonQueue jsonQueue;
     private String codeQR;
     private String tokenValue;
     private String topic;
@@ -696,7 +695,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        // tv_coupon_name.setText(jsonCoupon.getDiscountName());
+        if (null != jsonPurchaseOrder.getJsonCoupon())
+            tv_coupon_name.setText(jsonPurchaseOrder.getJsonCoupon().getDiscountName());
         ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);
