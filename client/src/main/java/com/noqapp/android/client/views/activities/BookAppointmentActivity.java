@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -104,10 +105,11 @@ public class BookAppointmentActivity extends BaseActivity implements
         });
         horizontalCalendarView.refresh();
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
+        String styledText = "<big><b><font color='#ffffff'>Store is closed.</font></b></big> <br><small><b><font color='#ffffff'>Not accepting appointments for today</font></b></small>";
+        tv_empty_slots.setText(Html.fromHtml(styledText));
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
         rv_available_date.setItemAnimator(new DefaultItemAnimator());
-
         sp_name_list = findViewById(R.id.sp_name_list);
 
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
@@ -170,20 +172,25 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
         List<AppointmentModel> listData = new ArrayList<>();
-        String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
-        String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
-        for (int i = 0; i < timeSlot.size() - 1; i++) {
-            listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
-        }
-        appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
-        rv_available_date.setAdapter(appointmentDateAdapter);
-        appointmentDateAdapter.notifyDataSetChanged();
-        selectedPos = -1;
-        if (listData.size() == 0) {
+        if (storeHourElastic.isDayClosed()) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
             tv_empty_slots.setVisibility(View.GONE);
+            String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
+            String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
+            ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
+            for (int i = 0; i < timeSlot.size() - 1; i++) {
+                listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
+            }
+            appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
+            rv_available_date.setAdapter(appointmentDateAdapter);
+            appointmentDateAdapter.notifyDataSetChanged();
+            selectedPos = -1;
+            if (listData.size() == 0) {
+                tv_empty_slots.setVisibility(View.VISIBLE);
+            } else {
+                tv_empty_slots.setVisibility(View.GONE);
+            }
         }
     }
 
