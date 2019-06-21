@@ -308,7 +308,7 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
             Intent in = new Intent(this, JoinActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonQueue.getCodeQR());
             in.putExtra(IBConstant.KEY_FROM_LIST, false);
-            in.putExtra(IBConstant.KEY_JSON_QUEUE, jsonQueue);
+            in.putExtra(IBConstant.KEY_IS_PAYMENT_ENABLE, jsonQueue.isEnabledPayment());
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             in.putExtra("qUserId", ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId());

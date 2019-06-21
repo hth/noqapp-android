@@ -1,29 +1,5 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.JsonQueue;
-import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
-import com.noqapp.android.common.beans.JsonHour;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.Formatter;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import com.squareup.picasso.Picasso;
-
-import org.joda.time.LocalDateTime;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -42,9 +18,31 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
+
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.noqapp.android.client.BuildConfig;
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.JsonQueue;
+import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
+import com.noqapp.android.common.beans.JsonHour;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.Formatter;
+import com.squareup.picasso.Picasso;
+
+import org.joda.time.LocalDateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -482,6 +480,14 @@ public class AppUtilities extends CommonHelper {
             return "Closed";
         } else {
             return key;
+        }
+    }
+
+    public boolean checkStoreClosedWithTime( StoreHourElastic storeHourElastic){
+        if ((storeHourElastic.getStartHour() == 0 && storeHourElastic.getEndHour() == 0)) {
+            return true;
+        }else {
+            return false;
         }
     }
 

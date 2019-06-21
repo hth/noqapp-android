@@ -172,7 +172,7 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
         List<AppointmentModel> listData = new ArrayList<>();
-        if (storeHourElastic.isDayClosed()) {
+        if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
             tv_empty_slots.setVisibility(View.GONE);
