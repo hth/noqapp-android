@@ -469,7 +469,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         // shown only one time if it is skipped
         if (StringUtils.isNotBlank(reviewDataSkip.getCodeQR())) {
             ReviewDB.deleteReview(reviewData.getCodeQR(), reviewData.getToken());
-            new CustomToast().showToast(launchActivity, "You were Skip");
+            new CustomToast().showToast(launchActivity, "You were skipped");
         }
     }
 
@@ -590,7 +590,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             cv.put(DatabaseTable.Review.KEY_GOTO, "");
             ReviewDB.insert(cv);
         }
-        new CustomToast().showToast(launchActivity, "You were Skip");
+        new CustomToast().showToast(launchActivity, "You were skipped");
         // Clear all activity from stack then launch skip(Join) Screen
         Intent in1 = new Intent(this, LaunchActivity.class);
         in1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
