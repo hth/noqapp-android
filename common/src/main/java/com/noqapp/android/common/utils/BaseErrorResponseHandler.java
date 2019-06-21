@@ -84,6 +84,7 @@ public abstract class BaseErrorResponseHandler {
                     case PURCHASE_ORDER_ALREADY_CANCELLED:
                     case PURCHASE_ORDER_CANNOT_ACTIVATE:
                     case ORDER_PAYMENT_UPDATE_FAILED:
+                    case ORDER_PAYMENT_PAID_ALREADY_FAILED:
                     case PURCHASE_ORDER_PRODUCT_NOT_FOUND:
                     case FAILED_PLACING_MEDICAL_ORDER_AS_INCORRECT_BUSINESS:
 
