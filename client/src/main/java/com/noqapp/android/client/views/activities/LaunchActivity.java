@@ -61,6 +61,7 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
@@ -106,7 +107,8 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
-public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter, AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter,
+        AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     private TextView tv_badge;
@@ -127,12 +129,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     public NetworkUtil networkUtil;
     public ProgressDialog progressDialog;
     public ActivityCommunicator activityCommunicator;
-    private final int STORAGE_PERMISSION_CODE = 102;
-    private final String[] STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private static final int LOCATION_PERMISSION_CODE = 99;
-    private String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+
     public double latitute = 0;
     public double longitute = 0;
     public String cityName = "";
@@ -253,7 +250,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, new String[]{mPermission}, LOCATION_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{PermissionUtils.LOCATION_PERMISSION}, PermissionUtils.PERMISSION_REQUEST_LOCATION);
             return;
         }
 
@@ -388,7 +385,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == STORAGE_PERMISSION_CODE) {
+        if (requestCode == PermissionUtils.PERMISSION_REQUEST_STORAGE) {
             try {
                 //both remaining permission allowed
                 if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
@@ -406,10 +403,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 e.printStackTrace();
             }
         }
-        if (requestCode == LOCATION_PERMISSION_CODE) {
+        if (requestCode == PermissionUtils.PERMISSION_REQUEST_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission was granted.
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, PermissionUtils.LOCATION_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
                     callLocationManager();
                 }
             } else {
@@ -1183,10 +1180,10 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 AppUtilities.openPlayStore(launchActivity);
                 break;
             case R.drawable.ic_menu_share:
-                if (isExternalStoragePermissionAllowed()) {
+                if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
                     AppUtilities.shareTheApp(launchActivity);
                 } else {
-                    requestStoragePermission();
+                    PermissionUtils.requestStoragePermission(launchActivity);
                 }
                 break;
             case R.drawable.legal: {
@@ -1202,22 +1199,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         }
     }
 
-    private boolean isExternalStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
 
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                STORAGE_PERMISSION_PERMS,
-                STORAGE_PERMISSION_CODE);
-    }
 
 }
