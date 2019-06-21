@@ -86,7 +86,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private TextView tv_name;
     private JsonToken jsonToken;
     private JsonTokenAndQueue jsonTokenAndQueue;
-    //  private JsonQueue jsonQueue;
     private String codeQR;
     private String tokenValue;
     private String topic;
@@ -236,7 +235,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         queueApiAuthenticCall = new QueueApiAuthenticCall();
         queueApiAuthenticCall.setQueueJsonPurchaseOrderPresenter(this);
         queueApiAuthenticCall.setTokenPresenter(this);
-        LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
@@ -273,7 +271,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 iv_home.performClick();
             });
             iv_home.setOnClickListener((View v) -> {
-                LaunchActivity.getLaunchActivity().activityCommunicator = null;
                 Intent goToA = new Intent(JoinActivity.this, LaunchActivity.class);
                 goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(goToA);
@@ -352,12 +349,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         this.jsonToken = token;
         tokenValue = String.valueOf(token.getToken());
         btn_cancel_queue.setEnabled(true);
-        NoQueueMessagingService.subscribeTopics(topic);
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
-        //save data to DB
-        TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
+
         dismissProgress();
 
         if (UserUtils.isLogin()) {
@@ -374,11 +369,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     }
 
     private void navigateToAfterJoinScreen(JsonToken jsonToken) {
+
         jsonTokenAndQueue.setServingNumber(jsonToken.getServingNumber());
         jsonTokenAndQueue.setToken(jsonToken.getToken());
         jsonTokenAndQueue.setQueueStatus(jsonToken.getQueueStatus());
         jsonTokenAndQueue.setServiceEndTime(jsonToken.getExpectedServiceBegin());
         jsonTokenAndQueue.setJsonPurchaseOrder(jsonToken.getJsonPurchaseOrder());
+        //save data to DB
+        TokenAndQueueDB.saveJoinQueueObject(jsonTokenAndQueue);
+        NoQueueMessagingService.subscribeTopics(topic);
         Intent in = new Intent(this, AfterJoinActivity.class);
         in.putExtra(IBConstant.KEY_CODE_QR, jsonTokenAndQueue.getCodeQR());
         in.putExtra(IBConstant.KEY_FROM_LIST, false);
@@ -541,7 +540,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LaunchActivity.getLaunchActivity().activityCommunicator = null;
     }
 
     @Override
@@ -696,7 +694,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         tv_grand_total_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getOrderPrice()));
         tv_coupon_amount.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
-        // tv_coupon_name.setText(jsonCoupon.getDiscountName());
+        if (null != jsonPurchaseOrder.getJsonCoupon())
+            tv_coupon_name.setText(jsonPurchaseOrder.getJsonCoupon().getDiscountName());
         ll_order_details.removeAllViews();
         for (int i = 0; i < jsonPurchaseOrder.getPurchaseOrderProducts().size(); i++) {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = jsonPurchaseOrder.getPurchaseOrderProducts().get(i);

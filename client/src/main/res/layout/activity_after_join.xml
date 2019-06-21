@@ -371,6 +371,128 @@
                     </LinearLayout>
 
 
+                    <FrameLayout
+                        android:id="@+id/frame_coupon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:background="#efefef">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_apply_coupon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:padding="10dp">
+
+                            <ImageView
+                                android:id="@+id/iv_offer"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:background="@drawable/offers"
+                                android:padding="5dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/iv_offer"
+                                android:padding="5dp"
+                                android:text="Apply Coupon Code"
+                                android:textColor="@color/btn_color"
+                                android:textSize="@dimen/text_size_sixteen" />
+
+                            <ImageView
+                                android:id="@+id/iv_offer1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/arrow_right" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_coupon_applied"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:padding="10dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv_check"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:background="@drawable/offers"
+                                android:padding="5dp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/iv_check"
+                                android:orientation="vertical"
+                                android:paddingLeft="5dp">
+
+                                <TextView
+                                    android:id="@+id/tv_coupon_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="----- -----"
+                                    android:textColor="#333"
+                                    android:textSize="@dimen/text_size_sixteen"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Coupon applied successfully"
+                                    android:textSize="@dimen/text_size_fourteen" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:orientation="vertical"
+                                android:paddingRight="10dp">
+
+                                <TextView
+                                    android:id="@+id/tv_coupon_amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:text="Rs -00"
+                                    android:textSize="@dimen/text_size_sixteen" />
+
+                                <TextView
+                                    android:id="@+id/tv_remove_coupon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:text="Remove"
+                                    android:textColor="@color/btn_color"
+                                    android:textSize="@dimen/text_size_sixteen" />
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+                    </FrameLayout>
+
+
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/card_amount"
                         android:layout_width="match_parent"
@@ -538,24 +660,52 @@
             android:orientation="vertical">
 
 
-            <Button
-                android:id="@+id/btn_cancel_queue"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_standard_height"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/btn_bg_inactive"
-                android:clickable="true"
-                android:fontFamily="sans-serif-medium"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:gravity="center"
-                android:text="@string/cancel"
-                android:textAllCaps="true"
-                android:textColor="@color/btn_color"
-                android:textSize="@dimen/text_size_sixteen"
-                android:textStyle="normal" />
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/btn_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_standard_height"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="0.0"
+                    android:background="@drawable/btn_bg_enable"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:text="Pay"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_cancel_queue"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_standard_height"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_bg_inactive"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:text="@string/cancel"
+                    android:textAllCaps="true"
+                    android:textColor="@color/btn_color"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
 
 
             <TextView
