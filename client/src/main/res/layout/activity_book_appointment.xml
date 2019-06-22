@@ -85,10 +85,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:background="#d41717"
+                android:background="#fff"
                 android:padding="15dp"
-                android:text=" Store is closed. \n Not accepting appointments for today"
-                android:textColor="#fff"
+                android:text=" Closed on this day\n Not accepting appointment"
+                android:textColor="#d41717"
                 android:textSize="@dimen/text_size_eighteen"
                 android:textStyle="bold"
                 android:visibility="gone" />

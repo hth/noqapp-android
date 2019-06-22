@@ -105,7 +105,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         });
         horizontalCalendarView.refresh();
         tv_empty_slots = findViewById(R.id.tv_empty_slots);
-        String styledText = "<big><b><font color='#ffffff'>Store is closed.</font></b></big> <br><small><b><font color='#ffffff'>Not accepting appointments for today</font></b></small>";
+        String styledText = "<big><b><font color='#d41717'>Closed on this day</font></b></big><br/><small><b><font color='#d41717'>Not accepting appointment</font></b></small>";
         tv_empty_slots.setText(Html.fromHtml(styledText));
         rv_available_date = findViewById(R.id.rv_available_date);
         rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
