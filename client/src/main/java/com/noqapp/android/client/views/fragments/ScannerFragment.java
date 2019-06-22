@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,23 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
+import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
 public abstract class ScannerFragment extends NoQueueBaseFragment {
-    private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final int RC_BARCODE_CAPTURE = 23;
     private final String TAG = ScannerFragment.class.getSimpleName();
-    private final int CAMERA_AND_STORAGE_PERMISSION_CODE = 109;
-    private final String[] CAMERA_AND_STORAGE_PERMISSION_PERMS = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA
-    };
 
     public ScannerFragment() {
 
@@ -39,7 +32,7 @@ public abstract class ScannerFragment extends NoQueueBaseFragment {
     }
 
     protected void startScanningBarcode() {
-        if (isCameraAndStoragePermissionAllowed()) {
+        if (PermissionUtils.isCameraAndStoragePermissionAllowed(getActivity())) {
             scanBarcode();
         } else {
             requestCameraAndStoragePermission();
@@ -60,40 +53,16 @@ public abstract class ScannerFragment extends NoQueueBaseFragment {
         startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 
-    private boolean isExternalStoragePermissionAllowed() {
-        //Getting the permission status
-        int result_read = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int result_write = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private boolean isCameraPermissionAllowed() {
-        //Getting the permission status
-        int result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        //If permission is granted returning true
-        if (result == PackageManager.PERMISSION_GRANTED)
-            return true;
-        //If permission is not granted returning false
-        return false;
-    }
-
-    private boolean isCameraAndStoragePermissionAllowed() {
-        return (isCameraPermissionAllowed() && isExternalStoragePermissionAllowed());
-    }
 
     private void requestCameraAndStoragePermission() {
         requestPermissions(
-                CAMERA_AND_STORAGE_PERMISSION_PERMS,
-                CAMERA_AND_STORAGE_PERMISSION_CODE);
+                PermissionUtils.CAMERA_AND_STORAGE_PERMISSIONS,
+                PermissionUtils.PERMISSION_REQUEST_CAMERA_AND_STORAGE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == CAMERA_AND_STORAGE_PERMISSION_CODE) {
+        if (requestCode == PermissionUtils.PERMISSION_REQUEST_CAMERA_AND_STORAGE) {
             try {
                 //both remaining permission allowed
                 if (grantResults.length == 2 && (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
