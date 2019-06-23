@@ -31,7 +31,7 @@
                 android:padding="10dp"
                 android:textColor="@android:color/white"
                 android:background="@android:color/black"
-                android:text=" Gps is disabled, in order to get coupon/offer for your city you need to enable GPS of your device"
+                android:text=" GPS is disabled, in order to get coupon/offer for your city you need to enable GPS on your device"
                 android:visibility="gone" />
 
         </RelativeLayout>

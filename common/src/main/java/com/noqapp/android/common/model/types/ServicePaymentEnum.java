@@ -7,6 +7,7 @@ import java.util.List;
  * hitender
  * 2019-03-13 11:45
  */
+@Deprecated
 public enum ServicePaymentEnum {
     R("R", "Required"),
     O("O", "Optional");
