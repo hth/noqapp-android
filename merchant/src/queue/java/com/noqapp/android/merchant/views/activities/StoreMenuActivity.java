@@ -1,5 +1,30 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
@@ -30,30 +55,6 @@ import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
-
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -285,6 +286,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         final EditText edt_id = view.findViewById(R.id.edt_id);
         final RadioGroup rg_user_id = view.findViewById(R.id.rg_user_id);
         final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
+        final RadioButton rb_customer_id = view.findViewById(R.id.rb_customer_id);
         builder.setView(view);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -301,6 +303,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                 }
             }
         });
+        rb_customer_id.setVisibility(View.GONE);
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
         btn_create_token.setText("Search Customer");

@@ -1,5 +1,18 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.appcompat.app.AlertDialog;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -35,18 +48,6 @@ import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -195,7 +196,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = customDialogView.findViewById(R.id.iv_banner);
         tvcount = customDialogView.findViewById(R.id.tvcount);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();

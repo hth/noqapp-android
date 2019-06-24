@@ -1,104 +1,100 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@android:color/white">
+    android:background="@android:color/transparent">
 
     <RelativeLayout
-        android:id="@+id/ll_top"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/color_action_bar">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@android:color/white">
 
-        <ImageView
-            android:id="@+id/actionbarBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/cross"
-            android:padding="10dp" />
-
-
-        <TextView
-            android:id="@+id/tv_toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/create_token"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_top"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:padding="20dp">
-
-        <ImageView
-                android:id="@+id/iv_banner"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/token_banner_image_height"
-                android:layout_marginLeft="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="100dp"
-                android:background="@drawable/before_token_generated"/>
-
-        <LinearLayout
-            android:id="@+id/ll_center"
+        <RelativeLayout
+            android:id="@+id/ll_top"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_banner"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="25dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="50dp"
+            android:background="@color/color_action_bar">
 
-            <TextView
-                android:id="@+id/tvtitle"
+            <ImageView
+                android:id="@+id/actionbarBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="Click button to create token"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_twelve" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/cross"
+                android:padding="10dp" />
+
 
             <TextView
-                android:id="@+id/tvcount"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/button_drawable_red"
-                android:gravity="center"
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/create_token"
                 android:textColor="@android:color/white"
-                android:textSize="30sp"
-                android:visibility="invisible" />
-        </LinearLayout>
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btn_create_token"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/ll_center"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/button_drawable_red"
-            android:text="@string/create_token"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_sixteen" />
+        </RelativeLayout>
 
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_top"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:id="@+id/ll_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Click button to create token"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+                <TextView
+                    android:id="@+id/tvcount"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/button_drawable_red"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_create_token"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/ll_center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/button_drawable_red"
+                android:text="@string/create_token"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_sixteen" />
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
-
-</RelativeLayout>
+</ScrollView>
