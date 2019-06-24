@@ -1,10 +1,12 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.AppointmentStatusEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.model.types.AppointmentStatusEnum;
 
 import java.io.Serializable;
 
@@ -68,10 +70,11 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     private ErrorEncounteredJson error;
 
     // add to keep track the actual assign slot in case of splitting the slot to show in appointment UI
+    @JsonIgnore
     private int multipleSlotStartTiming;
 
+    @JsonIgnore
     private int multipleSlotEndTiming;
-
 
     public String getScheduleAppointmentId() {
         return scheduleAppointmentId;
@@ -181,18 +184,22 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
+    @JsonIgnoreProperties
     public int getMultipleSlotStartTiming() {
         return multipleSlotStartTiming;
     }
 
+    @JsonIgnoreProperties
     public void setMultipleSlotStartTiming(int multipleSlotStartTiming) {
         this.multipleSlotStartTiming = multipleSlotStartTiming;
     }
 
+    @JsonIgnoreProperties
     public int getMultipleSlotEndTiming() {
         return multipleSlotEndTiming;
     }
 
+    @JsonIgnoreProperties
     public void setMultipleSlotEndTiming(int multipleSlotEndTiming) {
         this.multipleSlotEndTiming = multipleSlotEndTiming;
     }

@@ -238,9 +238,13 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             // set to keep track the actual assign slot in case of splitting the slot to show in appointment UI
             js.setMultipleSlotStartTiming(js.getStartTime());
             js.setMultipleSlotEndTiming(js.getEndTime());
-            ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
-                    AppUtils.getTimeFourDigitWithColon(js.getEndTime()), false);
-            Log.e("no of time slots", "" + timeSlot.size());
+            ArrayList<String> timeSlot = AppUtils.getTimeSlots(
+                    appointmentDuration,
+                    AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
+                    AppUtils.getTimeFourDigitWithColon(js.getEndTime()),
+                    false);
+
+            Log.e("Number of time slots", "" + timeSlot.size());
             if (timeSlot.size() == 0 || timeSlot.size() == 1) {
                 events.add(temp.get(i));
             } else {
