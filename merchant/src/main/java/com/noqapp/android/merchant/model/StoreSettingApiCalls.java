@@ -71,7 +71,7 @@ public class StoreSettingApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("removeSchedule", String.valueOf(response.body()));
-                        storeSettingPresenter.queueSettingResponse(response.body());
+                        storeSettingPresenter.queueSettingModifyResponse(response.body());
                     } else {
                         Log.e(TAG, "Found error while removeSchedule");
                         storeSettingPresenter.responseErrorPresenter(response.body().getError());
@@ -102,7 +102,7 @@ public class StoreSettingApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "Modify setting, response " + response.body().toString());
-                            storeSettingPresenter.queueSettingResponse(response.body());
+                            storeSettingPresenter.queueSettingModifyResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to modify setting");
                             storeSettingPresenter.queueSettingError();
@@ -137,7 +137,7 @@ public class StoreSettingApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "serviceCost setting, response" + response.body().toString());
-                            storeSettingPresenter.queueSettingResponse(response.body());
+                            storeSettingPresenter.queueSettingModifyResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to serviceCost setting");
                             storeSettingPresenter.queueSettingError();
@@ -172,7 +172,7 @@ public class StoreSettingApiCalls {
                     if (null != response.body() && null == response.body().getError()) {
                         if (StringUtils.isNotBlank(response.body().getCodeQR())) {
                             Log.d(TAG, "appointment setting, response" + response.body().toString());
-                            storeSettingPresenter.queueSettingResponse(response.body());
+                            storeSettingPresenter.queueSettingModifyResponse(response.body());
                         } else {
                             Log.e(TAG, "Failed to appointment setting");
                             storeSettingPresenter.queueSettingError();

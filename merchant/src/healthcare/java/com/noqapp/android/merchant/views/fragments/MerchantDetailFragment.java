@@ -108,22 +108,21 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
-        ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
-        tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        iv_banner = customDialogView.findViewById(R.id.iv_banner);
-        tvcount = customDialogView.findViewById(R.id.tvcount);
-        ll_main_section = customDialogView.findViewById(R.id.ll_main_section);
-        ll_mobile = customDialogView.findViewById(R.id.ll_mobile);
-        edt_mobile = customDialogView.findViewById(R.id.edt_mobile);
-        sp_patient_list = customDialogView.findViewById(R.id.sp_patient_list);
-        tv_select_patient = customDialogView.findViewById(R.id.tv_select_patient);
+        View view = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
+        ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
+        tv_create_token = view.findViewById(R.id.tvtitle);
+        tvcount = view.findViewById(R.id.tvcount);
+        ll_main_section = view.findViewById(R.id.ll_main_section);
+        ll_mobile = view.findViewById(R.id.ll_mobile);
+        edt_mobile = view.findViewById(R.id.edt_mobile);
+        sp_patient_list = view.findViewById(R.id.sp_patient_list);
+        tv_select_patient = view.findViewById(R.id.tv_select_patient);
 
 
-        final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
-        final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
-        final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
-        builder.setView(customDialogView);
+        final EditText edt_id = view.findViewById(R.id.edt_id);
+        final RadioGroup rg_user_id = view.findViewById(R.id.rg_user_id);
+        final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
+        builder.setView(view);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -140,12 +139,12 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         });
         cid = "";
-        ccp = customDialogView.findViewById(R.id.ccp);
+        ccp = view.findViewById(R.id.ccp);
         String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         ccp.setDefaultCountryUsingNameCode(String.valueOf(c_code));
-        btn_create_order = customDialogView.findViewById(R.id.btn_create_order);
-        btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
+        btn_create_order = view.findViewById(R.id.btn_create_order);
+        btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_token.setText("Search Patient");
         btn_create_token.setOnClickListener(new View.OnClickListener() {
             @Override

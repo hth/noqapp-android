@@ -10,7 +10,6 @@ import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
@@ -156,8 +155,6 @@ public class JsonQueue implements Serializable {
     @JsonProperty("cp")
     private int cancellationPrice;
 
-    @JsonProperty("sp")
-    private ServicePaymentEnum servicePayment;
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/
@@ -643,15 +640,6 @@ public class JsonQueue implements Serializable {
         return this;
     }
 
-    public ServicePaymentEnum getServicePayment() {
-        return servicePayment;
-    }
-
-    public JsonQueue setServicePayment(ServicePaymentEnum servicePayment) {
-        this.servicePayment = servicePayment;
-        return this;
-    }
-
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -735,7 +723,6 @@ public class JsonQueue implements Serializable {
         sb.append(", availableTokenCount=").append(availableTokenCount);
         sb.append(", productPrice=").append(productPrice);
         sb.append(", cancellationPrice=").append(cancellationPrice);
-        sb.append(", servicePayment=").append(servicePayment);
         sb.append(", bizCategoryId='").append(bizCategoryId).append('\'');
         sb.append(", famousFor='").append(famousFor).append('\'');
         sb.append(", discount=").append(discount);

@@ -76,7 +76,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected Context context;
     protected TextView tv_create_token;
     protected Button btn_create_token;
-    protected ImageView iv_banner;
     protected TextView tvcount;
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList = new ArrayList<>();
@@ -85,7 +84,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     protected ProgressBar progressDialog;
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
-
     protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next, tv_skip;
     private Chronometer chronometer;
     protected int currrentpos = 0;
@@ -331,7 +329,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                 case S:
                     tv_create_token.setText("The generated token no is ");
                     btn_create_token.setText(context.getString(R.string.done));
-                    iv_banner.setBackgroundResource(R.drawable.after_token_generated);
                     tvcount.setText(String.valueOf(token.getToken()));
                     tvcount.setVisibility(View.VISIBLE);
                     btn_create_token.setClickable(true);

@@ -1,13 +1,11 @@
 package com.noqapp.android.merchant.presenter.beans.body;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
 
 import java.io.Serializable;
 
@@ -86,8 +84,6 @@ public class StoreSetting implements Serializable {
     @JsonProperty("cp")
     private int cancellationPrice;
 
-    @JsonProperty("sp")
-    private ServicePaymentEnum servicePayment;
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/
@@ -275,15 +271,6 @@ public class StoreSetting implements Serializable {
         return this;
     }
 
-    public ServicePaymentEnum getServicePayment() {
-        return servicePayment;
-    }
-
-    public StoreSetting setServicePayment(ServicePaymentEnum servicePayment) {
-        this.servicePayment = servicePayment;
-        return this;
-    }
-
     public int getFreeFollowupDays() {
         return freeFollowupDays;
     }
@@ -375,7 +362,6 @@ public class StoreSetting implements Serializable {
                 ", scheduledUntilDay='" + scheduledUntilDay + '\'' +
                 ", productPrice=" + productPrice +
                 ", cancellationPrice=" + cancellationPrice +
-                ", servicePayment=" + servicePayment +
                 ", storeActionType=" + storeActionType +
                 ", error=" + error +
                 '}';
