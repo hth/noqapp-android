@@ -241,17 +241,10 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                     sp_name_list.setVisibility(View.GONE);
             }
 
-            switch (jsonQueue.getServicePayment()) {
-                case R:
-                    btn_joinQueue.setVisibility(View.GONE);
-                    btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
-                    break;
-                case O:
-                    btn_joinQueue.setVisibility(View.VISIBLE);
-                    btn_pay_and_joinQueue.setVisibility(View.GONE);
-                    break;
-            }
-            if (!jsonQueue.isEnabledPayment()) {
+            if (jsonQueue.isEnabledPayment()) {
+                btn_joinQueue.setVisibility(View.GONE);
+                btn_pay_and_joinQueue.setVisibility(View.VISIBLE);
+            } else {
                 btn_joinQueue.setVisibility(View.VISIBLE);
                 btn_pay_and_joinQueue.setVisibility(View.GONE);
             }

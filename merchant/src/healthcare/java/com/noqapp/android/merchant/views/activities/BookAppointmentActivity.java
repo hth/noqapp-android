@@ -196,7 +196,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                         long diffInMinutes = calculateAppointmentSlot(AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
                                 AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
                         String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
-                        String endTime = getEndTime((int)diffInMinutes,temp[0].trim());
+                        String endTime = getEndTime((int) diffInMinutes, temp[0].trim());
                         jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
                         jsonScheduleTemp.setEndTime(AppUtils.removeColon(endTime));
                         jsonScheduleTemp.setScheduleDate(new AppUtils().getDateWithFormat(selectedDate));
@@ -368,12 +368,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
 
 
     private void searchPatientWithMobileNoORCustomerId() {
-        AlertDialog.Builder builder;
-        if (new AppUtils().isTablet(getApplicationContext())) {
-            builder = new AlertDialog.Builder(this);
-        } else {
-            builder = new AlertDialog.Builder(this, R.style.FullScreenDialogTheme);
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.FullScreenDialogTheme);
         LayoutInflater inflater = LayoutInflater.from(this);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_search_patient_for_appointment, null, false);
@@ -401,6 +396,15 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 R.layout.spinner_item, times);
         sp_end_time.setAdapter(sp_adapter);
         sp_start_time.setAdapter(sp_adapter);
+        String[] split = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+        int selectStart = times.indexOf(split[0].trim());
+        int selectEnd = times.indexOf(split[1].trim());
+        if (selectStart != -1) {
+            sp_start_time.setSelection(selectStart);
+        }
+        if (selectEnd != -1) {
+            sp_end_time.setSelection(selectEnd);
+        }
         final EditText edt_id = customDialogView.findViewById(R.id.edt_id);
         final RadioGroup rg_user_id = customDialogView.findViewById(R.id.rg_user_id);
         final RadioButton rb_mobile = customDialogView.findViewById(R.id.rb_mobile);
@@ -595,7 +599,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
             long endTime = calendar1.getTimeInMillis();
             long duration = endTime - startTime;
             long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
-            Log.e("Booked Slots in min : ",String.valueOf(diffInMinutes));
+            Log.e("Booked Slots in min : ", String.valueOf(diffInMinutes));
             return diffInMinutes;
         } catch (Exception e) {
             e.printStackTrace();
@@ -612,12 +616,12 @@ public class BookAppointmentActivity extends AppCompatActivity implements
 
             Calendar calendar2 = Calendar.getInstance();
             calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
-            calendar2.set(Calendar.MINUTE, fromMinute+slotMinute);
+            calendar2.set(Calendar.MINUTE, fromMinute + slotMinute);
             long currentTime = calendar2.getTimeInMillis();
 
             DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            String str =  sdfTime.format(new Date(currentTime));
-            Log.e("Booked Slots end time :",str);
+            String str = sdfTime.format(new Date(currentTime));
+            Log.e("Booked Slots end time :", str);
             return str;
         } catch (Exception e) {
             e.printStackTrace();
