@@ -422,6 +422,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:minLines="1"
                                     android:paddingRight="5dp"
                                     android:textSize="@dimen/text_size_twelve" />
 
@@ -637,6 +640,8 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
                                     android:orientation="horizontal"
                                     android:weightSum="1">
 
@@ -645,7 +650,7 @@
                                         android:layout_width="0dp"
                                         android:layout_height="40dp"
                                         android:layout_gravity="center_vertical"
-                                        android:layout_margin="5dp"
+                                        android:layout_marginRight="5dp"
                                         android:layout_weight=".5"
                                         android:background="@drawable/sp_background" />
 
@@ -653,11 +658,9 @@
                                         android:id="@+id/btn_pay_now"
                                         android:layout_width="0dp"
                                         android:layout_height="40dp"
-                                        android:layout_margin="5dp"
+                                        android:layout_marginLeft="5dp"
                                         android:layout_weight=".5"
                                         android:background="@drawable/bg_nogradient_round"
-                                        android:paddingLeft="10dp"
-                                        android:paddingRight="10dp"
                                         android:text="Pay Total"
                                         android:textColor="@android:color/white"
                                         android:textSize="@dimen/text_size_fourteen"
@@ -665,56 +668,60 @@
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_partial"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginRight="10dp"
                                     android:orientation="horizontal"
                                     android:weightSum="1">
 
                                     <EditText
                                         android:id="@+id/edt_amount"
                                         android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="10dp"
+                                        android:layout_height="40dp"
+                                        android:layout_marginRight="5dp"
                                         android:layout_weight=".5"
                                         android:background="@drawable/edt_roun_rect"
                                         android:hint="amount"
                                         android:inputType="numberDecimal"
                                         android:maxLines="1"
                                         android:minLines="1"
-                                        android:padding="10dp"
+                                        android:padding="5dp"
                                         android:textColorHint="@android:color/darker_gray" />
 
                                     <Button
                                         android:id="@+id/btn_pay_partial"
                                         android:layout_width="0dp"
                                         android:layout_height="40dp"
-                                        android:layout_margin="10dp"
+                                        android:layout_marginLeft="5dp"
                                         android:layout_weight=".5"
                                         android:background="@drawable/bg_nogradient_round"
-                                        android:paddingLeft="10dp"
-                                        android:paddingRight="10dp"
                                         android:text="Pay Partial"
                                         android:textColor="@android:color/white"
-
                                         android:textSize="@dimen/text_size_fourteen"
                                         android:visibility="visible" />
                                 </LinearLayout>
                             </LinearLayout>
 
-                            <RelativeLayout
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="10dp"
+                                android:orientation="horizontal">
 
                                 <FrameLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
                                     android:layout_marginRight="5dp"
-                                    android:layout_toLeftOf="@+id/btn_print">
+                                    android:layout_weight=".5">
 
                                     <Button
                                         android:id="@+id/btn_refund"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:background="@drawable/bg_nogradient_round"
                                         android:paddingLeft="10dp"
@@ -726,7 +733,7 @@
 
                                     <Button
                                         android:id="@+id/btn_discount"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:background="@drawable/bg_nogradient_round"
                                         android:paddingLeft="10dp"
@@ -737,7 +744,7 @@
 
                                     <Button
                                         android:id="@+id/btn_remove_discount"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:background="@drawable/bg_nogradient_round"
                                         android:paddingLeft="10dp"
@@ -750,20 +757,16 @@
 
                                 <Button
                                     android:id="@+id/btn_print"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="40dp"
-                                    android:layout_alignParentRight="true"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginRight="5dp"
+                                    android:layout_weight=".5"
                                     android:background="@drawable/bg_nogradient_round"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
                                     android:text="Print invoice"
                                     android:textColor="@android:color/white"
                                     android:textSize="@dimen/text_size_fourteen" />
 
-                            </RelativeLayout>
+                            </LinearLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>

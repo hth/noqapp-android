@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.PaymentPermissionEnum;
@@ -28,9 +31,6 @@ import com.noqapp.android.merchant.views.activities.DocumentUploadActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 
@@ -100,7 +100,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
 //        }
 
 
-        if (null != LaunchActivity.getLaunchActivity()) {
+        if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
             recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                     PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         }

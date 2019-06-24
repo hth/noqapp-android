@@ -12,7 +12,7 @@ public enum PurchaseOrderStateEnum {
     FO("FO", "Failed Order", "Failed Order"),
     PO("PO", "Placed Order", "Placed Order"),
     NM("NM", "Notified Merchant", "Notified Merchant"),
-    OP("OP", "Order being Processed", "Order being Processed"),
+    OP("OP", "Order being Processed", "Order being Prepared"),
     PR("PR", "Processed", "Processed"),
     //Based on PurchaseOrder if request pickup or delivery it bifurcates
     RP("RP", "Ready for Pickup", "Ready for Pickup"),

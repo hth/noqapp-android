@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -92,6 +93,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private TextView tv_coupon_discount_amt;
     private Button btn_discount, btn_remove_discount;
     private TextView tv_discount_value;
+    private LinearLayout ll_partial;
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -145,6 +147,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         btn_discount = findViewById(R.id.btn_discount);
         btn_remove_discount = findViewById(R.id.btn_remove_discount);
         tv_discount_value = findViewById(R.id.tv_discount_value);
+        ll_partial = findViewById(R.id.ll_partial);
         btn_discount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -501,6 +504,13 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             if (getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY, false)) {
                 tv_payment_msg.setVisibility(View.GONE);
             }
+        }
+
+        // Partial Payment Show only for HealthCare Services
+        if (getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, false)) {
+            ll_partial.setVisibility(View.VISIBLE);
+        }else{
+            ll_partial.setVisibility(View.GONE);
         }
     }
 

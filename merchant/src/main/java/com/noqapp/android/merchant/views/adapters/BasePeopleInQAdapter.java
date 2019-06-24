@@ -1,5 +1,23 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.DataVisibilityEnum;
@@ -23,23 +41,6 @@ import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-
-import android.content.Context;
-import android.graphics.Color;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -227,10 +228,11 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
                 TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())
                         ? Html.fromHtml("<b>Reg. Id: </b>" + context.getString(R.string.unregister_user))
                         : Html.fromHtml("<b>Reg. Id: </b>" + jsonQueuedPerson.getBusinessCustomerId()));
-        recordHolder.tv_customer_mobile.setText(
-                TextUtils.isEmpty(phoneNo)
-                        ? context.getString(R.string.unregister_user)
-                        : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        if (null != LaunchActivity.getLaunchActivity() && null != LaunchActivity.getLaunchActivity().getUserProfile()) {
+            recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
+                    PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
+        }
+
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
         if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
             recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {

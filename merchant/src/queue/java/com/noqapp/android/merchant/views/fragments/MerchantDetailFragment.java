@@ -296,6 +296,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         Intent in = new Intent(context, OrderDetailActivity.class);
         in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
         in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, isPaymentNotAllowed);
+        in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonTopic.getBusinessType() == BusinessTypeEnum.HS);
         ((Activity) context).startActivity(in);
     }
 

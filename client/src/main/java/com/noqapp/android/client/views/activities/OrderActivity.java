@@ -36,6 +36,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -201,7 +202,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             progressDialog.show();
                             progressDialog.setMessage("Order placing in progress..");
-
                             jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
@@ -525,5 +525,17 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
 
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        super.responseErrorPresenter(errorCode);
+        enableDisableOrderButton(true);
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        super.responseErrorPresenter(eej);
+        enableDisableOrderButton(true);
     }
 }
