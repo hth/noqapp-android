@@ -1,5 +1,23 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.LoginEvent;
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -19,26 +37,7 @@ import com.noqapp.android.merchant.views.interfaces.LoginPresenter;
 import com.noqapp.android.merchant.views.interfaces.MerchantPresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
-import com.google.gson.Gson;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.LoginEvent;
-
 import org.apache.commons.lang3.StringUtils;
-
-import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -51,6 +50,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     private ArrayList<String> userList = new ArrayList<>();
     private LoginApiCalls loginApiCalls;
     private MerchantProfileApiCalls merchantProfileModel;
+    private View view;
 
     public LoginFragment() {
         super();
@@ -58,7 +58,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
-        View view = inflater.inflate(R.layout.frag_login, container, false);
+        view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = view.findViewById(R.id.btn_login);
         actv_email = view.findViewById(R.id.actv_email);
         edt_pwd = view.findViewById(R.id.edt_pwd);
@@ -172,8 +172,9 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                         (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
                                 jsonMerchant.getJsonProfile().getBusinessType() != BusinessTypeEnum.DO)||getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.tv")) {
                     if (new AppUtils().isTablet(getActivity())) {
-                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.3f);
-                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.FILL_PARENT, 0.6f);
+                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
+                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.6f);
+                        view.setVisibility(View.GONE); // to hide  the login view when screen resize
                         LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
                         LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
                         LaunchActivity.getLaunchActivity().enableDisableDrawer(true);

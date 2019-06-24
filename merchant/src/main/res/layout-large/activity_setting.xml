@@ -1045,51 +1045,6 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp">
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".5"
-                                        android:gravity="center_vertical"
-                                        android:padding="5dp"
-                                        android:text="@string/payment_service"
-                                        android:textColor="@color/color_total_val"
-                                        android:textSize="@dimen/text_size_fourteen" />
-
-
-                                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
-                                        android:id="@+id/sc_paid_user"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight=".5"
-                                        segmentedcontrol:columnCount="3"
-                                        segmentedcontrol:distributeEvenly="true"
-                                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                                        segmentedcontrol:radius="6dp"
-                                        segmentedcontrol:radiusForEverySegment="false"
-                                        segmentedcontrol:segmentHorizontalMargin="0dp"
-                                        segmentedcontrol:segmentVerticalMargin="0dp"
-                                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                                        segmentedcontrol:strokeWidth="1dp"
-                                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                                        segmentedcontrol:textVerticalPadding="7dp"
-                                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
-                                </LinearLayout>
-
-
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

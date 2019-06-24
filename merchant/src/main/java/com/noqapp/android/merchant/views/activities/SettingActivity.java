@@ -32,7 +32,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.model.types.ServicePaymentEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
@@ -61,8 +60,6 @@ import java.util.List;
 import java.util.Locale;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
     private ProgressDialog progressDialog;
@@ -82,12 +79,9 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     private EditText edt_appointment_accepting_week, edt_appointment_duration;
 
 
-    private SegmentedControl sc_paid_user, sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline;
+    private SegmentedControl sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline;
 
-
-    private List<String> pay_list = new ArrayList<>();
     private List<String> yes_no_list = new ArrayList<>();
-    private ServicePaymentEnum servicePaymentEnum;
     private LinearLayout ll_payment, ll_follow_up;
     private TextView tv_fee_after_discounted_followup;
     private CardView cv_payment;
@@ -161,7 +155,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         sc_today_closed = findViewById(R.id.sc_today_closed);
         sc_store_offline = findViewById(R.id.sc_store_offline);
         sc_prevent_join = findViewById(R.id.sc_prevent_join);
-        sc_paid_user = findViewById(R.id.sc_paid_user);
 
         View view_prevent_click = findViewById(R.id.view_prevent_click);
         TextView tv_no_permission = findViewById(R.id.tv_no_permission);
@@ -189,8 +182,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             cv_payment.setVisibility(View.GONE);
             isFollowUpAllow = false;
         }
-        pay_list.clear();
-        pay_list.addAll(ServicePaymentEnum.asListOfDescription());
+
         yes_no_list.clear();
         yes_no_list.add(YES);
         yes_no_list.add(NO);
@@ -199,21 +191,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         sc_day_closed.addSegments(yes_no_list);
         sc_store_offline.addSegments(yes_no_list);
 
-
-        sc_paid_user.addSegments(pay_list);
-        sc_paid_user.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    try {
-                        int selection = segmentViewHolder.getAbsolutePosition();
-                        servicePaymentEnum = ServicePaymentEnum.getEnum(pay_list.get(selection));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -574,6 +551,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         }
     }
 
+
     @Override
     public void queueSettingResponse(StoreSetting storeSetting) {
         if (null != storeSetting) {
@@ -621,8 +599,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             edt_appointment_accepting_week.setText(String.valueOf(storeSetting.getAppointmentOpenHowFar()));
 
             if (isFollowUpAllow) {
-                ServicePaymentEnum servicePaymentEnum = storeSetting.getServicePayment();
-                sc_paid_user.setSelectedSegment(pay_list.indexOf(servicePaymentEnum.getDescription()));
                 edt_deduction_amount.setText(String.valueOf(storeSetting.getCancellationPrice() / 100));
                 edt_fees.setText(String.valueOf(storeSetting.getProductPrice() / 100));
 
@@ -633,6 +609,13 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             }
         }
         dismissProgress();
+    }
+
+    @Override
+    public void queueSettingModifyResponse(StoreSetting storeSetting) {
+        new CustomToast().showToast(this, "Settings updated successfully!!!");
+        queueSettingResponse(storeSetting);
+
     }
 
     @Override
@@ -815,7 +798,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             } else {
                 storeSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
             }
-            storeSetting.setServicePayment(servicePaymentEnum);
             storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
             storeSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
         } else {

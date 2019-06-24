@@ -235,6 +235,9 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         List<EventDay> temp = parseEventList(jsonScheduleList);
         for (int i = 0; i < temp.size(); i++) {
             JsonSchedule js = (JsonSchedule) temp.get(i).getEventObject();
+            // set to keep track the actual assign slot in case of splitting the slot to show in appointment UI
+            js.setMultipleSlotStartTiming(js.getStartTime());
+            js.setMultipleSlotEndTiming(js.getEndTime());
             ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, AppUtils.getTimeFourDigitWithColon(js.getStartTime()),
                     AppUtils.getTimeFourDigitWithColon(js.getEndTime()), false);
             Log.e("no of time slots", "" + timeSlot.size());
