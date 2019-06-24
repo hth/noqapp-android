@@ -263,9 +263,11 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         tv_serving_no.setText(jsonPurchaseOrder.getToken() - currentTemp <= 0 ? String.valueOf(jsonPurchaseOrder.getToken()) : String.valueOf(currentTemp));
         btn_pay_now.setVisibility(View.GONE);
         switch (jsonPurchaseOrder.getPresentOrderState()) {
-            case OP:
-                tv_status.setText("Order being prepared");
-                break;
+            case VB: {
+                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+                btn_pay_now.setVisibility(View.VISIBLE);
+            }
+            break;
             case PO:
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
                 if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
@@ -274,24 +276,25 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     btn_pay_now.setVisibility(View.GONE);
                 }
                 break;
-            case RD:
+            case OP:
+            case PR:
             case RP:
+            case RD:
+            case OW:
+            case LO:
+            case FD:
+            case DA:
             case OD:
+            case CO:
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+                btn_cancel_order.setVisibility(View.GONE);
                 break;
-            case VB: {
-                tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
-                btn_pay_now.setVisibility(View.VISIBLE);
-            }
-            break;
+
             default:
                 tv_status.setText(jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
         }
         tv_token.setText(String.valueOf(jsonPurchaseOrder.getToken()));
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
-        if (jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.CO) {
-            btn_cancel_order.setVisibility(View.GONE);
-        }
         checkProductWithZeroPrice();
     }
 
