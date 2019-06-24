@@ -13,10 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -61,8 +59,6 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
-
 public class OrderDetailActivity extends AppCompatActivity implements PaymentProcessPresenter,
         PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter,
         CouponApplyRemovePresenter {
@@ -78,12 +74,10 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
     private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
     private Button btn_update_price;
     private CardView cv_notes;
-    private EditText edt_amount;
     private View rl_payment;
-    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_multiple_payment, tv_transaction_via, tv_order_state, tv_transaction_id;
-    private Button btn_pay_partial, btn_refund;
+    private TextView tv_payment_mode, tv_payment_status, tv_address, tv_transaction_via, tv_order_state, tv_transaction_id;
+    private Button btn_refund;
     public static UpdateWholeList updateWholeList;
-    private RelativeLayout rl_multiple;
     private TextView tv_token, tv_q_name, tv_customer_name;
     private OrderItemAdapter adapter;
     private long mLastClickTime = 0;
@@ -134,11 +128,9 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_address = findViewById(R.id.tv_address);
         btn_update_price = findViewById(R.id.btn_update_price);
         tv_cost = findViewById(R.id.tv_cost);
-        tv_multiple_payment = findViewById(R.id.tv_multiple_payment);
         tv_transaction_via = findViewById(R.id.tv_transaction_via);
         tv_order_state = findViewById(R.id.tv_order_state);
         tv_transaction_id = findViewById(R.id.tv_transaction_id);
-        rl_multiple = findViewById(R.id.rl_multiple);
         sp_payment_mode = findViewById(R.id.sp_payment_mode);
         tv_coupon_discount_amt = findViewById(R.id.tv_coupon_discount_amt);
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
@@ -213,7 +205,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_remaining_amount_value = findViewById(R.id.tv_remaining_amount_value);
         tv_paid_amount_value = findViewById(R.id.tv_paid_amount_value);
         cv_notes = findViewById(R.id.cv_notes);
-        edt_amount = findViewById(R.id.edt_amount);
         rl_payment = findViewById(R.id.rl_payment);
         btn_refund = findViewById(R.id.btn_refund);
         btn_refund.setOnClickListener(new View.OnClickListener() {
@@ -257,55 +248,7 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
             }
         });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
-        btn_pay_partial = findViewById(R.id.btn_pay_partial);
         initProgress();
-        btn_pay_partial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (isProductWithoutPrice) {
-                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
-                } else {
-                    if (TextUtils.isEmpty(edt_amount.getText().toString())) {
-                        new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount to pay.");
-                    } else {
-                        if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
-                            new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount less or equal to order amount.");
-                        } else {
-
-                            ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
-                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                @Override
-                                public void btnPositiveClick() {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        progressDialog.show();
-                                        progressDialog.setMessage("Starting payment..");
-                                        progressDialog.setCancelable(false);
-                                        progressDialog.setCanceledOnTouchOutside(false);
-                                        jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                                        jsonPurchaseOrder.setPartialPayment(new BigDecimal(edt_amount.getText().toString()).multiply(new BigDecimal("100")).toString());
-                                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                                        purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                                        purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                                    } else {
-                                        ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
-                                    }
-                                }
-
-                                @Override
-                                public void btnNegativeClick() {
-                                    //Do nothing
-                                }
-                            });
-                            showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
-                        }
-                    }
-                }
-            }
-        });
         btn_update_price.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -422,32 +365,21 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
         btn_remove_discount.setVisibility(View.GONE);
         btn_discount.setVisibility(View.GONE);
-        if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
+        if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
             if (isProductWithoutPrice) {
                 rl_payment.setVisibility(View.GONE);
                 btn_update_price.setVisibility(View.VISIBLE);
             } else {
                 rl_payment.setVisibility(View.VISIBLE);
                 btn_update_price.setVisibility(View.GONE);
-                if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
-                    if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
-                        btn_remove_discount.setVisibility(View.GONE);
-                        btn_discount.setVisibility(View.VISIBLE);
-                    } else {
-                        btn_remove_discount.setVisibility(View.VISIBLE);
-                        btn_discount.setVisibility(View.GONE);
-                    }
+                if (TextUtils.isEmpty(jsonPurchaseOrder.getCouponId())) {
+                    btn_remove_discount.setVisibility(View.GONE);
+                    btn_discount.setVisibility(View.VISIBLE);
+                } else {
+                    btn_remove_discount.setVisibility(View.VISIBLE);
+                    btn_discount.setVisibility(View.GONE);
                 }
-            }
-            if (PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
-                btn_pay_partial.setVisibility(View.GONE);
-                edt_amount.setVisibility(View.GONE);
-                rl_multiple.setVisibility(View.VISIBLE);
-                tv_multiple_payment.setText(currencySymbol + " " + String.valueOf(Double.parseDouble(jsonPurchaseOrder.getPartialPayment()) / 100));
-            } else {
-                rl_multiple.setVisibility(View.GONE);
-                tv_multiple_payment.setText("");
+
             }
         } else {
             rl_payment.setVisibility(View.GONE);
@@ -495,7 +427,6 @@ public class OrderDetailActivity extends AppCompatActivity implements PaymentPro
         if (getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false)) {
             rl_payment.setVisibility(View.GONE);
             btn_update_price.setVisibility(View.GONE);
-            rl_multiple.setVisibility(View.GONE);
             btn_refund.setVisibility(View.GONE);
             tv_payment_msg.setVisibility(View.VISIBLE);
             if (getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY, false)) {
