@@ -486,21 +486,17 @@
 
                     </RelativeLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:id="@+id/rl_payment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="5dp">
-
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_accept_payment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@+id/btn_pay_now"
-                            android:layout_alignParentLeft="true"
-                            android:layout_toLeftOf="@+id/sp_payment_mode"
-                            android:paddingLeft="5dp"
+                            android:paddingLeft="10dp"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
                             android:text="Accept Payment:"
@@ -508,33 +504,38 @@
                             android:textSize="@dimen/text_size_twelve"
                             android:textStyle="bold" />
 
-                        <Spinner
-                            android:id="@+id/sp_payment_mode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_toLeftOf="@+id/btn_pay_now"
-                            android:background="@drawable/sp_background"
-                            android:minWidth="100dp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
-                        <Button
-                            android:id="@+id/btn_pay_now"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/bg_nogradient_round"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="Pay Total"
-                            android:textColor="@android:color/white"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:visibility="visible" />
+                            <Spinner
+                                android:id="@+id/sp_payment_mode"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/sp_background" />
 
-
-                    </RelativeLayout>
+                            <Button
+                                android:id="@+id/btn_pay_now"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_margin="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/bg_nogradient_round"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="Pay Total"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/text_size_fourteen"
+                                android:visibility="visible" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -564,20 +565,23 @@
 
                     </RelativeLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="10dp">
 
                         <FrameLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="15dp"
-                            android:layout_toLeftOf="@+id/btn_print">
+                            android:layout_marginRight="5dp"
+                            android:layout_weight=".5">
 
                             <Button
                                 android:id="@+id/btn_refund"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:background="@drawable/bg_nogradient_round"
                                 android:paddingLeft="10dp"
@@ -588,7 +592,7 @@
 
                             <Button
                                 android:id="@+id/btn_discount"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:background="@drawable/bg_nogradient_round"
                                 android:paddingLeft="10dp"
@@ -599,7 +603,7 @@
 
                             <Button
                                 android:id="@+id/btn_remove_discount"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:background="@drawable/bg_nogradient_round"
                                 android:paddingLeft="10dp"
@@ -611,19 +615,19 @@
 
                         <Button
                             android:id="@+id/btn_print"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
                             android:layout_gravity="right"
+                            android:layout_marginLeft="5dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginRight="15dp"
+                            android:layout_weight=".5"
                             android:background="@drawable/bg_nogradient_round"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:text="Print invoice"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/text_size_fourteen" />
-                    </RelativeLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
