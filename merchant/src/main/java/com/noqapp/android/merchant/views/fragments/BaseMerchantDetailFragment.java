@@ -71,7 +71,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter, DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter,
+        DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,
+        RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
 
     protected Context context;
     protected TextView tv_create_token;
