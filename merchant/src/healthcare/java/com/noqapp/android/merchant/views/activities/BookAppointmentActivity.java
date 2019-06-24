@@ -58,10 +58,14 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -187,9 +191,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                         progressDialog.show();
                         progressDialog.setCancelable(false);
                         progressDialog.setCanceledOnTouchOutside(false);
+
+
+                        long diffInMinutes = calculateAppointmentSlot(AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
+                                AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
                         String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                        String endTime = getEndTime((int)diffInMinutes,temp[0].trim());
                         jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
-                        jsonScheduleTemp.setEndTime(AppUtils.removeColon(temp[1].trim()));
+                        jsonScheduleTemp.setEndTime(AppUtils.removeColon(endTime));
                         jsonScheduleTemp.setScheduleDate(new AppUtils().getDateWithFormat(selectedDate));
                         BookSchedule bookSchedule = new BookSchedule()
                                 .setBusinessCustomer(null)
@@ -202,6 +211,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                     } else {
                         ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                     }
+
                 } else {
                     searchPatientWithMobileNoORCustomerId();
                 }
@@ -561,5 +571,57 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     @Override
     public void passPhoneNo(JsonProfile jsonProfile) {
         findCustomerResponse(jsonProfile);
+    }
+
+
+    private long calculateAppointmentSlot(String strFromTime, String strToTime) {
+        try {
+            int fromHour, fromMinute, toHour, toMinute;
+            fromHour = Integer.parseInt(strFromTime.split(":")[0]);
+            fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
+
+            toHour = Integer.parseInt(strToTime.split(":")[0]);
+            toMinute = Integer.parseInt(strToTime.split(":")[1]);
+
+
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
+            calendar2.set(Calendar.MINUTE, fromMinute);
+
+            long startTime = calendar2.getTimeInMillis();
+            Calendar calendar1 = Calendar.getInstance();
+            calendar1.set(Calendar.HOUR_OF_DAY, toHour);
+            calendar1.set(Calendar.MINUTE, toMinute);
+            long endTime = calendar1.getTimeInMillis();
+            long duration = endTime - startTime;
+            long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+            Log.e("Booked Slots in min : ",String.valueOf(diffInMinutes));
+            return diffInMinutes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    private String getEndTime(int slotMinute, String strFromTime) {
+        try {
+            int fromHour, fromMinute;
+            fromHour = Integer.parseInt(strFromTime.split(":")[0]);
+            fromMinute = Integer.parseInt(strFromTime.split(":")[1]);
+
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.set(Calendar.HOUR_OF_DAY, fromHour);
+            calendar2.set(Calendar.MINUTE, fromMinute+slotMinute);
+            long currentTime = calendar2.getTimeInMillis();
+
+            DateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String str =  sdfTime.format(new Date(currentTime));
+            Log.e("Booked Slots end time :",str);
+            return str;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

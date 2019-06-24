@@ -49,7 +49,7 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("gq")
+    @JsonProperty("gq")
     private String guardianQid;
 
     @JsonProperty("as")
@@ -66,6 +66,12 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    // add to keep track the actual assign slot in case of splitting the slot to show in appointment UI
+    private int multipleSlotStartTiming;
+
+    private int multipleSlotEndTiming;
+
 
     public String getScheduleAppointmentId() {
         return scheduleAppointmentId;
@@ -175,6 +181,22 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public int getMultipleSlotStartTiming() {
+        return multipleSlotStartTiming;
+    }
+
+    public void setMultipleSlotStartTiming(int multipleSlotStartTiming) {
+        this.multipleSlotStartTiming = multipleSlotStartTiming;
+    }
+
+    public int getMultipleSlotEndTiming() {
+        return multipleSlotEndTiming;
+    }
+
+    public void setMultipleSlotEndTiming(int multipleSlotEndTiming) {
+        this.multipleSlotEndTiming = multipleSlotEndTiming;
+    }
+
     public ErrorEncounteredJson getError() {
         return error;
     }
@@ -185,18 +207,22 @@ public class JsonSchedule extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonSchedule{");
-        sb.append("scheduleAppointmentId='").append(scheduleAppointmentId).append('\'');
-        sb.append(", codeQR='").append(codeQR).append('\'');
-        sb.append(", scheduleDate='").append(scheduleDate).append('\'');
-        sb.append(", totalAppointments=").append(totalAppointments);
-        sb.append(", startTime=").append(startTime);
-        sb.append(", endTime=").append(endTime);
-        sb.append(", queueUserId='").append(queueUserId).append('\'');
-        sb.append(", appointmentStatus=").append(appointmentStatus);
-        sb.append(", jsonProfile=").append(jsonProfile);
-        sb.append(", error=").append(error);
-        sb.append('}');
-        return sb.toString();
+        return "JsonSchedule{" +
+                "scheduleAppointmentId='" + scheduleAppointmentId + '\'' +
+                ", codeQR='" + codeQR + '\'' +
+                ", scheduleDate='" + scheduleDate + '\'' +
+                ", totalAppointments=" + totalAppointments +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", queueUserId='" + queueUserId + '\'' +
+                ", guardianQid='" + guardianQid + '\'' +
+                ", appointmentStatus=" + appointmentStatus +
+                ", chiefComplain='" + chiefComplain + '\'' +
+                ", jsonProfile=" + jsonProfile +
+                ", jsonQueueDisplay=" + jsonQueueDisplay +
+                ", error=" + error +
+                ", multipleSlotStartTiming=" + multipleSlotStartTiming +
+                ", multipleSlotEndTiming=" + multipleSlotEndTiming +
+                '}';
     }
 }
