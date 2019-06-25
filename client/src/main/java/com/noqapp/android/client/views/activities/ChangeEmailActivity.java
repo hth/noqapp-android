@@ -64,8 +64,8 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 if (TextUtils.isEmpty(edt_otp.getText())) {
                     edt_otp.setError(getString(R.string.error_otp_blank));
                 } else {
-                    progressDialog.setMessage("OTP validation in progress...");
-                    progressDialog.show();
+                    setProgressMessage("OTP validation in progress...");
+                    showProgress();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     ChangeMailOTP changeMailOTP = new ChangeMailOTP();
                     changeMailOTP.setUserId(edt_email.getText().toString());
@@ -79,8 +79,8 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
                 if (TextUtils.isEmpty(edt_email.getText())) {
                     edt_email.setError(getString(R.string.error_email_blank));
                 } else if (new CommonHelper().isValidEmail(edt_email.getText())) {
-                    progressDialog.setMessage("Request OTP in progress...");
-                    progressDialog.show();
+                    setProgressMessage("Request OTP in progress...");
+                    showProgress();
                     new AppUtilities().hideKeyBoard(ChangeEmailActivity.this);
                     MigrateMail migrateMail = new MigrateMail();
                     migrateMail.setMail(edt_email.getText().toString());

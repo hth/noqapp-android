@@ -45,7 +45,8 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class UserProfileActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter {
+public class UserProfileActivity extends ProfileActivity implements View.OnClickListener,
+        ImageUploadPresenter, ProfilePresenter {
     private TextView tv_name;
     private TextView tv_birthday;
     private EditText edt_address;
@@ -110,7 +111,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             ClientProfileApiCall clientProfileApiCall = new ClientProfileApiCall();
             clientProfileApiCall.setProfilePresenter(this);
             clientProfileApiCall.fetchProfile(UserUtils.getEmail(), UserUtils.getAuth());
@@ -197,8 +198,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                     NoQueueBaseActivity.setUserProfileUri(convertedPath);
 
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Updating profile image");
+                        showProgress();
+                        setProgressMessage("Updating profile image");
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));

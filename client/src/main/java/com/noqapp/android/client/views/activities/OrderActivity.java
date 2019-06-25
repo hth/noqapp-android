@@ -191,17 +191,16 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                progressDialog.show();
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setMessage("Order placing in progress..");
+                showProgress();
+                setProgressCancel(false);
+                setProgressMessage("Order placing in progress..");
                 if (validateForm()) {
                     if (isProductWithoutPrice) {
                         new CustomToast().showToast(OrderActivity.this, "Cannot process as merchant has not set product price");
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Order placing in progress..");
+                            showProgress();
+                            setProgressMessage("Order placing in progress..");
                             jsonPurchaseOrder.setDeliveryAddress(tv_address.getText().toString())
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
@@ -432,7 +431,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         Log.e("User Navigate Back", "Back without payment");
         enableDisableOrderButton(false);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             purchaseOrderApiCall.setResponsePresenter(this);
             purchaseOrderApiCall.cancelPayBeforeOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrderServer);
         } else {

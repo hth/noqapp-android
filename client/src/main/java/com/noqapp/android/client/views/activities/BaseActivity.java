@@ -1,12 +1,15 @@
 package com.noqapp.android.client.views.activities;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.noqapp.android.client.R;
@@ -20,7 +23,8 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
 public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter {
 
-    protected ProgressDialog progressDialog;
+    private Dialog dialog;
+    private TextView tv_loading_msg;
     protected ImageView iv_home;
     protected ImageView actionbarBack;
     protected TextView tv_toolbar_title;
@@ -32,14 +36,32 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     }
 
     private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.lay_progress, null, false);
+        tv_loading_msg = view.findViewById(R.id.tv_loading_msg);
+        builder.setView(view);
+        dialog = builder.create();
     }
 
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
+    protected void setProgressCancel(boolean isCancelled) {
+        if (null != dialog && dialog.isShowing()) {
+            dialog.setCanceledOnTouchOutside(isCancelled);
+            dialog.setCancelable(isCancelled);
+        }
+    }
+protected void dismissProgress() {
+        if (null != dialog && dialog.isShowing())
+            dialog.dismiss();
+    }
+
+    protected void showProgress() {
+        if (null != dialog)
+            dialog.show();
+    }
+
+    protected void setProgressMessage(String msg) {
+        tv_loading_msg.setText(msg);
     }
 
     protected void initActionsViews(boolean isHomeVisible) {

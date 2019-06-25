@@ -40,7 +40,8 @@ import java.util.ArrayList;
 /**
  * Created by chandra on 5/7/17.
  */
-public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener, SearchBusinessStorePresenter {
+public class SearchActivity extends BaseActivity implements SearchAdapter.OnItemClickListener,
+        SearchBusinessStorePresenter {
     private ArrayList<BizStoreElastic> listData = new ArrayList<>();
     private SearchAdapter searchAdapter;
     private String scrollId = "";
@@ -150,7 +151,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     private void performSearch() {
         if (StringUtils.isNotBlank(edt_search.getText().toString())) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                showProgress();
                 SearchStoreQuery searchStoreQuery = new SearchStoreQuery()
                         .setCityName(city)
                         .setLatitude(lat)

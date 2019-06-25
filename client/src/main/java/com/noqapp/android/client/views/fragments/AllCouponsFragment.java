@@ -58,8 +58,8 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
         }
         TextView tv_location_enable = view.findViewById(R.id.tv_location_enable);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching all coupons...");
-            progressDialog.show();
+            setProgressMessage("Fetching all coupons...");
+            showProgress();
             CouponApiCalls couponApiCalls = new CouponApiCalls();
             couponApiCalls.setCouponPresenter(this);
             Location location = new Location();

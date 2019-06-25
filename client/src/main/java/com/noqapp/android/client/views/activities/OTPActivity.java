@@ -172,7 +172,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 btn_login.setBackground(null);
                 btn_login.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 btn_login.requestLayout();
-                progressDialog.setMessage("OTP Generated");
+                setProgressMessage("OTP Generated");
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 // Update UI
@@ -183,8 +183,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     }
 
     protected void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        progressDialog.setMessage("Validating OTP");
-        progressDialog.show();
+        setProgressMessage("Validating OTP");
+        showProgress();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -397,7 +397,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             return;
         }
         if (mVerificationId != null) {
-            progressDialog.show();
+            showProgress();
             new AppUtilities().hideKeyBoard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeOTP(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six));
             signInWithPhoneAuthCredential(credential);
@@ -409,8 +409,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     private void actionLogin() {
         if (validate()) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                progressDialog.setMessage("Generating OTP");
+                showProgress();
+                setProgressMessage("Generating OTP");
                 //countryCode = edt_phone_code.getText().toString();
                 countryCode = ccp.getSelectedCountryCodeWithPlus();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());

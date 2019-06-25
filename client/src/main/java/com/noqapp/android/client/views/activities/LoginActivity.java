@@ -40,7 +40,7 @@ public class LoginActivity extends OTPActivity {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        progressDialog.setMessage("Login in progress");
+        setProgressMessage("Login in progress");
         Login login = new Login();
         login.setPhone(phoneNumber);
         login.setCountryShortName("");

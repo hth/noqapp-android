@@ -59,7 +59,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener, ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
+public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener,
+        ImageUploadPresenter, ProfilePresenter, DependencyPresenter {
     private static final String TAG = UserProfileEditActivity.class.getSimpleName();
 
     private ImageView iv_profile;
@@ -105,7 +106,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         iv_profile = findViewById(R.id.iv_profile);
         clientProfileApiCall = new ClientProfileApiCall();
         iv_profile.setOnClickListener(this);
-        progressDialog.setMessage("Updating profile....");
+        setProgressMessage("Updating profile....");
         isDependent = getIntent().getBooleanExtra(IBConstant.IS_DEPENDENT, false);
         dependentProfile = (JsonProfile) getIntent().getSerializableExtra(IBConstant.DEPENDENT_PROFILE);
         // gaurdianProfile = (JsonProfile) getIntent().getSerializableExtra(NoQueueBaseActivity.KEY_USER_PROFILE);
@@ -199,8 +200,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         int id = v.getId();
         switch (id) {
             case R.id.tv_remove_image: {
-                progressDialog.show();
-                progressDialog.setMessage("Removing profile image");
+                showProgress();
+                setProgressMessage("Removing profile image");
                 clientProfileApiCall.setImageUploadPresenter(this);
                 clientProfileApiCall.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(qUserId));
             }
@@ -270,8 +271,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     }
 
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Updating profile image");
+                        showProgress();
+                        setProgressMessage("Updating profile image");
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -294,7 +295,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             btn_update.setBackgroundResource(R.drawable.btn_bg_enable);
             btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                showProgress();
                 clientProfileApiCall.setProfilePresenter(this);
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_Name.getText().toString();
@@ -395,7 +396,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 }
             } else {
                 btn_update.setText("Add Family Members");
-                progressDialog.setMessage("Adding family member....");
+                setProgressMessage("Adding family member....");
                 tv_toolbar_title.setText("Add Profile");
                 iv_profile.setEnabled(false);
                 iv_profile.setClickable(false);

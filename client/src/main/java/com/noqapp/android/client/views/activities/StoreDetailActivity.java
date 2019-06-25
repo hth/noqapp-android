@@ -114,9 +114,9 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 startActivity(in);
             }
         });
-        progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+        setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
         if (NetworkUtils.isConnectingToInternet(this)) {
-            progressDialog.show();
+            showProgress();
             new StoreDetailApiCalls(this).getStoreDetail(UserUtils.getDeviceId(), bizStoreElastic.getCodeQR());
         } else {
             ShowAlertInformation.showNetworkDialog(this);
@@ -248,10 +248,10 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         rv_photos.setAdapter(interiorAdapter);
         if (null != storeInteriorImages && storeInteriorImages.size() > 0) {
             iv_category_banner.setOnClickListener((View v) -> {
-                    Intent intent = new Intent(StoreDetailActivity.this, SliderActivity.class);
-                    intent.putExtra("pos", 0);
-                    intent.putExtra("imageurls", storeInteriorImages);
-                    startActivity(intent);
+                Intent intent = new Intent(StoreDetailActivity.this, SliderActivity.class);
+                intent.putExtra("pos", 0);
+                intent.putExtra("imageurls", storeInteriorImages);
+                startActivity(intent);
             });
         }
         //
@@ -269,7 +269,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
                     listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
-                } 
+                }
             } else {
                 //TODO(hth) when product without category else it will drop
                 if (null == listDataChild.get(defaultCategory)) {
@@ -286,18 +286,18 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         }
 
         tv_menu.setOnClickListener((View v) -> {
-                if (isOrderNow()) {
-                    Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-                    bundle.putSerializable("listDataChild", listDataChild);
-                    bundle.putSerializable("jsonQueue", jsonQueue);
-                    in.putExtras(bundle);
-                    startActivity(in);
-                } else {
-                    //Do nothing
-                    new CustomToast().showToast(StoreDetailActivity.this, "Please visit store to purchase.");
-                }
+            if (isOrderNow()) {
+                Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
+                bundle.putSerializable("listDataChild", listDataChild);
+                bundle.putSerializable("jsonQueue", jsonQueue);
+                in.putExtras(bundle);
+                startActivity(in);
+            } else {
+                //Do nothing
+                new CustomToast().showToast(StoreDetailActivity.this, "Please visit store to purchase.");
+            }
         });
         if (isStoreOpenToday(jsonStore)) {
             tv_menu.setClickable(true);

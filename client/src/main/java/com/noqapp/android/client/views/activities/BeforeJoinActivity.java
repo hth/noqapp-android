@@ -136,8 +136,8 @@ public class BeforeJoinActivity extends BaseActivity implements QueuePresenter {
                 queueResponse(jsonQueue);
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setMessage("Loading queue details...");
-                    progressDialog.show();
+                    setProgressMessage("Loading queue details...");
+                    showProgress();
                     if (UserUtils.isLogin()) {
                         QueueApiAuthenticCall queueApiAuthenticCall = new QueueApiAuthenticCall();
                         queueApiAuthenticCall.setQueuePresenter(this);

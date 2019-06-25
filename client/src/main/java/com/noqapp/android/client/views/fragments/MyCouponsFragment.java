@@ -51,8 +51,8 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
             rl_empty.setVisibility(View.GONE);
         }
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching coupons...");
-            progressDialog.show();
+            setProgressMessage("Fetching coupons...");
+            showProgress();
             CouponApiCalls couponApiCalls = new CouponApiCalls();
             couponApiCalls.setCouponPresenter(this);
             couponApiCalls.availableCoupon(UserUtils.getDeviceId(),

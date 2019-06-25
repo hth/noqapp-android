@@ -157,10 +157,9 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 else {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         /* New instance of progressbar because it is a new activity. */
-                        progressDialog = new ProgressDialog(ReviewActivity.this);
-                        progressDialog.setIndeterminate(true);
-                        progressDialog.setMessage("Submitting review...");
-                        progressDialog.show();
+                        setProgressCancel(true);
+                        setProgressMessage("Submitting review...");
+                        showProgress();
                         if (UserUtils.isLogin()) {
                             if (jtk.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
                                 OrderReview orderReview = new OrderReview();

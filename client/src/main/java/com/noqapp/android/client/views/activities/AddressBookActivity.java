@@ -59,8 +59,8 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
                 edt_add_address.setError(getString(R.string.error_field_required));
             } else {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Adding address in progress..");
+                    showProgress();
+                    setProgressMessage("Adding address in progress..");
                     clientProfileApiCall.addProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),
                             new JsonUserAddress().setAddress(edt_add_address.getText().toString()).setId(""));
                 }
@@ -141,8 +141,8 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
                             separator.setVisibility(View.VISIBLE);
                             btn_yes.setOnClickListener((View view) -> {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    progressDialog.show();
-                                    progressDialog.setMessage("Deleting address..");
+                                    showProgress();
+                                    setProgressMessage("Deleting address..");
                                     clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(), new JsonUserAddress().setAddress(rdbtn.getText().toString()).setId(rdbtn.getTag().toString()));
                                 } else {
                                     ShowAlertInformation.showNetworkDialog(AddressBookActivity.this);
@@ -192,8 +192,8 @@ public class AddressBookActivity extends BaseActivity implements ProfileAddressP
     @Override
     public void removeAddress(JsonUserAddress jsonUserAddress) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            progressDialog.setMessage("Deleting address..");
+            showProgress();
+            setProgressMessage("Deleting address..");
             clientProfileApiCall.deleteProfileAddress(UserUtils.getEmail(), UserUtils.getAuth(),
                     jsonUserAddress);
         } else {
