@@ -86,6 +86,9 @@ public final class JsonProfile implements Serializable {
     @JsonProperty("ads")
     private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
+    @JsonProperty("up")
+    private JsonUserPreference jsonUserPreference;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -238,6 +241,15 @@ public final class JsonProfile implements Serializable {
 
     public JsonProfile setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
         this.jsonUserAddresses = jsonUserAddresses;
+        return this;
+    }
+
+    public JsonUserPreference getJsonUserPreference() {
+        return jsonUserPreference;
+    }
+
+    public JsonProfile setJsonUserPreference(JsonUserPreference jsonUserPreference) {
+        this.jsonUserPreference = jsonUserPreference;
         return this;
     }
 
