@@ -1,5 +1,6 @@
 package com.noqapp.android.client.network;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -9,6 +10,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -42,6 +45,8 @@ import com.noqapp.android.client.presenter.beans.JsonTokenAndQueueList;
 import com.noqapp.android.client.presenter.beans.ReviewData;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.views.activities.LaunchActivity;
+import com.noqapp.android.client.views.activities.MyApplication;
+import com.noqapp.android.client.views.activities.NoQueueBaseActivity;
 import com.noqapp.android.client.views.receivers.AlarmReceiver;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
@@ -74,11 +79,11 @@ import static com.noqapp.android.client.utils.Constants.Firebase_Type;
 import static com.noqapp.android.client.utils.Constants.ISREVIEW;
 import static com.noqapp.android.client.utils.Constants.QRCODE;
 import static com.noqapp.android.client.utils.Constants.TOKEN;
+import static com.noqapp.android.client.views.activities.MyApplication.isNotificationSoundEnable;
 
 public class NoQueueMessagingService extends FirebaseMessagingService {
 
     private final static String TAG = NoQueueMessagingService.class.getSimpleName();
-
     public NoQueueMessagingService() {
     }
 
@@ -400,7 +405,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                                 NotificationDB.KEY_NOTIFY,
                                 ((JsonMedicalFollowUp) object).getCodeQR(), ((JsonMedicalFollowUp) object).getBody(),
                                 ((JsonMedicalFollowUp) object).getTitle(), BusinessTypeEnum.PA.getName(), imageUrl);
-                    }else if (object instanceof JsonTopicAppointmentData) {
+                    } else if (object instanceof JsonTopicAppointmentData) {
                         Log.e("JsonTopicAppointData", ((JsonTopicAppointmentData) object).toString());
                         NotificationDB.insertNotification(
                                 NotificationDB.KEY_NOTIFY,
@@ -526,7 +531,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
-                int importance = NotificationManager.IMPORTANCE_HIGH;
+                int importance = MyApplication.isNotificationSoundEnable() ?
+                        NotificationManager.IMPORTANCE_HIGH:NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(
                         channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
@@ -540,8 +546,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setContentText(messageBody)
                     .setAutoCancel(true)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10)
-                    .setSound(defaultSoundUri);
+                    .setLights(Color.parseColor("#ffb400"), 50, 10);
+            if (MyApplication.isNotificationSoundEnable()) {
+                mBuilder.setSound(defaultSoundUri);
+            }else{
+                mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+            }
             if (bitmap != null) {
                 mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
                         .bigPicture(bitmap)
@@ -615,7 +625,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             String channelId = "channel-01";
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 String channelName = "Channel Name";
-                int importance = NotificationManager.IMPORTANCE_HIGH;
+                int importance = MyApplication.isNotificationSoundEnable() ?
+                        NotificationManager.IMPORTANCE_HIGH:NotificationManager.IMPORTANCE_LOW;
                 NotificationChannel mChannel = new NotificationChannel(
                         channelId, channelName, importance);
                 notificationManager.createNotificationChannel(mChannel);
@@ -629,8 +640,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     .setContentText(messageBody)
                     .setAutoCancel(true)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
-                    .setLights(Color.parseColor("#ffb400"), 50, 10)
-                    .setSound(defaultSoundUri);
+                    .setLights(Color.parseColor("#ffb400"), 50, 10);
+            if (MyApplication.isNotificationSoundEnable()) {
+                mBuilder.setSound(defaultSoundUri);
+            }else{
+                mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+            }
             if (bitmap != null) {
                 mBuilder.setStyle(new NotificationCompat.BigPictureStyle()   //Set the Image in Big picture Style with text.
                         .bigPicture(bitmap)
@@ -648,5 +663,4 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             notificationManager.notify(notificationId, mBuilder.build());
         }
     }
-
 }

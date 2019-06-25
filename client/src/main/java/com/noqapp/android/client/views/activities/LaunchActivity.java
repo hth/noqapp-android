@@ -1057,6 +1057,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
         settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
         settingList.add(new MenuModel(getString(R.string.title_activity_contact_us), false, false, R.drawable.contact_us));
+        settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
         headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         if (isLogin) {
             headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));
@@ -1118,6 +1119,11 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             }
             case R.drawable.offers: {
                 Intent in = new Intent(launchActivity, CouponsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_notification: {
+                Intent in = new Intent(launchActivity, NotificationSettings.class);
                 startActivity(in);
                 break;
             }
