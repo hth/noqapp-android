@@ -91,10 +91,6 @@ public class LaunchActivity extends BaseLaunchActivity {
                 List<MenuModel> childModelsList = new ArrayList<>();
                 childModelsList.add(new MenuModel(getString(R.string.menu_preference), false, false, R.drawable.case_history));
                 childModelsList.add(new MenuModel(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
-                if (!AppUtils.isRelease()) {
-                    // Currently supported only in debug mode
-                    childModelsList.add(new MenuModel(getString(R.string.menu_appointments), false, false, R.drawable.appointment));
-                }
                 headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings,childModelsList));
             }
         } catch (Exception e) {
