@@ -58,6 +58,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
+        super.onCreateView(inflater, container, args);
         view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = view.findViewById(R.id.btn_login);
         actv_email = view.findViewById(R.id.actv_email);
