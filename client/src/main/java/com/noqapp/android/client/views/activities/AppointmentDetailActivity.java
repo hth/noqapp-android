@@ -79,10 +79,31 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
             tv_msg.setText(note);
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
+            Button btn_cancel = findViewById(R.id.btn_cancel);
+            btn_cancel.setOnClickListener((View v) -> {
+                ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentDetailActivity.this, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            setProgressMessage("Canceling appointment...");
+                            showProgress();
+                            appointmentApiCalls.cancelAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Cancel Appointment", "Do you want to cancel the appointment?");
+            });
             if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 isNavigateHome = false;
                 //iv_main.setVisibility(View.GONE);
-                Button btn_cancel = findViewById(R.id.btn_cancel);
                 switch (jsonSchedule.getAppointmentStatus()) {
                     case U:
                     case A:
@@ -96,27 +117,6 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
                 if (getIntent().getBooleanExtra("isPast", false)) {
                     btn_cancel.setVisibility(View.GONE);
                 }
-                btn_cancel.setOnClickListener((View v) -> {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(AppointmentDetailActivity.this, true);
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                        @Override
-                        public void btnPositiveClick() {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                setProgressMessage("Canceling appointment...");
-                                showProgress();
-                                appointmentApiCalls.cancelAppointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonSchedule);
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(AppointmentDetailActivity.this);
-                            }
-                        }
-
-                        @Override
-                        public void btnNegativeClick() {
-                            //Do nothing
-                        }
-                    });
-                    showDialog.displayDialog("Cancel Appointment", "Do you want to cancel the appointment?");
-                });
             } else {
                 isNavigateHome = true;
                 // iv_main.setVisibility(View.VISIBLE);
