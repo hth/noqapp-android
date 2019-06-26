@@ -14,7 +14,7 @@ public interface ClientPreferenceApiUrls {
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
      */
-    @GET("api/c/preference/notificationSound.json")
+    @POST("api/c/preference/notificationSound.json")
     Call<JsonUserPreference> notificationSound(
             @Header("X-R-DID")
             String did,
