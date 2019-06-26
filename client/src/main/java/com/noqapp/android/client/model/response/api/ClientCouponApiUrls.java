@@ -15,7 +15,7 @@ import retrofit2.http.POST;
  * User: hitender
  * Date: 2019-06-10 13:33
  */
-public interface CouponApiUrls {
+public interface ClientCouponApiUrls {
 
     /**
      * Errors

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.noqapp.android.client.model.response.api.CouponApiUrls;
+import com.noqapp.android.client.model.response.api.ClientCouponApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
@@ -18,10 +18,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CouponApiCalls {
-    private static final String TAG = CouponApiCalls.class.getSimpleName();
+public class ClientCouponApiCalls {
+    private static final String TAG = ClientCouponApiCalls.class.getSimpleName();
 
-    private static final CouponApiUrls couponApiUrls;
+    private static final ClientCouponApiUrls clientCouponApiUrls;
     private CouponPresenter couponPresenter;
     private CouponApplyRemovePresenter couponApplyRemovePresenter;
 
@@ -34,11 +34,11 @@ public class CouponApiCalls {
     }
 
     static {
-        couponApiUrls = RetrofitClient.getClient().create(CouponApiUrls.class);
+        clientCouponApiUrls = RetrofitClient.getClient().create(ClientCouponApiUrls.class);
     }
 
     public void globalCoupon(String did, String mail, String auth, Location location) {
-        couponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth,location).enqueue(new Callback<JsonCouponList>() {
+        clientCouponApiUrls.globalCoupon(did, Constants.DEVICE_TYPE, mail, auth,location).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -68,7 +68,7 @@ public class CouponApiCalls {
     }
 
     public void availableCoupon(String did, String mail, String auth) {
-        couponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
+        clientCouponApiUrls.availableCoupon(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonCouponList>() {
             @Override
             public void onResponse(@NonNull Call<JsonCouponList> call, @NonNull Response<JsonCouponList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -98,7 +98,7 @@ public class CouponApiCalls {
     }
 
     public void apply(String did, String mail, String auth, CouponOnOrder couponOnOrder) {
-        couponApiUrls.apply(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        clientCouponApiUrls.apply(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
@@ -128,7 +128,7 @@ public class CouponApiCalls {
     }
 
     public void remove(String did, String mail, String auth, CouponOnOrder couponOnOrder) {
-        couponApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
+        clientCouponApiUrls.remove(did, Constants.DEVICE_TYPE, mail, auth, couponOnOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
             public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
