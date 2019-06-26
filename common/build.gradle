@@ -32,14 +32,14 @@ dependencies {
     }
     implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
     implementation 'net.danlew:android.joda:2.9.9.3'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.10.10'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.10.13'
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation 'org.mockito:mockito-android:2.23.0'
 
-    testImplementation 'org.mockito:mockito-core:2.25.1'
+    testImplementation 'org.mockito:mockito-core:2.28.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
 
