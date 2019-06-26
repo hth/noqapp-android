@@ -54,7 +54,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class PresentationService extends CastRemoteDisplayLocalService implements ClientInQueuePresenter, AdvertisementPresenter {
+public class PresentationService extends CastRemoteDisplayLocalService implements
+        ClientInQueuePresenter, AdvertisementPresenter {
     private DetailPresentation castPresentation;
     private int image_list_size = 0;
     private int profile_size = 0;

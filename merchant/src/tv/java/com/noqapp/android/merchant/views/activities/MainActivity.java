@@ -1,6 +1,11 @@
 package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
@@ -56,7 +61,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements ClientInQueuePresenter, AdvertisementPresenter {
+public class MainActivity extends BaseActivity implements ClientInQueuePresenter,
+        AdvertisementPresenter {
 
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private MediaRouter mediaRouter;
@@ -66,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     private final long DELAY_MS = 1000;//delay in milliseconds before task is to be executed
     private final long PERIOD_MS = 5 * 1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
-    private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
     private JsonAdvertisementList jsonAdvertisementList;
     private boolean isNotification = false;
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv);
-        initProgress();
+        setProgressMessage("Fetching data...");
         setupMediaRouter();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -121,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             }
         };
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
             ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
             clientInQueueApiCalls.toBeServedClients(
@@ -366,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     public void updateTv(ArrayList<JsonTopic> topics) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             isNotification = true;
-            progressDialog.show();
+            showProgress();
             QueueDetail queueDetail = getQueueDetails(topics);
             ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
             clientInQueueApiCalls.toBeServedClients(
@@ -381,18 +386,6 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
         Log.v("data", jsonAdvertisementList.toString());
         this.jsonAdvertisementList = jsonAdvertisementList;
     }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
 
     public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
 
