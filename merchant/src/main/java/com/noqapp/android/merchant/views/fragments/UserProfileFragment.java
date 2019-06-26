@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -8,16 +7,13 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -55,7 +51,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
-
+        super.onCreateView(inflater, container, args);
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         merchantProfileApiCalls = new MerchantProfileApiCalls();
         edt_email = view.findViewById(R.id.edt_email);
@@ -183,23 +179,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         dismissProgress();
     }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
 
     public void updateUI(JsonProfile jsonProfile) {
         edt_name.setText(jsonProfile.getName());

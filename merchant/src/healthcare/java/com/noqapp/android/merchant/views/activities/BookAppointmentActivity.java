@@ -70,7 +70,7 @@ import java.util.concurrent.TimeUnit;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
-public class BookAppointmentActivity extends AppCompatActivity implements
+public class BookAppointmentActivity extends BaseActivity implements
         AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter
         , RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private TextView tv_empty_slots;
@@ -80,7 +80,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     private AppointmentDateAdapter appointmentDateAdapter;
     private int selectedPos = -1;
     private ScheduleApiCalls scheduleApiCalls;
-    private ProgressDialog progressDialog;
     private Button btn_create_token;
     private Spinner sp_patient_list;
     private LinearLayout ll_mobile;
@@ -117,7 +116,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
-        initProgress();
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -187,11 +185,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        progressDialog.setMessage("Booking appointment...");
-                        progressDialog.show();
-                        progressDialog.setCancelable(false);
-                        progressDialog.setCanceledOnTouchOutside(false);
-
+                        setProgressMessage("Booking appointment...");
+                        showProgress();
+                        setProgressCancel(false);
 
                         long diffInMinutes = calculateAppointmentSlot(AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
                                 AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
@@ -307,11 +303,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         dismissProgress();
     }
 
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
@@ -330,17 +321,11 @@ public class BookAppointmentActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-
-    private void fetchAppointments(String day) {
+       private void fetchAppointments(String day) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching appointments...");
-            progressDialog.show();
+            setProgressMessage("Fetching appointments...");
+            setProgressCancel(false);
+            showProgress();
             scheduleApiCalls = new ScheduleApiCalls();
             scheduleApiCalls.setAppointmentPresenter(this);
             scheduleApiCalls.scheduleForDay(BaseLaunchActivity.getDeviceID(),
@@ -352,20 +337,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching appointments...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(false);
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
 
     private void searchPatientWithMobileNoORCustomerId() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.FullScreenDialogTheme);
@@ -458,10 +429,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                 }
 
                 if (isValid) {
-                    progressDialog.setMessage("Searching patient...");
-                    progressDialog.show();
-                    progressDialog.setCancelable(false);
-                    progressDialog.setCanceledOnTouchOutside(false);
+                    setProgressMessage("Searching patient...");
+                    showProgress();
+                    setProgressCancel(false);
                     String phone = "";
                     cid = "";
                     if (rb_mobile.isChecked()) {
@@ -499,7 +469,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements
     @Override
     public void findCustomerResponse(JsonProfile jsonProfile) {
         dismissProgress();
-        LaunchActivity.getLaunchActivity().progressDialog.dismiss();
         if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);
@@ -527,10 +496,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
                                 btn_create_order.setEnabled(false);
-                                progressDialog.setMessage("Booking appointment...");
-                                progressDialog.show();
-                                progressDialog.setCancelable(false);
-                                progressDialog.setCanceledOnTouchOutside(false);
+                                setProgressMessage("Booking appointment...");
+                                showProgress();
+                                setProgressCancel(false);
                                 String phoneNoWithCode = "";
                                 if (TextUtils.isEmpty(cid)) {
                                     phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());

@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathologyList;
@@ -17,9 +16,7 @@ import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
-import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -32,7 +29,6 @@ import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -45,7 +41,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.fragment.app.Fragment;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
@@ -53,7 +48,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintFragment extends Fragment implements MedicalRecordPresenter {
+public class PrintFragment extends BaseFragment implements MedicalRecordPresenter {
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
     private TextView tv_radio_xray, tv_radio_sono, tv_radio_scan, tv_radio_mri, tv_radio_special, tv_details, tv_followup;
     private TextView tv_weight, tv_height, tv_respiratory, tv_temperature, tv_bp, tv_pulse;
@@ -62,8 +57,6 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     private Button btn_print_pdf;
     private ListView lv_medicine;
     private MedicalRecordAdapter adapter;
-    // private List<JsonPreferredBusiness> jsonPreferredBusinessList;
-    private ProgressDialog progressDialog;
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
@@ -74,8 +67,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_print, container, false);
-        initProgress();
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         tv_patient_name = v.findViewById(R.id.tv_patient_name);
         tv_address = v.findViewById(R.id.tv_address);
@@ -134,6 +127,8 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         follow_up_data.add(String.valueOf(DurationDaysEnum.D6M.getValue()));
         sc_follow_up.addSegments(follow_up_data);
 
+        setProgressMessage("Uploading data...");
+
         sc_follow_up.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
@@ -155,7 +150,7 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
+                showProgress();
                 CaseHistory caseHistory = MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory();
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getRecordReferenceId());
@@ -668,37 +663,9 @@ public class PrintFragment extends Fragment implements MedicalRecordPresenter {
     }
 
     @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
     public void medicalRecordError() {
         dismissProgress();
         new CustomToast().showToast(getActivity(), "Failed to update");
     }
 
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Uploading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 }

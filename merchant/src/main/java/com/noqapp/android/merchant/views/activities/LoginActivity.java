@@ -32,11 +32,9 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
 import com.hbb20.CountryCodePicker;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -50,14 +48,13 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 
-public class LoginActivity extends AppCompatActivity implements ProfilePresenter {
+public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
     public interface LoginCallBack {
         void passPhoneNo(JsonProfile jsonProfile);
     }
 
     public static LoginCallBack loginCallBack;
-    private ProgressDialog progressDialog;
     private final String TAG = LoginActivity.class.getSimpleName();
     private final int STATE_INITIALIZED = 1;
     private final int STATE_CODE_SENT = 2;
@@ -127,10 +124,9 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 btnVerifyClick();
             }
         });
-
+        setProgressMessage("Login in progress");
         mAuth = FirebaseAuth.getInstance();
         updateUI(STATE_INITIALIZED);
-        initProgress();
         String c_codeValue = LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName();
         int c_code = PhoneFormatterUtil.getCountryCodeFromRegion(c_codeValue.toUpperCase());
         Log.v("country code", "" + c_code);
@@ -192,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                 mVerificationId = verificationId;
                 // Update UI
                 updateUI(STATE_CODE_SENT);
-                progressDialog.setMessage("OTP Generated and sent to the above mobile number");
+                setProgressMessage("OTP Generated and sent to the above mobile number");
 
             }
         };
@@ -202,8 +198,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     private void action_Login() {
         if (validate()) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                progressDialog.setMessage("Generating OTP");
+                showProgress();
+                setProgressMessage("Generating OTP");
                 countryCode = ccp.getSelectedCountryCodeWithPlus();
                 countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
                 startPhoneNumberVerification(countryCode + edt_phoneNo.getText().toString());
@@ -214,7 +210,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             } else {
                 ShowAlertInformation.showNetworkDialog(this);
             }
-
         }
     }
 
@@ -234,7 +229,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             edt_phoneNo.setError(getString(R.string.error_mobile_blank));
             isValid = false;
         }
-
         return isValid;
     }
 
@@ -254,8 +248,8 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        progressDialog.setMessage("Validating OTP");
-        progressDialog.show();
+        setProgressMessage("Validating OTP");
+        showProgress();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -311,18 +305,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
         }
     }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
     private void enableViews(View... views) {
         for (View v : views) {
             v.setVisibility(View.VISIBLE);
@@ -344,7 +326,7 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
             return;
         }
         if (mVerificationId != null) {
-            progressDialog.show();
+            showProgress();
             new AppUtils().hideKeyBoard(this);
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
             signInWithPhoneAuthCredential(credential);
@@ -414,18 +396,6 @@ public class LoginActivity extends AppCompatActivity implements ProfilePresenter
                     dismissProgress();
                 }
                 break;
-        }
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Login in progress");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 }

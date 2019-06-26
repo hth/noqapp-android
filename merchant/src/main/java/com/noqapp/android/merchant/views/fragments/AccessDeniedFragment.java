@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 public class AccessDeniedFragment extends Fragment {
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_access_denied, container, false);
@@ -22,7 +20,6 @@ public class AccessDeniedFragment extends Fragment {
         tv_msg.setText(getArguments().getString("errorMsg",getString(R.string.error_access_denied)));
         return view;
     }
-
 
     @Override
     public void onResume() {

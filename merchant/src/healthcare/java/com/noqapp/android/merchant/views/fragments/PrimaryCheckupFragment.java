@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterViewValueChanged {
+public class PrimaryCheckupFragment extends BaseFragment implements MeterView.MeterViewValueChanged {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_rr, tv_height;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
@@ -29,8 +29,8 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_primary_checkup, container, false);
-
         mv_weight1 = v.findViewById(R.id.mv_weight1);
         mv_weight2 = v.findViewById(R.id.mv_weight2);
         mv_pulse = v.findViewById(R.id.mv_pulse);

@@ -38,7 +38,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreatmentFragment extends Fragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick, AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
+public class TreatmentFragment extends BaseFragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick, AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, recyclerView_one, rcv_medicine;
     private TextView tv_add_medicine, tv_add_diagnosis, tv_close, tv_remove, tv_medicine_name;
@@ -58,6 +58,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_treatment, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView_one = v.findViewById(R.id.recyclerViewOne);

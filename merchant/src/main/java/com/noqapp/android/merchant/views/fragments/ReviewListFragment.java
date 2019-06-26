@@ -34,6 +34,7 @@ public class ReviewListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
         Bundle bundle = getArguments();

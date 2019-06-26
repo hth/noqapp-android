@@ -38,7 +38,7 @@ import io.fabric.sdk.android.Fabric;
 
 import java.util.UUID;
 
-public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
+public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
 
     static SplashScreen splashScreen;
     private static String fcmToken = "";
@@ -123,22 +123,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
     @Override
     public void deviceRegisterError() {
-
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void authenticationFailure() {
-
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override

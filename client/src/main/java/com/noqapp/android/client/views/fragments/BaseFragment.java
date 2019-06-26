@@ -47,6 +47,13 @@ public abstract class BaseFragment extends Fragment implements ResponseErrorPres
             dialog.show();
     }
 
+    protected void setProgressCancel(boolean isCancelled) {
+        if (null != dialog && dialog.isShowing()) {
+            dialog.setCanceledOnTouchOutside(isCancelled);
+            dialog.setCancelable(isCancelled);
+        }
+    }
+
     protected void setProgressMessage(String msg) {
         tv_loading_msg.setText(msg);
     }

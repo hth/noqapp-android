@@ -61,8 +61,7 @@ import java.util.Locale;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class SettingActivity extends AppCompatActivity implements StoreSettingPresenter, View.OnClickListener {
-    private ProgressDialog progressDialog;
+public class SettingActivity extends BaseActivity implements StoreSettingPresenter, View.OnClickListener {
     protected ImageView actionbarBack, iv_delete_scheduling;
     private String codeQR;
     private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
@@ -112,7 +111,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         ScrollView scroll_view = findViewById(R.id.scroll_view);
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
-        initProgress();
+        setProgressMessage("Loading Queue Settings...");
 
         if (!new AppUtils().isTablet(getApplicationContext())) {
 
@@ -206,7 +205,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
                         public void btnPositiveClick() {
-                            progressDialog.show();
+                            showProgress();
                             storeSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
                         }
 
@@ -258,7 +257,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
                     /* Write your logic here that will be executed when user taps next button */
                     if (!edt_token_no.getText().toString().equals("")) {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
+                            showProgress();
                             updateQueueSettings();
                         } else {
                             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
@@ -470,7 +469,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             storeSettingApiCalls.getQueueState(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
@@ -526,18 +525,6 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading Queue Settings...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 
@@ -637,14 +624,8 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     }
 
     @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
     public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         AppUtils.authenticationProcessing();
         Intent intent = new Intent();
         intent.putExtra(Constants.CLEAR_DATA, true);
@@ -702,7 +683,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
             break;
             default:
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
+                    showProgress();
                     updateQueueSettings();
                 } else {
                     ShowAlertInformation.showNetworkDialog(SettingActivity.this);
@@ -711,7 +692,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
     }
 
     private void updateQueueSettings() {
-        progressDialog.setMessage("Updating Queue Settings...");
+        setProgressMessage("Updating Queue Settings...");
         StoreSetting storeSetting = new StoreSetting();
         storeSetting.setCodeQR(codeQR);
         storeSetting.setDayClosed(sc_day_closed.getSelectedAbsolutePosition() == 0 ? true : false);
@@ -769,8 +750,8 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
 
     private void updatePaymentSettings() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Updating payment settings...");
-            progressDialog.show();
+            setProgressMessage("Updating payment settings...");
+            showProgress();
             StoreSetting storeSetting = SerializationUtils.clone(this.storeSettingTemp);
             if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
                 storeSetting.setCancellationPrice(0);
@@ -807,8 +788,8 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
 
     private void updateAppointmentSettings() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Updating appointment settings...");
-            progressDialog.show();
+            setProgressMessage("Updating appointment settings...");
+            showProgress();
             StoreSetting storeSetting = SerializationUtils.clone(this.storeSettingTemp);
             if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
                 storeSetting.setAppointmentDuration(0);
@@ -895,7 +876,7 @@ public class SettingActivity extends AppCompatActivity implements StoreSettingPr
 
     private void callUpdate() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             updateQueueSettings();
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);

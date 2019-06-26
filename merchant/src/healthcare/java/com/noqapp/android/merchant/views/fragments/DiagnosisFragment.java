@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNew.SearchByPos {
+public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
@@ -38,6 +38,7 @@ public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_diagnosis, container, false);
         actv_clinical_findings = v.findViewById(R.id.actv_clinical_findings);
         actv_examination_results = v.findViewById(R.id.actv_examination_results);

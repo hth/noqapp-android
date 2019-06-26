@@ -18,7 +18,6 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.QueueReviewListAdapter;
 import com.noqapp.android.merchant.views.interfaces.ReviewPresenter;
 
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,15 +27,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class QReviewListActivity extends AppCompatActivity implements QueueReviewListAdapter.OnItemClickListener, ReviewPresenter {
+public class QReviewListActivity extends BaseActivity implements
+        QueueReviewListAdapter.OnItemClickListener, ReviewPresenter {
 
-    private ProgressDialog progressDialog;
     private MerchantProfileApiCalls merchantProfileApiCalls;
 
     @Override
@@ -53,7 +51,6 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
         TextView tv_queue_name = findViewById(R.id.tv_queue_name);
         RecyclerView rcv_review = findViewById(R.id.rcv_review);
         RelativeLayout rl_empty = findViewById(R.id.rl_empty);
-        initProgress();
         rcv_review.setHasFixedSize(true);
         rcv_review.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         rcv_review.setItemAnimator(new DefaultItemAnimator());
@@ -68,7 +65,6 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_all_review));
-        initProgress();
 
         JsonReviewList jsonReviewList = (JsonReviewList) getIntent().getSerializableExtra("data");
         tv_queue_name.setText(TextUtils.isEmpty(jsonReviewList.getDisplayName()) ? "N/A" : jsonReviewList.getDisplayName());
@@ -81,20 +77,12 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
         }
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
-    }
 
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 
     @Override
     public void reviewItemListClick(String codeQR, JsonReview jsonReview) {
-        progressDialog.show();
+        showProgress();
+        setProgressMessage("Updating data...");
         merchantProfileApiCalls.flagReview(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR, jsonReview);
     }
 
@@ -112,12 +100,6 @@ public class QReviewListActivity extends AppCompatActivity implements QueueRevie
         dismissProgress();
         AppUtils.authenticationProcessing();
         finish();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override

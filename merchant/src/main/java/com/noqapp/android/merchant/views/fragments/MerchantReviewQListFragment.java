@@ -42,6 +42,7 @@ public class MerchantReviewQListFragment extends BaseFragment implements QueueRe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_merchant_qreview, container, false);
         rcv_review = view.findViewById(R.id.rcv_review);
         rcv_review.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
@@ -58,25 +59,6 @@ public class MerchantReviewQListFragment extends BaseFragment implements QueueRe
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-    }
-
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override

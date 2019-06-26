@@ -22,7 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class ChartListActivity extends AppCompatActivity {
+public class ChartListActivity extends BaseActivity {
 
 
     public static ChartListActivity getChartListActivity() {

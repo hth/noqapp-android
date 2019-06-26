@@ -173,9 +173,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
 
                 if (isValid) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    LaunchActivity.getLaunchActivity().progressDialog.setCancelable(false);
-                    LaunchActivity.getLaunchActivity().progressDialog.setCanceledOnTouchOutside(false);
+                    showProgress();
+                    setProgressCancel(false);
                     setDispensePresenter();
                     String phone = "";
                     cid = "";
@@ -218,7 +217,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void findCustomerResponse(JsonProfile jsonProfile) {
         dismissProgress();
-        LaunchActivity.getLaunchActivity().progressDialog.dismiss();
         if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);
@@ -241,9 +239,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         btn_create_order.setEnabled(false);
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        LaunchActivity.getLaunchActivity().progressDialog.setCancelable(false);
-                        LaunchActivity.getLaunchActivity().progressDialog.setCanceledOnTouchOutside(false);
+                        showProgress();
+                        setProgressCancel(false);
                         String phoneNoWithCode = "";
                         setDispensePresenter();
                         if (TextUtils.isEmpty(cid)) {

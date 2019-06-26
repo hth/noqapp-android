@@ -22,10 +22,8 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +69,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class BaseMerchantDetailFragment extends Fragment implements ManageQueuePresenter,
+public abstract class BaseMerchantDetailFragment extends BaseFragment implements ManageQueuePresenter,
         DispenseTokenPresenter, QueuePersonListPresenter, PeopleInQAdapter.PeopleInQAdapterClick,
         RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
 
@@ -83,7 +81,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList = new ArrayList<>();
     protected EditText edt_mobile;
     protected RecyclerView rv_queue_people;
-    protected ProgressBar progressDialog;
     protected JsonTopic jsonTopic = null;
     protected TextView tv_counter_name;
     protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next, tv_skip;
@@ -110,6 +107,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
@@ -124,7 +122,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
             jsonTopic = topicsList.get(currrentpos);
 
 
-        progressDialog = itemView.findViewById(R.id.progress_bar);
+        //progressDialog = itemView.findViewById(R.id.progress_bar);
         tv_current_value = itemView.findViewById(R.id.tv_current_value);
         tv_total_value = itemView.findViewById(R.id.tv_total_value);
         tv_title = itemView.findViewById(R.id.tv_title);
@@ -234,12 +232,10 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
     @Override
     public void manageQueueError() {
         dismissProgress();
-        LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void manageQueueResponse(JsonToken token) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token) {
             JsonTopic jt = topicsList.get(currrentpos);
@@ -262,7 +258,6 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != eej && eej.getSystemErrorCode().equalsIgnoreCase(MobileSystemErrorCodeEnum.USER_NOT_FOUND.getCode())) {
             new CustomToast().showToast(context, eej.getReason());
@@ -290,22 +285,11 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         }
     }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
 
-    @Override
-    public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
+
 
     @Override
     public void dispenseTokenResponse(JsonToken token) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token && null != tv_create_token) {
             if (null != edt_mobile) {
@@ -342,7 +326,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                         }
                     }
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.setVisibility(View.VISIBLE);
+                        showProgress();
                         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
                     } else {
                         ShowAlertInformation.showNetworkDialog(getActivity());
@@ -442,14 +426,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     @Override
     public void queuePersonListError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog) {
-            progressDialog.setVisibility(View.GONE);
-        }
     }
 
     protected void updateUI() {
@@ -546,7 +523,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     chronometer.setBase(SystemClock.elapsedRealtime());
                     chronometer.start();
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                        showProgress();
                         Served served = new Served();
                         served.setCodeQR(jsonTopic.getCodeQR());
                         served.setQueueStatus(jsonTopic.getQueueStatus());
@@ -578,7 +555,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                             @Override
                             public void btnPositiveClick() {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                                    showProgress();
                                     Served served = new Served();
                                     served.setCodeQR(jsonTopic.getCodeQR());
                                     served.setQueueStatus(jsonTopic.getQueueStatus());
@@ -632,7 +609,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                                 @Override
                                 public void btnPositiveClick() {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        LaunchActivity.getLaunchActivity().progressDialog.show();
+                                        showProgress();
                                         Served served = new Served();
                                         served.setCodeQR(jsonTopic.getCodeQR());
                                         served.setQueueUserState(QueueUserStateEnum.S);
@@ -659,7 +636,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                             showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                LaunchActivity.getLaunchActivity().progressDialog.show();
+                                showProgress();
                                 Served served = new Served();
                                 served.setCodeQR(jsonTopic.getCodeQR());
                                 served.setQueueUserState(QueueUserStateEnum.S);
@@ -686,9 +663,8 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
         });
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setVisibility(View.VISIBLE);
+            showProgress();
             getAllPeopleInQ(jsonTopic);
-
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -719,7 +695,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
                     @Override
                     public void btnPositiveClick() {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.setVisibility(View.VISIBLE);
+                            showProgress();
                             lastSelectedPos = position;
                             Served served = new Served();
                             served.setCodeQR(jsonTopic.getCodeQR());
@@ -753,7 +729,7 @@ public abstract class BaseMerchantDetailFragment extends Fragment implements Man
 
     @Override
     public void passPhoneNo(JsonProfile jsonProfile) {
-        LaunchActivity.getLaunchActivity().progressDialog.show();
+        showProgress();
         String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
         setDispensePresenter();
 

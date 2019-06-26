@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.LoginEvent;
@@ -110,7 +109,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
     public void loginResponse(String email, String auth) {
         if (StringUtils.isNotBlank(email) && StringUtils.isNotBlank(auth)) {
             LaunchActivity.getLaunchActivity().setUserInformation("", "", email, auth, true);
-            LaunchActivity.getLaunchActivity().progressDialog.setMessage("Fetching your profile...");
+            setProgressMessage("Fetching your profile...");
             merchantProfileModel.setMerchantPresenter(this);
             merchantProfileModel.fetch(BaseLaunchActivity.getDeviceID(), email, auth);
             if (!userList.contains(email)) {

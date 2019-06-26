@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MedicineFragment extends Fragment implements CustomExpandListAdapter.RemoveChild {
+public class MedicineFragment extends BaseFragment implements CustomExpandListAdapter.RemoveChild {
     private CustomExpandListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
@@ -43,6 +43,7 @@ public class MedicineFragment extends Fragment implements CustomExpandListAdapte
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_medicine, container, false);
         expListView = v.findViewById(R.id.lvExp);
         edt_item = v.findViewById(R.id.edt_item);

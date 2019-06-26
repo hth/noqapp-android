@@ -93,7 +93,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     public void onClick(View v) {
                         if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                LaunchActivity.getLaunchActivity().progressDialog.show();
+                               // LaunchActivity.getLaunchActivity().progressDialog.show();
                                 ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
                                 changeUserInQueue.setCodeQR(qCodeQR);
                                 changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
@@ -172,7 +172,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
                             edt_random.setError(mContext.getString(R.string.error_invalid_captcha));
                         } else {
-                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                          //  LaunchActivity.getLaunchActivity().progressDialog.show();
                             String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
                             JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
                             jsonBusinessCustomer.setCodeQR(qCodeQR);

@@ -38,7 +38,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 import java.util.ArrayList;
 import java.util.List;
 
-public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
+public class SymptomsFragment extends BaseFragment implements StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_gynac, rcv_obstretics, rcv_symptom_select;
     private TextView tv_add_new, tv_symptoms_name, tv_close, tv_remove, tv_output;
@@ -59,6 +59,7 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_symptoms, container, false);
         rcv_gynac = v.findViewById(R.id.rcv_gynac);
         rcv_obstretics = v.findViewById(R.id.rcv_obstretics);
@@ -372,6 +373,5 @@ public class SymptomsFragment extends Fragment implements StaggeredGridSymptomAd
         new AppUtils().hideKeyBoard(getActivity());
         actv_search.setText("");
         staggeredClick(true, false, dataObj, 0);
-
     }
 }

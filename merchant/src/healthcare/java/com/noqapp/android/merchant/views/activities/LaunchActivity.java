@@ -59,7 +59,6 @@ public class LaunchActivity extends BaseLaunchActivity {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }
-        initProgress();
         initDrawer();
 
         /* Call to check if the current version of app blacklist or old. */

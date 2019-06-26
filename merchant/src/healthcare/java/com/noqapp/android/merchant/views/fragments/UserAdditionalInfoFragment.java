@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,17 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -36,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class UserAdditionalInfoFragment extends Fragment implements MerchantProfessionalPresenter {
+public class UserAdditionalInfoFragment extends BaseFragment implements MerchantProfessionalPresenter {
     private EditText edt_about_me;
     private TextView edt_practice_start;
     private EditText edt_edu_name;
@@ -50,15 +45,10 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     private LinearLayout ll_license;
     private JsonProfessionalProfilePersonal jsonProfessionalProfilePersonal;
 
-
-    private ProgressDialog progressDialog;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.frag_additional_info, container, false);
-        initProgress();
-
         edt_about_me = view.findViewById(R.id.edt_about_me);
         edt_practice_start = view.findViewById(R.id.edt_practice_start);
         edt_edu_name = view.findViewById(R.id.edt_edu_name);
@@ -73,6 +63,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
         ll_education = view.findViewById(R.id.ll_education);
         ll_experience = view.findViewById(R.id.ll_experience);
         ll_license = view.findViewById(R.id.ll_license);
+        setProgressMessage("Updating data...");
         Button btn_update = view.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +122,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
                     updateUI(jsonProfessionalProfilePersonal);
                     edt_award_name.setText("");
                     tv_award_date.setText("");
-
                 }
             }
         });
@@ -253,8 +243,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
             iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
                     showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                         @Override
@@ -283,7 +271,7 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
         if (jsonProfessionalProfilePersonal.getLicenses().size() == 0 && jsonProfessionalProfilePersonal.getEducation().size() == 0) {
             new CustomToast().showToast(getActivity(), "Please add one record in education or License");
         } else {
-            progressDialog.show();
+            showProgress();
             jsonProfessionalProfilePersonal.setAboutMe(edt_about_me.getText().toString());
             jsonProfessionalProfilePersonal.setPracticeStart(edt_practice_start.getText().toString());
             merchantProfileApiCalls.updateProfessionalProfile(UserUtils.getEmail(), UserUtils.getAuth(), jsonProfessionalProfilePersonal);
@@ -306,35 +294,6 @@ public class UserAdditionalInfoFragment extends Fragment implements MerchantProf
     public void merchantProfessionalError() {
         dismissProgress();
         new CustomToast().showToast(getActivity(), "Professional profile updated failed");
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     private void openDatePickerDialog(final TextView edt) {

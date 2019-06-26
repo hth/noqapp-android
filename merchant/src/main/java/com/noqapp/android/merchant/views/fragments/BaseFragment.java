@@ -11,9 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements ResponseErrorPresenter {
     private Dialog dialog;
     private TextView tv_loading_msg;
 
@@ -43,10 +47,33 @@ public class BaseFragment extends Fragment {
             dialog.show();
     }
 
+    protected void setProgressCancel(boolean isCancelled) {
+        if (null != dialog && dialog.isShowing()) {
+            dialog.setCanceledOnTouchOutside(isCancelled);
+            dialog.setCancelable(isCancelled);
+        }
+    }
+
     protected void setProgressMessage(String msg) {
         tv_loading_msg.setText(msg);
     }
 
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        dismissProgress();
+        new ErrorResponseHandler().processError(getActivity(), eej);
+    }
 
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        dismissProgress();
+        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
+    }
+
+    @Override
+    public void authenticationFailure() {
+        dismissProgress();
+        AppUtils.authenticationProcessing();
+    }
 }
 

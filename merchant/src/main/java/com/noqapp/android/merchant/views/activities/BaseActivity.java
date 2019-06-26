@@ -1,7 +1,6 @@
-package com.noqapp.android.client.views.activities;
+package com.noqapp.android.merchant.views.activities;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +10,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 
-
-public abstract class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter {
+public class BaseActivity extends AppCompatActivity implements ResponseErrorPresenter {
 
     private Dialog dialog;
     private TextView tv_loading_msg;
@@ -63,42 +59,23 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     protected void setProgressMessage(String msg) {
         tv_loading_msg.setText(msg);
     }
-
-    protected void initActionsViews(boolean isHomeVisible) {
-        iv_home = findViewById(R.id.iv_home);
-        actionbarBack = findViewById(R.id.actionbarBack);
-        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.INVISIBLE);
-        actionbarBack.setOnClickListener((View v) -> {
-            finish();
-        });
-        iv_home.setOnClickListener((View v) -> {
-            Intent goToA = new Intent(BaseActivity.this, LaunchActivity.class);
-            goToA.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(goToA);
-        });
-    }
+    
 
     @Override
-    public void authenticationFailure() {
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        AppUtilities.authenticationProcessing(this);
+        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
         dismissProgress();
-        if (errorCode == Constants.INVALID_BAR_CODE) {
-            ShowAlertInformation.showBarcodeErrorDialog(this);
-        } else {
-            new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-        }
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+    public void authenticationFailure() {
         dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
+        AppUtils.authenticationProcessing();
     }
 }

@@ -88,29 +88,29 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             }
         }
         notifyDataSetChanged();
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        //LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void queuePersonListError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        //LaunchActivity.getLaunchActivity().dismissProgress();
     }
 
     @Override
     public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+       // LaunchActivity.getLaunchActivity().dismissProgress();
         AppUtils.authenticationProcessing();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+       // LaunchActivity.getLaunchActivity().dismissProgress();
         new ErrorResponseHandler().processError(context, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        //LaunchActivity.getLaunchActivity().dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(context, errorCode);
     }
 

@@ -5,7 +5,6 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -58,7 +56,8 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class BaseManagerProfileActivity extends AppCompatActivity implements View.OnClickListener, MerchantPresenter, ImageUploadPresenter {
+public class BaseManagerProfileActivity extends BaseActivity implements View.OnClickListener,
+        MerchantPresenter, ImageUploadPresenter {
 
     private TextView tv_profile_name;
     private Button tv_remove_image;
@@ -76,7 +75,6 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
 
     private ImageView actionbarBack;
     private MerchantProfileApiCalls merchantProfileApiCalls;
-    private ProgressDialog progressDialog;
     protected  TabViewPagerAdapter adapter;
 
     @Override
@@ -87,7 +85,6 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        initProgress();
         setContentView(R.layout.activity_queue_manager_profile);
         actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +104,7 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
         loadTabs = new LoadTabs();
         loadTabs.execute();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             merchantProfileApiCalls.setMerchantPresenter(this);
             merchantProfileApiCalls.fetch(
                     UserUtils.getDeviceId(),
@@ -115,7 +112,6 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
                     LaunchActivity.getLaunchActivity().getAuth());
         }
     }
-
 
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
@@ -141,12 +137,6 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
         dismissProgress();
         AppUtils.authenticationProcessing();
         finish();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
@@ -207,8 +197,8 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
                 selectImage();
                 break;
             case R.id.tv_remove_image: {
-                progressDialog.show();
-                progressDialog.setMessage("Removing profile image");
+                showProgress();
+                setProgressMessage("Removing profile image");
                 merchantProfileApiCalls.setImageUploadPresenter(this);
                 merchantProfileApiCalls.removeImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new UpdateProfile().setQueueUserId(LaunchActivity.getLaunchActivity().getUserProfile().getQueueUserId()));
             }
@@ -244,8 +234,8 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
                     // NoQueueBaseActivity.setUserProfileUri(convertedPath);
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Updating profile image");
+                        showProgress();
+                        setProgressMessage("Updating profile image");
                         String type = getMimeType(this, selectedImage);
                         File file = new File(convertedPath);
                         MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -344,16 +334,5 @@ public class BaseManagerProfileActivity extends AppCompatActivity implements Vie
     @Override
     public void imageUploadError() {
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 }

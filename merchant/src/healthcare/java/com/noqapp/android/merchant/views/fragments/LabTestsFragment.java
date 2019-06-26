@@ -35,7 +35,7 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew.SearchByPos{
+public class LabTestsFragment extends BaseFragment implements AutoCompleteAdapterNew.SearchByPos{
 
     private RecyclerView rcv_mri, rcv_scan, rcv_sono, rcv_xray, rcv_pathology,rcv_special;
     private TextView tv_add_pathology, tv_add_new;
@@ -46,6 +46,7 @@ public class LabTestsFragment extends Fragment implements AutoCompleteAdapterNew
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_recomand_lab_test, container, false);
         rcv_mri = v.findViewById(R.id.rcv_mri);
         rcv_scan = v.findViewById(R.id.rcv_scan);

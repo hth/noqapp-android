@@ -27,7 +27,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstructionFragment extends Fragment {
+public class InstructionFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private ListView list_view;
     private TextView tv_add_instruction, tv_add_new;
@@ -36,6 +36,7 @@ public class InstructionFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_instruction, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
         list_view = v.findViewById(R.id.list_view);

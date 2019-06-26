@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -81,7 +80,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     private static SharedPreferences sharedpreferences;
     protected List<MenuModel> headerList = new ArrayList<>();
@@ -110,7 +110,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     private static final String FCM_TOKEN = "fcmToken";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
-    public ProgressDialog progressDialog;
     protected long lastPress;
     protected Toast backpressToast;
     public NetworkUtil networkUtil;
@@ -520,26 +519,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         FragmentManager fragmentManager = getSupportFragmentManager();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
-    }
-
-    protected void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
-    }
-
-    public void dismissProgress() {
-        try {
-            if (null != progressDialog && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setProgressTitle(String msg) {
-        progressDialog.setMessage(msg);
     }
 
     public void setUserName() {
