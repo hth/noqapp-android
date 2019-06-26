@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
                     android:padding="10dp"
-                    android:text="Receive SMS notification"
+                    android:text="Receive Promotional SMS"
                     android:textColor="@android:color/black" />
 
                 <LinearLayout

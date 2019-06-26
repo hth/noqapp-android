@@ -22,20 +22,20 @@ class NotificationSettings : BaseActivity() {
             MyApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
-                CustomToast().showToast(this@NotificationSettings,"Sms Enable")
+                CustomToast().showToast(this@NotificationSettings,"SMS Enabled")
             } else {
                 // The switch is disabled
-                CustomToast().showToast(this@NotificationSettings,"Sms Disable")
+                CustomToast().showToast(this@NotificationSettings,"SMS Disabled")
             }
         }
         sc_sound.setOnCheckedChangeListener { _buttonView, isChecked ->
             MyApplication.setNotificationSoundEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
-                CustomToast().showToast(this@NotificationSettings,"Sound Enable")
+                CustomToast().showToast(this@NotificationSettings,"Sound Enabled")
             } else {
                 // The switch is disabled
-                CustomToast().showToast(this@NotificationSettings,"Sound Disable")
+                CustomToast().showToast(this@NotificationSettings,"Sound Disabled")
             }
         }
 
