@@ -176,7 +176,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             view_loader.setVisibility(View.GONE);
             populateAndSortedCache(bizStoreElasticList);
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
-            LaunchActivity.getLaunchActivity().dismissProgress();
+            dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());
