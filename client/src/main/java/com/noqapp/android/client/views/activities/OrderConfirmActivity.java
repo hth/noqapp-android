@@ -105,10 +105,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 } else {
                     if (NoQueueBaseActivity.isEmailVerified()) {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Starting payment process..");
-                            progressDialog.setCancelable(false);
-                            progressDialog.setCanceledOnTouchOutside(false);
+                            showProgress();
+                            setProgressMessage("Starting payment process..");
+                            setProgressCancel(false);
                             purchaseOrderApiCall.payNow(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             isPayClick = true;
                         }
@@ -129,8 +128,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         if (getIntent().getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
             tv_toolbar_title.setText(getString(R.string.order_details));
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                progressDialog.setMessage("Fetching order details in progress..");
+                showProgress();
+                setProgressMessage("Fetching order details in progress..");
                 int token = getIntent().getExtras().getInt("token");
                 purchaseOrderApiCall.orderDetail(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new OrderDetail().setCodeQR(codeQR).setToken(token));
                 if (AppUtilities.isRelease()) {
@@ -186,8 +185,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     private void cancelOrder() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
-            progressDialog.setMessage("Order cancel in progress..");
+            showProgress();
+            setProgressMessage("Order cancel in progress..");
             purchaseOrderApiCall.cancelOrder(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
 
             if (AppUtilities.isRelease()) {
@@ -344,7 +343,8 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     @Override
     public void purchaseOrderActivateResponse(JsonPurchaseOrderHistorical jsonPurchaseOrderHistorical) {
-
+        // implementation not required here
+        dismissProgress();
     }
 
     @Override
@@ -455,7 +455,5 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         } else {
             new CustomToast().showToast(this, jsonPurchaseOrder.getTransactionMessage());
         }
-
     }
-
 }

@@ -129,15 +129,15 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             BizStoreElastic bizStoreElastic = (BizStoreElastic) bundle.getSerializable("BizStoreElastic");
             if (null != bizStoreElastic) {
                 if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO || bizStoreElastic.getBusinessType() == BusinessTypeEnum.BK) {
-                    progressDialog.setMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
+                    setProgressMessage("Loading " + bizStoreElastic.getBusinessName() + "...");
                 } else {
-                    progressDialog.setMessage("Loading ...");
+                    setProgressMessage("Loading ...");
                 }
             } else {
-                progressDialog.setMessage("Loading ...");
+                setProgressMessage("Loading ...");
             }
             if (NetworkUtils.isConnectingToInternet(this)) {
-                progressDialog.show();
+                showProgress();
                 QueueApiUnAuthenticCall queueApiUnAuthenticCall = new QueueApiUnAuthenticCall();
                 queueApiUnAuthenticCall.setQueuePresenter(this);
                 if (bundle.getBoolean(IBConstant.KEY_CALL_CATEGORY, false)) {
@@ -176,7 +176,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             view_loader.setVisibility(View.GONE);
             populateAndSortedCache(bizStoreElasticList);
             bizStoreElastic = bizStoreElasticList.getBizStoreElastics().get(0);
-            LaunchActivity.getLaunchActivity().dismissProgress();
+            dismissProgress();
             tv_store_name.setText(bizStoreElastic.getBusinessName());
             tv_address.setText(AppUtilities.getStoreAddress(bizStoreElastic.getTown(), bizStoreElastic.getArea()));
             tv_complete_address.setText(bizStoreElastic.getAddress());

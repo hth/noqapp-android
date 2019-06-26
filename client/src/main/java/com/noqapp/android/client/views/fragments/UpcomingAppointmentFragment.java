@@ -55,8 +55,8 @@ public class UpcomingAppointmentFragment extends BaseFragment implements Appoint
             rl_empty.setVisibility(View.GONE);
         }
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching appointments...");
-            progressDialog.show();
+            setProgressMessage("Fetching appointments...");
+            showProgress();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
             appointmentApiCalls.allAppointments(UserUtils.getDeviceId(),

@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
-public class NoQueueBaseFragment extends Fragment {
+public class NoQueueBaseFragment extends BaseFragment {
 
     public static void replaceFragmentWithBackStack(FragmentActivity activity, int container, Fragment fragment, String tag) {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();

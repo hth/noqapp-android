@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,7 +43,7 @@ public class WebViewActivity extends BaseActivity {
         if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
             url = getIntent().getStringExtra(IBConstant.KEY_URL);
         }
-        isPdf = getIntent().getBooleanExtra(IBConstant.KEY_IS_PDF,false);
+        isPdf = getIntent().getBooleanExtra(IBConstant.KEY_IS_PDF, false);
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -60,9 +59,9 @@ public class WebViewActivity extends BaseActivity {
             webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        if(isPdf){
-            webView.loadUrl("http://docs.google.com/viewer?url="+url);
-        }else {
+        if (isPdf) {
+            webView.loadUrl("http://docs.google.com/viewer?url=" + url);
+        } else {
             webView.loadUrl(url);
         }
         webView.setOnKeyListener(new OnKeyListener() {
@@ -109,14 +108,10 @@ public class WebViewActivity extends BaseActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            if (progressDialog == null) {
-                progressDialog = new ProgressDialog(WebViewActivity.this);
-                progressDialog.setMessage("Loading...");
-                progressDialog.show();
-            }
+            dismissProgress();
+            setProgressMessage("Loading...");
+            showProgress();
+
         }
 
         @Override
@@ -129,10 +124,7 @@ public class WebViewActivity extends BaseActivity {
         public void onPageFinished(WebView view, String url) {
             //super.onPageFinished(view, url);
             try {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
+                dismissProgress();
                 webView.loadUrl("javascript:(function() { " +
                         "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {

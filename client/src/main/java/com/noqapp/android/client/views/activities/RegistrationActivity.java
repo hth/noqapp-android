@@ -118,10 +118,9 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             btnRegistration.setBackgroundResource(R.drawable.blue_gradient_or);
             btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.setMessage("Registration in progress...");
-                progressDialog.show();
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
+                setProgressMessage("Registration in progress...");
+                showProgress();
+                setProgressCancel(false);
                 callRegistrationAPI();
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

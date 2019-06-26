@@ -170,8 +170,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 @Override
                 public void btnPositiveClick() {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Removing discount..");
+                        showProgress();
+                        setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
                         // progressDialog.setCanceledOnTouchOutside(false);
                         CouponApiCalls couponApiCalls = new CouponApiCalls();
@@ -322,8 +322,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
             if (bundle.getBooleanExtra(IBConstant.KEY_FROM_LIST, false)) {
                 if (!TextUtils.isEmpty(jsonTokenAndQueue.getTransactionId())) {
-                    progressDialog.setMessage("Fetching Queue data..");
-                    progressDialog.show();
+                    setProgressMessage("Fetching Queue data..");
+                    showProgress();
                     queueApiAuthenticCall.purchaseOrder(
                             UserUtils.getDeviceId(),
                             UserUtils.getEmail(),
@@ -377,8 +377,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     private void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Cancel Queue");
-            progressDialog.show();
+            setProgressMessage("Cancel Queue");
+            showProgress();
             if (UserUtils.isLogin()) {
                 queueApiAuthenticCall.setResponsePresenter(this);
                 queueApiAuthenticCall.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -703,8 +703,8 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 Log.e("data recieve", jsonCoupon.toString());
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Applying discount..");
+                    showProgress();
+                    setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();
@@ -739,10 +739,9 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
     private void pay() {
         if (null != jsonTokenAndQueue.getJsonPurchaseOrder()) {
-            progressDialog.setMessage("Starting payment process...");
-            progressDialog.show();
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
+            setProgressMessage("Starting payment process...");
+            showProgress();
+            setProgressCancel(false);
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                     .setCodeQR(codeQR)
                     .setQueueUserId(jsonTokenAndQueue.getQueueUserId())

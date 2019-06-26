@@ -559,21 +559,21 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void historyQueueError() {
         Log.d(TAG, "History queue Error");
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         passMsgToHandler(false);
     }
 
     @Override
     public void currentQueueError() {
         Log.d(TAG, "Current queue Error");
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         passMsgToHandler(true);
         pb_current.setVisibility(View.GONE);
     }
 
     @Override
     public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         AppUtilities.authenticationProcessing(getActivity());
         pb_current.setVisibility(View.GONE);
         pb_health_care.setVisibility(View.GONE);
@@ -584,7 +584,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
         pb_feed.setVisibility(View.GONE);
     }
@@ -623,7 +623,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
     @Override
     public void tokenCurrentQueueList(List<JsonTokenAndQueue> currentQueueList) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         Log.d(TAG, "Current Queue Count : " + String.valueOf(currentQueueList.size()));
         if (null != getActivity() && isAdded()) {
             Collections.sort(currentQueueList, new Comparator<JsonTokenAndQueue>() {
@@ -661,7 +661,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
     @Override
     public void tokenHistoryQueueList(List<JsonTokenAndQueue> historyQueueList) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         Log.d(TAG, ":History Queue Count:" + String.valueOf(historyQueueList.size()));
     }
 

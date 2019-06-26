@@ -60,7 +60,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
                     MedicalRecordApiCall medicalRecordApiCall = new MedicalRecordApiCall();
                     medicalRecordApiCall.setMedicalRecordPresenter(this);
                     medicalRecordApiCall.history(UserUtils.getEmail(), UserUtils.getAuth());
-                    progressDialog.show();
+                    showProgress();
                 }
             } else {
                 new CustomToast().showToast(this, "Please login to see the details");

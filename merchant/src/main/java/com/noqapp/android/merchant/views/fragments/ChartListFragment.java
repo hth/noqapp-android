@@ -29,7 +29,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChartListFragment extends Fragment implements ChartPresenter {
+public class ChartListFragment extends BaseFragment implements ChartPresenter {
 
     public static int selected_pos = 0;
     public ChartFragment chartFragment;
@@ -38,7 +38,6 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
     private ArrayList<JsonTopic> topics = new ArrayList<>();
     private ListView listview;
     private ArrayList<HealthCareStat> healthCareStatList = new ArrayList<>();
-    private ProgressDialog progressDialog;
     private boolean isFirstTime = true;
 
     public ChartListFragment() {
@@ -49,7 +48,6 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
-        initProgress();
         MerchantStatsApiCalls merchantStatsApiCalls = new MerchantStatsApiCalls(this);
         Bundle bundle = getArguments();
         run = new Runnable() {
@@ -67,7 +65,7 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
 
         if (isFirstTime) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                showProgress();
                 merchantStatsApiCalls.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
                 isFirstTime = false;
             } else {
@@ -162,17 +160,5 @@ public class ChartListFragment extends Fragment implements ChartPresenter {
         }
         dismissProgress();
         Log.v("Chart data", healthCareStatList.toString());
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 }

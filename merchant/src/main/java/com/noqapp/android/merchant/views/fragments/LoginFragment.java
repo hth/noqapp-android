@@ -41,7 +41,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
-public class LoginFragment extends Fragment implements LoginPresenter, MerchantPresenter {
+public class LoginFragment extends BaseFragment implements LoginPresenter, MerchantPresenter {
 
     private Button btn_login;
     private EditText edt_pwd;
@@ -58,6 +58,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
+        super.onCreateView(inflater, container, args);
         view = inflater.inflate(R.layout.frag_login, container, false);
         btn_login = view.findViewById(R.id.btn_login);
         actv_email = view.findViewById(R.id.actv_email);
@@ -77,8 +78,8 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                  //   btn_login.setBackgroundResource(R.drawable.button_drawable_red);
                  //   btn_login.setTextColor(Color.WHITE);
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        LaunchActivity.getLaunchActivity().progressDialog.setMessage("Login in progress..");
+                        showProgress();
+                        setProgressMessage("Login in progress..");
                         loginApiCalls.login(email.toLowerCase(), pwd);
 
                         Answers.getInstance().logLogin(new LoginEvent()
@@ -121,7 +122,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
                 actv_email.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
             }
         } else {
-            LaunchActivity.getLaunchActivity().dismissProgress();
+            dismissProgress();
             new CustomToast().showToast(getActivity(), getString(R.string.error_login));
             btn_login.setBackgroundResource(R.drawable.button_drawable);
             btn_login.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
@@ -130,13 +131,13 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
 
     @Override
     public void loginError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         LaunchActivity.getLaunchActivity().clearLoginData(false);
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
                 new CustomToast().showToast(getActivity(), getString(R.string.error_account_block));
@@ -150,7 +151,7 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
     @Override
     public void responseErrorPresenter(int errorCode) {
         LaunchActivity.getLaunchActivity().clearLoginData(false);
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
@@ -210,18 +211,18 @@ public class LoginFragment extends Fragment implements LoginPresenter, MerchantP
             }
             LaunchActivity.getLaunchActivity().setUserName();
         }
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void merchantError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         LaunchActivity.getLaunchActivity().clearLoginData(false);
     }
 
     @Override
     public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
        // AppUtils.authenticationProcessing();
         //On Login screen need not to clear the data
         ShowAlertInformation.showThemeDialog(getActivity(),"Invalid Credentail","There was an error with your E-Mail/Password combination. Please try again.");

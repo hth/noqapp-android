@@ -1,4 +1,4 @@
-package com.noqapp.android.client.views.fragments;
+package com.noqapp.android.merchant.views.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -11,13 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.ErrorResponseHandler;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.presenter.ResponseErrorPresenter;
+import com.noqapp.android.merchant.R;
 
-public abstract class BaseFragment extends Fragment implements ResponseErrorPresenter {
+public class BaseFragment extends Fragment {
     private Dialog dialog;
     private TextView tv_loading_msg;
 
@@ -51,22 +47,6 @@ public abstract class BaseFragment extends Fragment implements ResponseErrorPres
         tv_loading_msg.setText(msg);
     }
 
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtilities.authenticationProcessing(getActivity());
-    }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
 }
+

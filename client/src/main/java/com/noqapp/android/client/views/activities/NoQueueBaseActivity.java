@@ -1,19 +1,19 @@
 package com.noqapp.android.client.views.activities;
 
-import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.JsonProfile;
-
-import com.google.gson.Gson;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.google.gson.Gson;
+import com.noqapp.android.client.model.APIConstant;
+import com.noqapp.android.client.utils.Constants;
+import com.noqapp.android.common.beans.JsonProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,6 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     private static final String PREKEY_GENDER = "gender";
     private static final String PREKEY_INVITECODE = "invitecode";
     private static final String PREKEY_COUNTRY_SHORT_NAME = "countryshortname";
-    private static final int ACCOUNTKIT_REQUEST_CODE = 99;
     private static final String PREKEY_IS_REVIEW_SHOWN = "reviewScreen";
 
 
@@ -101,8 +100,8 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return sharedPreferences.getBoolean(NoQueueBaseActivity.PREKEY_IS_REVIEW_SHOWN, false);
     }
 
-    public static void setReviewShown(boolean isReviewShown) {
-        sharedPreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, isReviewShown).apply();
+    public static void setReviewShown(boolean check) {
+        sharedPreferences.edit().putBoolean(PREKEY_IS_REVIEW_SHOWN, check).apply();
     }
 
     public static String getMail() {
@@ -119,7 +118,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getOfficeMail() {
-        return  getActualMail();
+        return getActualMail();
     }
 
     public static String getOfficePhoneNo() {
@@ -212,7 +211,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
         return new Gson().fromJson(json, JsonProfile.class);
     }
 
-    public static List<JsonProfile> getAllProfileList(){
+    public static List<JsonProfile> getAllProfileList() {
         List<JsonProfile> profileList = new ArrayList<>();
         if (null != getUserProfile().getDependents()) {
             profileList = getUserProfile().getDependents();

@@ -54,8 +54,8 @@ public class PastAppointmentFragment extends BaseFragment implements Appointment
             rl_empty.setVisibility(View.GONE);
         }
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching past appointments...");
-            progressDialog.show();
+            setProgressMessage("Fetching past appointments...");
+            showProgress();
             AppointmentApiCalls appointmentApiCalls = new AppointmentApiCalls();
             appointmentApiCalls.setAppointmentPresenter(this);
             appointmentApiCalls.allPastAppointments(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());

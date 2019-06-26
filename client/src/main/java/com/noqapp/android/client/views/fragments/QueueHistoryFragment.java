@@ -40,8 +40,8 @@ public class QueueHistoryFragment extends BaseFragment implements
         rl_empty = view.findViewById(R.id.rl_empty);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             if (UserUtils.isLogin()) {
-                progressDialog.setMessage("Fetching Queue history...");
-                progressDialog.show();
+                setProgressMessage("Fetching Queue history...");
+                showProgress();
                 OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
                 orderQueueHistoryModel.setQueueHistoryPresenter(this);
                 orderQueueHistoryModel.queues(UserUtils.getEmail(), UserUtils.getAuth());

@@ -78,8 +78,8 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
                     } else {
                         reviewApiUnAuthenticCall.review(UserUtils.getDeviceId(), codeQR);
                     }
-                    progressDialog.setMessage("Getting Reviews...");
-                    progressDialog.show();
+                    setProgressMessage("Getting Reviews...");
+                    showProgress();
 
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);

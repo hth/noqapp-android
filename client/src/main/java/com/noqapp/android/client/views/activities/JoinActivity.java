@@ -148,8 +148,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 @Override
                 public void btnPositiveClick() {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Removing discount..");
+                        showProgress();
+                        setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
                         // progressDialog.setCanceledOnTouchOutside(false);
                         CouponApiCalls couponApiCalls = new CouponApiCalls();
@@ -212,10 +212,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
                 pay();
             } else {
-                progressDialog.setMessage("Starting token process...");
-                progressDialog.show();
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
+                setProgressMessage("Starting token process...");
+                showProgress();
+                setProgressCancel(false);
                 queueApiAuthenticCall.setCashFreeNotifyQPresenter(JoinActivity.this);
                 JsonCashfreeNotification jsonCashfreeNotification = new JsonCashfreeNotification();
                 jsonCashfreeNotification.setTxMsg(null);
@@ -297,8 +296,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 if (isResumeFirst) {
-                    progressDialog.setMessage("Joining Queue..");
-                    progressDialog.show();
+                    setProgressMessage("Joining Queue..");
+                    showProgress();
                     callQueue();
                 }
             } else {
@@ -457,8 +456,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     private void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Cancel Queue");
-            progressDialog.show();
+            setProgressMessage("Cancel Queue");
+            showProgress();
             if (UserUtils.isLogin()) {
                 queueApiAuthenticCall.setResponsePresenter(this);
                 queueApiAuthenticCall.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -568,8 +567,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     @Override
     public void onBackPressed() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Canceling token...");
-            progressDialog.show();
+            setProgressMessage("Canceling token...");
+            showProgress();
             queueApiAuthenticCall.setResponsePresenter(this);
             queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
                     UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
@@ -624,8 +623,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             // do nothing
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.setMessage("Canceling token...");
-                progressDialog.show();
+                setProgressMessage("Canceling token...");
+                showProgress();
                 queueApiAuthenticCall.setResponsePresenter(this);
                 queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
             } else {
@@ -759,10 +758,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     private void pay() {
         if (null != jsonTokenAndQueue.getJsonPurchaseOrder()) {
-            progressDialog.setMessage("Starting payment process...");
-            progressDialog.show();
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
+            setProgressMessage("Starting payment process...");
+            showProgress();
+            setProgressCancel(false);
             JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
                     .setCodeQR(codeQR)
                     .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
@@ -779,8 +777,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 Log.e("data recieve", jsonCoupon.toString());
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Applying discount..");
+                    showProgress();
+                    setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();

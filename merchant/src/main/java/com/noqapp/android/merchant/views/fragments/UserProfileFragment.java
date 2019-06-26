@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
-public class UserProfileFragment extends Fragment implements View.OnClickListener, ProfilePresenter {
+public class UserProfileFragment extends BaseFragment implements View.OnClickListener, ProfilePresenter {
 
     private EditText edt_birthday;
     private EditText edt_address;
@@ -49,7 +49,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     private String gender = "";
     private DatePickerDialog fromDatePickerDialog;
     private MerchantProfileApiCalls merchantProfileApiCalls;
-    private ProgressDialog progressDialog;
     private String qUserId = "";
     private SegmentedControl sc_gender;
     private ArrayList<String> gender_list = new ArrayList<>();
@@ -59,7 +58,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         merchantProfileApiCalls = new MerchantProfileApiCalls();
-        initProgress();
         edt_email = view.findViewById(R.id.edt_email);
         edt_name = view.findViewById(R.id.edt_name);
         edt_phoneNo = view.findViewById(R.id.edt_phone);
@@ -139,7 +137,8 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
             // btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                setProgressMessage("Updating data...");
+                showProgress();
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_name.getText().toString();
                 //   String mail = edt_Mail.getText().toString();
@@ -261,15 +260,5 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         return isValid;
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 }
 

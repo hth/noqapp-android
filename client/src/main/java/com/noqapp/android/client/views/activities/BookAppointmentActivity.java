@@ -129,8 +129,8 @@ public class BookAppointmentActivity extends BaseActivity implements
             } else {
                 // Process
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.setMessage("Booking appointment...");
-                    progressDialog.show();
+                    setProgressMessage("Booking appointment...");
+                    showProgress();
                     String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
                     JsonSchedule jsonSchedule = new JsonSchedule()
                             .setCodeQR(bizStoreElastic.getCodeQR())
@@ -236,8 +236,8 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     private void fetchAppointments(String day) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Fetching appointments...");
-            progressDialog.show();
+            setProgressMessage("Fetching appointments...");
+            showProgress();
             appointmentApiCalls.scheduleForDay(UserUtils.getDeviceId(),
                     UserUtils.getEmail(),
                     UserUtils.getAuth(), day, bizStoreElastic.getCodeQR());

@@ -137,8 +137,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 userMedicalProfileApiCalls.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                progressDialog.setMessage("fetching medical profile...");
-                progressDialog.show();
+                setProgressMessage("fetching medical profile...");
+                showProgress();
             } else {
                 new CustomToast().showToast(this, "Please login to see the details");
             }
@@ -290,8 +290,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                             jump.setOccupation(OccupationEnum.getEnum(sc_occupation_type_data.get(sc_occupation_type.getSelectedAbsolutePosition())));
                             medicalProfile.setJsonUserMedicalProfile(jump);
                             userMedicalProfileApiCalls.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                            progressDialog.setMessage("Updating occupation type....");
-                            progressDialog.show();
+                            setProgressMessage("Updating occupation type....");
+                            showProgress();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -340,8 +340,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                     }
                     medicalProfile.setJsonUserMedicalProfile(jump);
                     userMedicalProfileApiCalls.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                    progressDialog.setMessage("Updating medical history....");
-                    progressDialog.show();
+                    setProgressMessage("Updating medical history....");
+                    showProgress();
                 }
             }
             break;
@@ -372,8 +372,8 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                                     jump.setBloodType(BloodTypeEnum.getEnum(sc_blood_type_data.get(sc_blood_type.getSelectedAbsolutePosition())));
                                     medicalProfile.setJsonUserMedicalProfile(jump);
                                     userMedicalProfileApiCalls.updateUserMedicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                                    progressDialog.setMessage("Updating blood type....");
-                                    progressDialog.show();
+                                    setProgressMessage("Updating blood type....");
+                                    showProgress();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

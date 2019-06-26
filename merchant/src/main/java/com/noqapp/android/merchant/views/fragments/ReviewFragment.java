@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ReviewFragment extends Fragment implements AllReviewPresenter {
+public class ReviewFragment extends BaseFragment implements AllReviewPresenter {
 
     private RecyclerView rv_all_review;
     private TextView tv_review_label;
@@ -43,7 +43,6 @@ public class ReviewFragment extends Fragment implements AllReviewPresenter {
     private List<JsonReview> jsonReviewsOnlyText = new ArrayList<>();
     private RelativeLayout rl_empty;
     private SwitchCompat toggleShowAll;
-    private ProgressDialog progressDialog;
     private View view;
     private TextView tv_store_name, tv_address;
 
@@ -61,7 +60,6 @@ public class ReviewFragment extends Fragment implements AllReviewPresenter {
                 = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rv_all_review.setLayoutManager(horizontalLayoutManagaer);
         rv_all_review.setItemAnimator(new DefaultItemAnimator());
-        initProgress();
         Bundle bundle = getArguments();
         if (null != bundle) {
             JsonTopic jt = (JsonTopic) bundle.getSerializable("jsonTopic");
@@ -82,23 +80,11 @@ public class ReviewFragment extends Fragment implements AllReviewPresenter {
                 ReviewApiUnAuthenticCalls reviewApiUnAuthenticCall = new ReviewApiUnAuthenticCalls();
                 reviewApiUnAuthenticCall.setAllReviewPresenter(this);
                 reviewApiUnAuthenticCall.review(UserUtils.getDeviceId(), codeQR);
-                progressDialog.setMessage("Getting Reviews...");
-                progressDialog.show();
+                setProgressMessage("Getting Reviews...");
+                showProgress();
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
-        }
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 

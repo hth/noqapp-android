@@ -41,8 +41,8 @@ public class OrderHistoryFragment extends BaseFragment implements
         rl_empty = view.findViewById(R.id.rl_empty);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             if (UserUtils.isLogin()) {
-                progressDialog.setMessage("Fetching order history...");
-                progressDialog.show();
+                setProgressMessage("Fetching order history...");
+                showProgress();
                 OrderQueueHistoryApiCall orderQueueHistoryModel = new OrderQueueHistoryApiCall();
                 orderQueueHistoryModel.setOrderHistoryPresenter(this);
                 orderQueueHistoryModel.orders(UserUtils.getEmail(), UserUtils.getAuth());

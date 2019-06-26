@@ -32,7 +32,7 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     protected void callApi(String phoneNumber) {
-        progressDialog.setMessage("Account migration in progress");
+        setProgressMessage("Account migration in progress");
         TimeZone tz = TimeZone.getDefault();
         MigratePhone migratePhone = new MigratePhone();
         migratePhone.setCountryShortName(countryShortName);
