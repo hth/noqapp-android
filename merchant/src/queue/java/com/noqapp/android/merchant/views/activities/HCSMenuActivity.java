@@ -91,13 +91,15 @@ import java.util.List;
 /**
  * Health Care Service Menu Screen
  */
-public class HCSMenuActivity extends AppCompatActivity implements FilePresenter, AutoCompleteHCSMenuAdapter.SearchByPos, HCSMenuAdapter.StaggeredClick, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+public class HCSMenuActivity extends BaseActivity implements FilePresenter,
+        AutoCompleteHCSMenuAdapter.SearchByPos, HCSMenuAdapter.StaggeredClick,
+        FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack,
+        LoginActivity.LoginCallBack {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private RecyclerView rcv_menu, rcv_menu_select;
-    private ProgressDialog progressDialog;
     private long lastPress;
     private Toast backPressToast;
     private ArrayList<HCSMenuObject> masterDataXray = new ArrayList<>();
@@ -146,7 +148,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hs_menu);
-        initProgress();
+        setProgressMessage("Updating data...");
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Test List");
@@ -228,7 +230,7 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
 
     private void callFileApi() {
         if (isStoragePermissionAllowed()) {
-            progressDialog.show();
+            showProgress();
             BaseMasterLabApiCalls baseMasterLabApiCalls = new BaseMasterLabApiCalls();
             baseMasterLabApiCalls.setFilePresenter(this);
             baseMasterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
@@ -273,17 +275,6 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 this,
                 STORAGE_PERMISSION_PERMS,
                 STORAGE_PERMISSION_CODE);
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -475,18 +466,6 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         }
     }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -513,8 +492,6 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
         new AppUtils().hideKeyBoard(this);
         actv_search.setText("");
         staggeredClick(false, menuObject, 0);
-
-
     }
 
     @Override
@@ -697,10 +674,8 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                     }
-                    progressDialog.show();
-                    progressDialog.setCancelable(false);
-                    progressDialog.setCanceledOnTouchOutside(false);
-
+                    showProgress();
+                    setProgressCancel(false);
                     businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -752,10 +727,9 @@ public class HCSMenuActivity extends AppCompatActivity implements FilePresenter,
                 @Override
                 public void onClick(View v) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.setMessage("Placing order....");
-                        progressDialog.show();
-                        progressDialog.setCancelable(false);
-                        progressDialog.setCanceledOnTouchOutside(false);
+                        setProgressMessage("Placing order....");
+                        showProgress();
+                        setProgressCancel(false);
                         btn_create_order.setEnabled(false);
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;

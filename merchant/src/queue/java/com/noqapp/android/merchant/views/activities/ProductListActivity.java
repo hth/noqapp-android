@@ -51,9 +51,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProductListActivity extends AppCompatActivity implements StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.MenuItemUpdate {
+public class ProductListActivity extends BaseActivity implements
+        StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
+        MenuAdapter.MenuItemUpdate {
 
-    private ProgressDialog progressDialog;
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
@@ -70,7 +71,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prod_list);
-        initProgress();
+        setProgressMessage("Fetching data...");
         codeQR = getIntent().getStringExtra("codeQR");
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -85,43 +86,12 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         });
         tv_toolbar_title.setText(getString(R.string.screen_product_list));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setStoreProductPresenter(this);
             storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
-        }
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 
@@ -220,10 +190,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     @Override
     public void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Updating data...");
-            progressDialog.show();
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
+            setProgressMessage("Updating data...");
+            showProgress();
+            setProgressCancel(false);
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setActionOnProductPresenter(this);
             storeProductApiCalls.actionOnProduct(UserUtils.getEmail(), UserUtils.getAuth(), codeQR, actionTypeEnum, jsonStoreProduct);
@@ -378,7 +347,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(this, "Action perform successfully");
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                showProgress();
                 StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
                 storeProductApiCalls.setStoreProductPresenter(this);
                 storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);

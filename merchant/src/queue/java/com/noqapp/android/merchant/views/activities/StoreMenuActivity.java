@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,8 +58,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StoreMenuActivity extends AppCompatActivity implements StoreProductPresenter, MenuHeaderAdapter.OnItemClickListener,
-        MenuOrderAdapter.CartOrderUpdate, FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
+public class StoreMenuActivity extends BaseActivity implements StoreProductPresenter,
+        MenuHeaderAdapter.OnItemClickListener, MenuOrderAdapter.CartOrderUpdate,
+        FindCustomerPresenter, PurchaseOrderPresenter, RegistrationActivity.RegisterCallBack,
+        LoginActivity.LoginCallBack {
 
     private Button tv_place_order;
     private RecyclerView rcv_header;
@@ -69,7 +69,6 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
     private HashMap<String, ChildData> orders = new HashMap<>();
-    private ProgressDialog progressDialog;
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
@@ -79,23 +78,11 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
     private Button btn_create_order, btn_create_token;
     private String codeQR = "";
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_menu);
-        initProgress();
+        setProgressMessage("Fetching data...");
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Menu");
@@ -117,7 +104,7 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         codeQR = getIntent().getStringExtra("codeQR");
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setStoreProductPresenter(this);
             storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
@@ -258,18 +245,6 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
         }
     }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -338,9 +313,8 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                         cid = edt_id.getText().toString();
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                     }
-                    progressDialog.show();
-                    progressDialog.setCancelable(false);
-                    progressDialog.setCanceledOnTouchOutside(false);
+                    showProgress();
+                    setProgressCancel(false);
                     businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -390,10 +364,9 @@ public class StoreMenuActivity extends AppCompatActivity implements StoreProduct
                 @Override
                 public void onClick(View v) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        progressDialog.setMessage("Placing order....");
-                        progressDialog.show();
-                        progressDialog.setCancelable(false);
-                        progressDialog.setCanceledOnTouchOutside(false);
+                        setProgressMessage("Placing order....");
+                        showProgress();
+                        setProgressCancel(false);
                         HashMap<String, ChildData> getOrder = getOrders();
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;

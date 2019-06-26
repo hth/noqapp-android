@@ -647,6 +647,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     @Override
     public void onBackPressed() {
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() == 0) {
             long currentTime = System.currentTimeMillis();

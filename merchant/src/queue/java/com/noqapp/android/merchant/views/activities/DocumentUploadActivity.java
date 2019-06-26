@@ -59,14 +59,14 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, LabFilePresenter, ImageUploadAdapter.OnItemClickListener {
+public class DocumentUploadActivity extends BaseActivity implements View.OnClickListener,
+        ImageUploadPresenter, LabFilePresenter, ImageUploadAdapter.OnItemClickListener {
 
     private final int PICK_IMAGE_CAMERA = 101;
     private final int PICK_IMAGE_GALLERY = 102;
     private final int PERMISSION_REQUEST_CAMERA = 103;
     private String transactionId;
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
-    private ProgressDialog progressDialog;
     private ProgressDialog progressDialogImage;
     private LabFile labFileTemp;
     private String userChoosenTask;
@@ -104,7 +104,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         purchaseOrderApiCalls.setImageUploadPresenter(this);
         transactionId = getIntent().getStringExtra("transactionId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
-
+        setProgressMessage("Loading data...");
         rcv_photo = findViewById(R.id.rcv_photo);
         rcv_photo.setLayoutManager(new GridLayoutManager(this, columnCount));
         frame_image = findViewById(R.id.frame_image);
@@ -126,8 +126,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             }
         });
 
-        progressDialog.show();
-        progressDialog.setMessage("Fetching documents...");
+        showProgress();
+        setProgressMessage("Fetching documents...");
         purchaseOrderApiCalls.setLabFilePresenter(this);
         purchaseOrderApiCalls.showAttachment(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -141,12 +141,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         dismissProgress();
         AppUtils.authenticationProcessing();
         finish();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override
@@ -224,10 +218,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
 
     private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-
         progressDialogImage = new ProgressDialog(this);
         progressDialogImage.getWindow().setBackgroundDrawable(new
                 ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -235,11 +225,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         progressDialogImage.setCancelable(true);
         // progressDialogImage.show();
         progressDialogImage.setContentView(R.layout.progress_lay);
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     private void deleteImage(final String imageName) {
@@ -255,8 +240,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 LabFile labFile = new LabFile().
                         setTransactionId(transactionId)
                         .setDeleteAttachment(imageName);
-                progressDialog.show();
-                progressDialog.setMessage("Deleting image...");
+                showProgress();
+                setProgressMessage("Deleting image...");
                 purchaseOrderApiCalls.removeAttachment(BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), labFile);
@@ -378,8 +363,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = getRealPathFromURI(imageUri);
             if (!TextUtils.isEmpty(path)) {
-                progressDialog.show();
-                progressDialog.setMessage("Uploading document");
+                showProgress();
+                setProgressMessage("Uploading document");
                 String type = getMimeType(path);
                 File file = new File(path);
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -401,8 +386,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Uploading document");
+                        showProgress();
+                        setProgressMessage("Uploading document");
                         String type = getMimeType(convertedPath);
                         //  Log.e("File type :", type);
                         File file = new File(convertedPath);

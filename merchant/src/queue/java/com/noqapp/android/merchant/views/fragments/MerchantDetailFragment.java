@@ -131,7 +131,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                LaunchActivity.getLaunchActivity().progressDialog.show();
+                showProgress();
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -163,7 +163,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     }
             );
             peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
-                    this, jsonTopic.getServingNumber(),jsonTopic.getJsonPaymentPermission());
+                    this, jsonTopic.getServingNumber(), jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
             if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
@@ -182,7 +182,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
             purchaseOrders = new ArrayList<>();
             peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
-                    this,jsonTopic.getJsonPaymentPermission());
+                    this, jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
         } else {
             super.resetList();
@@ -205,7 +205,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             @Override
             public void onClick(View v) {
                 if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                    showProgress();
                     setDispensePresenter();
                     manageQueueApiCalls.dispenseToken(
                             BaseLaunchActivity.getDeviceID(),
@@ -249,8 +249,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
         } else {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                LaunchActivity.getLaunchActivity().progressDialog.show();
-                LaunchActivity.getLaunchActivity().progressDialog.setMessage("Completing the order...");
+                showProgress();
+                setProgressMessage("Completing the order...");
                 OrderServed orderServed = new OrderServed();
                 orderServed.setCodeQR(jsonTopic.getCodeQR());
                 orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -271,8 +271,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void orderCancelClick(int position) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            LaunchActivity.getLaunchActivity().progressDialog.show();
-            LaunchActivity.getLaunchActivity().progressDialog.setMessage("Canceling the order...");
+            showProgress();
+            setProgressMessage("Canceling the order...");
             OrderServed orderServed = new OrderServed();
             orderServed.setCodeQR(jsonTopic.getCodeQR());
             orderServed.setServedNumber(purchaseOrders.get(position).getToken());
@@ -303,7 +303,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void acquireOrderResponse(JsonToken token) {
         //Log.v("Order acquire response",token.toString());
-        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
         if (null != token) {
             JsonTopic jt = topicsList.get(currrentpos);
@@ -327,7 +326,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
-        LaunchActivity.getLaunchActivity().dismissProgress();
         new ErrorResponseHandler().processError(getActivity(), eej);
     }
 
@@ -425,7 +423,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            showProgress();
                             OrderServed orderServed = new OrderServed();
                             orderServed.setCodeQR(jsonTopic.getCodeQR());
                             orderServed.setServedNumber(jsonTopic.getServingNumber());
@@ -459,7 +457,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                     @Override
                                     public void btnPositiveClick() {
                                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                                            showProgress();
                                             OrderServed orderServed = new OrderServed();
                                             orderServed.setCodeQR(jsonTopic.getCodeQR());
                                             orderServed.setServedNumber(jsonTopic.getServingNumber());
@@ -480,7 +478,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                                 showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                             } else {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    LaunchActivity.getLaunchActivity().progressDialog.show();
+                                    showProgress();
                                     OrderServed orderServed = new OrderServed();
                                     orderServed.setCodeQR(jsonTopic.getCodeQR());
                                     orderServed.setServedNumber(jsonTopic.getServingNumber());
@@ -498,7 +496,8 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             });
 
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.setVisibility(View.VISIBLE);
+                // progressDialog.setVisibility(View.VISIBLE);
+                showProgress();
                 getAllPeopleInQ(jsonTopic);
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
@@ -524,17 +523,17 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         }
         peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
-                this, jsonTopic.getServingNumber(),jsonTopic.getJsonPaymentPermission());
+                this, jsonTopic.getServingNumber(), jsonTopic.getJsonPaymentPermission());
         rv_queue_people.setAdapter(peopleInQOrderAdapter);
         if (jsonTopic.getServingNumber() > 0) {
             rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
         }
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
     public void orderProcessedError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
     }
 
     @Override
