@@ -74,10 +74,10 @@
     <string name="currently_serving">Currently serving</string>
     <string name="people_in_queue">People in queue</string>
 
-    <string name="cancel_queue">You successfully cancel the queue</string>
-    <string name="fail_to_cancel">Failed to cancel the queue</string>
+    <string name="cancel_queue">You have successfully cancelled</string>
+    <string name="fail_to_cancel">Failed to cancel</string>
 
-    <string name="cancel_order">You successfully cancel the order</string>
+    <string name="cancel_order">You have successfully cancelled the order</string>
     <string name="fail_to_cancel_order">Failed to cancel the order</string>
 
 
