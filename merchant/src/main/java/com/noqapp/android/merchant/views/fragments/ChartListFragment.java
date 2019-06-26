@@ -63,6 +63,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
         if (isFirstTime) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
+                setProgressMessage("Getting statistics...");
                 merchantStatsApiCalls.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
                 isFirstTime = false;
             } else {

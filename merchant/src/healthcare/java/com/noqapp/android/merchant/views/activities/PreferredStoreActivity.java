@@ -39,7 +39,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferredStoreActivity extends AppCompatActivity implements PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener, IntellisensePresenter {
+public class PreferredStoreActivity extends BaseActivity implements
+        PreferredBusinessPresenter, MenuHeaderAdapter.OnItemClickListener, IntellisensePresenter {
 
     private long lastPress;
     private Toast backPressToast;
@@ -51,7 +52,6 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
     private PreferredStoreFragment frag_sono_and_xray;
     private PreferredStoreFragment frag_path_and_spec;
     private PreferredStoreFragment frag_physio_medic;
-    private ProgressDialog progressDialog;
     public PreferenceObjects preferenceObjects;
 
     public static PreferredStoreActivity getPreferredStoreActivity() {
@@ -84,7 +84,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
             preferenceObjects = new PreferenceObjects();
             initStores();
         }
-        initProgress();
+        setProgressMessage("Fetching stores...");
         setContentView(R.layout.activity_preferred_business);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Preferred Stores");
@@ -105,7 +105,7 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
 
         if (null != LaunchActivity.merchantListFragment && null != LaunchActivity.merchantListFragment.getTopics() && LaunchActivity.merchantListFragment.getTopics().size() > 0) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                showProgress();
                 new PreferredBusinessApiCalls(this)
                         .getAllPreferredStores(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
             }
@@ -183,24 +183,6 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         dismissProgress();
     }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
     private Bundle getBundle(int pos) {
         Bundle b = new Bundle();
         b.putInt("type", pos);
@@ -226,17 +208,6 @@ public class PreferredStoreActivity extends AppCompatActivity implements Preferr
         frag_path_and_spec.saveData();
         frag_physio_medic.saveData();
         LaunchActivity.getLaunchActivity().setSuggestionsPrefs(preferenceObjects);
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching stores...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
 

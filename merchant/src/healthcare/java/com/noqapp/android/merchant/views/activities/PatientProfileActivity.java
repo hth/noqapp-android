@@ -43,7 +43,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class PatientProfileActivity extends AppCompatActivity implements PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter {
+public class PatientProfileActivity extends BaseActivity implements
+        PatientProfilePresenter, MedicalRecordListPresenter, JsonMedicalRecordPresenter {
     private long lastPress;
     private Toast backPressToast;
     public ProgressBar pb_physical, pb_history;

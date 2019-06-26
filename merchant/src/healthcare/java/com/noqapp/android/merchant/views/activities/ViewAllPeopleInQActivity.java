@@ -5,20 +5,17 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ViewAllExpandableListAdapter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +25,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,10 +34,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class ViewAllPeopleInQActivity extends AppCompatActivity implements QueuePersonListPresenter {
+public class ViewAllPeopleInQActivity extends BaseActivity implements QueuePersonListPresenter {
 
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
-    private ProgressDialog progressDialog;
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
 
@@ -67,9 +62,9 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_queue_history));
-        initProgress();
+        setProgressMessage("Fetching data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             ManageQueueApiCalls manageQueueApiCalls = new ManageQueueApiCalls();
             manageQueueApiCalls.setQueuePersonListPresenter(this);
             manageQueueApiCalls.getAllQueuePersonListHistory(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
@@ -77,17 +72,6 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
             ShowAlertInformation.showNetworkDialog(this);
         }
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -117,23 +101,6 @@ public class ViewAllPeopleInQActivity extends AppCompatActivity implements Queue
         dismissProgress();
     }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
 
     private void createData(List<JsonQueuedPerson> temp) {
         if (null != temp && temp.size() > 0) {

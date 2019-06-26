@@ -60,7 +60,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
-public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener, ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
+public class DocumentUploadActivity extends BaseActivity implements View.OnClickListener,
+        ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {
 
     private static final int PICK_IMAGE_CAMERA = 101;
     private static final int PICK_IMAGE_GALLERY = 102;
@@ -68,7 +69,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private static final int PERMISSION_REQUEST_CAMERA = 103;
     private String recordReferenceId;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
-    private ProgressDialog progressDialog;
     private ProgressDialog progressDialogImage;
     private JsonMedicalRecord jsonMedicalRecordTemp;
     private String userChoosenTask;
@@ -125,9 +125,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 }
             }
         });
-
-        progressDialog.show();
-        progressDialog.setMessage("Fetching documents...");
+        showProgress();
+        setProgressMessage("Fetching documents...");
         medicalHistoryApiCalls.setJsonMedicalRecordPresenter(this);
         medicalHistoryApiCalls.existsMedicalRecord(BaseLaunchActivity.getDeviceID(),
                 LaunchActivity.getLaunchActivity().getEmail(),
@@ -143,11 +142,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         finish();
     }
 
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
@@ -244,11 +238,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     }
 
     private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-
-
         progressDialogImage = new ProgressDialog(this);
         progressDialogImage.getWindow().setBackgroundDrawable(new
                 ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -258,12 +247,6 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         progressDialogImage.setContentView(R.layout.progress_lay);
 
     }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     private void deleteImage(final String imageName) {
         ShowCustomDialog showDialog = new ShowCustomDialog(this);
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -281,8 +264,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         add(imageName);
                     }
                 });
-                progressDialog.show();
-                progressDialog.setMessage("Deleting image...");
+                showProgress();
+                setProgressMessage("Deleting image...");
                 medicalHistoryApiCalls.removeImage(BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
@@ -416,8 +399,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 File file = new File(path);
                 String type = getMimeType(uri);
                 String displayName = file.getName();
-                progressDialog.show();
-                progressDialog.setMessage("Uploading document");
+                showProgress();
+                setProgressMessage("Uploading document");
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", displayName, RequestBody.create(MediaType.parse(type), file));
                 RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), recordReferenceId);
                 medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
@@ -425,7 +408,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
         } catch (Exception e) {
             e.printStackTrace();
-            progressDialog.dismiss();
+            dismissProgress();
             Log.e("pdf file upload failed",e.getMessage());
         }
     }
@@ -439,8 +422,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = getRealPathFromURI(imageUri);
             if (!TextUtils.isEmpty(path)) {
-                progressDialog.show();
-                progressDialog.setMessage("Uploading document");
+                showProgress();
+                setProgressMessage("Uploading document");
                 String type = getMimeType(imageUri);
                 File file = new File(path);
                 MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
@@ -462,8 +445,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     Log.e("file path temp:", convertedPath);
                     if (!TextUtils.isEmpty(convertedPath)) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Uploading document");
+                        showProgress();
+                        setProgressMessage("Uploading document");
                         String type = getMimeType(data.getData());
                         //  Log.e("File type :", type);
                         File file = new File(convertedPath);

@@ -54,9 +54,8 @@ import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class OrderDetailActivity extends AppCompatActivity implements QueuePaymentPresenter,
+public class OrderDetailActivity extends BaseActivity implements QueuePaymentPresenter,
         QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
-    private ProgressDialog progressDialog;
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private TextView tv_cost, tv_order_state, tv_transaction_id;
@@ -98,7 +97,7 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
 
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         actionbarBack = findViewById(R.id.actionbarBack);
-        initProgress();
+        setProgressMessage("Loading Queue Settings...");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("jsonQueuedPerson");
         jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
         actionbarBack.setOnClickListener(new View.OnClickListener() {
@@ -181,8 +180,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     @Override
                     public void btnPositiveClick() {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Removing discount..");
+                            showProgress();
+                            setProgressMessage("Removing discount..");
                             // progressDialog.setCancelable(false);
                             // progressDialog.setCanceledOnTouchOutside(false);
                             CouponApiCalls couponApiCalls = new CouponApiCalls();
@@ -224,10 +223,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     @Override
                     public void btnPositiveClick() {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            progressDialog.show();
-                            progressDialog.setMessage("Starting payment refund..");
-                            progressDialog.setCancelable(false);
-                            progressDialog.setCanceledOnTouchOutside(false);
+                            showProgress();
+                            setProgressMessage("Starting payment refund..");
+                            setProgressCancel(false);
                             JsonQueuedPerson jqp = new JsonQueuedPerson()
                                     .setQueueUserId(jsonQueuedPerson.getQueueUserId())
                                     .setToken(jsonQueuedPerson.getToken());
@@ -257,7 +255,6 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             }
         });
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
-        initProgress();
         updateUI();
         TextView tv_item_count = findViewById(R.id.tv_item_count);
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
@@ -279,10 +276,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                             @Override
                             public void btnPositiveClick() {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    progressDialog.show();
-                                    progressDialog.setMessage("Starting payment..");
-                                    progressDialog.setCancelable(false);
-                                    progressDialog.setCanceledOnTouchOutside(false);
+                                    showProgress();
+                                    setProgressMessage("Starting payment..");
+                                    setProgressCancel(false);
                                     JsonQueuedPerson jqp = new JsonQueuedPerson()
                                             .setQueueUserId(jsonQueuedPerson.getQueueUserId())
                                             .setToken(jsonQueuedPerson.getToken());
@@ -331,10 +327,9 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                     showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
                 } else {
                     if (permissionHelper.isStoragePermissionAllowed()) {
-                        progressDialog.show();
-                        progressDialog.setMessage("Fetching receipt info...");
-                        progressDialog.setCancelable(false);
-                        progressDialog.setCanceledOnTouchOutside(false);
+                        showProgress();
+                        setProgressMessage("Fetching receipt info...");
+                        setProgressCancel(false);
                         Receipt receipt = new Receipt();
                         receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
                         receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
@@ -419,18 +414,6 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
             if (getIntent().getBooleanExtra(IBConstant.KEY_IS_HISTORY, false)) {
                 tv_payment_msg.setVisibility(View.GONE);
             }
-        }
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading Queue Settings...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 
@@ -552,8 +535,8 @@ public class OrderDetailActivity extends AppCompatActivity implements QueuePayme
                 }
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    progressDialog.show();
-                    progressDialog.setMessage("Applying discount..");
+                    showProgress();
+                    setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();

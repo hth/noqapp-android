@@ -53,6 +53,7 @@ public class MerchantReviewQListFragment extends BaseFragment implements QueueRe
     public void updateUI(JsonProfessionalProfilePersonal temp) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
+            setProgressMessage("Getting reviews...");
             MerchantProfileApiCalls merchantProfileApiCalls = new MerchantProfileApiCalls();
             merchantProfileApiCalls.setAllReviewPresenter(this);
             merchantProfileApiCalls.allReviews(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());

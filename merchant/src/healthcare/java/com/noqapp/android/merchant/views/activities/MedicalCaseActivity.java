@@ -55,7 +55,8 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
+public class MedicalCaseActivity extends BaseActivity implements
+        MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
     private ViewPager viewPager;
     private long lastPress;
     private Toast backPressToast;
@@ -208,21 +209,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     @Override
     public void preferredBusinessError() {
 
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        AppUtils.authenticationProcessing();
     }
 
     @Override

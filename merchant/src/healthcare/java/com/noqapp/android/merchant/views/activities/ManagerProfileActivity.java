@@ -11,8 +11,6 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
 
     private UserAdditionalInfoFragment userAdditionalInfoFragment;
 
-
-
     @Override
     protected void setupViewPager(ViewPager viewPager) {
         super.setupViewPager(viewPager);
@@ -51,7 +49,6 @@ public class ManagerProfileActivity extends BaseManagerProfileActivity {
                         //Do nothing
                 }
             }
-
         }
     }
 }

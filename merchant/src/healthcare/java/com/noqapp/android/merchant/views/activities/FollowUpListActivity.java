@@ -38,10 +38,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class FollowUpListActivity extends AppCompatActivity implements QueuePersonListPresenter {
+public class FollowUpListActivity extends BaseActivity implements QueuePersonListPresenter {
 
     private Map<Date, List<JsonQueuePersonList>> expandableListDetail = new HashMap<>();
-    private ProgressDialog progressDialog;
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
 
@@ -67,26 +66,15 @@ public class FollowUpListActivity extends AppCompatActivity implements QueuePers
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_followup));
-        initProgress();
+        setProgressMessage("Fetching followup data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(FollowUpListActivity.this);
             medicalHistoryApiCalls.getFollowUpList(UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching followup data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -115,24 +103,6 @@ public class FollowUpListActivity extends AppCompatActivity implements QueuePers
     @Override
     public void queuePersonListError() {
         dismissProgress();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 
     private void createData(List<JsonQueuedPerson> temp) {

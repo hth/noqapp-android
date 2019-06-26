@@ -44,9 +44,8 @@ import java.io.OutputStream;
 import java.util.Date;
 
 
-public class ScribbleActivity extends AppCompatActivity  {
+public class ScribbleActivity extends BaseActivity  {
 
-    private ProgressDialog progressDialog;
     private EditText edt_prescription;
     private final String packageName = "com.google.android.apps.handwriting.ime";
 
@@ -69,7 +68,7 @@ public class ScribbleActivity extends AppCompatActivity  {
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_prescription));
-        initProgress();
+        setProgressMessage("Fetching data...");
         Button btn_submit = findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,17 +127,6 @@ public class ScribbleActivity extends AppCompatActivity  {
             tv_title.setText("Scribble app missing");
         }
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     private boolean isAppInstalled(String uri) {

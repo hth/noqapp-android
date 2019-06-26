@@ -46,8 +46,8 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.On
 
 import java.util.ArrayList;
 
-public class PhysicalActivity extends AppCompatActivity implements MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
-    private ProgressDialog progressDialog;
+public class PhysicalActivity extends BaseActivity implements
+        MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
@@ -87,7 +87,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         ScrollView scroll_view = findViewById(R.id.scroll_view);
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
-        initProgress();
+        setProgressMessage("Loading Patient data...");
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -267,8 +267,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.setMessage("Updating Patient data...");
-                progressDialog.show();
+                setProgressMessage("Updating Patient data...");
+                showProgress();
                 JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
                 jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
                 jsonMedicalRecord.setFormVersion(FormVersionEnum.MFD1);
@@ -332,7 +332,7 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
             }
         });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
             jsonMedicalRecord.setRecordReferenceId(jsonQueuedPerson.getRecordReferenceId());
             jsonMedicalRecord.setCodeQR(codeQR);
@@ -356,8 +356,8 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                         ShowCustomDialog showDialog = new ShowCustomDialog(PhysicalActivity.this, false);
                         showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
                     } else {
-                        progressDialog.show();
-                        progressDialog.setMessage("Fetching receipt info...");
+                        showProgress();
+                        setProgressMessage("Fetching receipt info...");
                         Receipt receipt = new Receipt();
                         receipt.setCodeQR(codeQR);
                         receipt.setQueueUserId(jsonQueuedPerson.getQueueUserId());
@@ -371,19 +371,6 @@ public class PhysicalActivity extends AppCompatActivity implements MedicalRecord
                 }
             }
         });
-    }
-
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading Patient data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
     }
 
     @Override

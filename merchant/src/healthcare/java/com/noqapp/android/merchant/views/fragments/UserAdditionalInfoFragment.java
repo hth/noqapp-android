@@ -63,7 +63,7 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
         ll_education = view.findViewById(R.id.ll_education);
         ll_experience = view.findViewById(R.id.ll_experience);
         ll_license = view.findViewById(R.id.ll_license);
-        setProgressMessage("Updating data...");
+        setProgressMessage("Updating Professional profile...");
         Button btn_update = view.findViewById(R.id.btn_update);
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override

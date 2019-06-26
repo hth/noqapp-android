@@ -105,6 +105,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
         loadTabs.execute();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
+            setProgressMessage("Fetching profile...");
             merchantProfileApiCalls.setMerchantPresenter(this);
             merchantProfileApiCalls.fetch(
                     UserUtils.getDeviceId(),

@@ -56,14 +56,14 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 
-public class PreferenceActivity extends AppCompatActivity implements FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener {
+public class PreferenceActivity extends BaseActivity implements
+        FilePresenter, IntellisensePresenter, MenuHeaderAdapter.OnItemClickListener {
     private final int STORAGE_PERMISSION_CODE = 102;
     private final String[] STORAGE_PERMISSION_PERMS = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
-    private ProgressDialog progressDialog;
     private ViewPager viewPager;
     private long lastPress;
     private Toast backPressToast;
@@ -102,7 +102,6 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                 onBackPressed();
             }
         });
-        initProgress();
         preferenceActivity = this;
         try {
             preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);
@@ -188,7 +187,8 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
     }
 
     private void callFileApi() {
-        progressDialog.show();
+        showProgress();
+        setProgressMessage("Updating data...");
         MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
         masterLabApiCalls.setFilePresenter(this);
         masterLabApiCalls.fetchFile(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
@@ -264,17 +264,6 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                 STORAGE_PERMISSION_CODE);
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     @Override
     public void fileError() {
         dismissProgress();
@@ -294,24 +283,6 @@ public class PreferenceActivity extends AppCompatActivity implements FilePresent
                 }
             }
         }
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 
     private Bundle getBundle(int pos) {

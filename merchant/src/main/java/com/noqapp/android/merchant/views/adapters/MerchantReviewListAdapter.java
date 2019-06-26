@@ -59,7 +59,7 @@ public class MerchantReviewListAdapter extends BaseAdapter {
             recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
         } else {
-            recordHolder.cardview.setCardBackgroundColor(Color.TRANSPARENT);
+            recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
             recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
         }
 
