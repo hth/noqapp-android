@@ -112,7 +112,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             isPayClick = true;
                         }
                     } else {
-                        new CustomToast().showToast(OrderConfirmActivity.this, "Email is mandatory. Please add and verify it");
+                        new CustomToast().showToast(OrderConfirmActivity.this, "To pay, email is mandatory. In your profile add and verify email");
                     }
                 }
             }
