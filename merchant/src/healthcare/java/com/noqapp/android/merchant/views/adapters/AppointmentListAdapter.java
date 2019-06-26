@@ -142,10 +142,10 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                             listener.appointmentReject(jsonSchedule, position);
                             break;
                         case R:
-                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be reversed");
+                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be modified");
                             break;
                         case S:
-                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be reversed");
+                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be modified");
                             break;
                     }
                 }
@@ -163,10 +163,10 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                             new CustomToast().showToast(context, "Appointment already accepted.");
                             break;
                         case R:
-                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be reversed");
+                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be modified");
                             break;
                         case S:
-                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be reversed");
+                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be modified");
                             break;
                     }
                 }
