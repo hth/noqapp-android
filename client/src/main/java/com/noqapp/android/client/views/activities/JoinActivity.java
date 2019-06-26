@@ -655,7 +655,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             params.put(PARAM_CUSTOMER_EMAIL, customerEmail);
             cfPaymentService.doPayment(this, params, token, this, stage);
         } else {
-            new CustomToast().showToast(this, "Email is mandatory. Please add and verify it");
+            new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         }
     }
 

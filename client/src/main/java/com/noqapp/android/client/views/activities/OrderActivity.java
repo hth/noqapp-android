@@ -287,7 +287,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             isValid = false;
         }
         if (!NoQueueBaseActivity.isEmailVerified()) {
-            new CustomToast().showToast(this, "Email is mandatory. Please add and verify it");
+            new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
             isValid = false;
         }
         if (isAddressRequired()) {
