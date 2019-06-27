@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.views.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
@@ -10,8 +14,6 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
 
-import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

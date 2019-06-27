@@ -1,11 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
+
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.math.BigDecimal;
 import java.util.List;

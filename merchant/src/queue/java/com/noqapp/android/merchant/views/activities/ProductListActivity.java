@@ -1,33 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.order.ProductTypeEnum;
-import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.EnumAdapter;
-import com.noqapp.android.merchant.views.adapters.MenuAdapter;
-import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
-import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.merchant.views.fragments.FragmentDummy;
-import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
-import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
-import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
-
-import com.google.android.material.textfield.TextInputEditText;
-
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,12 +12,36 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.EnumAdapter;
+import com.noqapp.android.merchant.views.adapters.MenuAdapter;
+import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.FragmentDummy;
+import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
+import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
+import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 
 import java.util.ArrayList;
 import java.util.HashMap;

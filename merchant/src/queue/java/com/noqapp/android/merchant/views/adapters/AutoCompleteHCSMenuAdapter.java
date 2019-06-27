@@ -1,8 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
 
 import java.util.ArrayList;
 import java.util.List;
