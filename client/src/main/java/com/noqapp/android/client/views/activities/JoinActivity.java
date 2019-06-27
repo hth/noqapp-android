@@ -1,33 +1,18 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import androidx.cardview.widget.CardView;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
@@ -59,21 +44,35 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 /**
  * Created by chandra on 5/7/17.
@@ -213,8 +212,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         });
         btn_pay.setOnClickListener((View v) -> {
             //startTimer();
-            if(null != timer)
-              timer.cancel();
+            if (null != timer) {
+                timer.cancel();
+            }
+
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
                 pay();
             } else {
@@ -317,19 +318,20 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private void startTimer() {
         //isPause = false;
         isCancel = false;
-        if (null != timer)
+        if (null != timer) {
             timer.cancel();
-        Log.e("Start time","");
-        timer = new CountDownTimer(BuildConfig.TransactionTimeOut * 60 * 1000, 1000) {
+        }
+        Log.e("Start time", "");
+        timer = new CountDownTimer(BuildConfig.TRANSACTION_TIMEOUT * 60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 //Some code
             }
 
             public void onFinish() {
-                Log.e("End time","");
-                if(!isPause) {
+                Log.e("End time", "");
+                if (!isPause) {
                     onBackPressed();
-                }else {
+                } else {
                     isCancel = true;
                 }
             }
@@ -549,9 +551,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             isResumeFirst = false;
         }
 
-        if(isCancel && isPause){
+        if (isCancel && isPause) {
             onBackPressed();
-        }else{
+        } else {
             isPause = false;
         }
     }

@@ -224,7 +224,7 @@ android {
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
-            buildConfigField INTEGER, "TransactionTimeOut", "1"
+            buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "1"
         }
 
         sandbox {
@@ -269,7 +269,7 @@ android {
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
-            buildConfigField INTEGER, "TransactionTimeOut", "1"
+            buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "1"
         }
 
         release {
@@ -312,7 +312,7 @@ android {
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeProd
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdProd
-            buildConfigField INTEGER, "TransactionTimeOut", "5"
+            buildConfigField INTEGER, "TRANSACTION_TIMEOUT", "5"
         }
     }
 
