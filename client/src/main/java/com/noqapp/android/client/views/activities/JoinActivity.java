@@ -312,7 +312,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
         }
         startTimer();
-        new CustomToast().showToast(this, "This transaction will be cancel if screen will be idle for 5 min.");
+        new CustomToast().showToast(this, "Please complete your transaction within 5 minutes.");
     }
 
     private void startTimer() {
@@ -506,8 +506,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             if (AppUtilities.isRelease()) {
                 try {
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE)
-                            .putCustomAttribute("Queue Name", displayName));
+                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE).putCustomAttribute("Queue Name", displayName));
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
