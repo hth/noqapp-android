@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -28,9 +29,14 @@ public class CouponsActivity extends TabbedActivity {
         b.putString(IBConstant.KEY_CODE_QR,codeQr);
         allCouponsFragment.setArguments(b);
         myCouponsFragment.setArguments(b);
-        adapter.addFragment(allCouponsFragment, "New Coupons");
-        if (UserUtils.isLogin()) {
-            adapter.addFragment(myCouponsFragment, "My Coupons");
+        if(TextUtils.isEmpty(codeQr)){
+            adapter.addFragment(allCouponsFragment, "New Coupons");
+            if (UserUtils.isLogin()) {
+                adapter.addFragment(myCouponsFragment, "My Coupons");
+            }
+        }else{
+            //Coming from order or Q screen
+            adapter.addFragment(allCouponsFragment, "All Coupons");
         }
         viewPager.setAdapter(adapter);
     }
