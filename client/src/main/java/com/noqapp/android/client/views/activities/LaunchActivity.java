@@ -1036,7 +1036,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
         settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
         settingList.add(new MenuModel(getString(R.string.title_activity_contact_us), false, false, R.drawable.contact_us));
-        settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+        if (isLogin) {
+            settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+        }
         headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         if (isLogin) {
             headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));

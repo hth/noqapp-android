@@ -25,11 +25,15 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
         setProgressMessage("Updating settings...")
         val sc_sound: SwitchCompat = findViewById(R.id.sc_sound)
         val sc_sms: SwitchCompat = findViewById(R.id.sc_sms)
-        //  sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
-        //  sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
-        val jsonUserPreference: JsonUserPreference = LaunchActivity.getUserProfile().jsonUserPreference
-        sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
-        sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
+
+        val jsonUserPreference: JsonUserPreference? = LaunchActivity.getUserProfile().jsonUserPreference
+        if(null == jsonUserPreference ){
+              sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
+              sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
+        }else {
+            sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
+            sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
+        }
         sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
             MyApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
