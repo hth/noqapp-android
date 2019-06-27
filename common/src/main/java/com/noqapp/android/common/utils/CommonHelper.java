@@ -18,6 +18,7 @@ import org.joda.time.Months;
 import org.joda.time.Years;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -303,4 +304,12 @@ public class CommonHelper {
         }
     }
 
+    public static String randomStringGenerator(int length) {
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++)
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        return sb.toString();
+    }
 }
