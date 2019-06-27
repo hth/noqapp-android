@@ -246,7 +246,7 @@ public class CommonHelper {
         String input = String.format("%4s", str).replace(' ', '0');
         int index = 1;
         String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-        Log.e("Check string----- ", input + "----------- " + outPut);
+      //  Log.e("Check string----- ", input + "----------- " + outPut);
         return outPut;
     }
 

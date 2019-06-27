@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,6 +110,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private LinearLayout ll_order_details;
     private RelativeLayout rl_discount;
     private boolean isEnabledPayment;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +211,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
         });
         btn_pay.setOnClickListener((View v) -> {
+            startTimer();
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
                 pay();
             } else {
@@ -305,6 +308,25 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
 
         }
+        startTimer();
+        new CustomToast().showToast(this, "This transaction will be cancel if screen will be idle for 5 min.");
+    }
+
+    private void startTimer() {
+        if (null != timer)
+            timer.cancel();
+        Log.e("Start time","");
+        timer = new CountDownTimer(5 * 60 * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                //Some code
+            }
+
+            public void onFinish() {
+                Log.e("End time","");
+                onBackPressed();
+            }
+        };
+        timer.start();
     }
 
     @Override
@@ -566,6 +588,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
+        if (null != timer)
+            timer.cancel();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Canceling token...");
             showProgress();
