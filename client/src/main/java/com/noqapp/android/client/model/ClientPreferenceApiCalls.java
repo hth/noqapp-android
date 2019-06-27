@@ -1,19 +1,16 @@
 package com.noqapp.android.client.model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.noqapp.android.client.model.response.api.ClientPreferenceApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.ClientPreferencePresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonUserPreference;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 public class ClientPreferenceApiCalls {
     private final String TAG = ClientPreferenceApiCalls.class.getSimpleName();
@@ -27,7 +24,6 @@ public class ClientPreferenceApiCalls {
     static {
         clientPreferenceApiUrls = RetrofitClient.getClient().create(ClientPreferenceApiUrls.class);
     }
-
 
     public void notificationSound(String did, String mail, String auth) {
         clientPreferenceApiUrls.notificationSound(did, Constants.DEVICE_TYPE, mail, auth).enqueue(new Callback<JsonUserPreference>() {

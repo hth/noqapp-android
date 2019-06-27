@@ -11,7 +11,6 @@ import com.noqapp.android.common.beans.JsonUserPreference
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.model.types.CommunicationModeEnum
 
-
 class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,20 +18,21 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)
         tv_toolbar_title.text = "Notification Settings"
-        val clientPreferenceApiCalls: ClientPreferenceApiCalls = ClientPreferenceApiCalls()
+        val clientPreferenceApiCalls = ClientPreferenceApiCalls()
         clientPreferenceApiCalls.setClientPreferencePresenter(this@NotificationSettings)
         setProgressMessage("Updating settings...")
         val sc_sound: SwitchCompat = findViewById(R.id.sc_sound)
         val sc_sms: SwitchCompat = findViewById(R.id.sc_sms)
 
         val jsonUserPreference: JsonUserPreference? = LaunchActivity.getUserProfile().jsonUserPreference
-        if(null == jsonUserPreference ){
-              sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
-              sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
-        }else {
+        if (null == jsonUserPreference) {
+            sc_sms.isChecked = MyApplication.isNotificationReceiveEnable()
+            sc_sound.isChecked = MyApplication.isNotificationSoundEnable()
+        } else {
             sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
             sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
         }
+
         sc_sms.setOnCheckedChangeListener { buttonView, isChecked ->
             MyApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
@@ -42,9 +42,10 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
                 // The switch is disabled
                 CustomToast().showToast(this@NotificationSettings, "Promotional SMS Disabled")
             }
-           // showProgress()
+            // showProgress()
             clientPreferenceApiCalls.promotionalSMS(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
+
         sc_sound.setOnCheckedChangeListener { _buttonView, isChecked ->
             MyApplication.setNotificationSoundEnable(isChecked)
             if (isChecked) {
@@ -57,15 +58,13 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
             //showProgress()
             clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
-
     }
 
     override fun clientPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
         //dismissProgress()
         val jsonProfile: JsonProfile = LaunchActivity.getUserProfile()
-        jsonProfile.setJsonUserPreference(jsonUserPreference);
+        jsonProfile.jsonUserPreference = jsonUserPreference
         LaunchActivity.setUserProfile(jsonProfile)
         CustomToast().showToast(this@NotificationSettings, "Settings updated successfully")
     }
-
 }
