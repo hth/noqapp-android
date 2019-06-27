@@ -600,14 +600,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
-        if (null != timer)
+        if (null != timer) {
             timer.cancel();
+        }
+
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Canceling token...");
             showProgress();
             queueApiAuthenticCall.setResponsePresenter(this);
-            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
+            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
