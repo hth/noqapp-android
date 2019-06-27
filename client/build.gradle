@@ -176,6 +176,7 @@ android {
     buildTypes {
         def BOOLEAN = "boolean"
         def STRING = "String"
+        def INTEGER = "int"
         def TRUE = "true"
         def FALSE = "false"
         def LOG_HTTP_REQUESTS = "LOG_HTTP_REQUESTS"
@@ -223,6 +224,7 @@ android {
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
+            buildConfigField INTEGER, "TransactionTimeOut", "1"
         }
 
         sandbox {
@@ -267,6 +269,7 @@ android {
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeTest
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdTest
+            buildConfigField INTEGER, "TransactionTimeOut", "1"
         }
 
         release {
@@ -309,6 +312,7 @@ android {
             buildConfigField STRING, "APP_FLAVOR", "\"NQCL\""
             buildConfigField STRING, "CASHFREE_STAGE", cashfreeProd
             buildConfigField STRING, "CASHFREE_APP_ID", cashfreeAppIdProd
+            buildConfigField INTEGER, "TransactionTimeOut", "5"
         }
     }
 

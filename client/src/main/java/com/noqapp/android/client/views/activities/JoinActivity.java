@@ -320,7 +320,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (null != timer)
             timer.cancel();
         Log.e("Start time","");
-        timer = new CountDownTimer(2 * 60 * 1000, 1000) {
+        timer = new CountDownTimer(BuildConfig.TransactionTimeOut * 60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 //Some code
             }
