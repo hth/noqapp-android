@@ -1,12 +1,14 @@
 package com.noqapp.android.merchant.model;
 
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
-import com.noqapp.android.merchant.utils.Constants;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
+
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

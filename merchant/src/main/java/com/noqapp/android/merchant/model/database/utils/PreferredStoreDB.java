@@ -1,17 +1,17 @@
 package com.noqapp.android.merchant.model.database.utils;
 
-import static com.noqapp.android.merchant.views.activities.BaseLaunchActivity.dbHandler;
-
-import com.noqapp.android.merchant.model.database.DatabaseTable;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.util.Log;
 
+import com.noqapp.android.merchant.model.database.DatabaseTable;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.noqapp.android.merchant.views.activities.BaseLaunchActivity.dbHandler;
 
 public class PreferredStoreDB {
     private static final String TAG = PreferredStoreDB.class.getSimpleName();

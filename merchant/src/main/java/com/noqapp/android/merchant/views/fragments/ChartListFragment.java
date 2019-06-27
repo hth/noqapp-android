@@ -1,30 +1,27 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantStatsApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
-import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.ChartListActivity;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.adapters.MerchantChartListAdapter;
-import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
-
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.fragment.app.FragmentTransaction;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantStatsApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStat;
+import com.noqapp.android.merchant.presenter.beans.stats.HealthCareStatList;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.ChartListActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.adapters.MerchantChartListAdapter;
+import com.noqapp.android.merchant.views.interfaces.ChartPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +43,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_merchant_chart_list, container, false);
         listview = view.findViewById(R.id.listview);
         MerchantStatsApiCalls merchantStatsApiCalls = new MerchantStatsApiCalls(this);
@@ -66,6 +64,7 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
         if (isFirstTime) {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
+                setProgressMessage("Getting statistics...");
                 merchantStatsApiCalls.healthCare(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth());
                 isFirstTime = false;
             } else {
@@ -130,24 +129,6 @@ public class ChartListFragment extends BaseFragment implements ChartPresenter {
     @Override
     public void chartError() {
         dismissProgress();
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override

@@ -129,7 +129,6 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         tv_grand_total_amt = findViewById(R.id.tv_grand_total_amt);
         // frame_coupon.setVisibility(View.GONE);
         rl_apply_coupon.setOnClickListener((View v) -> {
-            // new CustomToast().showToast(JoinActivity.this,"Apply Coupon");
             Intent in = new Intent(OrderActivity.this, CouponsActivity.class);
             in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
             startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);

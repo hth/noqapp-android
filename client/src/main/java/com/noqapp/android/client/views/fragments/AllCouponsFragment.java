@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.CouponApiCalls;
+import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.IBConstant;
@@ -60,8 +60,8 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching all coupons...");
             showProgress();
-            CouponApiCalls couponApiCalls = new CouponApiCalls();
-            couponApiCalls.setCouponPresenter(this);
+            ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
+            clientCouponApiCalls.setCouponPresenter(this);
             Location location = new Location();
             if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().cityName)) {
                 location.setLatitude(String.valueOf(Constants.DEFAULT_LATITUDE));
@@ -74,8 +74,14 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
                 location.setCityName(LaunchActivity.getLaunchActivity().cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
-            couponApiCalls.globalCoupon(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth(), location);
+            String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
+            if (TextUtils.isEmpty(codeQR)) {
+                clientCouponApiCalls.globalCoupon(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), location);
+            } else {
+                clientCouponApiCalls.filterCoupon(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

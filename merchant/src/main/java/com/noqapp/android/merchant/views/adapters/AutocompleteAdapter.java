@@ -4,12 +4,6 @@ package com.noqapp.android.merchant.views.adapters;
  * Created by chandra on 2/6/18.
  */
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.SearchEvent;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.SearchEvent;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 
 import java.util.ArrayList;
 import java.util.List;

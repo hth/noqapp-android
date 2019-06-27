@@ -1,12 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.TextUtils;
@@ -16,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 
 import java.util.List;
 

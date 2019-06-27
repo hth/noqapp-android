@@ -1,12 +1,17 @@
 package com.noqapp.android.merchant.views.utils;
 
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHelper;
-import com.noqapp.android.merchant.views.pojos.Receipt;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+
+import androidx.core.content.FileProvider;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -25,18 +30,13 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-import androidx.core.content.FileProvider;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.PdfHelper;
+import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

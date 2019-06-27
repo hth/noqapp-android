@@ -1,7 +1,23 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
@@ -11,34 +27,14 @@ import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import io.fabric.sdk.android.Fabric;
-
 import java.util.UUID;
 
-public class SplashScreen extends AppCompatActivity implements DeviceRegisterPresenter {
+import io.fabric.sdk.android.Fabric;
+
+public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
 
     static SplashScreen splashScreen;
     private static String fcmToken = "";
@@ -123,22 +119,10 @@ public class SplashScreen extends AppCompatActivity implements DeviceRegisterPre
 
     @Override
     public void deviceRegisterError() {
-
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this, eej);
     }
 
     @Override
     public void authenticationFailure() {
-
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
     }
 
     @Override

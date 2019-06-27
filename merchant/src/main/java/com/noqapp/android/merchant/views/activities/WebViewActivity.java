@@ -1,18 +1,12 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,10 +18,12 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class WebViewActivity extends AppCompatActivity {
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+
+public class WebViewActivity extends BaseActivity {
     private WebView webView;
     private String url = "";
-    private ProgressDialog progressDialog;
     private boolean isPdf = false;
     private Handler handler = new Handler() {
         @Override
@@ -124,14 +120,10 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            if (progressDialog == null && active) {
-                progressDialog = new ProgressDialog(WebViewActivity.this);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setMessage("Loading...");
-                progressDialog.show();
+            dismissProgress();
+            if ( active) {
+                setProgressMessage("Loading...");
+                showProgress();
             }
         }
 
@@ -145,10 +137,7 @@ public class WebViewActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             //super.onPageFinished(view, url);
             try {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
+               dismissProgress();
                 webView.loadUrl("javascript:(function() { " +
                         "document.querySelector('[role=\"toolbar\"]').remove();})()");
             } catch (Exception exception) {

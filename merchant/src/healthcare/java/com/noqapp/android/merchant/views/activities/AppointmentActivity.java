@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.animation.ValueAnimator;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -15,8 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
@@ -24,7 +21,6 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -34,7 +30,6 @@ import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.EventListAdapter;
@@ -49,10 +44,9 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class AppointmentActivity extends AppCompatActivity implements AppointmentPresenter,
+public class AppointmentActivity extends BaseActivity implements AppointmentPresenter,
         EventListAdapter.OnItemClickListener {
     private FixedHeightListView fh_list_view;
-    private ProgressDialog progressDialog;
     private CalendarView calendarView;
     public EventListAdapter adapter;
     private String codeRQ = "";
@@ -80,7 +74,9 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
             }
         });
         tv_toolbar_title.setText(getString(R.string.menu_appointments));
-        initProgress();
+
+        setProgressMessage("Fetching appointments...");
+        setProgressCancel(false);
         codeRQ = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         Log.e("CODE_QR", codeRQ);
         calendarView = findViewById(R.id.calendarView);
@@ -395,11 +391,9 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
     }
 
     private void fetchEvents(Calendar calendar) {
-        progressDialog.show();
         adapter = new EventListAdapter(AppointmentActivity.this, new ArrayList<EventDay>(), this);
         fh_list_view.setAdapter(adapter);
-        progressDialog.show();
-
+        showProgress();
         ScheduleApiCalls scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForMonth(BaseLaunchActivity.getDeviceID(),
@@ -445,37 +439,6 @@ public class AppointmentActivity extends AppCompatActivity implements Appointmen
         dismissProgress();
     }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this, eej);
-        dismissProgress();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-        dismissProgress();
-    }
-
-    @Override
-    public void authenticationFailure() {
-        AppUtils.authenticationProcessing();
-        dismissProgress();
-    }
-
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching appointments...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(false);
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 
     @Override
     public void appointmentAccept(EventDay item, View view, int pos) {

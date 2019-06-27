@@ -17,18 +17,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.common.beans.ErrorEncounteredJson
-import com.noqapp.android.common.customviews.CustomToast
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
-import com.noqapp.android.merchant.R
-import com.noqapp.android.merchant.model.CouponApiCalls
 import com.noqapp.android.common.beans.JsonCoupon
 import com.noqapp.android.common.beans.JsonCouponList
+import com.noqapp.android.common.customviews.CustomToast
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
+import com.noqapp.android.common.presenter.CouponPresenter
+import com.noqapp.android.merchant.R
+import com.noqapp.android.merchant.model.CouponApiCalls
 import com.noqapp.android.merchant.utils.AppUtils
 import com.noqapp.android.merchant.utils.ErrorResponseHandler
 import com.noqapp.android.merchant.utils.IBConstant
 import com.noqapp.android.merchant.utils.UserUtils
 import com.noqapp.android.merchant.views.adapters.CouponAdapter
-import com.noqapp.android.common.presenter.CouponPresenter
 
 
 class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, CouponPresenter {

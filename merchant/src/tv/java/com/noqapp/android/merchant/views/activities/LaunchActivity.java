@@ -46,7 +46,6 @@ public class LaunchActivity extends BaseLaunchActivity {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }
-        initProgress();
         initDrawer();
         //enableDisableDrawer(false);
         toolbar.setVisibility(View.GONE);

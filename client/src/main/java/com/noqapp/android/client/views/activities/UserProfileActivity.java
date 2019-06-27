@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
 import com.noqapp.android.client.presenter.ProfilePresenter;
@@ -40,7 +42,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

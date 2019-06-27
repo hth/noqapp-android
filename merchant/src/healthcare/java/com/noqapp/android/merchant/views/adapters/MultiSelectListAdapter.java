@@ -1,8 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.List;
 

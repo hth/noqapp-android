@@ -1,8 +1,7 @@
 package com.noqapp.android.merchant.views.pojos;
 
-import com.noqapp.android.common.utils.CommonHelper;
-
 import com.google.gson.annotations.SerializedName;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;

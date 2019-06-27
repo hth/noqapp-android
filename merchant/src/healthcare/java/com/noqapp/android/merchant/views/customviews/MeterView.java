@@ -1,16 +1,17 @@
 package com.noqapp.android.merchant.views.customviews;
 
 
-import com.noqapp.android.merchant.R;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+
+import com.noqapp.android.merchant.R;
 
 public class MeterView extends LinearLayout implements MeterNumberPicker.MeterNumberValueChanged {
 

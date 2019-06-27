@@ -1,9 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +17,6 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.PrintManager;
 import android.provider.UserDictionary;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -35,6 +29,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,9 +43,8 @@ import java.io.OutputStream;
 import java.util.Date;
 
 
-public class ScribbleActivity extends AppCompatActivity  {
+public class ScribbleActivity extends BaseActivity  {
 
-    private ProgressDialog progressDialog;
     private EditText edt_prescription;
     private final String packageName = "com.google.android.apps.handwriting.ime";
 
@@ -69,7 +67,7 @@ public class ScribbleActivity extends AppCompatActivity  {
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_prescription));
-        initProgress();
+        setProgressMessage("Fetching data...");
         Button btn_submit = findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,17 +126,6 @@ public class ScribbleActivity extends AppCompatActivity  {
             tv_title.setText("Scribble app missing");
         }
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     private boolean isAppInstalled(String uri) {

@@ -1,12 +1,11 @@
 package com.noqapp.android.common.beans;
 
-import com.noqapp.android.common.model.types.CommunicationModeEnum;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.CommunicationModeEnum;
 
 import java.io.Serializable;
 
@@ -37,6 +36,9 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
     @JsonProperty("fn")
     private CommunicationModeEnum firebaseNotification;
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
     public CommunicationModeEnum getPromotionalSMS() {
         return promotionalSMS;
     }
@@ -53,5 +55,23 @@ public class JsonUserPreference extends AbstractDomain implements Serializable {
     public JsonUserPreference setFirebaseNotification(CommunicationModeEnum firebaseNotification) {
         this.firebaseNotification = firebaseNotification;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonUserPreference{");
+        sb.append("promotionalSMS=").append(promotionalSMS);
+        sb.append(", firebaseNotification=").append(firebaseNotification);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

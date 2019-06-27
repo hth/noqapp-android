@@ -1,19 +1,20 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
 
 
 public class PrivacyActivity extends AppCompatActivity implements View.OnClickListener {

@@ -2,6 +2,8 @@ package com.noqapp.android.client.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.api.FeedbackApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -10,7 +12,6 @@ import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.presenter.FeedbackPresenter;
 
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

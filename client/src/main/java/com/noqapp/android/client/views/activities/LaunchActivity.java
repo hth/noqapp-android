@@ -2,7 +2,6 @@ package com.noqapp.android.client.views.activities;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -61,7 +60,6 @@ import com.noqapp.android.client.utils.ErrorResponseHandler;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
-import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
@@ -90,6 +88,7 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
+import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.squareup.picasso.Picasso;
 
@@ -1037,7 +1036,9 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
         settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
         settingList.add(new MenuModel(getString(R.string.title_activity_contact_us), false, false, R.drawable.contact_us));
-        settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+        if (isLogin) {
+            settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+        }
         headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
         if (isLogin) {
             headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));

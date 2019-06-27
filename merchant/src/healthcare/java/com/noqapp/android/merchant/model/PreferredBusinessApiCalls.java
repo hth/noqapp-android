@@ -1,6 +1,10 @@
 package com.noqapp.android.merchant.model;
 
 
+import android.os.Environment;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.noqapp.android.merchant.interfaces.PreferredBusinessPresenter;
 import com.noqapp.android.merchant.model.response.api.health.PreferredStoreApiUrls;
@@ -9,18 +13,15 @@ import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 
-import android.os.Environment;
-import androidx.annotation.NonNull;
-import android.util.Log;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PreferredBusinessApiCalls {
     private static final String TAG = PreferredBusinessApiCalls.class.getSimpleName();

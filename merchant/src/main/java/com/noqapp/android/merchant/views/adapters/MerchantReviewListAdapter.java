@@ -8,15 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 import com.noqapp.android.merchant.views.fragments.ReviewListFragment;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 public class MerchantReviewListAdapter extends BaseAdapter {
     private Context context;
@@ -59,7 +58,7 @@ public class MerchantReviewListAdapter extends BaseAdapter {
             recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
         } else {
-            recordHolder.cardview.setCardBackgroundColor(Color.TRANSPARENT);
+            recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
             recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
         }
 

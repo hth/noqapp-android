@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.views.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
@@ -17,8 +21,6 @@ import com.noqapp.android.merchant.views.interfaces.OrderProcessedPresenter;
 import com.noqapp.android.merchant.views.interfaces.PaymentProcessPresenter;
 import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 
-import android.util.Log;
-import androidx.annotation.NonNull;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;

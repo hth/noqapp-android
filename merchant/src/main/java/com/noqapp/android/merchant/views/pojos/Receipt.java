@@ -10,9 +10,6 @@ import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;

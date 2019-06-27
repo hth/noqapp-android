@@ -1,15 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.WebViewActivity;
-import com.noqapp.android.merchant.views.customviews.TouchImageView;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.WebViewActivity;
+import com.noqapp.android.merchant.views.customviews.TouchImageView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.merchant.R;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class QueueReviewCardAdapter extends RecyclerView.Adapter {
     private final Context context;

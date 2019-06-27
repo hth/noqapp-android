@@ -2,6 +2,8 @@ package com.noqapp.android.client.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.model.response.open.DeviceApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
@@ -13,7 +15,6 @@ import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

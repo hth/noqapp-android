@@ -1,14 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.adapters.SliderPagerAdapter;
-
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +10,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.adapters.SliderPagerAdapter;
 
 import java.util.ArrayList;
 

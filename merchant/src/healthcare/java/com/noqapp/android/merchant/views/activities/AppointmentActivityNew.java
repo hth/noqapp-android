@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,14 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -27,7 +24,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
@@ -45,9 +41,9 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-public class AppointmentActivityNew extends AppCompatActivity implements AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
+public class AppointmentActivityNew extends BaseActivity implements
+        AppointmentListAdapter.OnItemClickListener, AppointmentPresenter {
 
-    private ProgressDialog progressDialog;
     private TextView tv_header, tv_date;
     private RecyclerView rcv_appointments;
     private TextView tv_appointment_accepted, tv_total_appointment,
@@ -70,7 +66,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_new);
-        initProgress();
+        setProgressMessage("Fetching appointments...");
+        setProgressCancel(false);
         tv_header = findViewById(R.id.tv_header);
         tv_date = findViewById(R.id.tv_date);
 
@@ -137,7 +134,7 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     }
 
     private void fetchData() {
-        progressDialog.show();
+        showProgress();
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         scheduleApiCalls.scheduleForDay(BaseLaunchActivity.getDeviceID(),
@@ -155,8 +152,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
-                    progressDialog.setMessage("Accepting appointment...");
-                    progressDialog.show();
+                    setProgressMessage("Accepting appointment...");
+                    showProgress();
                     jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.A);
                     scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -182,8 +179,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
             showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick() {
-                    progressDialog.setMessage("Rejecting appointment...");
-                    progressDialog.show();
+                    setProgressMessage("Rejecting appointment...");
+                    showProgress();
                     jsonSchedule.setAppointmentStatus(AppointmentStatusEnum.R);
                     scheduleApiCalls.scheduleAction(BaseLaunchActivity.getDeviceID(),
                             LaunchActivity.getLaunchActivity().getEmail(),
@@ -203,8 +200,8 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
 
     @Override
     public void appointmentEdit(JsonSchedule jsonSchedule, int pos) {
-        progressDialog.setMessage("Editing appointment...");
-        progressDialog.show();
+        setProgressMessage("Editing appointment...");
+        showProgress();
         BookSchedule bookSchedule = new BookSchedule()
                 .setBusinessCustomer(null)
                 .setJsonSchedule(jsonSchedule)
@@ -345,38 +342,6 @@ public class AppointmentActivityNew extends AppCompatActivity implements Appoint
     @Override
     public void appointmentCancelResponse(JsonResponse jsonResponse) {
         dismissProgress();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this, eej);
-        dismissProgress();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-        dismissProgress();
-    }
-
-    @Override
-    public void authenticationFailure() {
-        AppUtils.authenticationProcessing();
-        dismissProgress();
-    }
-
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching appointments...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setCancelable(false);
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     private List<EventDay> parseEventList(JsonScheduleList jsonScheduleList) {

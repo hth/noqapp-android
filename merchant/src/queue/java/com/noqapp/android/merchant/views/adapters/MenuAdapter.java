@@ -1,15 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -19,7 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 
 import java.util.List;
 

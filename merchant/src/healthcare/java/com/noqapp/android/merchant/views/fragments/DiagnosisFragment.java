@@ -1,20 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +11,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 
-public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNew.SearchByPos {
+public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView rcv_provisional_diagnosis;
     private StaggeredGridAdapter provisionalDiagnosisAdapter;
@@ -38,6 +37,7 @@ public class DiagnosisFragment extends Fragment implements AutoCompleteAdapterNe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_diagnosis, container, false);
         actv_clinical_findings = v.findViewById(R.id.actv_clinical_findings);
         actv_examination_results = v.findViewById(R.id.actv_examination_results);

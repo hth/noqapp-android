@@ -1,15 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
-import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +10,15 @@ import android.view.animation.Animation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
+import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.Collections;

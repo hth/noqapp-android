@@ -2,6 +2,8 @@ package com.noqapp.android.client.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.client.model.response.api.ClientProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.MigrateEmailPresenter;
@@ -18,7 +20,6 @@ import com.noqapp.android.common.beans.JsonUserAddressList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 
-import androidx.annotation.NonNull;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;

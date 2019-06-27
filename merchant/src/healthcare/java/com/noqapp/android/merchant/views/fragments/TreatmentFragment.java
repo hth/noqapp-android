@@ -1,6 +1,24 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import android.content.Context;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
@@ -14,31 +32,14 @@ import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.merchant.views.adapters.StaggeredGridMedicineAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
-import android.content.Context;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
+
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TreatmentFragment extends Fragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick, AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
+public class TreatmentFragment extends BaseFragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick, AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
     private RecyclerView recyclerView, recyclerView_one, rcv_medicine;
     private TextView tv_add_medicine, tv_add_diagnosis, tv_close, tv_remove, tv_medicine_name;
@@ -58,6 +59,7 @@ public class TreatmentFragment extends Fragment implements StaggeredGridMedicine
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_treatment, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView_one = v.findViewById(R.id.recyclerViewOne);

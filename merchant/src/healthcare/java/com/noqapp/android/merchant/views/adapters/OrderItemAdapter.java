@@ -4,22 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import androidx.appcompat.app.AlertDialog;
 
 public class OrderItemAdapter extends BaseAdapter {
     private Context context;

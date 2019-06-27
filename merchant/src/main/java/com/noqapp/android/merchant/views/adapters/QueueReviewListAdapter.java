@@ -1,22 +1,22 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.JsonReview;
-import com.noqapp.android.common.beans.JsonReviewList;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-
-import com.squareup.picasso.Picasso;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.JsonReview;
+import com.noqapp.android.common.beans.JsonReviewList;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.squareup.picasso.Picasso;
 
 public class QueueReviewListAdapter extends RecyclerView.Adapter {
     private final QueueReviewListAdapter.OnItemClickListener listener;

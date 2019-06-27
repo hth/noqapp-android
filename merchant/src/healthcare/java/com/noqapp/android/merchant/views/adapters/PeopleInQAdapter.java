@@ -1,5 +1,20 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -25,21 +40,6 @@ import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
-
-import com.google.gson.Gson;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 import java.util.Random;
@@ -93,7 +93,8 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     public void onClick(View v) {
                         if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                LaunchActivity.getLaunchActivity().progressDialog.show();
+                                customProgressBar.setProgressMessage("Changing patient name...");
+                                customProgressBar.showProgress();
                                 ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
                                 changeUserInQueue.setCodeQR(qCodeQR);
                                 changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
@@ -172,7 +173,8 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                         if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
                             edt_random.setError(mContext.getString(R.string.error_invalid_captcha));
                         } else {
-                            LaunchActivity.getLaunchActivity().progressDialog.show();
+                            customProgressBar.setProgressMessage("Updating customer ID...");
+                            customProgressBar.showProgress();
                             String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
                             JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
                             jsonBusinessCustomer.setCodeQR(qCodeQR);

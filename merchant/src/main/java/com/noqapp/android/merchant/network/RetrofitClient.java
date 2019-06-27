@@ -2,11 +2,11 @@ package com.noqapp.android.merchant.network;
 
 import com.noqapp.android.merchant.BuildConfig;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender

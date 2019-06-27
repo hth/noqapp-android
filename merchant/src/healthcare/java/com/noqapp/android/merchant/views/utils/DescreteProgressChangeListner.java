@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.views.utils;
 
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import android.widget.TextView;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 public class DescreteProgressChangeListner implements DiscreteSeekBar.OnProgressChangeListener{
 

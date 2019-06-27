@@ -1,32 +1,18 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import androidx.cardview.widget.CardView;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.CouponApiCalls;
+import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.model.QueueApiAuthenticCall;
 import com.noqapp.android.client.model.QueueApiUnAuthenticCall;
-import com.noqapp.android.client.model.database.utils.ReviewDB;
 import com.noqapp.android.client.model.database.utils.TokenAndQueueDB;
 import com.noqapp.android.client.network.NoQueueMessagingService;
 import com.noqapp.android.client.presenter.CashFreeNotifyQPresenter;
@@ -58,21 +44,35 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 /**
  * Created by chandra on 5/7/17.
@@ -90,7 +90,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private String tokenValue;
     private String topic;
     private boolean isResumeFirst = true;
-    private String gotoPerson = "";
     private String queueUserId = "";
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
@@ -109,6 +108,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private LinearLayout ll_order_details;
     private RelativeLayout rl_discount;
     private boolean isEnabledPayment;
+    private CountDownTimer timer;
+    private boolean isCancel = false;
+    private boolean isPause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,15 +154,15 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                         setProgressMessage("Removing discount..");
                         // progressDialog.setCancelable(false);
                         // progressDialog.setCanceledOnTouchOutside(false);
-                        CouponApiCalls couponApiCalls = new CouponApiCalls();
-                        couponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
+                        ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
+                        clientCouponApiCalls.setCouponApplyRemovePresenter(JoinActivity.this);
 
                         CouponOnOrder couponOnOrder = new CouponOnOrder()
                                 .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                                 // .setCouponId(jsonCoupon.getCouponId())
                                 .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                        couponApiCalls.remove(UserUtils.getDeviceId(),
+                        clientCouponApiCalls.remove(UserUtils.getDeviceId(),
                                 UserUtils.getEmail(),
                                 UserUtils.getAuth(),
                                 couponOnOrder);
@@ -209,6 +211,11 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
         });
         btn_pay.setOnClickListener((View v) -> {
+            //startTimer();
+            if (null != timer) {
+                timer.cancel();
+            }
+
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
                 pay();
             } else {
@@ -293,7 +300,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             tv_address.setOnClickListener((View v) -> {
                 AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             });
-            gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 if (isResumeFirst) {
                     setProgressMessage("Joining Queue..");
@@ -305,6 +311,38 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
 
         }
+        startTimer();
+        new CustomToast().showToast(this, "This transaction will be cancel if screen will be idle for 5 min.");
+    }
+
+    private void startTimer() {
+        //isPause = false;
+        isCancel = false;
+        if (null != timer) {
+            timer.cancel();
+        }
+        Log.e("Start time", "");
+        timer = new CountDownTimer(BuildConfig.TRANSACTION_TIMEOUT * 60 * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                //Some code
+            }
+
+            public void onFinish() {
+                Log.e("End time", "");
+                if (!isPause) {
+                    onBackPressed();
+                } else {
+                    isCancel = true;
+                }
+            }
+        };
+        timer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPause = true;
     }
 
     @Override
@@ -509,16 +547,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     public void onResume() {
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
-        if (!isResumeFirst) {
-            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, tokenValue);
-            if (null != jtk) {
-                if (TextUtils.isEmpty(gotoPerson))
-                    gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-                setObject(jtk, gotoPerson);
-            }
-        }
         if (isResumeFirst) {
             isResumeFirst = false;
+        }
+
+        if (isCancel && isPause) {
+            onBackPressed();
+        } else {
+            isPause = false;
         }
     }
 
@@ -528,7 +564,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
 
     public void setObject(JsonTokenAndQueue jq, String go_to) {
-        gotoPerson = go_to;
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
@@ -566,6 +601,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void onBackPressed() {
+        if (null != timer)
+            timer.cancel();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Canceling token...");
             showProgress();
@@ -781,14 +818,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     setProgressMessage("Applying discount..");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
-                    CouponApiCalls couponApiCalls = new CouponApiCalls();
-                    couponApiCalls.setCouponApplyRemovePresenter(this);
+                    ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
+                    clientCouponApiCalls.setCouponApplyRemovePresenter(this);
                     CouponOnOrder couponOnOrder = new CouponOnOrder()
                             .setQueueUserId(jsonTokenAndQueue.getQueueUserId())
                             .setCouponId(jsonCoupon.getCouponId())
                             .setTransactionId(jsonTokenAndQueue.getTransactionId());
 
-                    couponApiCalls.apply(UserUtils.getDeviceId(),
+                    clientCouponApiCalls.apply(UserUtils.getDeviceId(),
                             UserUtils.getEmail(),
                             UserUtils.getAuth(),
                             couponOnOrder);

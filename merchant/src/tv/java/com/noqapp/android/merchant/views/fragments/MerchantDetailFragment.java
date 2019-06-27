@@ -38,10 +38,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MerchantDetailFragment extends Fragment implements QueuePersonListPresenter {
+public class MerchantDetailFragment extends BaseFragment implements QueuePersonListPresenter {
 
     protected Context context;
-
     protected ImageView iv_banner;
     protected TextView tvcount;
     private ShowPersonInQAdapter peopleInQAdapter;
@@ -69,6 +68,7 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
@@ -125,28 +125,6 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
 
 
     @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-
-    @Override
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
@@ -169,7 +147,6 @@ public class MerchantDetailFragment extends Fragment implements QueuePersonListP
 
     @Override
     public void queuePersonListError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
         dismissProgress();
     }
 

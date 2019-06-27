@@ -1,23 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.body.UpdateProfile;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,15 +11,28 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.beans.body.UpdateProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener, ProfilePresenter {
@@ -55,7 +52,7 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
-
+        super.onCreateView(inflater, container, args);
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         merchantProfileApiCalls = new MerchantProfileApiCalls();
         edt_email = view.findViewById(R.id.edt_email);
@@ -132,12 +129,11 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     public void updateProfile() {
-
         if (validate()) {
             // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
             // btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                setProgressMessage("Updating data...");
+                setProgressMessage("Updating profile info...");
                 showProgress();
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_name.getText().toString();
@@ -183,23 +179,6 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         dismissProgress();
     }
 
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
 
     public void updateUI(JsonProfile jsonProfile) {
         edt_name.setText(jsonProfile.getName());

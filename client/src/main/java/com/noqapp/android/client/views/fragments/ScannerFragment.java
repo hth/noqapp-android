@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.R;
-import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.client.views.activities.BarcodeCaptureActivity;
+import com.noqapp.android.common.utils.PermissionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 

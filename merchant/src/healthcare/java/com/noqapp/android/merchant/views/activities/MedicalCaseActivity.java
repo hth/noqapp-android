@@ -1,6 +1,27 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -12,7 +33,6 @@ import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusinessBucket;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -29,33 +49,11 @@ import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-import com.google.gson.Gson;
-
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicalCaseActivity extends AppCompatActivity implements MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
+public class MedicalCaseActivity extends BaseActivity implements
+        MenuHeaderAdapter.OnItemClickListener, PreferredBusinessPresenter {
     private ViewPager viewPager;
     private long lastPress;
     private Toast backPressToast;
@@ -208,21 +206,6 @@ public class MedicalCaseActivity extends AppCompatActivity implements MenuHeader
     @Override
     public void preferredBusinessError() {
 
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        AppUtils.authenticationProcessing();
     }
 
     @Override

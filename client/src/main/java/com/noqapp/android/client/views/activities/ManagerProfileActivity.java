@@ -3,6 +3,20 @@ package com.noqapp.android.client.views.activities;
 /**
  * Created by chandra on 10/4/18.
  */
+
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ProfessionalProfileApiCall;
 import com.noqapp.android.client.presenter.QueueManagerPresenter;
@@ -17,21 +31,8 @@ import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
-import com.google.android.material.tabs.TabLayout;
-
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.viewpager.widget.ViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;

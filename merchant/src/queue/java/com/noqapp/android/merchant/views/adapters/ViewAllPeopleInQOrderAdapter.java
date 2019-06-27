@@ -1,14 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.IBConstant;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.util.List;
 

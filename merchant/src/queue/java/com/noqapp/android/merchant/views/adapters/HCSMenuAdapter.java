@@ -1,10 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,13 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.pojos.HCSMenuObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class HCSMenuAdapter extends RecyclerView.Adapter<HCSMenuAdapter.MyViewHolder> {
+public class HCSMenuAdapter extends RecyclerView.Adapter {
 
     private ArrayList<HCSMenuObject> hcsMenuObjects;
     private Context context;
@@ -38,14 +39,14 @@ public class HCSMenuAdapter extends RecyclerView.Adapter<HCSMenuAdapter.MyViewHo
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.name.setText(hcsMenuObjects.get(position).getSortName());
         if (hcsMenuObjects.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));

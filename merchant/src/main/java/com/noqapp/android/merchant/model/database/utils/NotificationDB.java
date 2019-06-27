@@ -1,16 +1,14 @@
 package com.noqapp.android.merchant.model.database.utils;
 
-import static com.noqapp.android.merchant.views.activities.LaunchActivity.dbHandler;
-
-import com.noqapp.android.common.beans.NotificationBeans;
-import com.noqapp.android.merchant.model.database.DatabaseTable;
-import com.noqapp.android.merchant.utils.Constants;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.merchant.model.database.DatabaseTable;
+import com.noqapp.android.merchant.utils.Constants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static com.noqapp.android.merchant.views.activities.LaunchActivity.dbHandler;
 
 /**
  * Created by chandra on 8/7/17.

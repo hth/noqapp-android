@@ -1,33 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.store.JsonStoreCategory;
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.ActionTypeEnum;
-import com.noqapp.android.common.model.types.order.ProductTypeEnum;
-import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.EnumAdapter;
-import com.noqapp.android.merchant.views.adapters.MenuAdapter;
-import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
-import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.merchant.views.fragments.FragmentDummy;
-import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
-import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
-import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
-
-import com.google.android.material.textfield.TextInputEditText;
-
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,20 +12,45 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.store.JsonStoreCategory;
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.order.ProductTypeEnum;
+import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.EnumAdapter;
+import com.noqapp.android.merchant.views.adapters.MenuAdapter;
+import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
+import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
+import com.noqapp.android.merchant.views.fragments.FragmentDummy;
+import com.noqapp.android.merchant.views.interfaces.ActionOnProductPresenter;
+import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
+import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProductListActivity extends AppCompatActivity implements StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener, MenuAdapter.MenuItemUpdate {
+public class ProductListActivity extends BaseActivity implements
+        StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
+        MenuAdapter.MenuItemUpdate {
 
-    private ProgressDialog progressDialog;
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
@@ -70,7 +67,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prod_list);
-        initProgress();
+        setProgressMessage("Fetching data...");
         codeQR = getIntent().getStringExtra("codeQR");
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
@@ -85,43 +82,12 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         });
         tv_toolbar_title.setText(getString(R.string.screen_product_list));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setStoreProductPresenter(this);
             storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
-        }
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    private void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 
@@ -220,10 +186,9 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
     @Override
     public void menuItemUpdate(JsonStoreProduct jsonStoreProduct, ActionTypeEnum actionTypeEnum) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setMessage("Updating data...");
-            progressDialog.show();
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(false);
+            setProgressMessage("Updating data...");
+            showProgress();
+            setProgressCancel(false);
             StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
             storeProductApiCalls.setActionOnProductPresenter(this);
             storeProductApiCalls.actionOnProduct(UserUtils.getEmail(), UserUtils.getAuth(), codeQR, actionTypeEnum, jsonStoreProduct);
@@ -378,7 +343,7 @@ public class ProductListActivity extends AppCompatActivity implements StoreProdu
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             new CustomToast().showToast(this, "Action perform successfully");
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
+                showProgress();
                 StoreProductApiCalls storeProductApiCalls = new StoreProductApiCalls();
                 storeProductApiCalls.setStoreProductPresenter(this);
                 storeProductApiCalls.storeProduct(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);

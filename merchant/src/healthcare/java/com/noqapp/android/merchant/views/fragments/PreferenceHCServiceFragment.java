@@ -1,29 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.model.MasterLabApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.PreferenceActivity;
-import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
-import com.noqapp.android.merchant.views.adapters.TestListAdapter;
-import com.noqapp.android.merchant.views.adapters.TestListAutoComplete;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,17 +13,36 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MasterLabApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
+import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAutoComplete;
+import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class PreferenceHCServiceFragment extends Fragment implements SelectItemListAdapter.RemoveListItem, TestListAdapter.FlagListItem, MasterLabPresenter {
+public class PreferenceHCServiceFragment extends BaseFragment implements
+        SelectItemListAdapter.RemoveListItem, TestListAdapter.FlagListItem, MasterLabPresenter {
 
     private ListView lv_tests, lv_all_tests;
     private AutoCompleteTextView actv_search;
     private EditText edt_add;
     private TestListAdapter testListAdapter;
-    private ProgressDialog progressDialog;
     private ArrayList<JsonMasterLab> masterLabArrayList = new ArrayList<>();
 
     public ArrayList<DataObj> getSelectedList() {
@@ -68,8 +65,8 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_preference_hc_service, container, false);
-        initProgress();
         edt_add = v.findViewById(R.id.edt_add);
         lv_tests = v.findViewById(R.id.lv_tests);
         lv_all_tests = v.findViewById(R.id.lv_all_tests);
@@ -152,20 +149,8 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
         return v;
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Flag the data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     public void setData(ArrayList<JsonMasterLab> tempList) {
         masterLabArrayList = tempList;
-
         Collections.sort(masterLabArrayList, new Comparator<JsonMasterLab>() {
             @Override
             public int compare(JsonMasterLab item1, JsonMasterLab item2) {
@@ -247,7 +232,6 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
             public int compare(DataObj item1, DataObj item2) {
                 return item1.getShortName().compareToIgnoreCase(item2.getShortName());
             }
-
         });
     }
 
@@ -262,8 +246,8 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
     @Override
     public void flagItem(int pos) {
         new CustomToast().showToast(getActivity(), "Record flagged");
-        initProgress();
-        progressDialog.show();
+        setProgressMessage("Flag the data...");
+        showProgress();
         MasterLabApiCalls masterLabApiCalls = new MasterLabApiCalls();
         masterLabApiCalls.setMasterLabPresenter(this);
         masterLabApiCalls.flag(BaseLaunchActivity.getDeviceID(),
@@ -279,24 +263,5 @@ public class PreferenceHCServiceFragment extends Fragment implements SelectItemL
             new CustomToast().showToast(getActivity(), "Failed to flag data");
         }
         dismissProgress();
-    }
-
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 }

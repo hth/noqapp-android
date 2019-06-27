@@ -5,20 +5,6 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.ViewAllOrderExpandableListAdapter;
-import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
-
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +14,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.ViewAllOrderExpandableListAdapter;
+import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
+import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,10 +34,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class ViewAllPeopleInQOrderActivity extends AppCompatActivity implements PurchaseOrderPresenter {
+public class ViewAllPeopleInQOrderActivity extends BaseActivity implements PurchaseOrderPresenter {
 
     private Map<Date, List<JsonPurchaseOrderList>> expandableListDetail = new HashMap<>();
-    private ProgressDialog progressDialog;
     private ExpandableListView listview;
     private RelativeLayout rl_empty;
 
@@ -67,9 +62,9 @@ public class ViewAllPeopleInQOrderActivity extends AppCompatActivity implements 
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_order_q_history));
-        initProgress();
+        setProgressMessage("Fetching data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
             purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
             purchaseOrderApiCalls.showOrdersHistorical(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), getIntent().getStringExtra("codeQR"));
@@ -77,35 +72,6 @@ public class ViewAllPeopleInQOrderActivity extends AppCompatActivity implements 
             ShowAlertInformation.showNetworkDialog(this);
         }
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 
     private void createData(List<JsonPurchaseOrder> temp) {

@@ -5,7 +5,6 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewBucket;
-import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 

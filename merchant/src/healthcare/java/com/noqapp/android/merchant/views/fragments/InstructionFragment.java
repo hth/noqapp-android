@@ -1,20 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +11,23 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.MultiSelectListAdapter;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstructionFragment extends Fragment {
+public class InstructionFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private ListView list_view;
     private TextView tv_add_instruction, tv_add_new;
@@ -36,6 +36,7 @@ public class InstructionFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_instruction, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
         list_view = v.findViewById(R.id.list_view);

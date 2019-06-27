@@ -5,26 +5,9 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.RegisterApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.Registration;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -38,11 +21,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.RegisterApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.Registration;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class RegistrationActivity extends AppCompatActivity implements ProfilePresenter, View.OnClickListener {
+public class RegistrationActivity extends BaseActivity implements ProfilePresenter,
+        View.OnClickListener {
 
     public interface RegisterCallBack {
         void passPhoneNo(JsonProfile jsonProfile);
@@ -63,15 +61,11 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     private Button btnRegistration;
     private long mLastClickTime = 0;
     private DatePickerDialog fromDatePickerDialog;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
-        initProgress();
-
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,9 +155,9 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
             btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
             btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                progressDialog.show();
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
+                setProgressMessage("Loading data...");
+                setProgressCancel(false);
+                showProgress();
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                     return;
                 }
@@ -195,24 +189,6 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
     @Override
     public void profileError() {
         dismissProgress();
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 
     @Override
@@ -320,16 +296,5 @@ public class RegistrationActivity extends AppCompatActivity implements ProfilePr
         RegisterApiCalls registerApiCalls = new RegisterApiCalls(this);
         registerApiCalls.register(UserUtils.getDeviceId(), registration);
 
-    }
-
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 }

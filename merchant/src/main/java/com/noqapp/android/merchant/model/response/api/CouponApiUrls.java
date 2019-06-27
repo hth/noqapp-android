@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.model.response.api;
 
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

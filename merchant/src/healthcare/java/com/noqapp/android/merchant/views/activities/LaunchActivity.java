@@ -19,7 +19,6 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;
@@ -59,7 +58,6 @@ public class LaunchActivity extends BaseLaunchActivity {
             list_fragment = findViewById(R.id.frame_layout);
             list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }
-        initProgress();
         initDrawer();
 
         /* Call to check if the current version of app blacklist or old. */
@@ -92,10 +90,6 @@ public class LaunchActivity extends BaseLaunchActivity {
                 List<MenuModel> childModelsList = new ArrayList<>();
                 childModelsList.add(new MenuModel(getString(R.string.menu_preference), false, false, R.drawable.case_history));
                 childModelsList.add(new MenuModel(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
-                if (!AppUtils.isRelease()) {
-                    // Currently supported only in debug mode
-                    childModelsList.add(new MenuModel(getString(R.string.menu_appointments), false, false, R.drawable.appointment));
-                }
                 headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings,childModelsList));
             }
         } catch (Exception e) {

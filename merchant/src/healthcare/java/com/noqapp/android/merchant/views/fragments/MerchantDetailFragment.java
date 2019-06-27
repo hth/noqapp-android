@@ -45,7 +45,8 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
+        FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
@@ -173,9 +174,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
 
                 if (isValid) {
-                    LaunchActivity.getLaunchActivity().progressDialog.show();
-                    LaunchActivity.getLaunchActivity().progressDialog.setCancelable(false);
-                    LaunchActivity.getLaunchActivity().progressDialog.setCanceledOnTouchOutside(false);
+                    setProgressMessage("Searching patient...");
+                    showProgress();
+                    setProgressCancel(false);
                     setDispensePresenter();
                     String phone = "";
                     cid = "";
@@ -218,7 +219,6 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void findCustomerResponse(JsonProfile jsonProfile) {
         dismissProgress();
-        LaunchActivity.getLaunchActivity().progressDialog.dismiss();
         if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);
@@ -241,9 +241,9 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         btn_create_order.setEnabled(false);
-                        LaunchActivity.getLaunchActivity().progressDialog.show();
-                        LaunchActivity.getLaunchActivity().progressDialog.setCancelable(false);
-                        LaunchActivity.getLaunchActivity().progressDialog.setCanceledOnTouchOutside(false);
+                        setProgressMessage("Creating token...");
+                        showProgress();
+                        setProgressCancel(false);
                         String phoneNoWithCode = "";
                         setDispensePresenter();
                         if (TextUtils.isEmpty(cid)) {

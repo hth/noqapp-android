@@ -1,16 +1,17 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ChildData;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
-import com.noqapp.android.merchant.views.adapters.MenuOrderAdapter;
-
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import androidx.fragment.app.Fragment;
+
+import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
+import com.noqapp.android.merchant.views.adapters.MenuOrderAdapter;
 
 import java.util.List;
 

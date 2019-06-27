@@ -1,17 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.customviews.MeterView;
-import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +9,18 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterViewValueChanged {
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.customviews.MeterView;
+import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
+public class PrimaryCheckupFragment extends BaseFragment implements MeterView.MeterViewValueChanged {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_rr, tv_height;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
@@ -29,8 +29,8 @@ public class PrimaryCheckupFragment extends Fragment implements MeterView.MeterV
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_primary_checkup, container, false);
-
         mv_weight1 = v.findViewById(R.id.mv_weight1);
         mv_weight2 = v.findViewById(R.id.mv_weight2);
         mv_pulse = v.findViewById(R.id.mv_pulse);

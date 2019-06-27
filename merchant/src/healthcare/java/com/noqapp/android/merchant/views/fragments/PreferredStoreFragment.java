@@ -1,6 +1,16 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
@@ -12,26 +22,14 @@ import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PreferredStoreFragment extends Fragment {
+public class PreferredStoreFragment extends BaseFragment {
 
     private RecyclerView rcv_one, rcv_two;
     private TextView tv_label_one, tv_label_two, tv_sublabel_one, tv_sublabel_two;
-    private ProgressDialog progressDialog;
     private int pos = -1;
     private PreferredListAdapter preferredListAdapter1 = null;
     private PreferredListAdapter preferredListAdapter2 = null;
@@ -39,8 +37,8 @@ public class PreferredStoreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_preferred_store, container, false);
-        initProgress();
         rcv_one = v.findViewById(R.id.rcv_one);
         rcv_two = v.findViewById(R.id.rcv_two);
         tv_label_one = v.findViewById(R.id.tv_label_one);
@@ -85,17 +83,6 @@ public class PreferredStoreFragment extends Fragment {
         return v;
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Updating data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
     private HealthCareServiceEnum getHealthCareEnum(int pos) {
         switch (pos) {
             case 0:
@@ -116,14 +103,11 @@ public class PreferredStoreFragment extends Fragment {
     }
 
 
-
-
     private List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
 
         List<ParentCheckBoxObj> parentCheckBoxObjs = new ArrayList<>();
         for (int j = 0; j < LaunchActivity.merchantListFragment.getTopics().size(); j++) {
             List<CheckBoxObj> temp = new ArrayList<>();
-
             List<CheckBoxObj> checkBoxObjListScan = new ArrayList<>();
             List<CheckBoxObj> checkBoxObjListSono = new ArrayList<>();
             List<CheckBoxObj> checkBoxObjListPath = new ArrayList<>();
@@ -387,7 +371,6 @@ public class PreferredStoreFragment extends Fragment {
                 }
                 return -1;
             }
-
         }
     }
 
@@ -395,13 +378,11 @@ public class PreferredStoreFragment extends Fragment {
         return  "Select preferred store to receive "+str+" requested for patients";
     }
 
-
     private List<JsonPreferredBusiness> getBusinessStoreList(String codeQR) {
         if (null != PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists()) {
             for (int i = 0; i < PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists().size(); i++) {
                 if (PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists().get(i).getCodeQR().equals(codeQR)) {
                     return PreferredStoreActivity.getPreferredStoreActivity().getJsonPreferredBusinessLists().get(i).getPreferredBusinesses();
-
                 }
             }
         }

@@ -1,18 +1,19 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.views.fragments.ChartListFragment;
-
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class MerchantChartListAdapter extends BaseAdapter {
             recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
             recordHolder.tv_queue_name.setTextColor(Color.WHITE);
         } else {
-            recordHolder.cardview.setCardBackgroundColor(Color.TRANSPARENT);
+            recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
             recordHolder.tv_queue_name.setTextColor(ContextCompat.getColor(context, R.color.color_action_bar));
         }
 

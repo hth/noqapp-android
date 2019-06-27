@@ -1,35 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
-import com.noqapp.android.common.model.types.QueueStatusEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ManageQueueApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
-import com.noqapp.android.merchant.presenter.beans.JsonToken;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
-import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
-import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
-import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
-import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -45,9 +15,36 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.fragment.app.Fragment;
+
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
+import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.ManageQueueApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
+import com.noqapp.android.merchant.presenter.beans.JsonToken;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.JsonTopicList;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.GetTimeAgoUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.adapters.AutocompleteAdapter;
+import com.noqapp.android.merchant.views.adapters.MerchantListAdapter;
+import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
+import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
+import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -94,6 +91,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_merchantlist, container, false);
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setTopicPresenter(this);
@@ -249,7 +247,7 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
     @Override
     public void topicPresenterResponse(JsonTopicList topiclist) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         // To cancel
         if (null != topiclist) {
             updateListData(topiclist.getTopics());
@@ -266,27 +264,14 @@ public class MerchantListFragment extends BaseFragment implements TopicPresenter
 
     @Override
     public void topicPresenterError() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        dismissProgress();
         swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        LaunchActivity.getLaunchActivity().dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
     public void authenticationFailure() {
-        LaunchActivity.getLaunchActivity().dismissProgress();
+        super.authenticationFailure();
         swipeRefreshLayout.setRefreshing(false);
-        AppUtils.authenticationProcessing();
     }
 
 

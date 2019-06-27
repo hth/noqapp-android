@@ -1,5 +1,16 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+
+import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -8,25 +19,13 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 
-import com.crashlytics.android.answers.Answers;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
 import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity {
-
     private FrameLayout fl_notification;
     private TextView tv_badge;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +59,7 @@ public class LaunchActivity extends BaseLaunchActivity {
             list_fragment = (FrameLayout) findViewById(R.id.frame_layout);
             list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
         }
-        initProgress();
         initDrawer();
-
-
-
 
         /* Call to check if the current version of app blacklist or old. */
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -75,7 +70,6 @@ public class LaunchActivity extends BaseLaunchActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         int notify_count = NotificationDB.getNotificationCount();
         tv_badge.setText(String.valueOf(notify_count));
         if (notify_count > 0) {
@@ -83,7 +77,6 @@ public class LaunchActivity extends BaseLaunchActivity {
         } else {
             tv_badge.setVisibility(View.INVISIBLE);
         }
-
         // clear the notification area when the app is opened
         NoQueueMessagingService.clearNotifications(getApplicationContext());
     }

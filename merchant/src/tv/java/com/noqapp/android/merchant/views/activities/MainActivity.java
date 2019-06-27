@@ -1,15 +1,42 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.mediarouter.media.MediaRouteSelector;
+import androidx.mediarouter.media.MediaRouter;
+
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.common.api.Status;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.fcm.data.JsonAlertData;
+import com.noqapp.android.common.fcm.data.JsonClientData;
+import com.noqapp.android.common.fcm.data.JsonClientOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
+import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
+import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
+import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
-import com.noqapp.android.common.presenter.AdvertisementPresenter;
-import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -19,32 +46,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastMediaControlIntent;
-import com.google.android.gms.cast.CastRemoteDisplayLocalService;
-import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.common.api.Status;
-
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import androidx.annotation.NonNull;
-
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.mediarouter.media.MediaRouteSelector;
-import androidx.mediarouter.media.MediaRouter;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,7 +58,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements ClientInQueuePresenter, AdvertisementPresenter {
+public class MainActivity extends BaseActivity implements ClientInQueuePresenter,
+        AdvertisementPresenter {
 
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private MediaRouter mediaRouter;
@@ -66,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     private final long DELAY_MS = 1000;//delay in milliseconds before task is to be executed
     private final long PERIOD_MS = 5 * 1000;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
-    private ProgressDialog progressDialog;
     protected BroadcastReceiver broadcastReceiver;
     private JsonAdvertisementList jsonAdvertisementList;
     private boolean isNotification = false;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv);
-        initProgress();
+        setProgressMessage("Fetching data...");
         setupMediaRouter();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -92,36 +94,73 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
                         String current_serving = intent.getStringExtra(Constants.CURRENT_SERVING);
                         String lastNumber = intent.getStringExtra(Constants.LASTNO);
                         String payload = intent.getStringExtra(Constants.Firebase_Type);
-                        try {
-                            for (int i = 0; i < topics.size(); i++) {
-                                JsonTopic jt = topics.get(i);
-                                if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
-                                    if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
-                                        /* Update only from merchant msg. */
-                                        jt.setQueueStatus(QueueStatusEnum.valueOf(status));
-                                    }
-                                    if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S)||QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.N)) {
-                                        jt.setToken(Integer.parseInt(lastNumber));
-                                        jt.setServingNumber(Integer.parseInt(current_serving));
-                                    } else {
-                                        if (Integer.parseInt(lastNumber) >= jt.getToken()) {
-                                            jt.setToken(Integer.parseInt(lastNumber));
+                        Object object = intent.getSerializableExtra("object");
+
+                        if (object instanceof JsonTopicQueueData) {
+                            Log.e("onReceiveJsonTopicQdata", ((JsonTopicQueueData) object).toString());
+                            try {
+                                for (int i = 0; i < topics.size(); i++) {
+                                    JsonTopic jt = topics.get(i);
+                                    if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
+                                        if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                                            /* Update only from merchant msg. */
+                                            jt.setQueueStatus(QueueStatusEnum.valueOf(status));
                                         }
+                                        if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S) || QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.N)) {
+                                            jt.setToken(Integer.parseInt(lastNumber));
+                                            jt.setServingNumber(Integer.parseInt(current_serving));
+                                        } else {
+                                            if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                                jt.setToken(Integer.parseInt(lastNumber));
+                                            }
+                                        }
+                                        topics.set(i, jt);
+                                        break;
                                     }
-                                    topics.set(i, jt);
-                                    break;
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } else if (object instanceof JsonClientData) {
+                            Log.e("onReceiveJsonClientData", ((JsonClientData) object).toString());
+                        } else if (object instanceof JsonAlertData) {
+                            Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
+                        } else if (object instanceof JsonTopicOrderData) {
+                            Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
+                            try {
+                                for (int i = 0; i < topics.size(); i++) {
+                                    JsonTopic jt = topics.get(i);
+                                    if (jt.getCodeQR().equalsIgnoreCase(codeQR)) {
+                                        if (StringUtils.isNotBlank(payload) && payload.equalsIgnoreCase(FirebaseMessageTypeEnum.M.getName())) {
+                                            /* Update only from merchant msg. */
+                                            jt.setQueueStatus(QueueStatusEnum.valueOf(status));
+                                        }
+                                        if (QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.S) || QueueStatusEnum.valueOf(status).equals(QueueStatusEnum.N)) {
+                                            jt.setToken(Integer.parseInt(lastNumber));
+                                            jt.setServingNumber(Integer.parseInt(current_serving));
+                                        } else {
+                                            if (Integer.parseInt(lastNumber) >= jt.getToken()) {
+                                                jt.setToken(Integer.parseInt(lastNumber));
+                                            }
+                                        }
+                                        topics.set(i, jt);
+                                        break;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if (object instanceof JsonClientOrderData) {
+                            Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
                         }
                     }
                     updateTv(topics);
                 }
+
             }
         };
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.show();
+            showProgress();
             QueueDetail queueDetail = getQueueDetails(LaunchActivity.merchantListFragment.getTopics());
             ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
             clientInQueueApiCalls.toBeServedClients(
@@ -298,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
-                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList,true);
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, true);
                 }
                 final Handler handler = new Handler();
                 final Runnable Update = new Runnable() {
@@ -366,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
     public void updateTv(ArrayList<JsonTopic> topics) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             isNotification = true;
-            progressDialog.show();
+            showProgress();
             QueueDetail queueDetail = getQueueDetails(topics);
             ClientInQueueApiCalls clientInQueueApiCalls = new ClientInQueueApiCalls(this);
             clientInQueueApiCalls.toBeServedClients(
@@ -382,18 +421,6 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
         this.jsonAdvertisementList = jsonAdvertisementList;
     }
 
-    private void initProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching data...");
-    }
-
-    protected void dismissProgress() {
-        if (null != progressDialog && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
-
     public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
 
         try {
@@ -402,17 +429,17 @@ public class MainActivity extends AppCompatActivity implements ClientInQueuePres
             String currentTime = formatter.format(date);
             //Start Time
             //all times are from java.util.Date
-            Date inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(initialTime);
+            Date inTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(initialTime);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(inTime);
 
             //Current Time
-            Date checkTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(currentTime);
+            Date checkTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(currentTime);
             Calendar calendar3 = Calendar.getInstance();
             calendar3.setTime(checkTime);
 
             //End Time
-            Date finTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(finalTime);
+            Date finTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(finalTime);
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTime(finTime);
 

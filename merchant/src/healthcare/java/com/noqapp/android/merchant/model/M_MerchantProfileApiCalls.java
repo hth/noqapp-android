@@ -1,12 +1,14 @@
 package com.noqapp.android.merchant.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.merchant.interfaces.IntellisensePresenter;
 import com.noqapp.android.merchant.utils.Constants;
 
-import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

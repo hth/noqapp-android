@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
 import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 
 import okhttp3.ResponseBody;
@@ -10,7 +9,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 public interface MasterLabApiUrls {
 

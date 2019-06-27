@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.model.CouponApiCalls;
+import com.noqapp.android.client.model.ClientCouponApiCalls;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
@@ -53,16 +54,21 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching coupons...");
             showProgress();
-            CouponApiCalls couponApiCalls = new CouponApiCalls();
-            couponApiCalls.setCouponPresenter(this);
-            couponApiCalls.availableCoupon(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth());
+            ClientCouponApiCalls clientCouponApiCalls = new ClientCouponApiCalls();
+            clientCouponApiCalls.setCouponPresenter(this);
+            String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
+            if (TextUtils.isEmpty(codeQR)) {
+                clientCouponApiCalls.availableCoupon(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth());
+            } else {
+                clientCouponApiCalls.filterCoupon(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
         return view;
     }
-
 
 
     @Override
@@ -85,12 +91,12 @@ public class MyCouponsFragment extends BaseFragment implements CouponPresenter,
 
     @Override
     public void discountItemClick(JsonCoupon jsonCoupon) {
-        if(null != getActivity().getCallingActivity()) {
+        if (null != getActivity().getCallingActivity()) {
             Intent intent = new Intent();
             intent.putExtra(IBConstant.KEY_DATA_OBJECT, jsonCoupon);
             getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
-        }else{
+        } else {
             // Do nothing right now
         }
     }

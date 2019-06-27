@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.app.ProgressDialog;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,7 +11,11 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.presenter.AllReviewPresenter;
@@ -20,7 +23,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ReviewApiUnAuthenticCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -28,12 +30,6 @@ import com.noqapp.android.merchant.views.adapters.ReviewsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ReviewFragment extends BaseFragment implements AllReviewPresenter {
 
@@ -48,6 +44,7 @@ public class ReviewFragment extends BaseFragment implements AllReviewPresenter {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
+        super.onCreateView(inflater, container, args);
         view = inflater.inflate(R.layout.frag_show_all_review, container, false);
         rv_all_review = view.findViewById(R.id.rv_all_review);
         rl_empty = view.findViewById(R.id.rl_empty);
@@ -86,25 +83,6 @@ public class ReviewFragment extends BaseFragment implements AllReviewPresenter {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         }
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(getActivity(), eej);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
 
     @Override
