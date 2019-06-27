@@ -79,13 +79,15 @@ public class ShowCustomDialog {
             btnNegative.setText(btnNegativeText);
         btnPositive.setOnClickListener((View v) -> {
             dialog.dismiss();
-            if (null != dialogClickListener)
+            if (null != dialogClickListener) {
                 dialogClickListener.btnPositiveClick();
+            }
         });
         btnNegative.setOnClickListener((View v) -> {
             dialog.dismiss();
-            if (null != dialogClickListener)
+            if (null != dialogClickListener) {
                 dialogClickListener.btnNegativeClick();
+            }
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
