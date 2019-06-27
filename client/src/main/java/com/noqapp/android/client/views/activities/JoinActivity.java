@@ -312,7 +312,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
         }
         startTimer();
-        new CustomToast().showToast(this, "Please complete your transaction within 5 minutes.");
+        new CustomToast().showToast(this, "Please complete your transaction within " + BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
     }
 
     private void startTimer() {
