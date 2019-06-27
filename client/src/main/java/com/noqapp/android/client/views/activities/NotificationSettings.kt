@@ -37,10 +37,10 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
             MyApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
-                CustomToast().showToast(this@NotificationSettings, "SMS Enabled")
+                CustomToast().showToast(this@NotificationSettings, "Promotional SMS Enabled")
             } else {
                 // The switch is disabled
-                CustomToast().showToast(this@NotificationSettings, "SMS Disabled")
+                CustomToast().showToast(this@NotificationSettings, "Promotional SMS Disabled")
             }
            // showProgress()
             clientPreferenceApiCalls.promotionalSMS(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
