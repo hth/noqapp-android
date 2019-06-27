@@ -11,11 +11,11 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.activities.LaunchActivity;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.activities.LaunchActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
 

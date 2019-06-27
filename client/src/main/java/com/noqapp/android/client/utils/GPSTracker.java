@@ -17,11 +17,11 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.core.app.ActivityCompat;
 
 /**
  * Create this Class from tutorial :

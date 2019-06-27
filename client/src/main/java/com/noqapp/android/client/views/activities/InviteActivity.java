@@ -2,11 +2,11 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.fragments.InviteFragment;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.views.fragments.InviteFragment;
 
 public class InviteActivity extends BaseActivity {
 

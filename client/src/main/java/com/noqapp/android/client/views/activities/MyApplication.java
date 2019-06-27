@@ -7,11 +7,11 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.noqapp.android.common.utils.FontsOverride;
 
 import java.util.Locale;
-
-import androidx.multidex.MultiDexApplication;
 
 /**
  * Created by chandra on 5/20/17.

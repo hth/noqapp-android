@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import com.noqapp.android.client.model.response.api.ClientCouponApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.presenter.beans.body.Location;
-import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.JsonCouponList;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
+import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.presenter.CouponPresenter;
 
 import retrofit2.Call;

@@ -2,6 +2,11 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.JsonCategory;
@@ -12,11 +17,6 @@ import com.noqapp.android.client.views.fragments.CategoryListFragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by chandra on 5/7/17.

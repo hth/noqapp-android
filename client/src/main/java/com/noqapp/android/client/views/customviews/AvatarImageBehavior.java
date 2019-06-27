@@ -5,11 +5,11 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.noqapp.android.client.R;
-import com.noqapp.android.common.customviews.CircularImageView;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.customviews.CircularImageView;
 
 
 @SuppressWarnings("unused")

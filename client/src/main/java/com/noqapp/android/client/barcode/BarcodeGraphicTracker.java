@@ -17,12 +17,12 @@ package com.noqapp.android.client.barcode;
 
 import android.content.Context;
 
+import androidx.annotation.UiThread;
+
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.noqapp.android.client.barcode.camera.GraphicOverlay;
-
-import androidx.annotation.UiThread;
 
 /**
  * Generic tracker which is used for tracking or reading a barcode (and can really be used for
