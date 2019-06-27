@@ -91,7 +91,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private String tokenValue;
     private String topic;
     private boolean isResumeFirst = true;
-    private String gotoPerson = "";
     private String queueUserId = "";
     private QueueApiUnAuthenticCall queueApiUnAuthenticCall;
     private QueueApiAuthenticCall queueApiAuthenticCall;
@@ -111,6 +110,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     private RelativeLayout rl_discount;
     private boolean isEnabledPayment;
     private CountDownTimer timer;
+    private boolean isCancel = false;
+    private boolean isPause = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +212,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             showDialog.displayDialog("Cancel Queue", "Do you want to cancel the queue?");
         });
         btn_pay.setOnClickListener((View v) -> {
-            startTimer();
+            //startTimer();
+            if(null != timer)
+              timer.cancel();
             if (new BigDecimal(jsonToken.getJsonPurchaseOrder().getOrderPrice()).intValue() > 0) {
                 pay();
             } else {
@@ -296,7 +299,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             tv_address.setOnClickListener((View v) -> {
                 AppUtilities.openAddressInMap(JoinActivity.this, tv_address.getText().toString());
             });
-            gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 if (isResumeFirst) {
                     setProgressMessage("Joining Queue..");
@@ -313,20 +315,32 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     }
 
     private void startTimer() {
+        //isPause = false;
+        isCancel = false;
         if (null != timer)
             timer.cancel();
         Log.e("Start time","");
-        timer = new CountDownTimer(5 * 60 * 1000, 1000) {
+        timer = new CountDownTimer(2 * 60 * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 //Some code
             }
 
             public void onFinish() {
                 Log.e("End time","");
-                onBackPressed();
+                if(!isPause) {
+                    onBackPressed();
+                }else {
+                    isCancel = true;
+                }
             }
         };
         timer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPause = true;
     }
 
     @Override
@@ -531,16 +545,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
     public void onResume() {
         super.onResume();
         /* Added to update the screen if app is in background & notification received */
-        if (!isResumeFirst) {
-            JsonTokenAndQueue jtk = TokenAndQueueDB.getCurrentQueueObject(codeQR, tokenValue);
-            if (null != jtk) {
-                if (TextUtils.isEmpty(gotoPerson))
-                    gotoPerson = null != ReviewDB.getValue(codeQR, tokenValue) ? ReviewDB.getValue(codeQR, tokenValue).getGotoCounter() : "";
-                setObject(jtk, gotoPerson);
-            }
-        }
         if (isResumeFirst) {
             isResumeFirst = false;
+        }
+
+        if(isCancel && isPause){
+            onBackPressed();
+        }else{
+            isPause = false;
         }
     }
 
@@ -550,7 +562,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
 
     public void setObject(JsonTokenAndQueue jq, String go_to) {
-        gotoPerson = go_to;
         // jsonTokenAndQueue = jq; removed to avoided the override of the data
         jsonTokenAndQueue.setServingNumber(jq.getServingNumber());
         jsonTokenAndQueue.setToken(jq.getToken());
