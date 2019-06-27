@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,14 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
@@ -27,7 +24,6 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.ScheduleApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.BookSchedule;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;

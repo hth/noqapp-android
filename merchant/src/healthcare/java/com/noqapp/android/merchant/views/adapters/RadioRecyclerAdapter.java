@@ -1,13 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
-
 import android.content.Context;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
@@ -15,6 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
 
 import java.util.List;
 

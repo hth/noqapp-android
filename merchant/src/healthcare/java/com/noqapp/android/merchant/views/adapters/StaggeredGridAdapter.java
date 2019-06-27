@@ -1,14 +1,7 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
-import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +9,14 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
+import com.noqapp.android.common.beans.medical.JsonMedicalRadiology;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.Collections;

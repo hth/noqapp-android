@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -18,8 +22,6 @@ import com.noqapp.android.merchant.views.interfaces.MerchantProfessionalPresente
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 import com.noqapp.android.merchant.views.interfaces.ReviewPresenter;
 
-import androidx.annotation.NonNull;
-import android.util.Log;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;

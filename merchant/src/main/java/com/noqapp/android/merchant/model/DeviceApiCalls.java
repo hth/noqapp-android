@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.model;
 
-import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
@@ -12,11 +14,11 @@ import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.AppBlacklistPresenter;
 
-import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.noqapp.android.merchant.utils.Constants.DEVICE_TYPE;
 
 /**
  * User: hitender

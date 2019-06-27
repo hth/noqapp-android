@@ -1,19 +1,20 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.model.types.DiscountTypeEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.common.beans.JsonCoupon;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.JsonCoupon;
+import com.noqapp.android.common.model.types.DiscountTypeEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 

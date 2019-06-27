@@ -1,5 +1,20 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -25,21 +40,6 @@ import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
-
-import com.google.gson.Gson;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 import java.util.Random;

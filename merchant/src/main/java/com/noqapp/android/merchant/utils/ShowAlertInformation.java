@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.merchant.R;
-
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -10,8 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.merchant.R;
 
 public class ShowAlertInformation {
 

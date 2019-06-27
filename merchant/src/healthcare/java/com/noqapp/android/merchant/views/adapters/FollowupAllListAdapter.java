@@ -1,20 +1,21 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.common.utils.PhoneFormatterUtil;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-
 import android.app.Activity;
 import android.content.Context;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.utils.PhoneFormatterUtil;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 

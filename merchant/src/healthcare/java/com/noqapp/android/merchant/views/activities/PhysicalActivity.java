@@ -1,5 +1,19 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
@@ -26,25 +40,11 @@ import com.noqapp.android.merchant.views.utils.PdfSkeletonGenerator;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
+import java.util.ArrayList;
+
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
-
-import java.util.ArrayList;
 
 public class PhysicalActivity extends BaseActivity implements
         MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {

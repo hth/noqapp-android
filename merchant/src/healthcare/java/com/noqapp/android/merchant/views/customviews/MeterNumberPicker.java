@@ -1,8 +1,6 @@
 package com.noqapp.android.merchant.views.customviews;
 
 
-import com.noqapp.android.merchant.R;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,12 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.DimenRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.annotation.StyleRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -25,6 +17,15 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+
+import com.noqapp.android.merchant.R;
 
 import java.util.Locale;
 

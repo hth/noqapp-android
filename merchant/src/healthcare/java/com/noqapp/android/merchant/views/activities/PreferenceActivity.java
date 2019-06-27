@@ -1,6 +1,25 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import android.Manifest;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -11,7 +30,6 @@ import com.noqapp.android.merchant.model.M_MerchantProfileApiCalls;
 import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
@@ -20,31 +38,9 @@ import com.noqapp.android.merchant.views.fragments.PreferenceHCServiceFragment;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
 
-import com.google.gson.Gson;
-
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-
-import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

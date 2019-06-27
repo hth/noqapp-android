@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
@@ -9,15 +13,13 @@ import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
 import com.noqapp.android.merchant.model.response.api.health.MedicalRecordApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
-import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
+import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
-import android.util.Log;
-import androidx.annotation.NonNull;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;

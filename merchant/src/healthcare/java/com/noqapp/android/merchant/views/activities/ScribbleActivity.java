@@ -1,9 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +17,6 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintDocumentInfo;
 import android.print.PrintManager;
 import android.provider.UserDictionary;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -34,6 +28,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

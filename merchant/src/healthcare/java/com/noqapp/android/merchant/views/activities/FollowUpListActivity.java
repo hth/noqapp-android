@@ -5,23 +5,8 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.FollowupListAdapter;
-import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -29,6 +14,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.FollowupListAdapter;
+import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import java.util.ArrayList;
 import java.util.Date;

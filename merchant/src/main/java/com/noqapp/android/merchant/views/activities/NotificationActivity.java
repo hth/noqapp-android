@@ -5,21 +5,22 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import com.noqapp.android.common.beans.NotificationBeans;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.database.utils.NotificationDB;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.adapters.NotificationListAdapter;
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.database.utils.NotificationDB;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.adapters.NotificationListAdapter;
 
 import java.util.List;
 

@@ -1,7 +1,5 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.merchant.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -14,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.noqapp.android.merchant.R;
 
 public class ShowCustomDialog {
     private Context context;

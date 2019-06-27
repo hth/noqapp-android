@@ -1,6 +1,20 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
+
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathologyList;
@@ -29,24 +43,12 @@ import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSpinner;
+import java.util.ArrayList;
+import java.util.List;
+
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PrintFragment extends BaseFragment implements MedicalRecordPresenter {
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;

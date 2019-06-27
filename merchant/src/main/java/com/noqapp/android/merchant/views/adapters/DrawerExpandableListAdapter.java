@@ -8,8 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.noqapp.android.merchant.R;
 import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.merchant.R;
 
 import java.util.List;
 

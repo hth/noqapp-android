@@ -1,20 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 

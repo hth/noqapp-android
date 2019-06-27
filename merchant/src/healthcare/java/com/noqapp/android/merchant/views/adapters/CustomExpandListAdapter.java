@@ -1,9 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -12,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.HashMap;
 import java.util.List;

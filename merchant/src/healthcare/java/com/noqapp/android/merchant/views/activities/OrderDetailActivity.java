@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -19,9 +18,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonCoupon;
+import com.noqapp.android.common.beans.body.CouponOnOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.DiscountTypeEnum;
@@ -35,9 +34,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.CouponApiCalls;
 import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
-import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.common.beans.body.CouponOnOrder;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;

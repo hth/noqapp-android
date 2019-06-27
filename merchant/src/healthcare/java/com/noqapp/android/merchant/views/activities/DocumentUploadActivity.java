@@ -1,30 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
-import com.noqapp.android.common.utils.FileUtils;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
-import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
-import com.noqapp.android.merchant.utils.FileUtilsPdf;
-import com.noqapp.android.merchant.utils.PermissionUtils;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -47,18 +22,42 @@ import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
+import com.noqapp.android.common.presenter.ImageUploadPresenter;
+import com.noqapp.android.common.utils.FileUtils;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
+import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.FileUtilsPdf;
+import com.noqapp.android.merchant.utils.PermissionUtils;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.adapters.ImageUploadAdapter;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class DocumentUploadActivity extends BaseActivity implements View.OnClickListener,
         ImageUploadPresenter, JsonMedicalRecordPresenter, ImageUploadAdapter.OnItemClickListener {

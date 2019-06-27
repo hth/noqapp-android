@@ -1,15 +1,15 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.utils.FontsOverride;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
+import com.noqapp.android.common.utils.FontsOverride;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
 

@@ -1,15 +1,16 @@
 package com.noqapp.android.merchant.views.utils;
 
 
-import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHelper;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.pojos.CaseHistory;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+
+import androidx.core.content.FileProvider;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -25,16 +26,15 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-import androidx.core.content.FileProvider;
+import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.PdfHelper;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.pojos.CaseHistory;
 
 import java.io.File;
 import java.io.FileOutputStream;

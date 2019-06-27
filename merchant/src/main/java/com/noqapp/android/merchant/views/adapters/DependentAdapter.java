@@ -1,8 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedDependent;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -10,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedDependent;
 
 import java.util.List;
 

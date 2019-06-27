@@ -1,18 +1,12 @@
 package com.noqapp.android.merchant.views.activities;
 
 
-
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +17,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
 
 public class WebViewActivity extends BaseActivity {
     private WebView webView;

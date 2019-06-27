@@ -1,22 +1,24 @@
 package com.noqapp.android.merchant.model;
 
+import android.os.Environment;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.merchant.model.response.api.health.MasterLabApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.FilePresenter;
 
-import android.os.Environment;
-import androidx.annotation.NonNull;
-import android.util.Log;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BaseMasterLabApiCalls {
     protected static final String TAG = BaseMasterLabApiCalls.class.getSimpleName();

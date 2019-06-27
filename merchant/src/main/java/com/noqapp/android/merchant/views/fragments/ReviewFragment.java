@@ -11,6 +11,11 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.beans.JsonReviewList;
 import com.noqapp.android.common.presenter.AllReviewPresenter;
@@ -25,11 +30,6 @@ import com.noqapp.android.merchant.views.adapters.ReviewsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ReviewFragment extends BaseFragment implements AllReviewPresenter {
 

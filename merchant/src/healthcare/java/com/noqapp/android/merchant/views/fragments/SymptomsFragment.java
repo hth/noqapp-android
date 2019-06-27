@@ -1,24 +1,8 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
-import com.noqapp.android.merchant.views.adapters.StaggeredGridSymptomAdapter;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +15,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.adapters.AutoCompleteAdapterNew;
+import com.noqapp.android.merchant.views.adapters.StaggeredGridSymptomAdapter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class SymptomsFragment extends BaseFragment implements StaggeredGridSymptomAdapter.StaggeredClick, AutoCompleteAdapterNew.SearchByPos {
 

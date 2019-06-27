@@ -5,23 +5,9 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.RegisterApiCalls;
-import com.noqapp.android.merchant.presenter.beans.body.Registration;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
-
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -34,6 +20,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonProfile;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.RegisterApiCalls;
+import com.noqapp.android.merchant.presenter.beans.body.Registration;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.ShowAlertInformation;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.util.Calendar;
 import java.util.Date;

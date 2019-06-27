@@ -1,5 +1,19 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
@@ -13,30 +27,14 @@ import com.noqapp.android.merchant.interfaces.PatientProfilePresenter;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.model.PatientProfileApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
-
+import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
 import com.squareup.picasso.Picasso;
-
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;

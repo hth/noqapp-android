@@ -1,5 +1,28 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -21,30 +44,7 @@ import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.FragmentCommunicator;
 import com.noqapp.android.merchant.views.interfaces.TopicPresenter;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -7,19 +7,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.ReviewListActivity;
-import com.noqapp.android.merchant.views.adapters.MerchantChartListAdapter;
 import com.noqapp.android.merchant.views.adapters.MerchantReviewListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 public class ReviewListFragment extends Fragment {
     public static int selected_pos = 0;

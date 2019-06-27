@@ -1,10 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
 
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
-import com.noqapp.android.merchant.utils.ShowCustomDialog;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
+
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+import com.noqapp.android.merchant.utils.ShowCustomDialog;
 
 import java.util.List;
 

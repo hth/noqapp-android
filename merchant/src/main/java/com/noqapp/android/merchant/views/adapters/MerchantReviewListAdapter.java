@@ -8,15 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 import com.noqapp.android.merchant.views.fragments.ReviewListFragment;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 public class MerchantReviewListAdapter extends BaseAdapter {
     private Context context;

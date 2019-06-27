@@ -1,12 +1,5 @@
 package com.noqapp.android.merchant.utils;
 
-import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -19,9 +12,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 import java.util.Locale;

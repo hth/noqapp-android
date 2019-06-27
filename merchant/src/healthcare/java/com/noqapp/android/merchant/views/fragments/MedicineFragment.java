@@ -1,5 +1,16 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+
+import androidx.annotation.Nullable;
+
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
@@ -8,23 +19,13 @@ import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.adapters.CustomExpandListAdapter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
 
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class MedicineFragment extends BaseFragment implements CustomExpandListAdapter.RemoveChild {
     private CustomExpandListAdapter listAdapter;

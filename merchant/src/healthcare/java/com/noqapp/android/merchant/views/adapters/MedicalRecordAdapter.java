@@ -1,19 +1,20 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.model.types.medical.DailyFrequencyEnum;
 import com.noqapp.android.common.model.types.medical.DurationDaysEnum;
 import com.noqapp.android.common.model.types.medical.MedicationIntakeEnum;
 import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import com.noqapp.android.merchant.R;
-
-import android.content.Context;
-import androidx.cardview.widget.CardView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;

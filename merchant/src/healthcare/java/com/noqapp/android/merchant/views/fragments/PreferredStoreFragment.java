@@ -1,6 +1,16 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
@@ -11,15 +21,6 @@ import com.noqapp.android.merchant.views.adapters.PreferredListAdapter;
 import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
-
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;

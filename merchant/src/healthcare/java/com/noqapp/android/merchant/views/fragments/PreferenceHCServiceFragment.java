@@ -1,25 +1,7 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.common.beans.JsonResponse;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
-import com.noqapp.android.merchant.model.MasterLabApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.PreferenceActivity;
-import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
-import com.noqapp.android.merchant.views.adapters.TestListAdapter;
-import com.noqapp.android.merchant.views.adapters.TestListAutoComplete;
-import com.noqapp.android.merchant.views.pojos.DataObj;
-
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,6 +12,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+
+import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.MasterLabApiCalls;
+import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.PreferenceActivity;
+import com.noqapp.android.merchant.views.adapters.SelectItemListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAdapter;
+import com.noqapp.android.merchant.views.adapters.TestListAutoComplete;
+import com.noqapp.android.merchant.views.interfaces.MasterLabPresenter;
+import com.noqapp.android.merchant.views.pojos.DataObj;
 
 import java.util.ArrayList;
 import java.util.Collections;

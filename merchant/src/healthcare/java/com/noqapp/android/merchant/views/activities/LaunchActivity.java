@@ -19,7 +19,6 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.ArrayList;

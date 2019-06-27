@@ -1,5 +1,17 @@
 package com.noqapp.android.merchant.views.fragments;
 
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -12,26 +24,15 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
-import android.app.DatePickerDialog;
-import android.os.Bundle;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
-import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
-import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
+import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
+import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 
 public class UserProfileFragment extends BaseFragment implements View.OnClickListener, ProfilePresenter {

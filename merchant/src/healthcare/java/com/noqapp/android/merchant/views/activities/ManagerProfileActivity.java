@@ -1,11 +1,11 @@
 package com.noqapp.android.merchant.views.activities;
 
+import androidx.viewpager.widget.ViewPager;
+
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonMerchant;
 import com.noqapp.android.merchant.views.fragments.MerchantReviewQListFragment;
 import com.noqapp.android.merchant.views.fragments.UserAdditionalInfoFragment;
-
-import androidx.viewpager.widget.ViewPager;
 
 public class ManagerProfileActivity extends BaseManagerProfileActivity {
 

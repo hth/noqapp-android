@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
@@ -15,9 +18,6 @@ import com.noqapp.android.merchant.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ReviewsAdapter extends RecyclerView.Adapter{
     private final Context context;

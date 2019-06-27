@@ -1,10 +1,10 @@
 package com.noqapp.android.merchant.model.database;
 
-import static com.noqapp.android.merchant.model.database.DatabaseTable.Notification;
-import static com.noqapp.android.merchant.model.database.DatabaseTable.PreferredStore;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import static com.noqapp.android.merchant.model.database.DatabaseTable.Notification;
+import static com.noqapp.android.merchant.model.database.DatabaseTable.PreferredStore;
 
 /**
  * User: hitender

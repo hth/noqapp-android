@@ -1,8 +1,8 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.merchant.R;
-
 import android.os.Bundle;
+
+import com.noqapp.android.merchant.R;
 
 
 public class PhysicalDialogActivity extends PhysicalActivity {

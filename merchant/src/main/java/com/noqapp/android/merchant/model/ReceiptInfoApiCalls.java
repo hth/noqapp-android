@@ -2,13 +2,14 @@ package com.noqapp.android.merchant.model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.merchant.model.response.api.ReceiptApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

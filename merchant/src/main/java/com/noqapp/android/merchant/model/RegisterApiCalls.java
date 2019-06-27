@@ -1,5 +1,9 @@
 package com.noqapp.android.merchant.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.merchant.model.response.open.RegisterApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
@@ -8,8 +12,6 @@ import com.noqapp.android.merchant.presenter.beans.body.Registration;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
-import androidx.annotation.NonNull;
-import android.util.Log;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

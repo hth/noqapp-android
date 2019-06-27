@@ -1,17 +1,6 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
-import com.noqapp.android.merchant.views.customviews.MeterView;
-import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+import com.noqapp.android.merchant.views.customviews.MeterView;
+import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
+
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 public class PrimaryCheckupFragment extends BaseFragment implements MeterView.MeterViewValueChanged {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;

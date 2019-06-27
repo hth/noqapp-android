@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.interfaces;
 
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonReview;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
