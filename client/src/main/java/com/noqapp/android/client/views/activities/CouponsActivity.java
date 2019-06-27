@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.AllCouponsFragment;
@@ -20,9 +21,16 @@ public class CouponsActivity extends TabbedActivity {
     @Override
     protected void setupViewPager(ViewPager viewPager) {
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AllCouponsFragment(), "New Coupons");
+        String codeQr = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
+        AllCouponsFragment allCouponsFragment = new AllCouponsFragment();
+        MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
+        Bundle b = new Bundle();
+        b.putString(IBConstant.KEY_CODE_QR,codeQr);
+        allCouponsFragment.setArguments(b);
+        myCouponsFragment.setArguments(b);
+        adapter.addFragment(allCouponsFragment, "New Coupons");
         if (UserUtils.isLogin()) {
-            adapter.addFragment(new MyCouponsFragment(), "My Coupons");
+            adapter.addFragment(myCouponsFragment, "My Coupons");
         }
         viewPager.setAdapter(adapter);
     }

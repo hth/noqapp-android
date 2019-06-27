@@ -74,8 +74,14 @@ public class AllCouponsFragment extends BaseFragment implements CouponPresenter,
                 location.setCityName(LaunchActivity.getLaunchActivity().cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
-            clientCouponApiCalls.globalCoupon(UserUtils.getDeviceId(),
-                    UserUtils.getEmail(), UserUtils.getAuth(), location);
+            String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);
+            if (TextUtils.isEmpty(codeQR)) {
+                clientCouponApiCalls.globalCoupon(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), location);
+            } else {
+                clientCouponApiCalls.filterCoupon(UserUtils.getDeviceId(),
+                        UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+            }
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
