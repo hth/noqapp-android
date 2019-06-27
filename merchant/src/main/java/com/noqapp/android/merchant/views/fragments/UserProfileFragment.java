@@ -129,12 +129,11 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     public void updateProfile() {
-
         if (validate()) {
             // btn_update.setBackgroundResource(R.drawable.button_drawable_red);
             // btn_update.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                setProgressMessage("Updating data...");
+                setProgressMessage("Updating profile info...");
                 showProgress();
                 //   String phoneNo = edt_phoneNo.getText().toString();
                 String name = edt_name.getText().toString();
@@ -179,7 +178,6 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     public void profileError() {
         dismissProgress();
     }
-
 
 
     public void updateUI(JsonProfile jsonProfile) {

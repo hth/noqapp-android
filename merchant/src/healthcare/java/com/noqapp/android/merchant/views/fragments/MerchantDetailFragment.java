@@ -45,7 +45,8 @@ import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantDetailFragment extends BaseMerchantDetailFragment implements FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
+public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
+        FindCustomerPresenter, OrderDetailActivity.UpdateWholeList {
     private Spinner sp_patient_list;
     private TextView tv_select_patient;
     private Button btn_create_order;
@@ -173,6 +174,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
 
                 if (isValid) {
+                    setProgressMessage("Searching patient...");
                     showProgress();
                     setProgressCancel(false);
                     setDispensePresenter();
@@ -239,6 +241,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         btn_create_order.setEnabled(false);
+                        setProgressMessage("Creating token...");
                         showProgress();
                         setProgressCancel(false);
                         String phoneNoWithCode = "";

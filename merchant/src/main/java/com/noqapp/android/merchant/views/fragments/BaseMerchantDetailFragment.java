@@ -326,6 +326,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                         }
                     }
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        setProgressMessage("Fetching list...");
                         showProgress();
                         manageQueueApiCalls.getAllQueuePersonList(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonTopic.getCodeQR());
                     } else {
@@ -524,6 +525,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     chronometer.start();
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         showProgress();
+                        setProgressMessage("Calling next person in Q...");
                         Served served = new Served();
                         served.setCodeQR(jsonTopic.getCodeQR());
                         served.setQueueStatus(jsonTopic.getQueueStatus());
@@ -555,6 +557,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             @Override
                             public void btnPositiveClick() {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    setProgressMessage("Skip current person in Q...");
                                     showProgress();
                                     Served served = new Served();
                                     served.setCodeQR(jsonTopic.getCodeQR());
@@ -609,6 +612,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                 @Override
                                 public void btnPositiveClick() {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                        setProgressMessage("Pause the Queue...");
                                         showProgress();
                                         Served served = new Served();
                                         served.setCodeQR(jsonTopic.getCodeQR());
@@ -636,6 +640,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
                         } else {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                setProgressMessage("Starting Queue...");
                                 showProgress();
                                 Served served = new Served();
                                 served.setCodeQR(jsonTopic.getCodeQR());

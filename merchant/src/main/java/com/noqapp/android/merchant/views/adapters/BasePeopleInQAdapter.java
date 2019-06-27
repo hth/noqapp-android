@@ -27,6 +27,7 @@ import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomProgressBar;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.noqapp.android.merchant.R;
@@ -57,6 +58,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
     private QueueStatusEnum queueStatusEnum;
     private JsonDataVisibility jsonDataVisibility;
     private JsonPaymentPermission jsonPaymentPermission;
+    protected CustomProgressBar customProgressBar;
 
     // for medical Only
     abstract void changePatient(Context context, JsonQueuedPerson jsonQueuedPerson);
@@ -88,29 +90,29 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
             }
         }
         notifyDataSetChanged();
-        //LaunchActivity.getLaunchActivity().dismissProgress();
+        customProgressBar.dismissProgress();
     }
 
     @Override
     public void queuePersonListError() {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
+        customProgressBar.dismissProgress();
     }
 
     @Override
     public void authenticationFailure() {
-       // LaunchActivity.getLaunchActivity().dismissProgress();
+        customProgressBar.dismissProgress();
         AppUtils.authenticationProcessing();
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-       // LaunchActivity.getLaunchActivity().dismissProgress();
+        customProgressBar.dismissProgress();
         new ErrorResponseHandler().processError(context, eej);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-        //LaunchActivity.getLaunchActivity().dismissProgress();
+        customProgressBar.dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(context, errorCode);
     }
 
@@ -175,6 +177,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         businessCustomerApiCalls.setQueuePersonListPresenter(this);
         this.jsonDataVisibility = jsonDataVisibility;
         this.jsonPaymentPermission = jsonPaymentPermission;
+        customProgressBar = new CustomProgressBar(context);
     }
 
     protected BasePeopleInQAdapter(
@@ -201,6 +204,7 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         this.jsonDataVisibility = jsonDataVisibility;
         this.jsonPaymentPermission = jsonPaymentPermission;
         this.bizCategoryId = bizCategoryId;
+        customProgressBar = new CustomProgressBar(context);
     }
 
     @Override

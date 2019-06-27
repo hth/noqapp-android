@@ -19,7 +19,6 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)
         tv_toolbar_title.text = "Notification Settings"
-
         val clientPreferenceApiCalls: ClientPreferenceApiCalls = ClientPreferenceApiCalls()
         clientPreferenceApiCalls.setClientPreferencePresenter(this@NotificationSettings)
         setProgressMessage("Updating settings...")
@@ -43,7 +42,7 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
                 // The switch is disabled
                 CustomToast().showToast(this@NotificationSettings, "SMS Disabled")
             }
-            showProgress()
+           // showProgress()
             clientPreferenceApiCalls.promotionalSMS(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
         sc_sound.setOnCheckedChangeListener { _buttonView, isChecked ->
@@ -55,14 +54,14 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
                 // The switch is disabled
                 CustomToast().showToast(this@NotificationSettings, "Sound Disabled")
             }
-            showProgress()
+            //showProgress()
             clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
         }
 
     }
 
     override fun clientPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
-        dismissProgress()
+        //dismissProgress()
         val jsonProfile: JsonProfile = LaunchActivity.getUserProfile()
         jsonProfile.setJsonUserPreference(jsonUserPreference);
         LaunchActivity.setUserProfile(jsonProfile)
