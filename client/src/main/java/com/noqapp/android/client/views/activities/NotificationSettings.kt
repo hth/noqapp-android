@@ -49,10 +49,10 @@ class NotificationSettings : BaseActivity(), ClientPreferencePresenter {
             MyApplication.setNotificationSoundEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
-                CustomToast().showToast(this@NotificationSettings, "Sound Enabled")
+                CustomToast().showToast(this@NotificationSettings, "Notification Sound Enabled")
             } else {
                 // The switch is disabled
-                CustomToast().showToast(this@NotificationSettings, "Sound Disabled")
+                CustomToast().showToast(this@NotificationSettings, "Notification Sound Disabled")
             }
             //showProgress()
             clientPreferenceApiCalls.notificationSound(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth())
