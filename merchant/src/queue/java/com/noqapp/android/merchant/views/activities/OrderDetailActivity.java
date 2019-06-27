@@ -1,15 +1,19 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,10 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -44,7 +46,6 @@ import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.OrderServed;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ReceiptGeneratorPDF;
@@ -224,37 +225,63 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            showProgress();
-                            setProgressMessage("Starting payment refund..");
-                            setProgressCancel(false);
-                            OrderServed orderServed = new OrderServed();
-                            orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                            orderServed.setServedNumber(jsonPurchaseOrder.getToken());
-                            orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
-                            orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                            orderServed.setQueueStatus(QueueStatusEnum.N);
-                            orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
-                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                            purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
-                            purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
 
+                final Dialog dialog = new Dialog(OrderDetailActivity.this, android.R.style.Theme_Dialog);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_refund);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setCanceledOnTouchOutside(true);
+                ImageView actionbarBack = dialog.findViewById(R.id.actionbarBack);
+                final TextView tv_random = dialog.findViewById(R.id.tv_random);
+                final EditText edt_random = dialog.findViewById(R.id.edt_random);
+                tv_random.setText(AppUtils.randomStringGenerator(3));
+                final Button btn_update = dialog.findViewById(R.id.btn_update);
+                btn_update.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        edt_random.setError(null);
+                        new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
+                        if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
+                            edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
+                            new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
                         } else {
-                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                            // do process
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                showProgress();
+                                setProgressMessage("Starting payment refund..");
+                                setProgressCancel(false);
+                                OrderServed orderServed = new OrderServed();
+                                orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                                orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                                orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                                orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                                orderServed.setQueueStatus(QueueStatusEnum.N);
+                                orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
+                                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                                purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
+                                purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                            }
+                            btn_update.setClickable(false);
+                            dialog.dismiss();
                         }
                     }
+                });
 
+                actionbarBack.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
                 });
-                showDialog.displayDialog("Alert", "You are initiating refund process. Please confirm");
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                dialog.show();
             }
+
         });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_pay_partial = findViewById(R.id.btn_pay_partial);
