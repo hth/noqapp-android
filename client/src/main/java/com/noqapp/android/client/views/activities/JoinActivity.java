@@ -23,7 +23,6 @@ import com.noqapp.android.client.presenter.beans.JsonToken;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.ShowCustomDialog;
@@ -312,7 +311,8 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
         }
         startTimer();
-        new CustomToast().showToast(this, "Please complete your transaction within " + BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
+        new CustomToast().showToast(this, "Please complete your transaction within " +
+                BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
     }
 
     private void startTimer() {
@@ -471,15 +471,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     @Override
     public void responsePresenterResponse(JsonResponse response) {
-        if (null != response) {
-            if (response.getResponse() == Constants.SUCCESS) {
-                new CustomToast().showToast(this, getString(R.string.cancel_queue));
-            } else {
-                new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
-            }
-        } else {
-            new CustomToast().showToast(this, getString(R.string.fail_to_cancel));
-        }
         NoQueueMessagingService.unSubscribeTopics(topic);
         TokenAndQueueDB.deleteTokenQueue(codeQR, tokenValue);
         iv_home.performClick();
@@ -494,23 +485,10 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
 
     private void cancelQueue() {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            setProgressMessage("Cancel Queue");
+            setProgressMessage("Canceling process...");
             showProgress();
-            if (UserUtils.isLogin()) {
-                queueApiAuthenticCall.setResponsePresenter(this);
-                queueApiAuthenticCall.abortQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-            } else {
-                queueApiUnAuthenticCall.setResponsePresenter(this);
-                queueApiUnAuthenticCall.abortQueue(UserUtils.getDeviceId(), codeQR);
-            }
-            if (AppUtilities.isRelease()) {
-                try {
-                    String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
-                    Answers.getInstance().logCustom(new CustomEvent(FabricEvents.EVENT_CANCEL_QUEUE).putCustomAttribute("Queue Name", displayName));
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-            }
+            queueApiAuthenticCall.setResponsePresenter(this);
+            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
@@ -603,15 +581,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         if (null != timer) {
             timer.cancel();
         }
-
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            setProgressMessage("Canceling token...");
-            showProgress();
-            queueApiAuthenticCall.setResponsePresenter(this);
-            queueApiAuthenticCall.cancelPayBeforeQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonToken);
-        } else {
-            ShowAlertInformation.showNetworkDialog(this);
-        }
+        cancelQueue();
     }
 
     private void returnResultBack() {
