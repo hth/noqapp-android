@@ -196,7 +196,7 @@
 
         <activity
             android:name=".views.activities.MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

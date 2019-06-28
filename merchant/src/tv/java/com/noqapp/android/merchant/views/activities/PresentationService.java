@@ -1,35 +1,9 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.AdvertisementApiCalls;
-import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
-import com.noqapp.android.common.presenter.AdvertisementPresenter;
-import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
-import com.noqapp.android.common.beans.JsonAdvertisement;
-import com.noqapp.android.common.beans.JsonAdvertisementList;
-import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
-import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
-import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.UserUtils;
-
-import com.google.android.gms.cast.CastPresentation;
-import com.google.android.gms.cast.CastRemoteDisplayLocalService;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -41,9 +15,37 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.cardview.widget.CardView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.cast.CastPresentation;
+import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.beans.JsonAdvertisement;
+import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.presenter.AdvertisementPresenter;
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.AdvertisementApiCalls;
+import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
+import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
+import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
+import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.customviews.ScrollTextView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -140,35 +142,35 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 JsonAdvertisement jsonAdvertisement = jsonAdvertisementList.getJsonAdvertisements().get(i);
                 if (null != jsonAdvertisement) {
                     Log.e("data", jsonAdvertisement.toString());
-                        switch (jsonAdvertisement.getAdvertisementType()) {
-                            case MA:
-                            case GI:
-                                if (null != jsonAdvertisement.getImageUrls() && jsonAdvertisement.getImageUrls().size() > 0) {
-                                    image_list_size = image_list_size + jsonAdvertisement.getImageUrls().size();
-                                    if (null == jsonAdvertisement_images) {
-                                        jsonAdvertisement_images = new JsonAdvertisement();
-                                        for (int j = 0; j < jsonAdvertisement.getImageUrls().size(); j++) {
-                                            jsonAdvertisement_images.getImageUrls().add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
-                                            urlList.add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
-                                        }
-                                    } else {
-                                        for (int j = 0; j < jsonAdvertisement.getImageUrls().size(); j++) {
-                                            jsonAdvertisement_images.getImageUrls().add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
-                                            urlList.add(jsonAdvertisement.getAdvertisementId() +"/"+jsonAdvertisement.getImageUrls().get(j));
-                                        }
+                    switch (jsonAdvertisement.getAdvertisementType()) {
+                        case MA:
+                        case GI:
+                            if (null != jsonAdvertisement.getImageUrls() && jsonAdvertisement.getImageUrls().size() > 0) {
+                                image_list_size = image_list_size + jsonAdvertisement.getImageUrls().size();
+                                if (null == jsonAdvertisement_images) {
+                                    jsonAdvertisement_images = new JsonAdvertisement();
+                                    for (int j = 0; j < jsonAdvertisement.getImageUrls().size(); j++) {
+                                        jsonAdvertisement_images.getImageUrls().add(jsonAdvertisement.getAdvertisementId() + "/" + jsonAdvertisement.getImageUrls().get(j));
+                                        urlList.add(jsonAdvertisement.getAdvertisementId() + "/" + jsonAdvertisement.getImageUrls().get(j));
                                     }
-                                    Log.e("Advertisement: ", "Image URL called");
+                                } else {
+                                    for (int j = 0; j < jsonAdvertisement.getImageUrls().size(); j++) {
+                                        jsonAdvertisement_images.getImageUrls().add(jsonAdvertisement.getAdvertisementId() + "/" + jsonAdvertisement.getImageUrls().get(j));
+                                        urlList.add(jsonAdvertisement.getAdvertisementId() + "/" + jsonAdvertisement.getImageUrls().get(j));
+                                    }
                                 }
-                                break;
-                            case PP:
-                                if (null != jsonAdvertisement.getJsonProfessionalProfileTV()) {
-                                    profile_size = 1;
-                                    jsonAdvertisement_profile = jsonAdvertisement;
-                                    Log.e("Advertisement: ", "Profile called");
-                                }
-                                break;
-                            default:
-                        }
+                                Log.e("Advertisement: ", "Image URL called");
+                            }
+                            break;
+                        case PP:
+                            if (null != jsonAdvertisement.getJsonProfessionalProfileTV()) {
+                                profile_size = 1;
+                                jsonAdvertisement_profile = jsonAdvertisement;
+                                Log.e("Advertisement: ", "Profile called");
+                            }
+                            break;
+                        default:
+                    }
 
                 }
             }
@@ -219,7 +221,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     public class DetailPresentation extends CastPresentation {
         private ImageView image, image1, iv_advertisement, iv_profile;
-        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_doctor_name, tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1;
+        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_doctor_name,
+                tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1;
         private LinearLayout ll_list, ll_profile, ll_no_list;
         private Context context;
 
@@ -259,6 +262,19 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             textList.add("Front desk can book your appointment just by your phone number.");
             textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
             no_of_q = topicAndQueueTVList.size();
+            TextView tv_marquee = findViewById(R.id.tv_marquee);
+            String str = getString(R.string.bullet) + " We do not track your activities \t" +
+                    getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
+                    getString(R.string.bullet) + " We are not affiliated to any social media \t" +
+                    getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
+            tv_marquee.setText(str);
+            tv_marquee.setMarqueeRepeatLimit(-1);
+            tv_marquee.setSelected(true);
+            //setMarqueeSpeed(tv_marquee,5);
+
+            ScrollTextView scrolltext = findViewById(R.id.scrolltext);
+            scrolltext.setText(str);
+            scrolltext.startScroll();
             updateDetail();
         }
 
@@ -279,37 +295,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
-//            if (null == topicAndQueueTV || null == topicAndQueueTV.getJsonQueueTV()) {
-//                if (null != jsonVigyaapanTV)
-//                    switch (jsonVigyaapanTV.getAdvertisementType()) {
-//                        case MV: {
-//                            ll_profile.setVisibility(View.GONE);
-//                            if (url_pos < urlList.size()) {
-//                                Picasso.get().load(urlList.get(url_pos)).into(iv_advertisement);
-//                                iv_advertisement.setVisibility(View.VISIBLE);
-//                                ++url_pos;
-//                            } else {
-//                                url_pos = 0;
-//                                Picasso.get().load(urlList.get(url_pos)).into(iv_advertisement);
-//                                iv_advertisement.setVisibility(View.VISIBLE);
-//                            }
-//                        }
-//                        break;
-//                        case PP:
-//                            if(null != jsonVigyaapanTV.getJsonProfessionalProfileTV()) {
-//                                ll_profile.setVisibility(View.VISIBLE);
-//                                Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfileImage()).into(iv_profile);
-//                                tv_doctor_name.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getName());
-//                                tv_doctor_category.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getProfessionType());
-//                                tv_doctor_degree.setText(getSelectedData(jsonVigyaapanTV.getJsonProfessionalProfileTV().getEducation()));
-//                                tv_about_doctor.setText(jsonVigyaapanTV.getJsonProfessionalProfileTV().getAboutMe());
-//                            }
-//                            break;
-//                        default:
-//                    }
-//            }
 
             if (sequence >= no_of_q) {
                 if (null != jsonAdvertisement_profile && no_of_q + profile_size == sequence + 1) {
@@ -351,8 +336,8 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     ll_no_list.setVisibility(View.GONE);
                     Log.e("Inside Images", "Images: " + sequence);
                     if (url_pos < urlList.size()) {
-                        String url = AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET,urlList.get(url_pos));
-                        Log.e("URL",url);
+                        String url = AppUtils.getImageUrls(BuildConfig.ADVERTISEMENT_BUCKET, urlList.get(url_pos));
+                        Log.e("URL", url);
                         Picasso.get().load(url).into(iv_advertisement);
                         iv_advertisement.setVisibility(View.VISIBLE);
                         ++url_pos;
@@ -362,16 +347,13 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                 } else {
                     iv_advertisement.setVisibility(View.GONE);
-
                 }
-
-
             } else {
                 Log.e("Check error", "Inside List: " + sequence);
                 url_pos = 0;
                 ll_profile.setVisibility(View.GONE);
                 iv_advertisement.setVisibility(View.GONE);
-                ll_no_list.setVisibility(View.GONE);
+                ll_no_list.setVisibility(View.VISIBLE);
                 if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
                     if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                         Picasso.get().load(R.drawable.profile_tv).into(image);
@@ -408,7 +390,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                             + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
-
                     title1.setText(title.getText().toString());
                     tv_degree1.setText(tv_degree.getText().toString());
                     tv_timing1.setText(tv_timing.getText().toString());
@@ -417,12 +398,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                     tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
                     ++text_list_pos;
-
-                    if (sequence % 2 == 0) {
-                        ll_list.setBackground(ContextCompat.getDrawable(this.context, R.mipmap.temp_2));
-                    } else {
-                        ll_list.setBackground(ContextCompat.getDrawable(this.context, R.mipmap.pp_bg));
-                    }
                     ll_list.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(this.context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
@@ -441,7 +416,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         }
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
-                            CardView cardview = customView.findViewById(R.id.cardview);
+                            View cardview = customView.findViewById(R.id.cardview);
                             TextView tv_name = customView.findViewById(R.id.tv_name);
                             TextView tv_seq = customView.findViewById(R.id.tv_seq);
                             TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
@@ -451,21 +426,16 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             tv_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
                             if (topicAndQueueTV.getJsonTopic().getServingNumber() == data.get(i).getToken()) {
                                 tv_mobile.setText("It's your turn");
-                                cardview.setCardBackgroundColor(Color.parseColor("#8c1515"));
+                                cardview.setBackgroundColor(Color.parseColor("#8c1515"));
                                 tv_name.setTextColor(Color.WHITE);
                                 tv_mobile.setTextColor(Color.WHITE);
                             } else {
-                                cardview.setCardBackgroundColor(Color.WHITE);
+                                cardview.setBackgroundColor(Color.WHITE);
                                 tv_name.setTextColor(Color.BLACK);
                                 tv_mobile.setTextColor(Color.BLACK);
                             }
                             ll_list.addView(customView);
                         }
-                    }
-                    if (ll_list.getChildCount() > 0) {
-                        ll_no_list.setVisibility(View.GONE);
-                    } else {
-                        ll_no_list.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -618,6 +588,38 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static void setMarqueeSpeed(TextView tv, float speed) {
+        //Make sure that you call this method only after tv.setText() and tv.setSelected(true).
+        // Otherwise it will not work.
+        if (tv != null) {
+            try {
+                Field f = null;
+                if (tv instanceof AppCompatTextView) {
+                    f = tv.getClass().getSuperclass().getDeclaredField("mMarquee");
+                } else {
+                    f = tv.getClass().getDeclaredField("mMarquee");
+                }
+                if (f != null) {
+                    f.setAccessible(true);
+                    Object marquee = f.get(tv);
+                    if (marquee != null) {
+                        String scrollSpeedFieldName = "mScrollUnit";
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            scrollSpeedFieldName = "mPixelsPerSecond";
+                        }
+                        Field mf = marquee.getClass().getDeclaredField(scrollSpeedFieldName);
+                        mf.setAccessible(true);
+                        mf.setFloat(marquee, speed);
+                    }
+                } else {
+                    //Logger.e("Marquee", "mMarquee object is null.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

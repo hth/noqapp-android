@@ -1,58 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView  xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    android:id="@+id/cardview"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    card_view:cardBackgroundColor="@android:color/white"
-                                    card_view:cardCornerRadius="10dp"
-                                    card_view:cardElevation="2dp"
-                                    card_view:cardUseCompatPadding="true">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:gravity="center_vertical"
-            android:layout_height="40dp">
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
-                android:id="@+id/tv_seq"
-                android:layout_width="25dp"
-                android:layout_alignParentStart="true"
-                android:textColor="@android:color/white"
-                android:background="@drawable/round"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:text="23"
-                android:textSize="@dimen/text_size_sixteen"
-                android:layout_height="25dp"/>
+            android:id="@+id/tv_seq"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="2dp"
+            android:background="@drawable/round"
+            android:gravity="center"
+            android:text="23"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_twelve"
+            android:textStyle="bold" />
 
         <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:paddingStart="10dp"
-                android:layout_toRightOf="@+id/tv_seq"
-                android:layout_toLeftOf="@+id/tv_mobile"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:text=""
-                android:layout_centerVertical="true"
-                android:textSize="@dimen/text_size_sixteen"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_mobile"
+            android:layout_toRightOf="@+id/tv_seq"
+            android:paddingStart="10dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_twelve"
+            android:textStyle="bold" />
 
         <TextView
-                android:id="@+id/tv_mobile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingEnd="10dp"
-                android:textColor="@android:color/black"
-                android:text=""
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_fourteen"
-                android:layout_alignParentEnd="true"/>
+            android:id="@+id/tv_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:paddingEnd="10dp"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_twelve"
+            android:textStyle="bold" />
+
 
     </RelativeLayout>
-</androidx.cardview.widget.CardView >
+
+    <View
+        android:id="@+id/view_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_gradient_square" />
+</LinearLayout>
