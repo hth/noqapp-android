@@ -1,19 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.common.utils.Formatter;
-import com.noqapp.android.merchant.BuildConfig;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
-import com.noqapp.android.merchant.utils.AppUtils;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.cardview.widget.CardView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +13,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+
+import com.noqapp.android.common.utils.Formatter;
+import com.noqapp.android.merchant.BuildConfig;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,9 +34,11 @@ import java.util.List;
 public class DetailFragment extends Fragment {
     private static final String ARG_LIST_DATA = "data";
     private TopicAndQueueTV topicAndQueueTV;
-    private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1;
+    private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_info1;
     private ImageView image, image1;
     private LinearLayout ll_list, ll_no_list;
+    private List<String> textList = new ArrayList<>();
+    private int text_list_pos = 0;
 
     public static DetailFragment newInstance(TopicAndQueueTV ad) {
         DetailFragment fragment = new DetailFragment();
@@ -67,8 +71,25 @@ public class DetailFragment extends Fragment {
         title1 = view.findViewById(R.id.ad_title1);
         tv_timing1 = view.findViewById(R.id.tv_timing1);
         tv_degree1 = view.findViewById(R.id.tv_degree1);
+        tv_info1 = view.findViewById(R.id.tv_info1);
         ll_list = view.findViewById(R.id.ll_list);
         ll_no_list = view.findViewById(R.id.ll_no_list);
+        textList.add("Doctor is now available on <font color='#8c1515'><b>NoQApp</b></font>.");
+        textList.add("Save time. Book appointment online on <font color='#8c1515'><b>NoQApp</b></font>.");
+        textList.add("Forgot your medical file. Now medical records are securely available on <font color='#8c1515'><b>NoQApp</b></font>");
+        textList.add("See all your medical records online on <font color='#8c1515'><b>NoQApp</b></font>.");
+        textList.add("Get real time appointment updates on <font color='#8c1515'><b>NoQApp</b></font>.");
+        textList.add("Front desk can book your appointment just by your phone number.");
+        textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
+
+        TextView tv_marquee = view.findViewById(R.id.tv_marquee);
+        String str = getString(R.string.bullet) + " We do not track your activities \t" +
+                getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
+                getString(R.string.bullet) + " We are not affiliated to any social media \t" +
+                getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
+        tv_marquee.setText(str);
+        tv_marquee.setMarqueeRepeatLimit(-1);
+        tv_marquee.setSelected(true);
         return view;
     }
 
@@ -111,6 +132,11 @@ public class DetailFragment extends Fragment {
             title1.setText(title.getText().toString());
             tv_degree1.setText(tv_degree.getText().toString());
             tv_timing1.setText(tv_timing.getText().toString());
+            if (text_list_pos >= textList.size()) {
+                text_list_pos = 0;
+            }
+            tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
+            ++text_list_pos;
             ll_list.removeAllViews();
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             if (null != topicAndQueueTV.getJsonQueueTV()) {
@@ -126,7 +152,7 @@ public class DetailFragment extends Fragment {
                 );
                 for (int i = 0; i < data.size(); i++) {
                     View customView = inflater.inflate(R.layout.lay_text, null, false);
-                    CardView cardview = customView.findViewById(R.id.cardview);
+                    View cardview = customView.findViewById(R.id.cardview);
                     TextView textView = customView.findViewById(R.id.tv_name);
                     TextView tv_seq = customView.findViewById(R.id.tv_seq);
                     TextView tv_mobile = customView.findViewById(R.id.tv_mobile);
@@ -139,7 +165,7 @@ public class DetailFragment extends Fragment {
                         tv_mobile.setText("It's your turn");
                         Animation startAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.show_anim);
                         cardview.startAnimation(startAnimation);
-                    }else{
+                    } else {
                         Animation startAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.remove_anim);
                         cardview.startAnimation(startAnimation);
                     }
@@ -147,10 +173,9 @@ public class DetailFragment extends Fragment {
                     ll_list.addView(customView);
                 }
             }
-            if (ll_list.getChildCount() > 0)
-                ll_no_list.setVisibility(View.GONE);
-            else
-                ll_no_list.setVisibility(View.VISIBLE);
+
+            ll_no_list.setVisibility(View.VISIBLE);
+
 
         }
     }
