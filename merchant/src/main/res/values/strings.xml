@@ -128,7 +128,7 @@
     <string name="english">English</string>
 
     <string name="error_mobile_blank">Please enter phone number</string>
-    <string name="error_customer_id">Please enter Customer ID</string>
+    <string name="error_customer_id">Please enter Customer Id</string>
 
     <string name="login_hint">Phone no. without country code</string>
     <string name="verify_phone_auth">Verify</string>

@@ -73,7 +73,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     @Override
     public void changePatient(final Context context, final JsonQueuedPerson jsonQueuedPerson) {
-        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
+        if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState()) {
             if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
