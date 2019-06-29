@@ -440,7 +440,7 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
             rl_payment.setVisibility(View.GONE);
             btn_discount.setVisibility(View.GONE);
             btn_remove_discount.setVisibility(View.GONE);
-            tv_payment_mode.setText("N/A");
+            tv_payment_mode.setText(context.getString(R.string.name_unavailable));
         }
         tv_payment_msg.setVisibility(View.GONE);
         if (getIntent().getBooleanExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false)) {
@@ -565,7 +565,7 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
         if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
-                Log.e("data recieve", jsonCoupon.toString());
+                Log.e("Data recieved", jsonCoupon.toString());
                 if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
                     tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
                 } else {
