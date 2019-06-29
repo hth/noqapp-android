@@ -230,7 +230,7 @@ public class OrderDetailActivity
             ImageView actionbarBack = dialog.findViewById(R.id.actionbarBack);
             final TextView tv_random = dialog.findViewById(R.id.tv_random);
             final EditText edt_random = dialog.findViewById(R.id.edt_random);
-            tv_random.setText(AppUtils.randomStringGenerator(3));
+            tv_random.setText(AppUtils.randomStringGenerator(3).toUpperCase());
             final Button btn_update = dialog.findViewById(R.id.btn_update);
             btn_update.setOnClickListener(v12 -> {
                 edt_random.setError(null);
