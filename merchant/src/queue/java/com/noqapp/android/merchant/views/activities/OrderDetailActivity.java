@@ -233,178 +233,160 @@ public class OrderDetailActivity
         edt_amount = findViewById(R.id.edt_amount);
         rl_payment = findViewById(R.id.rl_payment);
         btn_refund = findViewById(R.id.btn_refund);
-        btn_refund.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
+        btn_refund.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
 
-                final Dialog dialog = new Dialog(OrderDetailActivity.this, android.R.style.Theme_Dialog);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.dialog_refund);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.setCanceledOnTouchOutside(true);
-                ImageView actionbarBack = dialog.findViewById(R.id.actionbarBack);
-                final TextView tv_random = dialog.findViewById(R.id.tv_random);
-                final EditText edt_random = dialog.findViewById(R.id.edt_random);
-                tv_random.setText(AppUtils.randomStringGenerator(3).toUpperCase());
-                final Button btn_update = dialog.findViewById(R.id.btn_update);
-                btn_update.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        edt_random.setError(null);
-                        new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
-                        if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
-                            edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
-                            new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
+            final Dialog dialog = new Dialog(OrderDetailActivity.this, android.R.style.Theme_Dialog);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_refund);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCanceledOnTouchOutside(true);
+            ImageView actionbarBack = dialog.findViewById(R.id.actionbarBack);
+            final TextView tv_random = dialog.findViewById(R.id.tv_random);
+            final EditText edt_random = dialog.findViewById(R.id.edt_random);
+            tv_random.setText(AppUtils.randomStringGenerator(3).toUpperCase());
+            final Button btn_update = dialog.findViewById(R.id.btn_update);
+            btn_update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    edt_random.setError(null);
+                    new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
+                    if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
+                        edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
+                        new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
+                    } else {
+                        // do process
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            showProgress();
+                            setProgressMessage("Starting payment refund...");
+                            setProgressCancel(false);
+                            OrderServed orderServed = new OrderServed();
+                            orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                            orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                            orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                            orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                            orderServed.setQueueStatus(QueueStatusEnum.N);
+                            orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
+                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                            purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
+                            purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+
                         } else {
-                            // do process
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                showProgress();
-                                setProgressMessage("Starting payment refund...");
-                                setProgressCancel(false);
-                                OrderServed orderServed = new OrderServed();
-                                orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                                orderServed.setServedNumber(jsonPurchaseOrder.getToken());
-                                orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
-                                orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                                orderServed.setQueueStatus(QueueStatusEnum.N);
-                                orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
-                                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                                purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
-                                purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
-                            }
-                            btn_update.setClickable(false);
-                            dialog.dismiss();
+                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                         }
-                    }
-                });
-
-                actionbarBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                        btn_update.setClickable(false);
                         dialog.dismiss();
                     }
-                });
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                dialog.show();
-            }
+                }
+            });
 
+            actionbarBack.setOnClickListener(v1 -> dialog.dismiss());
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            dialog.show();
         });
         Button btn_pay_now = findViewById(R.id.btn_pay_now);
         btn_pay_partial = findViewById(R.id.btn_pay_partial);
-        btn_pay_partial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (isProductWithoutPrice) {
-                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
+        btn_pay_partial.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            if (isProductWithoutPrice) {
+                new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
+            } else {
+                if (TextUtils.isEmpty(edt_amount.getText().toString())) {
+                    new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount to pay.");
                 } else {
-                    if (TextUtils.isEmpty(edt_amount.getText().toString())) {
-                        new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount to pay.");
+                    if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
+                        new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount less or equal to order amount.");
                     } else {
-                        if (Double.parseDouble(edt_amount.getText().toString()) * 100 > Double.parseDouble(jsonPurchaseOrder.getOrderPrice())) {
-                            new CustomToast().showToast(OrderDetailActivity.this, "Please enter amount less or equal to order amount.");
-                        } else {
 
-                            ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
-                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                @Override
-                                public void btnPositiveClick() {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        showProgress();
-                                        setProgressMessage("Starting payment...");
-                                        setProgressCancel(false);
-                                        jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                                        jsonPurchaseOrder.setPartialPayment(new BigDecimal(edt_amount.getText().toString()).multiply(new BigDecimal("100")).toString());
-                                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                                        purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                                        purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                                    } else {
-                                        ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
-                                    }
+                        ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    showProgress();
+                                    setProgressMessage("Starting payment...");
+                                    setProgressCancel(false);
+                                    jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                                    jsonPurchaseOrder.setPartialPayment(new BigDecimal(edt_amount.getText().toString()).multiply(new BigDecimal("100")).toString());
+                                    PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                                    purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
+                                    purchaseOrderApiCalls.partialCounterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                                } else {
+                                    ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                                 }
+                            }
 
-                                @Override
-                                public void btnNegativeClick() {
-                                    //Do nothing
-                                }
-                            });
-                            showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
-                        }
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
+                        });
+                        showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
                     }
                 }
             }
         });
-        btn_update_price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (isProductWithoutPrice) {
-                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
-                } else {
-                    showProgress();
-                    setProgressMessage("Updating price...");
-                    setProgressCancel(false);
-                    PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                    purchaseOrderApiCalls.setModifyOrderPresenter(OrderDetailActivity.this);
-                    purchaseOrderApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                }
+        btn_update_price.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            if (isProductWithoutPrice) {
+                new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
+            } else {
+                showProgress();
+                setProgressMessage("Updating price...");
+                setProgressCancel(false);
+                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                purchaseOrderApiCalls.setModifyOrderPresenter(OrderDetailActivity.this);
+                purchaseOrderApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
             }
         });
 
-        btn_pay_now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (isProductWithoutPrice) {
-                    new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
-                } else {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                        @Override
-                        public void btnPositiveClick() {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                showProgress();
-                                setProgressMessage("Starting payment...");
-                                setProgressCancel(false);
-                                jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
-                                jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
-                                PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                                purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
-                                purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
-                                purchaseOrderApiCalls.counterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
-                            }
-                        }
-
-                        @Override
-                        public void btnNegativeClick() {
-                            //Do nothing
-                        }
-                    });
-                    showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
-                }
-
+        btn_pay_now.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            if (isProductWithoutPrice) {
+                new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
+            } else {
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            showProgress();
+                            setProgressMessage("Starting payment...");
+                            setProgressCancel(false);
+                            jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
+                            jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());
+                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                            purchaseOrderApiCalls.setPaymentProcessPresenter(OrderDetailActivity.this);
+                            purchaseOrderApiCalls.setPurchaseOrderPresenter(OrderDetailActivity.this);
+                            purchaseOrderApiCalls.counterPayment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Alert", "You are initiating payment process. Please confirm");
+            }
+
         });
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         tv_item_count.setText("Total Items: (" + jsonPurchaseOrder.getPurchaseOrderProducts().size() + ")");
@@ -415,31 +397,28 @@ public class OrderDetailActivity
         ReceiptInfoApiCalls receiptInfoApiCalls = new ReceiptInfoApiCalls();
         receiptInfoApiCalls.setReceiptInfoPresenter(this);
         Button btn_print = findViewById(R.id.btn_print);
-        btn_print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, false);
-                    showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+        btn_print.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getTransactionId())) {
+                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, false);
+                showDialog.displayDialog("Alert", "Transaction Id is empty. Receipt can't be generated");
+            } else {
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    showProgress();
+                    setProgressMessage("Fetching receipt info...");
+                    setProgressCancel(false);
+                    Receipt receipt = new Receipt();
+                    receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                    receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                    receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                    receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(), receipt);
                 } else {
-                    if (permissionHelper.isStoragePermissionAllowed()) {
-                        showProgress();
-                        setProgressMessage("Fetching receipt info...");
-                        setProgressCancel(false);
-                        Receipt receipt = new Receipt();
-                        receipt.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                        receipt.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
-                        receipt.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                        receiptInfoApiCalls.detail(BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(), receipt);
-                    } else {
-                        permissionHelper.requestStoragePermission();
-                    }
+                    permissionHelper.requestStoragePermission();
                 }
             }
         });
@@ -448,7 +427,7 @@ public class OrderDetailActivity
     private void updateUI() {
         btn_refund.setVisibility(View.GONE);
         tv_customer_name.setText(jsonPurchaseOrder.getCustomerName());
-        tv_token.setText("Token/Order No. " + String.valueOf(jsonPurchaseOrder.getToken()));
+        tv_token.setText("Token/Order No. " + jsonPurchaseOrder.getToken());
         tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
         tv_notes.setText("Additional Notes: " + jsonPurchaseOrder.getAdditionalNote());
         cv_notes.setVisibility(TextUtils.isEmpty(jsonPurchaseOrder.getAdditionalNote()) ? View.GONE : View.VISIBLE);
@@ -493,9 +472,9 @@ public class OrderDetailActivity
         }
 
 
-        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus() ||
-                PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
+        if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus()
+                || PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()
+                || PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
             if (null != jsonPurchaseOrder.getPaymentMode()) {
                 tv_payment_mode.setText(jsonPurchaseOrder.getPaymentMode().getDescription());
             }
@@ -593,8 +572,7 @@ public class OrderDetailActivity
     public void paymentProcessResponse(JsonPurchaseOrder jsonPurchaseOrder) {
         dismissProgress();
         if (null != jsonPurchaseOrder) {
-            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PA ||
-                    jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.MP) {
+            if (PaymentStatusEnum.PA == jsonPurchaseOrder.getPaymentStatus() || PaymentStatusEnum.MP == jsonPurchaseOrder.getPaymentStatus()) {
                 this.jsonPurchaseOrder = jsonPurchaseOrder;
                 updateUI();
                 new CustomToast().showToast(OrderDetailActivity.this, "Payment updated successfully");
@@ -609,7 +587,7 @@ public class OrderDetailActivity
     public void purchaseOrderResponse(JsonPurchaseOrderList jsonPurchaseOrderList) {
         dismissProgress();
         if (null != jsonPurchaseOrderList) {
-            Log.v("order data:", jsonPurchaseOrderList.toString());
+            Log.v("Order data:", jsonPurchaseOrderList.toString());
             finish();
             if (null != updateWholeList) {
                 updateWholeList.updateWholeList();
@@ -640,7 +618,7 @@ public class OrderDetailActivity
         dismissProgress();
         if (null != jsonPurchaseOrderList && jsonPurchaseOrderList.getPurchaseOrders().size() > 0) {
             jsonPurchaseOrder = jsonPurchaseOrderList.getPurchaseOrders().get(0);
-            if (jsonPurchaseOrder.getPaymentStatus() == PaymentStatusEnum.PR) {
+            if (PaymentStatusEnum.PR == jsonPurchaseOrder.getPaymentStatus()) {
                 updateUI();
                 new CustomToast().showToast(OrderDetailActivity.this, "Payment refund successfully");
                 if (null != updateWholeList) {
@@ -708,7 +686,7 @@ public class OrderDetailActivity
         if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
-                Log.e("data recieve", jsonCoupon.toString());
+                Log.e("Data received", jsonCoupon.toString());
                 if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
                     tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
                 } else {
