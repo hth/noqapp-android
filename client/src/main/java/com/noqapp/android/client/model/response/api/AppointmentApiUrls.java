@@ -20,6 +20,7 @@ public interface AppointmentApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
     @GET("api/c/appointment/scheduleForMonth/{month}/{codeQR}.json")
     Call<JsonScheduleList> scheduleForMonth(
@@ -47,6 +48,7 @@ public interface AppointmentApiUrls {
      * Errors
      * {@link javax.servlet.http.HttpServletResponse#SC_UNAUTHORIZED} - HTTP STATUS 401
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE}
+     * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#MOBILE}
      */
     @GET("api/c/appointment/scheduleForDay/{day}/{codeQR}.json")
     Call<JsonScheduleList> scheduleForDay(

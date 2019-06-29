@@ -120,7 +120,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
     private TextView tv_coupon_name;
     private CFPaymentService cfPaymentService;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,7 +244,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         LaunchActivity.getLaunchActivity().activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
-
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
             Log.d("AfterJoin bundle", jsonTokenAndQueue.toString());
             if (null != jsonTokenAndQueue) {
@@ -262,6 +260,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             if (UserUtils.isLogin()) {
                 profileList = NoQueueBaseActivity.getAllProfileList();
             }
+
             if (!TextUtils.isEmpty(queueUserId)) {
                 jsonProfile = AppUtilities.getJsonProfileQueueUserID(queueUserId, profileList);
                 tv_name.setText(jsonProfile.getName());
@@ -269,16 +268,13 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
 
             String imageUrl = bundle.getStringExtra(IBConstant.KEY_IMAGE_URL);
             if (!TextUtils.isEmpty(imageUrl)) {
-
                 Picasso.get().load(imageUrl).
                         placeholder(getResources().getDrawable(R.drawable.profile_theme)).
                         error(getResources().getDrawable(R.drawable.profile_theme)).into(iv_profile);
             } else {
                 Picasso.get().load(R.drawable.profile_theme).into(iv_profile);
             }
-            actionbarBack.setOnClickListener((View v) -> {
-                iv_home.performClick();
-            });
+            actionbarBack.setOnClickListener((View v) -> iv_home.performClick());
             iv_home.setOnClickListener((View v) -> {
                 LaunchActivity.getLaunchActivity().activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, LaunchActivity.class);
@@ -337,7 +333,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         }
     }
 
-
     private class InitPaymentGateway extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -350,7 +345,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         protected void onPostExecute(String result) {
         }
     }
-
 
     @Override
     public void responsePresenterResponse(JsonResponse response) {
@@ -419,7 +413,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         queueJsonPurchaseOrderResponse(jsonToken.getJsonPurchaseOrder());
         dismissProgress();
     }
-
 
     @Override
     public void onResume() {
@@ -499,7 +492,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 tv_estimated_time.setText(String.format(getString(R.string.estimated_time), Formatter.getTimeAsString(Formatter.getDateFromString(jsonToken.getExpectedServiceBegin()))));
                 tv_estimated_time.setVisibility(View.VISIBLE);
             } else {
-                if (!TextUtils.isEmpty("" + jsonTokenAndQueue.getAverageServiceTime()) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
+                if (!TextUtils.isEmpty(String.valueOf(jsonTokenAndQueue.getAverageServiceTime())) && jsonTokenAndQueue.getAverageServiceTime() > 0) {
                     String output = GetTimeAgoUtils.getTimeAgo(jsonTokenAndQueue.afterHowLong() * jsonTokenAndQueue.getAverageServiceTime());
                     if (null == output) {
                         tv_estimated_time.setVisibility(View.INVISIBLE);
@@ -518,7 +511,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         tv_estimated_time.setText(getString(R.string.will_be_served, "30 Min *"));
         tv_estimated_time.setVisibility(View.VISIBLE);
     }
-
 
     @Override
     protected void onDestroy() {
@@ -558,7 +550,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         if (getIntent().getBooleanExtra(Constants.ACTIVITY_TO_CLOSE, false)) {
             Intent intent = new Intent();
             intent.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
-            if (getParent() == null) {
+            if (null == getParent()) {
                 setResult(Activity.RESULT_OK, intent);
             } else {
                 getParent().setResult(Activity.RESULT_OK, intent);
@@ -647,8 +639,7 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
                 }
             }
 
-            if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) ||
-                    Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) == 0) {
+            if (TextUtils.isEmpty(jsonPurchaseOrder.getOrderPrice()) || 0 == Integer.parseInt(jsonPurchaseOrder.getOrderPrice())) {
                 frame_coupon.setVisibility(View.GONE);
                 rl_discount.setVisibility(View.GONE);
             }
@@ -692,13 +683,12 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         }
     }
 
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
-            if (resultCode == RESULT_OK) {
+            if (RESULT_OK == resultCode) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
-                Log.e("data recieve", jsonCoupon.toString());
+                Log.e("Data received", jsonCoupon.toString());
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     showProgress();
@@ -723,15 +713,11 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
         }
     }
 
-
     private LinearLayout.LayoutParams setLayoutWidthParams(boolean isMatchParent) {
         if (isMatchParent) {
-            return new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    120, 1.0f);
+            return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120, 1.0f);
         } else {
-            return new LinearLayout.LayoutParams(0,
-                    120, 0.49f);
+            return new LinearLayout.LayoutParams(0, 120, 0.49f);
         }
     }
 
@@ -797,7 +783,6 @@ public class AfterJoinActivity extends BaseActivity implements ResponsePresenter
             new CustomToast().showToast(this, jsonToken.getJsonPurchaseOrder().getTransactionMessage());
         }
     }
-
 
     public void tokenPresenterResponse(JsonToken token) {
         Log.d(TAG, token.toString());
