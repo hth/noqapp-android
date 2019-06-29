@@ -1,33 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -64,6 +36,33 @@ import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -76,7 +75,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected Context context;
     protected TextView tv_create_token;
     protected Button btn_create_token;
-    protected TextView tvcount;
+    protected TextView tvCount;
     private PeopleInQAdapter peopleInQAdapter;
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList = new ArrayList<>();
     protected EditText edt_mobile;
@@ -85,12 +84,12 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     protected TextView tv_counter_name;
     protected TextView tv_title, tv_total_value, tv_current_value, tv_timing, tv_start, tv_next, tv_skip;
     private Chronometer chronometer;
-    protected int currrentpos = 0;
+    protected int currentPosition = 0;
     protected static AdapterCallback mAdapterCallback;
     protected Button btn_skip;
     protected Button btn_next;
     protected Button btn_start;
-    protected ImageView iv_product_list,iv_appointment;
+    protected ImageView iv_product_list, iv_appointment;
     protected boolean queueStatusOuter = false;
     private int lastSelectedPos = -1;
     protected ManageQueueApiCalls manageQueueApiCalls;
@@ -111,16 +110,16 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         Bundle bundle = getArguments();
         if (null != bundle) {
             topicsList = (ArrayList<JsonTopic>) bundle.getSerializable("jsonMerchant");
-            currrentpos = bundle.getInt("position");
+            currentPosition = bundle.getInt("position");
         }
 
         View itemView = inflater.inflate(R.layout.viewpager_item, container, false);
         context = getActivity();
         manageQueueApiCalls = new ManageQueueApiCalls();
         manageQueueApiCalls.setManageQueuePresenter(this);
-        if (null != topicsList && topicsList.size() > 0)
-            jsonTopic = topicsList.get(currrentpos);
-
+        if (null != topicsList && topicsList.size() > 0) {
+            jsonTopic = topicsList.get(currentPosition);
+        }
 
         //progressDialog = itemView.findViewById(R.id.progress_bar);
         tv_current_value = itemView.findViewById(R.id.tv_current_value);
@@ -132,9 +131,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
         tv_counter_name = itemView.findViewById(R.id.tv_counter_name);
         rv_queue_people.setHasFixedSize(true);
-        LinearLayoutManager horizontalLayoutManagaer
-                = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        rv_queue_people.setLayoutManager(horizontalLayoutManagaer);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rv_queue_people.setLayoutManager(horizontalLayoutManager);
         rv_queue_people.setItemAnimator(new DefaultItemAnimator());
         btn_skip = itemView.findViewById(R.id.btn_skip);
         btn_next = itemView.findViewById(R.id.btn_next);
@@ -146,48 +144,34 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         iv_product_list = itemView.findViewById(R.id.iv_product_list);
         iv_appointment = itemView.findViewById(R.id.iv_appointment);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
-        iv_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(context, SettingActivity.class);
-                in.putExtra("codeQR", jsonTopic.getCodeQR());
-                ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
-                ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
-            }
+        iv_settings.setOnClickListener(v -> {
+            Intent in = new Intent(context, SettingActivity.class);
+            in.putExtra("codeQR", jsonTopic.getCodeQR());
+            ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
+            ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
         });
         iv_generate_token = itemView.findViewById(R.id.iv_generate_token);
-        iv_generate_token.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Preventing multiple clicks, using threshold of 3 second
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    createToken(context, jsonTopic.getCodeQR());
-                } else {
-                    ShowAlertInformation.showNetworkDialog(context);
-                }
+        iv_generate_token.setOnClickListener(view -> {
+            // Preventing multiple clicks, using threshold of 3 second
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                createToken(context, jsonTopic.getCodeQR());
+            } else {
+                ShowAlertInformation.showNetworkDialog(context);
             }
         });
         iv_queue_history = itemView.findViewById(R.id.iv_queue_history);
-        iv_queue_history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    showAllPeopleInQHistory();
-                } else {
-                    ShowAlertInformation.showNetworkDialog(context);
-                }
+        iv_queue_history.setOnClickListener(view -> {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                showAllPeopleInQHistory();
+            } else {
+                ShowAlertInformation.showNetworkDialog(context);
             }
         });
         iv_view_followup = itemView.findViewById(R.id.iv_view_followup);
-        tv_counter_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCounterEditDialog(context, tv_counter_name, jsonTopic.getCodeQR());
-            }
-        });
+        tv_counter_name.setOnClickListener(v -> showCounterEditDialog(context, tv_counter_name, jsonTopic.getCodeQR()));
         updateUI();
         return itemView;
     }
@@ -199,11 +183,11 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if(UserUtils.isLogin()) {
+        if (UserUtils.isLogin()) {
             LaunchActivity.getLaunchActivity().setActionBarTitle(getString(R.string.screen_queue_detail));
             LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
             LaunchActivity.getLaunchActivity().enableDisableBack(false);
-        }else{
+        } else {
             LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.GONE);
         }
     }
@@ -220,13 +204,12 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
 
     public void setPage(int pos) {
         //update UI
-        currrentpos = pos;
+        currentPosition = pos;
         jsonTopic = topicsList.get(pos);
         chronometer.stop();
         chronometer.setBase(SystemClock.elapsedRealtime());
         resetList();
         updateUI();
-
     }
 
     @Override
@@ -238,7 +221,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void manageQueueResponse(JsonToken token) {
         dismissProgress();
         if (null != token) {
-            JsonTopic jt = topicsList.get(currrentpos);
+            JsonTopic jt = topicsList.get(currentPosition);
             if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
                 if (StringUtils.isNotBlank(jt.getCustomerName())) {
                     Log.i(BaseMerchantDetailFragment.class.getSimpleName(), "Show customer name=" + jt.getCustomerName());
@@ -247,7 +230,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());
                 jt.setCustomerName(token.getCustomerName());
-                topicsList.set(currrentpos, jt);
+                topicsList.set(currentPosition, jt);
 
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
@@ -285,9 +268,6 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         }
     }
 
-
-
-
     @Override
     public void dispenseTokenResponse(JsonToken token) {
         dismissProgress();
@@ -315,8 +295,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 case S:
                     tv_create_token.setText("The generated token no is ");
                     btn_create_token.setText(context.getString(R.string.done));
-                    tvcount.setText(String.valueOf(token.getToken()));
-                    tvcount.setVisibility(View.VISIBLE);
+                    tvCount.setText(String.valueOf(token.getToken()));
+                    tvCount.setVisibility(View.VISIBLE);
                     btn_create_token.setClickable(true);
                     for (int i = 0; i < jsonQueuedPersonArrayList.size(); i++) {
                         JsonQueuedPerson jt = jsonQueuedPersonArrayList.get(i);
@@ -356,30 +336,22 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         AppUtils.setAutoCompleteText(actv_counter, textView.getText().toString().trim());
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        btnPositive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actv_counter.setError(null);
-                if (actv_counter.getText().toString().equals("")) {
-                    actv_counter.setError(mContext.getString(R.string.empty_counter));
-                } else {
-                    new AppUtils().hideKeyBoard(getActivity());
-                    textView.setText(actv_counter.getText().toString());
-                    mAdapterCallback.saveCounterNames(codeQR, actv_counter.getText().toString().trim());
-                    if (!names.contains(actv_counter.getText().toString())) {
-                        names.add(actv_counter.getText().toString());
-                        LaunchActivity.getLaunchActivity().setCounterNames(names);
-                    }
-                    dialog.dismiss();
+        btnPositive.setOnClickListener(v -> {
+            actv_counter.setError(null);
+            if (actv_counter.getText().toString().equals("")) {
+                actv_counter.setError(mContext.getString(R.string.empty_counter));
+            } else {
+                new AppUtils().hideKeyBoard(getActivity());
+                textView.setText(actv_counter.getText().toString());
+                mAdapterCallback.saveCounterNames(codeQR, actv_counter.getText().toString().trim());
+                if (!names.contains(actv_counter.getText().toString())) {
+                    names.add(actv_counter.getText().toString());
+                    LaunchActivity.getLaunchActivity().setCounterNames(names);
                 }
-            }
-        });
-        btnNegative.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
+        btnNegative.setOnClickListener(v -> dialog.dismiss());
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -718,6 +690,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                             ShowAlertInformation.showNetworkDialog(getActivity());
                         }
                     }
+
                     @Override
                     public void btnNegativeClick() {
                         //Do nothing
@@ -740,7 +713,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
 
         JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonProfile.getQueueUserId());
         jsonBusinessCustomer
-                .setCodeQR(topicsList.get(currrentpos).getCodeQR())
+                .setCodeQR(topicsList.get(currentPosition).getCodeQR())
                 .setCustomerPhone(phoneNoWithCode);
 
         manageQueueApiCalls.dispenseTokenWithClientInfo(

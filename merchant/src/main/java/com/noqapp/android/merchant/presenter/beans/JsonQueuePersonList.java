@@ -35,6 +35,9 @@ public class JsonQueuePersonList implements Serializable {
     @JsonProperty("qps")
     private List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
+    @JsonProperty("ac")
+    private long appointmentCountForToday = 0;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -44,6 +47,15 @@ public class JsonQueuePersonList implements Serializable {
 
     public JsonQueuePersonList setQueuedPeople(List<JsonQueuedPerson> queuedPeople) {
         this.queuedPeople = queuedPeople;
+        return this;
+    }
+
+    public long getAppointmentCountForToday() {
+        return appointmentCountForToday;
+    }
+
+    public JsonQueuePersonList setAppointmentCountForToday(long appointmentCountForToday) {
+        this.appointmentCountForToday = appointmentCountForToday;
         return this;
     }
 

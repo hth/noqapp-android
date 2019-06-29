@@ -112,7 +112,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         View view = inflater.inflate(R.layout.dialog_create_token_with_mobile, null, false);
         ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
         tv_create_token = view.findViewById(R.id.tvtitle);
-        tvcount = view.findViewById(R.id.tvcount);
+        tvCount = view.findViewById(R.id.tvcount);
         ll_main_section = view.findViewById(R.id.ll_main_section);
         ll_mobile = view.findViewById(R.id.ll_mobile);
         edt_mobile = view.findViewById(R.id.edt_mobile);
@@ -253,7 +253,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                         JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
                                 setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
                         jsonBusinessCustomer
-                                .setCodeQR(topicsList.get(currrentpos).getCodeQR())
+                                .setCodeQR(topicsList.get(currentPosition).getCodeQR())
                                 .setCustomerPhone(phoneNoWithCode)
                                 .setBusinessCustomerId(cid);
                         manageQueueApiCalls.dispenseTokenWithClientInfo(
