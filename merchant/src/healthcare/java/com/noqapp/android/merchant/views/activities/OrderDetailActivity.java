@@ -582,7 +582,7 @@ public class OrderDetailActivity
         if (requestCode == Constants.ACTIVITTY_RESULT_BACK) {
             if (resultCode == RESULT_OK) {
                 JsonCoupon jsonCoupon = (JsonCoupon) data.getSerializableExtra(IBConstant.KEY_OBJECT);
-                Log.e("Data recieved", jsonCoupon.toString());
+                Log.e("Data received", jsonCoupon.toString());
                 if (jsonCoupon.getDiscountType() == DiscountTypeEnum.F) {
                     tv_discount_value.setText(currencySymbol + " " + jsonCoupon.getDiscountAmount());
                 } else {
