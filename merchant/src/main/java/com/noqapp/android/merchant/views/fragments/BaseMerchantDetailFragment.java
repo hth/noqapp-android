@@ -371,14 +371,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
-            Collections.sort(
-                    jsonQueuedPersonArrayList,
-                    new Comparator<JsonQueuedPerson>() {
-                        public int compare(JsonQueuedPerson lhs, JsonQueuedPerson rhs) {
-                            return Integer.compare(lhs.getToken(), rhs.getToken());
-                        }
-                    }
-            );
+            Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
             peopleInQAdapter = new PeopleInQAdapter(
                     jsonQueuedPersonArrayList,
                     context,
@@ -390,8 +383,9 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                     jsonTopic.getJsonPaymentPermission(),
                     jsonTopic.getBizCategoryId());
             rv_queue_people.setAdapter(peopleInQAdapter);
-            if (jsonTopic.getServingNumber() > 0)
+            if (jsonTopic.getServingNumber() > 0) {
                 rv_queue_people.getLayoutManager().scrollToPosition(jsonTopic.getServingNumber() - 1);
+            }
 
         }
         dismissProgress();
