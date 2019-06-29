@@ -65,9 +65,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 
-public class OrderDetailActivity extends BaseActivity implements PaymentProcessPresenter,
-        PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter,
-        CouponApplyRemovePresenter {
+public class OrderDetailActivity
+        extends BaseActivity
+        implements PaymentProcessPresenter, PurchaseOrderPresenter, ModifyOrderPresenter, OrderProcessedPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private boolean isProductWithoutPrice = false;
@@ -75,8 +75,24 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
     private String currencySymbol;
     private TextView tv_paid_amount_value, tv_remaining_amount_value, tv_notes;
     private Spinner sp_payment_mode;
-    private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
-    private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ, PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
+    private String[] payment_modes = {
+            "Cash",
+            "Cheque",
+            "Credit Card",
+            "Debit Card",
+            "Internet Banking",
+            "Paytm"
+    };
+
+    private PaymentModeEnum[] payment_modes_enum = {
+            PaymentModeEnum.CA,
+            PaymentModeEnum.CQ,
+            PaymentModeEnum.CC,
+            PaymentModeEnum.DC,
+            PaymentModeEnum.NTB,
+            PaymentModeEnum.PTM
+    };
+
     private Button btn_update_price;
     private CardView cv_notes;
     private EditText edt_amount;
@@ -101,7 +117,6 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
@@ -164,7 +179,7 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                     public void btnPositiveClick() {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             showProgress();
-                            setProgressMessage("Removing discount..");
+                            setProgressMessage("Removing discount...");
                             // progressDialog.setCancelable(false);
                             // progressDialog.setCanceledOnTouchOutside(false);
                             CouponApiCalls couponApiCalls = new CouponApiCalls();
@@ -234,7 +249,7 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                 ImageView actionbarBack = dialog.findViewById(R.id.actionbarBack);
                 final TextView tv_random = dialog.findViewById(R.id.tv_random);
                 final EditText edt_random = dialog.findViewById(R.id.edt_random);
-                tv_random.setText(AppUtils.randomStringGenerator(3));
+                tv_random.setText(AppUtils.randomStringGenerator(3).toUpperCase());
                 final Button btn_update = dialog.findViewById(R.id.btn_update);
                 btn_update.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -248,7 +263,7 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                             // do process
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 showProgress();
-                                setProgressMessage("Starting payment refund..");
+                                setProgressMessage("Starting payment refund...");
                                 setProgressCancel(false);
                                 OrderServed orderServed = new OrderServed();
                                 orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
@@ -308,7 +323,7 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                                 public void btnPositiveClick() {
                                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                                         showProgress();
-                                        setProgressMessage("Starting payment..");
+                                        setProgressMessage("Starting payment...");
                                         setProgressCancel(false);
                                         jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                                         jsonPurchaseOrder.setPartialPayment(new BigDecimal(edt_amount.getText().toString()).multiply(new BigDecimal("100")).toString());
@@ -342,7 +357,7 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                     new CustomToast().showToast(OrderDetailActivity.this, "Some product having 0 price. Please set price to them");
                 } else {
                     showProgress();
-                    setProgressMessage("Updating price..");
+                    setProgressMessage("Updating price...");
                     setProgressCancel(false);
                     PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
                     purchaseOrderApiCalls.setModifyOrderPresenter(OrderDetailActivity.this);
@@ -367,7 +382,7 @@ public class OrderDetailActivity extends BaseActivity implements PaymentProcessP
                         public void btnPositiveClick() {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
                                 showProgress();
-                                setProgressMessage("Starting payment..");
+                                setProgressMessage("Starting payment...");
                                 setProgressCancel(false);
                                 jsonPurchaseOrder.setPaymentMode(payment_modes_enum[sp_payment_mode.getSelectedItemPosition()]);
                                 jsonPurchaseOrder.setPartialPayment(jsonPurchaseOrder.getOrderPrice());

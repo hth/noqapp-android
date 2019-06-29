@@ -1,20 +1,5 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AlertDialog;
-
-import com.google.gson.Gson;
 import com.noqapp.android.common.beans.JsonProfessionalProfilePersonal;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.QueueStatusEnum;
@@ -40,6 +25,21 @@ import com.noqapp.android.merchant.views.activities.PhysicalActivity;
 import com.noqapp.android.merchant.views.activities.PhysicalDialogActivity;
 import com.noqapp.android.merchant.views.activities.PreferenceActivity;
 import com.noqapp.android.merchant.views.pojos.PreferenceObjects;
+
+import com.google.gson.Gson;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 import java.util.Random;
@@ -73,7 +73,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
 
     @Override
     public void changePatient(final Context context, final JsonQueuedPerson jsonQueuedPerson) {
-        if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q) {
+        if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState()) {
             if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
@@ -87,42 +87,32 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 DependentAdapter adapter = new DependentAdapter(context, jsonQueuedPerson.getDependents());
                 sp_patient_list.setAdapter(adapter);
                 Button btn_update = customDialogView.findViewById(R.id.btn_update);
-                btn_update.setOnClickListener(new View.OnClickListener() {
+                btn_update.setOnClickListener(v -> {
+                    if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            customProgressBar.setProgressMessage("Changing patient name...");
+                            customProgressBar.showProgress();
+                            ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
+                            changeUserInQueue.setCodeQR(qCodeQR);
+                            changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
+                            changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                            changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
 
-                    @Override
-                    public void onClick(View v) {
-                        if (!jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId().equalsIgnoreCase(jsonQueuedPerson.getQueueUserId())) {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                customProgressBar.setProgressMessage("Changing patient name...");
-                                customProgressBar.showProgress();
-                                ChangeUserInQueue changeUserInQueue = new ChangeUserInQueue();
-                                changeUserInQueue.setCodeQR(qCodeQR);
-                                changeUserInQueue.setTokenNumber(jsonQueuedPerson.getToken());
-                                changeUserInQueue.setChangeToQueueUserId(jsonQueuedPerson.getDependents().get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                                changeUserInQueue.setExistingQueueUserId(jsonQueuedPerson.getQueueUserId());
-
-                                manageQueueApiCalls.changeUserInQueue(
-                                        BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
-                                mAlertDialog.dismiss();
-                            } else {
-                                mAlertDialog.dismiss();
-                                ShowAlertInformation.showNetworkDialog(context);
-                            }
+                            manageQueueApiCalls.changeUserInQueue(
+                                    BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(), changeUserInQueue);
+                            mAlertDialog.dismiss();
                         } else {
-                            new CustomToast().showToast(context, "Please select a patient name other than the current name");
+                            mAlertDialog.dismiss();
+                            ShowAlertInformation.showNetworkDialog(context);
                         }
-                    }
-
-                });
-
-                actionbarBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mAlertDialog.dismiss();
+                    } else {
+                        new CustomToast().showToast(context, "Please select a patient name other than the current name");
                     }
                 });
+
+                actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
                 mAlertDialog.show();
             } else {
                 new CustomToast().showToast(context, context.getString(R.string.msg_client_already_acquired));
@@ -155,57 +145,49 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         final Button btn_update = customDialogView.findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_id.setError(null);
-                edt_random.setError(null);
-                new AppUtils().hideKeyBoard((Activity) mContext);
+        btn_update.setOnClickListener(v -> {
+            edt_id.setError(null);
+            edt_random.setError(null);
+            new AppUtils().hideKeyBoard((Activity) mContext);
 
-                if (TextUtils.isEmpty(edt_id.getText().toString())) {
-                    edt_id.setError(mContext.getString(R.string.error_customer_id));
+            if (TextUtils.isEmpty(edt_id.getText().toString())) {
+                edt_id.setError(mContext.getString(R.string.error_customer_id));
+            } else {
+                if (!edt_id.getText().toString().matches("^[a-zA-Z0-9]+$")) {
+                    edt_id.setError(mContext.getString(R.string.error_customer_id_input));
+                } else if (!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())) {
+                    edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
                 } else {
-                    if (!edt_id.getText().toString().matches("^[a-zA-Z0-9]+$")) {
-                        edt_id.setError(mContext.getString(R.string.error_customer_id_input));
-                    } else if (!TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId()) && jsonQueuedPerson.getBusinessCustomerId().equalsIgnoreCase(edt_id.getText().toString())) {
-                        edt_id.setError(mContext.getString(R.string.error_customer_id_exist));
+                    if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
+                        edt_random.setError(mContext.getString(R.string.error_invalid_captcha));
                     } else {
-                        if (jsonQueuedPerson.getBusinessCustomerIdChangeCount() > 1 && !edt_random.getText().toString().equalsIgnoreCase(tv_random.getText().toString())) {
-                            edt_random.setError(mContext.getString(R.string.error_invalid_captcha));
+                        customProgressBar.setProgressMessage("Updating Customer Id...");
+                        customProgressBar.showProgress();
+                        String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
+                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
+                        jsonBusinessCustomer.setCodeQR(qCodeQR);
+                        jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
+                        jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
+                        if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
+                            businessCustomerApiCalls.addId(
+                                    BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
                         } else {
-                            customProgressBar.setProgressMessage("Updating customer ID...");
-                            customProgressBar.showProgress();
-                            String phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonQueuedPerson.getCustomerPhone(), LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName());
-                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().setQueueUserId(jsonQueuedPerson.getQueueUserId());
-                            jsonBusinessCustomer.setCodeQR(qCodeQR);
-                            jsonBusinessCustomer.setCustomerPhone(phoneNoWithCode);
-                            jsonBusinessCustomer.setBusinessCustomerId(edt_id.getText().toString());
-                            if (TextUtils.isEmpty(jsonQueuedPerson.getBusinessCustomerId())) {
-                                businessCustomerApiCalls.addId(
-                                        BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
-                            } else {
-                                businessCustomerApiCalls.editId(
-                                        BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
-                            }
-                            btn_update.setClickable(false);
-                            mAlertDialog.dismiss();
+                            businessCustomerApiCalls.editId(
+                                    BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(), jsonBusinessCustomer);
                         }
+                        btn_update.setClickable(false);
+                        mAlertDialog.dismiss();
                     }
-
                 }
+
             }
         });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
@@ -220,7 +202,6 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
     @Override
     public void createCaseHistory(Context context, JsonQueuedPerson jsonQueuedPerson, String bizCategoryId) {
         if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.Q_SUPERVISOR) {
-
             if (new AppUtils().isTablet(context)) {
                 Intent intent = new Intent(context, PhysicalDialogActivity.class);
                 intent.putExtra("qCodeQR", qCodeQR);
@@ -232,11 +213,10 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                 intent.putExtra("data", jsonQueuedPerson);
                 context.startActivity(intent);
                 ((Activity) context).overridePendingTransition(R.anim.slide_up, R.anim.stay);
-
             }
 
         } else {
-            if (jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S) {
+            if (QueueUserStateEnum.Q == jsonQueuedPerson.getQueueUserState() || QueueUserStateEnum.S == jsonQueuedPerson.getQueueUserState()) {
                 if (TextUtils.isEmpty(jsonQueuedPerson.getServerDeviceId()) || jsonQueuedPerson.getServerDeviceId().equals(UserUtils.getDeviceId())) {
                     if (null == LaunchActivity.getLaunchActivity().getUserProfessionalProfile()) {
                         // temporary crash fix
@@ -249,6 +229,7 @@ public class PeopleInQAdapter extends BasePeopleInQAdapter {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                     if (null == preferenceObjects || preferenceObjects.isEmpty()) {
                         ShowCustomDialog showDialog = new ShowCustomDialog(context);
                         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {

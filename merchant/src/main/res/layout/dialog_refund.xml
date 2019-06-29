@@ -56,7 +56,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="5dp"
-            android:text="Do you really want to initiate refund. To continue, please fill the given captcha."
+            android:text="To continue refund, please fill the given captcha."
             android:textColor="@android:color/holo_red_dark"
             android:textSize="@dimen/text_size_sixteen"
             android:textStyle="bold" />
@@ -83,7 +83,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/square_white_bg_drawable"
-            android:hint="Enter above capcha"
+            android:hint="Enter above captcha"
             android:maxLength="10"
             android:maxLines="1"
             android:minLines="1"
