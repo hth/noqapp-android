@@ -1,30 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonCoupon;
 import com.noqapp.android.common.beans.body.CouponOnOrder;
@@ -57,6 +32,30 @@ import com.noqapp.android.merchant.views.interfaces.ReceiptInfoPresenter;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import org.apache.commons.lang3.StringUtils;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class OrderDetailActivity extends BaseActivity implements QueuePaymentPresenter,
         QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
@@ -304,7 +303,7 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
                             public void btnPositiveClick() {
                                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                                     showProgress();
-                                    setProgressMessage("Starting payment..");
+                                    setProgressMessage("Starting payment...");
                                     setProgressCancel(false);
                                     JsonQueuedPerson jqp = new JsonQueuedPerson()
                                             .setQueueUserId(jsonQueuedPerson.getQueueUserId())
@@ -379,7 +378,10 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
         tv_customer_name.setText(jsonQueuedPerson.getCustomerName());
         tv_token.setText("Token/Order No. " + String.valueOf(jsonQueuedPerson.getToken()));
         tv_q_name.setText(jsonPurchaseOrder.getDisplayName());
-        tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress()) ? "N/A" : jsonPurchaseOrder.getDeliveryAddress()));
+        tv_address.setText(Html.fromHtml(StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
+                ? context.getString(R.string.name_unavailable)
+                : jsonPurchaseOrder.getDeliveryAddress()));
+
         tv_paid_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computePaidAmount());
         tv_remaining_amount_value.setText(currencySymbol + " " + jsonPurchaseOrder.computeBalanceAmount());
         if (PaymentStatusEnum.PP == jsonPurchaseOrder.getPaymentStatus()) {
@@ -409,13 +411,21 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
             tv_payment_status.setText(jsonPurchaseOrder.getPaymentStatus().getDescription());
 
         }
-        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState() ? "N/A" : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
-        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId() ? "N/A" : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
+
+        tv_order_state.setText(null == jsonPurchaseOrder.getPresentOrderState()
+                ? context.getString(R.string.name_unavailable)
+                : jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription());
+
+        tv_transaction_id.setText(null == jsonPurchaseOrder.getTransactionId()
+                ? context.getString(R.string.name_unavailable)
+                : CommonHelper.transactionForDisplayOnly(jsonPurchaseOrder.getTransactionId()));
+
         if (null == jsonPurchaseOrder.getTransactionVia()) {
-            tv_transaction_via.setText("N/A");
+            tv_transaction_via.setText(context.getString(R.string.name_unavailable));
         } else {
             tv_transaction_via.setText(jsonPurchaseOrder.getTransactionVia().getDescription());
         }
+
         try {
             tv_cost.setText(currencySymbol + " " + jsonPurchaseOrder.computeFinalAmountWithDiscount());
             tv_grand_total_amt.setText(currencySymbol + " " + CommonHelper.displayPrice((jsonPurchaseOrder.getOrderPrice())));
@@ -424,6 +434,7 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
             tv_cost.setText(currencySymbol + " " + String.valueOf(0 / 100));
             tv_grand_total_amt.setText(currencySymbol + " " + String.valueOf(0 / 100));
         }
+
         tv_coupon_discount_amt.setText(currencySymbol + CommonHelper.displayPrice(jsonPurchaseOrder.getStoreDiscount()));
         if (PurchaseOrderStateEnum.CO == jsonPurchaseOrder.getPresentOrderState() && null == jsonPurchaseOrder.getPaymentMode()) {
             rl_payment.setVisibility(View.GONE);
@@ -563,7 +574,7 @@ public class OrderDetailActivity extends BaseActivity implements QueuePaymentPre
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
                     showProgress();
-                    setProgressMessage("Applying discount..");
+                    setProgressMessage("Applying discount...");
                     // progressDialog.setCancelable(false);
                     // progressDialog.setCanceledOnTouchOutside(false);
                     CouponApiCalls couponApiCalls = new CouponApiCalls();
