@@ -179,10 +179,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
 
     @Override
     protected void resetList() {
-        if (jsonTopic.getBusinessType().getQueueOrderType() == QueueOrderTypeEnum.O) {
+        if (QueueOrderTypeEnum.O == jsonTopic.getBusinessType().getQueueOrderType()) {
             purchaseOrders = new ArrayList<>();
-            peopleInQOrderAdapter = new PeopleInQOrderAdapter(purchaseOrders, context, jsonTopic.getCodeQR(),
-                    this, jsonTopic.getJsonPaymentPermission());
+            peopleInQOrderAdapter = new PeopleInQOrderAdapter(
+                    purchaseOrders,
+                    context,
+                    jsonTopic.getCodeQR(),
+                    this,
+                    jsonTopic.getJsonPaymentPermission());
             rv_queue_people.setAdapter(peopleInQOrderAdapter);
         } else {
             super.resetList();
@@ -196,7 +200,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         View customDialogView = inflater.inflate(R.layout.dialog_create_token, null, false);
         ImageView actionbarBack = customDialogView.findViewById(R.id.actionbarBack);
         tv_create_token = customDialogView.findViewById(R.id.tvtitle);
-        tvcount = customDialogView.findViewById(R.id.tvcount);
+        tvCount = customDialogView.findViewById(R.id.tvcount);
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
@@ -305,7 +309,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         //Log.v("Order acquire response",token.toString());
         dismissProgress();
         if (null != token) {
-            JsonTopic jt = topicsList.get(currrentpos);
+            JsonTopic jt = topicsList.get(currentPosition);
             if (token.getCodeQR().equalsIgnoreCase(jt.getCodeQR())) {
                 if (StringUtils.isNotBlank(jt.getCustomerName())) {
                     Log.i(BaseMerchantDetailFragment.class.getSimpleName(), "Show customer name=" + jt.getCustomerName());
@@ -314,7 +318,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 jt.setQueueStatus(token.getQueueStatus());
                 jt.setServingNumber(token.getServingNumber());
                 jt.setCustomerName(token.getCustomerName());
-                topicsList.set(currrentpos, jt);
+                topicsList.set(currentPosition, jt);
 
                 //To update merchant list screen
                 mAdapterCallback.onMethodCallback(token);
