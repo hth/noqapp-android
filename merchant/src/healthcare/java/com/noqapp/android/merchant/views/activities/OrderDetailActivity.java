@@ -57,15 +57,32 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class OrderDetailActivity extends BaseActivity implements QueuePaymentPresenter,
-        QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
+public class OrderDetailActivity
+        extends BaseActivity
+        implements QueuePaymentPresenter, QueueRefundPaymentPresenter, ReceiptInfoPresenter, CouponApplyRemovePresenter {
     protected ImageView actionbarBack;
     private JsonPurchaseOrder jsonPurchaseOrder;
     private TextView tv_cost, tv_order_state, tv_transaction_id;
     private Spinner sp_payment_mode;
-    private String[] payment_modes = {"Cash", "Cheque", "Credit Card", "Debit Card", "Internet Banking", "Paytm"};
-    private PaymentModeEnum[] payment_modes_enum = {PaymentModeEnum.CA, PaymentModeEnum.CQ,
-            PaymentModeEnum.CC, PaymentModeEnum.DC, PaymentModeEnum.NTB, PaymentModeEnum.PTM};
+
+    private String[] payment_modes = {
+            "Cash",
+            "Cheque",
+            "Credit Card",
+            "Debit Card",
+            "Internet Banking",
+            "Paytm"
+    };
+
+    private PaymentModeEnum[] payment_modes_enum = {
+            PaymentModeEnum.CA,
+            PaymentModeEnum.CQ,
+            PaymentModeEnum.CC,
+            PaymentModeEnum.DC,
+            PaymentModeEnum.NTB,
+            PaymentModeEnum.PTM
+    };
+
     private View rl_payment;
     private TextView tv_payment_mode, tv_payment_status, tv_address, tv_transaction_via;
     public static UpdateWholeList updateWholeList;
