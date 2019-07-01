@@ -137,7 +137,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     public void setAdvertisementList(JsonAdvertisementList jsonAdvertisementList, int no_of_q) {
         Log.e("setAdvertisementList", "called");
-        if (jsonAdvertisementList.getJsonAdvertisements().size() > 0) {
+        if (null != jsonAdvertisementList && null != jsonAdvertisementList.getJsonAdvertisements() && jsonAdvertisementList.getJsonAdvertisements().size() > 0) {
             jsonAdvertisement_images = null;
             image_list_size = 0;
             urlList = new ArrayList<>();
