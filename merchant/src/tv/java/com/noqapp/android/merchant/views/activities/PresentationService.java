@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -16,8 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
+
 
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -25,7 +23,6 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonNameDatePair;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.Formatter;
@@ -45,9 +42,6 @@ import com.noqapp.android.merchant.views.customviews.ScrollTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,7 +56,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         ClientInQueuePresenter, AdvertisementPresenter {
     private DetailPresentation castPresentation;
     private int image_list_size = 0;
-    private int profile_size = 0;
     private int url_pos = 0;
     private int no_of_q = 0;
     private int sequence = -1;
@@ -166,7 +159,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             break;
                         case PP:
                             if (null != jsonAdvertisement.getJsonProfessionalProfileTV()) {
-                                profile_size = 1;
                                 jsonAdvertisement_profile = jsonAdvertisement;
                                 Log.e("Advertisement: ", "Profile called");
                             }
@@ -222,10 +214,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     }
 
     public class DetailPresentation extends CastPresentation {
-        private ImageView image, image1, iv_advertisement, iv_profile;
-        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_doctor_name,
-                tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1, tv_category;;
-        private LinearLayout ll_list, ll_profile, ll_no_list;
+        private ImageView image, image1, iv_advertisement;
+        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
+                   tv_info1, tv_category;;
+        private LinearLayout ll_list, ll_no_list;
         private Context context;
 
         public DetailPresentation(Context context, Display display) {
@@ -240,7 +232,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             image = findViewById(R.id.ad_image);
             image1 = findViewById(R.id.ad_image1);
             iv_advertisement = findViewById(R.id.iv_advertisement);
-            iv_profile = findViewById(R.id.iv_profile);
             title = findViewById(R.id.ad_title);
             tv_timing = findViewById(R.id.tv_timing);
             tv_degree = findViewById(R.id.tv_degree);
@@ -248,15 +239,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             title1 = findViewById(R.id.ad_title1);
             tv_timing1 = findViewById(R.id.tv_timing1);
             tv_degree1 = findViewById(R.id.tv_degree1);
-            tv_doctor_name = findViewById(R.id.tv_doctor_name);
-            tv_doctor_category = findViewById(R.id.tv_doctor_category);
-            tv_doctor_degree = findViewById(R.id.tv_doctor_degree);
-            tv_about_doctor = findViewById(R.id.tv_about_doctor);
             tv_info1 = findViewById(R.id.tv_info1);
             tv_category = findViewById(R.id.tv_category);
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
-            ll_profile = findViewById(R.id.ll_profile);
             textList.add("Doctor is now available on <font color='#8c1515'><b>NoQApp</b></font>.");
             textList.add("Save time. Book appointment online on <font color='#8c1515'><b>NoQApp</b></font>.");
             textList.add("Forgot your medical file. Now medical records are securely available on <font color='#8c1515'><b>NoQApp</b></font>");
@@ -282,9 +268,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             try {
 
                 ++sequence;
-                if (sequence >= no_of_q + image_list_size + profile_size) {
-
-                    Log.e("sequence", "sequence " + sequence + " no_of_q: " + no_of_q + " image_list_size: " + image_list_size + " profile_size: " + profile_size);
+                if (sequence >= no_of_q + image_list_size) {
+                    Log.e("sequence", "sequence " + sequence + " no_of_q: " + no_of_q
+                            + " image_list_size: " + image_list_size );
                     sequence = 0;
                     Log.e("sequence reset", "" + sequence);
                 }
@@ -296,42 +282,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             }
 
             if (sequence >= no_of_q) {
-                if (null != jsonAdvertisement_profile && no_of_q + profile_size == sequence + 1) {
-                    Log.e("Inside Profile", "profile :" + sequence);
-                    ll_profile.setVisibility(View.VISIBLE);
-                    iv_advertisement.setVisibility(View.GONE);
-                    ll_no_list.setVisibility(View.GONE);
-                    String imageName = jsonAdvertisement_profile.getJsonProfessionalProfileTV().getProfileImage();
-                    if (StringUtils.isNotBlank(imageName)) {
-                        if (imageName.contains(".")) {
-                            String[] file = imageName.split("\\.");
-                            imageName = file[0] + "_o." + file[1];
-                        }
-                    } else {
-                        imageName = "";
-                    }
-
-                    Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(R.drawable.profile_tv).into(iv_profile);
-                        }
-                    });
-                    tv_doctor_name.setText("Dr. " + jsonAdvertisement_profile.getJsonProfessionalProfileTV().getName());
-                    tv_doctor_category.setText(jsonAdvertisement_profile.getJsonProfessionalProfileTV().getProfessionType());
-                    tv_doctor_degree.setText(getSelectedData(jsonAdvertisement_profile.getJsonProfessionalProfileTV().getEducation()));
-                    tv_about_doctor.setText(jsonAdvertisement_profile.getJsonProfessionalProfileTV().getAboutMe());
-                } else {
-                    ll_profile.setVisibility(View.GONE);
-                }
-
-                if (null != jsonAdvertisement_images && sequence + 1 > no_of_q + profile_size) {
-                    ll_profile.setVisibility(View.GONE);
+                if (null != jsonAdvertisement_images && sequence + 1 > no_of_q) {
                     ll_no_list.setVisibility(View.GONE);
                     Log.e("Inside Images", "Images: " + sequence);
                     if (url_pos < urlList.size()) {
@@ -350,7 +301,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             } else {
                 Log.e("Check error", "Inside List: " + sequence);
                 url_pos = 0;
-                ll_profile.setVisibility(View.GONE);
                 iv_advertisement.setVisibility(View.GONE);
                 ll_no_list.setVisibility(View.VISIBLE);
                 if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {

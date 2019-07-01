@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.api;
 
+import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 
