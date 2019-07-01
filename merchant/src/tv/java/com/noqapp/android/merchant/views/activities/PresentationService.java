@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
-
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
@@ -77,6 +75,14 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private boolean callAdvertisement = true;
     private boolean callFirstTime = true;
     private int timerCount = 0;
+    private ScrollTextView scrolltext;
+    private boolean isMarqueeInit = false;
+
+    public void setMarqueeList(List<String> marqueeList) {
+        this.marqueeList = marqueeList;
+    }
+
+    private List<String> marqueeList = new ArrayList<>();
 
     @Override
     public void onCreatePresentation(Display display) {
@@ -221,9 +227,11 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public class DetailPresentation extends CastPresentation {
         private ImageView image, image1, iv_advertisement;
         private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
-                   tv_info1, tv_category,tv_category1;;
+                tv_info1, tv_category, tv_category1;
+        ;
         private LinearLayout ll_list, ll_no_list;
         private Context context;
+
 
         public DetailPresentation(Context context, Display display) {
             super(context, display);
@@ -251,25 +259,32 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             ll_no_list = findViewById(R.id.ll_no_list);
             no_of_q = topicAndQueueTVList.size();
 
-            String str = getString(R.string.bullet) + " We do not track your activities \t" +
-                    getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
-                    getString(R.string.bullet) + " We are not affiliated to any social media \t" +
-                    getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
-
-            ScrollTextView scrolltext = findViewById(R.id.scrolltext);
-            scrolltext.setText(str);
-            scrolltext.startScroll();
+//            String str = getString(R.string.bullet) + " We do not track your activities \t" +
+//                    getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
+//                    getString(R.string.bullet) + " We are not affiliated to any social media \t" +
+//                    getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
+            scrolltext = findViewById(R.id.scrolltext);
             updateDetail();
         }
 
         public void updateDetail() {
             TopicAndQueueTV topicAndQueueTV = null;
+            if (!isMarqueeInit) {
+                String str = "";
+                for (int i = 0; i < marqueeList.size(); i++) {
+                    str += getString(R.string.bullet) + " " + marqueeList.get(i) + " \t";
+                }
+                Log.e("List: ", str);
+                scrolltext.setText(str);
+                scrolltext.startScroll();
+                isMarqueeInit = true;
+            }
             try {
 
                 ++sequence;
                 if (sequence >= no_of_q + image_list_size) {
                     Log.e("sequence", "sequence " + sequence + " no_of_q: " + no_of_q
-                            + " image_list_size: " + image_list_size );
+                            + " image_list_size: " + image_list_size);
                     sequence = 0;
                     Log.e("sequence reset", "" + sequence);
                 }
@@ -302,7 +317,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 url_pos = 0;
                 iv_advertisement.setVisibility(View.GONE);
                 ll_no_list.setVisibility(View.VISIBLE);
-                if(null != jsonProfessionalProfileTVList && jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size()>0){
+                if (null != jsonProfessionalProfileTVList && jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size() > 0) {
                     // do something
                     if (profile_pos >= jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size()) {
                         profile_pos = 0;
@@ -313,7 +328,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     tv_category1.setText(jsonProfessionalProfileTV.getProfessionType());
                     tv_timing1.setText("Mon-Tue-Thu  9:30 am-6:30 pm  ???");
                     if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()))) {
-                        tv_degree1.setText( new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
+                        tv_degree1.setText(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
                     } else {
                         tv_degree1.setText("");
                     }
@@ -352,13 +367,13 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
                     tv_category.setText(MedicalDepartmentEnum.valueOf(topicAndQueueTV.getJsonTopic().getBizCategoryId()).getDescription());
                     if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()))) {
-                        tv_degree.setText( new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()));
+                        tv_degree.setText(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()));
                     } else {
                         tv_degree.setText("");
                     }
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                             + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
-                    
+
                     ll_list.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(this.context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {

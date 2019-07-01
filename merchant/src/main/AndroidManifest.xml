@@ -171,6 +171,10 @@
             android:name=".views.activities.FollowUpListActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".views.activities.MarqueeActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <service
             android:name=".network.NoQueueMessagingService"

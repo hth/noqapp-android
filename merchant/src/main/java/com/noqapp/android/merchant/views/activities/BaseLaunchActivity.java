@@ -76,6 +76,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -107,6 +108,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
+    protected final String KEY_MARQUEE_LIST = "marqueeList";
     private static final String FCM_TOKEN = "fcmToken";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -282,6 +284,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 break;
             case R.drawable.appointment:
                 callAppointments();
+                break;
+            case R.drawable.ic_add:
+                callMarqueeSettings();
                 break;
             default:
 
@@ -484,6 +489,29 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     }
 
+    public void saveMarquee(List<String> data) {
+        //Set the values
+        Gson gson = new Gson();
+        List<String> textList = new ArrayList<String>();
+        textList.addAll(data);
+        String jsonText = gson.toJson(textList);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(KEY_MARQUEE_LIST, jsonText);
+        editor.apply();
+    }
+
+    public List<String> getMarquee() {
+        Gson gson = new Gson();
+        String jsonText = sharedpreferences.getString(KEY_MARQUEE_LIST, null);
+        if (TextUtils.isEmpty(jsonText)) {
+            return new ArrayList<>();
+        } else {
+            String[] text = gson.fromJson(jsonText, String[].class);
+            List<String> temp = Arrays.asList(text);
+            return null == temp ? new ArrayList<>() : temp;
+        }
+    }
+
     public void setUserProfessionalProfile(JsonProfessionalProfilePersonal jsonProfessionalProfile) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         String json = new Gson().toJson(jsonProfessionalProfile);
@@ -558,7 +586,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 if (fragmentCommunicator != null) {
                     fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
                 }
-            }  else if (object instanceof JsonClientOrderData) {
+            } else if (object instanceof JsonClientOrderData) {
                 Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
             }
         }
@@ -784,6 +812,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     }
 
     public void callAppointments() {
+
+    }
+
+    public void callMarqueeSettings() {
 
     }
 

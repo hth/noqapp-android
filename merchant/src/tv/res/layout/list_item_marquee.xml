@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_menu_child"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/iv_delete"
+        android:text=""
+        android:textSize="@dimen/text_size_fourteen" />
+
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="@dimen/action_image_size"
+        android:layout_height="@dimen/action_image_size"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/delete_record"
+        android:backgroundTint="@color/colorPrimary" />
+
+
+</RelativeLayout>

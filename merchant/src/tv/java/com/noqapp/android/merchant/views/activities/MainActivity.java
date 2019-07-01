@@ -264,6 +264,8 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
                         new CastRemoteDisplayLocalService.Callbacks() {
                             @Override
                             public void onServiceCreated(CastRemoteDisplayLocalService service) {
+                                ((PresentationService) CastRemoteDisplayLocalService.getInstance()).
+                                        setMarqueeList(LaunchActivity.getLaunchActivity().getMarquee());
                                 ((PresentationService) service).setTopicAndQueueTV(
                                         topicAndQueueTVList);
                             }
@@ -336,6 +338,7 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
 
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setMarqueeList(LaunchActivity.getLaunchActivity().getMarquee());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, true);
                 }
