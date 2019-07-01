@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -23,6 +22,8 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.JsonProfessionalProfileTV;
+import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.Formatter;
@@ -31,6 +32,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.ProfessionalProfilesPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
@@ -53,16 +55,16 @@ import java.util.List;
 import java.util.Locale;
 
 public class PresentationService extends CastRemoteDisplayLocalService implements
-        ClientInQueuePresenter, AdvertisementPresenter {
+        ClientInQueuePresenter, AdvertisementPresenter, ProfessionalProfilesPresenter {
     private DetailPresentation castPresentation;
     private int image_list_size = 0;
     private int url_pos = 0;
+    private int profile_pos = 0;
     private int no_of_q = 0;
     private int sequence = -1;
-    private int text_list_pos = 0;
     private List<String> urlList = new ArrayList<>();
-    private List<String> textList = new ArrayList<>();
     private JsonAdvertisement jsonAdvertisement_profile, jsonAdvertisement_images;
+    private JsonProfessionalProfileTVList jsonProfessionalProfileTVList;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
     private FetchLatestData fetchLatestData;
@@ -165,12 +167,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             break;
                         default:
                     }
-
                 }
             }
         }
         this.no_of_q = no_of_q;
-
     }
 
     @Override
@@ -213,10 +213,15 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         fetchLatestData = null;
     }
 
+    @Override
+    public void professionalProfilesResponse(JsonProfessionalProfileTVList jsonProfessionalProfileTVList) {
+        this.jsonProfessionalProfileTVList = jsonProfessionalProfileTVList;
+    }
+
     public class DetailPresentation extends CastPresentation {
         private ImageView image, image1, iv_advertisement;
         private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
-                   tv_info1, tv_category;;
+                   tv_info1, tv_category,tv_category1;;
         private LinearLayout ll_list, ll_no_list;
         private Context context;
 
@@ -241,15 +246,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             tv_degree1 = findViewById(R.id.tv_degree1);
             tv_info1 = findViewById(R.id.tv_info1);
             tv_category = findViewById(R.id.tv_category);
+            tv_category1 = findViewById(R.id.tv_category1);
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
-            textList.add("Doctor is now available on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Save time. Book appointment online on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Forgot your medical file. Now medical records are securely available on <font color='#8c1515'><b>NoQApp</b></font>");
-            textList.add("See all your medical records online on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Get real time appointment updates on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Front desk can book your appointment just by your phone number.");
-            textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
             no_of_q = topicAndQueueTVList.size();
 
             String str = getString(R.string.bullet) + " We do not track your activities \t" +
@@ -303,10 +302,40 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                 url_pos = 0;
                 iv_advertisement.setVisibility(View.GONE);
                 ll_no_list.setVisibility(View.VISIBLE);
+                if(null != jsonProfessionalProfileTVList && jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size()>0){
+                    // do something
+                    if (profile_pos >= jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size()) {
+                        profile_pos = 0;
+                    }
+                    JsonProfessionalProfileTV jsonProfessionalProfileTV = jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().get(profile_pos);
+                    ++profile_pos;
+                    title1.setText(jsonProfessionalProfileTV.getName());
+                    tv_category1.setText(jsonProfessionalProfileTV.getProfessionType());
+                    tv_timing1.setText("Mon-Tue-Thu  9:30 am-6:30 pm  ???");
+                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()))) {
+                        tv_degree1.setText( new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
+                    } else {
+                        tv_degree1.setText("");
+                    }
+                    if (TextUtils.isEmpty(jsonProfessionalProfileTV.getProfileImage())) {
+                        Picasso.get().load(R.drawable.profile_tv).into(image1);
+                    } else {
+                        Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonProfessionalProfileTV.getProfileImage()).into(image1, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.profile_tv).into(image1);
+                            }
+                        });
+                    }
+                }
                 if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
                     if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                         Picasso.get().load(R.drawable.profile_tv).into(image);
-                        Picasso.get().load(R.drawable.profile_tv).into(image1);
                     } else {
                         Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                             @Override
@@ -319,17 +348,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                 Picasso.get().load(R.drawable.profile_tv).into(image);
                             }
                         });
-                        Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
-                            @Override
-                            public void onSuccess() {
-
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                Picasso.get().load(R.drawable.profile_tv).into(image1);
-                            }
-                        });
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
                     tv_category.setText(MedicalDepartmentEnum.valueOf(topicAndQueueTV.getJsonTopic().getBizCategoryId()).getDescription());
@@ -340,14 +358,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     }
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                             + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
-                    title1.setText(title.getText().toString());
-                    tv_degree1.setText(tv_degree.getText().toString());
-                    tv_timing1.setText(tv_timing.getText().toString());
-                    if (text_list_pos >= textList.size()) {
-                        text_list_pos = 0;
-                    }
-                    tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
-                    ++text_list_pos;
+                    
                     ll_list.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(this.context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
@@ -484,7 +495,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             if (callAdvertisement) {
                 AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
                 advertisementApiCalls.setAdvertisementPresenter(PresentationService.this);
+                advertisementApiCalls.setProfessionalProfilesPresenter(PresentationService.this);
                 advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(), LaunchActivity.getLaunchActivity().getEmail(), LaunchActivity.getLaunchActivity().getAuth());
+                advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(), LaunchActivity.getLaunchActivity().getEmail(), LaunchActivity.getLaunchActivity().getAuth());
                 callAdvertisement = false;
             }
         }

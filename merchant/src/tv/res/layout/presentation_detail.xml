@@ -157,7 +157,7 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -170,16 +170,14 @@
                     android:id="@+id/ad_image1"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_alignParentStart="true"
                     android:contentDescription="@string/presentation_detail_description_title"
                     android:scaleType="fitXY" />
 
                 <TextView
                     android:id="@+id/ad_title1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ad_image1"
-                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -191,10 +189,23 @@
 
                 <TextView
                     android:id="@+id/tv_degree1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ad_title1"
-                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:text=""
+                    android:textColor="@color/colorAddress"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_category1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -206,16 +217,15 @@
 
                 <TextView
                     android:id="@+id/tv_timing1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_degree1"
-                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/colorAddress"
                     android:textSize="18sp" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_info1"
@@ -244,8 +254,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/tv_noq"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_noq"
             android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -258,8 +268,8 @@
             android:layout_gravity="right|bottom"
             android:gravity="bottom"
             android:includeFontPadding="false"
-            android:paddingEnd="10dp"
             android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="NoQApp"
             android:textColor="#fff"
             android:textSize="42sp"

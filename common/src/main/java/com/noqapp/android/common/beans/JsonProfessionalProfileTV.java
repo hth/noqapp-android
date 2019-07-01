@@ -53,7 +53,7 @@ public class JsonProfessionalProfileTV extends JsonProfessionalProfilePersonal i
 
     @Override
     public String toString() {
-        return "JsonProfessionalProfileTV{" +
+        return super.toString()+"JsonProfessionalProfileTV{" +
                 "profileImage='" + profileImage + '\'' +
                 ", professionType='" + professionType + '\'' +
                 '}';

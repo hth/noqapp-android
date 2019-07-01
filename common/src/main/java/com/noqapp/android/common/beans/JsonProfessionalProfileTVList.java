@@ -31,6 +31,18 @@ public class JsonProfessionalProfileTVList extends AbstractDomain {
     @JsonProperty("pps")
     private List<JsonProfessionalProfileTV> jsonProfessionalProfileTV = new ArrayList<>();
 
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+
     public List<JsonProfessionalProfileTV> getJsonProfessionalProfileTV() {
         return jsonProfessionalProfileTV;
     }
@@ -43,5 +55,14 @@ public class JsonProfessionalProfileTVList extends AbstractDomain {
     public JsonProfessionalProfileTVList addJsonProfessionalProfileTV(JsonProfessionalProfileTV jsonProfessionalProfileTV) {
         this.jsonProfessionalProfileTV.add(jsonProfessionalProfileTV);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonProfessionalProfileTVList{");
+        sb.append("jsonProfessionalProfileTV=").append(jsonProfessionalProfileTV);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }
