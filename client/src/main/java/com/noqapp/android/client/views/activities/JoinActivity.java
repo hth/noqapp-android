@@ -310,9 +310,6 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
             }
 
         }
-        startTimer();
-        new CustomToast().showToast(this, "Please complete your transaction within " +
-                BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
     }
 
     private void startTimer() {
@@ -508,6 +505,9 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                 }
                 JoinQueue joinQueue = new JoinQueue().setCodeQR(codeQR).setQueueUserId(qUserId).setGuardianQid(guardianId);
                 if (isEnabledPayment) {
+                    startTimer();
+                    new CustomToast().showToast(this, "Please complete your transaction within " +
+                            BuildConfig.TRANSACTION_TIMEOUT + " minutes.");
                     queueApiAuthenticCall.payBeforeJoinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
                 } else {
                     queueApiAuthenticCall.joinQueue(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), joinQueue);
