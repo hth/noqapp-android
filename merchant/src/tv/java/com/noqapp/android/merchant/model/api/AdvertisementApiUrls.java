@@ -46,7 +46,7 @@ public interface AdvertisementApiUrls {
     );
 
     @GET("api/tv/vigyapan/professionalProfiles.json")
-    Call<JsonAdvertisementList> professionalProfiles(
+    Call<JsonProfessionalProfileTVList> professionalProfiles(
             @Header("X-R-DID")
             String did,
 
