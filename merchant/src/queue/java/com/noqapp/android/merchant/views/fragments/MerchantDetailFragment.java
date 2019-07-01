@@ -223,12 +223,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             }
         });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener((View.OnClickListener) v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
