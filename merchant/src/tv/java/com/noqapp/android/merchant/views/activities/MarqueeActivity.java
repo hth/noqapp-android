@@ -19,13 +19,12 @@ import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class MarqueeActivity extends BaseActivity implements
-        MarqueeAdapter.OnItemClickListener {
+public class MarqueeActivity
+        extends BaseActivity
+        implements MarqueeAdapter.OnItemClickListener {
     private FixedHeightListView fh_list_view;
     public MarqueeAdapter adapter;
     private List<String> marqueeList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class MarqueeActivity extends BaseActivity implements
         Button btn_add_marquee = findViewById(R.id.btn_add_marquee);
         marqueeList = LaunchActivity.getLaunchActivity().getMarquee();
         btn_add_marquee.setOnClickListener(View -> {
+            //TODO error on add
             if (!TextUtils.isEmpty(edt_marquee.getText().toString())) {
                 marqueeList.add(edt_marquee.getText().toString());
                 adapter.notifyDataSetChanged();
