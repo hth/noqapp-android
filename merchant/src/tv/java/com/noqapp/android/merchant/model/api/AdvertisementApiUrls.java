@@ -44,4 +44,19 @@ public interface AdvertisementApiUrls {
             @Header("X-R-AUTH")
             String auth
     );
+
+    @GET("api/tv/vigyapan/professionalProfiles.json")
+    Call<JsonAdvertisementList> professionalProfiles(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
+    );
 }
