@@ -25,6 +25,8 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
@@ -222,7 +224,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public class DetailPresentation extends CastPresentation {
         private ImageView image, image1, iv_advertisement, iv_profile;
         private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_doctor_name,
-                tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1;
+                tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1, tv_category;;
         private LinearLayout ll_list, ll_profile, ll_no_list;
         private Context context;
 
@@ -251,6 +253,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             tv_doctor_degree = findViewById(R.id.tv_doctor_degree);
             tv_about_doctor = findViewById(R.id.tv_about_doctor);
             tv_info1 = findViewById(R.id.tv_info1);
+            tv_category = findViewById(R.id.tv_category);
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
             ll_profile = findViewById(R.id.ll_profile);
@@ -262,15 +265,11 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             textList.add("Front desk can book your appointment just by your phone number.");
             textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
             no_of_q = topicAndQueueTVList.size();
-            TextView tv_marquee = findViewById(R.id.tv_marquee);
+
             String str = getString(R.string.bullet) + " We do not track your activities \t" +
                     getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
                     getString(R.string.bullet) + " We are not affiliated to any social media \t" +
                     getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
-            tv_marquee.setText(str);
-            tv_marquee.setMarqueeRepeatLimit(-1);
-            tv_marquee.setSelected(true);
-            //setMarqueeSpeed(tv_marquee,5);
 
             ScrollTextView scrolltext = findViewById(R.id.scrolltext);
             scrolltext.setText(str);
@@ -383,8 +382,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                         });
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
+                    tv_category.setText(MedicalDepartmentEnum.valueOf(topicAndQueueTV.getJsonTopic().getBizCategoryId()).getDescription());
                     if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()))) {
-                        tv_degree.setText(" (" + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + ") ");
+                        tv_degree.setText( new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()));
                     } else {
                         tv_degree.setText("");
                     }
@@ -588,38 +588,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public static void setMarqueeSpeed(TextView tv, float speed) {
-        //Make sure that you call this method only after tv.setText() and tv.setSelected(true).
-        // Otherwise it will not work.
-        if (tv != null) {
-            try {
-                Field f = null;
-                if (tv instanceof AppCompatTextView) {
-                    f = tv.getClass().getSuperclass().getDeclaredField("mMarquee");
-                } else {
-                    f = tv.getClass().getDeclaredField("mMarquee");
-                }
-                if (f != null) {
-                    f.setAccessible(true);
-                    Object marquee = f.get(tv);
-                    if (marquee != null) {
-                        String scrollSpeedFieldName = "mScrollUnit";
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            scrollSpeedFieldName = "mPixelsPerSecond";
-                        }
-                        Field mf = marquee.getClass().getDeclaredField(scrollSpeedFieldName);
-                        mf.setAccessible(true);
-                        mf.setFloat(marquee, speed);
-                    }
-                } else {
-                    //Logger.e("Marquee", "mMarquee object is null.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }
