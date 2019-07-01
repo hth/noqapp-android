@@ -77,8 +77,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             case DO:
             case HS:
                 iv_appointment.setVisibility(View.VISIBLE);
+                fl_appointment.setVisibility(View.VISIBLE);
                 break;
             default:
+                fl_appointment.setVisibility(View.GONE);
                 iv_appointment.setVisibility(View.GONE);
         }
         iv_appointment.setOnClickListener(new View.OnClickListener() {
