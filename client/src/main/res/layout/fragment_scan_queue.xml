@@ -1,95 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/white"
-            android:fillViewport="true">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:fillViewport="true">
 
     <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@drawable/scan_bg"/>
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="160dp"-->
+        <!--android:background="@drawable/scan_bg"/>-->
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/tv_deviceId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="60"
-                    android:padding="10dp"
-                    android:textSize="@dimen/text_size_twelve"
-                    android:visibility="gone"/>
+                android:id="@+id/tv_deviceId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="60"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_twelve"
+                android:visibility="gone" />
 
             <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_update_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:visibility="gone"
-                    card_view:cardCornerRadius="4dp">
+                android:id="@+id/cv_update_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                card_view:cardCornerRadius="4dp">
 
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/cell_size"
-                        android:paddingLeft="@dimen/screen_padding_home"
-                        android:paddingRight="@dimen/screen_padding_home">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/cell_size"
+                    android:paddingLeft="@dimen/screen_padding_home"
+                    android:paddingRight="@dimen/screen_padding_home">
 
                     <ImageView
-                            android:id="@+id/iv_location"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_alignParentLeft="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/ic_location"/>
+                        android:id="@+id/iv_location"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_location" />
 
                     <TextView
-                            android:id="@+id/tv_location_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_toRightOf="@id/iv_location"
-                            android:text="@string/new_location"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_twelve"/>
+                        android:id="@+id/tv_location_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_toRightOf="@id/iv_location"
+                        android:text="@string/new_location"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_twelve" />
 
 
                     <TextView
-                            android:id="@+id/tv_no_thanks"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_location_title"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@+id/tv_update"
-                            android:padding="10dp"
-                            android:text="@string/no_thanks"
-                            android:textAllCaps="true"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="@dimen/text_size_twelve"/>
+                        android:id="@+id/tv_no_thanks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_location_title"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/tv_update"
+                        android:padding="10dp"
+                        android:text="@string/no_thanks"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_twelve" />
 
                     <TextView
-                            android:id="@+id/tv_update"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_location_title"
-                            android:layout_alignParentRight="true"
-                            android:padding="10dp"
-                            android:text="@string/update"
-                            android:textAllCaps="true"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="@dimen/text_size_twelve"/>
+                        android:id="@+id/tv_update"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_location_title"
+                        android:layout_alignParentRight="true"
+                        android:padding="10dp"
+                        android:text="@string/update"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_twelve" />
 
 
                 </RelativeLayout>
@@ -99,386 +99,387 @@
 
 
             <RelativeLayout
-                    android:id="@+id/rl_scan"
-                    android:layout_width="match_parent"
+                android:id="@+id/rl_scan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingTop="10dp"
+                android:paddingRight="@dimen/screen_padding_home"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_scan"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/cell_size"
-                    android:paddingLeft="@dimen/screen_padding_home"
-                    android:paddingTop="10dp"
-                    android:paddingRight="@dimen/screen_padding_home">
-
-                <ImageView
-                        android:id="@+id/iv_scan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/barcode"/>
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/barcode" />
 
                 <TextView
-                        android:id="@+id/tv_scan_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toLeftOf="@+id/nav_arrow"
-                        android:layout_toRightOf="@+id/iv_scan"
-                        android:text="@string/scan_qr"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_size_fourteen"
-                        android:textStyle="bold"/>
+                    android:id="@+id/tv_scan_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/nav_arrow"
+                    android:layout_toRightOf="@+id/iv_scan"
+                    android:text="@string/scan_qr"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_fourteen"
+                    android:textStyle="bold" />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_scan_title"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toLeftOf="@+id/nav_arrow"
-                        android:layout_toRightOf="@+id/iv_scan"
-                        android:text="@string/scan_info"
-                        android:textColor="#cc000000"
-                        android:textSize="@dimen/text_size_twelve"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_scan_title"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toLeftOf="@+id/nav_arrow"
+                    android:layout_toRightOf="@+id/iv_scan"
+                    android:text="@string/scan_info"
+                    android:textColor="#cc000000"
+                    android:textSize="@dimen/text_size_twelve" />
 
                 <ImageView
-                        android:id="@+id/nav_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/arrow_right"/>
+                    android:id="@+id/nav_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_right" />
 
 
             </RelativeLayout>
 
 
             <LinearLayout
-                    android:id="@+id/rl_current_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/cell_size"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/screen_padding_home"
-                    android:paddingRight="@dimen/screen_padding_home">
+                android:id="@+id/rl_current_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                     <TextView
-                            android:id="@+id/tv_current_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="@string/active_queue"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:textStyle="bold"/>
+                        android:id="@+id/tv_current_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/active_queue"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
 
 
                 </RelativeLayout>
 
                 <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_current_activity"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scrollbars="horizontal"/>
+                        android:id="@+id/rv_current_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal" />
 
                     <ProgressBar
-                            android:id="@+id/pb_current"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:visibility="gone"/>
+                        android:id="@+id/pb_current"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
                 </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
-                    android:id="@+id/rl_upcoming_events"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/cell_size"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/screen_padding_home"
-                    android:paddingRight="@dimen/screen_padding_home">
+                android:id="@+id/rl_upcoming_events"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                     <TextView
-                            android:id="@+id/tv_merchant_title1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="Events &amp; Offers"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:textStyle="bold"/>
+                        android:id="@+id/tv_merchant_title1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Events &amp; Offers"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
 
                     <View
-                            android:layout_width="50dp"
-                            android:layout_height="@dimen/bottom_view_height"
-                            android:layout_below="@+id/tv_merchant_title1"
-                            android:background="@color/theme_aqua"/>
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/bottom_view_height"
+                        android:layout_below="@+id/tv_merchant_title1"
+                        android:background="@color/theme_aqua" />
 
                     <TextView
-                            android:id="@+id/tv_events_view_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:padding="5dp"
-                            android:text="@string/view_all"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/text_size_twelve"
-                            android:visibility="invisible"/>
+                        android:id="@+id/tv_events_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="5dp"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
 
                 <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_events"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="5dp"
-                            android:scrollbarSize="2dp"
-                            android:scrollbarStyle="outsideInset"
-                            android:scrollbarThumbHorizontal="@color/colorPrimary"
-                            android:scrollbars="horizontal"/>
+                        android:id="@+id/rv_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:scrollbarSize="2dp"
+                        android:scrollbarStyle="outsideInset"
+                        android:scrollbarThumbHorizontal="@color/colorPrimary"
+                        android:scrollbars="horizontal" />
 
                     <ProgressBar
-                            android:id="@+id/pb_events"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:visibility="gone"/>
+                        android:id="@+id/pb_events"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
                 </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
-                    android:id="@+id/rl_health_care"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/cell_size"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/screen_padding_home"
-                    android:paddingRight="@dimen/screen_padding_home"
-                    android:visibility="gone">
+                android:id="@+id/rl_health_care"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                     <TextView
-                            android:id="@+id/tv_health_care_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="@string/health_care"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:textStyle="bold"/>
+                        android:id="@+id/tv_health_care_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/health_care"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
 
                     <View
-                            android:layout_width="50dp"
-                            android:layout_height="@dimen/bottom_view_height"
-                            android:layout_below="@+id/tv_health_care_title"
-                            android:background="@color/theme_aqua"/>
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/bottom_view_height"
+                        android:layout_below="@+id/tv_health_care_title"
+                        android:background="@color/theme_aqua" />
 
                     <TextView
-                            android:id="@+id/tv_health_care_view_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="@string/view_all"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/text_size_twelve"
-                            android:visibility="invisible"/>
+                        android:id="@+id/tv_health_care_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
                 <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_health_care"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="5dp"
-                            android:scrollbarSize="2dp"
-                            android:scrollbarStyle="outsideInset"
-                            android:scrollbarThumbHorizontal="@color/colorPrimary"
-                            android:scrollbars="horizontal"/>
-
-                    <ProgressBar
-                            android:id="@+id/pb_health_care"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:visibility="gone"/>
-                </FrameLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                    android:id="@+id/rl_merchant_around_you"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/cell_size"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/screen_padding_home"
-                    android:paddingRight="@dimen/screen_padding_home">
-
-                <RelativeLayout
+                        android:id="@+id/rv_health_care"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp">
-
-                    <TextView
-                            android:id="@+id/tv_merchant_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="@string/merchant_near"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:textStyle="bold"/>
-
-                    <View
-                            android:layout_width="50dp"
-                            android:layout_height="@dimen/bottom_view_height"
-                            android:layout_below="@+id/tv_merchant_title"
-                            android:background="@color/theme_aqua"/>
-
-                    <TextView
-                            android:id="@+id/tv_near_view_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:padding="5dp"
-                            android:text="@string/view_all"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/text_size_twelve"
-                            android:visibility="gone"/>
-
-                </RelativeLayout>
-
-                <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_merchant_around_you"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="5dp"
-                            android:scrollbarSize="2dp"
-                            android:scrollbarStyle="outsideInset"
-                            android:scrollbarThumbHorizontal="@color/colorPrimary"
-                            android:scrollbars="horizontal"/>
+                        android:paddingBottom="5dp"
+                        android:scrollbarSize="2dp"
+                        android:scrollbarStyle="outsideInset"
+                        android:scrollbarThumbHorizontal="@color/colorPrimary"
+                        android:scrollbars="horizontal" />
 
                     <ProgressBar
-                            android:id="@+id/pb_near"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:visibility="gone"/>
+                        android:id="@+id/pb_health_care"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
                 </FrameLayout>
             </LinearLayout>
 
 
             <LinearLayout
-                    android:id="@+id/rl_feed"
+                android:id="@+id/rl_merchant_around_you"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/cell_size"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/screen_padding_home"
+                android:paddingRight="@dimen/screen_padding_home">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:minHeight="55dp"
-                    android:orientation="vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_merchant_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/merchant_near"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/bottom_view_height"
+                        android:layout_below="@+id/tv_merchant_title"
+                        android:background="@color/theme_aqua" />
+
+                    <TextView
+                        android:id="@+id/tv_near_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:padding="5dp"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_merchant_around_you"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:scrollbarSize="2dp"
+                        android:scrollbarStyle="outsideInset"
+                        android:scrollbarThumbHorizontal="@color/colorPrimary"
+                        android:scrollbars="horizontal" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_near"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/rl_feed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:minHeight="55dp"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
 
                 <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp">
 
                     <TextView
-                            android:id="@+id/tv_feed_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="Feeds"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_size_fourteen"
-                            android:textStyle="bold"/>
+                        android:id="@+id/tv_feed_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Feeds"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_size_fourteen"
+                        android:textStyle="bold" />
 
                     <View
-                            android:layout_width="50dp"
-                            android:layout_height="@dimen/bottom_view_height"
-                            android:layout_below="@+id/tv_feed_title"
-                            android:background="@color/theme_aqua"/>
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/bottom_view_height"
+                        android:layout_below="@+id/tv_feed_title"
+                        android:background="@color/theme_aqua" />
 
                     <TextView
-                            android:id="@+id/tv_feed_view_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="@string/view_all"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/text_size_twelve"
-                            android:visibility="invisible"/>
+                        android:id="@+id/tv_feed_view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="@string/view_all"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/text_size_twelve"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
 
                 <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_feed"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="5dp"
-                            android:scrollbarSize="2dp"
-                            android:scrollbarStyle="outsideInset"
-                            android:scrollbarThumbHorizontal="@color/colorPrimary"
-                            android:scrollbars="horizontal"/>
+                        android:id="@+id/rv_feed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:scrollbarSize="2dp"
+                        android:scrollbarStyle="outsideInset"
+                        android:scrollbarThumbHorizontal="@color/colorPrimary"
+                        android:scrollbars="horizontal" />
 
                     <ProgressBar
-                            android:id="@+id/pb_feed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:visibility="gone"/>
+                        android:id="@+id/pb_feed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
                 </FrameLayout>
 
             </LinearLayout>

@@ -362,7 +362,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
             }
             SearchBusinessStoreApiCalls searchBusinessStoreApiCalls = new SearchBusinessStoreApiCalls(this);
             searchBusinessStoreApiCalls.otherMerchant(UserUtils.getDeviceId(), searchStoreQuery);
-            // searchBusinessStoreApiCall.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
+            searchBusinessStoreApiCalls.healthCare(UserUtils.getDeviceId(), searchStoreQuery);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -371,7 +371,12 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     @Override
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeData = new ArrayList<>();
-        nearMeData.addAll(bizStoreElasticList.getBizStoreElastics());
+        for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
+            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.PH &&
+                    bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
+                nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
+            }
+        }
         //sort the list, give the Comparator the current location
         Collections.sort(nearMeData, new SortPlaces(new LatLng(lat, log)));
         StoreInfoAdapter storeInfoAdapter = new StoreInfoAdapter(nearMeData, getActivity(), storeListener, lat, log);
