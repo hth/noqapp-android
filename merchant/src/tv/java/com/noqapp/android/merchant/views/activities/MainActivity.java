@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.activities;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
@@ -15,6 +16,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.ProfessionalProfilesPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -60,7 +62,7 @@ import java.util.TimerTask;
 
 public class MainActivity
         extends BaseActivity
-        implements ClientInQueuePresenter, AdvertisementPresenter {
+        implements ClientInQueuePresenter, AdvertisementPresenter, ProfessionalProfilesPresenter {
 
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private MediaRouter mediaRouter;
@@ -72,6 +74,7 @@ public class MainActivity
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     protected BroadcastReceiver broadcastReceiver;
     private JsonAdvertisementList jsonAdvertisementList;
+    private JsonProfessionalProfileTVList jsonProfessionalProfileTVList;
     private boolean isNotification = false;
     private DetailFragment detailFragment;
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
@@ -171,10 +174,13 @@ public class MainActivity
 
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
+            advertisementApiCalls.setProfessionalProfilesPresenter(this);
             advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
-
+            advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth());
         }
     }
 
@@ -263,6 +269,8 @@ public class MainActivity
                         @Override
                         public void onServiceCreated(CastRemoteDisplayLocalService service) {
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setMarqueeList(LaunchActivity.getLaunchActivity().getMarquee());
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                             ((PresentationService) service).setTopicAndQueueTV(topicAndQueueTVList);
                         }
 
@@ -335,6 +343,7 @@ public class MainActivity
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setMarqueeList(LaunchActivity.getLaunchActivity().getMarquee());
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, true);
                 }
@@ -415,6 +424,12 @@ public class MainActivity
     public void advertisementResponse(JsonAdvertisementList jsonAdvertisementList) {
         Log.v("data", jsonAdvertisementList.toString());
         this.jsonAdvertisementList = jsonAdvertisementList;
+    }
+
+    @Override
+    public void professionalProfilesResponse(JsonProfessionalProfileTVList jsonProfessionalProfileTVList) {
+        Log.v("profile data", jsonProfessionalProfileTVList.toString());
+        this.jsonProfessionalProfileTVList = jsonProfessionalProfileTVList;
     }
 
     public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
