@@ -76,7 +76,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -502,14 +501,13 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public List<String> getMarquee() {
         Gson gson = new Gson();
-        String jsonText = sharedpreferences.getString(KEY_MARQUEE_LIST, null);
-        if (TextUtils.isEmpty(jsonText)) {
-            return new ArrayList<>();
-        } else {
-            String[] text = gson.fromJson(jsonText, String[].class);
-            List<String> temp = Arrays.asList(text);
-            return null == temp ? new ArrayList<>() : temp;
-        }
+        String jsonPreferences = sharedpreferences.getString(KEY_MARQUEE_LIST, "");
+        Type type = new TypeToken<List<String>>() {
+        }.getType();
+        List<String> marqueeList = gson.fromJson(jsonPreferences, type);
+        if (null == marqueeList)
+            marqueeList = new ArrayList<String>();
+        return marqueeList;
     }
 
     public void setUserProfessionalProfile(JsonProfessionalProfilePersonal jsonProfessionalProfile) {

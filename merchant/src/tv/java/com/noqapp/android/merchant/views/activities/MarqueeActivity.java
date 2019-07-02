@@ -48,12 +48,13 @@ public class MarqueeActivity
         Button btn_add_marquee = findViewById(R.id.btn_add_marquee);
         marqueeList = LaunchActivity.getLaunchActivity().getMarquee();
         btn_add_marquee.setOnClickListener(View -> {
-            //TODO error on add
             if (!TextUtils.isEmpty(edt_marquee.getText().toString())) {
                 marqueeList.add(edt_marquee.getText().toString());
                 adapter.notifyDataSetChanged();
                 edt_marquee.setText("");
                 LaunchActivity.getLaunchActivity().saveMarquee(marqueeList);
+            } else {
+                new CustomToast().showToast(MarqueeActivity.this, "Marquee field is empty");
             }
         });
         fh_list_view = findViewById(R.id.fh_list_view);
