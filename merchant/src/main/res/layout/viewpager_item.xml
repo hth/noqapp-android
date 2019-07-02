@@ -124,8 +124,8 @@
 
                         <TextView
                             android:id="@+id/tv_appointment_count"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="bottom|right"
                             android:background="@drawable/badge_bg"
                             android:gravity="center"

@@ -63,7 +63,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/arrow_up" />
+                            android:background="@drawable/arrow_up"
+                            android:backgroundTint="@color/colorAccent"/>
                     </RelativeLayout>
 
                     <LinearLayout
@@ -272,6 +273,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
+                            android:backgroundTint="@color/colorAccent"
                             android:padding="5dp" />
                     </RelativeLayout>
 
@@ -456,6 +458,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
+                            android:backgroundTint="@color/colorAccent"
                             android:background="@drawable/arrow_up"
                             android:padding="5dp" />
                     </RelativeLayout>
@@ -604,6 +607,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
+                            android:backgroundTint="@color/colorAccent"
                             android:padding="5dp" />
                     </RelativeLayout>
 
@@ -862,6 +866,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
+                            android:backgroundTint="@color/colorAccent"
                             android:padding="5dp" />
                     </RelativeLayout>
 
@@ -1178,6 +1183,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/arrow_up"
+                            android:backgroundTint="@color/colorAccent"
                             android:padding="5dp" />
                     </RelativeLayout>
 
