@@ -173,6 +173,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
+            if(null != registerCallBack)
             registerCallBack.passPhoneNo(profile);
             finish();
 

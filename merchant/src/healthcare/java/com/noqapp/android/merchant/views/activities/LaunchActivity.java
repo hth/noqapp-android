@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
-import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.pojos.MenuModel;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -28,6 +27,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity {
     private TextView tv_badge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +90,8 @@ public class LaunchActivity extends BaseLaunchActivity {
                 List<MenuModel> childModelsList = new ArrayList<>();
                 childModelsList.add(new MenuModel(getString(R.string.menu_preference), false, false, R.drawable.case_history));
                 childModelsList.add(new MenuModel(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
-                headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings,childModelsList));
+                headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings, childModelsList));
+                headerList.add(3, new MenuModel("Add New Patient", true, false, R.drawable.add_user, childModelsList));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,10 +113,9 @@ public class LaunchActivity extends BaseLaunchActivity {
     }
 
     @Override
-    public void callAppointments() {
-        super.callAppointments();
-        //Intent intentAppointments = new Intent(launchActivity, AppointmentActivity.class);
-       // startActivity(intentAppointments);
-        new CustomToast().showToast(this, "Enable later");
+    public void callAddPatient() {
+        super.callAddPatient();
+        Intent intentAddPatient = new Intent(launchActivity, LoginActivity.class);
+        startActivity(intentAddPatient);
     }
 }

@@ -75,6 +75,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     private String countryCode = "";
     private String countryShortName = "";
     private long mLastClickTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -277,7 +278,8 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        loginCallBack.passPhoneNo(profile);
+        if (null != loginCallBack)
+            loginCallBack.passPhoneNo(profile);
         finish();//close the current activity
         dismissProgress();
     }

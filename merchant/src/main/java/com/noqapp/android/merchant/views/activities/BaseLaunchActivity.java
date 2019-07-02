@@ -281,11 +281,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             case R.drawable.pharmacy:
                 callPreferredStore();
                 break;
-            case R.drawable.appointment:
-                callAppointments();
-                break;
             case R.drawable.ic_add:
                 callMarqueeSettings();
+                break;
+            case R.drawable.add_user:
+                callAddPatient();
                 break;
             default:
 
@@ -809,11 +809,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     }
 
-    public void callAppointments() {
+    public void callMarqueeSettings() {
 
     }
 
-    public void callMarqueeSettings() {
+    public void callAddPatient() {
 
     }
 
