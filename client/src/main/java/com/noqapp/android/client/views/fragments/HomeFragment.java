@@ -372,8 +372,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void nearMeResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeData = new ArrayList<>();
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.PH &&
-                    bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
+            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() != BusinessTypeEnum.DO) {
                 nearMeData.add(bizStoreElasticList.getBizStoreElastics().get(i));
             }
         }
@@ -410,8 +409,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     public void nearMeHospitalResponse(BizStoreElasticList bizStoreElasticList) {
         nearMeHospital = new ArrayList<>();
         for (int i = 0; i < bizStoreElasticList.getBizStoreElastics().size(); i++) {
-            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.PH ||
-                    bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.DO) {
+            if (bizStoreElasticList.getBizStoreElastics().get(i).getBusinessType() == BusinessTypeEnum.DO) {
                 nearMeHospital.add(bizStoreElasticList.getBizStoreElastics().get(i));
             }
         }
