@@ -41,7 +41,7 @@ import java.util.List;
 public class MerchantDetailFragment extends BaseFragment implements QueuePersonListPresenter {
 
     protected Context context;
-    protected ImageView iv_banner;
+   // protected ImageView iv_banner;
     protected TextView tvcount;
     private ShowPersonInQAdapter peopleInQAdapter;
 
@@ -52,7 +52,7 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
     private List<JsonQueuedPerson> jsonQueuedPersonArrayList = new ArrayList<>();
     protected EditText edt_mobile;
     protected RecyclerView rv_queue_people;
-    protected ProgressBar progressDialog;
+   // protected ProgressBar progressDialog;
     protected JsonTopic jsonTopic = null;
     protected TextView tv_title, tv_current_value, tv_timing;
     protected int currrentpos = 0;
@@ -79,7 +79,7 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
         context = getActivity();
         manageQueueApiCalls = new ManageQueueApiCalls();
         jsonTopic = topicsList.get(currrentpos);
-        progressDialog = itemView.findViewById(R.id.progress_bar);
+        //progressDialog = itemView.findViewById(R.id.progress_bar);
         tv_current_value = itemView.findViewById(R.id.tv_current_value);
         tv_title = itemView.findViewById(R.id.tv_title);
         tv_timing = itemView.findViewById(R.id.tv_timing);
@@ -150,11 +150,6 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
         dismissProgress();
     }
 
-    protected void dismissProgress() {
-        if (null != progressDialog) {
-            progressDialog.setVisibility(View.GONE);
-        }
-    }
 
     protected void updateUI() {
 
@@ -165,7 +160,7 @@ public class MerchantDetailFragment extends BaseFragment implements QueuePersonL
         tv_current_value.setText(String.valueOf(jsonTopic.getServingNumber()));
         tv_title.setText(jsonTopic.getDisplayName());
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            progressDialog.setVisibility(View.VISIBLE);
+            showProgress();
             getAllPeopleInQ(jsonTopic);
 
         } else {

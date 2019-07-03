@@ -27,8 +27,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginBottom="10dp"
                 android:textColor="#333"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_fourteen" />
+                android:textSize="@dimen/text_size_fourteen"
+                android:textStyle="bold" />
 
 
             <TextView
