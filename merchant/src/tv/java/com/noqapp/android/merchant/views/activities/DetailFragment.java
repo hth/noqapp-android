@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.MarqueeSharedPreference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -37,9 +39,6 @@ public class DetailFragment extends Fragment {
     private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_info1;
     private ImageView image, image1;
     private LinearLayout ll_list, ll_no_list;
-    private List<String> textList = new ArrayList<>();
-    private int text_list_pos = 0;
-
     public static DetailFragment newInstance(TopicAndQueueTV ad) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
@@ -74,19 +73,13 @@ public class DetailFragment extends Fragment {
         tv_info1 = view.findViewById(R.id.tv_info1);
         ll_list = view.findViewById(R.id.ll_list);
         ll_no_list = view.findViewById(R.id.ll_no_list);
-        textList.add("Doctor is now available on <font color='#8c1515'><b>NoQApp</b></font>.");
-        textList.add("Save time. Book appointment online on <font color='#8c1515'><b>NoQApp</b></font>.");
-        textList.add("Forgot your medical file. Now medical records are securely available on <font color='#8c1515'><b>NoQApp</b></font>");
-        textList.add("See all your medical records online on <font color='#8c1515'><b>NoQApp</b></font>.");
-        textList.add("Get real time appointment updates on <font color='#8c1515'><b>NoQApp</b></font>.");
-        textList.add("Front desk can book your appointment just by your phone number.");
-        textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
-
         TextView tv_marquee = view.findViewById(R.id.tv_marquee);
-        String str = getString(R.string.bullet) + " We do not track your activities \t" +
-                getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
-                getString(R.string.bullet) + " We are not affiliated to any social media \t" +
-                getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
+        MarqueeSharedPreference.init(getContext().getApplicationContext());
+        List<String>marqueeList = MarqueeSharedPreference.getMarquee();
+        String str = "";
+        for (int i = 0; i < marqueeList.size(); i++) {
+            str += getString(R.string.bullet) + " " + marqueeList.get(i) + " \t";
+        }
         tv_marquee.setText(str);
         tv_marquee.setMarqueeRepeatLimit(-1);
         tv_marquee.setSelected(true);
@@ -132,11 +125,8 @@ public class DetailFragment extends Fragment {
             title1.setText(title.getText().toString());
             tv_degree1.setText(tv_degree.getText().toString());
             tv_timing1.setText(tv_timing.getText().toString());
-            if (text_list_pos >= textList.size()) {
-                text_list_pos = 0;
-            }
-            tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
-            ++text_list_pos;
+            tv_info1.setText("");
+
             ll_list.removeAllViews();
             LayoutInflater inflater = LayoutInflater.from(getActivity());
             if (null != topicAndQueueTV.getJsonQueueTV()) {
