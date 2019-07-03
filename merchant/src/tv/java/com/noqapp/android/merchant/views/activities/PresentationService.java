@@ -24,6 +24,7 @@ import com.noqapp.android.common.beans.JsonProfessionalProfileTV;
 import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -42,6 +43,9 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.customviews.ScrollTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -241,7 +245,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public class DetailPresentation extends CastPresentation {
         private ImageView image, image1, iv_advertisement;
         private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
-                tv_info1, tv_category, tv_category1;
+                tv_info1, tv_category, tv_category1,tv_experience;
         ;
         private LinearLayout ll_list, ll_no_list;
         private Context context;
@@ -269,6 +273,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             tv_info1 = findViewById(R.id.tv_info1);
             tv_category = findViewById(R.id.tv_category);
             tv_category1 = findViewById(R.id.tv_category1);
+            tv_experience = findViewById(R.id.tv_experience);
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
             no_of_q = topicAndQueueTVList.size();
@@ -340,7 +345,19 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                     ++profile_pos;
                     title1.setText(jsonProfessionalProfileTV.getName());
                     tv_category1.setText(jsonProfessionalProfileTV.getProfessionType());
-                    tv_timing1.setText("Mon-Tue-Thu  9:30 am-6:30 pm  ???");
+                    tv_timing1.setText(jsonProfessionalProfileTV.getAboutMe());
+                    if (!TextUtils.isEmpty(jsonProfessionalProfileTV.getPracticeStart())) {
+                        try {
+                            // Format - practiceStart='2017-08-07'
+                            DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfessionalProfileTV.getPracticeStart()));
+                            Period period = new Period(dateTime, new DateTime());
+                            tv_experience.setText(String.valueOf(period.getYears()) + "+ yrs experience");
+                            if (0 == period.getYears())
+                                tv_experience.setText(" ");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()))) {
                         tv_degree1.setText(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
                     } else {
@@ -400,10 +417,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                     }
                                 }
                         );
-                        if (data.size() > 0) {
+                       // if (data.size() > 0) {
                             View v = inflater.inflate(R.layout.lay_header, null, false);
                             ll_list.addView(v);
-                        }
+                      //  }
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
                             View cardview = customView.findViewById(R.id.cardview);
