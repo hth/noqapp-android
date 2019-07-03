@@ -196,19 +196,19 @@ public class MainActivity
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
-    @Override
-    public void onDestroy() {
-        if (mediaRouter != null) {
-            mediaRouter.removeCallback(mMediaRouterCallback);
-        }
-        super.onDestroy();
-    }
+//    @Override
+//    public void onDestroy() {
+//        if (mediaRouter != null) {
+//            mediaRouter.removeCallback(mMediaRouterCallback);
+//        }
+//        super.onDestroy();
+//    }
 
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-        super.onPause();
-    }
+//    @Override
+//    protected void onPause() {
+//       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+//        super.onPause();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -473,10 +473,16 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        super.onBackPressed();
+//        try {
+//            if (timer != null) {
+//                timer.cancel();
+//                timer = null;
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        super.onBackPressed();
+      //  onPause();
+        finish();
     }
 }
