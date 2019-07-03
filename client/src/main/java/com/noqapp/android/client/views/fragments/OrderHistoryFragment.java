@@ -23,8 +23,11 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.OrderHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.OrderHistoryAdapter;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class OrderHistoryFragment extends BaseFragment implements
@@ -72,11 +75,22 @@ public class OrderHistoryFragment extends BaseFragment implements
     @Override
     public void orderHistoryResponse(JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList) {
         listData = new ArrayList<>(jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals());
+        Collections.sort(listData, new Comparator<JsonPurchaseOrderHistorical>() {
+            public int compare(JsonPurchaseOrderHistorical o1, JsonPurchaseOrderHistorical o2) {
+                try {
+                    return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).
+                            compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
         OrderHistoryAdapter orderHistoryAdapter = new OrderHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(orderHistoryAdapter);
         if (null != listData && listData.size() == 0 && null != getActivity()) {
             rl_empty.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             rl_empty.setVisibility(View.GONE);
         }
         dismissProgress();
