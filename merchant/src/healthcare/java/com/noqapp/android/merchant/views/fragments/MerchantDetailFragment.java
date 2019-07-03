@@ -221,6 +221,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public void findCustomerResponse(JsonProfile jsonProfile) {
         dismissProgress();
+        mLastClickTime = 0;
         if (null != jsonProfile) {
             List<JsonProfile> jsonProfileList = new ArrayList<>();
             jsonProfileList.add(jsonProfile);

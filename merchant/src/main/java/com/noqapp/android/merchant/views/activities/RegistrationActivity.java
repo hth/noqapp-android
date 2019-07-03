@@ -9,9 +9,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +35,7 @@ import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 
 public class RegistrationActivity extends BaseActivity implements ProfilePresenter,
@@ -57,6 +56,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     private EditText edt_confirm_pwd;
     private TextView tv_male;
     private TextView tv_female;
+    private TextView tv_transgender;
     private LinearLayout ll_pwd;
     private Button btnRegistration;
     private long mLastClickTime = 0;
@@ -84,6 +84,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         edt_confirm_pwd = findViewById(R.id.edt_confirm_pwd);
         tv_male = findViewById(R.id.tv_male);
         tv_female = findViewById(R.id.tv_female);
+        tv_transgender = findViewById(R.id.tv_transgender);
         ll_pwd = findViewById(R.id.ll_pwd);
         btnRegistration = findViewById(R.id.btnRegistration);
         btnRegistration.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +96,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);
+        tv_transgender.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -122,31 +124,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
             edt_phoneNo.setEnabled(false);
             edt_phoneNo.setText(phno);
         }
-
-        edt_Mail.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() == 0) {
-                    ll_pwd.setVisibility(View.GONE);
-                    edt_pwd.setText("");
-                    edt_confirm_pwd.setText("");
-                } else {
-                    ll_pwd.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
+        edt_pwd.setText(generatePassword());
+        edt_confirm_pwd.setText(edt_pwd.getText().toString());
     }
 
 
@@ -173,8 +152,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            if(null != registerCallBack)
-            registerCallBack.passPhoneNo(profile);
+            if (null != registerCallBack)
+                registerCallBack.passPhoneNo(profile);
             finish();
 
         } else {
@@ -200,17 +179,30 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
-            tv_male.setBackgroundResource(R.drawable.button_drawable_red_square);
+            tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_male.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
             tv_male.setText(getString(R.string.male));
             tv_male.setTextColor(Color.WHITE);
             tv_female.setTextColor(Color.BLACK);
+            tv_transgender.setTextColor(Color.BLACK);
         } else if (v == tv_female) {
             gender = "F";
-            tv_female.setBackgroundResource(R.drawable.button_drawable_red_square);
+            tv_female.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
             tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_transgender.setBackgroundResource(R.drawable.square_white_bg_drawable);
             tv_male.setTextColor(Color.BLACK);
             tv_female.setTextColor(Color.WHITE);
+            tv_transgender.setTextColor(Color.BLACK);
             tv_female.setText(getString(R.string.female));
+        } else if (v == tv_transgender) {
+            gender = "T";
+            tv_transgender.setBackgroundColor(ContextCompat.getColor(RegistrationActivity.this, R.color.review_color));
+            tv_male.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_male.setTextColor(Color.BLACK);
+            tv_female.setTextColor(Color.BLACK);
+            tv_transgender.setTextColor(Color.WHITE);
+            tv_transgender.setText(getString(R.string.transgender));
         }
     }
 
@@ -235,31 +227,16 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
                 errorMsg = getString(R.string.error_name_length);
             isValid = false;
         }
-        if (!TextUtils.isEmpty(edt_Mail.getText().toString())) {
-
+        if (TextUtils.isEmpty(edt_Mail.getText().toString())) {
+            edt_Mail.setError(getString(R.string.error_email_blank));
+            errorMsg = getString(R.string.error_email_blank);
+            isValid = false;
+        } else {
             if (!new CommonHelper().isValidEmail(edt_Mail.getText().toString())) {
                 edt_Mail.setError(getString(R.string.error_invalid_email));
                 if (TextUtils.isEmpty(errorMsg))
                     errorMsg = getString(R.string.error_invalid_email);
                 isValid = false;
-            }
-            if (TextUtils.isEmpty(edt_pwd.getText().toString())) {
-                edt_pwd.setError(getString(R.string.error_pwd_blank));
-                if (TextUtils.isEmpty(errorMsg))
-                    errorMsg = getString(R.string.error_pwd_blank);
-                isValid = false;
-            } else {
-                if (edt_pwd.getText().toString().length() < 6) {
-                    edt_pwd.setError(getString(R.string.error_pwd_length));
-                    if (TextUtils.isEmpty(errorMsg))
-                        errorMsg = getString(R.string.error_pwd_length);
-                    isValid = false;
-                } else if (!edt_pwd.getText().toString().equals(edt_confirm_pwd.getText().toString())) {
-                    edt_pwd.setError(getString(R.string.error_pwd_not_match));
-                    if (TextUtils.isEmpty(errorMsg))
-                        errorMsg = getString(R.string.error_pwd_not_match);
-                    isValid = false;
-                }
             }
         }
         if (TextUtils.isEmpty(tv_birthday.getText().toString())) {
@@ -297,5 +274,11 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         RegisterApiCalls registerApiCalls = new RegisterApiCalls(this);
         registerApiCalls.register(UserUtils.getDeviceId(), registration);
 
+    }
+
+    private String generatePassword() {
+        Random rnd = new Random();
+        int n = 100000 + rnd.nextInt(900000);
+        return String.valueOf(n);
     }
 }
