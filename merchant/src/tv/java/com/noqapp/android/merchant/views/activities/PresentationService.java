@@ -37,6 +37,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.MarqueeSharedPreference;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.customviews.ScrollTextView;
 import com.squareup.picasso.Callback;
@@ -53,7 +54,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class PresentationService extends CastRemoteDisplayLocalService implements
-        ClientInQueuePresenter, AdvertisementPresenter, ProfessionalProfilesPresenter {
+        ClientInQueuePresenter, AdvertisementPresenter, ProfessionalProfilesPresenter,
+        MarqueeSharedPreference.OnPreferenceChangeListener {
     private DetailPresentation castPresentation;
     private int image_list_size = 0;
     private int url_pos = 0;
@@ -78,9 +80,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private ScrollTextView scrolltext;
     private boolean isMarqueeInit = false;
 
-    public void setMarqueeList(List<String> marqueeList) {
-        this.marqueeList = marqueeList;
-    }
 
     private List<String> marqueeList = new ArrayList<>();
 
@@ -88,7 +87,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     public void onCreatePresentation(Display display) {
         dismissPresentation();
         castPresentation = new DetailPresentation(this, display);
+        MarqueeSharedPreference.init(getApplicationContext());
+        MarqueeSharedPreference.onPreferenceChangeListener = this;
         try {
+            marqueeList = MarqueeSharedPreference.getMarquee();
             castPresentation.show();
         } catch (WindowManager.InvalidDisplayException ex) {
             dismissPresentation();
@@ -222,6 +224,18 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     @Override
     public void professionalProfilesResponse(JsonProfessionalProfileTVList jsonProfessionalProfileTVList) {
         this.jsonProfessionalProfileTVList = jsonProfessionalProfileTVList;
+    }
+
+    @Override
+    public void onPreferenceChange() {
+        marqueeList = MarqueeSharedPreference.getMarquee();
+        String str = "";
+        for (int i = 0; i < marqueeList.size(); i++) {
+            str += getString(R.string.bullet) + " " + marqueeList.get(i) + " \t";
+        }
+        Log.e("List: ", str);
+        scrolltext.setText(str);
+        scrolltext.startScroll();
     }
 
     public class DetailPresentation extends CastPresentation {

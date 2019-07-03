@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.MarqueeSharedPreference;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
 import com.noqapp.android.merchant.views.adapters.MarqueeAdapter;
 import com.noqapp.android.merchant.views.customviews.FixedHeightListView;
@@ -46,13 +47,14 @@ public class MarqueeActivity
         tv_toolbar_title.setText("Marquee Settings");
         EditText edt_marquee = findViewById(R.id.edt_marquee);
         Button btn_add_marquee = findViewById(R.id.btn_add_marquee);
-        marqueeList = LaunchActivity.getLaunchActivity().getMarquee();
+        MarqueeSharedPreference.init(getApplicationContext());
+        marqueeList = MarqueeSharedPreference.getMarquee();
         btn_add_marquee.setOnClickListener(View -> {
             if (!TextUtils.isEmpty(edt_marquee.getText().toString())) {
                 marqueeList.add(edt_marquee.getText().toString());
                 adapter.notifyDataSetChanged();
                 edt_marquee.setText("");
-                LaunchActivity.getLaunchActivity().saveMarquee(marqueeList);
+                MarqueeSharedPreference.saveMarquee(marqueeList);
             } else {
                 new CustomToast().showToast(MarqueeActivity.this, "Marquee field is empty");
             }
@@ -72,7 +74,7 @@ public class MarqueeActivity
                 new CustomToast().showToast(MarqueeActivity.this, "Deleted from Marquee List");
                 marqueeList.remove(item);
                 adapter.notifyDataSetChanged();
-                LaunchActivity.getLaunchActivity().saveMarquee(marqueeList);
+                MarqueeSharedPreference.saveMarquee(marqueeList);
             }
 
             @Override

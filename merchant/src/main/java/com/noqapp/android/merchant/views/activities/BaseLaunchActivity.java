@@ -107,7 +107,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
-    protected final String KEY_MARQUEE_LIST = "marqueeList";
     private static final String FCM_TOKEN = "fcmToken";
     protected TextView tv_name;
     public FragmentCommunicator fragmentCommunicator;
@@ -486,28 +485,6 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         String json = sharedpreferences.getString(KEY_USER_PROFILE, "");
         return new Gson().fromJson(json, JsonProfile.class);
 
-    }
-
-    public void saveMarquee(List<String> data) {
-        //Set the values
-        Gson gson = new Gson();
-        List<String> textList = new ArrayList<String>();
-        textList.addAll(data);
-        String jsonText = gson.toJson(textList);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(KEY_MARQUEE_LIST, jsonText);
-        editor.apply();
-    }
-
-    public List<String> getMarquee() {
-        Gson gson = new Gson();
-        String jsonPreferences = sharedpreferences.getString(KEY_MARQUEE_LIST, "");
-        Type type = new TypeToken<List<String>>() {
-        }.getType();
-        List<String> marqueeList = gson.fromJson(jsonPreferences, type);
-        if (null == marqueeList)
-            marqueeList = new ArrayList<String>();
-        return marqueeList;
     }
 
     public void setUserProfessionalProfile(JsonProfessionalProfilePersonal jsonProfessionalProfile) {

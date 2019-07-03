@@ -1,5 +1,27 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.mediarouter.media.MediaRouteSelector;
+import androidx.mediarouter.media.MediaRouter;
+
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.common.api.Status;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
@@ -26,29 +48,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.UserUtils;
 
-import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastMediaControlIntent;
-import com.google.android.gms.cast.CastRemoteDisplayLocalService;
-import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.common.api.Status;
-
 import org.apache.commons.lang3.StringUtils;
-
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.mediarouter.media.MediaRouteSelector;
-import androidx.mediarouter.media.MediaRouter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -268,7 +268,6 @@ public class MainActivity
                     new CastRemoteDisplayLocalService.Callbacks() {
                         @Override
                         public void onServiceCreated(CastRemoteDisplayLocalService service) {
-                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setMarqueeList(LaunchActivity.getLaunchActivity().getMarquee());
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
                             ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                             ((PresentationService) service).setTopicAndQueueTV(topicAndQueueTVList);
@@ -342,7 +341,6 @@ public class MainActivity
 
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
-                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setMarqueeList(LaunchActivity.getLaunchActivity().getMarquee());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, true);
