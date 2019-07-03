@@ -16,6 +16,7 @@ public class MarqueeSharedPreference {
     private static final String KEY_MARQUEE_LIST = "marqueeList";
     private static SharedPreferences mSharedPref;
     public static OnPreferenceChangeListener onPreferenceChangeListener;
+    private static SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener;
     public interface OnPreferenceChangeListener {
         void onPreferenceChange( );
     }
@@ -26,18 +27,19 @@ public class MarqueeSharedPreference {
     {
         if(mSharedPref == null) {
             mSharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            mSharedPref.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(
-                    SharedPreferences sharedPreferences, String key) {
-                if (key.equals(KEY_MARQUEE_LIST)) {
+            sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(
+                        SharedPreferences sharedPreferences, String key) {
                     Log.e("Marquee update", "preference change");
-                    if (null != onPreferenceChangeListener)
-                        onPreferenceChangeListener.onPreferenceChange();
-                }
+                    if (key.equals(KEY_MARQUEE_LIST)) {
+                        if (null != onPreferenceChangeListener)
+                            onPreferenceChangeListener.onPreferenceChange();
+                    }
 
-            }
-        });
+                }
+            };
+            mSharedPref.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
         }
     }
 
