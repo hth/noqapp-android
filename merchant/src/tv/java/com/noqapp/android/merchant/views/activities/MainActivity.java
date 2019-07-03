@@ -334,10 +334,11 @@ public class MainActivity
             if (null == detailFragment) {
                 detailFragment = new DetailFragment();
             }
-
-            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
-            ft.commit();
+            if(!isFinishing()) {
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+                ft.commitAllowingStateLoss();
+            }
 
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
