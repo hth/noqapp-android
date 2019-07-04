@@ -538,11 +538,16 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
     }
 
+
     @Override
-    public void passPhoneNo(JsonProfile jsonProfile) {
+    public void userFound(JsonProfile jsonProfile) {
         findCustomerResponse(jsonProfile);
     }
 
+    @Override
+    public void userRegistered(JsonProfile jsonProfile) {
+        findCustomerResponse(jsonProfile);
+    }
 
     private long calculateAppointmentSlot(String strFromTime, String strToTime) {
         try {

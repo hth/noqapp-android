@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginActivity extends BaseActivity implements ProfilePresenter {
 
     public interface LoginCallBack {
-        void passPhoneNo(JsonProfile jsonProfile);
+        void userFound(JsonProfile jsonProfile);
     }
 
     public static LoginCallBack loginCallBack;
@@ -279,7 +279,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
         if (null != loginCallBack)
-            loginCallBack.passPhoneNo(profile);
+            loginCallBack.userFound(profile);
         finish();//close the current activity
         dismissProgress();
     }
@@ -390,6 +390,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // Np-op, handled by sign-in check
 
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    showProgress();
                     callLoginAPI(user.getPhoneNumber());
                 } else {
                     ShowAlertInformation.showNetworkDialog(this);
