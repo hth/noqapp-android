@@ -1,9 +1,7 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.noqapp.android.common.utils.Formatter;
@@ -28,7 +25,6 @@ import com.noqapp.android.merchant.utils.MarqueeSharedPreference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

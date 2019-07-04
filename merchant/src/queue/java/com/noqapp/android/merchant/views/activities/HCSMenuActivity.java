@@ -672,6 +672,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                         edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                     }
                     showProgress();
+                    setProgressMessage("Searching patient...");
                     setProgressCancel(false);
                     businessCustomerApiCalls.findCustomer(
                             BaseLaunchActivity.getDeviceID(),
@@ -695,8 +696,14 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
     }
 
     @Override
-    public void passPhoneNo(JsonProfile jsonProfile) {
-        // coming from login or registration activity
+    public void userFound(JsonProfile jsonProfile) {
+        // coming from login activity
+        findCustomerResponse(jsonProfile);
+    }
+
+    @Override
+    public void userRegistered(JsonProfile jsonProfile) {
+        // coming from registration activity
         findCustomerResponse(jsonProfile);
     }
 

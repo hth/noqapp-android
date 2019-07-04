@@ -1,11 +1,11 @@
 package com.noqapp.android.merchant.views.adapters;
 
+import android.content.Context;
+
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.merchant.presenter.beans.JsonDataVisibility;
 import com.noqapp.android.merchant.presenter.beans.JsonPaymentPermission;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-
-import android.content.Context;
 
 import java.util.List;
 

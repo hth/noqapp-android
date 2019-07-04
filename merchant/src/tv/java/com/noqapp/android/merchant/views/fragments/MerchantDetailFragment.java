@@ -1,7 +1,18 @@
 package com.noqapp.android.merchant.views.fragments;
 
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.common.model.types.QueueStatusEnum;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
@@ -10,28 +21,12 @@ import com.noqapp.android.merchant.model.ManageQueueApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.ShowPersonInQAdapter;
 import com.noqapp.android.merchant.views.interfaces.AdapterCallback;
 import com.noqapp.android.merchant.views.interfaces.QueuePersonListPresenter;
-
-import android.content.Context;
-import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;

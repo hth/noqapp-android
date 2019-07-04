@@ -42,7 +42,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         View.OnClickListener {
 
     public interface RegisterCallBack {
-        void passPhoneNo(JsonProfile jsonProfile);
+        void userRegistered(JsonProfile jsonProfile);
     }
 
     public static RegisterCallBack registerCallBack;
@@ -131,10 +131,10 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     public void action_Registration() {
         if (validate()) {
-            btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
-            btnRegistration.setTextColor(Color.WHITE);
+//            btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
+//            btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                setProgressMessage("Loading data...");
+                setProgressMessage("Registration in progress...");
                 setProgressCancel(false);
                 showProgress();
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
@@ -153,7 +153,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
             if (null != registerCallBack)
-                registerCallBack.passPhoneNo(profile);
+                registerCallBack.userRegistered(profile);
             finish();
 
         } else {
@@ -207,8 +207,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     private boolean validate() {
-        btnRegistration.setBackgroundResource(R.drawable.button_drawable);
-        btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
+        //btnRegistration.setBackgroundResource(R.drawable.button_drawable);
+       // btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);
