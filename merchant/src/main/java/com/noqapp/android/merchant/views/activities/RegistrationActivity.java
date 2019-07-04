@@ -131,8 +131,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     public void action_Registration() {
         if (validate()) {
-            btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
-            btnRegistration.setTextColor(Color.WHITE);
+//            btnRegistration.setBackgroundResource(R.drawable.button_drawable_red);
+//            btnRegistration.setTextColor(Color.WHITE);
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 setProgressMessage("Registration in progress...");
                 setProgressCancel(false);
@@ -207,8 +207,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     }
 
     private boolean validate() {
-        btnRegistration.setBackgroundResource(R.drawable.button_drawable);
-        btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
+        //btnRegistration.setBackgroundResource(R.drawable.button_drawable);
+       // btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);

@@ -5,11 +5,14 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -89,7 +92,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
             }
         });
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title.setText("Login");
+        tv_toolbar_title.setText("Verify Mobile Number");
         edt_phoneNo = findViewById(R.id.edt_phone);
         btn_login = findViewById(R.id.btn_login);
         btn_verify_phone = findViewById(R.id.btn_verify_phone);
@@ -182,12 +185,18 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:" + verificationId);
-
+                btn_login.setText(getString(R.string.resend_otp));
+                btn_login.setTextColor(Color.parseColor("#333333"));
+                btn_login.setPaintFlags(btn_login.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                btn_login.setBackground(null);
+                btn_login.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                btn_login.requestLayout();
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 // Update UI
                 updateUI(STATE_CODE_SENT);
-                setProgressMessage("OTP Generated and sent to the above mobile number");
+                //setProgressMessage("OTP Generated and sent to the above mobile number");
+                dismissProgress();
 
             }
         };
@@ -363,7 +372,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
                 break;
             case STATE_VERIFY_FAILED:
                 // Verification has failed, show all options
-                enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_verification_code);
+                //enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_verification_code);
                 tv_detail.setText(R.string.status_verification_failed);
                 break;
             case STATE_VERIFY_SUCCESS:

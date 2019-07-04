@@ -106,6 +106,7 @@
     <string name="prompt_marital_status">marital status</string>
     <string name="action_update">Update Profile</string>
     <string name="phone">Phone <font color='red'>\u002A</font></string>
+    <string name="c_phone">Customer Mobile No.<font color='red'>\u002A</font></string>
     <string name="name">Name <font color='red'>\u002A</font></string>
     <string name="birthday">Birthday <font color='red'>\u002A</font></string>
     <string name="mail">Mail </string>
@@ -131,6 +132,7 @@
     <string name="error_customer_id">Please enter Customer Id</string>
 
     <string name="login_hint">Phone no. without country code</string>
+    <string name="resend_otp">Resend OTP</string>
     <string name="verify_phone_auth">Verify</string>
     <string name="hint_verification_code">Verification Code</string>
     <string name="status_code_sent">Code sent to above mobile number</string>

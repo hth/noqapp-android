@@ -2,7 +2,6 @@ package com.noqapp.android.merchant.views.activities
 
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -12,28 +11,22 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonCoupon
 import com.noqapp.android.common.beans.JsonCouponList
-import com.noqapp.android.common.customviews.CustomToast
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.presenter.CouponPresenter
 import com.noqapp.android.merchant.R
 import com.noqapp.android.merchant.model.CouponApiCalls
 import com.noqapp.android.merchant.utils.AppUtils
-import com.noqapp.android.merchant.utils.ErrorResponseHandler
 import com.noqapp.android.merchant.utils.IBConstant
 import com.noqapp.android.merchant.utils.UserUtils
 import com.noqapp.android.merchant.views.adapters.CouponAdapter
 
 
-class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, CouponPresenter {
+class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, CouponPresenter {
 
-    private var progressDialog: ProgressDialog? = null
     private var couponApiCalls: CouponApiCalls? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +40,6 @@ class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, C
         couponApiCalls = CouponApiCalls()
         couponApiCalls!!.setCouponPresenter(this)
 
-        initProgress()
 
         val fl_notification = findViewById<FrameLayout>(R.id.fl_notification)
         val tv_toolbar_title = findViewById<TextView>(R.id.tv_toolbar_title)
@@ -56,21 +48,12 @@ class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, C
         actionbarBack.setOnClickListener { finish() }
         tv_toolbar_title.text = getString(R.string.activity_discount)
 
-        progressDialog!!.show()
+        showProgress()
+        setProgressMessage("Getting coupons...")
         couponApiCalls!!.availableDiscount(UserUtils.getDeviceId(), UserUtils.getEmail(),
                 UserUtils.getAuth(), intent.getStringExtra(IBConstant.KEY_CODE_QR))
     }
 
-    private fun initProgress() {
-        progressDialog = ProgressDialog(this)
-        progressDialog!!.isIndeterminate = true
-        progressDialog!!.setMessage("Updating data...")
-    }
-
-    protected fun dismissProgress() {
-        if (null != progressDialog && progressDialog!!.isShowing)
-            progressDialog!!.dismiss()
-    }
 
     override fun discountItemClick(jsonCoupon: JsonCoupon?) {
         val intent = Intent()
@@ -99,30 +82,6 @@ class CouponActivity : AppCompatActivity(), CouponAdapter.OnItemClickListener, C
 
                 rcv_review.itemAnimator = DefaultItemAnimator()
                 rcv_review.adapter = couponAdapter
-            }
-        }
-    }
-
-    override fun authenticationFailure() {
-        dismissProgress()
-        AppUtils.authenticationProcessing()
-        finish()
-    }
-
-    override fun responseErrorPresenter(errorCode: Int) {
-        dismissProgress()
-        ErrorResponseHandler().processFailureResponseCode(this, errorCode)
-    }
-
-    override fun responseErrorPresenter(eej: ErrorEncounteredJson?) {
-        if (null != eej) {
-            if (eej.systemErrorCode == MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.code) {
-                CustomToast().showToast(this, getString(R.string.error_account_block))
-                LaunchActivity.getLaunchActivity().clearLoginData(false)
-                dismissProgress()
-                finish()//close the current activity
-            } else {
-                ErrorResponseHandler().processError(this, eej)
             }
         }
     }
