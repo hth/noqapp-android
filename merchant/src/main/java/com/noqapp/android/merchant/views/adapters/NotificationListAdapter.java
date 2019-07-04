@@ -75,11 +75,9 @@ public class NotificationListAdapter extends BaseAdapter {
         }
 
         if (notificationsList.get(position).getStatus().equals(NotificationDB.KEY_UNREAD)) {
-            recordHolder.tv_title.setTypeface(null, Typeface.BOLD);
             recordHolder.cardview.setCardBackgroundColor(Color.WHITE);
         } else {
-            recordHolder.tv_title.setTypeface(null, Typeface.NORMAL);
-            recordHolder.cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.disable_list));
+            recordHolder.cardview.setCardBackgroundColor(Color.parseColor("#f6f6f6"));
         }
         return view;
     }

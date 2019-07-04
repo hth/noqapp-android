@@ -24,6 +24,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.common.api.Status;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
+import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.fcm.data.JsonAlertData;
 import com.noqapp.android.common.fcm.data.JsonClientData;
 import com.noqapp.android.common.fcm.data.JsonClientOrderData;
@@ -37,6 +38,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.ProfessionalProfilesPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
@@ -58,8 +60,9 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends BaseActivity implements ClientInQueuePresenter,
-        AdvertisementPresenter {
+public class MainActivity
+        extends BaseActivity
+        implements ClientInQueuePresenter, AdvertisementPresenter, ProfessionalProfilesPresenter {
 
     protected static final String INTENT_EXTRA_CAST_DEVICE = "CastDevice";
     private MediaRouter mediaRouter;
@@ -71,6 +74,7 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     protected BroadcastReceiver broadcastReceiver;
     private JsonAdvertisementList jsonAdvertisementList;
+    private JsonProfessionalProfileTVList jsonProfessionalProfileTVList;
     private boolean isNotification = false;
     private DetailFragment detailFragment;
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
@@ -126,7 +130,7 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
                         } else if (object instanceof JsonAlertData) {
                             Log.e("onReceiveJsonAlertData", ((JsonAlertData) object).toString());
                         } else if (object instanceof JsonTopicOrderData) {
-                            Log.e("onReceiveJsonTopicOdata", ((JsonTopicOrderData) object).toString());
+                            Log.e("onReceiveJsonTopicData", ((JsonTopicOrderData) object).toString());
                             try {
                                 for (int i = 0; i < topics.size(); i++) {
                                     JsonTopic jt = topics.get(i);
@@ -170,10 +174,13 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
 
             AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
             advertisementApiCalls.setAdvertisementPresenter(this);
+            advertisementApiCalls.setProfessionalProfilesPresenter(this);
             advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(),
                     LaunchActivity.getLaunchActivity().getEmail(),
                     LaunchActivity.getLaunchActivity().getAuth());
-
+            advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth());
         }
     }
 
@@ -189,19 +196,19 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
-    @Override
-    public void onDestroy() {
-        if (mediaRouter != null) {
-            mediaRouter.removeCallback(mMediaRouterCallback);
-        }
-        super.onDestroy();
-    }
+//    @Override
+//    public void onDestroy() {
+//        if (mediaRouter != null) {
+//            mediaRouter.removeCallback(mMediaRouterCallback);
+//        }
+//        super.onDestroy();
+//    }
 
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-        super.onPause();
-    }
+//    @Override
+//    protected void onPause() {
+//       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+//        super.onPause();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -247,45 +254,42 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
     };
 
     private void startCastService(final CastDevice castDevice) {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().post(() -> {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent notificationPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
 
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                PendingIntent notificationPendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+            CastRemoteDisplayLocalService.NotificationSettings settings =
+                    new CastRemoteDisplayLocalService.NotificationSettings.Builder()
+                            .setNotificationPendingIntent(notificationPendingIntent).build();
 
-                CastRemoteDisplayLocalService.NotificationSettings settings =
-                        new CastRemoteDisplayLocalService.NotificationSettings.Builder()
-                                .setNotificationPendingIntent(notificationPendingIntent).build();
+            CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class,
+                    getString(R.string.app_cast_id), castDevice, settings,
+                    new CastRemoteDisplayLocalService.Callbacks() {
+                        @Override
+                        public void onServiceCreated(CastRemoteDisplayLocalService service) {
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
+                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
+                            ((PresentationService) service).setTopicAndQueueTV(topicAndQueueTVList);
+                        }
 
-                CastRemoteDisplayLocalService.startService(MainActivity.this, PresentationService.class,
-                        getString(R.string.app_cast_id), castDevice, settings,
-                        new CastRemoteDisplayLocalService.Callbacks() {
-                            @Override
-                            public void onServiceCreated(CastRemoteDisplayLocalService service) {
-                                ((PresentationService) service).setTopicAndQueueTV(
-                                        topicAndQueueTVList);
-                            }
+                        @Override
+                        public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
+                        }
 
-                            @Override
-                            public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService service) {
-                            }
+                        @Override
+                        public void onRemoteDisplaySessionError(Status errorReason) {
+                            initError();
 
-                            @Override
-                            public void onRemoteDisplaySessionError(Status errorReason) {
-                                initError();
+                            MainActivity.this.castDevice = null;
+                            MainActivity.this.finish();
+                        }
 
-                                MainActivity.this.castDevice = null;
-                                MainActivity.this.finish();
-                            }
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        }
+                    });
 
-                            @Override
-                            public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            }
-                        });
-
-            }
         });
     }
 
@@ -318,7 +322,6 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
     @Override
     public void clientInResponse(JsonQueueTVList jsonQueueTVList) {
         if (null != jsonQueueTVList && null != jsonQueueTVList.getQueues()) {
-
             Log.v("TV Data", jsonQueueTVList.getQueues().toString());
             topicAndQueueTVList.clear();
             for (int i = 0; i < jsonQueueTVList.getQueues().size(); i++) {
@@ -328,36 +331,37 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
             if (topicAndQueueTVList.size() == 0) {
                 topicAndQueueTVList.add(new TopicAndQueueTV().setJsonTopic(null).setJsonQueueTV(null));
             }
-            if (null == detailFragment)
+            if (null == detailFragment) {
                 detailFragment = new DetailFragment();
-            final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
-            ft.commit();
+            }
+            if(!isFinishing()) {
+                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+                ft.commitAllowingStateLoss();
+            }
 
             if (!isNotification) {
                 if (CastRemoteDisplayLocalService.getInstance() != null) {
+                    ((PresentationService) CastRemoteDisplayLocalService.getInstance()).professionalProfilesResponse(jsonProfessionalProfileTVList);
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonAdvertisementList, topicAndQueueTVList.size());
                     ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, true);
                 }
                 final Handler handler = new Handler();
-                final Runnable Update = new Runnable() {
-                    public void run() {
-                        if (currentPage == topicAndQueueTVList.size()) {
-                            currentPage = 0;
-                        }
-                        detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
-                        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
-                        ft.commitAllowingStateLoss();
-                        //Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
+                final Runnable Update = () -> {
+                    if (currentPage == topicAndQueueTVList.size()) {
+                        currentPage = 0;
+                    }
+                    detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
+                    final FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
+                    ft1.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+                    ft1.commitAllowingStateLoss();
+                    //Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
 //                        if (CastRemoteDisplayLocalService.getInstance() != null) {
 //                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonVigyaapanTV, topicAndQueueTVList.size());
 //                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, currentPage);
 //                        }
-                        currentPage++;
-                    }
+                    currentPage++;
                 };
-
 
                 if (timer != null) {
                     timer.cancel();
@@ -421,8 +425,13 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
         this.jsonAdvertisementList = jsonAdvertisementList;
     }
 
-    public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
+    @Override
+    public void professionalProfilesResponse(JsonProfessionalProfileTVList jsonProfessionalProfileTVList) {
+        Log.v("profile data", jsonProfessionalProfileTVList.toString());
+        this.jsonProfessionalProfileTVList = jsonProfessionalProfileTVList;
+    }
 
+    public static boolean isTimeBetweenTwoTime(String initialTime, String finalTime) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Date date = new Date();
@@ -462,13 +471,18 @@ public class MainActivity extends BaseActivity implements ClientInQueuePresenter
         }
     }
 
-
     @Override
     public void onBackPressed() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        super.onBackPressed();
+//        try {
+//            if (timer != null) {
+//                timer.cancel();
+//                timer = null;
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        super.onBackPressed();
+      //  onPause();
+        finish();
     }
 }

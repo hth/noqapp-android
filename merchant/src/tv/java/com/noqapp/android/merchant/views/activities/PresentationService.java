@@ -3,9 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -16,36 +14,39 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.beans.JsonProfessionalProfileTV;
+import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.presenter.AdvertisementPresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.AdvertisementApiCalls;
 import com.noqapp.android.merchant.model.ClientInQueueApiCalls;
 import com.noqapp.android.merchant.presenter.ClientInQueuePresenter;
+import com.noqapp.android.merchant.presenter.ProfessionalProfilesPresenter;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTV;
 import com.noqapp.android.merchant.presenter.beans.JsonQueueTVList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPersonTV;
 import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.presenter.beans.body.QueueDetail;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.MarqueeSharedPreference;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.customviews.ScrollTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,17 +58,17 @@ import java.util.List;
 import java.util.Locale;
 
 public class PresentationService extends CastRemoteDisplayLocalService implements
-        ClientInQueuePresenter, AdvertisementPresenter {
+        ClientInQueuePresenter, AdvertisementPresenter, ProfessionalProfilesPresenter,
+        MarqueeSharedPreference.OnPreferenceChangeListener {
     private DetailPresentation castPresentation;
     private int image_list_size = 0;
-    private int profile_size = 0;
     private int url_pos = 0;
+    private int profile_pos = 0;
     private int no_of_q = 0;
     private int sequence = -1;
-    private int text_list_pos = 0;
     private List<String> urlList = new ArrayList<>();
-    private List<String> textList = new ArrayList<>();
     private JsonAdvertisement jsonAdvertisement_profile, jsonAdvertisement_images;
+    private JsonProfessionalProfileTVList jsonProfessionalProfileTVList;
     private HashMap<String, JsonTopic> topicHashMap = new HashMap<>();
     private List<TopicAndQueueTV> topicAndQueueTVList = new ArrayList<>();
     private FetchLatestData fetchLatestData;
@@ -80,12 +81,20 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
     private boolean callAdvertisement = true;
     private boolean callFirstTime = true;
     private int timerCount = 0;
+    private ScrollTextView scrolltext;
+    private boolean isMarqueeInit = false;
+
+
+    private List<String> marqueeList = new ArrayList<>();
 
     @Override
     public void onCreatePresentation(Display display) {
         dismissPresentation();
         castPresentation = new DetailPresentation(this, display);
+        MarqueeSharedPreference.init(getApplicationContext());
+        MarqueeSharedPreference.onPreferenceChangeListener = this;
         try {
+            marqueeList = MarqueeSharedPreference.getMarquee();
             castPresentation.show();
         } catch (WindowManager.InvalidDisplayException ex) {
             dismissPresentation();
@@ -134,7 +143,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
 
     public void setAdvertisementList(JsonAdvertisementList jsonAdvertisementList, int no_of_q) {
         Log.e("setAdvertisementList", "called");
-        if (jsonAdvertisementList.getJsonAdvertisements().size() > 0) {
+        if (null != jsonAdvertisementList && null != jsonAdvertisementList.getJsonAdvertisements() && jsonAdvertisementList.getJsonAdvertisements().size() > 0) {
             jsonAdvertisement_images = null;
             image_list_size = 0;
             urlList = new ArrayList<>();
@@ -164,19 +173,16 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                             break;
                         case PP:
                             if (null != jsonAdvertisement.getJsonProfessionalProfileTV()) {
-                                profile_size = 1;
                                 jsonAdvertisement_profile = jsonAdvertisement;
                                 Log.e("Advertisement: ", "Profile called");
                             }
                             break;
                         default:
                     }
-
                 }
             }
         }
         this.no_of_q = no_of_q;
-
     }
 
     @Override
@@ -219,12 +225,31 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         fetchLatestData = null;
     }
 
+    @Override
+    public void professionalProfilesResponse(JsonProfessionalProfileTVList jsonProfessionalProfileTVList) {
+        this.jsonProfessionalProfileTVList = jsonProfessionalProfileTVList;
+    }
+
+    @Override
+    public void onPreferenceChange() {
+        marqueeList = MarqueeSharedPreference.getMarquee();
+        String str = "";
+        for (int i = 0; i < marqueeList.size(); i++) {
+            str += getString(R.string.bullet) + " " + marqueeList.get(i) + " \t";
+        }
+        Log.e("List: ", str);
+        scrolltext.setText(str);
+        scrolltext.startScroll();
+    }
+
     public class DetailPresentation extends CastPresentation {
-        private ImageView image, image1, iv_advertisement, iv_profile;
-        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1, tv_doctor_name,
-                tv_doctor_category, tv_doctor_degree, tv_about_doctor, tv_info1;
-        private LinearLayout ll_list, ll_profile, ll_no_list;
+        private ImageView image, image1, iv_advertisement;
+        private TextView title, tv_timing, tv_degree, title1, tv_timing1, tv_degree1,
+                tv_info1, tv_category, tv_category1,tv_experience;
+        ;
+        private LinearLayout ll_list, ll_no_list;
         private Context context;
+
 
         public DetailPresentation(Context context, Display display) {
             super(context, display);
@@ -238,7 +263,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             image = findViewById(R.id.ad_image);
             image1 = findViewById(R.id.ad_image1);
             iv_advertisement = findViewById(R.id.iv_advertisement);
-            iv_profile = findViewById(R.id.iv_profile);
             title = findViewById(R.id.ad_title);
             tv_timing = findViewById(R.id.tv_timing);
             tv_degree = findViewById(R.id.tv_degree);
@@ -246,46 +270,40 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             title1 = findViewById(R.id.ad_title1);
             tv_timing1 = findViewById(R.id.tv_timing1);
             tv_degree1 = findViewById(R.id.tv_degree1);
-            tv_doctor_name = findViewById(R.id.tv_doctor_name);
-            tv_doctor_category = findViewById(R.id.tv_doctor_category);
-            tv_doctor_degree = findViewById(R.id.tv_doctor_degree);
-            tv_about_doctor = findViewById(R.id.tv_about_doctor);
             tv_info1 = findViewById(R.id.tv_info1);
+            tv_category = findViewById(R.id.tv_category);
+            tv_category1 = findViewById(R.id.tv_category1);
+            tv_experience = findViewById(R.id.tv_experience);
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
-            ll_profile = findViewById(R.id.ll_profile);
-            textList.add("Doctor is now available on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Save time. Book appointment online on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Forgot your medical file. Now medical records are securely available on <font color='#8c1515'><b>NoQApp</b></font>");
-            textList.add("See all your medical records online on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Get real time appointment updates on <font color='#8c1515'><b>NoQApp</b></font>.");
-            textList.add("Front desk can book your appointment just by your phone number.");
-            textList.add("Download <font color='#8c1515'><b>NoQApp</b></font> from Google Play Store.");
             no_of_q = topicAndQueueTVList.size();
-            TextView tv_marquee = findViewById(R.id.tv_marquee);
-            String str = getString(R.string.bullet) + " We do not track your activities \t" +
-                    getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
-                    getString(R.string.bullet) + " We are not affiliated to any social media \t" +
-                    getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
-            tv_marquee.setText(str);
-            tv_marquee.setMarqueeRepeatLimit(-1);
-            tv_marquee.setSelected(true);
-            //setMarqueeSpeed(tv_marquee,5);
 
-            ScrollTextView scrolltext = findViewById(R.id.scrolltext);
-            scrolltext.setText(str);
-            scrolltext.startScroll();
+//            String str = getString(R.string.bullet) + " We do not track your activities \t" +
+//                    getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
+//                    getString(R.string.bullet) + " We are not affiliated to any social media \t" +
+//                    getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
+            scrolltext = findViewById(R.id.scrolltext);
             updateDetail();
         }
 
         public void updateDetail() {
             TopicAndQueueTV topicAndQueueTV = null;
+            if (!isMarqueeInit) {
+                String str = "";
+                for (int i = 0; i < marqueeList.size(); i++) {
+                    str += getString(R.string.bullet) + " " + marqueeList.get(i) + " \t";
+                }
+                Log.e("List: ", str);
+                scrolltext.setText(str);
+                scrolltext.startScroll();
+                isMarqueeInit = true;
+            }
             try {
 
                 ++sequence;
-                if (sequence >= no_of_q + image_list_size + profile_size) {
-
-                    Log.e("sequence", "sequence " + sequence + " no_of_q: " + no_of_q + " image_list_size: " + image_list_size + " profile_size: " + profile_size);
+                if (sequence >= no_of_q + image_list_size) {
+                    Log.e("sequence", "sequence " + sequence + " no_of_q: " + no_of_q
+                            + " image_list_size: " + image_list_size);
                     sequence = 0;
                     Log.e("sequence reset", "" + sequence);
                 }
@@ -297,42 +315,7 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             }
 
             if (sequence >= no_of_q) {
-                if (null != jsonAdvertisement_profile && no_of_q + profile_size == sequence + 1) {
-                    Log.e("Inside Profile", "profile :" + sequence);
-                    ll_profile.setVisibility(View.VISIBLE);
-                    iv_advertisement.setVisibility(View.GONE);
-                    ll_no_list.setVisibility(View.GONE);
-                    String imageName = jsonAdvertisement_profile.getJsonProfessionalProfileTV().getProfileImage();
-                    if (StringUtils.isNotBlank(imageName)) {
-                        if (imageName.contains(".")) {
-                            String[] file = imageName.split("\\.");
-                            imageName = file[0] + "_o." + file[1];
-                        }
-                    } else {
-                        imageName = "";
-                    }
-
-                    Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageName).into(iv_profile, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Picasso.get().load(R.drawable.profile_tv).into(iv_profile);
-                        }
-                    });
-                    tv_doctor_name.setText("Dr. " + jsonAdvertisement_profile.getJsonProfessionalProfileTV().getName());
-                    tv_doctor_category.setText(jsonAdvertisement_profile.getJsonProfessionalProfileTV().getProfessionType());
-                    tv_doctor_degree.setText(getSelectedData(jsonAdvertisement_profile.getJsonProfessionalProfileTV().getEducation()));
-                    tv_about_doctor.setText(jsonAdvertisement_profile.getJsonProfessionalProfileTV().getAboutMe());
-                } else {
-                    ll_profile.setVisibility(View.GONE);
-                }
-
-                if (null != jsonAdvertisement_images && sequence + 1 > no_of_q + profile_size) {
-                    ll_profile.setVisibility(View.GONE);
+                if (null != jsonAdvertisement_images && sequence + 1 > no_of_q) {
                     ll_no_list.setVisibility(View.GONE);
                     Log.e("Inside Images", "Images: " + sequence);
                     if (url_pos < urlList.size()) {
@@ -351,13 +334,54 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             } else {
                 Log.e("Check error", "Inside List: " + sequence);
                 url_pos = 0;
-                ll_profile.setVisibility(View.GONE);
                 iv_advertisement.setVisibility(View.GONE);
                 ll_no_list.setVisibility(View.VISIBLE);
+                if (null != jsonProfessionalProfileTVList && jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size() > 0) {
+                    // do something
+                    if (profile_pos >= jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().size()) {
+                        profile_pos = 0;
+                    }
+                    JsonProfessionalProfileTV jsonProfessionalProfileTV = jsonProfessionalProfileTVList.getJsonProfessionalProfileTV().get(profile_pos);
+                    ++profile_pos;
+                    title1.setText(jsonProfessionalProfileTV.getName());
+                    tv_category1.setText(jsonProfessionalProfileTV.getProfessionType());
+                    tv_timing1.setText(jsonProfessionalProfileTV.getAboutMe());
+                    if (!TextUtils.isEmpty(jsonProfessionalProfileTV.getPracticeStart())) {
+                        try {
+                            // Format - practiceStart='2017-08-07'
+                            DateTime dateTime = new DateTime(CommonHelper.SDF_YYYY_MM_DD.parse(jsonProfessionalProfileTV.getPracticeStart()));
+                            Period period = new Period(dateTime, new DateTime());
+                            tv_experience.setText(String.valueOf(period.getYears()) + "+ yrs experience");
+                            if (0 == period.getYears())
+                                tv_experience.setText(" ");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()))) {
+                        tv_degree1.setText(new AppUtils().getCompleteEducation(jsonProfessionalProfileTV.getEducation()));
+                    } else {
+                        tv_degree1.setText("");
+                    }
+                    if (TextUtils.isEmpty(jsonProfessionalProfileTV.getProfileImage())) {
+                        Picasso.get().load(R.drawable.profile_tv).into(image1);
+                    } else {
+                        Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + jsonProfessionalProfileTV.getProfileImage()).into(image1, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get().load(R.drawable.profile_tv).into(image1);
+                            }
+                        });
+                    }
+                }
                 if (null != topicAndQueueTV && null != topicAndQueueTV.getJsonQueueTV()) {
                     if (TextUtils.isEmpty(topicAndQueueTV.getJsonQueueTV().getProfileImage())) {
                         Picasso.get().load(R.drawable.profile_tv).into(image);
-                        Picasso.get().load(R.drawable.profile_tv).into(image1);
                     } else {
                         Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image, new Callback() {
                             @Override
@@ -370,34 +394,17 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                 Picasso.get().load(R.drawable.profile_tv).into(image);
                             }
                         });
-                        Picasso.get().load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + topicAndQueueTV.getJsonQueueTV().getProfileImage()).into(image1, new Callback() {
-                            @Override
-                            public void onSuccess() {
-
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                Picasso.get().load(R.drawable.profile_tv).into(image1);
-                            }
-                        });
                     }
                     title.setText(topicAndQueueTV.getJsonTopic().getDisplayName());
+                    tv_category.setText(MedicalDepartmentEnum.valueOf(topicAndQueueTV.getJsonTopic().getBizCategoryId()).getDescription());
                     if (!TextUtils.isEmpty(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()))) {
-                        tv_degree.setText(" (" + new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()) + ") ");
+                        tv_degree.setText(new AppUtils().getCompleteEducation(topicAndQueueTV.getJsonQueueTV().getEducation()));
                     } else {
                         tv_degree.setText("");
                     }
                     tv_timing.setText("Timing: " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getStartHour())
                             + " - " + Formatter.convertMilitaryTo12HourFormat(topicAndQueueTV.getJsonTopic().getHour().getEndHour()));
-                    title1.setText(title.getText().toString());
-                    tv_degree1.setText(tv_degree.getText().toString());
-                    tv_timing1.setText(tv_timing.getText().toString());
-                    if (text_list_pos >= textList.size()) {
-                        text_list_pos = 0;
-                    }
-                    tv_info1.setText(Html.fromHtml(textList.get(text_list_pos)));
-                    ++text_list_pos;
+
                     ll_list.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(this.context);
                     if (null != topicAndQueueTV.getJsonQueueTV().getJsonQueuedPersonTVList()) {
@@ -410,10 +417,10 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
                                     }
                                 }
                         );
-                        if (data.size() > 0) {
+                       // if (data.size() > 0) {
                             View v = inflater.inflate(R.layout.lay_header, null, false);
                             ll_list.addView(v);
-                        }
+                      //  }
                         for (int i = 0; i < data.size(); i++) {
                             View customView = inflater.inflate(R.layout.lay_text, null, false);
                             View cardview = customView.findViewById(R.id.cardview);
@@ -534,7 +541,9 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             if (callAdvertisement) {
                 AdvertisementApiCalls advertisementApiCalls = new AdvertisementApiCalls();
                 advertisementApiCalls.setAdvertisementPresenter(PresentationService.this);
+                advertisementApiCalls.setProfessionalProfilesPresenter(PresentationService.this);
                 advertisementApiCalls.getAllAdvertisements(UserUtils.getDeviceId(), LaunchActivity.getLaunchActivity().getEmail(), LaunchActivity.getLaunchActivity().getAuth());
+                advertisementApiCalls.professionalProfiles(UserUtils.getDeviceId(), LaunchActivity.getLaunchActivity().getEmail(), LaunchActivity.getLaunchActivity().getAuth());
                 callAdvertisement = false;
             }
         }
@@ -588,38 +597,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public static void setMarqueeSpeed(TextView tv, float speed) {
-        //Make sure that you call this method only after tv.setText() and tv.setSelected(true).
-        // Otherwise it will not work.
-        if (tv != null) {
-            try {
-                Field f = null;
-                if (tv instanceof AppCompatTextView) {
-                    f = tv.getClass().getSuperclass().getDeclaredField("mMarquee");
-                } else {
-                    f = tv.getClass().getDeclaredField("mMarquee");
-                }
-                if (f != null) {
-                    f.setAccessible(true);
-                    Object marquee = f.get(tv);
-                    if (marquee != null) {
-                        String scrollSpeedFieldName = "mScrollUnit";
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            scrollSpeedFieldName = "mPixelsPerSecond";
-                        }
-                        Field mf = marquee.getClass().getDeclaredField(scrollSpeedFieldName);
-                        mf.setAccessible(true);
-                        mf.setFloat(marquee, speed);
-                    }
-                } else {
-                    //Logger.e("Marquee", "mMarquee object is null.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }

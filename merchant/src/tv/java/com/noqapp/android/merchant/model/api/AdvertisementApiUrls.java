@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.model.api;
 
+import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
 
@@ -32,6 +33,21 @@ public interface AdvertisementApiUrls {
 
     @GET("api/tv/vigyapan/all.json")
     Call<JsonAdvertisementList> getAllAdvertisements(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
+    );
+
+    @GET("api/tv/vigyapan/professionalProfiles.json")
+    Call<JsonProfessionalProfileTVList> professionalProfiles(
             @Header("X-R-DID")
             String did,
 

@@ -23,8 +23,11 @@ import com.noqapp.android.client.views.activities.LaunchActivity;
 import com.noqapp.android.client.views.activities.QueueHistoryDetailActivity;
 import com.noqapp.android.client.views.adapters.QueueHistoryAdapter;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class QueueHistoryFragment extends BaseFragment implements
         QueueHistoryAdapter.OnItemClickListener, QueueHistoryPresenter {
@@ -71,6 +74,17 @@ public class QueueHistoryFragment extends BaseFragment implements
     @Override
     public void queueHistoryResponse(JsonQueueHistoricalList jsonQueueHistoricalList) {
         listData = new ArrayList<>(jsonQueueHistoricalList.getQueueHistoricals());
+        Collections.sort(listData, new Comparator<JsonQueueHistorical>() {
+            public int compare(JsonQueueHistorical o1, JsonQueueHistorical o2) {
+                try {
+                    return CommonHelper.SDF_ISO8601_FMT.parse(o2.getCreated()).
+                            compareTo(CommonHelper.SDF_ISO8601_FMT.parse(o1.getCreated()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        });
         //add all items
         QueueHistoryAdapter queueHistoryAdapter = new QueueHistoryAdapter(listData, getActivity(), this);
         rcv_order_history.setAdapter(queueHistoryAdapter);

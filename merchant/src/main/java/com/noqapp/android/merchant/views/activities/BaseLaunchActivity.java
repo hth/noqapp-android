@@ -280,8 +280,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             case R.drawable.pharmacy:
                 callPreferredStore();
                 break;
-            case R.drawable.appointment:
-                callAppointments();
+            case R.drawable.ic_add:
+                callMarqueeSettings();
+                break;
+            case R.drawable.add_user:
+                callAddPatient();
                 break;
             default:
 
@@ -558,7 +561,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 if (fragmentCommunicator != null) {
                     fragmentCommunicator.passDataToFragment(qrcode, current_serving, status, lastno, payload);
                 }
-            }  else if (object instanceof JsonClientOrderData) {
+            } else if (object instanceof JsonClientOrderData) {
                 Log.e("JsonClientOrderData", ((JsonClientOrderData) object).toString());
             }
         }
@@ -783,7 +786,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     }
 
-    public void callAppointments() {
+    public void callMarqueeSettings() {
+
+    }
+
+    public void callAddPatient() {
 
     }
 

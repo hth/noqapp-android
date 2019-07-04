@@ -81,7 +81,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private List<String> yes_no_list = new ArrayList<>();
     private LinearLayout ll_payment, ll_follow_up;
     private TextView tv_fee_after_discounted_followup;
-    private CardView cv_payment;
+    private CardView cv_payment,cv_appointment;
     private boolean isFollowUpAllow = false;
     private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting, iv_payment_setting, iv_appointment_setting;
     private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting, ll_payment_setting, ll_appointment_setting;
@@ -168,9 +168,11 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         ll_payment = findViewById(R.id.ll_payment);
         ll_follow_up = findViewById(R.id.ll_follow_up);
         cv_payment = findViewById(R.id.cv_payment);
+        cv_appointment = findViewById(R.id.cv_appointment);
         codeQR = getIntent().getStringExtra("codeQR");
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && BusinessTypeEnum.DO == BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && BusinessTypeEnum.DO ==
+                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()) {
             ll_follow_up.setVisibility(View.VISIBLE);
             cv_payment.setVisibility(View.VISIBLE);
             isFollowUpAllow = true;
@@ -178,6 +180,14 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             ll_follow_up.setVisibility(View.GONE);
             cv_payment.setVisibility(View.GONE);
             isFollowUpAllow = false;
+        }
+
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() &&( BusinessTypeEnum.DO ==
+                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()||BusinessTypeEnum.HS ==
+                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())) {
+            cv_appointment.setVisibility(View.VISIBLE);
+        } else {
+            cv_appointment.setVisibility(View.GONE);
         }
 
         yes_no_list.clear();

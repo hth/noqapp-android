@@ -56,6 +56,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -99,6 +100,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     private long mLastClickTime = 0;
     protected LinearLayout ll_mobile;
     protected LinearLayout ll_main_section;
+    protected TextView tv_appointment_count;
+    protected FrameLayout fl_appointment;
 
     public static void setAdapterCallBack(AdapterCallback adapterCallback) {
         mAdapterCallback = adapterCallback;
@@ -126,6 +129,8 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         tv_total_value = itemView.findViewById(R.id.tv_total_value);
         tv_title = itemView.findViewById(R.id.tv_title);
         tv_timing = itemView.findViewById(R.id.tv_timing);
+        tv_appointment_count = itemView.findViewById(R.id.tv_appointment_count);
+        fl_appointment = itemView.findViewById(R.id.fl_appointment);
         chronometer = itemView.findViewById(R.id.chronometer);
 
         rv_queue_people = itemView.findViewById(R.id.rv_queue_people);
@@ -371,6 +376,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
     public void queuePersonListResponse(JsonQueuePersonList jsonQueuePersonList) {
         if (null != jsonQueuePersonList) {
             jsonQueuedPersonArrayList = jsonQueuePersonList.getQueuedPeople();
+            tv_appointment_count.setText(String.valueOf(jsonQueuePersonList.getAppointmentCountForToday()));
             Collections.sort(jsonQueuedPersonArrayList, (lhs, rhs) -> Integer.compare(lhs.getToken(), rhs.getToken()));
             peopleInQAdapter = new PeopleInQAdapter(
                     jsonQueuedPersonArrayList,
