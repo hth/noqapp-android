@@ -1,12 +1,11 @@
 package com.noqapp.android.merchant.views.activities;
 
-import com.noqapp.android.merchant.R;
+import android.content.Context;
 
 import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
-
-import android.content.Context;
+import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
