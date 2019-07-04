@@ -14,7 +14,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -34,6 +33,7 @@ import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.FirebaseMessageTypeEnum;
 import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
@@ -84,11 +84,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
             clearNotifications(this);
             Log.e("M-Notification: ",remoteMessage.getData().toString());
 
-            // add notification to DB
-
-            if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
-            }
             MessageOriginEnum messageOrigin = MessageOriginEnum.valueOf(remoteMessage.getData().get(Constants.MESSAGE_ORIGIN));
 
             Object object = null;
@@ -112,14 +107,7 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     }
                     break;
                 case CQO:
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        // Do nothing here
-                        Log.e("FCM", object.toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(LaunchActivity.getLaunchActivity(), "Parsing exception", Toast.LENGTH_SHORT).show();
-                    }
+                    // Do nothing here
                     break;
                 case QR:
                     try {
@@ -173,6 +161,11 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
 
             if (!isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
+                // add notification to DB
+
+                if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
+                }
                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                 pushNotification.putExtra(Constants.MESSAGE, body);
                 pushNotification.putExtra(Constants.QRCODE, remoteMessage.getData().get(Constants.CodeQR));
@@ -184,6 +177,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
             } else {
                 // app is in background, show the notification in notification tray
+                if (null == LaunchActivity.dbHandler) {
+                    LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                }
+                if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
+                }
                 sendNotification(title, body, remoteMessage);
             }
         }

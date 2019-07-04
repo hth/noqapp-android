@@ -597,7 +597,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             if (AppUtils.isRelease()) {
                 try {
                     String currentVersion = Constants.appVersion();
-                    if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
+                    if (Integer.parseInt(currentVersion.replace(".", "")) < Integer.
+                            parseInt(jsonLatestAppVersion.getLatestAppVersion().replace(".", ""))) {
                         ShowAlertInformation.showThemePlayStoreDialog(
                                 this,
                                 getString(R.string.playstore_update_title),
