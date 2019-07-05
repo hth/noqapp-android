@@ -177,8 +177,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                         view.setVisibility(View.GONE); // to hide  the login view when screen resize
                         LaunchActivity.getLaunchActivity().list_fragment.setLayoutParams(lp1);
                         LaunchActivity.getLaunchActivity().list_detail_fragment.setLayoutParams(lp2);
-                        LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
                     }
+                    LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
                     LaunchActivity.getLaunchActivity().setAccessGrant(true);
                     LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
                     LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
@@ -206,6 +206,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 Bundle b = new Bundle();
                 b.putString("errorMsg", getString(R.string.error_access_denied));
                 adf.setArguments(b);
+                LaunchActivity.getLaunchActivity().clearLoginData(false);
                 LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
             LaunchActivity.getLaunchActivity().setUserName();
