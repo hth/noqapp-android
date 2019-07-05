@@ -206,6 +206,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                 Bundle b = new Bundle();
                 b.putString("errorMsg", getString(R.string.error_access_denied));
                 adf.setArguments(b);
+                LaunchActivity.getLaunchActivity().clearLoginData(false);
                 LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
             }
             LaunchActivity.getLaunchActivity().setUserName();
