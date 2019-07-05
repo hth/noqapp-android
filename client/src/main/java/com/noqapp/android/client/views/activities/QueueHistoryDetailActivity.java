@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
@@ -44,6 +45,7 @@ public class QueueHistoryDetailActivity extends BaseActivity {
         TextView tv_total_order_amt = findViewById(R.id.tv_total_order_amt);
         TextView tv_discount_amount = findViewById(R.id.tv_discount_amount);
         TextView tv_grand_total = findViewById(R.id.tv_grand_total);
+        LinearLayout ll_order_details = findViewById(R.id.ll_order_details);
 
         final JsonQueueHistorical jsonQueueHistorical = (JsonQueueHistorical) getIntent().getExtras().getSerializable(IBConstant.KEY_DATA);
         tv_support.setOnClickListener((View v) -> {
@@ -141,6 +143,8 @@ public class QueueHistoryDetailActivity extends BaseActivity {
             } else {
                 tv_payment_status.setText("Payment status: " + jsonQueueHistorical.getJsonPurchaseOrder().getPaymentStatus().getDescription());
             }
+        }else{
+            ll_order_details.setVisibility(View.GONE);
         }
     }
 
