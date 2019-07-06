@@ -657,7 +657,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(getActivity(), "Medical History updated Successfully");
+            new CustomToast().showToast(getActivity(), "Medical History updated successfully");
             getActivity().finish();
         } else {
             new CustomToast().showToast(getActivity(), "Failed to update");
