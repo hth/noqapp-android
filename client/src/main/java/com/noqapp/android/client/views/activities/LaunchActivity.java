@@ -1,46 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.DeviceApiCall;
@@ -90,28 +49,78 @@ import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
+import android.Manifest;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import io.fabric.sdk.android.Fabric;
 import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
 public class LaunchActivity extends NoQueueBaseActivity implements OnClickListener, DeviceRegisterPresenter,
         AppBlacklistPresenter, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = LaunchActivity.class.getSimpleName();
-
-    private TextView tv_badge;
+    public static DatabaseHelper dbHandler;
+    public static Locale locale;
+    public static SharedPreferences languagepref;
+    public static String language;
+    private static LaunchActivity launchActivity;
     public TextView tv_location;
+    public NetworkUtil networkUtil;
+    public ActivityCommunicator activityCommunicator;
+    public double latitute = 0;
+    public double longitute = 0;
+    public String cityName = "";
+    protected ExpandableListView expandable_drawer_listView;
+    private TextView tv_badge;
     private long lastPress;
     private Toast backPressToast;
     private FcmNotificationReceiver fcmNotificationReceiver;
@@ -119,18 +128,6 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private TextView tv_name, tv_email, tv_version;
     private HomeFragment homeFragment;
     private DrawerLayout drawer;
-    protected ExpandableListView expandable_drawer_listView;
-    public static DatabaseHelper dbHandler;
-    public static Locale locale;
-    public static SharedPreferences languagepref;
-    public static String language;
-    private static LaunchActivity launchActivity;
-    public NetworkUtil networkUtil;
-    public ActivityCommunicator activityCommunicator;
-
-    public double latitute = 0;
-    public double longitute = 0;
-    public String cityName = "";
     private List<MenuModel> headerList = new ArrayList<>();
 
     public static LaunchActivity getLaunchActivity() {
@@ -664,6 +661,324 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         AppUtilities.authenticationProcessing(this);
     }
 
+    private void updateNotification(Object object, String codeQR) {
+        String go_to = "";
+        String messageOrigin = "";
+        String current_serving = "";
+        String title = "";
+        String body = "";
+        PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
+        if (object instanceof JsonTopicQueueData) {
+            current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+            go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
+            messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            title = ((JsonTopicQueueData) object).getTitle();
+            body = ((JsonTopicQueueData) object).getBody();
+        } else if (object instanceof JsonTopicOrderData) {
+            current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
+            go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
+            messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
+            purchaseOrderStateEnum = ((JsonTopicOrderData) object).getPurchaseOrderState();
+            title = ((JsonTopicOrderData) object).getTitle();
+            body = ((JsonTopicOrderData) object).getBody();
+        }
+        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
+        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
+            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
+            if (null != jtk) {
+                //update DB & after join screen
+                if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
+                    // Do nothing - In Case of getting service no less than what the object have
+                } else {
+                    jtk.setServingNumber(Integer.parseInt(current_serving));
+                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
+                }
+
+                if (object instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
+                    jtk.setPurchaseOrderState(purchaseOrderStateEnum);
+                }
+                /*
+                 * Save codeQR of goto & show it in after join screen on app
+                 * Review DB for review key && current serving == token no.
+                 */
+                if (Integer.parseInt(current_serving) == jtk.getToken()) {
+                    // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
+                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                    if (null != reviewData) {
+                        ContentValues cv = new ContentValues();
+                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                        // update
+                    } else {
+                        //insert
+                        ContentValues cv = new ContentValues();
+                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                        cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
+                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
+                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
+                        ReviewDB.insert(cv);
+                    }
+                }
+
+                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
+                    //un subscribe the topic
+                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
+                }
+
+                if (activityCommunicator != null) {
+                    boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
+
+                    if (isUpdated) {
+                        ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
+                        if (null != reviewData) {
+                            if (!reviewData.getIsBuzzerShow().equals("1")) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                                ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
+                                Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
+                                startActivity(blinker);
+                            } else {
+                                //Blinker already shown
+                            }
+                            // update
+                        } else {
+                            //insert
+                            ContentValues cv = new ContentValues();
+                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
+                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
+                            cv.put(DatabaseTable.Review.TOKEN, current_serving);
+                            cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
+                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
+                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
+                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
+                            ReviewDB.insert(cv);
+                            Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
+                            startActivity(blinker);
+                        }
+                    }
+                }
+                try {
+                    // In case of order update the order status
+                    if (object instanceof JsonTopicOrderData) {
+                        if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
+                            jtk.setPurchaseOrderState(((JsonTopicOrderData) object).getPurchaseOrderState());
+                            TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
+                        }
+                    }
+                    homeFragment.updateListFromNotification(jtk, go_to, title, body);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
+            }
+        }
+    }
+
+    public void reCreateDeviceID() {
+        String deviceId = UUID.randomUUID().toString().toUpperCase();
+        Log.d(TAG, "Re-Created deviceId=" + deviceId);
+        NoQueueBaseActivity.setDeviceID(deviceId);
+        DeviceApiCall deviceModel = new DeviceApiCall();
+        deviceModel.setDeviceRegisterPresenter(this);
+        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
+    }
+
+    @Override
+    public void deviceRegisterError() {
+
+    }
+
+    @Override
+    public void responseErrorPresenter(ErrorEncounteredJson eej) {
+        //dismissProgress(); no progress bar silent call here
+        new ErrorResponseHandler().processError(this, eej);
+    }
+
+    @Override
+    public void responseErrorPresenter(int errorCode) {
+        //dismissProgress(); no progress bar silent call here
+        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
+    }
+
+    @Override
+    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
+        if (deviceRegistered.getRegistered() == 1) {
+            Log.e("Device register", "deviceRegister Success");
+        } else {
+            Log.e("Device register error: ", deviceRegistered.toString());
+            new CustomToast().showToast(this, "Device register error: ");
+        }
+    }
+
+    private void setUpExpandableList(boolean isLogin) {
+        // Fill menu items
+        headerList.clear();
+
+        List<MenuModel> healthList = new ArrayList<>();
+        healthList.add(new MenuModel(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
+        healthList.add(new MenuModel(getString(R.string.medical_history), false, false, R.drawable.medical_history));
+        healthList.add(new MenuModel(getString(R.string.my_appointments), false, false, R.drawable.appointment));
+
+        headerList.add(new MenuModel(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
+        headerList.add(new MenuModel(getString(R.string.order_history), true, false, R.drawable.purchase_order));
+        headerList.add(new MenuModel(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
+        headerList.add(new MenuModel(getString(R.string.offers), true, false, R.drawable.offers));
+
+        List<MenuModel> settingList = new ArrayList<>();
+        settingList.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
+        settingList.add(new MenuModel(getString(R.string.invite), false, false, R.drawable.invite));
+        settingList.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
+        settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
+        settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
+        if (isLogin) {
+            settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+        }
+        headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
+        headerList.add(new MenuModel(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
+        if (isLogin) {
+            headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));
+        }
+
+        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList);
+        expandable_drawer_listView.setAdapter(expandableListAdapter);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        expandable_drawer_listView.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            if (headerList.get(groupPosition).isGroup()) {
+                if (!headerList.get(groupPosition).isHasChildren()) {
+                    int drawableId = headerList.get(groupPosition).getIcon();
+                    menuClick(drawableId);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+            }
+            return false;
+        });
+
+        expandable_drawer_listView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (headerList.get(groupPosition) != null) {
+                MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
+                int drawableId = model.getIcon();
+                menuClick(drawableId);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+            return false;
+        });
+    }
+
+    private void menuClick(int drawable) {
+        switch (drawable) {
+            case R.drawable.merchant_account:
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
+                    in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
+                    startActivity(in);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
+                }
+                break;
+            case R.drawable.purchase_order: {
+                Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_app_setting: {
+                Intent in = new Intent(launchActivity, SettingsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.offers: {
+                Intent in = new Intent(launchActivity, CouponsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_notification: {
+                Intent in = new Intent(launchActivity, NotificationSettings.class);
+                startActivity(in);
+                break;
+            }
+            case R.id.nav_transaction:
+                new CustomToast().showToast(launchActivity, "Coming soon... ");
+                break;
+            case R.drawable.ic_logout:
+                ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        NoQueueBaseActivity.clearPreferences();
+                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
+                        startActivity(loginIntent);
+                    }
+
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
+                break;
+            case R.drawable.medical_history: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
+                    startActivity(in);
+                } else {
+                    new CustomToast().showToast(launchActivity, "Please login to see the details");
+                }
+                break;
+            }
+            case R.drawable.medical_profile: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
+                    startActivity(in);
+                } else {
+                    new CustomToast().showToast(launchActivity, "Please login to see the details");
+                }
+                break;
+            }
+            case R.drawable.appointment: {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(launchActivity, MyAppointmentsActivity.class);
+                    startActivity(in);
+                } else {
+                    new CustomToast().showToast(launchActivity, "Please login to see the details");
+                }
+                break;
+            }
+            case R.drawable.language:
+                showChangeLangDialog();
+                break;
+            case R.drawable.contact_us: {
+                Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.ic_star:
+                AppUtilities.openPlayStore(launchActivity);
+                break;
+            case R.drawable.ic_menu_share:
+                if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
+                    AppUtilities.shareTheApp(launchActivity);
+                } else {
+                    PermissionUtils.requestStoragePermission(launchActivity);
+                }
+                break;
+            case R.drawable.legal: {
+                Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
+                startActivity(in);
+                break;
+            }
+            case R.drawable.invite: {
+                Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
+                startActivity(in);
+                break;
+            }
+        }
+    }
+
     public class FcmNotificationReceiver extends BroadcastReceiver {
         public boolean isRegistered;
 
@@ -671,7 +986,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             try {
                 if (!isRegistered) {
                     LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-                    Log.e("FCM Reciver: ", "register");
+                    Log.e("FCM Receiver: ", "register");
                     isRegistered = true;
                 }
             } catch (Exception e) {
@@ -859,333 +1174,5 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                 }
             }
         }
-
     }
-
-    private void updateNotification(Object object, String codeQR) {
-        String go_to = "";
-        String messageOrigin = "";
-        String current_serving = "";
-        String title = "";
-        String body = "";
-        PurchaseOrderStateEnum purchaseOrderStateEnum = PurchaseOrderStateEnum.IN;
-        if (object instanceof JsonTopicQueueData) {
-            current_serving = String.valueOf(((JsonTopicQueueData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
-            go_to = ((JsonTopicQueueData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-            messageOrigin = ((JsonTopicQueueData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
-            title = ((JsonTopicQueueData) object).getTitle();
-            body = ((JsonTopicQueueData) object).getBody();
-        } else if (object instanceof JsonTopicOrderData) {
-            current_serving = String.valueOf(((JsonTopicOrderData) object).getCurrentlyServing());//intent.getStringExtra(Constants.CurrentlyServing);
-            go_to = ((JsonTopicOrderData) object).getGoTo();//intent.getStringExtra(Constants.GoTo_Counter);
-            messageOrigin = ((JsonTopicOrderData) object).getMessageOrigin().name();//intent.getStringExtra(Constants.MESSAGE_ORIGIN);
-            purchaseOrderStateEnum = ((JsonTopicOrderData) object).getPurchaseOrderState();
-            title = ((JsonTopicOrderData) object).getTitle();
-            body = ((JsonTopicOrderData) object).getBody();
-        }
-        ArrayList<JsonTokenAndQueue> jsonTokenAndQueueArrayList = TokenAndQueueDB.getCurrentQueueObjectList(codeQR);
-        for (int i = 0; i < jsonTokenAndQueueArrayList.size(); i++) {
-            JsonTokenAndQueue jtk = jsonTokenAndQueueArrayList.get(i);
-            if (null != jtk) {
-                //update DB & after join screen
-                if (Integer.parseInt(current_serving) < jtk.getServingNumber()) {
-                    // Do nothing - In Case of getting service no less than what the object have
-                } else {
-                    jtk.setServingNumber(Integer.parseInt(current_serving));
-                    TokenAndQueueDB.updateCurrentListQueueObject(codeQR, current_serving, String.valueOf(jtk.getToken()));
-                }
-
-                if (object instanceof JsonTopicOrderData && jtk.getToken() - Integer.parseInt(current_serving) <= 0) {
-                    jtk.setPurchaseOrderState(purchaseOrderStateEnum);
-                }
-                /*
-                 * Save codeQR of goto & show it in after join screen on app
-                 * Review DB for review key && current serving == token no.
-                 */
-                if (Integer.parseInt(current_serving) == jtk.getToken()) {
-                    // if (Integer.parseInt(current_serving) == jtk.getToken() && isReview) {
-                    ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
-                    if (null != reviewData) {
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                        ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                        // update
-                    } else {
-                        //insert
-                        ContentValues cv = new ContentValues();
-                        cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                        cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                        cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                        cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
-                        cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "-1");
-                        cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                        cv.put(DatabaseTable.Review.KEY_GOTO, go_to);
-                        ReviewDB.insert(cv);
-                    }
-                }
-
-                if (jtk.isTokenExpired() && jsonTokenAndQueueArrayList.size() == 1) {
-                    //un subscribe the topic
-                    NoQueueMessagingService.unSubscribeTopics(jtk.getTopic());
-                }
-
-                if (activityCommunicator != null) {
-                    boolean isUpdated = activityCommunicator.updateUI(codeQR, jtk, go_to);
-
-                    if (isUpdated) {
-                        ReviewData reviewData = ReviewDB.getValue(codeQR, current_serving);
-                        if (null != reviewData) {
-                            if (!reviewData.getIsBuzzerShow().equals("1")) {
-                                ContentValues cv = new ContentValues();
-                                cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                                ReviewDB.updateReviewRecord(codeQR, current_serving, cv);
-                                Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                                startActivity(blinker);
-                            } else {
-                                //Blinker already shown
-                            }
-                            // update
-                        } else {
-                            //insert
-                            ContentValues cv = new ContentValues();
-                            cv.put(DatabaseTable.Review.KEY_REVIEW_SHOWN, -1);
-                            cv.put(DatabaseTable.Review.CODE_QR, codeQR);
-                            cv.put(DatabaseTable.Review.TOKEN, current_serving);
-                            cv.put(DatabaseTable.Review.QID, jtk.getQueueUserId());
-                            cv.put(DatabaseTable.Review.KEY_BUZZER_SHOWN, "1");
-                            cv.put(DatabaseTable.Review.KEY_SKIP, "-1");
-                            cv.put(DatabaseTable.Review.KEY_GOTO, "");
-                            ReviewDB.insert(cv);
-                            Intent blinker = new Intent(LaunchActivity.this, BlinkerActivity.class);
-                            startActivity(blinker);
-                        }
-                    }
-                }
-                try {
-                    // In case of order update the order status
-                    if (object instanceof JsonTopicOrderData) {
-                        if (messageOrigin.equalsIgnoreCase(MessageOriginEnum.O.name()) && Integer.parseInt(current_serving) == jtk.getToken()) {
-                            jtk.setPurchaseOrderState(((JsonTopicOrderData) object).getPurchaseOrderState());
-                            TokenAndQueueDB.updateCurrentListOrderObject(codeQR, jtk.getPurchaseOrderState().getName(), String.valueOf(jtk.getToken()));
-                        }
-                    }
-                    homeFragment.updateListFromNotification(jtk, go_to, title, body);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e(TAG, "codeQR=" + codeQR + " current_serving=" + current_serving + " goTo=" + go_to);
-            }
-        }
-    }
-
-    public void reCreateDeviceID() {
-        String deviceId = UUID.randomUUID().toString().toUpperCase();
-        Log.d(TAG, "Re-Created deviceId=" + deviceId);
-        NoQueueBaseActivity.setDeviceID(deviceId);
-        DeviceApiCall deviceModel = new DeviceApiCall();
-        deviceModel.setDeviceRegisterPresenter(this);
-        deviceModel.register(deviceId, new DeviceToken(NoQueueBaseActivity.getFCMToken(), Constants.appVersion()));
-    }
-
-    @Override
-    public void deviceRegisterError() {
-
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        //dismissProgress(); no progress bar silent call here
-        new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        //dismissProgress(); no progress bar silent call here
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
-    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        if (deviceRegistered.getRegistered() == 1) {
-            Log.e("Device register", "deviceRegister Success");
-        } else {
-            Log.e("Device register error: ", deviceRegistered.toString());
-            new CustomToast().showToast(this, "Device register error: ");
-        }
-    }
-
-    private void setUpExpandableList(boolean isLogin) {
-        // Fill menu items
-        headerList.clear();
-
-        List<MenuModel> healthList = new ArrayList<>();
-        healthList.add(new MenuModel(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
-        healthList.add(new MenuModel(getString(R.string.medical_history), false, false, R.drawable.medical_history));
-        healthList.add(new MenuModel(getString(R.string.my_appointments), false, false, R.drawable.appointment));
-
-        headerList.add(new MenuModel(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
-        headerList.add(new MenuModel(getString(R.string.order_history), true, false, R.drawable.purchase_order));
-        headerList.add(new MenuModel(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
-        headerList.add(new MenuModel(getString(R.string.offers), true, false, R.drawable.offers));
-
-        List<MenuModel> settingList = new ArrayList<>();
-        settingList.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
-        settingList.add(new MenuModel(getString(R.string.invite), false, false, R.drawable.invite));
-        settingList.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
-        settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
-        settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
-        settingList.add(new MenuModel(getString(R.string.title_activity_contact_us), false, false, R.drawable.contact_us));
-        if (isLogin) {
-            settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
-        }
-        headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
-        if (isLogin) {
-            headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));
-        }
-
-        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList);
-        expandable_drawer_listView.setAdapter(expandableListAdapter);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        expandable_drawer_listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (headerList.get(groupPosition).isGroup()) {
-                    if (!headerList.get(groupPosition).isHasChildren()) {
-                        int drawableId = headerList.get(groupPosition).getIcon();
-                        menuClick(drawableId);
-                        drawer.closeDrawer(GravityCompat.START);
-                    }
-                }
-                return false;
-            }
-        });
-
-        expandable_drawer_listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (headerList.get(groupPosition) != null) {
-                    MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
-                    int drawableId = model.getIcon();
-                    menuClick(drawableId);
-                    drawer.closeDrawer(GravityCompat.START);
-                }
-                return false;
-            }
-        });
-    }
-
-    private void menuClick(int drawable) {
-        switch (drawable) {
-            case R.drawable.merchant_account:
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    Intent in = new Intent(LaunchActivity.this, WebViewActivity.class);
-                    in.putExtra(IBConstant.KEY_URL, UserUtils.isLogin() ? Constants.URL_MERCHANT_LOGIN : Constants.URL_MERCHANT_REGISTER);
-                    startActivity(in);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(LaunchActivity.this);
-                }
-                break;
-            case R.drawable.purchase_order: {
-                Intent in = new Intent(LaunchActivity.this, OrderQueueHistoryActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.id.nav_app_setting: {
-                Intent in = new Intent(launchActivity, SettingsActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.drawable.offers: {
-                Intent in = new Intent(launchActivity, CouponsActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.drawable.ic_notification: {
-                Intent in = new Intent(launchActivity, NotificationSettings.class);
-                startActivity(in);
-                break;
-            }
-            case R.id.nav_transaction:
-                new CustomToast().showToast(launchActivity, "Coming soon... ");
-                break;
-            case R.drawable.ic_logout:
-                ShowCustomDialog showDialog = new ShowCustomDialog(launchActivity, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        NoQueueBaseActivity.clearPreferences();
-                        Intent loginIntent = new Intent(launchActivity, LoginActivity.class);
-                        startActivity(loginIntent);
-                    }
-
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog(getString(R.string.logout), getString(R.string.logout_msg));
-                break;
-            case R.drawable.medical_history: {
-                if (UserUtils.isLogin()) {
-                    Intent in = new Intent(launchActivity, MedicalHistoryActivity.class);
-                    startActivity(in);
-                } else {
-                    new CustomToast().showToast(launchActivity, "Please login to see the details");
-                }
-                break;
-            }
-            case R.drawable.medical_profile: {
-                if (UserUtils.isLogin()) {
-                    Intent in = new Intent(launchActivity, AllUsersProfileActivity.class);
-                    startActivity(in);
-                } else {
-                    new CustomToast().showToast(launchActivity, "Please login to see the details");
-                }
-                break;
-            }
-            case R.drawable.appointment: {
-                if (UserUtils.isLogin()) {
-                    Intent in = new Intent(launchActivity, MyAppointmentsActivity.class);
-                    startActivity(in);
-                } else {
-                    new CustomToast().showToast(launchActivity, "Please login to see the details");
-                }
-                break;
-            }
-            case R.drawable.language:
-                showChangeLangDialog();
-                break;
-            case R.drawable.contact_us: {
-                Intent in = new Intent(LaunchActivity.this, ContactUsActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.drawable.ic_star:
-                AppUtilities.openPlayStore(launchActivity);
-                break;
-            case R.drawable.ic_menu_share:
-                if (PermissionUtils.isExternalStoragePermissionAllowed(launchActivity)) {
-                    AppUtilities.shareTheApp(launchActivity);
-                } else {
-                    PermissionUtils.requestStoragePermission(launchActivity);
-                }
-                break;
-            case R.drawable.legal: {
-                Intent in = new Intent(LaunchActivity.this, PrivacyActivity.class);
-                startActivity(in);
-                break;
-            }
-            case R.drawable.invite: {
-                Intent in = new Intent(LaunchActivity.this, InviteActivity.class);
-                startActivity(in);
-                break;
-            }
-        }
-    }
-
-
-
 }
