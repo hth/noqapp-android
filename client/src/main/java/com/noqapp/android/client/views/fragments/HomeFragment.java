@@ -850,14 +850,14 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
                             .withRectangleShape(true)
                             .build()
             );
-            sequence.addSequenceItem(
-                    new MaterialShowcaseView.Builder(getActivity())
-                            .setTarget(rl_scan)
-                            .setDismissText("GOT IT")
-                            .setContentText("Click here to scan store QRCode to join their queue or place order")
-                            .withRectangleShape(true)
-                            .build()
-            );
+//            sequence.addSequenceItem(
+//                    new MaterialShowcaseView.Builder(getActivity())
+//                            .setTarget(rl_scan)
+//                            .setDismissText("GOT IT")
+//                            .setContentText("Click here to scan store QRCode to join their queue or place order")
+//                            .withRectangleShape(true)
+//                            .build()
+//            );
             sequence.addSequenceItem(
                     new MaterialShowcaseView.Builder(getActivity())
                             .setTarget(rl_current_activity)
