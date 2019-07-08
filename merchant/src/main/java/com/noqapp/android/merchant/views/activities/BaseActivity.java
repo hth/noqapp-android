@@ -26,19 +26,23 @@ public class BaseActivity extends AppCompatActivity implements ResponseErrorPres
     }
 
     protected void dismissProgress() {
-        customProgressBar.dismissProgress();
+        if (null != customProgressBar)
+            customProgressBar.dismissProgress();
     }
 
     protected void showProgress() {
-        customProgressBar.showProgress();
+        if (null != customProgressBar)
+            customProgressBar.showProgress();
     }
 
     protected void setProgressCancel(boolean isCancelled) {
-        customProgressBar.setProgressCancel(isCancelled);
+        if (null != customProgressBar)
+            customProgressBar.setProgressCancel(isCancelled);
     }
 
     protected void setProgressMessage(String msg) {
-        customProgressBar.setProgressMessage(msg);
+        if (null != customProgressBar)
+            customProgressBar.setProgressMessage(msg);
     }
 
     @Override
@@ -57,5 +61,12 @@ public class BaseActivity extends AppCompatActivity implements ResponseErrorPres
     public void authenticationFailure() {
         dismissProgress();
         AppUtils.authenticationProcessing();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (!isFinishing())
+            dismissProgress();
     }
 }

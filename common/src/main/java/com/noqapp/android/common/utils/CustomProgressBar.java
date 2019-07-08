@@ -1,5 +1,6 @@
 package com.noqapp.android.common.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -38,7 +39,13 @@ public class CustomProgressBar {
 
     public void showProgress() {
         if (null != dialog)
-            dialog.show();
+            if(!((Activity) context).isFinishing()){
+                //show dialog
+                dialog.show();
+            }else{
+                //Log the failure
+            }
+
     }
 
     public void setProgressCancel(boolean isCancelled) {
