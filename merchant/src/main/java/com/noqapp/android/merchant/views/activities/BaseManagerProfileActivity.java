@@ -75,7 +75,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
 
     private ImageView actionbarBack;
     private MerchantProfileApiCalls merchantProfileApiCalls;
-    protected  TabViewPagerAdapter adapter;
+    protected TabViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,14 +116,15 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
 
     @Override
     public void merchantResponse(JsonMerchant jsonMerchant) {
-        if (null != jsonMerchant) {
+        if (null != jsonMerchant && null != jsonMerchant.getJsonProfile()) {
             LaunchActivity.getLaunchActivity().setUserName(jsonMerchant.getJsonProfile().getName());
             LaunchActivity.getLaunchActivity().setUserLevel(jsonMerchant.getJsonProfile().getUserLevel().name());
             LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
             tv_profile_name.setText(jsonMerchant.getJsonProfile().getName());
-            userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
             Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             loadProfilePic(jsonMerchant.getJsonProfile().getProfileImage());
+            if (null != userProfileFragment)
+                userProfileFragment.updateUI(jsonMerchant.getJsonProfile());
         }
         dismissProgress();
     }
@@ -180,7 +181,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                         .load(BuildConfig.AWSS3 + BuildConfig.PROFILE_BUCKET + imageUrl)
                         .into(iv_profile);
                 tv_remove_image.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 tv_remove_image.setVisibility(View.GONE);
             }
         } catch (Exception e) {
@@ -231,7 +232,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     iv_profile.setImageBitmap(bitmap);
-                  //  String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
+                    //  String convertedPath = new ImagePathReader().getPathFromUri(this, selectedImage);
                     // NoQueueBaseActivity.setUserProfileUri(convertedPath);
                     String convertedPath = new FileUtils().getFilePath(this, data.getData());
                     if (!TextUtils.isEmpty(convertedPath)) {
@@ -325,7 +326,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
             tv_remove_image.setVisibility(View.GONE);
-            LaunchActivity.getLaunchActivity().setUserProfile( LaunchActivity.getLaunchActivity().getUserProfile().setProfileImage(""));
+            LaunchActivity.getLaunchActivity().setUserProfile(LaunchActivity.getLaunchActivity().getUserProfile().setProfileImage(""));
             new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
             new CustomToast().showToast(this, "Failed to remove profile image");
