@@ -25,19 +25,23 @@ public class BaseFragment extends Fragment implements ResponseErrorPresenter {
     }
 
     protected void dismissProgress() {
-        customProgressBar.dismissProgress();
+        if (null != customProgressBar)
+            customProgressBar.dismissProgress();
     }
 
     protected void showProgress() {
-        customProgressBar.showProgress();
+        if (null != customProgressBar)
+            customProgressBar.showProgress();
     }
 
     protected void setProgressCancel(boolean isCancelled) {
-        customProgressBar.setProgressCancel(isCancelled);
+        if (null != customProgressBar)
+            customProgressBar.setProgressCancel(isCancelled);
     }
 
     protected void setProgressMessage(String msg) {
-       customProgressBar.setProgressMessage(msg);
+        if (null != customProgressBar)
+            customProgressBar.setProgressMessage(msg);
     }
 
     @Override
