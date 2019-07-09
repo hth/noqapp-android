@@ -121,7 +121,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             }
         }
         setTopicAndQueueTV(topicAndQueueTVListTemp);
-
     }
 
     public void setTopicAndQueueTV(List<TopicAndQueueTV> topicAndQueueTVListTemp) {
@@ -277,11 +276,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
             ll_list = findViewById(R.id.ll_list);
             ll_no_list = findViewById(R.id.ll_no_list);
             no_of_q = topicAndQueueTVList.size();
-
-//            String str = getString(R.string.bullet) + " We do not track your activities \t" +
-//                    getString(R.string.bullet) + " We do not share your personal information with anyone \t" +
-//                    getString(R.string.bullet) + " We are not affiliated to any social media \t" +
-//                    getString(R.string.bullet) + " When you join a queue, a secure communication is between you, doctor and hospital. \t";
             scrolltext = findViewById(R.id.scrolltext);
             updateDetail();
         }
@@ -453,17 +447,6 @@ public class PresentationService extends CastRemoteDisplayLocalService implement
         public void onDetachedFromWindow() {
             super.onDetachedFromWindow();
         }
-    }
-
-    private String getSelectedData(List<JsonNameDatePair> temp) {
-        String data = "";
-        for (int i = 0; i < temp.size(); i++) {
-            data += temp.get(i).getName() + ", ";
-        }
-        if (data.endsWith(", ")) {
-            data = data.substring(0, data.length() - 2);
-        }
-        return data;
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
