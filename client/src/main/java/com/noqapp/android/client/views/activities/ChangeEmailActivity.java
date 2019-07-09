@@ -24,7 +24,8 @@ import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
 
-public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener, MigrateEmailPresenter, ProfilePresenter {
+public class ChangeEmailActivity extends BaseActivity implements View.OnClickListener,
+        MigrateEmailPresenter, ProfilePresenter {
 
     private TextView tv_header;
     private TextView tv_msg;
@@ -47,10 +48,9 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
         if (getIntent().getBooleanExtra("isValidated", false)) {
             tv_toolbar_title.setText(getString(R.string.change_email));
             btn_verify_email.setText("Start email migration");
-        }else {
+        } else {
             tv_toolbar_title.setText(getString(R.string.verify_email));
             edt_email.setText(getIntent().getStringExtra("email"));
-            edt_email.setEnabled(false);
         }
         btn_verify_email.setOnClickListener(this);
         btn_validate_otp.setOnClickListener(this);
