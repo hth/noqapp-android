@@ -482,7 +482,5 @@ public class MainActivity
             e.printStackTrace();
         }
         super.onBackPressed();
-        onPause();
-
     }
 }
