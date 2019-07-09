@@ -19,7 +19,6 @@ import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonAdvertisement;
 import com.noqapp.android.common.beans.JsonAdvertisementList;
-import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.beans.JsonProfessionalProfileTV;
 import com.noqapp.android.common.beans.JsonProfessionalProfileTVList;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
