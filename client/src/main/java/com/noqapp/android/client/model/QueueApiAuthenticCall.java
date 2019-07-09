@@ -344,7 +344,7 @@ public class QueueApiAuthenticCall {
             @Override
             public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("purchaseOrder fail", t.getLocalizedMessage(), t);
-                responsePresenter.responsePresenterError();
+                queueJsonPurchaseOrderPresenter.responseErrorPresenter(null);
             }
         });
     }
@@ -373,7 +373,7 @@ public class QueueApiAuthenticCall {
             @Override
             public void onFailure(@NonNull Call<JsonResponseWithCFToken> call, @NonNull Throwable t) {
                 Log.e("payNow fail", t.getLocalizedMessage(), t);
-                responsePresenter.responsePresenterError();
+                queueJsonPurchaseOrderPresenter.responseErrorPresenter(null);
             }
         });
     }
