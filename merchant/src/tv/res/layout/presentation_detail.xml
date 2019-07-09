@@ -14,7 +14,10 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".65">
+            android:layout_weight=".65"
+            android:background="@android:color/white"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp">
 
 
             <LinearLayout
@@ -158,6 +161,9 @@
             android:layout_weight=".35"
             android:background="#c4b7d5"
             android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
             android:weightSum="1">
 
             <LinearLayout
@@ -272,7 +278,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#7165b2">
+        android:background="#7165b2"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
 
         <com.noqapp.android.merchant.views.customviews.ScrollTextView
@@ -283,7 +292,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv_noq"
             android:textColor="#fff"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -295,6 +304,7 @@
             android:gravity="bottom"
             android:includeFontPadding="false"
             android:paddingStart="10dp"
+            android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:text="NoQApp"
             android:textColor="#fff"

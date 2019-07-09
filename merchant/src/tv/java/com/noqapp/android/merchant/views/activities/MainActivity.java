@@ -196,19 +196,19 @@ public class MainActivity
                 new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
-//    @Override
-//    public void onDestroy() {
-//        if (mediaRouter != null) {
-//            mediaRouter.removeCallback(mMediaRouterCallback);
-//        }
-//        super.onDestroy();
-//    }
+    @Override
+    public void onDestroy() {
+        if (mediaRouter != null) {
+            mediaRouter.removeCallback(mMediaRouterCallback);
+        }
+        super.onDestroy();
+    }
 
-//    @Override
-//    protected void onPause() {
-//       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-//        super.onPause();
-//    }
+    @Override
+    protected void onPause() {
+        // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -334,7 +334,7 @@ public class MainActivity
             if (null == detailFragment) {
                 detailFragment = new DetailFragment();
             }
-            if(!isFinishing()) {
+            if (!isFinishing()) {
                 final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
                 ft.commitAllowingStateLoss();
@@ -473,16 +473,16 @@ public class MainActivity
 
     @Override
     public void onBackPressed() {
-//        try {
-//            if (timer != null) {
-//                timer.cancel();
-//                timer = null;
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        super.onBackPressed();
-      //  onPause();
-        finish();
+        try {
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onBackPressed();
+        onPause();
+
     }
 }
