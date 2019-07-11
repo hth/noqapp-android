@@ -86,6 +86,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         iv_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 Intent intent = new Intent(getActivity(), AppointmentActivity.class);
                 intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
                 intent.putExtra("displayName",jsonTopic.getDisplayName());
