@@ -33,30 +33,18 @@ public class CustomProgressBar {
 
 
     public void dismissProgress() {
-        try {
-            if (null != dialog && dialog.isShowing() && !((Activity) context).isFinishing())
-                dialog.dismiss();
-        } catch (final IllegalArgumentException e) {
-            // Do nothing.
-        } catch (final Exception e) {
-            // Do nothing.
-        }
+        if (null != dialog && dialog.isShowing())
+            dialog.dismiss();
     }
 
     public void showProgress() {
-        try {
-            if (null != dialog)
-                if (!((Activity) context).isFinishing()) {
-                    //show dialog
-                    dialog.show();
-                } else {
-                    //Log the failure
-                }
-        } catch (final IllegalArgumentException e) {
-            // Do nothing.
-        } catch (final Exception e) {
-            // Do nothing.
-        }
+        if (null != dialog)
+            if(!((Activity) context).isFinishing()){
+                //show dialog
+                dialog.show();
+            }else{
+                //Log the failure
+            }
 
     }
 
