@@ -150,6 +150,10 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
         iv_appointment = itemView.findViewById(R.id.iv_appointment);
         ImageView iv_settings = itemView.findViewById(R.id.iv_settings);
         iv_settings.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
             Intent in = new Intent(context, SettingActivity.class);
             in.putExtra("codeQR", jsonTopic.getCodeQR());
             ((Activity) context).startActivityForResult(in, Constants.RESULT_SETTING);
@@ -161,6 +165,7 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
             if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                 return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 createToken(context, jsonTopic.getCodeQR());
             } else {
