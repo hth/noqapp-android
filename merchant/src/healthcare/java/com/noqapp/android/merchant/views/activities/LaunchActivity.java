@@ -104,7 +104,9 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     @Override
     public void callPreference() {
         super.callPreference();
-        Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
+       // Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
+        // temporary
+        Intent intentPreference = new Intent(launchActivity, ImmunizationActivity.class);
         startActivity(intentPreference);
     }
 
