@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -62,9 +63,10 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 public class SettingActivity extends BaseActivity implements StoreSettingPresenter, View.OnClickListener {
     protected ImageView actionbarBack, iv_delete_scheduling;
     private String codeQR;
-    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available, tv_limited_label, tv_delay_in_minute;
+    private TextView tv_store_close, tv_store_start, tv_token_available, tv_token_not_available,
+            tv_limited_label, tv_delay_in_minute;
     private TextView tv_scheduling_from, tv_scheduling_ending, tv_scheduling_status;
-    private CheckBox cb_limit, cb_enable_payment, cb_enable_appointment;
+    private CheckBox cb_limit, cb_enable_payment;
     private EditText edt_token_no;
     private boolean arrivalTextChange = false;
     private StoreSettingApiCalls storeSettingApiCalls;
@@ -76,15 +78,18 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
     private EditText edt_appointment_accepting_week, edt_appointment_duration;
 
 
-    private SegmentedControl sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline;
+    private SegmentedControl sc_prevent_join, sc_today_closed, sc_day_closed, sc_store_offline,
+            sc_enable_appointment;
 
     private List<String> yes_no_list = new ArrayList<>();
     private LinearLayout ll_payment, ll_follow_up;
     private TextView tv_fee_after_discounted_followup;
-    private CardView cv_payment,cv_appointment;
+    private CardView cv_payment, cv_appointment;
     private boolean isFollowUpAllow = false;
-    private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting, iv_payment_setting, iv_appointment_setting;
-    private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting, ll_payment_setting, ll_appointment_setting;
+    private ImageView iv_today_settings, iv_token_timing, iv_store_closing, iv_permanent_setting,
+            iv_payment_setting, iv_appointment_setting;
+    private LinearLayout ll_today_settings, ll_token_timing, ll_store_closing, ll_permanent_setting,
+            ll_payment_setting, ll_appointment_setting;
     boolean is_today_settings_expand = true;
     boolean is_token_timing = true;
     boolean is_store_closing = true;
@@ -152,6 +157,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         sc_today_closed = findViewById(R.id.sc_today_closed);
         sc_store_offline = findViewById(R.id.sc_store_offline);
         sc_prevent_join = findViewById(R.id.sc_prevent_join);
+        sc_enable_appointment = findViewById(R.id.sc_enable_appointment);
 
         View view_prevent_click = findViewById(R.id.view_prevent_click);
         TextView tv_no_permission = findViewById(R.id.tv_no_permission);
@@ -182,8 +188,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             isFollowUpAllow = false;
         }
 
-        if (null != LaunchActivity.getLaunchActivity().getUserProfile() &&( BusinessTypeEnum.DO ==
-                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType()||BusinessTypeEnum.HS ==
+        if (null != LaunchActivity.getLaunchActivity().getUserProfile() && (BusinessTypeEnum.DO ==
+                BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType() || BusinessTypeEnum.HS ==
                 BaseLaunchActivity.getLaunchActivity().getUserProfile().getBusinessType())) {
             cv_appointment.setVisibility(View.VISIBLE);
         } else {
@@ -197,40 +203,32 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         sc_today_closed.addSegments(yes_no_list);
         sc_day_closed.addSegments(yes_no_list);
         sc_store_offline.addSegments(yes_no_list);
+        sc_enable_appointment.addSegments(AppointmentStateEnum.asListOfDescription());
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        iv_delete_scheduling.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
+        actionbarBack.setOnClickListener(v -> onBackPressed());
+        iv_delete_scheduling.setOnClickListener(v -> {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
 
-                    ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                        @Override
-                        public void btnPositiveClick() {
-                            showProgress();
-                            storeSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
-                        }
+                ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        showProgress();
+                        storeSettingApiCalls.removeSchedule(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), codeQR);
+                    }
 
-                        @Override
-                        public void btnNegativeClick() {
-                            //Do nothing
-                        }
-                    });
-                    showDialog.displayDialog("Remove Schedule", "Do you want to remove schedule?");
-                } else {
-                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-                }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Remove Schedule", "Do you want to remove schedule?");
+            } else {
+                ShowAlertInformation.showNetworkDialog(SettingActivity.this);
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_settings));
 
-        cb_enable_appointment = findViewById(R.id.cb_enable_appointment);
         cb_enable_payment = findViewById(R.id.cb_enable_payment);
         cb_enable_payment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -291,18 +289,8 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         tv_scheduling_from = findViewById(R.id.tv_scheduleing_from);
         tv_scheduling_ending = findViewById(R.id.tv_scheduleing_ending);
         tv_scheduling_status = findViewById(R.id.tv_scheduling_status);
-        tv_scheduling_from.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePicker(tv_scheduling_from);
-            }
-        });
-        tv_scheduling_ending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePicker(tv_scheduling_ending);
-            }
-        });
+        tv_scheduling_from.setOnClickListener(v -> openDatePicker(tv_scheduling_from));
+        tv_scheduling_ending.setOnClickListener(v -> openDatePicker(tv_scheduling_ending));
         String dayLongName = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
         tv_close_day_of_week.setText(getResources().getString(R.string.dayclosed, dayLongName));
         tv_delay_in_minute.setOnClickListener(new TextViewClickDelay(tv_delay_in_minute));
@@ -322,69 +310,50 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         Button btn_update_scheduling = findViewById(R.id.btn_update_scheduling);
         Button btn_update_appointment = findViewById(R.id.btn_update_appointment);
         Button btn_update_permanent_setting = findViewById(R.id.btn_update_permanent_setting);
-        btn_update_appointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cb_enable_appointment.isChecked()) {
-                    if (validateAppointmentSetting()) {
-                        updateAppointmentSettings();
-                    }
-                } else {
-                    edt_appointment_accepting_week.setText("0");
-                    edt_appointment_duration.setText("0");
+        btn_update_appointment.setOnClickListener(v -> {
+            if (sc_enable_appointment.getSelectedAbsolutePosition() == 0) {
+                if (validateAppointmentSetting()) {
                     updateAppointmentSettings();
                 }
-
+            } else {
+                edt_appointment_accepting_week.setText("0");
+                edt_appointment_duration.setText("0");
+                updateAppointmentSettings();
             }
+
         });
 
-        btn_update_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_update_time.setOnClickListener(view -> {
+            if (isSpecificSettingEditAllowed()) {
+                if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue start time' should be before 'Queue close time'.");
+                } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Issue token from' should be before 'Stop issuing token after'.");
+                } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
+                    ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
+                } else {
+                    callUpdate();
+                }
+            } else {
+                ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
+            }
+        });
+        btn_update_scheduling.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(tv_scheduling_from.getText().toString()) || TextUtils.isEmpty(tv_scheduling_ending.getText().toString())) {
+                new CustomToast().showToast(SettingActivity.this, "Both scheduling dates are required");
+            } else if (isEndDateNotAfterStartDate()) {
+                new CustomToast().showToast(SettingActivity.this, "Until Date should be after From Date");
+            } else {
                 if (isSpecificSettingEditAllowed()) {
-                    if (isEndTimeBeforeStartTime(tv_store_start, tv_store_close)) {
-                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Queue start time' should be before 'Queue close time'.");
-                    } else if (isEndTimeBeforeStartTime(tv_token_available, tv_token_not_available)) {
-                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Issue token from' should be before 'Stop issuing token after'.");
-                    } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
-                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
-                    } else {
-                        callUpdate();
-                    }
+                    callUpdate();
                 } else {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
                 }
             }
         });
-        btn_update_scheduling.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TextUtils.isEmpty(tv_scheduling_from.getText().toString()) || TextUtils.isEmpty(tv_scheduling_ending.getText().toString())) {
-                    new CustomToast().showToast(SettingActivity.this, "Both scheduling dates are required");
-                } else if (isEndDateNotAfterStartDate()) {
-                    new CustomToast().showToast(SettingActivity.this, "Until Date should be after From Date");
-                } else {
-                    if (isSpecificSettingEditAllowed()) {
-                        callUpdate();
-                    } else {
-                        ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
-                    }
-                }
-            }
-        });
 
-        btn_update_delay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callUpdate();
-            }
-        });
-        btn_update_permanent_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callUpdate();
-            }
-        });
+        btn_update_delay.setOnClickListener(view -> callUpdate());
+        btn_update_permanent_setting.setOnClickListener(view -> callUpdate());
 
         if ((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)) {
             view_prevent_click.setVisibility(View.VISIBLE);
@@ -416,63 +385,60 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
 
             }
         });
-        btn_update_deduction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (cb_enable_payment.isChecked()) {
-                    if (TextUtils.isEmpty(edt_fees.getText().toString()) || Integer.parseInt(edt_fees.getText().toString()) == 0) {
-                        new CustomToast().showToast(SettingActivity.this, "Service Charge cannot be zero");
+        btn_update_deduction.setOnClickListener(view -> {
+            if (cb_enable_payment.isChecked()) {
+                if (TextUtils.isEmpty(edt_fees.getText().toString()) || Integer.parseInt(edt_fees.getText().toString()) == 0) {
+                    new CustomToast().showToast(SettingActivity.this, "Service Charge cannot be zero");
+                } else {
+                    if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && TextUtils.isEmpty(edt_fees.getText().toString())) {
+                        new CustomToast().showToast(SettingActivity.this, "Cancellation Charge is not allowed without Service Charge");
                     } else {
-                        if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && TextUtils.isEmpty(edt_fees.getText().toString())) {
-                            new CustomToast().showToast(SettingActivity.this, "Cancellation Charge is not allowed without Service Charge");
-                        } else {
-                            if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && !TextUtils.isEmpty(edt_fees.getText().toString())) {
-                                if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
-                                    if (isFollowUpAllow) {
-                                        if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                        if (!TextUtils.isEmpty(edt_deduction_amount.getText().toString()) && !TextUtils.isEmpty(edt_fees.getText().toString())) {
+                            if (Integer.parseInt(edt_deduction_amount.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString())) {
+                                if (isFollowUpAllow) {
+                                    if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                                        if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                                            if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
+                                                updatePaymentSettings();
+                                            } else {
+                                                new CustomToast().showToast(SettingActivity.this, "Limited follow-up days cannot be less than free follow-up days");
+                                            }
+                                        } else {
+                                            updatePaymentSettings();
+                                        }
+                                    } else {
+                                        if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString()))) {
                                             if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
                                                 if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
                                                     updatePaymentSettings();
                                                 } else {
-                                                    new CustomToast().showToast(SettingActivity.this, "Limited follow-up days cannot be less than free follow-up days");
+                                                    new CustomToast().showToast(SettingActivity.this, "Limited follow-up days cannot be less than free follow up days");
                                                 }
                                             } else {
                                                 updatePaymentSettings();
                                             }
                                         } else {
-                                            if (Integer.parseInt(edt_discounted_followup_price.getText().toString()) >= 0 && (Integer.parseInt(edt_discounted_followup_price.getText().toString()) <= Integer.parseInt(edt_fees.getText().toString()))) {
-                                                if (!TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                                                    if (Integer.parseInt(edt_follow_up_in_days.getText().toString()) < (Integer.parseInt(edt_limited_followup_days.getText().toString()))) {
-                                                        updatePaymentSettings();
-                                                    } else {
-                                                        new CustomToast().showToast(SettingActivity.this, "Limited follow-up days cannot be less than free follow up days");
-                                                    }
-                                                } else {
-                                                    updatePaymentSettings();
-                                                }
-                                            } else {
-                                                new CustomToast().showToast(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge");
-                                            }
+                                            new CustomToast().showToast(SettingActivity.this, "Discounted follow-up price cannot be greater than Service Charge");
                                         }
-                                    } else {
-                                        updatePaymentSettings();
                                     }
                                 } else {
-                                    new CustomToast().showToast(SettingActivity.this, "Cancellation charge cannot be greater than Service Charge");
+                                    updatePaymentSettings();
                                 }
                             } else {
-                                updatePaymentSettings();
+                                new CustomToast().showToast(SettingActivity.this, "Cancellation charge cannot be greater than Service Charge");
                             }
+                        } else {
+                            updatePaymentSettings();
                         }
                     }
-                } else {
-                    edt_fees.setText("0");
-                    edt_deduction_amount.setText("0");
-                    edt_discounted_followup_price.setText("0");
-                    edt_follow_up_in_days.setText("0");
-                    edt_limited_followup_days.setText("0");
-                    updatePaymentSettings();
                 }
+            } else {
+                edt_fees.setText("0");
+                edt_deduction_amount.setText("0");
+                edt_discounted_followup_price.setText("0");
+                edt_follow_up_in_days.setText("0");
+                edt_limited_followup_days.setText("0");
+                updatePaymentSettings();
             }
         });
 
@@ -556,8 +522,18 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             sc_today_closed.setSelectedSegment(storeSetting.isTempDayClosed() ? 0 : 1);
             sc_store_offline.setSelectedSegment(storeSetting.getStoreActionType() == ActionTypeEnum.INACTIVE ? 0 : 1);
             cb_enable_payment.setChecked(storeSetting.isEnabledPayment());
-
-            cb_enable_appointment.setChecked(storeSetting.isAppointmentEnable());
+            AppointmentStateEnum appointmentStateEnum = storeSetting.getAppointmentState();
+            switch (appointmentStateEnum) {
+                case O:
+                    sc_enable_appointment.setSelectedSegment(0);
+                    break;
+                case A:
+                    sc_enable_appointment.setSelectedSegment(1);
+                    break;
+                case S:
+                    sc_enable_appointment.setSelectedSegment(2);
+                    break;
+            }
             ll_payment.setVisibility(storeSetting.isEnabledPayment() ? View.VISIBLE : View.GONE);
             tv_token_available.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getTokenAvailableFrom()));
             tv_store_start.setText(Formatter.convertMilitaryTo24HourFormat(storeSetting.getStartHour()));
@@ -809,8 +785,18 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             } else {
                 storeSetting.setAppointmentOpenHowFar(Integer.parseInt(edt_appointment_accepting_week.getText().toString()));
             }
+            switch (sc_enable_appointment.getSelectedAbsolutePosition()) {
+                case 0:
+                    storeSetting.setAppointmentState( AppointmentStateEnum.O);
+                    break;
+                case 1:
+                    storeSetting.setAppointmentState( AppointmentStateEnum.A);
+                    break;
+                case 2:
+                    storeSetting.setAppointmentState( AppointmentStateEnum.S);
+                    break;
+            }
 
-            storeSetting.setAppointmentEnable(cb_enable_appointment.isChecked());
             storeSettingApiCalls.appointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
