@@ -1,11 +1,13 @@
 package com.noqapp.android.client.views.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +19,6 @@ import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
-import com.noqapp.android.client.presenter.ImmunizationHistoryPresenter;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -27,7 +28,6 @@ import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
-import com.noqapp.android.common.beans.medical.JsonImmunizationList;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
 public class MedicalProfileActivity extends BaseActivity implements
-        MedicalRecordProfilePresenter, ImmunizationHistoryPresenter, View.OnClickListener {
+        MedicalRecordProfilePresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
@@ -120,28 +120,28 @@ public class MedicalProfileActivity extends BaseActivity implements
         cv_occupation = findViewById(R.id.cv_occupation);
         ll_prevent_click = findViewById(R.id.ll_prevent_click);
         ll_prevent_occupation_click = findViewById(R.id.ll_prevent_occupation_click);
-        scroll_view.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                int scrollY = scroll_view.getScrollY();
-                if (scrollY > 350) {
-                    cv_info.setVisibility(View.GONE);
-                } else {
-                    cv_info.setVisibility(View.VISIBLE);
-                }
+        scroll_view.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int scrollY = scroll_view.getScrollY();
+            if (scrollY > 350) {
+                cv_info.setVisibility(View.GONE);
+            } else {
+                cv_info.setVisibility(View.VISIBLE);
             }
         });
-
+        Button btn_view_immune = findViewById(R.id.btn_view_immune);
+        btn_view_immune.setOnClickListener(v -> {
+            Intent in = new Intent(this, ImmunizationActivity.class);
+            in.putExtra("medicalProfile", medicalProfile);
+            startActivity(in);
+        });
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
         tv_patient_age_gender.setText(new AppUtilities().calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
         userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();
         userMedicalProfileApiCalls.setMedicalRecordProfilePresenter(this);
-        userMedicalProfileApiCalls.setImmunizationHistoryPresenter(this);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 userMedicalProfileApiCalls.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                userMedicalProfileApiCalls.immunizationHistory(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
                 setProgressMessage("fetching medical profile...");
                 showProgress();
             } else {
@@ -470,10 +470,5 @@ public class MedicalProfileActivity extends BaseActivity implements
                 }
             }
         }
-    }
-
-    @Override
-    public void immunizationHistoryResponse(JsonImmunizationList jsonImmunizationList) {
-        Log.e("immunization",jsonImmunizationList.toString());
     }
 }

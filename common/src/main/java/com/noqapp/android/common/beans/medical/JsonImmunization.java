@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
+import java.io.Serializable;
+
 /**
  * User: hitender
  * Date: 2019-07-19 08:17
@@ -26,7 +28,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonImmunization extends AbstractDomain {
+public class JsonImmunization extends AbstractDomain implements Serializable {
 
     @JsonProperty("mn")
     private String name;

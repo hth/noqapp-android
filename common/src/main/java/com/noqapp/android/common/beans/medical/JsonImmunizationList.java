@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonImmunizationList extends AbstractDomain {
+public class JsonImmunizationList extends AbstractDomain implements Serializable {
 
     @JsonProperty("ir")
     private List<JsonImmunization> jsonImmunizationStaticData = new ArrayList<>();
