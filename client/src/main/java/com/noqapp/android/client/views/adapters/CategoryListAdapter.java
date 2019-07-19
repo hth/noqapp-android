@@ -1,5 +1,18 @@
 package com.noqapp.android.client.views.adapters;
 
+import com.noqapp.android.client.R;
+import com.noqapp.android.client.presenter.beans.BizStoreElastic;
+import com.noqapp.android.client.presenter.beans.StoreHourElastic;
+import com.noqapp.android.client.utils.AppUtilities;
+import com.noqapp.android.client.utils.IBConstant;
+import com.noqapp.android.client.utils.UserUtils;
+import com.noqapp.android.client.views.activities.AllReviewsActivity;
+import com.noqapp.android.client.views.activities.BookAppointmentActivity;
+import com.noqapp.android.client.views.activities.ManagerProfileActivity;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.utils.Formatter;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -12,24 +25,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.noqapp.android.client.R;
-import com.noqapp.android.client.presenter.beans.BizStoreElastic;
-import com.noqapp.android.client.presenter.beans.StoreHourElastic;
-import com.noqapp.android.client.utils.AppUtilities;
-import com.noqapp.android.client.utils.IBConstant;
-import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.AllReviewsActivity;
-import com.noqapp.android.client.views.activities.BookAppointmentActivity;
-import com.noqapp.android.client.views.activities.ManagerProfileActivity;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.AppointmentStateEnum;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
-import com.noqapp.android.common.utils.Formatter;
 
 import java.util.List;
 
@@ -38,7 +36,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<BizStoreElastic> dataSet;
     private boolean isSingleEntry = false;
-
 
     public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener) {
         this.dataSet = jsonQueues;
@@ -54,15 +51,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
         if (isSingleEntry) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.rcv_single_entry_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_single_entry_item, parent, false);
         } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.rcv_item_category1, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
         }
         return new MyViewHolder(view);
     }
@@ -260,7 +254,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_name;
         private TextView tv_address;
         private TextView tv_store_rating;
