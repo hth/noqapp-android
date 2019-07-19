@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 /**
  * User: hitender
@@ -38,6 +39,9 @@ public class JsonImmunization extends AbstractDomain {
 
     @JsonProperty("dd")
     private String dueDate;
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public String getName() {
         return name;
@@ -73,5 +77,25 @@ public class JsonImmunization extends AbstractDomain {
     public JsonImmunization setDueDate(String dueDate) {
         this.dueDate = dueDate;
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonImmunization{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", immunizationDate='").append(immunizationDate).append('\'');
+        sb.append(", header='").append(header).append('\'');
+        sb.append(", dueDate='").append(dueDate).append('\'');
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.common.beans.medical.JsonImmunization;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.ImmuneAdapter;
-import com.noqapp.android.merchant.views.pojos.ImmuneObj;
 import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
 import java.util.ArrayList;
@@ -71,19 +71,19 @@ public class ImmunizationActivity extends BaseActivity {
         temp.add(dd);
     }
 
-    private ArrayList <ImmuneObj> getList(int size){
-        ArrayList <ImmuneObj> temp = new ArrayList<>();
+    private ArrayList <JsonImmunization> getList(int size){
+        ArrayList <JsonImmunization> temp = new ArrayList<>();
         Random rand = new Random();
         int max = size;
         int min = 0;
         int randomNum = rand.nextInt((max - min) + 1) + min;
         for (int i = 0; i < size; i++) {
 
-            ImmuneObj immuneObj = new ImmuneObj();
-            immuneObj.setImmuneDate("22-11-2019");
-            immuneObj.setImmuneTitle("PCV 1");
+            JsonImmunization immuneObj = new JsonImmunization();
+            immuneObj.setDueDate("22-11-2019");
+            immuneObj.setName("PCV 1");
             if(randomNum == i)
-                immuneObj.setImmunationDone(true);
+                immuneObj.setImmunizationDate("YES");
             temp.add(immuneObj);
         }
         return temp;

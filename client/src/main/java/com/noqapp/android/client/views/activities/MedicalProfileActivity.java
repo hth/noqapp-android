@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
+import com.noqapp.android.client.presenter.ImmunizationHistoryPresenter;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.AppUtilities;
@@ -26,6 +27,7 @@ import com.noqapp.android.client.utils.ShowCustomDialog;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
+import com.noqapp.android.common.beans.medical.JsonImmunizationList;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -36,7 +38,8 @@ import java.util.ArrayList;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
+public class MedicalProfileActivity extends BaseActivity implements
+        MedicalRecordProfilePresenter, ImmunizationHistoryPresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
@@ -134,9 +137,11 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         tv_patient_age_gender.setText(new AppUtilities().calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");
         userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();
         userMedicalProfileApiCalls.setMedicalRecordProfilePresenter(this);
+        userMedicalProfileApiCalls.setImmunizationHistoryPresenter(this);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 userMedicalProfileApiCalls.medicalProfile(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
+                userMedicalProfileApiCalls.immunizationHistory(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
                 setProgressMessage("fetching medical profile...");
                 showProgress();
             } else {
@@ -465,5 +470,10 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
                 }
             }
         }
+    }
+
+    @Override
+    public void immunizationHistoryResponse(JsonImmunizationList jsonImmunizationList) {
+        Log.e("immunization",jsonImmunizationList.toString());
     }
 }

@@ -2,6 +2,7 @@ package com.noqapp.android.merchant.views.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.common.beans.medical.JsonImmunization;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.pojos.ImmuneObj;
 import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
 import java.util.List;
@@ -33,7 +34,6 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.rcv_immune, parent, false);
         return new ViewHolder(view);
     }
@@ -52,12 +52,12 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
             TextView tv_immune_title = view.findViewById(R.id.tv_immune_title);
             TextView tv_immune_date = view.findViewById(R.id.tv_immune_date);
             CardView card_view = view.findViewById(R.id.card_view);
-            tv_immune_title.setText(categories.get(position).getImmuneObjs().get(i).getImmuneTitle());
-            tv_immune_date.setText(categories.get(position).getImmuneObjs().get(i).getImmuneDate());
-            if (categories.get(position).getImmuneObjs().get(i).isImmunationDone()) {
-                card_view.setCardBackgroundColor(Color.parseColor("#008080"));
-            } else {
+            tv_immune_title.setText(categories.get(position).getImmuneObjs().get(i).getName());
+            tv_immune_date.setText(categories.get(position).getImmuneObjs().get(i).getDueDate());
+            if (TextUtils.isEmpty(categories.get(position).getImmuneObjs().get(i).getImmunizationDate())) {
                 card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
+            } else {
+                card_view.setCardBackgroundColor(Color.parseColor("#008080"));
             }
             holder.ll_child.addView(view);
         }
@@ -72,7 +72,7 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onImmuneItemClick(ImmuneObj immuneObj);
+        void onImmuneItemClick(JsonImmunization jsonImmunization);
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {

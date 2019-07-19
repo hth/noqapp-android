@@ -1,12 +1,14 @@
 package com.noqapp.android.merchant.views.pojos;
 
+import com.noqapp.android.common.beans.medical.JsonImmunization;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ImmuneObjList implements Serializable {
 
     private String headerTitle;
-    private ArrayList<ImmuneObj> immuneObjs = new ArrayList<>();
+    private ArrayList<JsonImmunization> immuneObjs = new ArrayList<>();
 
     public String getHeaderTitle() {
         return headerTitle;
@@ -16,11 +18,11 @@ public class ImmuneObjList implements Serializable {
         this.headerTitle = headerTitle;
     }
 
-    public ArrayList<ImmuneObj> getImmuneObjs() {
+    public ArrayList<JsonImmunization> getImmuneObjs() {
         return immuneObjs;
     }
 
-    public void setImmuneObjs(ArrayList<ImmuneObj> immuneObjs) {
+    public void setImmuneObjs(ArrayList<JsonImmunization> immuneObjs) {
         this.immuneObjs = immuneObjs;
     }
 

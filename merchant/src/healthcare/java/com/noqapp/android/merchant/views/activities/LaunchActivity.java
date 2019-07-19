@@ -28,7 +28,7 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.LoginCallBack,
-        RegistrationActivity.RegisterCallBack{
+        RegistrationActivity.RegisterCallBack {
     private TextView tv_badge;
 
     @Override
@@ -104,10 +104,13 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     @Override
     public void callPreference() {
         super.callPreference();
-       // Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
-        // temporary
-        Intent intentPreference = new Intent(launchActivity, ImmunizationActivity.class);
-        startActivity(intentPreference);
+        if (AppUtils.isRelease()) {
+            Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
+            startActivity(intentPreference);
+        } else {
+            Intent intentPreference = new Intent(launchActivity, ImmunizationActivity.class);
+            startActivity(intentPreference);
+        }
     }
 
     @Override
@@ -128,11 +131,11 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
 
     @Override
     public void userFound(JsonProfile jsonProfile) {
-        new CustomToast().showToast(this,"User already exist with this number");
+        new CustomToast().showToast(this, "User already exist with this number");
     }
 
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
-        new CustomToast().showToast(this,"User added successfully with this number");
+        new CustomToast().showToast(this, "User added successfully with this number");
     }
 }
