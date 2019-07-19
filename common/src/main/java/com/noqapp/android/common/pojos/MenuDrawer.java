@@ -64,9 +64,10 @@ public class MenuDrawer {
         this.childList = childList;
     }
 
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("MenuModel{");
+        final StringBuilder sb = new StringBuilder("MenuDrawer{");
         sb.append("title='").append(title).append('\'');
         sb.append(", icon=").append(icon);
         sb.append(", hasChildren=").append(hasChildren);

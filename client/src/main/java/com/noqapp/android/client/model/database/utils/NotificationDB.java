@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.noqapp.android.client.model.database.DatabaseTable;
-import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -55,30 +55,30 @@ public class NotificationDB {
     }
 
 
-    public static List<NotificationBeans> getNotificationsList() {
+    public static List<DisplayNotification> getNotificationsList() {
 
         String query = "SELECT *  FROM " + DatabaseTable.Notification.TABLE_NAME + " ORDER BY " + DatabaseTable.Notification.SEQUENCE + " DESC ";
-        List<NotificationBeans> notificationBeansList = new ArrayList<>();
+        List<DisplayNotification> displayNotificationList = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
         if (cursor != null) {
             if (cursor.getCount() > 0) {
                 try {
                     while (cursor.moveToNext()) {
-                        NotificationBeans notificationBeans = new NotificationBeans();
+                        DisplayNotification notificationBeans = new DisplayNotification();
                         notificationBeans.setMsg(cursor.getString(2));
                         notificationBeans.setTitle(cursor.getString(3));
                         notificationBeans.setStatus(cursor.getString(4));
                         notificationBeans.setNotificationCreate(cursor.getString(6));
                         notificationBeans.setBusinessType(BusinessTypeEnum.valueOf(cursor.getString(7)));
                         notificationBeans.setImageUrl(cursor.getString(8));
-                        notificationBeansList.add(notificationBeans);
+                        displayNotificationList.add(notificationBeans);
                     }
                 } finally {
                     cursor.close();
                 }
             }
         }
-        return notificationBeansList;
+        return displayNotificationList;
     }
 
 

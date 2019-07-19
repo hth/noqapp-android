@@ -35,7 +35,7 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
-import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
@@ -261,27 +261,27 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
         final ArrayList<JsonStoreCategory> jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
 
         ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
-        final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
+        final HashMap<String, List<StoreCartItem>> storeCartItems = new HashMap<>();
         for (int l = 0; l < jsonStoreCategories.size(); l++) {
-            listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<>());
+            storeCartItems.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<>());
         }
         for (int k = 0; k < jsonStoreProducts.size(); k++) {
             if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
                 if (jsonStoreProducts.get(k).isActive()) {
-                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
+                    storeCartItems.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 }
             } else {
                 //TODO(hth) when product without category else it will drop
-                if (null == listDataChild.get(defaultCategory)) {
-                    listDataChild.put(defaultCategory, new ArrayList<>());
+                if (null == storeCartItems.get(defaultCategory)) {
+                    storeCartItems.put(defaultCategory, new ArrayList<>());
                 }
                 if (jsonStoreProducts.get(k).isActive()) {
-                    listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
+                    storeCartItems.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 }
             }
         }
 
-        if (null != listDataChild.get(defaultCategory)) {
+        if (null != storeCartItems.get(defaultCategory)) {
             jsonStoreCategories.add(new JsonStoreCategory().setCategoryName(defaultCategory).setCategoryId(defaultCategory));
         }
 
@@ -290,7 +290,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
                 Intent in = new Intent(StoreDetailActivity.this, StoreMenuActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("jsonStoreCategories", jsonStoreCategories);
-                bundle.putSerializable("listDataChild", listDataChild);
+                bundle.putSerializable("listDataChild", storeCartItems);
                 bundle.putSerializable("jsonQueue", jsonQueue);
                 in.putExtras(bundle);
                 startActivity(in);

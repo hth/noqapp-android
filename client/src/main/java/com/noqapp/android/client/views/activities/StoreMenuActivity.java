@@ -22,7 +22,7 @@ import com.noqapp.android.client.views.adapters.MenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
-import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
@@ -40,7 +40,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
     private JsonQueue jsonQueue;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
-    private HashMap<String, ChildData> orders = new HashMap<>();
+    private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private String currencySymbol;
 
     @Override
@@ -55,7 +55,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
         currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
         List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
-        HashMap<String, List<ChildData>> expandableListDetail = (HashMap<String, List<ChildData>>) getIntent().getExtras().getSerializable("listDataChild");
+        HashMap<String, List<StoreCartItem>> expandableListDetail = (HashMap<String, List<StoreCartItem>>) getIntent().getExtras().getSerializable("listDataChild");
         CustomExpandableListAdapter expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
         expandableListView.setAdapter(expandableListAdapter);
 
@@ -104,11 +104,11 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
                 if (UserUtils.isLogin()) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {
                         //HashMap<String, ChildData> getOrder = expandableListAdapter.getOrders();  old one
-                        HashMap<String, ChildData> getOrder = getOrders();
+                        HashMap<String, StoreCartItem> getOrder = getOrders();
 
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
-                        for (ChildData value : getOrder.values()) {
+                        for (StoreCartItem value : getOrder.values()) {
                             ll.add(new JsonPurchaseOrderProduct()
                                     .setProductId(value.getJsonStoreProduct().getProductId())
                                     .setProductPrice(value.getFinalDiscountedPrice() * 100)
@@ -176,7 +176,7 @@ public class StoreMenuActivity extends BaseActivity implements CustomExpandableL
         }
     }
 
-    public HashMap<String, ChildData> getOrders() {
+    public HashMap<String, StoreCartItem> getOrders() {
         return orders;
     }
 

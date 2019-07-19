@@ -12,7 +12,7 @@ import com.noqapp.android.client.model.database.utils.NotificationDB;
 import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.FabricEvents;
 import com.noqapp.android.client.views.adapters.NotificationListAdapter;
-import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.common.pojos.DisplayNotification;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class NotificationActivity extends BaseActivity {
         ListView listview = findViewById(R.id.listview);
         RelativeLayout rl_empty = findViewById(R.id.rl_empty);
         tv_toolbar_title.setText(getString(R.string.screen_notification));
-        List<NotificationBeans> notificationsList = NotificationDB.getNotificationsList();
+        List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(this, notificationsList);
         listview.setAdapter(adapter);
         if (notificationsList.size() <= 0) {

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.noqapp.android.common.beans.NotificationBeans;
+import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -49,7 +49,7 @@ public class NotificationActivity extends AppCompatActivity  {
             }
         });
         tv_toolbar_title.setText(getString(R.string.screen_notification));
-        List<NotificationBeans> notificationsList = NotificationDB.getNotificationsList();
+        List<DisplayNotification> notificationsList = NotificationDB.getNotificationsList();
         NotificationListAdapter adapter = new NotificationListAdapter(NotificationActivity.this, notificationsList);
         listview.setAdapter(adapter);
         if(notificationsList.size()<=0){
