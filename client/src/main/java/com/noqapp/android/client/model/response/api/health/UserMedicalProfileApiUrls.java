@@ -1,10 +1,12 @@
 package com.noqapp.android.client.model.response.api.health;
 
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
+import com.noqapp.android.common.beans.medical.JsonImmunizationList;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
@@ -26,6 +28,15 @@ public interface UserMedicalProfileApiUrls {
 
             @Body
             MedicalProfile medicalProfile
+    );
+
+    @GET("api/c/h/medicalProfile/immunizationHistory.json")
+    Call<JsonImmunizationList> immunizationHistory(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth
     );
 
     /**
