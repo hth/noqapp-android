@@ -49,7 +49,7 @@ import com.noqapp.android.common.fcm.data.JsonTopicOrderData;
 import com.noqapp.android.common.fcm.data.JsonTopicQueueData;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.views.activities.AppUpdateActivity;
 import com.noqapp.android.merchant.BuildConfig;
@@ -84,7 +84,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         SharedPreferences.OnSharedPreferenceChangeListener {
     public static DatabaseHelper dbHandler;
     private static SharedPreferences sharedpreferences;
-    protected List<MenuModel> headerList = new ArrayList<>();
+    protected List<MenuDrawer> menuDrawerItems = new ArrayList<>();
 
     public static void setMerchantListFragment(MerchantListFragment merchantListFragment) {
         BaseLaunchActivity.merchantListFragment = merchantListFragment;
@@ -293,22 +293,22 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
 
     public void updateMenuList(boolean showChart) {
         // Fill menu items
-        headerList.clear();
-        headerList.add(new MenuModel("Profile", true, false, R.drawable.profile_red));
-        headerList.add(new MenuModel("Reviews", true, false, R.drawable.ic_reviews));
+        menuDrawerItems.clear();
+        menuDrawerItems.add(new MenuDrawer("Profile", true, false, R.drawable.profile_red));
+        menuDrawerItems.add(new MenuDrawer("Reviews", true, false, R.drawable.ic_reviews));
 
-        List<MenuModel> settingList = new ArrayList<>();
-        settingList.add(new MenuModel("Share the app", false, false, R.drawable.ic_menu_share));
-        settingList.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
-        settingList.add(new MenuModel("Rate the app", false, false, R.drawable.ic_star));
-        settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
-        headerList.add(new MenuModel("Settings", true, true, R.drawable.settings_square, settingList));
-        headerList.add(new MenuModel("Logout", true, false, R.drawable.logout));
+        List<MenuDrawer> settingList = new ArrayList<>();
+        settingList.add(new MenuDrawer("Share the app", false, false, R.drawable.ic_menu_share));
+        settingList.add(new MenuDrawer(getString(R.string.legal), false, false, R.drawable.legal));
+        settingList.add(new MenuDrawer("Rate the app", false, false, R.drawable.ic_star));
+        settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
+        menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
+        menuDrawerItems.add(new MenuDrawer("Logout", true, false, R.drawable.logout));
         if (showChart) {
-            headerList.add(0, new MenuModel("Statistics", true, false, R.drawable.pie_chart));
+            menuDrawerItems.add(0, new MenuDrawer("Statistics", true, false, R.drawable.pie_chart));
         }
 
-        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList);
+        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
         mDrawerList.setAdapter(expandableListAdapter);
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -316,9 +316,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         mDrawerList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (headerList.get(groupPosition).isGroup()) {
-                    if (!headerList.get(groupPosition).isHasChildren()) {
-                        int drawableId = headerList.get(groupPosition).getIcon();
+                if (menuDrawerItems.get(groupPosition).isGroup()) {
+                    if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
+                        int drawableId = menuDrawerItems.get(groupPosition).getIcon();
                         menuClick(drawableId);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
                     }
@@ -330,8 +330,8 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         mDrawerList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (headerList.get(groupPosition).getChildList() != null) {
-                    MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
+                if (menuDrawerItems.get(groupPosition).getChildList() != null) {
+                    MenuDrawer model = menuDrawerItems.get(groupPosition).getChildList().get(childPosition);
                     int drawableId = model.getIcon();
                     menuClick(drawableId);
                     mDrawerLayout.closeDrawer(GravityCompat.START);

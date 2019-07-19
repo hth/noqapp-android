@@ -11,7 +11,7 @@ import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -90,12 +90,12 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         super.updateMenuList(showChart);
         try {
             if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                List<MenuModel> childModelsList = new ArrayList<>();
-                childModelsList.add(new MenuModel(getString(R.string.menu_preference), false, false, R.drawable.case_history));
-                childModelsList.add(new MenuModel(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
-                headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings, childModelsList));
+                List<MenuDrawer> childModelsList = new ArrayList<>();
+                childModelsList.add(new MenuDrawer(getString(R.string.menu_preference), false, false, R.drawable.case_history));
+                childModelsList.add(new MenuDrawer(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
+                menuDrawerItems.add(2, new MenuDrawer("Medical Settings", true, true, R.drawable.medical_settings, childModelsList));
             }
-            headerList.add(2, new MenuModel("Add New Patient", true, false, R.drawable.add_user));
+            menuDrawerItems.add(2, new MenuDrawer("Add New Patient", true, false, R.drawable.add_user));
         } catch (Exception e) {
             e.printStackTrace();
         }

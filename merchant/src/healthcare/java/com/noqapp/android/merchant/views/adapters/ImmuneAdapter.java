@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.pojos.ImmuneObj;
 import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<ImmuneObjList> categories;
     private Context context;
-    private int selected_pos = -1;
 
     public ImmuneAdapter(Context context, List<ImmuneObjList> categories,
                          OnItemClickListener listener) {
@@ -45,7 +45,7 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
             //listener.onCategoryItemClick(position, jsonCategory);
         });
         holder.tv_menu_header.setText(categories.get(position).getHeaderTitle());
-        holder.ll_header.removeAllViews();
+        // holder.ll_header.removeAllViews();
         for (int i = 0; i < categories.get(position).getImmuneObjs().size(); i++) {
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.rcv_immune_item, null, false);
@@ -54,23 +54,16 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
             CardView card_view = view.findViewById(R.id.card_view);
             tv_immune_title.setText(categories.get(position).getImmuneObjs().get(i).getImmuneTitle());
             tv_immune_date.setText(categories.get(position).getImmuneObjs().get(i).getImmuneDate());
-            if(categories.get(position).getImmuneObjs().get(i).isImmunationDone()){
+            if (categories.get(position).getImmuneObjs().get(i).isImmunationDone()) {
                 card_view.setCardBackgroundColor(Color.parseColor("#008080"));
-            }else{
+            } else {
                 card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
             }
             holder.ll_child.addView(view);
         }
+        holder.ll_header.setBackgroundColor(Color.WHITE);
+        holder.tv_menu_header.setTextColor(Color.BLACK);
 
-        if (selected_pos == position) {
-//            holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_dark));
-//            holder.tv_menu_header.setTextColor(ContextCompat.getColor(context, R.color.theme_color_dark));
-            holder.ll_header.setBackgroundColor(Color.BLUE);
-            holder.tv_menu_header.setTextColor(Color.WHITE);
-        } else {
-            holder.ll_header.setBackgroundColor(Color.WHITE);
-            holder.tv_menu_header.setTextColor(Color.BLACK);
-        }
     }
 
     @Override
@@ -78,13 +71,8 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
         return categories.size();
     }
 
-//    public CategoryHeaderAdapter setSelected_pos(int selected_pos) {
-//        this.selected_pos = selected_pos;
-//        return this;
-//    }
-//
     public interface OnItemClickListener {
-       // void onCategoryItemClick(int pos, JsonCategory jsonCategory);
+        void onImmuneItemClick(ImmuneObj immuneObj);
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {

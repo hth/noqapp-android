@@ -3,20 +3,20 @@ package com.noqapp.android.common.pojos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuModel {
+public class MenuDrawer {
     private String title;
     private int icon;
     private boolean hasChildren, isGroup;
-    private List<MenuModel> childList = new ArrayList<>();
+    private List<MenuDrawer> childList = new ArrayList<>();
 
-    public MenuModel(String title, boolean isGroup, boolean hasChildren, int icon) {
+    public MenuDrawer(String title, boolean isGroup, boolean hasChildren, int icon) {
         this.title = title;
         this.icon = icon;
         this.isGroup = isGroup;
         this.hasChildren = hasChildren;
     }
 
-    public MenuModel(String title, boolean isGroup, boolean hasChildren, int icon, List<MenuModel> childList) {
+    public MenuDrawer(String title, boolean isGroup, boolean hasChildren, int icon, List<MenuDrawer> childList) {
         this.title = title;
         this.icon = icon;
         this.isGroup = isGroup;
@@ -56,11 +56,11 @@ public class MenuModel {
         isGroup = group;
     }
 
-    public List<MenuModel> getChildList() {
+    public List<MenuDrawer> getChildList() {
         return childList;
     }
 
-    public void setChildList(List<MenuModel> childList) {
+    public void setChildList(List<MenuDrawer> childList) {
         this.childList = childList;
     }
 
