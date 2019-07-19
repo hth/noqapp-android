@@ -30,13 +30,16 @@ public interface UserMedicalProfileApiUrls {
             MedicalProfile medicalProfile
     );
 
-    @GET("api/c/h/medicalProfile/immunizationHistory.json")
+    @POST("api/c/h/medicalProfile/immunizationHistory.json")
     Call<JsonImmunizationList> immunizationHistory(
             @Header("X-R-MAIL")
             String mail,
 
             @Header("X-R-AUTH")
-            String auth
+            String auth,
+
+            @Body
+            MedicalProfile medicalProfile
     );
 
     /**
