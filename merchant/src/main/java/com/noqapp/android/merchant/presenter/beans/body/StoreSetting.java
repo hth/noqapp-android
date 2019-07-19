@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
 
 import java.io.Serializable;
 
@@ -100,8 +101,8 @@ public class StoreSetting implements Serializable {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @JsonProperty("pe")
-    private boolean appointmentEnable;
+    @JsonProperty("ps")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("pd")
     private int appointmentDuration;
@@ -298,12 +299,12 @@ public class StoreSetting implements Serializable {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public StoreSetting setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public StoreSetting setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 

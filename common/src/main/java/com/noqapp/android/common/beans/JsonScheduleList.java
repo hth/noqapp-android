@@ -1,5 +1,7 @@
 package com.noqapp.android.common.beans;
 
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,8 +38,8 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
     @JsonProperty("hours")
     private List<JsonHour> jsonHours = new LinkedList<>();
 
-    @JsonProperty("pe")
-    private boolean appointmentEnable;
+    @JsonProperty("ps")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("pd")
     private int appointmentDuration;
@@ -71,12 +73,12 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public JsonScheduleList setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public JsonScheduleList setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 
@@ -111,7 +113,7 @@ public class JsonScheduleList extends AbstractDomain implements Serializable {
         final StringBuilder sb = new StringBuilder("JsonScheduleList{");
         sb.append("jsonSchedules=").append(jsonSchedules);
         sb.append(", jsonHours=").append(jsonHours);
-        sb.append(", appointmentEnable=").append(appointmentEnable);
+        sb.append(", appointmentState=").append(appointmentState);
         sb.append(", appointmentDuration=").append(appointmentDuration);
         sb.append(", appointmentOpenHowFar=").append(appointmentOpenHowFar);
         sb.append(", error=").append(error);
