@@ -5,7 +5,6 @@ import com.noqapp.android.common.model.types.BusinessTypeEnum;
 /**
  * Created by chandra on 3/16/18.
  */
-
 public class NotificationBeans {
 
     private String title;
@@ -18,7 +17,6 @@ public class NotificationBeans {
     public NotificationBeans() {
 
     }
-
 
     public String getTitle() {
         return title;
