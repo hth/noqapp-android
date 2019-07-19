@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -130,7 +129,7 @@ public class MedicalProfileActivity extends BaseActivity implements
         });
         Button btn_view_immune = findViewById(R.id.btn_view_immune);
         btn_view_immune.setOnClickListener(v -> {
-            Intent in = new Intent(this, ImmunizationActivity.class);
+            Intent in = new Intent(this, HospitalVisitScheduleActivity.class);
             in.putExtra("medicalProfile", medicalProfile);
             startActivity(in);
         });

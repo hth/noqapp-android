@@ -1,37 +1,33 @@
 package com.noqapp.android.client.views.activities;
 
-
-import android.os.Bundle;
-import android.util.Log;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
-import com.noqapp.android.client.presenter.ImmunizationHistoryPresenter;
+import com.noqapp.android.client.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.ImmuneAdapter;
 import com.noqapp.android.client.views.pojos.ImmuneObjList;
-import com.noqapp.android.common.beans.medical.JsonImmunization;
-import com.noqapp.android.common.beans.medical.JsonImmunizationList;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
+
+import android.os.Bundle;
+import android.util.Log;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class ImmunizationActivity extends BaseActivity implements ImmunizationHistoryPresenter {
+public class HospitalVisitScheduleActivity extends BaseActivity implements HospitalVisitSchedulePresenter {
 
     private ArrayList<ImmuneObjList> temp = new ArrayList<>();
     private RecyclerView rcv_header;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +41,10 @@ public class ImmunizationActivity extends BaseActivity implements ImmunizationHi
         rcv_header.setItemAnimator(new DefaultItemAnimator());
         MedicalProfile medicalProfile = (MedicalProfile) getIntent().getSerializableExtra("medicalProfile");
         UserMedicalProfileApiCalls userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();
-        userMedicalProfileApiCalls.setImmunizationHistoryPresenter(this);
+        userMedicalProfileApiCalls.setHospitalVisitSchedulePresenter(this);
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
-                userMedicalProfileApiCalls.immunizationHistory(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
+                userMedicalProfileApiCalls.hospitalVisitSchedule(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
                 setProgressMessage("fetching immunization history...");
                 showProgress();
             } else {
@@ -59,29 +55,30 @@ public class ImmunizationActivity extends BaseActivity implements ImmunizationHi
         }
 
     }
+
     @Override
-    public void immunizationHistoryResponse(JsonImmunizationList jsonImmunizationList) {
-        Log.e("immunization",jsonImmunizationList.toString());
-        List<JsonImmunization> jsonImmunizations = jsonImmunizationList.getJsonImmunizations();
-        Map<String,ArrayList<JsonImmunization>> listHashMap = new HashMap<>();
-        for (int i = 0; i < jsonImmunizations.size(); i++) {
-            JsonImmunization jsonImmunization = jsonImmunizations.get(i);
-            ArrayList<JsonImmunization> value = listHashMap.get(jsonImmunization.getHeader());
+    public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
+        Log.e("immunization", jsonHospitalVisitScheduleList.toString());
+        List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = jsonHospitalVisitScheduleList.getJsonHospitalVisitSchedules();
+        Map<String, ArrayList<JsonHospitalVisitSchedule>> listHashMap = new HashMap<>();
+        for (int i = 0; i < jsonHospitalVisitSchedules.size(); i++) {
+            JsonHospitalVisitSchedule jsonHospitalVisitSchedule = jsonHospitalVisitSchedules.get(i);
+            ArrayList<JsonHospitalVisitSchedule> value = listHashMap.get(jsonHospitalVisitSchedule.getHeader());
             if (value != null) {
-                listHashMap.get(jsonImmunization.getHeader()).add(jsonImmunization);
+                listHashMap.get(jsonHospitalVisitSchedule.getHeader()).add(jsonHospitalVisitSchedule);
             } else {
                 // Key might be present...
-                if (listHashMap.containsKey(jsonImmunization.getHeader())) {
-                    listHashMap.put(jsonImmunization.getHeader(),new ArrayList<JsonImmunization>());
-                    listHashMap.get(jsonImmunization.getHeader()).add(jsonImmunization);
+                if (listHashMap.containsKey(jsonHospitalVisitSchedule.getHeader())) {
+                    listHashMap.put(jsonHospitalVisitSchedule.getHeader(), new ArrayList<JsonHospitalVisitSchedule>());
+                    listHashMap.get(jsonHospitalVisitSchedule.getHeader()).add(jsonHospitalVisitSchedule);
                 } else {
                     // Definitely no such key
-                    listHashMap.put(jsonImmunization.getHeader(),new ArrayList<JsonImmunization>());
-                    listHashMap.get(jsonImmunization.getHeader()).add(jsonImmunization);
+                    listHashMap.put(jsonHospitalVisitSchedule.getHeader(), new ArrayList<JsonHospitalVisitSchedule>());
+                    listHashMap.get(jsonHospitalVisitSchedule.getHeader()).add(jsonHospitalVisitSchedule);
                 }
             }
         }
-        for (Map.Entry<String, ArrayList<JsonImmunization>> entry : listHashMap.entrySet()) {
+        for (Map.Entry<String, ArrayList<JsonHospitalVisitSchedule>> entry : listHashMap.entrySet()) {
             System.out.println(entry.getKey() + "/" + entry.getValue());
             ImmuneObjList aa = new ImmuneObjList();
             aa.setHeaderTitle(entry.getKey());

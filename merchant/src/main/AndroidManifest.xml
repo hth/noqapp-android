@@ -219,7 +219,7 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.activities.ImmunizationActivity"
+            android:name=".views.activities.HospitalVisitScheduleActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity

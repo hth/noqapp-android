@@ -1,31 +1,27 @@
 package com.noqapp.android.merchant.views.activities;
 
-
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.noqapp.android.common.beans.medical.JsonImmunization;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.ImmuneAdapter;
 import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.widget.Toast;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-
-public class ImmunizationActivity extends BaseActivity {
+public class HospitalVisitScheduleActivity extends BaseActivity {
     private long lastPress;
     private Toast backPressToast;
     private String codeQR;
     private ArrayList<ImmuneObjList> temp = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +38,12 @@ public class ImmunizationActivity extends BaseActivity {
         rcv_header.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcv_header.setItemAnimator(new DefaultItemAnimator());
         initList();
-        ImmuneAdapter immuneAdapter = new ImmuneAdapter(this, temp,
-                null);
+        ImmuneAdapter immuneAdapter = new ImmuneAdapter(this, temp, null);
         rcv_header.setAdapter(immuneAdapter);
 
     }
 
     private void initList() {
-
         ImmuneObjList aa = new ImmuneObjList();
         aa.setHeaderTitle("Birth");
         aa.setImmuneObjs(getList(5));
@@ -71,18 +65,17 @@ public class ImmunizationActivity extends BaseActivity {
         temp.add(dd);
     }
 
-    private ArrayList <JsonImmunization> getList(int size){
-        ArrayList <JsonImmunization> temp = new ArrayList<>();
+    private ArrayList<JsonHospitalVisitSchedule> getList(int size) {
+        ArrayList<JsonHospitalVisitSchedule> temp = new ArrayList<>();
         Random rand = new Random();
         int max = size;
         int min = 0;
         int randomNum = rand.nextInt((max - min) + 1) + min;
         for (int i = 0; i < size; i++) {
-
-            JsonImmunization immuneObj = new JsonImmunization();
+            JsonHospitalVisitSchedule immuneObj = new JsonHospitalVisitSchedule();
             immuneObj.setDueDate("22-11-2019");
             immuneObj.setName("PCV 1");
-            if(randomNum == i)
+            if (randomNum == i)
                 immuneObj.setImmunizationDate("YES");
             temp.add(immuneObj);
         }
@@ -105,5 +98,4 @@ public class ImmunizationActivity extends BaseActivity {
             finish();
         }
     }
-
 }

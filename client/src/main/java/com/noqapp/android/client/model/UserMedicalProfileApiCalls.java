@@ -1,18 +1,16 @@
 package com.noqapp.android.client.model;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.noqapp.android.client.model.response.api.health.UserMedicalProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.ImmunizationHistoryPresenter;
+import com.noqapp.android.client.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.common.beans.medical.JsonImmunizationList;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,10 +18,10 @@ import retrofit2.Response;
 public class UserMedicalProfileApiCalls {
     private final static UserMedicalProfileApiUrls userMedicalProfileApiUrls;
     private MedicalRecordProfilePresenter medicalRecordProfilePresenter;
-    private ImmunizationHistoryPresenter immunizationHistoryPresenter;
+    private HospitalVisitSchedulePresenter hospitalVisitSchedulePresenter;
 
-    public void setImmunizationHistoryPresenter(ImmunizationHistoryPresenter immunizationHistoryPresenter) {
-        this.immunizationHistoryPresenter = immunizationHistoryPresenter;
+    public void setHospitalVisitSchedulePresenter(HospitalVisitSchedulePresenter hospitalVisitSchedulePresenter) {
+        this.hospitalVisitSchedulePresenter = hospitalVisitSchedulePresenter;
     }
 
     public void setMedicalRecordProfilePresenter(MedicalRecordProfilePresenter medicalRecordProfilePresenter) {
@@ -90,30 +88,30 @@ public class UserMedicalProfileApiCalls {
         });
     }
 
-    public void immunizationHistory(String mail, String auth, MedicalProfile medicalProfile) {
-        userMedicalProfileApiUrls.immunizationHistory(mail, auth,medicalProfile).enqueue(new Callback<JsonImmunizationList>() {
+    public void hospitalVisitSchedule(String mail, String auth, MedicalProfile medicalProfile) {
+        userMedicalProfileApiUrls.hospitalVisitSchedule(mail, auth, medicalProfile).enqueue(new Callback<JsonHospitalVisitScheduleList>() {
             @Override
-            public void onResponse(@NonNull Call<JsonImmunizationList> call, @NonNull Response<JsonImmunizationList> response) {
+            public void onResponse(@NonNull Call<JsonHospitalVisitScheduleList> call, @NonNull Response<JsonHospitalVisitScheduleList> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
                     if (null != response.body() && null == response.body().getError()) {
-                        Log.d("Resp immunizationHis", String.valueOf(response.body()));
-                        immunizationHistoryPresenter.immunizationHistoryResponse(response.body());
+                        Log.d("Resp hospitalVSchedule", String.valueOf(response.body()));
+                        hospitalVisitSchedulePresenter.hospitalVisitScheduleResponse(response.body());
                     } else {
-                        immunizationHistoryPresenter.responseErrorPresenter(response.body().getError());
+                        hospitalVisitSchedulePresenter.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        immunizationHistoryPresenter.authenticationFailure();
+                        hospitalVisitSchedulePresenter.authenticationFailure();
                     } else {
-                        immunizationHistoryPresenter.responseErrorPresenter(response.code());
+                        hospitalVisitSchedulePresenter.responseErrorPresenter(response.code());
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonImmunizationList> call, @NonNull Throwable t) {
-                Log.e("immunizationHis fail", t.getLocalizedMessage(), t);
-                immunizationHistoryPresenter.responseErrorPresenter(null);
+            public void onFailure(@NonNull Call<JsonHospitalVisitScheduleList> call, @NonNull Throwable t) {
+                Log.e("hospitalVSchedule fail", t.getLocalizedMessage(), t);
+                hospitalVisitSchedulePresenter.responseErrorPresenter(null);
             }
         });
     }

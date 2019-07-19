@@ -265,7 +265,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".views.activities.ImmunizationActivity"
+            android:name=".views.activities.HospitalVisitScheduleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity

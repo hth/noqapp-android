@@ -28,7 +28,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonImmunization extends AbstractDomain implements Serializable {
+public class JsonHospitalVisitSchedule extends AbstractDomain implements Serializable {
 
     @JsonProperty("mn")
     private String name;
@@ -49,7 +49,7 @@ public class JsonImmunization extends AbstractDomain implements Serializable {
         return name;
     }
 
-    public JsonImmunization setName(String name) {
+    public JsonHospitalVisitSchedule setName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public class JsonImmunization extends AbstractDomain implements Serializable {
         return immunizationDate;
     }
 
-    public JsonImmunization setImmunizationDate(String immunizationDate) {
+    public JsonHospitalVisitSchedule setImmunizationDate(String immunizationDate) {
         this.immunizationDate = immunizationDate;
         return this;
     }
@@ -67,7 +67,7 @@ public class JsonImmunization extends AbstractDomain implements Serializable {
         return header;
     }
 
-    public JsonImmunization setHeader(String header) {
+    public JsonHospitalVisitSchedule setHeader(String header) {
         this.header = header;
         return this;
     }
@@ -76,7 +76,7 @@ public class JsonImmunization extends AbstractDomain implements Serializable {
         return dueDate;
     }
 
-    public JsonImmunization setDueDate(String dueDate) {
+    public JsonHospitalVisitSchedule setDueDate(String dueDate) {
         this.dueDate = dueDate;
         return this;
     }
@@ -91,7 +91,7 @@ public class JsonImmunization extends AbstractDomain implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonImmunization{");
+        final StringBuilder sb = new StringBuilder("JsonHospitalVisitSchedule{");
         sb.append("name='").append(name).append('\'');
         sb.append(", immunizationDate='").append(immunizationDate).append('\'');
         sb.append(", header='").append(header).append('\'');

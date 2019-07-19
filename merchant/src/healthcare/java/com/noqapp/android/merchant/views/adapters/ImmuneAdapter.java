@@ -13,7 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.noqapp.android.common.beans.medical.JsonImmunization;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
@@ -72,7 +72,7 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onImmuneItemClick(JsonImmunization jsonImmunization);
+        void onImmuneItemClick(JsonHospitalVisitSchedule jsonHospitalVisitSchedule);
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {

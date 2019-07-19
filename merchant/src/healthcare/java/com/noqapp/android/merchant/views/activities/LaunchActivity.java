@@ -108,7 +108,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
             Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
             startActivity(intentPreference);
         } else {
-            Intent intentPreference = new Intent(launchActivity, ImmunizationActivity.class);
+            Intent intentPreference = new Intent(launchActivity, HospitalVisitScheduleActivity.class);
             startActivity(intentPreference);
         }
     }
