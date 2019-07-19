@@ -73,6 +73,17 @@ public class BookAppointmentActivity extends BaseActivity implements
         bizStoreElastic = (BizStoreElastic) getIntent().getSerializableExtra(IBConstant.KEY_DATA_OBJECT);
         if (null != bizStoreElastic) {
             storeHourElastics = bizStoreElastic.getStoreHourElasticList();
+            switch (bizStoreElastic.getAppointmentState()) {
+                case O:
+                    //do nothing
+                    break;
+                case A:
+                    isAppointmentBooking = true;
+                    break;
+                case S:
+                    isAppointmentBooking = false;
+                    break;
+            }
         }
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.DAY_OF_MONTH, bizStoreElastic.getAppointmentOpenHowFar() * 7); // end date of appointment

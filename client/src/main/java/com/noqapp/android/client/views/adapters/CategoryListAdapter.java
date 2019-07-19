@@ -27,6 +27,7 @@ import com.noqapp.android.client.views.activities.AllReviewsActivity;
 import com.noqapp.android.client.views.activities.BookAppointmentActivity;
 import com.noqapp.android.client.views.activities.ManagerProfileActivity;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -212,10 +213,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
             }
         });
         if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-            if (bizStoreElastic.isAppointmentEnable()) {
-                holder.btn_book_appointment.setVisibility(View.VISIBLE);
-            } else {
-                holder.btn_book_appointment.setVisibility(View.GONE);
+            switch (bizStoreElastic.getAppointmentState()) {
+                case O:
+                    holder.btn_book_appointment.setVisibility(View.GONE);
+                    break;
+                case A:
+                case S:
+                    holder.btn_book_appointment.setVisibility(View.VISIBLE);
+                    break;
             }
         } else {
             holder.btn_book_appointment.setVisibility(View.GONE);
