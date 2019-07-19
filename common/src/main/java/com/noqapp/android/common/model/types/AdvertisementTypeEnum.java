@@ -1,4 +1,4 @@
-package com.noqapp.android.common.beans;
+package com.noqapp.android.common.model.types;
 
 /**
  * hitender
