@@ -25,7 +25,7 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.AppointmentDateAdapter;
+import com.noqapp.android.client.views.adapters.AppointmentSlotAdapter;
 import com.noqapp.android.client.views.adapters.DependentAdapter;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -33,7 +33,7 @@ import com.noqapp.android.common.beans.JsonSchedule;
 import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
-import com.noqapp.android.common.pojos.AppointmentModel;
+import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
 
@@ -46,17 +46,17 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity extends BaseActivity implements
-        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter {
+        AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter {
     private Spinner sp_name_list;
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<StoreHourElastic> storeHourElastics;
     private BizStoreElastic bizStoreElastic;
     private Calendar selectedDate;
-    private AppointmentDateAdapter appointmentDateAdapter;
+    private AppointmentSlotAdapter appointmentSlotAdapter;
     private int selectedPos = -1;
     private AppointmentApiCalls appointmentApiCalls;
-    private AppointmentModel firstAvailableAppointment = null;
+    private AppointmentSlot firstAvailableAppointment = null;
 
     private boolean isAppointmentBooking = false;
     private FrameLayout frame;
@@ -151,7 +151,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             setProgressMessage("Booking appointment...");
                             showProgress();
-                            String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                            String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
                                     .setCodeQR(bizStoreElastic.getCodeQR())
                                     .setStartTime(AppUtilities.removeColon(temp[0].trim()))
@@ -170,7 +170,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             setProgressMessage("Booking appointment...");
                             showProgress();
-                            String[] temp = firstAvailableAppointment.getTime().split("-");
+                            String[] temp = firstAvailableAppointment.getTimeSlot().split("-");
                             JsonSchedule jsonSchedule = new JsonSchedule()
                                     .setCodeQR(bizStoreElastic.getCodeQR())
                                     .setStartTime(AppUtilities.removeColon(temp[0].trim()))
@@ -191,7 +191,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     @Override
-    public void onAppointmentSelected(AppointmentModel item, int pos) {
+    public void onAppointmentSelected(AppointmentSlot item, int pos) {
         selectedPos = pos;
     }
 
@@ -212,7 +212,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
-        List<AppointmentModel> listData = new ArrayList<>();
+        List<AppointmentSlot> listData = new ArrayList<>();
         if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
@@ -221,16 +221,16 @@ public class BookAppointmentActivity extends BaseActivity implements
             String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
             ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
-                listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
+                listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
 
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
                 }
 
             }
-            appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
-            rv_available_date.setAdapter(appointmentDateAdapter);
-            appointmentDateAdapter.notifyDataSetChanged();
+            appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
+            rv_available_date.setAdapter(appointmentSlotAdapter);
+            appointmentSlotAdapter.notifyDataSetChanged();
             selectedPos = -1;
             if (listData.size() == 0) {
                 tv_empty_slots.setVisibility(View.VISIBLE);

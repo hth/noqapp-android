@@ -1,15 +1,15 @@
 package com.noqapp.android.common.pojos;
 
-public class AppointmentModel {
-    private String time;
+public class AppointmentSlot {
+    private String timeSlot;
     private boolean isBooked;
 
-    public String getTime() {
-        return time;
+    public String getTimeSlot() {
+        return timeSlot;
     }
 
-    public AppointmentModel setTime(String time) {
-        this.time = time;
+    public AppointmentSlot setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
         return this;
     }
 
@@ -17,7 +17,7 @@ public class AppointmentModel {
         return isBooked;
     }
 
-    public AppointmentModel setBooked(boolean booked) {
+    public AppointmentSlot setBooked(boolean booked) {
         isBooked = booked;
         return this;
     }
@@ -25,7 +25,7 @@ public class AppointmentModel {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AppointmentModel{");
-        sb.append("time='").append(time).append('\'');
+        sb.append("timeSlot='").append(timeSlot).append('\'');
         sb.append(", isBooked=").append(isBooked);
         sb.append('}');
         return sb.toString();

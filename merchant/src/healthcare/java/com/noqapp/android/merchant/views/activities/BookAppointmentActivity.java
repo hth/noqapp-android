@@ -36,7 +36,7 @@ import com.noqapp.android.common.beans.JsonScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.pojos.AppointmentModel;
+import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.common.presenter.AppointmentPresenter;
 import com.noqapp.android.common.utils.Formatter;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
@@ -50,7 +50,7 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
-import com.noqapp.android.merchant.views.adapters.AppointmentDateAdapter;
+import com.noqapp.android.merchant.views.adapters.AppointmentSlotAdapter;
 import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
 import com.noqapp.android.merchant.views.pojos.DataObj;
@@ -69,13 +69,13 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 public class BookAppointmentActivity extends BaseActivity implements
-        AppointmentDateAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter
+        AppointmentSlotAdapter.OnItemClickListener, AppointmentPresenter, FindCustomerPresenter
         , RegistrationActivity.RegisterCallBack, LoginActivity.LoginCallBack {
     private TextView tv_empty_slots;
     private RecyclerView rv_available_date;
     private List<JsonHour> jsonHours;
     private Calendar selectedDate;
-    private AppointmentDateAdapter appointmentDateAdapter;
+    private AppointmentSlotAdapter appointmentSlotAdapter;
     private int selectedPos = -1;
     private ScheduleApiCalls scheduleApiCalls;
     private Button btn_create_token;
@@ -189,7 +189,7 @@ public class BookAppointmentActivity extends BaseActivity implements
 
                         long diffInMinutes = calculateAppointmentSlot(AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotStartTiming()),
                                 AppUtils.getTimeFourDigitWithColon(jsonScheduleTemp.getMultipleSlotEndTiming()));
-                        String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                        String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                         String endTime = getEndTime((int) diffInMinutes, temp[0].trim());
                         jsonScheduleTemp.setStartTime(AppUtils.removeColon(temp[0].trim()));
                         jsonScheduleTemp.setEndTime(AppUtils.removeColon(endTime));
@@ -218,7 +218,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     @Override
-    public void onAppointmentSelected(AppointmentModel item, int pos) {
+    public void onAppointmentSelected(AppointmentSlot item, int pos) {
         selectedPos = pos;
     }
 
@@ -239,18 +239,18 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     private void setAppointmentSlots(JsonHour storeHourElastic, ArrayList<String> filledTimes) {
-        List<AppointmentModel> listData = new ArrayList<>();
+        List<AppointmentSlot> listData = new ArrayList<>();
         String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
         String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
         ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
         times.clear();
         for (int i = 0; i < timeSlot.size() - 1; i++) {
-            listData.add(new AppointmentModel().setTime(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
+            listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
             times.add(timeSlot.get(i));
         }
-        appointmentDateAdapter = new AppointmentDateAdapter(listData, this, this);
-        rv_available_date.setAdapter(appointmentDateAdapter);
-        appointmentDateAdapter.notifyDataSetChanged();
+        appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
+        rv_available_date.setAdapter(appointmentSlotAdapter);
+        appointmentSlotAdapter.notifyDataSetChanged();
         if (listData.size() == 0) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
@@ -365,7 +365,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 R.layout.spinner_item, times);
         sp_end_time.setAdapter(sp_adapter);
         sp_start_time.setAdapter(sp_adapter);
-        String[] split = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+        String[] split = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
         int selectStart = times.indexOf(split[0].trim());
         int selectEnd = times.indexOf(split[1].trim());
         if (selectStart != -1) {
@@ -508,7 +508,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                                         .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
                                         .setCustomerPhone(phoneNoWithCode)
                                         .setBusinessCustomerId(cid);
-                                String[] temp = appointmentDateAdapter.getDataSet().get(selectedPos).getTime().split("-");
+                                String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
                                 JsonSchedule jsonSchedule = new JsonSchedule()
                                         .setCodeQR(codeQR)
                                         .setStartTime(start)
