@@ -11,8 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
@@ -21,12 +21,12 @@ import java.util.List;
 
 public class MenuOrderAdapter extends BaseAdapter {
     private Context context;
-    private List<ChildData> menuItemsList;
+    private List<StoreCartItem> menuItemsList;
     private StoreMenuActivity storeMenuActivity;
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
-    public MenuOrderAdapter(Context context, List<ChildData> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate,String currencySymbol) {
+    public MenuOrderAdapter(Context context, List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate, String currencySymbol) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;
@@ -48,7 +48,7 @@ public class MenuOrderAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
         final ChildViewHolder childViewHolder;
-        final ChildData childData = menuItemsList.get(position);
+        final StoreCartItem storeCartItem = menuItemsList.get(position);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,15 +67,15 @@ public class MenuOrderAdapter extends BaseAdapter {
             childViewHolder = (ChildViewHolder) convertView
                     .getTag(R.layout.list_item_menu_child);
         }
-        final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
+        final JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
-        childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
+        childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtils.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
                         + " "
-                        + childData.getFinalDiscountedPrice());
+                        + storeCartItem.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -136,7 +136,7 @@ public class MenuOrderAdapter extends BaseAdapter {
 
     private int showCartAmount() {
         int price = 0;
-        for (ChildData value : storeMenuActivity.getOrders().values()) {
+        for (StoreCartItem value : storeMenuActivity.getOrders().values()) {
             price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
         return price ;

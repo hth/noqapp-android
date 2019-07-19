@@ -8,7 +8,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
 import com.noqapp.android.merchant.views.adapters.MenuOrderAdapter;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FragmentDummyMenu extends Fragment {
     private View view;
-    private List<ChildData> childData;
+    private List<StoreCartItem> childData;
     private ListView listView;
     private MenuOrderAdapter.CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
@@ -26,7 +26,7 @@ public class FragmentDummyMenu extends Fragment {
         // Required empty public constructor
     }
 
-    public FragmentDummyMenu(List<ChildData> childData, StoreMenuActivity storeMenuActivity, MenuOrderAdapter.CartOrderUpdate cartOrderUpdate,String currencySymbol) {
+    public FragmentDummyMenu(List<StoreCartItem> childData, StoreMenuActivity storeMenuActivity, MenuOrderAdapter.CartOrderUpdate cartOrderUpdate,String currencySymbol) {
         this.childData = childData;
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;

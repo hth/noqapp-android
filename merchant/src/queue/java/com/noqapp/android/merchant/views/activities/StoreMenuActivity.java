@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -23,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
@@ -35,6 +35,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
@@ -68,7 +69,7 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
     // private JsonQueue jsonQueue;
     private MenuHeaderAdapter menuAdapter;
     private ViewPager viewPager;
-    private HashMap<String, ChildData> orders = new HashMap<>();
+    private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private ArrayList<JsonStoreCategory> jsonStoreCategories = new ArrayList<>();
     private PurchaseOrderApiCalls purchaseOrderApiCalls;
     private BusinessCustomerApiCalls businessCustomerApiCalls;
@@ -77,6 +78,13 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
     private TextView tv_select_patient;
     private Button btn_create_order, btn_create_token;
     private String codeQR = "";
+    public static UpdateWholeList updateWholeList;
+    private long lastPress;
+    private Toast backPressToast;
+
+    public interface UpdateWholeList {
+        void updateWholeList();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +100,8 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
             @Override
             public void onClick(View v) {
                 finish();
-                if (null != BaseLaunchActivity.merchantListFragment) {
-                    BaseLaunchActivity.merchantListFragment.onRefresh();
+                if (null != updateWholeList) {
+                    updateWholeList.updateWholeList();
                 }
             }
         });
@@ -133,19 +141,19 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
             jsonStoreCategories.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
-            final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
+            final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
-                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
+                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<StoreCartItem>());
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
+                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 } else {
                     //TODO(hth) when product without category else it will drop
                     if (null == listDataChild.get(defaultCategory)) {
-                        listDataChild.put(defaultCategory, new ArrayList<ChildData>());
+                        listDataChild.put(defaultCategory, new ArrayList<StoreCartItem>());
                     }
-                    listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
+                    listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 }
             }
 
@@ -225,7 +233,7 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
         }
     }
 
-    public HashMap<String, ChildData> getOrders() {
+    public HashMap<String, StoreCartItem> getOrders() {
         return orders;
     }
 
@@ -373,10 +381,10 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
                         setProgressMessage("Placing order....");
                         showProgress();
                         setProgressCancel(false);
-                        HashMap<String, ChildData> getOrder = getOrders();
+                        HashMap<String, StoreCartItem> getOrder = getOrders();
                         List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                         int price = 0;
-                        for (ChildData value : getOrder.values()) {
+                        for (StoreCartItem value : getOrder.values()) {
                             ll.add(new JsonPurchaseOrderProduct()
                                     .setProductId(value.getJsonStoreProduct().getProductId())
                                     .setProductPrice(value.getFinalDiscountedPrice() * 100)
@@ -409,8 +417,8 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
             finish();
-            if (null != BaseLaunchActivity.merchantListFragment) {
-                BaseLaunchActivity.merchantListFragment.onRefresh();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         }
     }
@@ -418,5 +426,25 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
     @Override
     public void purchaseOrderError() {
         dismissProgress();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 3000) {
+            backPressToast = new CustomToast().getToast(this, "Press back to exit");
+            backPressToast.show();
+            lastPress = currentTime;
+        } else {
+            if (backPressToast != null) {
+                backPressToast.cancel();
+            }
+            //super.onBackPressed();
+            finish();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
+            }
+        }
     }
 }

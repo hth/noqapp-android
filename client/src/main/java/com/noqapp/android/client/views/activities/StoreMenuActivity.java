@@ -18,7 +18,7 @@ import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.CustomExpandableListAdapter;
-import com.noqapp.android.client.views.adapters.MenuAdapter;
+import com.noqapp.android.client.views.adapters.StoreMenuAdapter;
 import com.noqapp.android.client.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.FragmentDummy;
@@ -34,7 +34,7 @@ import java.util.List;
 // Scrollview issue  https://stackoverflow.com/questions/37605545/android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 public class StoreMenuActivity extends BaseActivity implements CustomExpandableListAdapter.CartUpdate,
-        MenuHeaderAdapter.OnItemClickListener, MenuAdapter.CartOrderUpdate {
+        MenuHeaderAdapter.OnItemClickListener, StoreMenuAdapter.CartOrderUpdate {
     private Button tv_place_order;
     private RecyclerView rcv_header;
     private JsonQueue jsonQueue;

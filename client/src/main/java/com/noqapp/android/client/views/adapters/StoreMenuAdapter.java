@@ -18,14 +18,14 @@ import com.noqapp.android.common.beans.store.JsonStoreProduct;
 
 import java.util.List;
 
-public class MenuAdapter extends BaseAdapter {
+public class StoreMenuAdapter extends BaseAdapter {
     private Context context;
     private List<StoreCartItem> menuItemsList;
     private StoreMenuActivity storeMenuActivity;
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
-    public MenuAdapter(Context context, List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate, String currencySymbol) {
+    public StoreMenuAdapter(Context context, List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate, String currencySymbol) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;

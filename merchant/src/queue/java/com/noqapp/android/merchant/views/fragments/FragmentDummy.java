@@ -8,23 +8,23 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
-import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.views.adapters.MenuAdapter;
+import com.noqapp.android.merchant.views.adapters.StoreMenuAdapter;
 
 import java.util.List;
 
 public class FragmentDummy extends Fragment {
     private View view;
-    private List<ChildData> childData;
+    private List<StoreCartItem> childData;
     private ListView listView;
-    private MenuAdapter.MenuItemUpdate menuItemUpdate;
+    private StoreMenuAdapter.MenuItemUpdate menuItemUpdate;
 
     public FragmentDummy() {
         // Required empty public constructor
     }
 
-    public FragmentDummy(List<ChildData> childData,MenuAdapter.MenuItemUpdate menuItemUpdate) {
+    public FragmentDummy(List<StoreCartItem> childData, StoreMenuAdapter.MenuItemUpdate menuItemUpdate) {
         this.childData = childData;
         this.menuItemUpdate = menuItemUpdate;
     }
@@ -44,7 +44,7 @@ public class FragmentDummy extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = view.findViewById(R.id.listView);
-        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, menuItemUpdate);
+        StoreMenuAdapter menuAdapter = new StoreMenuAdapter(getActivity(), childData, menuItemUpdate);
         listView.setAdapter(menuAdapter);
         return view;
     }

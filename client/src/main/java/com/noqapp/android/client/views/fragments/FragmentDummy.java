@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.activities.StoreMenuActivity;
-import com.noqapp.android.client.views.adapters.MenuAdapter;
+import com.noqapp.android.client.views.adapters.StoreMenuAdapter;
 import com.noqapp.android.common.pojos.StoreCartItem;
 
 import java.util.List;
@@ -21,14 +21,14 @@ public class FragmentDummy extends Fragment {
     private List<StoreCartItem> childData;
     private ListView listView;
     private StoreMenuActivity storeMenuActivity;
-    private MenuAdapter.CartOrderUpdate cartOrderUpdate;
+    private StoreMenuAdapter.CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
     public FragmentDummy() {
         // Required empty public constructor
     }
 
-    public FragmentDummy(List<StoreCartItem> childData, StoreMenuActivity storeMenuActivity, MenuAdapter.CartOrderUpdate cartOrderUpdate, String currencySymbol) {
+    public FragmentDummy(List<StoreCartItem> childData, StoreMenuActivity storeMenuActivity, StoreMenuAdapter.CartOrderUpdate cartOrderUpdate, String currencySymbol) {
         this.childData = childData;
         this.storeMenuActivity = storeMenuActivity;
         this.cartOrderUpdate = cartOrderUpdate;
@@ -50,7 +50,7 @@ public class FragmentDummy extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = view.findViewById(R.id.listView);
-        MenuAdapter menuAdapter = new MenuAdapter(getActivity(), childData, storeMenuActivity, cartOrderUpdate,currencySymbol);
+        StoreMenuAdapter menuAdapter = new StoreMenuAdapter(getActivity(), childData, storeMenuActivity, cartOrderUpdate,currencySymbol);
         listView.setAdapter(menuAdapter);
         return view;
     }

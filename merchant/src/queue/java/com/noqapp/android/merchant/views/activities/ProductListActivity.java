@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.noqapp.android.common.beans.ChildData;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
@@ -28,6 +27,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
 import com.noqapp.android.common.model.types.order.ProductTypeEnum;
 import com.noqapp.android.common.model.types.order.UnitOfMeasurementEnum;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -35,7 +35,7 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.EnumAdapter;
-import com.noqapp.android.merchant.views.adapters.MenuAdapter;
+import com.noqapp.android.merchant.views.adapters.StoreMenuAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.FragmentDummy;
@@ -49,7 +49,7 @@ import java.util.List;
 
 public class ProductListActivity extends BaseActivity implements
         StoreProductPresenter, ActionOnProductPresenter, MenuHeaderAdapter.OnItemClickListener,
-        MenuAdapter.MenuItemUpdate {
+        StoreMenuAdapter.MenuItemUpdate {
 
     private RecyclerView rcv_header;
     private MenuHeaderAdapter menuAdapter;
@@ -99,19 +99,19 @@ public class ProductListActivity extends BaseActivity implements
             jsonStoreCategories.clear();
             jsonStoreCategories = (ArrayList<JsonStoreCategory>) jsonStore.getJsonStoreCategories();
             ArrayList<JsonStoreProduct> jsonStoreProducts = (ArrayList<JsonStoreProduct>) jsonStore.getJsonStoreProducts();
-            final HashMap<String, List<ChildData>> listDataChild = new HashMap<>();
+            final HashMap<String, List<StoreCartItem>> listDataChild = new HashMap<>();
             for (int l = 0; l < jsonStoreCategories.size(); l++) {
-                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<ChildData>());
+                listDataChild.put(jsonStoreCategories.get(l).getCategoryId(), new ArrayList<StoreCartItem>());
             }
             for (int k = 0; k < jsonStoreProducts.size(); k++) {
                 if (jsonStoreProducts.get(k).getStoreCategoryId() != null) {
-                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new ChildData(0, jsonStoreProducts.get(k)));
+                    listDataChild.get(jsonStoreProducts.get(k).getStoreCategoryId()).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 } else {
                     //TODO(hth) when product without category else it will drop
                     if (null == listDataChild.get(defaultCategory)) {
-                        listDataChild.put(defaultCategory, new ArrayList<ChildData>());
+                        listDataChild.put(defaultCategory, new ArrayList<StoreCartItem>());
                     }
-                    listDataChild.get(defaultCategory).add(new ChildData(0, jsonStoreProducts.get(k)));
+                    listDataChild.get(defaultCategory).add(new StoreCartItem(0, jsonStoreProducts.get(k)));
                 }
             }
 
