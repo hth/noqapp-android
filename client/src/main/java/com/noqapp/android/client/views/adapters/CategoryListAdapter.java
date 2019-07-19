@@ -62,8 +62,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
-        MyViewHolder holder = (MyViewHolder) Vholder;
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         holder.tv_name.setText(bizStoreElastic.getDisplayName());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
