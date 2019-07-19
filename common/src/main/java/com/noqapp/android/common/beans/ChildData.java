@@ -8,20 +8,17 @@ import java.io.Serializable;
 /**
  * Created by chandra on 3/28/18.
  */
-
 public class ChildData implements Serializable {
 
     private int childInput;
     private int finalDiscountedPrice;
     private JsonStoreProduct jsonStoreProduct;
 
-
     public ChildData(int childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
         this.jsonStoreProduct = jsonStoreProduct;
-        finalDiscountedPrice = (int)new ProductUtils().calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
+        finalDiscountedPrice = (int) new ProductUtils().calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
     }
-
 
     public int getChildInput() {
         return childInput;
