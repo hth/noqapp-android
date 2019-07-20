@@ -21,14 +21,13 @@ import com.noqapp.android.common.utils.CommonHelper;
 
 import java.util.List;
 
-public class ImmuneAdapter extends RecyclerView.Adapter {
+public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
     private List<ImmuneObjList> categories;
     private Context context;
 
-    public ImmuneAdapter(Context context, List<ImmuneObjList> categories,
-                         OnItemClickListener listener) {
+    public HospitalVisitScheduleAdapter(Context context, List<ImmuneObjList> categories, OnItemClickListener listener) {
         this.categories = categories;
         this.context = context;
         this.listener = listener;
@@ -36,7 +35,7 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rcv_immune, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.rcv_hvs, parent, false);
         return new ViewHolder(view);
     }
 
@@ -50,14 +49,14 @@ public class ImmuneAdapter extends RecyclerView.Adapter {
         // holder.ll_header.removeAllViews();
         for (int i = 0; i < categories.get(position).getImmuneObjs().size(); i++) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            View view = inflater.inflate(R.layout.rcv_immune_item, null, false);
-            TextView tv_immune_title = view.findViewById(R.id.tv_immune_title);
-            TextView tv_immune_date = view.findViewById(R.id.tv_immune_date);
+            View view = inflater.inflate(R.layout.rcv_hvs_item, null, false);
+            TextView tv_hvs_name = view.findViewById(R.id.tv_hvs_name);
+            TextView tv_hvs_visitedDate = view.findViewById(R.id.tv_hvs_visitedDate);
             CardView card_view = view.findViewById(R.id.card_view);
-            tv_immune_title.setText(categories.get(position).getImmuneObjs().get(i).getName());
-            String date = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, categories.get(position).getImmuneObjs().get(i).getImmunizationDate());
-            tv_immune_date.setText(date);
-            if (TextUtils.isEmpty(categories.get(position).getImmuneObjs().get(i).getImmunizationDate())) {
+            tv_hvs_name.setText(categories.get(position).getImmuneObjs().get(i).getName());
+            String date = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, categories.get(position).getImmuneObjs().get(i).getVisitedDate());
+            tv_hvs_visitedDate.setText(date);
+            if (TextUtils.isEmpty(categories.get(position).getImmuneObjs().get(i).getVisitedDate())) {
                 card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_light));
             } else {
                 card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_dark));

@@ -7,7 +7,7 @@ import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.adapters.ImmuneAdapter;
+import com.noqapp.android.client.views.adapters.HospitalVisitScheduleAdapter;
 import com.noqapp.android.client.views.pojos.ImmuneObjList;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
@@ -85,8 +85,8 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
             aa.setImmuneObjs(entry.getValue());
             temp.add(aa);
         }
-        ImmuneAdapter immuneAdapter = new ImmuneAdapter(this, temp,
+        HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(this, temp,
                 null);
-        rcv_header.setAdapter(immuneAdapter);
+        rcv_header.setAdapter(hospitalVisitScheduleAdapter);
     }
 }

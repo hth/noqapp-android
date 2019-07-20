@@ -32,28 +32,11 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHospitalVisitScheduleList extends AbstractDomain implements Serializable {
 
-    @JsonProperty("ir")
-    private List<JsonHospitalVisitSchedule> jsonHospitalVisitScheduleStaticData = new ArrayList<>();
-
-    @JsonProperty("ims")
+    @JsonProperty("hvs")
     private List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = new ArrayList<>();
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
-
-    public List<JsonHospitalVisitSchedule> getJsonHospitalVisitScheduleStaticData() {
-        return jsonHospitalVisitScheduleStaticData;
-    }
-
-    public JsonHospitalVisitScheduleList setJsonHospitalVisitScheduleStaticData(List<JsonHospitalVisitSchedule> jsonHospitalVisitScheduleStaticData) {
-        this.jsonHospitalVisitScheduleStaticData = jsonHospitalVisitScheduleStaticData;
-        return this;
-    }
-
-    public JsonHospitalVisitScheduleList addJsonImmunizationStaticData(JsonHospitalVisitSchedule jsonHospitalVisitSchedule) {
-        this.jsonHospitalVisitScheduleStaticData.add(jsonHospitalVisitSchedule);
-        return this;
-    }
 
     public List<JsonHospitalVisitSchedule> getJsonHospitalVisitSchedules() {
         return jsonHospitalVisitSchedules;
@@ -80,7 +63,6 @@ public class JsonHospitalVisitScheduleList extends AbstractDomain implements Ser
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("JsonHospitalVisitScheduleList{");
-        sb.append("jsonHospitalVisitScheduleStaticData=").append(jsonHospitalVisitScheduleStaticData);
         sb.append(", jsonHospitalVisitSchedules=").append(jsonHospitalVisitSchedules);
         sb.append(", error=").append(error);
         sb.append('}');

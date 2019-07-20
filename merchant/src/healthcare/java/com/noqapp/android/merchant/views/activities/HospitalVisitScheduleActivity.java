@@ -4,7 +4,7 @@ import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.adapters.ImmuneAdapter;
+import com.noqapp.android.merchant.views.adapters.HospitalVisitScheduleAdapter;
 import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
 import android.content.pm.ActivityInfo;
@@ -38,9 +38,8 @@ public class HospitalVisitScheduleActivity extends BaseActivity {
         rcv_header.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcv_header.setItemAnimator(new DefaultItemAnimator());
         initList();
-        ImmuneAdapter immuneAdapter = new ImmuneAdapter(this, temp, null);
-        rcv_header.setAdapter(immuneAdapter);
-
+        HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(this, temp, null);
+        rcv_header.setAdapter(hospitalVisitScheduleAdapter);
     }
 
     private void initList() {
@@ -73,10 +72,10 @@ public class HospitalVisitScheduleActivity extends BaseActivity {
         int randomNum = rand.nextInt((max - min) + 1) + min;
         for (int i = 0; i < size; i++) {
             JsonHospitalVisitSchedule immuneObj = new JsonHospitalVisitSchedule();
-            immuneObj.setDueDate("22-11-2019");
+            immuneObj.setExpectedDate("22-11-2019");
             immuneObj.setName("PCV 1");
             if (randomNum == i)
-                immuneObj.setImmunizationDate("YES");
+                //immuneObj.setImmunizationDate("YES");
             temp.add(immuneObj);
         }
         return temp;

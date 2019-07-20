@@ -30,17 +30,17 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHospitalVisitSchedule extends AbstractDomain implements Serializable {
 
-    @JsonProperty("mn")
+    @JsonProperty("vn")
     private String name;
 
-    @JsonProperty("md")
-    private String immunizationDate;
-
-    @JsonProperty("mh")
+    @JsonProperty("vh")
     private String header;
 
-    @JsonProperty("dd")
-    private String dueDate;
+    @JsonProperty("vd")
+    private String visitedDate;
+
+    @JsonProperty("ed")
+    private String expectedDate;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -54,15 +54,6 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
         return this;
     }
 
-    public String getImmunizationDate() {
-        return immunizationDate;
-    }
-
-    public JsonHospitalVisitSchedule setImmunizationDate(String immunizationDate) {
-        this.immunizationDate = immunizationDate;
-        return this;
-    }
-
     public String getHeader() {
         return header;
     }
@@ -72,12 +63,21 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
         return this;
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public String getVisitedDate() {
+        return visitedDate;
     }
 
-    public JsonHospitalVisitSchedule setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public JsonHospitalVisitSchedule setVisitedDate(String visitedDate) {
+        this.visitedDate = visitedDate;
+        return this;
+    }
+
+    public String getExpectedDate() {
+        return expectedDate;
+    }
+
+    public JsonHospitalVisitSchedule setExpectedDate(String expectedDate) {
+        this.expectedDate = expectedDate;
         return this;
     }
 
@@ -93,9 +93,9 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
     public String toString() {
         final StringBuilder sb = new StringBuilder("JsonHospitalVisitSchedule{");
         sb.append("name='").append(name).append('\'');
-        sb.append(", immunizationDate='").append(immunizationDate).append('\'');
         sb.append(", header='").append(header).append('\'');
-        sb.append(", dueDate='").append(dueDate).append('\'');
+        sb.append(", visitedDate='").append(visitedDate).append('\'');
+        sb.append(", expectedDate='").append(expectedDate).append('\'');
         sb.append(", error=").append(error);
         sb.append('}');
         return sb.toString();
