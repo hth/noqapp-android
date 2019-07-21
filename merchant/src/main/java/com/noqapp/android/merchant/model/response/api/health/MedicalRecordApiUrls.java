@@ -1,6 +1,7 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
@@ -86,6 +87,24 @@ public interface MedicalRecordApiUrls {
      */
     @POST("api/m/h/medicalRecord/historical.json")
     Call<JsonMedicalRecordList> historical(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            FindMedicalProfile findMedicalProfile
+    );
+
+    @POST("api/c/h/medicalProfile/hospitalVisitSchedule.json")
+    Call<JsonHospitalVisitScheduleList> hospitalVisitSchedule(
             @Header("X-R-DID")
             String did,
 
