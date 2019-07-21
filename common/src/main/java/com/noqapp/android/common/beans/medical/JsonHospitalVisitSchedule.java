@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User: hitender
@@ -30,8 +31,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHospitalVisitSchedule extends AbstractDomain implements Serializable {
 
-    @JsonProperty("vn")
-    private String name;
+    @JsonProperty("vf")
+    private List<String> visitingFor;
 
     @JsonProperty("vh")
     private String header;
@@ -45,12 +46,12 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
-    public String getName() {
-        return name;
+    public List<String> getVisitingFor() {
+        return visitingFor;
     }
 
-    public JsonHospitalVisitSchedule setName(String name) {
-        this.name = name;
+    public JsonHospitalVisitSchedule setVisitingFor(List<String> visitingFor) {
+        this.visitingFor = visitingFor;
         return this;
     }
 
@@ -92,7 +93,7 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("JsonHospitalVisitSchedule{");
-        sb.append("name='").append(name).append('\'');
+        sb.append("visitingFor='").append(visitingFor).append('\'');
         sb.append(", header='").append(header).append('\'');
         sb.append(", visitedDate='").append(visitedDate).append('\'');
         sb.append(", expectedDate='").append(expectedDate).append('\'');

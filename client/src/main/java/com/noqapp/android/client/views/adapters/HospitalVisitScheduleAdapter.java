@@ -53,7 +53,7 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
             TextView tv_hvs_name = view.findViewById(R.id.tv_hvs_name);
             TextView tv_hvs_visitedDate = view.findViewById(R.id.tv_hvs_visitedDate);
             CardView card_view = view.findViewById(R.id.card_view);
-            tv_hvs_name.setText(categories.get(position).getImmuneObjs().get(i).getName());
+            tv_hvs_name.setText(categories.get(position).getImmuneObjs().get(i).getVisitingFor().get(0));
             String date = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, categories.get(position).getImmuneObjs().get(i).getVisitedDate());
             tv_hvs_visitedDate.setText(date);
             if (TextUtils.isEmpty(categories.get(position).getImmuneObjs().get(i).getVisitedDate())) {
