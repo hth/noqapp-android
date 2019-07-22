@@ -64,7 +64,7 @@ public class FollowupListAdapter extends BaseExpandableListAdapter {
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         childViewHolder.rv.setLayoutManager(horizontalLayoutManager);
         childViewHolder.rv.setItemAnimator(new DefaultItemAnimator());
-        FollowupAllListAdapter followupAllListAdapter = new FollowupAllListAdapter(childData.getQueuedPeople(), context, null,visibility);
+        FollowupAllListAdapter followupAllListAdapter = new FollowupAllListAdapter(childData.getQueuedPeople(), context, visibility);
         childViewHolder.rv.setAdapter(followupAllListAdapter);
         followupAllListAdapter.notifyDataSetChanged();
         return convertView;

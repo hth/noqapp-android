@@ -36,8 +36,7 @@ public class PreferredListAdapter extends RecyclerView.Adapter<PreferredListAdap
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_prefered_store, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return  new MyViewHolder(v);
     }
 
     @Override

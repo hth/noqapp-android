@@ -37,8 +37,7 @@ public class AppointmentSlotAdapter extends RecyclerView.Adapter<AppointmentSlot
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_appointment_date, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -59,20 +58,17 @@ public class AppointmentSlotAdapter extends RecyclerView.Adapter<AppointmentSlot
 
         }
 
-        holder.tv_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    if (item.isBooked()) {
-                        selectPos = -1;
-                        listener.onBookedAppointmentSelected();
-                        new CustomToast().showToast(context, "This slot is already booked");
-                    } else {
-                        selectPos = listPosition;
-                        listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
-                    }
-                    notifyDataSetChanged();
+        holder.tv_time.setOnClickListener(v -> {
+            if (null != listener) {
+                if (item.isBooked()) {
+                    selectPos = -1;
+                    listener.onBookedAppointmentSelected();
+                    new CustomToast().showToast(context, "This slot is already booked");
+                } else {
+                    selectPos = listPosition;
+                    listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
                 }
+                notifyDataSetChanged();
             }
         });
     }
