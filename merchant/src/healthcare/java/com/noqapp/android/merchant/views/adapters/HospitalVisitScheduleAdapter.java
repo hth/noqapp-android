@@ -1,6 +1,8 @@
 package com.noqapp.android.merchant.views.adapters;
 
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.model.types.BooleanReplacementEnum;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 
 import android.content.Context;
@@ -15,7 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
 
@@ -23,7 +27,8 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
     private List<JsonHospitalVisitSchedule> categories;
     private Context context;
 
-    public HospitalVisitScheduleAdapter(Context context, List<JsonHospitalVisitSchedule> categories, OnItemClickListener listener) {
+    public HospitalVisitScheduleAdapter(Context context, List<JsonHospitalVisitSchedule> categories,
+                                        OnItemClickListener listener) {
         this.categories = categories;
         this.context = context;
         this.listener = listener;
@@ -43,20 +48,27 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
         });
         holder.tv_menu_header.setText(categories.get(position).getHeader());
         // holder.ll_header.removeAllViews();
-        for (int i = 0; i < categories.get(position).getVisitingFor().size(); i++) {
+        Map<String, BooleanReplacementEnum> visitingFor = categories.get(position).getVisitingFor();
+        Iterator it = visitingFor.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            BooleanReplacementEnum booleanReplacementEnum = (BooleanReplacementEnum) pair.getValue();
+
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.rcv_hvs_item, null, false);
-            TextView tv_hvs_title = view.findViewById(R.id.tv_hvs_name);
-            TextView tv_hvs_date = view.findViewById(R.id.tv_hvs_visitedDate);
+            TextView tv_hvs_name = view.findViewById(R.id.tv_hvs_name);
+            TextView tv_hvs_visitedDate = view.findViewById(R.id.tv_hvs_visitedDate);
+            TextView tv_hvs_status = view.findViewById(R.id.tv_hvs_status);
             CardView card_view = view.findViewById(R.id.card_view);
-            tv_hvs_title.setText(categories.get(position).getVisitingFor().get(i));
-            tv_hvs_date.setText(categories.get(position).getExpectedDate());
-            if (TextUtils.isEmpty(categories.get(position).getExpectedDate())) {
-                card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pressed_color));
-            } else {
-                card_view.setCardBackgroundColor(Color.parseColor("#008080"));
-            }
+            tv_hvs_name.setText(pair.getKey().toString());
+            String date = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
+                    categories.get(position).getVisitedDate());
+            tv_hvs_visitedDate.setText(date);
+            tv_hvs_status.setText("Status- "+booleanReplacementEnum.getDescription());
+            card_view.setCardBackgroundColor(Color.parseColor(booleanReplacementEnum.getColor()));
             holder.ll_child.addView(view);
+            it.remove(); // avoids a ConcurrentModificationException
         }
         holder.ll_header.setBackgroundColor(Color.WHITE);
         holder.tv_menu_header.setTextColor(Color.BLACK);

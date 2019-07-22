@@ -50,12 +50,9 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         tv_badge = findViewById(R.id.tv_badge);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         fl_notification.setVisibility(View.VISIBLE);
-        fl_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(launchActivity, NotificationActivity.class);
-                startActivity(in);
-            }
+        fl_notification.setOnClickListener(view -> {
+            Intent in = new Intent(launchActivity, NotificationActivity.class);
+            startActivity(in);
         });
         if (new AppUtils().isTablet(this)) {
             list_fragment = findViewById(R.id.frame_layout);
@@ -104,13 +101,9 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     @Override
     public void callPreference() {
         super.callPreference();
-        if (AppUtils.isRelease()) {
-            Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
-            startActivity(intentPreference);
-        } else {
-            Intent intentPreference = new Intent(launchActivity, HospitalVisitScheduleActivity.class);
-            startActivity(intentPreference);
-        }
+        Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
+        startActivity(intentPreference);
+
     }
 
     @Override
