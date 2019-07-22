@@ -1,12 +1,10 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -126,12 +124,6 @@ public class MedicalProfileActivity extends BaseActivity implements
             } else {
                 cv_info.setVisibility(View.VISIBLE);
             }
-        });
-        Button btn_view_immune = findViewById(R.id.btn_view_immune);
-        btn_view_immune.setOnClickListener(v -> {
-            Intent in = new Intent(this, HospitalVisitScheduleActivity.class);
-            in.putExtra("medicalProfile", medicalProfile);
-            startActivity(in);
         });
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());

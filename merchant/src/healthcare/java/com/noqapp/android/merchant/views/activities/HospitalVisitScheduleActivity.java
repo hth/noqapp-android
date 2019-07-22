@@ -5,7 +5,6 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.adapters.HospitalVisitScheduleAdapter;
-import com.noqapp.android.merchant.views.pojos.ImmuneObjList;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity {
     private long lastPress;
     private Toast backPressToast;
     private String codeQR;
-    private ArrayList<ImmuneObjList> temp = new ArrayList<>();
+    private ArrayList<JsonHospitalVisitSchedule> temp = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,40 +42,40 @@ public class HospitalVisitScheduleActivity extends BaseActivity {
     }
 
     private void initList() {
-        ImmuneObjList aa = new ImmuneObjList();
-        aa.setHeaderTitle("Birth");
-        aa.setImmuneObjs(getList(5));
+        JsonHospitalVisitSchedule aa = new JsonHospitalVisitSchedule();
+        aa.setHeader("Birth");
+        aa.setVisitingFor(getList(5));
         temp.add(aa);
 
-        ImmuneObjList bb = new ImmuneObjList();
-        bb.setHeaderTitle("6-8 Weeks");
-        bb.setImmuneObjs(getList(3));
+        JsonHospitalVisitSchedule bb = new JsonHospitalVisitSchedule();
+        bb.setHeader("6-8 Weeks");
+        bb.setVisitingFor(getList(3));
         temp.add(bb);
 
-        ImmuneObjList cc = new ImmuneObjList();
-        cc.setHeaderTitle("10-12 Weeks");
-        cc.setImmuneObjs(getList(7));
+        JsonHospitalVisitSchedule cc = new JsonHospitalVisitSchedule();
+        cc.setHeader("10-12 Weeks");
+        cc.setVisitingFor(getList(7));
         temp.add(cc);
 
-        ImmuneObjList dd = new ImmuneObjList();
-        dd.setHeaderTitle("14-16 Weeks");
-        dd.setImmuneObjs(getList(5));
+        JsonHospitalVisitSchedule dd = new JsonHospitalVisitSchedule();
+        dd.setHeader("14-16 Weeks");
+        dd.setVisitingFor(getList(5));
         temp.add(dd);
     }
 
-    private ArrayList<JsonHospitalVisitSchedule> getList(int size) {
-        ArrayList<JsonHospitalVisitSchedule> temp = new ArrayList<>();
+    private ArrayList<String> getList(int size) {
+        ArrayList<String> temp = new ArrayList<>();
         Random rand = new Random();
         int max = size;
         int min = 0;
         int randomNum = rand.nextInt((max - min) + 1) + min;
         for (int i = 0; i < size; i++) {
-            JsonHospitalVisitSchedule immuneObj = new JsonHospitalVisitSchedule();
-            immuneObj.setExpectedDate("22-11-2019");
-            immuneObj.setName("PCV 1");
-            if (randomNum == i)
+           // JsonHospitalVisitSchedule immuneObj = new JsonHospitalVisitSchedule();
+          //  immuneObj.setExpectedDate("22-11-2019");
+           // immuneObj.setHeader("PCV 1");
+          //  if (randomNum == i)
                 //immuneObj.setImmunizationDate("YES");
-            temp.add(immuneObj);
+            temp.add("PCV 1");
         }
         return temp;
     }

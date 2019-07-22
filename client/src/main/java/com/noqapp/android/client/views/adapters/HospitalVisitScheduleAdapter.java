@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.client.views.pojos.ImmuneObjList;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -24,10 +23,10 @@ import java.util.List;
 public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
 
     private final OnItemClickListener listener;
-    private List<ImmuneObjList> categories;
+    private List<JsonHospitalVisitSchedule> categories;
     private Context context;
 
-    public HospitalVisitScheduleAdapter(Context context, List<ImmuneObjList> categories, OnItemClickListener listener) {
+    public HospitalVisitScheduleAdapter(Context context, List<JsonHospitalVisitSchedule> categories, OnItemClickListener listener) {
         this.categories = categories;
         this.context = context;
         this.listener = listener;
@@ -45,18 +44,18 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
         holder.tv_menu_header.setOnClickListener((View v) -> {
             //listener.onCategoryItemClick(position, jsonCategory);
         });
-        holder.tv_menu_header.setText(categories.get(position).getHeaderTitle());
+        holder.tv_menu_header.setText(categories.get(position).getHeader());
         // holder.ll_header.removeAllViews();
-        for (int i = 0; i < categories.get(position).getImmuneObjs().size(); i++) {
+        for (int i = 0; i < categories.get(position).getVisitingFor().size(); i++) {
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.rcv_hvs_item, null, false);
             TextView tv_hvs_name = view.findViewById(R.id.tv_hvs_name);
             TextView tv_hvs_visitedDate = view.findViewById(R.id.tv_hvs_visitedDate);
             CardView card_view = view.findViewById(R.id.card_view);
-            tv_hvs_name.setText(categories.get(position).getImmuneObjs().get(i).getVisitingFor().get(0));
-            String date = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, categories.get(position).getImmuneObjs().get(i).getVisitedDate());
+            tv_hvs_name.setText(categories.get(position).getVisitingFor().get(0));
+            String date = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, categories.get(position).getVisitedDate());
             tv_hvs_visitedDate.setText(date);
-            if (TextUtils.isEmpty(categories.get(position).getImmuneObjs().get(i).getVisitedDate())) {
+            if (TextUtils.isEmpty(categories.get(position).getVisitedDate())) {
                 card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_light));
             } else {
                 card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.theme_color_dark));

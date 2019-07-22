@@ -8,7 +8,6 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.HospitalVisitScheduleAdapter;
-import com.noqapp.android.client.views.pojos.ImmuneObjList;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -19,14 +18,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HospitalVisitScheduleActivity extends BaseActivity implements HospitalVisitSchedulePresenter {
-
-    private ArrayList<ImmuneObjList> temp = new ArrayList<>();
     private RecyclerView rcv_header;
 
     @Override
@@ -60,32 +54,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
     public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
         Log.e("immunization", jsonHospitalVisitScheduleList.toString());
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = jsonHospitalVisitScheduleList.getJsonHospitalVisitSchedules();
-        Map<String, ArrayList<JsonHospitalVisitSchedule>> listHashMap = new HashMap<>();
-        for (int i = 0; i < jsonHospitalVisitSchedules.size(); i++) {
-            JsonHospitalVisitSchedule jsonHospitalVisitSchedule = jsonHospitalVisitSchedules.get(i);
-            ArrayList<JsonHospitalVisitSchedule> value = listHashMap.get(jsonHospitalVisitSchedule.getHeader());
-            if (value != null) {
-                listHashMap.get(jsonHospitalVisitSchedule.getHeader()).add(jsonHospitalVisitSchedule);
-            } else {
-                // Key might be present...
-                if (listHashMap.containsKey(jsonHospitalVisitSchedule.getHeader())) {
-                    listHashMap.put(jsonHospitalVisitSchedule.getHeader(), new ArrayList<JsonHospitalVisitSchedule>());
-                    listHashMap.get(jsonHospitalVisitSchedule.getHeader()).add(jsonHospitalVisitSchedule);
-                } else {
-                    // Definitely no such key
-                    listHashMap.put(jsonHospitalVisitSchedule.getHeader(), new ArrayList<JsonHospitalVisitSchedule>());
-                    listHashMap.get(jsonHospitalVisitSchedule.getHeader()).add(jsonHospitalVisitSchedule);
-                }
-            }
-        }
-        for (Map.Entry<String, ArrayList<JsonHospitalVisitSchedule>> entry : listHashMap.entrySet()) {
-            System.out.println(entry.getKey() + "/" + entry.getValue());
-            ImmuneObjList aa = new ImmuneObjList();
-            aa.setHeaderTitle(entry.getKey());
-            aa.setImmuneObjs(entry.getValue());
-            temp.add(aa);
-        }
-        HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(this, temp,
+        HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(this, jsonHospitalVisitSchedules,
                 null);
         rcv_header.setAdapter(hospitalVisitScheduleAdapter);
     }
