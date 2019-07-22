@@ -12,17 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.HospitalVisitScheduleAdapter;
+import com.noqapp.android.client.views.adapters.HospitalVisitScheduleListAdapter;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.List;
 
-public class HospitalVisitScheduleFragment extends BaseFragment  {
+public class HospitalVisitScheduleFragment extends BaseFragment
+        implements HospitalVisitScheduleListAdapter.OnItemClickListener {
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        View view = inflater.inflate(R.layout.fragment_hospital_visit, container, false);
         RecyclerView rcv_order_history = view.findViewById(R.id.rcv_order_history);
         RelativeLayout rl_empty = view.findViewById(R.id.rl_empty);
         rcv_order_history.setHasFixedSize(true);
@@ -33,7 +36,7 @@ public class HospitalVisitScheduleFragment extends BaseFragment  {
 
         List<JsonHospitalVisitSchedule> listData = (List<JsonHospitalVisitSchedule>) getArguments().getSerializable("data");
         HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(getActivity(), listData,
-                null);
+                this);
         rcv_order_history.setAdapter(hospitalVisitScheduleAdapter);
 
         if (null != listData && listData.size() == 0 && null != getActivity()) {
@@ -45,6 +48,9 @@ public class HospitalVisitScheduleFragment extends BaseFragment  {
     }
 
 
-
+    @Override
+    public void onImmuneItemClick() {
+        new CustomToast().showToast(getActivity(), "Do some action");
+    }
 
 }
