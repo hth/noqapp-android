@@ -1,16 +1,17 @@
 package com.noqapp.android.common.beans.medical;
 
 import com.noqapp.android.common.beans.AbstractDomain;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.BooleanReplacementEnum;
+import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -32,11 +33,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHospitalVisitSchedule extends AbstractDomain implements Serializable {
 
+    @JsonProperty("id")
+    private String hospitalVisitScheduleId;
+
     @JsonProperty("hv")
     private HospitalVisitForEnum hospitalVisitFor;
 
     @JsonProperty("vf")
-    private List<String> visitingFor;
+    private Map<String, BooleanReplacementEnum> visitingFor;
 
     @JsonProperty("vh")
     private String header;
@@ -50,6 +54,15 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
+    public String getHospitalVisitScheduleId() {
+        return hospitalVisitScheduleId;
+    }
+
+    public JsonHospitalVisitSchedule setHospitalVisitScheduleId(String hospitalVisitScheduleId) {
+        this.hospitalVisitScheduleId = hospitalVisitScheduleId;
+        return this;
+    }
+
     public HospitalVisitForEnum getHospitalVisitFor() {
         return hospitalVisitFor;
     }
@@ -59,11 +72,11 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
         return this;
     }
 
-    public List<String> getVisitingFor() {
+    public Map<String, BooleanReplacementEnum> getVisitingFor() {
         return visitingFor;
     }
 
-    public JsonHospitalVisitSchedule setVisitingFor(List<String> visitingFor) {
+    public JsonHospitalVisitSchedule setVisitingFor(Map<String, BooleanReplacementEnum> visitingFor) {
         this.visitingFor = visitingFor;
         return this;
     }
