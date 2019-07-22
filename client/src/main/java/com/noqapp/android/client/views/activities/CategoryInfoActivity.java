@@ -363,7 +363,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     @Override
-    public void onCategoryItemClick(int pos, JsonCategory jsonCategory) {
+    public void onCategoryItemClick( JsonCategory jsonCategory) {
         Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
         Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
         switch (bizStoreElastic.getBusinessType()) {
@@ -430,7 +430,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     @Override
-    public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
+    public void onCategoryItemClick(BizStoreElastic item) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:

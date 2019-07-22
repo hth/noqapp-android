@@ -201,7 +201,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
         holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_join.setOnClickListener((View v) -> {
             if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
-                listener.onCategoryItemClick(bizStoreElastic, v, listPosition);
+                listener.onCategoryItemClick(bizStoreElastic);
             } else {
                 new CustomToast().showToast(context, "Please visit store to avail the service.");
             }
@@ -250,7 +250,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onCategoryItemClick(BizStoreElastic item, View view, int pos);
+        void onCategoryItemClick(BizStoreElastic item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

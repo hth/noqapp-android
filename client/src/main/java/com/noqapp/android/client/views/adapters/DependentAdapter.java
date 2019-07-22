@@ -18,16 +18,14 @@ public class DependentAdapter extends ArrayAdapter<JsonProfile> {
     private final Context mContext;
     private final List<JsonProfile> items;
 
-    public DependentAdapter(Context context,
-                            List<JsonProfile> items) {
+    public DependentAdapter(Context context, List<JsonProfile> items) {
         super(context, R.layout.spinner_item, items);
         mContext = context;
         this.items = items;
     }
 
     @Override
-    public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return createItemView(position, convertView, parent);
     }
 

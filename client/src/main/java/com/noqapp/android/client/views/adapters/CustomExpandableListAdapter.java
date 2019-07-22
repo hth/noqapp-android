@@ -180,10 +180,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
         }
 
-        TextView tv_list_header = (TextView) convertView.findViewById(R.id.tv_list_header);
+        TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
         tv_list_header.setTypeface(null, Typeface.BOLD);
         tv_list_header.setText(headerTitle);
-        ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
+        ImageView ivGroupIndicator =  convertView.findViewById(R.id.ivGroupIndicator);
         ivGroupIndicator.setSelected(isExpanded);
         return convertView;
     }

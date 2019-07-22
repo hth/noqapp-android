@@ -39,9 +39,6 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder Vholder, final int position) {
         ViewHolder holder = (ViewHolder) Vholder;
-        holder.tv_menu_header.setOnClickListener((View v) -> {
-            //listener.onCategoryItemClick(position, jsonCategory);
-        });
         holder.tv_menu_header.setText(categories.get(position).getHeader());
         HospitalVisitScheduleListAdapter adapter = new HospitalVisitScheduleListAdapter(context,
                 categories.get(position).getVisitingFor(), listener, categories.get(position).getVisitedDate());

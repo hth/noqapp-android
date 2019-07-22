@@ -35,7 +35,7 @@ public class AllFeedsActivity extends BaseActivity implements FeedAdapter.OnItem
     }
 
     @Override
-    public void onFeedItemClick(JsonFeed item, View view, int pos) {
+    public void onFeedItemClick(JsonFeed item) {
         Intent in = new Intent(this, FeedActivity.class);
         in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);

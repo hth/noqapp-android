@@ -15,21 +15,16 @@ import java.util.List;
 
 
 public class StaggeredGridAdapter extends RecyclerView.Adapter {
-
     private List<String> dataList;
-
-
     public StaggeredGridAdapter(List<String> dataList) {
         this.dataList = dataList;
         Collections.sort(dataList);
     }
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override

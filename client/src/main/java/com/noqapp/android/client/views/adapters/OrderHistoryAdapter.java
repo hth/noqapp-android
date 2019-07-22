@@ -51,13 +51,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(
-            ViewGroup parent,
-            int viewType
-    ) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_order_history, parent, false);
-        RecyclerView.ViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     @Override
@@ -86,7 +82,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
                 holder.tv_queue_status.setTextColor(ContextCompat.getColor(context, R.color.text_header_color));
         }
         holder.iv_details.setOnClickListener((View v) -> {
-            listener.onStoreItemClick(jsonPurchaseOrderHistorical, v, listPosition);
+            listener.onStoreItemClick(jsonPurchaseOrderHistorical);
 
         });
         if (jsonPurchaseOrderHistorical.getBusinessType() == BusinessTypeEnum.PH && (jsonPurchaseOrderHistorical.getPresentOrderState() == PurchaseOrderStateEnum.PO ||
@@ -179,7 +175,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter implements Purchas
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(JsonPurchaseOrderHistorical item, View view, int pos);
+        void onStoreItemClick(JsonPurchaseOrderHistorical item);
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {

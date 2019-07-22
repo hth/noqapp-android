@@ -41,10 +41,8 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.grid_item_category, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -73,7 +71,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter {
                     .into(Vholder.iv_main);
         }
         Vholder.card_view.setOnClickListener((View v) -> {
-            listener.onCategoryItemClick(position, jsonCategory);
+            listener.onCategoryItemClick(jsonCategory);
         });
     }
 
@@ -83,7 +81,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onCategoryItemClick(int pos, JsonCategory jsonCategory);
+        void onCategoryItemClick( JsonCategory jsonCategory);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

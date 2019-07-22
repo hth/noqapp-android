@@ -61,7 +61,7 @@ public class CategoryListFragment extends Fragment implements CategoryListAdapte
     }
 
     @Override
-    public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
+    public void onCategoryItemClick(BizStoreElastic item) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:
