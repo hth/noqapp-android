@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,6 +32,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHospitalVisitSchedule extends AbstractDomain implements Serializable {
 
+    @JsonProperty("hv")
+    private HospitalVisitForEnum hospitalVisitFor;
+
     @JsonProperty("vf")
     private List<String> visitingFor;
 
@@ -45,6 +49,15 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
+
+    public HospitalVisitForEnum getHospitalVisitFor() {
+        return hospitalVisitFor;
+    }
+
+    public JsonHospitalVisitSchedule setHospitalVisitFor(HospitalVisitForEnum hospitalVisitFor) {
+        this.hospitalVisitFor = hospitalVisitFor;
+        return this;
+    }
 
     public List<String> getVisitingFor() {
         return visitingFor;
