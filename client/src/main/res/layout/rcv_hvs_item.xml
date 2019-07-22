@@ -44,6 +44,16 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_twelve"
                 android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_hvs_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_twelve"
+                android:textStyle="bold" />
         </LinearLayout>
 
 

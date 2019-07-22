@@ -2,12 +2,12 @@ package com.noqapp.android.client.model;
 
 import com.noqapp.android.client.model.response.api.health.UserMedicalProfileApiUrls;
 import com.noqapp.android.client.network.RetrofitClient;
-import com.noqapp.android.client.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.client.presenter.MedicalRecordProfilePresenter;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
+import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
 
 import android.util.Log;
 import androidx.annotation.NonNull;

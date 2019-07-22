@@ -1,7 +1,6 @@
-package com.noqapp.android.client.presenter;
+package com.noqapp.android.common.presenter;
 
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
-import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 
 public interface HospitalVisitSchedulePresenter extends ResponseErrorPresenter {
 
