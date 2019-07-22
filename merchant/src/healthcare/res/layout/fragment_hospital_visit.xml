@@ -4,12 +4,17 @@
     android:layout_height="match_parent"
     android:background="#efefef">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_order_history"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp"
-        android:scrollbars="horizontal" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_order_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:scrollbars="horizontal" />
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/rl_empty"

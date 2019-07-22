@@ -57,12 +57,9 @@ public class FollowupAllListAdapter extends RecyclerView.Adapter<FollowupAllList
         } else {
             holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.currentItemClick(listPosition);
-                }
+        holder.card_view.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.currentItemClick(listPosition);
             }
         });
     }
