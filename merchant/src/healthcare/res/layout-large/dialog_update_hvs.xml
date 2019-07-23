@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="25dp"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center"
+    android:maxWidth="350dp"
+    android:minHeight="300dp"
+    android:outlineProvider="paddedBounds"
+    android:paddingTop="10dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tvtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:text="Update Immunization"
+            android:textColor="@color/color_action_bar"
+            android:textSize="@dimen/text_size_sixteen"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_sub_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/tvtitle"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_eighteen"
+            android:textStyle="bold" />
+
+
+        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sc_hvs_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_sub_header"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            segmentedcontrol:columnCount="3"
+            segmentedcontrol:distributeEvenly="true"
+            segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+            segmentedcontrol:radius="6dp"
+            segmentedcontrol:radiusForEverySegment="false"
+            segmentedcontrol:segmentHorizontalMargin="0dp"
+            segmentedcontrol:segmentVerticalMargin="0dp"
+            segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+            segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+            segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+            segmentedcontrol:strokeWidth="1dp"
+            segmentedcontrol:textSize="@dimen/text_size_fourteen"
+            segmentedcontrol:textVerticalPadding="7dp"
+            segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+            segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+            segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sc_hvs_status"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnPositive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:padding="10dp"
+                android:text="UPDATE"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnNegative"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_bg"
+                android:padding="10dp"
+                android:text="CANCEL"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
