@@ -1,6 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +40,7 @@ import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.common.utils.FileUtils;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
@@ -50,16 +49,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-
-;
 
 
 public class UserProfileEditActivity extends ProfileActivity implements View.OnClickListener,
@@ -79,8 +74,6 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     private TextView tv_female;
     private TextView tv_transgender;
     private TextView tv_remove_image;
-
-    private DatePickerDialog fromDatePickerDialog;
     private boolean isDependent = false;
     private JsonProfile dependentProfile = null;
     private ClientProfileApiCall clientProfileApiCall;
@@ -123,26 +116,8 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
         btn_update.setOnClickListener(this);
         tv_remove_image.setOnClickListener(this);
         edt_address.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    new CustomToast().showToast(UserProfileEditActivity.this, getString(R.string.error_invalid_date));
-                    tv_birthday.setText("");
-                } else {
-                    tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
+
 
     private void loadProfilePic() {
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(iv_profile);
@@ -217,7 +192,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 break;
 
             case R.id.tv_birthday:
-                fromDatePickerDialog.show();
+                CustomCalendar customCalendar = new CustomCalendar(UserProfileEditActivity.this);
+                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                    @Override
+                    public void calendarDate(String date) {
+                        tv_birthday.setText(date);
+                    }
+                });
+                customCalendar.showDobCalendar();
                 break;
             case R.id.tv_male:
                 gender = "M";
