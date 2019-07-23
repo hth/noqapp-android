@@ -4,6 +4,6 @@
     <string name="error_invalid_date">Please select a valid date</string>
     <string name="reason_for_correct_dob">
         Your medical records, vaccination, immunization history depends on correct date of birth. Please ensure
-        your date of birth is correct.
+        your date of birth is correct. \n\n Your data stays private and secure. Please check out Privacy Policy under Legal.
     </string>
 </resources>
