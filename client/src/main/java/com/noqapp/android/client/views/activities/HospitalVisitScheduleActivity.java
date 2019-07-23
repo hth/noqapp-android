@@ -43,17 +43,16 @@ public class HospitalVisitScheduleActivity extends TabbedActivity implements
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-
     }
 
 
     @Override
     protected void setupViewPager(ViewPager viewPager) {
-
     }
 
     @Override
     public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
+        dismissProgress();
         Log.e("immunization", jsonHospitalVisitScheduleList.toString());
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = jsonHospitalVisitScheduleList.getJsonHospitalVisitSchedules();
 
@@ -81,5 +80,11 @@ public class HospitalVisitScheduleActivity extends TabbedActivity implements
         if (immunizationList.size() > 0)
             adapter.addFragment(hvsfImmune, "Immunization");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void hospitalVisitScheduleResponse(JsonHospitalVisitSchedule jsonHospitalVisitSchedule) {
+        dismissProgress();
+        // do nothing
     }
 }

@@ -117,7 +117,6 @@ public class PatientProfileActivity extends BaseActivity implements
                 intent.putExtra("qCodeQR", codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
                 startActivity(intent);
-                finish();
             }
         });
 

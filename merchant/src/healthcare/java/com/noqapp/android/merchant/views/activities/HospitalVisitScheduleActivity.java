@@ -32,6 +32,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         HospitalVisitSchedulePresenter {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private String qUserId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +50,12 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText("Hospital Visit Schedule");
         String codeQR = getIntent().getStringExtra("qCodeQR");
+        JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
+        qUserId = jsonQueuedPerson.getQueueUserId();
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
-            JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
             MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
             medicalHistoryApiCalls.hospitalVisitSchedule(BaseLaunchActivity.getDeviceID(),
                     LaunchActivity.getLaunchActivity().getEmail(),
@@ -67,6 +69,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
 
     @Override
     public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
+        dismissProgress();
         Log.e("immunization", jsonHospitalVisitScheduleList.toString());
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = jsonHospitalVisitScheduleList.getJsonHospitalVisitSchedules();
 
@@ -82,11 +85,13 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         HospitalVisitScheduleFragment hvsfVaccine = new HospitalVisitScheduleFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("data", (Serializable) vaccinationList);
+        bundle.putString("qUserId",qUserId);
         hvsfVaccine.setArguments(bundle);
 
         HospitalVisitScheduleFragment hvsfImmune = new HospitalVisitScheduleFragment();
         Bundle b = new Bundle();
         b.putSerializable("data", (Serializable) immunizationList);
+        b.putString("qUserId",qUserId);
         hvsfImmune.setArguments(b);
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         if (vaccinationList.size() > 0)
@@ -95,6 +100,12 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
             adapter.addFragment(hvsfImmune, "Immunization");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void hospitalVisitScheduleResponse(JsonHospitalVisitSchedule jsonHospitalVisitSchedule) {
+        dismissProgress();
+        // Do nothing
     }
 
 

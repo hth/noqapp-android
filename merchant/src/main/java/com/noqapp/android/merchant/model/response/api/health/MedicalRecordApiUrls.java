@@ -105,7 +105,7 @@ public interface MedicalRecordApiUrls {
             FindMedicalProfile findMedicalProfile
     );
 
-    @POST("api/c/h/medicalProfile/hospitalVisitSchedule.json")
+    @POST("api/m/h/medicalRecord/hospitalVisitSchedule.json")
     Call<JsonHospitalVisitScheduleList> hospitalVisitSchedule(
             @Header("X-R-DID")
             String did,
@@ -123,7 +123,7 @@ public interface MedicalRecordApiUrls {
             FindMedicalProfile findMedicalProfile
     );
 
-    @POST("api/c/h/medicalProfile/modifyVisitingFor.json")
+    @POST("api/m/h/medicalRecord/modifyVisitingFor.json")
     Call<JsonHospitalVisitSchedule> modifyVisitingFor(
             @Header("X-R-DID")
             String did,
