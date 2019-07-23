@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -76,6 +77,8 @@ public class HospitalVisitScheduleFragment extends BaseFragment
         List<String> tempList = BooleanReplacementEnum.asListOfDescription();
         sc_hvs_status.addSegments(tempList);
         sc_hvs_status.setSelectedSegment(tempList.indexOf(booleanReplacement));
+        TextView tv_sub_header = dialog.findViewById(R.id.tv_sub_header);
+        tv_sub_header.setText(key);
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
         btnPositive.setOnClickListener(v -> {

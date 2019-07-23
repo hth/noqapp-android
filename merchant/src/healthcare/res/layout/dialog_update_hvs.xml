@@ -22,9 +22,22 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="20dp"
             android:gravity="center_horizontal"
-            android:text="Update Health Visit Schedule"
+            android:text="Update Immunization"
             android:textColor="@color/color_action_bar"
             android:textSize="@dimen/text_size_sixteen"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_sub_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/tvtitle"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_eighteen"
             android:textStyle="bold" />
 
 
@@ -32,8 +45,9 @@
             android:id="@+id/sc_hvs_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_sub_header"
             android:layout_gravity="center_vertical"
-            android:layout_below="@+id/tvtitle"
+            android:layout_margin="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             segmentedcontrol:columnCount="3"
@@ -54,7 +68,6 @@
             segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +82,7 @@
                 android:id="@+id/btnPositive"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
                 android:padding="10dp"
@@ -82,7 +95,7 @@
                 android:id="@+id/btnNegative"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_bg"
                 android:padding="10dp"
