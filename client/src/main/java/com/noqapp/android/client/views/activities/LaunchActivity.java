@@ -44,7 +44,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
 import com.noqapp.android.common.model.types.QueueUserStateEnum;
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
-import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.common.utils.PermissionUtils;
@@ -128,7 +128,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private TextView tv_name, tv_email, tv_version;
     private HomeFragment homeFragment;
     private DrawerLayout drawer;
-    private List<MenuModel> headerList = new ArrayList<>();
+    private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -816,42 +816,42 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
 
     private void setUpExpandableList(boolean isLogin) {
         // Fill menu items
-        headerList.clear();
+        menuDrawerItems.clear();
 
-        List<MenuModel> healthList = new ArrayList<>();
-        healthList.add(new MenuModel(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
-        healthList.add(new MenuModel(getString(R.string.medical_history), false, false, R.drawable.medical_history));
-        healthList.add(new MenuModel(getString(R.string.my_appointments), false, false, R.drawable.appointment));
+        List<MenuDrawer> healthList = new ArrayList<>();
+        healthList.add(new MenuDrawer(getString(R.string.medical_profiles), false, false, R.drawable.medical_profile));
+        healthList.add(new MenuDrawer(getString(R.string.medical_history), false, false, R.drawable.medical_history));
+        healthList.add(new MenuDrawer(getString(R.string.my_appointments), false, false, R.drawable.appointment));
 
-        headerList.add(new MenuModel(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
-        headerList.add(new MenuModel(getString(R.string.order_history), true, false, R.drawable.purchase_order));
-        headerList.add(new MenuModel(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
-        headerList.add(new MenuModel(getString(R.string.offers), true, false, R.drawable.offers));
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.health_care), true, true, R.drawable.health_care, healthList));
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.order_history), true, false, R.drawable.purchase_order));
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.merchant_account), true, false, R.drawable.merchant_account));
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.offers), true, false, R.drawable.offers));
 
-        List<MenuModel> settingList = new ArrayList<>();
-        settingList.add(new MenuModel(getString(R.string.share), false, false, R.drawable.ic_menu_share));
-        settingList.add(new MenuModel(getString(R.string.invite), false, false, R.drawable.invite));
-        settingList.add(new MenuModel(getString(R.string.legal), false, false, R.drawable.legal));
-        settingList.add(new MenuModel(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
-        settingList.add(new MenuModel(getString(R.string.language_setting), false, false, R.drawable.language));
+        List<MenuDrawer> settingList = new ArrayList<>();
+        settingList.add(new MenuDrawer(getString(R.string.share), false, false, R.drawable.ic_menu_share));
+        settingList.add(new MenuDrawer(getString(R.string.invite), false, false, R.drawable.invite));
+        settingList.add(new MenuDrawer(getString(R.string.legal), false, false, R.drawable.legal));
+        settingList.add(new MenuDrawer(getString(R.string.ratetheapp), false, false, R.drawable.ic_star));
+        settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
         if (isLogin) {
-            settingList.add(new MenuModel(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+            settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
         }
-        headerList.add(new MenuModel(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
-        headerList.add(new MenuModel(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.action_settings), true, true, R.drawable.settings_square, settingList));
+        menuDrawerItems.add(new MenuDrawer(getString(R.string.title_activity_contact_us), true, false, R.drawable.contact_us));
         if (isLogin) {
-            headerList.add(new MenuModel(getString(R.string.logout), true, false, R.drawable.ic_logout));
+            menuDrawerItems.add(new MenuDrawer(getString(R.string.logout), true, false, R.drawable.ic_logout));
         }
 
-        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, headerList);
+        DrawerExpandableListAdapter expandableListAdapter = new DrawerExpandableListAdapter(this, menuDrawerItems);
         expandable_drawer_listView.setAdapter(expandableListAdapter);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
         expandable_drawer_listView.setOnGroupClickListener((parent, v, groupPosition, id) -> {
-            if (headerList.get(groupPosition).isGroup()) {
-                if (!headerList.get(groupPosition).isHasChildren()) {
-                    int drawableId = headerList.get(groupPosition).getIcon();
+            if (menuDrawerItems.get(groupPosition).isGroup()) {
+                if (!menuDrawerItems.get(groupPosition).isHasChildren()) {
+                    int drawableId = menuDrawerItems.get(groupPosition).getIcon();
                     menuClick(drawableId);
                     drawer.closeDrawer(GravityCompat.START);
                 }
@@ -860,8 +860,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         });
 
         expandable_drawer_listView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            if (headerList.get(groupPosition) != null) {
-                MenuModel model = headerList.get(groupPosition).getChildList().get(childPosition);
+            if (menuDrawerItems.get(groupPosition) != null) {
+                MenuDrawer model = menuDrawerItems.get(groupPosition).getChildList().get(childPosition);
                 int drawableId = model.getIcon();
                 menuClick(drawableId);
                 drawer.closeDrawer(GravityCompat.START);

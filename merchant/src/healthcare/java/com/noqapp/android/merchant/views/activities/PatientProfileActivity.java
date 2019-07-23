@@ -94,21 +94,29 @@ public class PatientProfileActivity extends BaseActivity implements
         pb_physical = findViewById(R.id.pb_physical);
         pb_history = findViewById(R.id.pb_history);
         TextView tv_start_diagnosis = findViewById(R.id.tv_start_diagnosis);
-        tv_start_diagnosis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(null == jsonProfile || null == jsonMedicalRecordTemp){
-                    new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
-                }else {
-                    Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
-                    intent.putExtra("qCodeQR", codeQR);
-                    intent.putExtra("data", jsonQueuedPerson);
-                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                    intent.putExtra("jsonProfile", jsonProfile);
-                    intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
-                    startActivity(intent);
-                    finish();
-                }
+        tv_start_diagnosis.setOnClickListener(v -> {
+            if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
+            }else {
+                Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
+                intent.putExtra("qCodeQR", codeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                intent.putExtra("jsonProfile", jsonProfile);
+                intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
+                startActivity(intent);
+                finish();
+            }
+        });
+        TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
+        tv_hospital_schedule.setOnClickListener(v -> {
+            if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
+            }else {
+                Intent intent = new Intent(PatientProfileActivity.this, HospitalVisitScheduleActivity.class);
+                intent.putExtra("qCodeQR", codeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                startActivity(intent);
             }
         });
 

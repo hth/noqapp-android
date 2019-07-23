@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by chandra on 3/26/18.
  */
-public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalleryAdapter.MyViewHolder> {
+public class ThumbnailGalleryAdapter extends RecyclerView.Adapter {
     private final int baseVisibleCount = 4;
     private List<String> imageUrls;
     private Context context;
@@ -45,16 +45,16 @@ public class ThumbnailGalleryAdapter extends RecyclerView.Adapter<ThumbnailGalle
     }
 
     @Override
-    public ThumbnailGalleryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View photoView = inflater.inflate(R.layout.layout_image_thumb, parent, false);
-        ThumbnailGalleryAdapter.MyViewHolder viewHolder = new ThumbnailGalleryAdapter.MyViewHolder(photoView);
-        return viewHolder;
+        return new MyViewHolder(photoView);
     }
 
     @Override
-    public void onBindViewHolder(ThumbnailGalleryAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder Vholder, int position) {
+        MyViewHolder holder = (MyViewHolder) Vholder;
         if (isDocument) {
             if (imageUrls.get(position).endsWith(".pdf")) {
                 Picasso.get()

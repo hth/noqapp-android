@@ -1,6 +1,7 @@
 package com.noqapp.android.client.model.response.api.health;
 
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalProfile;
 
 import retrofit2.Call;
@@ -18,6 +19,18 @@ public interface UserMedicalProfileApiUrls {
      */
     @POST("api/c/h/medicalProfile/profile.json")
     Call<JsonMedicalProfile> profile(
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            MedicalProfile medicalProfile
+    );
+
+    @POST("api/c/h/medicalProfile/hospitalVisitSchedule.json")
+    Call<JsonHospitalVisitScheduleList> hospitalVisitSchedule(
             @Header("X-R-MAIL")
             String mail,
 

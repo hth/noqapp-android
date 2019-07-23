@@ -45,7 +45,7 @@ public class ViewAllListActivity extends BaseActivity implements StoreInfoViewAl
     }
 
     @Override
-    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
+    public void onStoreItemClick(BizStoreElastic item) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:

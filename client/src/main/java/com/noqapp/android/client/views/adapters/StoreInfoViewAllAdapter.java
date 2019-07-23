@@ -52,8 +52,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         if (viewType == VIEW_ITEM) {
             View v = LayoutInflater.from(parent.getContext())
@@ -111,7 +110,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
             holder.card_view.setOnClickListener((View v) -> {
-                listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
+                listener.onStoreItemClick(dataSet.get(listPosition));
             });
             if (holder.tv_store_rating.getText().toString().equals("0.0")) {
                 holder.tv_store_rating.setVisibility(View.INVISIBLE);
@@ -149,7 +148,7 @@ public class StoreInfoViewAllAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(BizStoreElastic item, View view, int pos);
+        void onStoreItemClick(BizStoreElastic item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

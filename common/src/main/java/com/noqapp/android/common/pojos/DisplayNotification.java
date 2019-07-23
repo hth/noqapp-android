@@ -1,12 +1,11 @@
-package com.noqapp.android.common.beans;
+package com.noqapp.android.common.pojos;
 
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 /**
  * Created by chandra on 3/16/18.
  */
-
-public class NotificationBeans {
+public class DisplayNotification {
 
     private String title;
     private String msg;
@@ -15,16 +14,15 @@ public class NotificationBeans {
     private BusinessTypeEnum businessType;
     private String imageUrl;
 
-    public NotificationBeans() {
+    public DisplayNotification() {
 
     }
-
 
     public String getTitle() {
         return title;
     }
 
-    public NotificationBeans setTitle(String title) {
+    public DisplayNotification setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -33,7 +31,7 @@ public class NotificationBeans {
         return msg;
     }
 
-    public NotificationBeans setMsg(String msg) {
+    public DisplayNotification setMsg(String msg) {
         this.msg = msg;
         return this;
     }
@@ -42,7 +40,7 @@ public class NotificationBeans {
         return status;
     }
 
-    public NotificationBeans setStatus(String status) {
+    public DisplayNotification setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -51,7 +49,7 @@ public class NotificationBeans {
         return notificationCreate;
     }
 
-    public NotificationBeans setNotificationCreate(String notificationCreate) {
+    public DisplayNotification setNotificationCreate(String notificationCreate) {
         this.notificationCreate = notificationCreate;
         return this;
     }
@@ -60,7 +58,7 @@ public class NotificationBeans {
         return businessType;
     }
 
-    public NotificationBeans setBusinessType(BusinessTypeEnum businessType) {
+    public DisplayNotification setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;
     }
@@ -69,14 +67,14 @@ public class NotificationBeans {
         return imageUrl;
     }
 
-    public NotificationBeans setImageUrl(String imageUrl) {
+    public DisplayNotification setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
         return this;
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("NotificationBeans{");
+        final StringBuilder sb = new StringBuilder("DisplayNotification{");
         sb.append("title='").append(title).append('\'');
         sb.append(", msg='").append(msg).append('\'');
         sb.append(", status='").append(status).append('\'');

@@ -64,7 +64,7 @@ public class OrderHistoryFragment extends BaseFragment implements
     }
 
     @Override
-    public void onStoreItemClick(JsonPurchaseOrderHistorical item, View view, int pos) {
+    public void onStoreItemClick(JsonPurchaseOrderHistorical item) {
         Intent intent = new Intent(getActivity(), OrderHistoryDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(IBConstant.KEY_DATA, item);

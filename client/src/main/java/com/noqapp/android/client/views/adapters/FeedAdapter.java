@@ -30,7 +30,8 @@ public class FeedAdapter extends RecyclerView.Adapter {
 
     }
 
-    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener, boolean increaseCardWidth) {
+    public FeedAdapter(List<JsonFeed> data, Context context, OnItemClickListener listener,
+                       boolean increaseCardWidth) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -59,7 +60,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
         holder.tv_title.setText(item.getTitle());
         holder.card_view.setOnClickListener((View v) -> {
             if (null != listener)
-                listener.onFeedItemClick(dataSet.get(listPosition), v, listPosition);
+                listener.onFeedItemClick(dataSet.get(listPosition));
         });
     }
 
@@ -69,7 +70,7 @@ public class FeedAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onFeedItemClick(JsonFeed item, View view, int pos);
+        void onFeedItemClick(JsonFeed item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

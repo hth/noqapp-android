@@ -10,6 +10,7 @@ import com.noqapp.android.client.model.types.AccreditationEnum;
 import com.noqapp.android.client.model.types.AmenityEnum;
 import com.noqapp.android.client.model.types.FacilityEnum;
 import com.noqapp.android.common.beans.JsonNameDatePair;
+import com.noqapp.android.common.model.types.AppointmentStateEnum;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 
 import java.io.Serializable;
@@ -137,8 +138,8 @@ public class BizStoreElastic implements Serializable {
     @JsonProperty("PP")
     private int productPrice;
 
-    @JsonProperty("PE")
-    private boolean appointmentEnable;
+    @JsonProperty("PS")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("PD")
     private int appointmentDuration;
@@ -457,12 +458,12 @@ public class BizStoreElastic implements Serializable {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public BizStoreElastic setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public BizStoreElastic setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 

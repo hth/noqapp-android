@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +35,8 @@ import java.util.ArrayList;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class MedicalProfileActivity extends BaseActivity implements MedicalRecordProfilePresenter, View.OnClickListener {
+public class MedicalProfileActivity extends BaseActivity implements
+        MedicalRecordProfilePresenter, View.OnClickListener {
 
     private TextView tv_weight, tv_pulse, tv_temperature, tv_height, tv_bp, tv_respiration;
     private TextView tv_medicine_allergy, tv_family_history, tv_past_history, tv_known_allergy, tv_blood_type_update_msg;
@@ -117,18 +117,14 @@ public class MedicalProfileActivity extends BaseActivity implements MedicalRecor
         cv_occupation = findViewById(R.id.cv_occupation);
         ll_prevent_click = findViewById(R.id.ll_prevent_click);
         ll_prevent_occupation_click = findViewById(R.id.ll_prevent_occupation_click);
-        scroll_view.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                int scrollY = scroll_view.getScrollY();
-                if (scrollY > 350) {
-                    cv_info.setVisibility(View.GONE);
-                } else {
-                    cv_info.setVisibility(View.VISIBLE);
-                }
+        scroll_view.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int scrollY = scroll_view.getScrollY();
+            if (scrollY > 350) {
+                cv_info.setVisibility(View.GONE);
+            } else {
+                cv_info.setVisibility(View.VISIBLE);
             }
         });
-
         AppUtilities.loadProfilePic(iv_profile, jsonProfile.getProfileImage(), this);
         tv_patient_name.setText(jsonProfile.getName());
         tv_patient_age_gender.setText(new AppUtilities().calculateAge(jsonProfile.getBirthday()) + " (" + jsonProfile.getGender() + ")");

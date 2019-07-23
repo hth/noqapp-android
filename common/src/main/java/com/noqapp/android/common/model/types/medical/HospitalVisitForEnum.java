@@ -1,27 +1,27 @@
-package com.noqapp.android.common.beans;
+package com.noqapp.android.common.model.types.medical;
 
 /**
  * User: hitender
- * Date: 2019-05-20 14:11
+ * Date: 2019-07-20 10:31
  */
-public enum AdvertisementViewerTypeEnum {
-    WTC("WTC", "With Terms And Conditions"),
-    JBA("JBA", "Just Banner");
+public enum HospitalVisitForEnum {
+    IMU("IMU", "Immunization"),
+    VAC("VAC", "Vaccination");
 
     private final String description;
     private final String name;
 
-    AdvertisementViewerTypeEnum(String name, String description) {
+    HospitalVisitForEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

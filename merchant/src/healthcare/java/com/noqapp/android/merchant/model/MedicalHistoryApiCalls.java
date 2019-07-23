@@ -5,8 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
+import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.interfaces.JsonMedicalRecordPresenter;
 import com.noqapp.android.merchant.interfaces.UpdateObservationPresenter;
@@ -14,6 +17,7 @@ import com.noqapp.android.merchant.model.response.api.health.MedicalRecordApiUrl
 import com.noqapp.android.merchant.network.RetrofitClient;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.HospitalVisitFor;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordListPresenter;
@@ -36,7 +40,12 @@ public class MedicalHistoryApiCalls {
     private JsonMedicalRecordPresenter jsonMedicalRecordPresenter;
     private UpdateObservationPresenter updateObservationPresenter;
     private ImageUploadPresenter imageUploadPresenter;
+    private HospitalVisitSchedulePresenter hospitalVisitSchedulePresenter;
 
+
+    public MedicalHistoryApiCalls(HospitalVisitSchedulePresenter hospitalVisitSchedulePresenter) {
+        this.hospitalVisitSchedulePresenter = hospitalVisitSchedulePresenter;
+    }
 
     public MedicalHistoryApiCalls(UpdateObservationPresenter updateObservationPresenter) {
         this.updateObservationPresenter = updateObservationPresenter;
@@ -304,4 +313,62 @@ public class MedicalHistoryApiCalls {
             }
         });
     }
+
+
+    public void hospitalVisitSchedule(String did, String mail, String auth, FindMedicalProfile findMedicalProfile) {
+        medicalRecordApiUrls.hospitalVisitSchedule(did, Constants.DEVICE_TYPE, mail, auth, findMedicalProfile).enqueue(new Callback<JsonHospitalVisitScheduleList>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonHospitalVisitScheduleList> call, @NonNull Response<JsonHospitalVisitScheduleList> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp hospitalVSchedule", String.valueOf(response.body()));
+                        hospitalVisitSchedulePresenter.hospitalVisitScheduleResponse(response.body());
+                    } else {
+                        hospitalVisitSchedulePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        hospitalVisitSchedulePresenter.authenticationFailure();
+                    } else {
+                        hospitalVisitSchedulePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonHospitalVisitScheduleList> call, @NonNull Throwable t) {
+                Log.e("hospitalVSchedule fail", t.getLocalizedMessage(), t);
+                hospitalVisitSchedulePresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
+    public void modifyVisitingFor(String did, String mail, String auth, HospitalVisitFor hospitalVisitFor) {
+        medicalRecordApiUrls.modifyVisitingFor(did, Constants.DEVICE_TYPE, mail, auth, hospitalVisitFor).enqueue(new Callback<JsonHospitalVisitSchedule>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonHospitalVisitSchedule> call, @NonNull Response<JsonHospitalVisitSchedule> response) {
+                if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCESS) {
+                    if (null != response.body() && null == response.body().getError()) {
+                        Log.d("Resp hospitalVSchedule", String.valueOf(response.body()));
+                        hospitalVisitSchedulePresenter.hospitalVisitScheduleResponse(response.body());
+                    } else {
+                        hospitalVisitSchedulePresenter.responseErrorPresenter(response.body().getError());
+                    }
+                } else {
+                    if (response.code() == Constants.INVALID_CREDENTIAL) {
+                        hospitalVisitSchedulePresenter.authenticationFailure();
+                    } else {
+                        hospitalVisitSchedulePresenter.responseErrorPresenter(response.code());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonHospitalVisitSchedule> call, @NonNull Throwable t) {
+                Log.e("hospitalVSchedule fail", t.getLocalizedMessage(), t);
+                hospitalVisitSchedulePresenter.responseErrorPresenter(null);
+            }
+        });
+    }
+
 }

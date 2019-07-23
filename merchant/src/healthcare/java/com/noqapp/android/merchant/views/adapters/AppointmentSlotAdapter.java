@@ -11,22 +11,22 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.pojos.AppointmentModel;
+import com.noqapp.android.common.pojos.AppointmentSlot;
 import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
-public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDateAdapter.MyViewHolder> {
+public class AppointmentSlotAdapter extends RecyclerView.Adapter<AppointmentSlotAdapter.MyViewHolder> {
     private final OnItemClickListener listener;
-    private List<AppointmentModel> dataSet;
+    private List<AppointmentSlot> dataSet;
     private Context context;
     private int selectPos = -1;
 
-    public List<AppointmentModel> getDataSet() {
+    public List<AppointmentSlot> getDataSet() {
         return dataSet;
     }
 
-    public AppointmentDateAdapter(List<AppointmentModel> data, OnItemClickListener listener, Context context) {
+    public AppointmentSlotAdapter(List<AppointmentSlot> data, OnItemClickListener listener, Context context) {
         this.dataSet = data;
         this.listener = listener;
         this.context = context;
@@ -37,14 +37,13 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_appointment_date, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        AppointmentModel item = dataSet.get(listPosition);
-        holder.tv_time.setText(item.getTime());
+        AppointmentSlot item = dataSet.get(listPosition);
+        holder.tv_time.setText(item.getTimeSlot());
         if (item.isBooked()) {
             holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_appointment_booked));
             holder.tv_time.setTextColor(Color.parseColor("#474747"));
@@ -59,20 +58,17 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
 
         }
 
-        holder.tv_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    if (item.isBooked()) {
-                        selectPos = -1;
-                        listener.onBookedAppointmentSelected();
-                        new CustomToast().showToast(context, "This slot is already booked");
-                    } else {
-                        selectPos = listPosition;
-                        listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
-                    }
-                    notifyDataSetChanged();
+        holder.tv_time.setOnClickListener(v -> {
+            if (null != listener) {
+                if (item.isBooked()) {
+                    selectPos = -1;
+                    listener.onBookedAppointmentSelected();
+                    new CustomToast().showToast(context, "This slot is already booked");
+                } else {
+                    selectPos = listPosition;
+                    listener.onAppointmentSelected(dataSet.get(listPosition), listPosition);
                 }
+                notifyDataSetChanged();
             }
         });
     }
@@ -83,7 +79,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter<AppointmentDate
     }
 
     public interface OnItemClickListener {
-        void onAppointmentSelected(AppointmentModel item, int pos);
+        void onAppointmentSelected(AppointmentSlot item, int pos);
         
         void onBookedAppointmentSelected();
     }

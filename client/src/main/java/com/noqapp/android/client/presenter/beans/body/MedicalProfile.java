@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.JsonUserMedicalProfile;
+import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 
 import java.io.Serializable;
 

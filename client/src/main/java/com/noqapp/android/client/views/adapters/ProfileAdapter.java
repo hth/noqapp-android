@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,8 +32,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.rcv_item_user_profile, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -43,7 +43,11 @@ public class ProfileAdapter extends RecyclerView.Adapter {
         AppUtilities.loadProfilePic(holder.iv_profile, jsonProfile.getProfileImage(), context);
         holder.cardview.setOnClickListener((View v) -> {
             if (null != listener)
-                listener.onProfileItemClick(position, jsonProfile);
+                listener.onProfileItemClick(jsonProfile);
+        });
+        holder.btn_hospital_visit.setOnClickListener((View v) -> {
+            if (null != listener)
+                listener.onHospitalVisitClick(jsonProfile);
         });
     }
 
@@ -54,18 +58,22 @@ public class ProfileAdapter extends RecyclerView.Adapter {
 
 
     public interface OnItemClickListener {
-        void onProfileItemClick(int pos, JsonProfile jsonProfile);
+        void onProfileItemClick(JsonProfile jsonProfile);
+
+        void onHospitalVisitClick(JsonProfile jsonProfile);
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_name;
         private ImageView iv_profile;
+        private Button btn_hospital_visit;
         private CardView cardview;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.tv_name = itemView.findViewById(R.id.tv_name);
             this.iv_profile = itemView.findViewById(R.id.iv_profile);
+            this.btn_hospital_visit = itemView.findViewById(R.id.btn_hospital_visit);
             this.cardview = itemView.findViewById(R.id.cardview);
         }
     }

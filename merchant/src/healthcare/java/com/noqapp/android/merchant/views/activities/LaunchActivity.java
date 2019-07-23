@@ -11,7 +11,7 @@ import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
-import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -28,7 +28,7 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 
 public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.LoginCallBack,
-        RegistrationActivity.RegisterCallBack{
+        RegistrationActivity.RegisterCallBack {
     private TextView tv_badge;
 
     @Override
@@ -50,12 +50,9 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         tv_badge = findViewById(R.id.tv_badge);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         fl_notification.setVisibility(View.VISIBLE);
-        fl_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(launchActivity, NotificationActivity.class);
-                startActivity(in);
-            }
+        fl_notification.setOnClickListener(view -> {
+            Intent in = new Intent(launchActivity, NotificationActivity.class);
+            startActivity(in);
         });
         if (new AppUtils().isTablet(this)) {
             list_fragment = findViewById(R.id.frame_layout);
@@ -90,12 +87,12 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         super.updateMenuList(showChart);
         try {
             if (launchActivity.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
-                List<MenuModel> childModelsList = new ArrayList<>();
-                childModelsList.add(new MenuModel(getString(R.string.menu_preference), false, false, R.drawable.case_history));
-                childModelsList.add(new MenuModel(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
-                headerList.add(2, new MenuModel("Medical Settings", true, true, R.drawable.medical_settings, childModelsList));
+                List<MenuDrawer> childModelsList = new ArrayList<>();
+                childModelsList.add(new MenuDrawer(getString(R.string.menu_preference), false, false, R.drawable.case_history));
+                childModelsList.add(new MenuDrawer(getString(R.string.menu_pref_store), false, false, R.drawable.pharmacy));
+                menuDrawerItems.add(2, new MenuDrawer("Medical Settings", true, true, R.drawable.medical_settings, childModelsList));
             }
-            headerList.add(2, new MenuModel("Add New Patient", true, false, R.drawable.add_user));
+            menuDrawerItems.add(2, new MenuDrawer("Add New Patient", true, false, R.drawable.add_user));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -106,6 +103,7 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
         super.callPreference();
         Intent intentPreference = new Intent(launchActivity, PreferenceActivity.class);
         startActivity(intentPreference);
+
     }
 
     @Override
@@ -126,11 +124,11 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
 
     @Override
     public void userFound(JsonProfile jsonProfile) {
-        new CustomToast().showToast(this,"User already exist with this number");
+        new CustomToast().showToast(this, "User already exist with this number");
     }
 
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
-        new CustomToast().showToast(this,"User added successfully with this number");
+        new CustomToast().showToast(this, "User added successfully with this number");
     }
 }

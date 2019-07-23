@@ -168,7 +168,7 @@ public class SearchActivity extends BaseActivity implements SearchAdapter.OnItem
     }
 
     @Override
-    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
+    public void onStoreItemClick(BizStoreElastic item) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:

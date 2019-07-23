@@ -12,21 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.client.R;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.pojos.AppointmentModel;
+import com.noqapp.android.common.pojos.AppointmentSlot;
 
 import java.util.List;
 
-public class AppointmentDateAdapter extends RecyclerView.Adapter {
+public class AppointmentSlotAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
-    private List<AppointmentModel> dataSet;
+    private List<AppointmentSlot> dataSet;
     private Context context;
     private int selectPos = -1;
 
-    public List<AppointmentModel> getDataSet() {
+    public List<AppointmentSlot> getDataSet() {
         return dataSet;
     }
 
-    public AppointmentDateAdapter(List<AppointmentModel> data, OnItemClickListener listener, Context context) {
+    public AppointmentSlotAdapter(List<AppointmentSlot> data, OnItemClickListener listener, Context context) {
         this.dataSet = data;
         this.listener = listener;
         this.context = context;
@@ -43,8 +43,8 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
         MyViewHolder holder = (MyViewHolder) Vholder;
-        AppointmentModel item = dataSet.get(listPosition);
-        holder.tv_time.setText(item.getTime());
+        AppointmentSlot item = dataSet.get(listPosition);
+        holder.tv_time.setText(item.getTimeSlot());
         if (item.isBooked()) {
             holder.tv_time.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_appointment_booked));
             holder.tv_time.setTextColor(Color.parseColor("#474747"));
@@ -80,7 +80,7 @@ public class AppointmentDateAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onAppointmentSelected(AppointmentModel item, int pos);
+        void onAppointmentSelected(AppointmentSlot item, int pos);
 
         void onBookedAppointmentSelected();
     }

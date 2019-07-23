@@ -42,8 +42,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
                                                       int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_item_recent_activity, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
         else
             holder.tv_store_rating.setVisibility(View.VISIBLE);
         holder.card_view.setOnClickListener((View v) -> {
-            listener.onStoreItemClick(dataSet.get(listPosition), v, listPosition);
+            listener.onStoreItemClick(dataSet.get(listPosition));
         });
 
 
@@ -98,7 +97,7 @@ public class StoreInfoAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onStoreItemClick(BizStoreElastic item, View view, int pos);
+        void onStoreItemClick(BizStoreElastic item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

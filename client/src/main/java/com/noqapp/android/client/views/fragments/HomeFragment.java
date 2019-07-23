@@ -429,7 +429,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
     }
 
     @Override
-    public void onStoreItemClick(BizStoreElastic item, View view, int pos) {
+    public void onStoreItemClick(BizStoreElastic item) {
         switch (item.getBusinessType()) {
             case DO:
             case BK:
@@ -491,7 +491,7 @@ public class HomeFragment extends ScannerFragment implements View.OnClickListene
 
 
     @Override
-    public void onFeedItemClick(JsonFeed item, View view, int pos) {
+    public void onFeedItemClick(JsonFeed item) {
         Intent in = new Intent(getActivity(), FeedActivity.class);
         in.putExtra(IBConstant.KEY_DATA_OBJECT, item);
         startActivity(in);

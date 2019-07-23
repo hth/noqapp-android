@@ -48,7 +48,7 @@ public class CategoryListActivity extends BaseActivity implements CategoryListAd
     }
 
     @Override
-    public void onCategoryItemClick(BizStoreElastic item, View view, int pos) {
+    public void onCategoryItemClick(BizStoreElastic item) {
         switch (item.getBusinessType()) {
             case DO:
                 // open hospital profile

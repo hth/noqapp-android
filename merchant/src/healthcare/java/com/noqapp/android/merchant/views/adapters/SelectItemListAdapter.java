@@ -43,23 +43,20 @@ public class SelectItemListAdapter extends ArrayAdapter<DataObj> {
         }
 
         holder.title.setText(list.get(position).getShortName());
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if(null != removeListItem)
-                            removeListItem.removeItem(position);
-                    }
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Delete from list", "Do you want to delete it from selected list?");
-            }
+        holder.iv_delete.setOnClickListener(v -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if(null != removeListItem)
+                        removeListItem.removeItem(position);
+                }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Delete from list", "Do you want to delete it from selected list?");
         });
 
         return convertView;

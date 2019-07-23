@@ -441,12 +441,12 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
 
     @Override
-    public void appointmentAccept(EventDay item, View view, int pos) {
+    public void appointmentAccept(EventDay item) {
 
     }
 
     @Override
-    public void appointmentReject(EventDay item, View view, int pos) {
+    public void appointmentReject(EventDay item) {
 
     }
 

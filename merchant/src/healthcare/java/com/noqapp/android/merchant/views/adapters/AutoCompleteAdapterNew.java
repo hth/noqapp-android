@@ -68,15 +68,12 @@ public class AutoCompleteAdapterNew extends ArrayAdapter<DataObj> implements Fil
         TextView lblName = view.findViewById(R.id.lbl_name);
         if (lblName != null)
             lblName.setText(dataObj.getShortName());
-        lblName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(null != searchClick && !isLocalUpdate){
-                    searchClick.searchClick(true,false, fullList.get(position),position);
-                }
-                if( null != searchByPos){
-                    searchByPos.searchByPos(fullList.get(position));
-                }
+        lblName.setOnClickListener(v -> {
+            if(null != searchClick && !isLocalUpdate){
+                searchClick.searchClick(true,false, fullList.get(position),position);
+            }
+            if( null != searchByPos){
+                searchByPos.searchByPos(fullList.get(position));
             }
         });
 

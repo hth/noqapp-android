@@ -9,22 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.common.pojos.MenuDrawer;
 
 import java.util.List;
 
 
 public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private List<MenuModel> listDataHeader;
+    private List<MenuDrawer> listDataHeader;
 
-    public DrawerExpandableListAdapter(Context context, List<MenuModel> listDataHeader) {
+    public DrawerExpandableListAdapter(Context context, List<MenuDrawer> listDataHeader) {
         this.context = context;
         this.listDataHeader = listDataHeader;
     }
 
     @Override
-    public MenuModel getChild(int groupPosition, int childPosititon) {
+    public MenuDrawer getChild(int groupPosition, int childPosititon) {
         return this.listDataHeader.get(groupPosition).getChildList()
                 .get(childPosititon);
     }
@@ -37,7 +37,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final MenuModel child = getChild(groupPosition, childPosition);
+        final MenuDrawer child = getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,7 +61,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public MenuModel getGroup(int groupPosition) {
+    public MenuDrawer getGroup(int groupPosition) {
         return this.listDataHeader.get(groupPosition);
     }
 
@@ -78,7 +78,7 @@ public class DrawerExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        MenuModel headerItem = getGroup(groupPosition);
+        MenuDrawer headerItem = getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

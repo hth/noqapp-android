@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,7 +48,8 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_col
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
 public class PhysicalActivity extends BaseActivity implements
-        MedicalRecordPresenter, JsonMedicalRecordPresenter, MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
+        MedicalRecordPresenter, JsonMedicalRecordPresenter,
+        MeterView.MeterViewValueChanged, ReceiptInfoPresenter {
     private MeterView mv_weight1, mv_weight2, mv_pulse, mv_temperature1, mv_temperature2, mv_oxygen;
     private TextView tv_weight, tv_pulse, tv_temperature, tv_oxygen, tv_bp_high, tv_bp_low, tv_followup, tv_rr, tv_height;
     private DiscreteSeekBar dsb_bp_low, dsb_bp_high, dsb_rr, dsb_height;
@@ -98,6 +100,17 @@ public class PhysicalActivity extends BaseActivity implements
         TextView tv_title = findViewById(R.id.tv_title);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         final String codeQR = getIntent().getStringExtra("qCodeQR");
+        TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
+        tv_hospital_schedule.setOnClickListener(v -> {
+
+                Intent intent = new Intent(PhysicalActivity.this, HospitalVisitScheduleActivity.class);
+                intent.putExtra("qCodeQR", codeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                startActivity(intent);
+                finish();
+
+        });
+
         tv_title.setText(jsonQueuedPerson.getCustomerName());
         mv_weight1 = findViewById(R.id.mv_weight1);
         mv_weight2 = findViewById(R.id.mv_weight2);

@@ -5,7 +5,6 @@ package com.noqapp.android.merchant.views.activities;
  */
 
 
-import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,7 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +23,7 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.RegisterApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.Registration;
@@ -33,8 +32,6 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
 
@@ -60,7 +57,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     private LinearLayout ll_pwd;
     private Button btnRegistration;
     private long mLastClickTime = 0;
-    private DatePickerDialog fromDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,26 +94,6 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_female.setOnClickListener(this);
         tv_transgender.setOnClickListener(this);
         edt_phoneNo.setEnabled(false);
-        Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    new CustomToast().showToast(RegistrationActivity.this, getString(R.string.error_invalid_date));
-                    tv_birthday.setText("");
-                } else {
-                    tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
         onClick(tv_male);
         String phno = getIntent().getStringExtra("mobile_no");
         if (!TextUtils.isEmpty(phno)) {
@@ -175,7 +151,14 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void onClick(View v) {
         if (v == tv_birthday) {
             new AppUtils().hideKeyBoard(this);
-            fromDatePickerDialog.show();
+            CustomCalendar customCalendar = new CustomCalendar(RegistrationActivity.this);
+            customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                @Override
+                public void calendarDate(String date) {
+                    tv_birthday.setText(date);
+                }
+            });
+            customCalendar.showDobCalendar();
         } else if (v == tv_male) {
             gender = "M";
             tv_female.setBackgroundResource(R.drawable.square_white_bg_drawable);

@@ -1,4 +1,4 @@
-package com.noqapp.android.common.beans;
+package com.noqapp.android.common.pojos;
 
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.utils.ProductUtils;
@@ -8,26 +8,23 @@ import java.io.Serializable;
 /**
  * Created by chandra on 3/28/18.
  */
-
-public class ChildData implements Serializable {
+public class StoreCartItem implements Serializable {
 
     private int childInput;
     private int finalDiscountedPrice;
     private JsonStoreProduct jsonStoreProduct;
 
-
-    public ChildData(int childInput, JsonStoreProduct jsonStoreProduct) {
+    public StoreCartItem(int childInput, JsonStoreProduct jsonStoreProduct) {
         this.childInput = childInput;
         this.jsonStoreProduct = jsonStoreProduct;
-        finalDiscountedPrice = (int)new ProductUtils().calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
+        finalDiscountedPrice = (int) new ProductUtils().calculateDiscountPrice(jsonStoreProduct.getDisplayPrice(), jsonStoreProduct.getDisplayDiscount());
     }
-
 
     public int getChildInput() {
         return childInput;
     }
 
-    public ChildData setChildInput(int childInput) {
+    public StoreCartItem setChildInput(int childInput) {
         this.childInput = childInput;
         return this;
     }
@@ -36,7 +33,7 @@ public class ChildData implements Serializable {
         return jsonStoreProduct;
     }
 
-    public ChildData setJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
+    public StoreCartItem setJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
         this.jsonStoreProduct = jsonStoreProduct;
         return this;
     }
@@ -45,7 +42,7 @@ public class ChildData implements Serializable {
         return finalDiscountedPrice;
     }
 
-    public ChildData setFinalDiscountedPrice(int finalDiscountedPrice) {
+    public StoreCartItem setFinalDiscountedPrice(int finalDiscountedPrice) {
         this.finalDiscountedPrice = finalDiscountedPrice;
         return this;
     }

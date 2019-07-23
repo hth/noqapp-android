@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
-import com.noqapp.android.common.pojos.MenuModel;
+import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
@@ -82,7 +82,7 @@ public class LaunchActivity extends BaseLaunchActivity {
     public void updateMenuList(boolean showChart) {
         super.updateMenuList(showChart);
         try {
-            headerList.add(3, new MenuModel("Marquees Settings", true, false, R.drawable.ic_add));
+            menuDrawerItems.add(3, new MenuDrawer("Marquees Settings", true, false, R.drawable.ic_add));
         } catch (Exception e) {
             e.printStackTrace();
         }

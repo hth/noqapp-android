@@ -45,8 +45,7 @@ public class RadioRecyclerAdapter extends RecyclerView.Adapter<RadioRecyclerAdap
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_checkbox, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
-        return vh;
+        return new MyViewHolder(v);
     }
 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {

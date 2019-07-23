@@ -42,12 +42,10 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.menu_header_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override

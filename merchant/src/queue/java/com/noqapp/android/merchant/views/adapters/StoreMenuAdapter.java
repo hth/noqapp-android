@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.noqapp.android.common.beans.ChildData;
+
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.ActionTypeEnum;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
@@ -24,12 +25,12 @@ import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 
 import java.util.List;
 
-public class MenuAdapter extends BaseAdapter {
+public class StoreMenuAdapter extends BaseAdapter {
     private Context context;
-    private List<ChildData> menuItemsList;
+    private List<StoreCartItem> menuItemsList;
     private MenuItemUpdate menuItemUpdate;
 
-    public MenuAdapter(Context context, List<ChildData> menuItemsList, MenuItemUpdate menuItemUpdate) {
+    public StoreMenuAdapter(Context context, List<StoreCartItem> menuItemsList, MenuItemUpdate menuItemUpdate) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.menuItemUpdate = menuItemUpdate;
@@ -49,7 +50,7 @@ public class MenuAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
         final ChildViewHolder childViewHolder;
-        final ChildData childData = menuItemsList.get(position);
+        final StoreCartItem storeCartItem = menuItemsList.get(position);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -68,7 +69,7 @@ public class MenuAdapter extends BaseAdapter {
             childViewHolder = (ChildViewHolder) convertView
                     .getTag(R.layout.list_item_menu_child);
         }
-        final JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
+        final JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         childViewHolder.tv_child_title_details.setText(jsonStoreProduct.getProductInfo());
         //  childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));

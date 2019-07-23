@@ -24,9 +24,9 @@ public class EventListAdapter extends BaseAdapter {
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void appointmentAccept(EventDay item, View view, int pos);
+        void appointmentAccept(EventDay item);
 
-        void appointmentReject(EventDay item, View view, int pos);
+        void appointmentReject(EventDay item);
     }
 
     public List<EventDay> getEventDayList() {

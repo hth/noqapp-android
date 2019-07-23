@@ -1,10 +1,13 @@
 package com.noqapp.android.merchant.model.response.api.health;
 
 import com.noqapp.android.common.beans.JsonResponse;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
+import com.noqapp.android.merchant.presenter.beans.body.merchant.HospitalVisitFor;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.LabFile;
 
 import okhttp3.MultipartBody;
@@ -100,6 +103,42 @@ public interface MedicalRecordApiUrls {
 
             @Body
             FindMedicalProfile findMedicalProfile
+    );
+
+    @POST("api/m/h/medicalRecord/hospitalVisitSchedule.json")
+    Call<JsonHospitalVisitScheduleList> hospitalVisitSchedule(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            FindMedicalProfile findMedicalProfile
+    );
+
+    @POST("api/m/h/medicalRecord/modifyVisitingFor.json")
+    Call<JsonHospitalVisitSchedule> modifyVisitingFor(
+            @Header("X-R-DID")
+            String did,
+
+            @Header("X-R-DT")
+            String dt,
+
+            @Header("X-R-MAIL")
+            String mail,
+
+            @Header("X-R-AUTH")
+            String auth,
+
+            @Body
+            HospitalVisitFor hospitalVisitFor
     );
 
     /**

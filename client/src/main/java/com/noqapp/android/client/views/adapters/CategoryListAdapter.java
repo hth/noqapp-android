@@ -1,22 +1,5 @@
 package com.noqapp.android.client.views.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.presenter.beans.BizStoreElastic;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
@@ -30,6 +13,22 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.Formatter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter {
@@ -37,7 +36,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<BizStoreElastic> dataSet;
     private boolean isSingleEntry = false;
-
 
     public CategoryListAdapter(List<BizStoreElastic> jsonQueues, Context context, OnItemClickListener listener) {
         this.dataSet = jsonQueues;
@@ -53,22 +51,19 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
         if (isSingleEntry) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.rcv_single_entry_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_single_entry_item, parent, false);
         } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.rcv_item_category1, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_category1, parent, false);
         }
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
-        MyViewHolder holder = (MyViewHolder) Vholder;
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         final BizStoreElastic bizStoreElastic = dataSet.get(listPosition);
         holder.tv_name.setText(bizStoreElastic.getDisplayName());
         holder.tv_store_rating.setText(String.valueOf(AppUtilities.round(bizStoreElastic.getRating())));
@@ -206,16 +201,20 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
         holder.tv_store_special.setText(bizStoreElastic.getFamousFor());
         holder.tv_join.setOnClickListener((View v) -> {
             if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.HS) {
-                listener.onCategoryItemClick(bizStoreElastic, v, listPosition);
+                listener.onCategoryItemClick(bizStoreElastic);
             } else {
                 new CustomToast().showToast(context, "Please visit store to avail the service.");
             }
         });
         if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-            if (bizStoreElastic.isAppointmentEnable()) {
-                holder.btn_book_appointment.setVisibility(View.VISIBLE);
-            } else {
-                holder.btn_book_appointment.setVisibility(View.GONE);
+            switch (bizStoreElastic.getAppointmentState()) {
+                case O:
+                    holder.btn_book_appointment.setVisibility(View.GONE);
+                    break;
+                case A:
+                case S:
+                    holder.btn_book_appointment.setVisibility(View.VISIBLE);
+                    break;
             }
         } else {
             holder.btn_book_appointment.setVisibility(View.GONE);
@@ -251,11 +250,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onCategoryItemClick(BizStoreElastic item, View view, int pos);
+        void onCategoryItemClick(BizStoreElastic item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tv_name;
         private TextView tv_address;
         private TextView tv_store_rating;

@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -9,13 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.body.UpdateProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.CustomCalendar;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MerchantProfileApiCalls;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -26,7 +25,6 @@ import com.noqapp.android.merchant.views.interfaces.ProfilePresenter;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -44,7 +42,6 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     private EditText edt_email;
 
     private String gender = "";
-    private DatePickerDialog fromDatePickerDialog;
     private MerchantProfileApiCalls merchantProfileApiCalls;
     private String qUserId = "";
     private SegmentedControl sc_gender;
@@ -92,26 +89,8 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         });
         btn_update.setOnClickListener(this);
         edt_birthday.setOnClickListener(this);
-        Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                Date current = newDate.getTime();
-                int date_diff = new Date().compareTo(current);
-
-                if (date_diff < 0) {
-                    new CustomToast().showToast(getActivity(), getString(R.string.error_invalid_date));
-                    edt_birthday.setText("");
-                } else {
-                    edt_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(newDate.getTime()));
-                }
-
-            }
-
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        return view;
+          return view;
     }
 
 
@@ -120,7 +99,14 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
         int id = v.getId();
         switch (id) {
             case R.id.edt_birthday:
-                fromDatePickerDialog.show();
+                CustomCalendar customCalendar = new CustomCalendar(getActivity());
+                customCalendar.setDateSelectListener(new CustomCalendar.DateSelectListener() {
+                    @Override
+                    public void calendarDate(String date) {
+                        edt_birthday.setText(date);
+                    }
+                });
+                customCalendar.showDobCalendar();
                 break;
             case R.id.btn_update:
                 updateProfile();

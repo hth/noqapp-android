@@ -44,8 +44,7 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override

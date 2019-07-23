@@ -57,7 +57,7 @@ import java.util.List;
 public class MerchantDetailFragment extends BaseMerchantDetailFragment implements
         PurchaseOrderPresenter, AcquireOrderPresenter, OrderProcessedPresenter,
         PeopleInQOrderAdapter.PeopleInQOrderAdapterClick, OrderDetailActivity.UpdateWholeList,
-        HCSMenuActivity.UpdateWholeList {
+        HCSMenuActivity.UpdateWholeList,StoreMenuActivity.UpdateWholeList {
 
     private PeopleInQOrderAdapter peopleInQOrderAdapter;
     private List<JsonPurchaseOrder> purchaseOrders = new ArrayList<>();
@@ -96,6 +96,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 intent.putExtra("jsonTopic", jsonTopic);
                 ((Activity) context).startActivity(intent);
             } else {
+                StoreMenuActivity.updateWholeList = this;
                 Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
                 intent.putExtra("codeQR", jsonTopic.getCodeQR());
                 ((Activity) context).startActivity(intent);

@@ -31,30 +31,22 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_item_upload_pic, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.imageDeleteClick(imageUrls.get(listPosition));
-                }
+        holder.iv_delete.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.imageDeleteClick(imageUrls.get(listPosition));
             }
         });
-        holder.iv_inlarge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.imageEnlargeClick(imageUrls.get(listPosition));
-                }
+        holder.iv_inlarge.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.imageEnlargeClick(imageUrls.get(listPosition));
             }
         });
 

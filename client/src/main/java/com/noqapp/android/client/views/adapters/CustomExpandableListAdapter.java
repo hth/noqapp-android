@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.noqapp.android.client.R;
-import com.noqapp.android.common.beans.ChildData;
+import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 
@@ -30,13 +30,13 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private List<JsonStoreCategory> listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<ChildData>> listDataChild;
+    private HashMap<String, List<StoreCartItem>> listDataChild;
     private CartUpdate cartUpdate;
     private String currencySymbol;
-    private HashMap<String, ChildData> orders = new HashMap<>();
+    private HashMap<String, StoreCartItem> orders = new HashMap<>();
 
     public CustomExpandableListAdapter(Context context, List<JsonStoreCategory> listDataHeader,
-                                       HashMap<String, List<ChildData>> listDataChild, CartUpdate cartUpdate, String currencySymbol) {
+                                       HashMap<String, List<StoreCartItem>> listDataChild, CartUpdate cartUpdate, String currencySymbol) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -45,7 +45,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         orders.clear();
     }
 
-    public HashMap<String, ChildData> getOrders() {
+    public HashMap<String, StoreCartItem> getOrders() {
         return orders;
     }
 
@@ -69,7 +69,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             ViewGroup parent
     ) {
         final ChildViewHolder childViewHolder;
-        final ChildData childData = (ChildData) getChild(groupPosition, childPosition);
+        final StoreCartItem storeCartItem = (StoreCartItem) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_menu_child, parent, false);
@@ -85,14 +85,14 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
         }
-        JsonStoreProduct jsonStoreProduct = childData.getJsonStoreProduct();
+        JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
         childViewHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
-        childViewHolder.tv_value.setText(String.valueOf(childData.getChildInput()));
+        childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + jsonStoreProduct.getDisplayPrice());
         childViewHolder.tv_discounted_price.setText(
                 currencySymbol
                         + " "
-                        + +childData.getFinalDiscountedPrice());
+                        + +storeCartItem.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);
@@ -180,10 +180,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_menu_group, parent, false);
         }
 
-        TextView tv_list_header = (TextView) convertView.findViewById(R.id.tv_list_header);
+        TextView tv_list_header = convertView.findViewById(R.id.tv_list_header);
         tv_list_header.setTypeface(null, Typeface.BOLD);
         tv_list_header.setText(headerTitle);
-        ImageView ivGroupIndicator = (ImageView) convertView.findViewById(R.id.ivGroupIndicator);
+        ImageView ivGroupIndicator =  convertView.findViewById(R.id.ivGroupIndicator);
         ivGroupIndicator.setSelected(isExpanded);
         return convertView;
     }
@@ -200,7 +200,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private int showCartAmount() {
         int price = 0;
-        for (ChildData value : getOrders().values()) {
+        for (StoreCartItem value : getOrders().values()) {
             price += value.getChildInput() * value.getFinalDiscountedPrice();
         }
         return price;

@@ -150,12 +150,16 @@ public class CommonHelper {
 
     public static String formatStringDate(SimpleDateFormat simpleDateFormat, String date) {
         String formattedDate = "";
-        try {
-            formattedDate = simpleDateFormat.format(new SimpleDateFormat(ISO8601_FMT, Locale.getDefault()).parse(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(TextUtils.isEmpty(date)){
+            return formattedDate;
+        }else{
+            try {
+                formattedDate = simpleDateFormat.format(new SimpleDateFormat(ISO8601_FMT, Locale.getDefault()).parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return formattedDate;
         }
-        return formattedDate;
     }
 
     public static Date stringToDate(String date) {
