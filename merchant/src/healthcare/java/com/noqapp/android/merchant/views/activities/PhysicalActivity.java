@@ -405,28 +405,9 @@ public class PhysicalActivity extends BaseActivity implements
     }
 
     @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        dismissProgress();
-        if (null != eej)
-            new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        dismissProgress();
-        new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    @Override
     public void medicalRecordError() {
         dismissProgress();
         new CustomToast().showToast(this, "Failed to update");
-    }
-
-    @Override
-    public void authenticationFailure() {
-        dismissProgress();
-        AppUtils.authenticationProcessing();
     }
 
     @Override

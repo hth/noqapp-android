@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.utils;
 import android.text.TextUtils;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -62,7 +63,14 @@ public class PdfHelper {
 
     protected PdfPCell pdfPCellWithBorder(String label, Font font) {
         PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
-        // pdfPCell.setBorder(Rectangle.NO_BORDER);
+        return pdfPCell;
+    }
+
+    protected PdfPCell pdfPCellWithBorder(String label, Font font, int padding) {
+        PdfPCell pdfPCell = new PdfPCell(new Phrase(label, font));
+        pdfPCell.setPaddingBottom(padding);
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+        pdfPCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         return pdfPCell;
     }
 

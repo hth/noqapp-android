@@ -48,6 +48,7 @@ public class BaseActivity extends AppCompatActivity implements ResponseErrorPres
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
         dismissProgress();
+        if (null != eej)
         new ErrorResponseHandler().processError(this, eej);
     }
 
