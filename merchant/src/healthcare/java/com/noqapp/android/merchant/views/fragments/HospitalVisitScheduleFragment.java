@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,21 +69,23 @@ public class HospitalVisitScheduleFragment extends BaseFragment
 
     @Override
     public void onImmuneItemClick(JsonHospitalVisitSchedule jsonHospitalVisitSchedule, String key, String booleanReplacement) {
-        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Dialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_update_hvs);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCanceledOnTouchOutside(true);
 
-        SegmentedControl sc_hvs_status = dialog.findViewById(R.id.sc_hvs_status);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        builder.setTitle(null);
+        View view = inflater.inflate(R.layout.dialog_update_hvs, null, false);
+        SegmentedControl sc_hvs_status = view.findViewById(R.id.sc_hvs_status);
         List<String> tempList = BooleanReplacementEnum.asListOfDescription();
         sc_hvs_status.addSegments(tempList);
         sc_hvs_status.setSelectedSegment(tempList.indexOf(booleanReplacement));
-        TextView tv_sub_header = dialog.findViewById(R.id.tv_sub_header);
+        TextView tv_sub_header = view.findViewById(R.id.tv_sub_header);
         tv_sub_header.setText(key);
-        Button btnPositive = dialog.findViewById(R.id.btnPositive);
-        Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        btnPositive.setOnClickListener(v -> {
+        ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
+        Button btn_update = view.findViewById(R.id.btn_update);
+        builder.setView(view);
+        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        btn_update.setOnClickListener(v -> {
             if (LaunchActivity.getLaunchActivity().isOnline()) {
                 showProgress();
                 HospitalVisitFor hospitalVisitFor = new HospitalVisitFor();
@@ -94,16 +98,13 @@ public class HospitalVisitScheduleFragment extends BaseFragment
                 medicalHistoryApiCalls.modifyVisitingFor(BaseLaunchActivity.getDeviceID(),
                         LaunchActivity.getLaunchActivity().getEmail(),
                         LaunchActivity.getLaunchActivity().getAuth(), hospitalVisitFor);
-                dialog.dismiss();
+                mAlertDialog.dismiss();
             } else {
                 ShowAlertInformation.showNetworkDialog(getActivity());
             }
         });
-        btnNegative.setOnClickListener(v -> dialog.dismiss());
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        dialog.show();
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
+        mAlertDialog.show();
 
     }
 
