@@ -524,35 +524,27 @@
                                         android:textSize="@dimen/text_size_fourteen" />
 
 
-                                    <RelativeLayout
+                                    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/sc_enable_appointment"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:gravity="center">
+                                        segmentedcontrol:columnCount="3"
+                                        segmentedcontrol:distributeEvenly="false"
+                                        segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:radius="6dp"
+                                        segmentedcontrol:radiusForEverySegment="false"
+                                        segmentedcontrol:segmentHorizontalMargin="0dp"
+                                        segmentedcontrol:segmentVerticalMargin="0dp"
+                                        segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
+                                        segmentedcontrol:strokeWidth="1dp"
+                                        segmentedcontrol:textSize="@dimen/text_size_fourteen"
+                                        segmentedcontrol:textVerticalPadding="7dp"
+                                        segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
+                                        segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
+                                        segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
 
-                                        <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl xmlns:segmentedcontrol="http://schemas.android.com/apk/res-auto"
-                                            android:id="@+id/sc_enable_appointment"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center_vertical"
-                                            segmentedcontrol:columnCount="3"
-                                            segmentedcontrol:distributeEvenly="false"
-                                            segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
-                                            segmentedcontrol:radius="6dp"
-                                            segmentedcontrol:radiusForEverySegment="false"
-                                            segmentedcontrol:segmentHorizontalMargin="0dp"
-                                            segmentedcontrol:segmentVerticalMargin="0dp"
-                                            segmentedcontrol:selectedBackgroundColor="@color/segment_bg_color_select"
-                                            segmentedcontrol:selectedStrokeColor="@color/segment_bg_color_select"
-                                            segmentedcontrol:selectedTextColor="@color/segment_text_color_select"
-                                            segmentedcontrol:strokeWidth="1dp"
-                                            segmentedcontrol:textSize="@dimen/text_size_fourteen"
-                                            segmentedcontrol:textVerticalPadding="7dp"
-                                            segmentedcontrol:unSelectedBackgroundColor="@color/segment_bg_color"
-                                            segmentedcontrol:unSelectedStrokeColor="@color/segment_bg_color_select"
-                                            segmentedcontrol:unSelectedTextColor="@color/segment_text_color" />
-
-                                    </RelativeLayout>
                                 </LinearLayout>
 
                                 <LinearLayout
