@@ -2,9 +2,13 @@ package com.noqapp.android.client.views.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.NetworkUtils;
@@ -24,11 +28,15 @@ import java.util.List;
 
 public class HospitalVisitScheduleActivity extends TabbedActivity implements
         HospitalVisitSchedulePresenter {
+    private RelativeLayout rl_empty;
+    private LinearLayout ll_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv_toolbar_title.setText("Hospital Visit Schedule");
+        rl_empty = findViewById(R.id.rl_empty);
+        ll_data = findViewById(R.id.ll_data);
         MedicalProfile medicalProfile = (MedicalProfile) getIntent().getSerializableExtra("medicalProfile");
         UserMedicalProfileApiCalls userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();
         userMedicalProfileApiCalls.setHospitalVisitSchedulePresenter(this);
@@ -80,6 +88,13 @@ public class HospitalVisitScheduleActivity extends TabbedActivity implements
         if (immunizationList.size() > 0)
             adapter.addFragment(hvsfImmune, "Immunization");
         viewPager.setAdapter(adapter);
+        if (immunizationList.size() <= 0 && vaccinationList.size() <= 0) {
+            ll_data.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.VISIBLE);
+        } else {
+            ll_data.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -6,4 +6,7 @@
         Your medical records, vaccination, immunization history depends on correct date of birth. Please ensure
         your date of birth is correct. \n\n Your data stays private and secure. Please check out Privacy Policy under Legal.
     </string>
+
+    <string name="empty_visiting_title">Empty hospital visit</string>
+    <string name="empty_visiting_subtitle">There are no hospital visit scheduled</string>
 </resources>

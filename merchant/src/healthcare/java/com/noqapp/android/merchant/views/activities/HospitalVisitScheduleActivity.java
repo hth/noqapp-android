@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
@@ -37,8 +39,10 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private String qUserId = "";
-    List<JsonHospitalVisitSchedule> immunizationList = new ArrayList<>();
-    List<JsonHospitalVisitSchedule> vaccinationList = new ArrayList<>();
+    private List<JsonHospitalVisitSchedule> immunizationList = new ArrayList<>();
+    private List<JsonHospitalVisitSchedule> vaccinationList = new ArrayList<>();
+    private RelativeLayout rl_empty;
+    private LinearLayout ll_data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -48,6 +52,8 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_immunization);
+        rl_empty = findViewById(R.id.rl_empty);
+        ll_data = findViewById(R.id.ll_data);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
@@ -115,6 +121,14 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
             adapter.addFragment(hvsfImmune, "Immunization");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        if (immunizationList.size() <= 0 && vaccinationList.size() <= 0) {
+            ll_data.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.VISIBLE);
+        } else {
+            ll_data.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.GONE);
+        }
     }
 
     @Override

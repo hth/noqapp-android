@@ -311,7 +311,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         Button btn_update_appointment = findViewById(R.id.btn_update_appointment);
         Button btn_update_permanent_setting = findViewById(R.id.btn_update_permanent_setting);
         btn_update_appointment.setOnClickListener(v -> {
-            if (sc_enable_appointment.getSelectedAbsolutePosition() == 0) {
+            if (sc_enable_appointment.getSelectedAbsolutePosition() != 0) {
                 if (validateAppointmentSetting()) {
                     updateAppointmentSettings();
                 }
