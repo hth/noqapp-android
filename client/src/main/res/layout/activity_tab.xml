@@ -1,79 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#99ffffff"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#99ffffff"
+              android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@android:color/black"
+            app:tabTextColor="@color/text_header_color"/>
 
-        <LinearLayout
-            android:id="@+id/ll_data"
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabGravity="fill"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@android:color/black"
-                app:tabTextColor="@color/text_header_color" />
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white" />
-
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/empty_screen_color"
-            android:visibility="gone">
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/empty_icons"
-                    android:layout_height="@dimen/empty_icons"
-                    android:background="@drawable/empty_visiting" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
-                    android:text="@string/empty_visiting_title"
-                    android:textSize="@dimen/empty_title_size"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/empty_visiting_subtitle"
-                    android:textSize="@dimen/empty_subtitle_size" />
-            </LinearLayout>
-        </RelativeLayout>
-
-    </FrameLayout>
+            android:background="@android:color/white"/>
 
 </LinearLayout>

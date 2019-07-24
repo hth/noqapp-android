@@ -31,7 +31,7 @@ import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHelper;
+import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;

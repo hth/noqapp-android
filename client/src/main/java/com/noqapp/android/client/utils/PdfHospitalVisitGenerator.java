@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.views.utils;
+package com.noqapp.android.client.utils;
 
 
 import android.content.ActivityNotFoundException;
@@ -27,13 +27,14 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
+import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.common.utils.PdfHelper;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,8 +65,8 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         }
     }
 
-    public void createPdf(List<JsonHospitalVisitSchedule> immunizationList, JsonQueuedPerson jsonQueuedPerson) {
-        String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_Vaccination_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
+    public void createPdf(List<JsonHospitalVisitSchedule> immunizationList, JsonProfile jsonQueuedPerson) {
+        String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getName() + "_Vaccination_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext) + fileName);
         if (dest.exists()) {
             Log.d("Delete", "File deleted successfully " + dest.delete());
@@ -86,7 +87,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
 
             Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(jsonQueuedPerson.getCustomerName(), titleFont);
+            Chunk titleChunk = new Chunk(jsonQueuedPerson.getName(), titleFont);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(titleChunk);
             titleParagraph.add(glue);

@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.utils;
+package com.noqapp.android.common.utils;
 
 import android.text.TextUtils;
 

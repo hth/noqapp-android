@@ -26,6 +26,7 @@ import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.pojos.Receipt;

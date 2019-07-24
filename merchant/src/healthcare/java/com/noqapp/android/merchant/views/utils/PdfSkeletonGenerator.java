@@ -35,7 +35,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHelper;
+import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import java.io.ByteArrayOutputStream;

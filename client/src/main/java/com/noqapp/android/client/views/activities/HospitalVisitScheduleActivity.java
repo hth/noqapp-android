@@ -1,21 +1,29 @@
 package com.noqapp.android.client.views.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
 import com.noqapp.android.client.utils.NetworkUtils;
+import com.noqapp.android.client.utils.PdfHospitalVisitGenerator;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.client.views.fragments.HospitalVisitScheduleFragment;
+import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -26,17 +34,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HospitalVisitScheduleActivity extends TabbedActivity implements
+public class HospitalVisitScheduleActivity extends BaseActivity implements
         HospitalVisitSchedulePresenter {
     private RelativeLayout rl_empty;
     private LinearLayout ll_data;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private final int STORAGE_PERMISSION_CODE = 102;
+    private final String[] STORAGE_PERMISSION_PERMS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_immunization);
+        initActionsViews(true);
         tv_toolbar_title.setText("Hospital Visit Schedule");
         rl_empty = findViewById(R.id.rl_empty);
         ll_data = findViewById(R.id.ll_data);
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tabs);
         MedicalProfile medicalProfile = (MedicalProfile) getIntent().getSerializableExtra("medicalProfile");
         UserMedicalProfileApiCalls userMedicalProfileApiCalls = new UserMedicalProfileApiCalls();
         userMedicalProfileApiCalls.setHospitalVisitSchedulePresenter(this);
@@ -54,9 +72,6 @@ public class HospitalVisitScheduleActivity extends TabbedActivity implements
     }
 
 
-    @Override
-    protected void setupViewPager(ViewPager viewPager) {
-    }
 
     @Override
     public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
@@ -88,6 +103,17 @@ public class HospitalVisitScheduleActivity extends TabbedActivity implements
         if (immunizationList.size() > 0)
             adapter.addFragment(hvsfImmune, "Immunization");
         viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
+        btn_print_pdf.setOnClickListener(v -> {
+            if (isExternalStoragePermissionAllowed()) {
+                JsonProfile jsonProfile =(JsonProfile) getIntent().getSerializableExtra("jsonProfile");
+                PdfHospitalVisitGenerator pdfGenerator = new PdfHospitalVisitGenerator(HospitalVisitScheduleActivity.this);
+                pdfGenerator.createPdf(immunizationList, jsonProfile);
+            } else {
+                requestStoragePermission();
+            }
+        });
         if (immunizationList.size() <= 0 && vaccinationList.size() <= 0) {
             ll_data.setVisibility(View.GONE);
             rl_empty.setVisibility(View.VISIBLE);
@@ -101,5 +127,24 @@ public class HospitalVisitScheduleActivity extends TabbedActivity implements
     public void hospitalVisitScheduleResponse(JsonHospitalVisitSchedule jsonHospitalVisitSchedule) {
         dismissProgress();
         // do nothing
+    }
+
+
+    private boolean isExternalStoragePermissionAllowed() {
+        //Getting the permission status
+        int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //If permission is granted returning true
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+            return true;
+        //If permission is not granted returning false
+        return false;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+                this,
+                STORAGE_PERMISSION_PERMS,
+                STORAGE_PERMISSION_CODE);
     }
 }
