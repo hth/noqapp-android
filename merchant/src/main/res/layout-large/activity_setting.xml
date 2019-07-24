@@ -529,7 +529,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         segmentedcontrol:columnCount="3"
-                                        segmentedcontrol:distributeEvenly="false"
+                                        segmentedcontrol:distributeEvenly="true"
                                         segmentedcontrol:focusedBackgroundColor="@color/segment_bg_color"
                                         segmentedcontrol:radius="6dp"
                                         segmentedcontrol:radiusForEverySegment="false"
