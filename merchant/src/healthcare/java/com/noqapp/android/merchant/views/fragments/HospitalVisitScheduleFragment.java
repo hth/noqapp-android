@@ -35,7 +35,8 @@ import java.util.List;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 
-public class HospitalVisitScheduleFragment extends BaseFragment
+public class HospitalVisitScheduleFragment
+        extends BaseFragment
         implements HospitalVisitScheduleListAdapter.OnItemClickListener, HospitalVisitSchedulePresenter {
 
     private List<JsonHospitalVisitSchedule> listData;
@@ -48,12 +49,10 @@ public class HospitalVisitScheduleFragment extends BaseFragment
         rcv_hospital_visit = view.findViewById(R.id.rcv_hospital_visit);
         RelativeLayout rl_empty = view.findViewById(R.id.rl_empty);
         rcv_hospital_visit.setHasFixedSize(true);
-        rcv_hospital_visit.setLayoutManager(new LinearLayoutManager(getActivity(),
-                RecyclerView.HORIZONTAL, false));
+        rcv_hospital_visit.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         rcv_hospital_visit.setItemAnimator(new DefaultItemAnimator());
         listData = (List<JsonHospitalVisitSchedule>) getArguments().getSerializable("data");
-        HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(getActivity(), listData,
-                this);
+        HospitalVisitScheduleAdapter hospitalVisitScheduleAdapter = new HospitalVisitScheduleAdapter(getActivity(), listData, this);
         rcv_hospital_visit.setAdapter(hospitalVisitScheduleAdapter);
 
         if (null != listData && listData.size() == 0 && null != getActivity()) {
@@ -82,7 +81,7 @@ public class HospitalVisitScheduleFragment extends BaseFragment
     @Override
     public void onImmuneItemClick(JsonHospitalVisitSchedule jsonHospitalVisitSchedule, String key, String booleanReplacement) {
         if (isExpectedDateInFuture(jsonHospitalVisitSchedule.getExpectedDate())) {
-            new CustomToast().showToast(getActivity(), "Vaccination date is in future. you cannot update now.");
+            new CustomToast().showToast(getActivity(), key + " due date is " + CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonHospitalVisitSchedule.getExpectedDate()));
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -105,8 +104,7 @@ public class HospitalVisitScheduleFragment extends BaseFragment
                     HospitalVisitFor hospitalVisitFor = new HospitalVisitFor();
                     hospitalVisitFor.setHospitalVisitScheduleId(jsonHospitalVisitSchedule.getHospitalVisitScheduleId());
                     hospitalVisitFor.setVisitingFor(key);
-                    hospitalVisitFor.setBooleanReplacement(BooleanReplacementEnum.getValue(
-                            tempList.get(sc_hvs_status.getSelectedAbsolutePosition())));
+                    hospitalVisitFor.setBooleanReplacement(BooleanReplacementEnum.getValue(tempList.get(sc_hvs_status.getSelectedAbsolutePosition())));
                     hospitalVisitFor.setQid(getArguments().getString("qUserId"));
                     MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
                     medicalHistoryApiCalls.modifyVisitingFor(BaseLaunchActivity.getDeviceID(),
@@ -120,9 +118,7 @@ public class HospitalVisitScheduleFragment extends BaseFragment
             actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
             mAlertDialog.show();
         }
-
     }
-
 
     @Override
     public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
