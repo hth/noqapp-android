@@ -6,5 +6,4 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 public interface StorePresenter extends ResponseErrorPresenter{
 
     void storeResponse(JsonStore jsonStore);
-
 }

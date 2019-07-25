@@ -1,10 +1,13 @@
 package com.noqapp.android.merchant.views.utils;
 
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BooleanReplacementEnum;
+import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.PdfHelper;
+import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -20,17 +23,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
-import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BooleanReplacementEnum;
-import com.noqapp.android.common.utils.CommonHelper;
-import com.noqapp.android.common.utils.PdfHelper;
-import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
+
+import org.apache.commons.lang3.StringUtils;
+
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,8 +45,11 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         super(mContext);
     }
 
-    public void createPdf(List<JsonHospitalVisitSchedule> immunizationList,
-                          JsonQueuedPerson jsonQueuedPerson, JsonMedicalRecord jsonMedicalRecord) {
+    public void createPdf(
+            List<JsonHospitalVisitSchedule> immunizationList,
+            JsonQueuedPerson jsonQueuedPerson,
+            JsonMedicalRecord jsonMedicalRecord
+    ) {
         String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_Vaccination_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);
         if (dest.exists()) {
@@ -58,7 +59,10 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         try {
             Document document = new Document();
             // Location to save
-            PdfWriter.getInstance(document, new FileOutputStream(dest));
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(dest));
+            HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            pdfWriter.setPageEvent(event);
+
             // Open to write
             document.open();
             // Document Settings
@@ -68,24 +72,15 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
-
-            Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(jsonQueuedPerson.getCustomerName(), titleFont);
-            Paragraph titleParagraph = new Paragraph();
-            titleParagraph.add(titleChunk);
-            document.add(titleParagraph);
-
-
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
 
-            Chunk degreeChunk = new Chunk(jsonMedicalRecord.getBusinessName(), normalBoldFont);
+            Chunk degreeChunk = new Chunk(jsonMedicalRecord.getBusinessName(), noqFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
             degreeParagraph.add(new Chunk("NoQueue", noqFont));
             document.add(degreeParagraph);
             addVerticalSpace();
-
 
             Paragraph hospital = new Paragraph();
             hospital.add(new Chunk(jsonMedicalRecord.getAreaAndTown(), normalFont));
@@ -98,14 +93,12 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             document.add(new Chunk(lineSeparator));
             document.add(addVerticalSpaceBefore(10f));
 
-
             document.add(addVerticalSpaceBefore(20f));
             document.add(new Paragraph(""));
 
             document.add(addVerticalSpaceAfter(5f));
-            addTable(document, immunizationList);
+            addTable(jsonQueuedPerson.getCustomerName(), document, immunizationList);
             document.add(addVerticalSpaceBefore(20.0f));
-
 
             Chunk chunkInstructionValue = new Chunk("\n\n", normalFont);
             Paragraph paragraphInstructionValue = new Paragraph(chunkInstructionValue);
@@ -113,7 +106,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             document.add(addVerticalSpace());
             document.close();
 
-            new CustomToast().showToast(mContext, "Immunisation Record Generated");
+            new CustomToast().showToast(mContext, "Immunization Record Generated");
             openFile(mContext, dest);
         } catch (IOException | DocumentException ie) {
             Log.e("createPdf: Error ", ie.getLocalizedMessage());
@@ -121,7 +114,6 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             new CustomToast().showToast(mContext, "No application found to open this file.");
         }
     }
-
 
     private PdfPCell pdfPCellWithBorder1(String label, Font font) {
         PdfPCell pdfPCell = new PdfPCell();
@@ -135,13 +127,20 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         return pdfPCell;
     }
 
-
-    private void addTable(Document document, List<JsonHospitalVisitSchedule> immunizationList) {
+    private void addTable(String patientName, Document document, List<JsonHospitalVisitSchedule> immunizationList) {
         try {
+            PdfPTable patientDetailTable = new PdfPTable(1);
+            PdfPCell pdfPatientCell = pdfPCellWithoutBorder(patientName + " Immunization Record", thirteenBigFont);
+            pdfPatientCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfPatientCell.setPaddingBottom(10.0f);
+            patientDetailTable.addCell(pdfPatientCell);
+            document.add(patientDetailTable);
+
             for (int i = 0; i < immunizationList.size(); i++) {
                 JsonHospitalVisitSchedule jsonHospitalVisitSchedule = immunizationList.get(i);
-                if (i == 6)
+                if (i == 6) {
                     document.newPage();
+                }
 
                 PdfPTable ppptable = new PdfPTable(1);
                 PdfPCell pdfPCell = pdfPCellWithBorder(jsonHospitalVisitSchedule.getHeader(), normalBoldFont);
@@ -157,22 +156,23 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
                 String dateExpected = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonHospitalVisitSchedule.getExpectedDate());
                 String dateVisited = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonHospitalVisitSchedule.getVisitedDate());
                 PdfPTable ptable = new PdfPTable(3);
-                ptable.addCell(pdfPCellWithoutBorder("Due Date: " + dateExpected, normalFont));
-                ptable.addCell(pdfPCellWithoutBorder("Given Date: " + dateVisited, normalFont));
-                ptable.addCell(pdfPCellWithoutBorder("Given By: " + jsonHospitalVisitSchedule.getPerformedBy(), normalFont));
+                ptable.addCell(pdfPCellWithoutBorder("Due: " + dateExpected, normalFont));
+                ptable.addCell(pdfPCellWithoutBorder("Administered: " + dateVisited, normalFont));
+                ptable.addCell(pdfPCellWithoutBorder("By: " + (StringUtils.isBlank(jsonHospitalVisitSchedule.getPerformedBy()) ? "" : jsonHospitalVisitSchedule.getPerformedBy()), normalFont));
                 document.add(ptable);
                 PdfPTable table = new PdfPTable(3);
                 int size = visitingFor.size();
                 int remain = 3 - (size % 3);
-                for (Map.Entry<String, BooleanReplacementEnum> entry : visitingFor.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() +
-                            ", Value = " + entry.getValue());
-                    table.addCell(pdfPCellWithBorder1(entry.getKey(), normalFont));
 
+                for (Map.Entry<String, BooleanReplacementEnum> entry : visitingFor.entrySet()) {
+                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                    table.addCell(pdfPCellWithBorder1(entry.getKey(), normalFont));
                 }
+
                 for (int j = 0; j < remain; j++) {
                     table.addCell(pdfPCellWithoutBorder("", normalFont));
                 }
+
                 document.add(table);
                 document.add(addVerticalSpaceBefore(5.0f));
                 document.add(addVerticalSpace());

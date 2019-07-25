@@ -6,5 +6,4 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 public interface OrderHistoryPresenter extends ResponseErrorPresenter {
 
     void orderHistoryResponse(JsonPurchaseOrderHistoricalList jsonPurchaseOrderHistoricalList);
-
 }

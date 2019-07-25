@@ -7,7 +7,6 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
  * User: hitender
  * Date: 4/1/17 12:22 PM
  */
-
 public interface TokenPresenter extends ResponseErrorPresenter {
 
     void tokenPresenterResponse(JsonToken token);
@@ -15,5 +14,4 @@ public interface TokenPresenter extends ResponseErrorPresenter {
     void paidTokenPresenterResponse(JsonToken token);
 
     void unPaidTokenPresenterResponse(JsonToken token);
-
 }

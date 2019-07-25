@@ -42,6 +42,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/edit_orange"
                     android:text="Print"
+                    android:visibility="gone"
                     android:textColor="@color/btn_color"
                     android:textStyle="bold" />
             </RelativeLayout>

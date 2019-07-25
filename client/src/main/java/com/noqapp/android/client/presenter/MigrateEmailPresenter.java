@@ -6,5 +6,4 @@ import com.noqapp.android.common.presenter.ResponseErrorPresenter;
 public interface MigrateEmailPresenter extends ResponseErrorPresenter {
 
     void migrateEmailResponse(JsonResponse jsonResponse);
-
 }

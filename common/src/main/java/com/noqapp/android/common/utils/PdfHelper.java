@@ -1,15 +1,5 @@
 package com.noqapp.android.common.utils;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.text.TextUtils;
-
-import androidx.core.content.FileProvider;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -19,6 +9,15 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.draw.LineSeparator;
+
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.text.TextUtils;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.util.List;
@@ -30,6 +29,7 @@ public class PdfHelper {
     protected Font normalFont;
     protected Font normalBoldFont;
     protected Font normalBigFont;
+    protected Font thirteenBigFont;
 
     public PdfHelper(Context mContext) {
         this.mContext = mContext;
@@ -38,6 +38,7 @@ public class PdfHelper {
             normalFont = new Font(baseFont, 10.0f, Font.NORMAL, BaseColor.BLACK);
             normalBoldFont = new Font(baseFont, 10.0f, Font.BOLD, BaseColor.BLACK);
             normalBigFont = new Font(baseFont, 12.0f, Font.BOLD, BaseColor.BLACK);
+            thirteenBigFont = new Font(baseFont, 13.0f, Font.BOLD, BaseColor.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,7 +78,6 @@ public class PdfHelper {
         paragraph.setSpacingAfter(10f); // for adding extra space after a view
         return paragraph;
     }
-
 
     protected Paragraph addVerticalSpaceBefore(float space) {
         Paragraph paragraph = new Paragraph("");

@@ -19,5 +19,4 @@ public interface TokenAndQueuePresenter extends ResponseErrorPresenter{
     void historyQueueError();
 
     void currentQueueError();
-
 }
