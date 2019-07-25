@@ -58,23 +58,20 @@ public class TestListAdapter extends BaseAdapter {
         }
         holder.iv_delete.setBackground(ContextCompat.getDrawable(context,R.drawable.icon_flag));
         holder.title.setText(list.get(position).getProductShortName());
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (null != flagListItem)
-                            flagListItem.flagItem(position);
-                    }
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Flag as incorrect", "Flag this data only when there is mistake in spelling, duplicate data");
-            }
+        holder.iv_delete.setOnClickListener(v -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (null != flagListItem)
+                        flagListItem.flagItem(position);
+                }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Flag as incorrect", "Flag this data only when there is mistake in spelling, duplicate data");
         });
 
         return convertView;

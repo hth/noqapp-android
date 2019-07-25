@@ -161,18 +161,8 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
             } else {
                 recordHolder.tv_observation_pathology_label.setText(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getObservation());
             }
-            recordHolder.tv_attachment_pathology.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callSliderScreen(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(), jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId());
-                }
-            });
-            recordHolder.tv_observation_pathology_label.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updateObservation(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId(), LabCategoryEnum.PATH);
-                }
-            });
+            recordHolder.tv_attachment_pathology.setOnClickListener(v -> callSliderScreen(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getImages(), jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId()));
+            recordHolder.tv_observation_pathology_label.setOnClickListener(v -> updateObservation(jsonMedicalRecord.getMedicalPathologiesLists().get(0).getRecordReferenceId(), LabCategoryEnum.PATH));
             recordHolder.ll_pathology.setVisibility(View.VISIBLE);
         } else {
             recordHolder.tv_attachment_pathology.setText("No Attachment");
@@ -201,53 +191,23 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
                 switch (labCategory) {
                     case SPEC:
                         recordHolder.tv_attachment_spec.setText(value);
-                        recordHolder.tv_attachment_spec.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
-                        });
+                        recordHolder.tv_attachment_spec.setOnClickListener(v -> callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId()));
                         recordHolder.tv_observation_spec_label.setText(observation);
-                        recordHolder.tv_observation_spec_label.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
-                            }
-                        });
+                        recordHolder.tv_observation_spec_label.setOnClickListener(v -> updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory()));
                         recordHolder.ll_spec.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     case SONO:
                         recordHolder.tv_attachment_sono.setText(value);
-                        recordHolder.tv_attachment_sono.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
-                        });
+                        recordHolder.tv_attachment_sono.setOnClickListener(v -> callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId()));
                         recordHolder.tv_observation_sono_label.setText(observation);
-                        recordHolder.tv_observation_sono_label.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
-                            }
-                        });
+                        recordHolder.tv_observation_sono_label.setOnClickListener(v -> updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory()));
                         recordHolder.ll_sono.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     case XRAY:
                         recordHolder.tv_attachment_xray.setText(value);
-                        recordHolder.tv_attachment_xray.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
-                        });
+                        recordHolder.tv_attachment_xray.setOnClickListener(v -> callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId()));
                         recordHolder.tv_observation_xray_label.setText(observation);
-                        recordHolder.tv_observation_xray_label.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
-                            }
-                        });
+                        recordHolder.tv_observation_xray_label.setOnClickListener(v -> updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory()));
                         recordHolder.ll_xray.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
 //                    case PATH:
@@ -269,36 +229,16 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
 //                        break;
                     case MRI:
                         recordHolder.tv_attachment_mri.setText(value);
-                        recordHolder.tv_attachment_mri.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
-                        });
+                        recordHolder.tv_attachment_mri.setOnClickListener(v -> callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId()));
                         recordHolder.tv_observation_mri_label.setText(observation);
-                        recordHolder.tv_observation_mri_label.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
-                            }
-                        });
+                        recordHolder.tv_observation_mri_label.setOnClickListener(v -> updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory()));
                         recordHolder.ll_mri.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     case SCAN:
                         recordHolder.tv_attachment_scan.setText(value);
-                        recordHolder.tv_attachment_scan.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId());
-                            }
-                        });
+                        recordHolder.tv_attachment_scan.setOnClickListener(v -> callSliderScreen(jsonMedicalRadiologyList.getImages(), jsonMedicalRadiologyList.getRecordReferenceId()));
                         recordHolder.tv_observation_scan_label.setText(observation);
-                        recordHolder.tv_observation_scan_label.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory());
-                            }
-                        });
+                        recordHolder.tv_observation_scan_label.setOnClickListener(v -> updateObservation(jsonMedicalRadiologyList.getRecordReferenceId(), jsonMedicalRadiologyList.getLabCategory()));
                         recordHolder.ll_scan.setVisibility(showLayout ? View.VISIBLE : View.GONE);
                         break;
                     default:
@@ -469,35 +409,27 @@ public class MedicalHistoryAdapter extends BaseAdapter implements UpdateObservat
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         final Button btn_update = customDialogView.findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_observation.setError(null);
-                new AppUtils().hideKeyBoard((Activity) context);
-                if (TextUtils.isEmpty(edt_observation.getText().toString())) {
-                    edt_observation.setError(context.getString(R.string.error_all_field_required));
-                } else {
-                    PatientProfileActivity.getPatientProfileActivity().pb_history.setVisibility(View.VISIBLE);
-                    ;
-                    LabFile labFile = new LabFile();
-                    labFile.setRecordReferenceId(recordReferenceId);
-                    labFile.setObservation(edt_observation.getText().toString());
-                    labFile.setLabCategory(labCategoryEnum);
-                    MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(updateObservationPresenter);
-                    medicalHistoryApiCalls.updateObservation(BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(), labFile);
-                    btn_update.setClickable(false);
-                    mAlertDialog.dismiss();
-                }
-            }
-        });
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_update.setOnClickListener(v -> {
+            edt_observation.setError(null);
+            new AppUtils().hideKeyBoard((Activity) context);
+            if (TextUtils.isEmpty(edt_observation.getText().toString())) {
+                edt_observation.setError(context.getString(R.string.error_all_field_required));
+            } else {
+                PatientProfileActivity.getPatientProfileActivity().pb_history.setVisibility(View.VISIBLE);
+                ;
+                LabFile labFile = new LabFile();
+                labFile.setRecordReferenceId(recordReferenceId);
+                labFile.setObservation(edt_observation.getText().toString());
+                labFile.setLabCategory(labCategoryEnum);
+                MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(updateObservationPresenter);
+                medicalHistoryApiCalls.updateObservation(BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(), labFile);
+                btn_update.setClickable(false);
                 mAlertDialog.dismiss();
             }
         });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 }

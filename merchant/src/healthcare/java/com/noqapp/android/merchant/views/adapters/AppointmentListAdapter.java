@@ -39,7 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentListAdapter.MyViewHolder> {
+public class AppointmentListAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<EventDay> dataSet;
@@ -54,13 +54,14 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_appointment_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         JsonSchedule jsonSchedule = (JsonSchedule) dataSet.get(position).getEventObject();
         holder.tv_title.setText(jsonSchedule.getJsonProfile().getName());
         holder.tv_gender_age.setText(new AppUtils().calculateAge(jsonSchedule.getJsonProfile().
@@ -71,14 +72,11 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                         : PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().
                                 getUserProfile().getCountryShortName(),
                         jsonSchedule.getJsonProfile().getPhoneRaw()));
-        holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
-                            formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(),
-                                    jsonSchedule.getJsonProfile().getPhoneRaw()));
-            }
+        holder.tv_customer_mobile.setOnClickListener(v -> {
+            if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.
+                        formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(),
+                                jsonSchedule.getJsonProfile().getPhoneRaw()));
         });
 
         try {
@@ -100,12 +98,7 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         holder.tv_appointment_status.setText(jsonSchedule.getAppointmentStatus().getDescription());
         holder.tv_chief_complaints.setText(TextUtils.isEmpty(jsonSchedule.getChiefComplain())
                 ? context.getString(R.string.unregister_user) : jsonSchedule.getChiefComplain());
-        holder.rl_edit_complaints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddComplaintsDialog(context, holder.tv_chief_complaints, jsonSchedule, position);
-            }
-        });
+        holder.rl_edit_complaints.setOnClickListener(v -> showAddComplaintsDialog(context, holder.tv_chief_complaints, jsonSchedule, position));
         holder.card_view.setCardBackgroundColor(Color.WHITE);
         holder.rl_accept.setBackgroundColor(Color.WHITE);
         holder.rl_reject.setBackgroundColor(Color.WHITE);
@@ -130,55 +123,44 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
                 holder.iv_reject.setBackground(ContextCompat.getDrawable(context, R.drawable.reject_not_allowed));
                 break;
         }
-        holder.rl_reject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    switch (jsonSchedule.getAppointmentStatus()) {
-                        case U:
-                            listener.appointmentReject(jsonSchedule, position);
-                            break;
-                        case A:
-                            listener.appointmentReject(jsonSchedule, position);
-                            break;
-                        case R:
-                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be modified");
-                            break;
-                        case S:
-                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be modified");
-                            break;
-                    }
+        holder.rl_reject.setOnClickListener(v -> {
+            if (null != listener) {
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                        listener.appointmentReject(jsonSchedule, position);
+                        break;
+                    case A:
+                        listener.appointmentReject(jsonSchedule, position);
+                        break;
+                    case R:
+                        new CustomToast().showToast(context, "Appointment already rejected. It cannot be modified");
+                        break;
+                    case S:
+                        new CustomToast().showToast(context, "Appointment already serviced. It cannot be modified");
+                        break;
                 }
             }
         });
-        holder.rl_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    switch (jsonSchedule.getAppointmentStatus()) {
-                        case U:
-                            listener.appointmentAccept(jsonSchedule, position);
-                            break;
-                        case A:
-                            new CustomToast().showToast(context, "Appointment already accepted.");
-                            break;
-                        case R:
-                            new CustomToast().showToast(context, "Appointment already rejected. It cannot be modified");
-                            break;
-                        case S:
-                            new CustomToast().showToast(context, "Appointment already serviced. It cannot be modified");
-                            break;
-                    }
+        holder.rl_accept.setOnClickListener(v -> {
+            if (null != listener) {
+                switch (jsonSchedule.getAppointmentStatus()) {
+                    case U:
+                        listener.appointmentAccept(jsonSchedule, position);
+                        break;
+                    case A:
+                        new CustomToast().showToast(context, "Appointment already accepted.");
+                        break;
+                    case R:
+                        new CustomToast().showToast(context, "Appointment already rejected. It cannot be modified");
+                        break;
+                    case S:
+                        new CustomToast().showToast(context, "Appointment already serviced. It cannot be modified");
+                        break;
                 }
             }
         });
 
-        holder.tv_appointment_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.appointmentReschedule(jsonSchedule,position);
-            }
-        });
+        holder.tv_appointment_time.setOnClickListener(v -> listener.appointmentReschedule(jsonSchedule,position));
     }
 
     @Override
@@ -250,22 +232,17 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<AppointmentList
         actv_chief_complaints.setAdapter(adapter1);
         actv_chief_complaints.setThreshold(1);
         actv_chief_complaints.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
-        // AppUtils.setAutoCompleteText(actv_chief_complaints, textView.getText().toString().trim());
         Button btnPositive = dialog.findViewById(R.id.btnPositive);
         Button btnNegative = dialog.findViewById(R.id.btnNegative);
-        btnPositive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actv_chief_complaints.setError(null);
-                if (actv_chief_complaints.getText().toString().equals("")) {
-                    actv_chief_complaints.setError("Cheif complaints can not be empty");
-                } else {
-                    new AppUtils().hideKeyBoard((Activity) mContext);
-                    //textView.setText(actv_chief_complaints.getText().toString());
-                    jsonSchedule.setChiefComplain(actv_chief_complaints.getText().toString());
-                    listener.appointmentEdit(jsonSchedule, position);
-                    dialog.dismiss();
-                }
+        btnPositive.setOnClickListener(v -> {
+            actv_chief_complaints.setError(null);
+            if (actv_chief_complaints.getText().toString().equals("")) {
+                actv_chief_complaints.setError("Cheif complaints can not be empty");
+            } else {
+                new AppUtils().hideKeyBoard((Activity) mContext);
+                jsonSchedule.setChiefComplain(actv_chief_complaints.getText().toString());
+                listener.appointmentEdit(jsonSchedule, position);
+                dialog.dismiss();
             }
         });
         btnNegative.setOnClickListener(new View.OnClickListener() {

@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.MyViewHolder> {
+public class StaggeredGridAdapter extends RecyclerView.Adapter {
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
@@ -45,13 +45,14 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
         return new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, drawableSelect));

@@ -58,24 +58,20 @@ public class CustomExpandListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.tv_child);
         ImageView iv_delete = convertView.findViewById(R.id.iv_delete);
         tv_child.setText(childText.getShortName());
-        iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if(null != removeChild)
-                            removeChild.removeChildAtPos(childPosition, childText);
-                    }
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Delete from list", "Do you want to delete it from selected list?");
-
-            }
+        iv_delete.setOnClickListener(v -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if(null != removeChild)
+                        removeChild.removeChildAtPos(childPosition, childText);
+                }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Delete from list", "Do you want to delete it from selected list?");
         });
         return convertView;
     }
@@ -110,7 +106,6 @@ public class CustomExpandListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_group_item, null);
         }
-
         TextView lblListHeader = convertView
                 .findViewById(R.id.lblListHeader);
         TextView tv_child_count = convertView

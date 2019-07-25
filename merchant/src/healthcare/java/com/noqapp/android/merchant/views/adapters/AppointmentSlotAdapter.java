@@ -16,7 +16,7 @@ import com.noqapp.android.merchant.R;
 
 import java.util.List;
 
-public class AppointmentSlotAdapter extends RecyclerView.Adapter<AppointmentSlotAdapter.MyViewHolder> {
+public class AppointmentSlotAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<AppointmentSlot> dataSet;
     private Context context;
@@ -34,14 +34,15 @@ public class AppointmentSlotAdapter extends RecyclerView.Adapter<AppointmentSlot
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_appointment_date, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         AppointmentSlot item = dataSet.get(listPosition);
         holder.tv_time.setText(item.getTimeSlot());
         if (item.isBooked()) {

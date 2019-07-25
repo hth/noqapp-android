@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.MyViewHolder> {
+public class ImageUploadAdapter extends RecyclerView.Adapter {
     private final OnItemClickListener listener;
     private List<String> imageUrls;
     private Context context;
@@ -31,14 +31,15 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_item_upload_pic, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.iv_delete.setOnClickListener(v -> {
             if (null != listener) {
                 listener.imageDeleteClick(imageUrls.get(listPosition));

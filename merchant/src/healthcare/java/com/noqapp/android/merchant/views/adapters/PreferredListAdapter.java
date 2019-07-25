@@ -17,7 +17,7 @@ import com.noqapp.android.merchant.views.pojos.ParentCheckBoxObj;
 
 import java.util.List;
 
-public class PreferredListAdapter extends RecyclerView.Adapter<PreferredListAdapter.MyViewHolder> implements RadioRecyclerAdapter.UpdateGrid {
+public class PreferredListAdapter extends RecyclerView.Adapter implements RadioRecyclerAdapter.UpdateGrid {
 
     private Context context;
 
@@ -34,13 +34,14 @@ public class PreferredListAdapter extends RecyclerView.Adapter<PreferredListAdap
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_prefered_store, parent, false);
         return  new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.tv_title.setText(parentCheckBoxObjs.get(position).getJsonTopic().getDisplayName());
         holder.cardview.setCardBackgroundColor(Color.TRANSPARENT);
 

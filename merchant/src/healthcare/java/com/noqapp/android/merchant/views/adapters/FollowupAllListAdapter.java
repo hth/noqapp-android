@@ -19,7 +19,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 import java.util.List;
 
-public class FollowupAllListAdapter extends RecyclerView.Adapter<FollowupAllListAdapter.MyViewHolder> {
+public class FollowupAllListAdapter extends RecyclerView.Adapter {
     private final Context context;
     private List<JsonQueuedPerson> dataSet;
     private boolean visibility;
@@ -31,25 +31,23 @@ public class FollowupAllListAdapter extends RecyclerView.Adapter<FollowupAllList
     }
 
     @Override
-    public FollowupAllListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_followup_list_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final FollowupAllListAdapter.MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
         holder.tv_customer_name.setText(TextUtils.isEmpty(jsonQueuedPerson.getCustomerName()) ? context.getString(R.string.unregister_user) : jsonQueuedPerson.getCustomerName());
         final String phoneNo = jsonQueuedPerson.getCustomerPhone();
         holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                 PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
         if (visibility) {
-            holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
-                }
+            holder.tv_customer_mobile.setOnClickListener(v -> {
+                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                    new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
             holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));

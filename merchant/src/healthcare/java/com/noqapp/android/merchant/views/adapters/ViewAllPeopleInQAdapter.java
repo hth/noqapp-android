@@ -28,7 +28,7 @@ import com.noqapp.android.merchant.views.activities.OrderDetailActivity;
 
 import java.util.List;
 
-public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleInQAdapter.MyViewHolder> {
+public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<JsonQueuedPerson> dataSet;
@@ -42,24 +42,17 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         final JsonQueuedPerson jsonQueuedPerson = dataSet.get(listPosition);
         holder.tv_sequence_number.setText(String.valueOf(jsonQueuedPerson.getToken()));
         holder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
-        switch (jsonQueuedPerson.getQueueUserState()) {
-            case A:
-                //TODO(show) abort state or other states
-                break;
-            case S:
-            default:
-
-        }
         final JsonPurchaseOrder jsonPurchaseOrder = jsonQueuedPerson.getJsonPurchaseOrder();
         if (null != jsonPurchaseOrder) {
             holder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + jsonPurchaseOrder.getPaymentStatus().getDescription()));
@@ -79,12 +72,9 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
                 holder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                         PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             }
-            holder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                        new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
-                }
+            holder.tv_customer_mobile.setOnClickListener(v -> {
+                if (!holder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                    new AppUtils().makeCall((Activity) context, PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
             holder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
@@ -93,22 +83,16 @@ public class ViewAllPeopleInQAdapter extends RecyclerView.Adapter<ViewAllPeopleI
         holder.rl_sequence_new_time.setBackgroundColor(Color.parseColor("#e07e3d"));
         holder.tv_sequence_number.setTextColor(Color.WHITE);
         holder.tv_join_timing.setTextColor(Color.WHITE);
-        holder.tv_order_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(context, OrderDetailActivity.class);
-                in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
-                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
-                in.putExtra(IBConstant.KEY_IS_HISTORY, true);
-                ((Activity) context).startActivity(in);
-            }
+        holder.tv_order_data.setOnClickListener(v -> {
+            Intent in = new Intent(context, OrderDetailActivity.class);
+            in.putExtra("jsonQueuedPerson", jsonQueuedPerson);
+            in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
+            in.putExtra(IBConstant.KEY_IS_HISTORY, true);
+            ((Activity) context).startActivity(in);
         });
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.currentItemClick(listPosition);
-                }
+        holder.card_view.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.currentItemClick(listPosition);
             }
         });
     }
