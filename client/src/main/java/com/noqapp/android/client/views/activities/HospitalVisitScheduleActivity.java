@@ -1,19 +1,5 @@
 package com.noqapp.android.client.views.activities;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.UserMedicalProfileApiCalls;
 import com.noqapp.android.client.presenter.beans.body.MedicalProfile;
@@ -27,15 +13,27 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
+
+import com.google.android.material.tabs.TabLayout;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HospitalVisitScheduleActivity extends BaseActivity implements
-        HospitalVisitSchedulePresenter {
+public class HospitalVisitScheduleActivity extends BaseActivity implements HospitalVisitSchedulePresenter {
     private RelativeLayout rl_empty;
     private LinearLayout ll_data;
     private TabLayout tabLayout;
@@ -61,7 +59,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         if (NetworkUtils.isConnectingToInternet(this)) {
             if (UserUtils.isLogin()) {
                 userMedicalProfileApiCalls.hospitalVisitSchedule(UserUtils.getEmail(), UserUtils.getAuth(), medicalProfile);
-                setProgressMessage("fetching immunization history...");
+                setProgressMessage("Fetching immunization history...");
                 showProgress();
             } else {
                 new CustomToast().showToast(this, "Please login to see the details");
@@ -70,8 +68,6 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
             ShowAlertInformation.showNetworkDialog(this);
         }
     }
-
-
 
     @Override
     public void hospitalVisitScheduleResponse(JsonHospitalVisitScheduleList jsonHospitalVisitScheduleList) {
@@ -82,10 +78,13 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         List<JsonHospitalVisitSchedule> immunizationList = new ArrayList<>();
         List<JsonHospitalVisitSchedule> vaccinationList = new ArrayList<>();
         for (int i = 0; i < jsonHospitalVisitSchedules.size(); i++) {
-            if (jsonHospitalVisitSchedules.get(i).getHospitalVisitFor() == HospitalVisitForEnum.IMU) {
-                immunizationList.add(jsonHospitalVisitSchedules.get(i));
-            } else {
-                vaccinationList.add(jsonHospitalVisitSchedules.get(i));
+            switch (jsonHospitalVisitSchedules.get(i).getHospitalVisitFor()) {
+                case IMU:
+                    immunizationList.add(jsonHospitalVisitSchedules.get(i));
+                    break;
+                case VAC:
+                    vaccinationList.add(jsonHospitalVisitSchedules.get(i));
+                    break;
             }
         }
         HospitalVisitScheduleFragment hvsfVaccine = new HospitalVisitScheduleFragment();
@@ -98,16 +97,18 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         b.putSerializable("data", (Serializable) immunizationList);
         hvsfImmune.setArguments(b);
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
-        if (vaccinationList.size() > 0)
+        if (vaccinationList.size() > 0) {
             adapter.addFragment(hvsfVaccine, "Vaccination");
-        if (immunizationList.size() > 0)
+        }
+        if (immunizationList.size() > 0) {
             adapter.addFragment(hvsfImmune, "Immunization");
+        }
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
         btn_print_pdf.setOnClickListener(v -> {
             if (isExternalStoragePermissionAllowed()) {
-                JsonProfile jsonProfile =(JsonProfile) getIntent().getSerializableExtra("jsonProfile");
+                JsonProfile jsonProfile = (JsonProfile) getIntent().getSerializableExtra("jsonProfile");
                 PdfHospitalVisitGenerator pdfGenerator = new PdfHospitalVisitGenerator(HospitalVisitScheduleActivity.this);
                 pdfGenerator.createPdf(immunizationList, jsonProfile);
             } else {
@@ -129,14 +130,14 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         // do nothing
     }
 
-
     private boolean isExternalStoragePermissionAllowed() {
         //Getting the permission status
         int result_read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         int result_write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         //If permission is granted returning true
-        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED)
+        if (result_read == PackageManager.PERMISSION_GRANTED && result_write == PackageManager.PERMISSION_GRANTED) {
             return true;
+        }
         //If permission is not granted returning false
         return false;
     }
