@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MasterLabApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonMasterLab;
@@ -160,66 +159,42 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         actv_search.setAdapter(testListAutoComplete);
     }
 
-    private HealthCareServiceEnum getHealthCareEnum(int pos) {
-        switch (pos) {
-            case 0:
-                return HealthCareServiceEnum.MRI;
-            case 1:
-                return HealthCareServiceEnum.SCAN;
-            case 2:
-                return HealthCareServiceEnum.SONO;
-            case 3:
-                return HealthCareServiceEnum.XRAY;
-            case 4:
-                return HealthCareServiceEnum.PATH;
-            case 5:
-                return HealthCareServiceEnum.SPEC;
-            default:
-                return HealthCareServiceEnum.PATH;
-        }
-    }
-
     private ArrayList<DataObj> getPreviousList(int pos) {
         if (null == PreferenceActivity.getPreferenceActivity().preferenceObjects)
             return null;
         else {
+            ArrayList<DataObj> temp;
             switch (pos) {
                 case 0: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMriList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getMriList();
+                    break;
                 }
                 case 1: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getScanList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getScanList();
+                    break;
                 }
                 case 2: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getSonoList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getSonoList();
+                    break;
                 }
                 case 3: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getXrayList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getXrayList();
+                    break;
                 }
                 case 4: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
+                    break;
                 }
                 case 5: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getSpecList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getSpecList();
+                    break;
                 }
                 default: {
-                    ArrayList<DataObj> temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
-                    sortListData(temp);
-                    return temp;
+                    temp = PreferenceActivity.getPreferenceActivity().preferenceObjects.getPathologyList();
                 }
             }
+            sortListData(temp);
+            return temp;
         }
     }
 

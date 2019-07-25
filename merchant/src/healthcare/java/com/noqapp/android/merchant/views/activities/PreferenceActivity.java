@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,7 +71,8 @@ public class PreferenceActivity extends BaseActivity implements
     private ArrayList<JsonMasterLab> masterDataXray = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterDataPath = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterDataSpec = new ArrayList<>();
-    private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
+    private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment,
+            preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
     private MedicineFragment medicineFragment;
     public PreferenceObjects preferenceObjects;
 

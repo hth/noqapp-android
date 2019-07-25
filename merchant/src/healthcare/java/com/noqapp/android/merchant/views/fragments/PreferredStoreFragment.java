@@ -27,9 +27,6 @@ import java.util.List;
 
 
 public class PreferredStoreFragment extends BaseFragment {
-
-    private RecyclerView rcv_one, rcv_two;
-    private TextView tv_label_one, tv_label_two, tv_sublabel_one, tv_sublabel_two;
     private int pos = -1;
     private PreferredListAdapter preferredListAdapter1 = null;
     private PreferredListAdapter preferredListAdapter2 = null;
@@ -39,12 +36,12 @@ public class PreferredStoreFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_preferred_store, container, false);
-        rcv_one = v.findViewById(R.id.rcv_one);
-        rcv_two = v.findViewById(R.id.rcv_two);
-        tv_label_one = v.findViewById(R.id.tv_label_one);
-        tv_label_two = v.findViewById(R.id.tv_label_two);
-        tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
-        tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
+        RecyclerView rcv_one = v.findViewById(R.id.rcv_one);
+        RecyclerView rcv_two = v.findViewById(R.id.rcv_two);
+        TextView tv_label_one = v.findViewById(R.id.tv_label_one);
+        TextView tv_label_two = v.findViewById(R.id.tv_label_two);
+        TextView tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
+        TextView tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
         rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         pos = getArguments().getInt("type");
@@ -82,26 +79,6 @@ public class PreferredStoreFragment extends BaseFragment {
         rcv_two.setAdapter(preferredListAdapter2);
         return v;
     }
-
-    private HealthCareServiceEnum getHealthCareEnum(int pos) {
-        switch (pos) {
-            case 0:
-                return HealthCareServiceEnum.MRI;
-            case 1:
-                return HealthCareServiceEnum.SCAN;
-            case 2:
-                return HealthCareServiceEnum.SONO;
-            case 3:
-                return HealthCareServiceEnum.XRAY;
-            case 4:
-                return HealthCareServiceEnum.PATH;
-            case 5:
-                return HealthCareServiceEnum.SPEC;
-            default:
-                return HealthCareServiceEnum.PATH;
-        }
-    }
-
 
     private List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
 
