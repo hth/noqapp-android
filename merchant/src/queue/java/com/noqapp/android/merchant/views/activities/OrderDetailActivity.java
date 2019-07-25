@@ -129,13 +129,10 @@ public class OrderDetailActivity
         actionbarBack = findViewById(R.id.actionbarBack);
         jsonPurchaseOrder = (JsonPurchaseOrder) getIntent().getSerializableExtra("jsonPurchaseOrder");
         checkProductWithZeroPrice();
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //onBackPressed();
-                // updateWholeList = null;
-                finish();
-            }
+        actionbarBack.setOnClickListener(v -> {
+            //onBackPressed();
+            // updateWholeList = null;
+            finish();
         });
 
         tv_toolbar_title.setText(getString(R.string.order_details));
@@ -162,51 +159,45 @@ public class OrderDetailActivity
         btn_remove_discount = findViewById(R.id.btn_remove_discount);
         tv_discount_value = findViewById(R.id.tv_discount_value);
         ll_partial = findViewById(R.id.ll_partial);
-        btn_discount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
-                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
-            }
+        btn_discount.setOnClickListener(v -> {
+            Intent in = new Intent(OrderDetailActivity.this, CouponActivity.class);
+            in.putExtra(IBConstant.KEY_CODE_QR, jsonPurchaseOrder.getCodeQR());
+            startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
         });
-        btn_remove_discount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, true);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            showProgress();
-                            setProgressMessage("Removing discount...");
-                            // progressDialog.setCancelable(false);
-                            // progressDialog.setCanceledOnTouchOutside(false);
-                            CouponApiCalls couponApiCalls = new CouponApiCalls();
-                            couponApiCalls.setCouponApplyRemovePresenter(OrderDetailActivity.this);
+        btn_remove_discount.setOnClickListener(v -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(OrderDetailActivity.this, true);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        showProgress();
+                        setProgressMessage("Removing discount...");
+                        // progressDialog.setCancelable(false);
+                        // progressDialog.setCanceledOnTouchOutside(false);
+                        CouponApiCalls couponApiCalls = new CouponApiCalls();
+                        couponApiCalls.setCouponApplyRemovePresenter(OrderDetailActivity.this);
 
-                            CouponOnOrder couponOnOrder = new CouponOnOrder()
-                                    .setQueueUserId(jsonPurchaseOrder.getQueueUserId())
-                                    .setCouponId(jsonPurchaseOrder.getCouponId())
-                                    .setCodeQR(jsonPurchaseOrder.getCodeQR())
-                                    .setTransactionId(jsonPurchaseOrder.getTransactionId());
+                        CouponOnOrder couponOnOrder = new CouponOnOrder()
+                                .setQueueUserId(jsonPurchaseOrder.getQueueUserId())
+                                .setCouponId(jsonPurchaseOrder.getCouponId())
+                                .setCodeQR(jsonPurchaseOrder.getCodeQR())
+                                .setTransactionId(jsonPurchaseOrder.getTransactionId());
 
-                            couponApiCalls.remove(BaseLaunchActivity.getDeviceID(),
-                                    LaunchActivity.getLaunchActivity().getEmail(),
-                                    LaunchActivity.getLaunchActivity().getAuth(),
-                                    couponOnOrder);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
-                        }
+                        couponApiCalls.remove(BaseLaunchActivity.getDeviceID(),
+                                LaunchActivity.getLaunchActivity().getEmail(),
+                                LaunchActivity.getLaunchActivity().getAuth(),
+                                couponOnOrder);
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                     }
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Remove coupon", "Do you want to remove the coupon?");
         });
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, payment_modes);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -249,37 +240,34 @@ public class OrderDetailActivity
             final EditText edt_random = dialog.findViewById(R.id.edt_random);
             tv_random.setText(AppUtils.randomStringGenerator(3).toUpperCase());
             final Button btn_update = dialog.findViewById(R.id.btn_update);
-            btn_update.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    edt_random.setError(null);
-                    new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
-                    if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
-                        edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
-                        new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
-                    } else {
-                        // do process
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            showProgress();
-                            setProgressMessage("Starting payment refund...");
-                            setProgressCancel(false);
-                            OrderServed orderServed = new OrderServed();
-                            orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
-                            orderServed.setServedNumber(jsonPurchaseOrder.getToken());
-                            orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
-                            orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
-                            orderServed.setQueueStatus(QueueStatusEnum.N);
-                            orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
-                            PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
-                            purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
-                            purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+            btn_update.setOnClickListener(v12 -> {
+                edt_random.setError(null);
+                new AppUtils().hideKeyBoard((Activity) OrderDetailActivity.this);
+                if (!edt_random.getText().toString().equals(tv_random.getText().toString())) {
+                    edt_random.setError(OrderDetailActivity.this.getString(R.string.error_invalid_captcha));
+                    new CustomToast().showToast(OrderDetailActivity.this, getString(R.string.error_invalid_captcha));
+                } else {
+                    // do process
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        showProgress();
+                        setProgressMessage("Starting payment refund...");
+                        setProgressCancel(false);
+                        OrderServed orderServed = new OrderServed();
+                        orderServed.setCodeQR(jsonPurchaseOrder.getCodeQR());
+                        orderServed.setServedNumber(jsonPurchaseOrder.getToken());
+                        orderServed.setQueueUserId(jsonPurchaseOrder.getQueueUserId());
+                        orderServed.setTransactionId(jsonPurchaseOrder.getTransactionId());
+                        orderServed.setQueueStatus(QueueStatusEnum.N);
+                        orderServed.setPurchaseOrderState(jsonPurchaseOrder.getPresentOrderState());
+                        PurchaseOrderApiCalls purchaseOrderApiCalls = new PurchaseOrderApiCalls();
+                        purchaseOrderApiCalls.setOrderProcessedPresenter(OrderDetailActivity.this);
+                        purchaseOrderApiCalls.cancel(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
 
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
-                        }
-                        btn_update.setClickable(false);
-                        dialog.dismiss();
+                    } else {
+                        ShowAlertInformation.showNetworkDialog(OrderDetailActivity.this);
                     }
+                    btn_update.setClickable(false);
+                    dialog.dismiss();
                 }
             });
 

@@ -22,7 +22,8 @@ public class ImageUploadAdapter extends RecyclerView.Adapter {
     private Context context;
     private String recordReferenceId;
 
-    public ImageUploadAdapter(List<String> data, Context context, String recordReferenceId, OnItemClickListener listener) {
+    public ImageUploadAdapter(List<String> data, Context context, String recordReferenceId,
+                              OnItemClickListener listener) {
         this.imageUrls = data;
         this.listener = listener;
         this.context = context;
@@ -31,8 +32,7 @@ public class ImageUploadAdapter extends RecyclerView.Adapter {
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                           int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_item_upload_pic, parent, false);
         return new MyViewHolder(view);
@@ -41,20 +41,14 @@ public class ImageUploadAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
         MyViewHolder holder = (MyViewHolder) viewHolder;
-        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.imageDeleteClick(imageUrls.get(listPosition));
-                }
+        holder.iv_delete.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.imageDeleteClick(imageUrls.get(listPosition));
             }
         });
-        holder.iv_inlarge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.imageEnlargeClick(imageUrls.get(listPosition));
-                }
+        holder.iv_inlarge.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.imageEnlargeClick(imageUrls.get(listPosition));
             }
         });
 

@@ -73,8 +73,7 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                      int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rcv_people_order_queue_item, parent, false);
         return new MyViewHolder(view);
@@ -175,15 +174,12 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         } else {
             recordHolder.tv_order_data.setVisibility(View.GONE);
         }
-        recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,false);
-                } else {
-                    new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
-                    peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,true);
-                }
+        recordHolder.tv_order_data.setOnClickListener(v -> {
+            if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,false);
+            } else {
+                new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
+                peopleInQOrderAdapterClick.viewOrderClick(jsonPurchaseOrder,true);
             }
         });
 
@@ -206,38 +202,27 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
             recordHolder.tv_order_accept.setVisibility(View.GONE);
         }
 
-        recordHolder.tv_order_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                peopleInQOrderAdapterClick.orderDoneClick(position);
-            }
+        recordHolder.tv_order_done.setOnClickListener(v -> peopleInQOrderAdapterClick.orderDoneClick(position));
+        recordHolder.tv_upload_document.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DocumentUploadActivity.class);
+            intent.putExtra("transactionId", jsonPurchaseOrder.getTransactionId());
+            intent.putExtra("qCodeQR", qCodeQR);
+            context.startActivity(intent);
         });
-        recordHolder.tv_upload_document.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DocumentUploadActivity.class);
-                intent.putExtra("transactionId", jsonPurchaseOrder.getTransactionId());
-                intent.putExtra("qCodeQR", qCodeQR);
-                context.startActivity(intent);
-            }
-        });
-        recordHolder.tv_order_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        peopleInQOrderAdapterClick.orderCancelClick(position);
-                    }
+        recordHolder.tv_order_cancel.setOnClickListener(v -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    peopleInQOrderAdapterClick.orderCancelClick(position);
+                }
 
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
-            }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Cancel Order", "Do you want to cancel the order?");
         });
 
         switch (jsonPurchaseOrder.getBusinessType()) {
@@ -259,26 +244,13 @@ public class PeopleInQOrderAdapter extends RecyclerView.Adapter {
         } else {
             recordHolder.tv_order_prepared.setVisibility(View.GONE);
         }
-        recordHolder.tv_order_prepared.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                peopleInQOrderAdapterClick.orderDoneClick(position);
-            }
-        });
-        recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
-            }
+        recordHolder.tv_order_prepared.setOnClickListener(v -> peopleInQOrderAdapterClick.orderDoneClick(position));
+        recordHolder.tv_customer_mobile.setOnClickListener(v -> {
+            if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
 
-        recordHolder.tv_order_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                peopleInQOrderAdapterClick.orderAcceptClick(position);
-            }
-        });
+        recordHolder.tv_order_accept.setOnClickListener(v -> peopleInQOrderAdapterClick.orderAcceptClick(position));
 
         if (glowPosition > 0 && glowPosition - 1 == position && jsonPurchaseOrder.getPresentOrderState() == PurchaseOrderStateEnum.OP) {
             Animation startAnimation = AnimationUtils.loadAnimation(context, R.anim.show_anim);

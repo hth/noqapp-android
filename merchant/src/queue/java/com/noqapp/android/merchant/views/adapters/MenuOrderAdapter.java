@@ -26,7 +26,9 @@ public class MenuOrderAdapter extends BaseAdapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
-    public MenuOrderAdapter(Context context, List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate, String currencySymbol) {
+    public MenuOrderAdapter(Context context, List<StoreCartItem> menuItemsList,
+                            StoreMenuActivity storeMenuActivity, CartOrderUpdate
+                                    cartOrderUpdate, String currencySymbol) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;
@@ -90,43 +92,37 @@ public class MenuOrderAdapter extends BaseAdapter {
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
-        childViewHolder.btn_increase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String val = childViewHolder.tv_value.getText().toString();
-                int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
-                childViewHolder.tv_value.setText("" + number);
-                menuItemsList
-                        .get(position).setChildInput(number);
-                if (number <= 0) {
-                    storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
-                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
-                } else {
-                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                            .get(position));
-                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
-                }
-                notifyDataSetChanged();
+        childViewHolder.btn_increase.setOnClickListener(v -> {
+            String val = childViewHolder.tv_value.getText().toString();
+            int number = 1 + (TextUtils.isEmpty(val) ? 0 : Integer.parseInt(val));
+            childViewHolder.tv_value.setText("" + number);
+            menuItemsList
+                    .get(position).setChildInput(number);
+            if (number <= 0) {
+                storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
+                cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+            } else {
+                storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
+                        .get(position));
+                cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             }
+            notifyDataSetChanged();
         });
-        childViewHolder.btn_decrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String val = childViewHolder.tv_value.getText().toString();
-                int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
-                childViewHolder.tv_value.setText("" + number);
-                menuItemsList
-                        .get(position).setChildInput(number);
-                if (number <= 0) {
-                    storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
-                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
-                } else {
-                    storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                            .get(position));
-                    cartOrderUpdate.updateCartOrderInfo(showCartAmount());
-                }
-                notifyDataSetChanged();
+        childViewHolder.btn_decrease.setOnClickListener(v -> {
+            String val = childViewHolder.tv_value.getText().toString();
+            int number = (TextUtils.isEmpty(val) ? 0 : (val.equals("0") ? 0 : Integer.parseInt(val) - 1));
+            childViewHolder.tv_value.setText("" + number);
+            menuItemsList
+                    .get(position).setChildInput(number);
+            if (number <= 0) {
+                storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
+                cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+            } else {
+                storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
+                        .get(position));
+                cartOrderUpdate.updateCartOrderInfo(showCartAmount());
             }
+            notifyDataSetChanged();
         });
 
         return convertView;

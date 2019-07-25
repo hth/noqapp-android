@@ -87,12 +87,7 @@ public class BaseManagerProfileActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_manager_profile);
         actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         tv_profile_name = findViewById(R.id.tv_profile_name);
         merchantProfileApiCalls = new MerchantProfileApiCalls();
         iv_profile = findViewById(R.id.iv_profile);

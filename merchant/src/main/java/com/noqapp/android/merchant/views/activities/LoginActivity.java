@@ -85,12 +85,7 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
         setContentView(R.layout.activity_login);
 
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Verify Mobile Number");
         edt_phoneNo = findViewById(R.id.edt_phone);
@@ -106,25 +101,19 @@ public class LoginActivity extends BaseActivity implements ProfilePresenter {
             }
         });
         tv_detail = findViewById(R.id.tv_detail);
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                action_Login();
+        btn_login.setOnClickListener(view -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            action_Login();
         });
-        btn_verify_phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                btnVerifyClick();
+        btn_verify_phone.setOnClickListener(view -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            btnVerifyClick();
         });
         setProgressMessage("Login in progress");
         mAuth = FirebaseAuth.getInstance();

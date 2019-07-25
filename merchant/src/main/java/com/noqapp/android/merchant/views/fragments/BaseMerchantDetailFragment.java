@@ -490,140 +490,51 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                 Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
         }
 
-        btn_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+        btn_next.setOnClickListener(v -> {
+            mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+            if (tv_counter_name.getText().toString().trim().equals("")) {
+                new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+            } else {
+                chronometer.stop();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    showProgress();
+                    setProgressMessage("Calling next person in Q...");
+                    Served served = new Served();
+                    served.setCodeQR(jsonTopic.getCodeQR());
+                    served.setQueueStatus(jsonTopic.getQueueStatus());
+                    served.setQueueUserState(QueueUserStateEnum.S);
+                    served.setServedNumber(jsonTopic.getServingNumber());
+                    served.setGoTo(tv_counter_name.getText().toString());
+                    setPresenter();
+                    manageQueueApiCalls.served(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            served);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(context);
+                }
+            }
+        });
+        btn_skip.setOnClickListener(v -> {
+            mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+            if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
                 if (tv_counter_name.getText().toString().trim().equals("")) {
                     new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                 } else {
-                    chronometer.stop();
-                    chronometer.setBase(SystemClock.elapsedRealtime());
-                    chronometer.start();
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        showProgress();
-                        setProgressMessage("Calling next person in Q...");
-                        Served served = new Served();
-                        served.setCodeQR(jsonTopic.getCodeQR());
-                        served.setQueueStatus(jsonTopic.getQueueStatus());
-                        served.setQueueUserState(QueueUserStateEnum.S);
-                        served.setServedNumber(jsonTopic.getServingNumber());
-                        served.setGoTo(tv_counter_name.getText().toString());
-                        setPresenter();
-                        manageQueueApiCalls.served(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                served);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(context);
-                    }
-                }
-            }
-        });
-        btn_skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                if (queueStatus != QueueStatusEnum.S && queueStatus != QueueStatusEnum.D) {
-                    if (tv_counter_name.getText().toString().trim().equals("")) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
-                    } else {
-                        ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                            @Override
-                            public void btnPositiveClick() {
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    setProgressMessage("Skip current person in Q...");
-                                    showProgress();
-                                    Served served = new Served();
-                                    served.setCodeQR(jsonTopic.getCodeQR());
-                                    served.setQueueStatus(jsonTopic.getQueueStatus());
-                                    served.setQueueUserState(QueueUserStateEnum.N);
-                                    served.setServedNumber(jsonTopic.getServingNumber());
-                                    served.setGoTo(tv_counter_name.getText().toString());
-                                    setPresenter();
-                                    manageQueueApiCalls.served(
-                                            BaseLaunchActivity.getDeviceID(),
-                                            LaunchActivity.getLaunchActivity().getEmail(),
-                                            LaunchActivity.getLaunchActivity().getAuth(),
-                                            served);
-                                    chronometer.stop();
-                                    chronometer.setBase(SystemClock.elapsedRealtime());
-                                } else {
-                                    ShowAlertInformation.showNetworkDialog(context);
-                                }
-                            }
-
-                            @Override
-                            public void btnNegativeClick() {
-                                //Do nothing
-                            }
-                        });
-                        showDialog.displayDialog("Alert", "Do you really want to skip the user. Please confirm");
-                    }
-                } else if (queueStatus == QueueStatusEnum.S) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_start));
-                } else if (queueStatus == QueueStatusEnum.D) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_done));
-                }
-            }
-        });
-        btn_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                if (jsonTopic.getToken() == 0) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_empty));
-                } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_empty_wait));
-                } else if (queueStatus == QueueStatusEnum.D) {
-                    new CustomToast().showToast(context, context.getString(R.string.error_done_next));
-                } else {
-                    if (tv_counter_name.getText().toString().trim().equals("")) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
-                    } else {
-                        if (tv_start.getText().equals(context.getString(R.string.pause))) {
-                            ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                @Override
-                                public void btnPositiveClick() {
-                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                        setProgressMessage("Pause the Queue...");
-                                        showProgress();
-                                        Served served = new Served();
-                                        served.setCodeQR(jsonTopic.getCodeQR());
-                                        served.setQueueUserState(QueueUserStateEnum.S);
-                                        /* send QueueStatusEnum P for pause state */
-                                        served.setQueueStatus(QueueStatusEnum.P);
-                                        served.setServedNumber(jsonTopic.getServingNumber());
-                                        served.setGoTo(tv_counter_name.getText().toString());
-                                        setPresenter();
-                                        manageQueueApiCalls.served(
-                                                BaseLaunchActivity.getDeviceID(),
-                                                LaunchActivity.getLaunchActivity().getEmail(),
-                                                LaunchActivity.getLaunchActivity().getAuth(),
-                                                served);
-                                    } else {
-                                        ShowAlertInformation.showNetworkDialog(context);
-                                    }
-                                }
-
-                                @Override
-                                public void btnNegativeClick() {
-                                    //Do nothing
-                                }
-                            });
-                            showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
-                        } else {
+                    ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                        @Override
+                        public void btnPositiveClick() {
                             if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                setProgressMessage("Starting Queue...");
+                                setProgressMessage("Skip current person in Q...");
                                 showProgress();
                                 Served served = new Served();
                                 served.setCodeQR(jsonTopic.getCodeQR());
-                                served.setQueueUserState(QueueUserStateEnum.S);
-                                /* send QueueStatusEnum as it is for other than pause state */
                                 served.setQueueStatus(jsonTopic.getQueueStatus());
+                                served.setQueueUserState(QueueUserStateEnum.N);
                                 served.setServedNumber(jsonTopic.getServingNumber());
                                 served.setGoTo(tv_counter_name.getText().toString());
                                 setPresenter();
@@ -634,10 +545,90 @@ public abstract class BaseMerchantDetailFragment extends BaseFragment implements
                                         served);
                                 chronometer.stop();
                                 chronometer.setBase(SystemClock.elapsedRealtime());
-                                chronometer.start();
                             } else {
                                 ShowAlertInformation.showNetworkDialog(context);
                             }
+                        }
+
+                        @Override
+                        public void btnNegativeClick() {
+                            //Do nothing
+                        }
+                    });
+                    showDialog.displayDialog("Alert", "Do you really want to skip the user. Please confirm");
+                }
+            } else if (queueStatus == QueueStatusEnum.S) {
+                new CustomToast().showToast(context, context.getString(R.string.error_start));
+            } else if (queueStatus == QueueStatusEnum.D) {
+                new CustomToast().showToast(context, context.getString(R.string.error_done));
+            }
+        });
+        btn_start.setOnClickListener(v -> {
+            mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+            if (jsonTopic.getToken() == 0) {
+                new CustomToast().showToast(context, context.getString(R.string.error_empty));
+            } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
+                new CustomToast().showToast(context, context.getString(R.string.error_empty_wait));
+            } else if (queueStatus == QueueStatusEnum.D) {
+                new CustomToast().showToast(context, context.getString(R.string.error_done_next));
+            } else {
+                if (tv_counter_name.getText().toString().trim().equals("")) {
+                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                } else {
+                    if (tv_start.getText().equals(context.getString(R.string.pause))) {
+                        ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                            @Override
+                            public void btnPositiveClick() {
+                                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                    setProgressMessage("Pause the Queue...");
+                                    showProgress();
+                                    Served served = new Served();
+                                    served.setCodeQR(jsonTopic.getCodeQR());
+                                    served.setQueueUserState(QueueUserStateEnum.S);
+                                    /* send QueueStatusEnum P for pause state */
+                                    served.setQueueStatus(QueueStatusEnum.P);
+                                    served.setServedNumber(jsonTopic.getServingNumber());
+                                    served.setGoTo(tv_counter_name.getText().toString());
+                                    setPresenter();
+                                    manageQueueApiCalls.served(
+                                            BaseLaunchActivity.getDeviceID(),
+                                            LaunchActivity.getLaunchActivity().getEmail(),
+                                            LaunchActivity.getLaunchActivity().getAuth(),
+                                            served);
+                                } else {
+                                    ShowAlertInformation.showNetworkDialog(context);
+                                }
+                            }
+
+                            @Override
+                            public void btnNegativeClick() {
+                                //Do nothing
+                            }
+                        });
+                        showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
+                    } else {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            setProgressMessage("Starting Queue...");
+                            showProgress();
+                            Served served = new Served();
+                            served.setCodeQR(jsonTopic.getCodeQR());
+                            served.setQueueUserState(QueueUserStateEnum.S);
+                            /* send QueueStatusEnum as it is for other than pause state */
+                            served.setQueueStatus(jsonTopic.getQueueStatus());
+                            served.setServedNumber(jsonTopic.getServingNumber());
+                            served.setGoTo(tv_counter_name.getText().toString());
+                            setPresenter();
+                            manageQueueApiCalls.served(
+                                    BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    served);
+                            chronometer.stop();
+                            chronometer.setBase(SystemClock.elapsedRealtime());
+                            chronometer.start();
+                        } else {
+                            ShowAlertInformation.showNetworkDialog(context);
                         }
                     }
                 }

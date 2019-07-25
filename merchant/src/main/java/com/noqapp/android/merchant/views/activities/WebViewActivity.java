@@ -90,12 +90,7 @@ public class WebViewActivity extends BaseActivity {
             }
 
         });
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
     }
 
     private void webViewGoBack() {

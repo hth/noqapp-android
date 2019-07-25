@@ -96,19 +96,15 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
         tv_toolbar_title.setText("Menu");
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                if (null != updateWholeList) {
-                    updateWholeList.updateWholeList();
-                }
+        actionbarBack.setOnClickListener(v -> {
+            finish();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         });
         ExpandableListView expandableListView = findViewById(R.id.expandableListView);
         rcv_header = findViewById(R.id.rcv_header);
         tv_place_order = findViewById(R.id.tv_place_order);
-        //  jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
         codeQR = getIntent().getStringExtra("codeQR");
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -124,12 +120,7 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
         businessCustomerApiCalls.setFindCustomerPresenter(this);
         purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
 
-        tv_place_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCreateTokenDialogWithMobile(StoreMenuActivity.this, codeQR);
-            }
-        });
+        tv_place_order.setOnClickListener(v -> showCreateTokenDialogWithMobile(StoreMenuActivity.this, codeQR));
 
     }
 
@@ -206,16 +197,8 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
 
                 }
             });
-
         }
-
     }
-
-
-//    @Override
-//    public void updateCartInfo(int amountString) {
-//        updateCartOrderInfo(amountString);
-//    }
 
     @Override
     public void menuHeaderClick(int pos) {
@@ -290,58 +273,47 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
         btn_create_token.setText("Search Customer");
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                boolean isValid = true;
-                edt_mobile.setError(null);
-                edt_id.setError(null);
-                new AppUtils().hideKeyBoard(StoreMenuActivity.this);
-                int selectedId = rg_user_id.getCheckedRadioButtonId();
-                if (selectedId == R.id.rb_mobile) {
-                    if (TextUtils.isEmpty(edt_mobile.getText())) {
-                        edt_mobile.setError(getString(R.string.error_mobile_blank));
-                        isValid = false;
-                    }
+        btn_create_token.setOnClickListener(v -> {
+            boolean isValid = true;
+            edt_mobile.setError(null);
+            edt_id.setError(null);
+            new AppUtils().hideKeyBoard(StoreMenuActivity.this);
+            int selectedId = rg_user_id.getCheckedRadioButtonId();
+            if (selectedId == R.id.rb_mobile) {
+                if (TextUtils.isEmpty(edt_mobile.getText())) {
+                    edt_mobile.setError(getString(R.string.error_mobile_blank));
+                    isValid = false;
+                }
+            } else {
+                if (TextUtils.isEmpty(edt_id.getText())) {
+                    edt_id.setError(getString(R.string.error_customer_id));
+                    isValid = false;
+                }
+            }
+            if (isValid) {
+                String phone = "";
+                String cid = "";
+                if (rb_mobile.isChecked()) {
+                    edt_id.setText("");
+                    phone = "91" + edt_mobile.getText().toString();
                 } else {
-                    if (TextUtils.isEmpty(edt_id.getText())) {
-                        edt_id.setError(getString(R.string.error_customer_id));
-                        isValid = false;
-                    }
+                    cid = edt_id.getText().toString();
+                    edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
                 }
-                if (isValid) {
-                    String phone = "";
-                    String cid = "";
-                    if (rb_mobile.isChecked()) {
-                        edt_id.setText("");
-                        phone = "91" + edt_mobile.getText().toString();
-                    } else {
-                        cid = edt_id.getText().toString();
-                        edt_mobile.setText("");// set blank so that wrong phone no. not pass to login screen
-                    }
-                    showProgress();
-                    setProgressMessage("Searching user...");
-                    setProgressCancel(false);
-                    businessCustomerApiCalls.findCustomer(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                    btn_create_token.setClickable(false);
-                    // mAlertDialog.dismiss();
+                showProgress();
+                setProgressMessage("Searching user...");
+                setProgressCancel(false);
+                businessCustomerApiCalls.findCustomer(
+                        BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                btn_create_token.setClickable(false);
+                // mAlertDialog.dismiss();
 
-                }
             }
         });
-
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
@@ -374,38 +346,35 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
             //tv_select_patient.setVisibility(View.VISIBLE);
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
-            btn_create_order.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        setProgressMessage("Placing order....");
-                        showProgress();
-                        setProgressCancel(false);
-                        HashMap<String, StoreCartItem> getOrder = getOrders();
-                        List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
-                        int price = 0;
-                        for (StoreCartItem value : getOrder.values()) {
-                            ll.add(new JsonPurchaseOrderProduct()
-                                    .setProductId(value.getJsonStoreProduct().getProductId())
-                                    .setProductPrice(value.getFinalDiscountedPrice() * 100)
-                                    .setProductQuantity(value.getChildInput())
-                                    .setProductName(value.getJsonStoreProduct().getProductName()));
-                            price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
-                        }
-                        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
-                                .setCodeQR(codeQR)
-                                .setQueueUserId(jsonProfile.getQueueUserId())
-                                .setOrderPrice(String.valueOf(price));
-                        jsonPurchaseOrder.setPurchaseOrderProducts(ll);
-                        jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
-                        jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
-                        jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
-                        jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
-                        jsonPurchaseOrder.setAdditionalNote("");
-                        purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
+            btn_create_order.setOnClickListener(v -> {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    setProgressMessage("Placing order....");
+                    showProgress();
+                    setProgressCancel(false);
+                    HashMap<String, StoreCartItem> getOrder = getOrders();
+                    List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
+                    int price = 0;
+                    for (StoreCartItem value : getOrder.values()) {
+                        ll.add(new JsonPurchaseOrderProduct()
+                                .setProductId(value.getJsonStoreProduct().getProductId())
+                                .setProductPrice(value.getFinalDiscountedPrice() * 100)
+                                .setProductQuantity(value.getChildInput())
+                                .setProductName(value.getJsonStoreProduct().getProductName()));
+                        price += value.getChildInput() * value.getFinalDiscountedPrice() * 100;
                     }
+                    JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder()
+                            .setCodeQR(codeQR)
+                            .setQueueUserId(jsonProfile.getQueueUserId())
+                            .setOrderPrice(String.valueOf(price));
+                    jsonPurchaseOrder.setPurchaseOrderProducts(ll);
+                    jsonPurchaseOrder.setDeliveryAddress(jsonProfile.getAddress());
+                    jsonPurchaseOrder.setDeliveryMode(DeliveryModeEnum.TO);
+                    jsonPurchaseOrder.setPaymentMode(PaymentModeEnum.CA);
+                    jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
+                    jsonPurchaseOrder.setAdditionalNote("");
+                    purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(StoreMenuActivity.this);
                 }
             });
         }

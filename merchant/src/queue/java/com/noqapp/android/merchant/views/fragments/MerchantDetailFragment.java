@@ -76,13 +76,10 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 iv_product_list.setVisibility(View.GONE);
         }
 
-        iv_product_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProductListActivity.class);
-                intent.putExtra("codeQR", jsonTopic.getCodeQR());
-                ((Activity) context).startActivity(intent);
-            }
+        iv_product_list.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ProductListActivity.class);
+            intent.putExtra("codeQR", jsonTopic.getCodeQR());
+            ((Activity) context).startActivity(intent);
         });
         return view;
     }
@@ -206,25 +203,22 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
-                    showProgress();
-                    setDispensePresenter();
-                    manageQueueApiCalls.dispenseToken(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            codeQR);
-                    btn_create_token.setClickable(false);
-                } else {
-                    mAlertDialog.dismiss();
-                }
+        btn_create_token.setOnClickListener(v -> {
+            if (btn_create_token.getText().equals(mContext.getString(R.string.create_token))) {
+                showProgress();
+                setDispensePresenter();
+                manageQueueApiCalls.dispenseToken(
+                        BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        codeQR);
+                btn_create_token.setClickable(false);
+            } else {
+                mAlertDialog.dismiss();
             }
         });
 
-        actionbarBack.setOnClickListener((View.OnClickListener) v -> mAlertDialog.dismiss());
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
@@ -415,80 +409,74 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                     Log.e(BaseMerchantDetailFragment.class.getSimpleName(), "Reached un-supported condition");
             }
 
-            btn_next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                    if (tv_counter_name.getText().toString().trim().equals("")) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+            btn_next.setOnClickListener(v -> {
+                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+                if (tv_counter_name.getText().toString().trim().equals("")) {
+                    new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
+                } else {
+                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                        showProgress();
+                        OrderServed orderServed = new OrderServed();
+                        orderServed.setCodeQR(jsonTopic.getCodeQR());
+                        orderServed.setServedNumber(jsonTopic.getServingNumber());
+                        orderServed.setGoTo(tv_counter_name.getText().toString());
+                        orderServed.setQueueStatus(QueueStatusEnum.N);
+                        orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
+                        purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
                     } else {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            showProgress();
-                            OrderServed orderServed = new OrderServed();
-                            orderServed.setCodeQR(jsonTopic.getCodeQR());
-                            orderServed.setServedNumber(jsonTopic.getServingNumber());
-                            orderServed.setGoTo(tv_counter_name.getText().toString());
-                            orderServed.setQueueStatus(QueueStatusEnum.N);
-                            orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                            purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(context);
-                        }
+                        ShowAlertInformation.showNetworkDialog(context);
                     }
                 }
             });
-            btn_start.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
-                    if (jsonTopic.getToken() == 0) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_empty));
-                    } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_empty_wait));
-                    } else if (queueStatus == QueueStatusEnum.D) {
-                        new CustomToast().showToast(context, context.getString(R.string.error_done_next));
+            btn_start.setOnClickListener(v -> {
+                mAdapterCallback.saveCounterNames(jsonTopic.getCodeQR(), tv_counter_name.getText().toString().trim());
+                if (jsonTopic.getToken() == 0) {
+                    new CustomToast().showToast(context, context.getString(R.string.error_empty));
+                } else if (jsonTopic.getRemaining() == 0 && jsonTopic.getServingNumber() == 0) {
+                    new CustomToast().showToast(context, context.getString(R.string.error_empty_wait));
+                } else if (queueStatus == QueueStatusEnum.D) {
+                    new CustomToast().showToast(context, context.getString(R.string.error_done_next));
+                } else {
+                    if (tv_counter_name.getText().toString().trim().equals("")) {
+                        new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
                     } else {
-                        if (tv_counter_name.getText().toString().trim().equals("")) {
-                            new CustomToast().showToast(context, context.getString(R.string.error_counter_empty));
-                        } else {
-                            if (tv_start.getText().equals(context.getString(R.string.pause))) {
-                                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                                    @Override
-                                    public void btnPositiveClick() {
-                                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                            showProgress();
-                                            OrderServed orderServed = new OrderServed();
-                                            orderServed.setCodeQR(jsonTopic.getCodeQR());
-                                            orderServed.setServedNumber(jsonTopic.getServingNumber());
-                                            orderServed.setGoTo(tv_counter_name.getText().toString());
-                                            orderServed.setQueueStatus(QueueStatusEnum.N);
-                                            orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                            purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-                                        } else {
-                                            ShowAlertInformation.showNetworkDialog(context);
-                                        }
+                        if (tv_start.getText().equals(context.getString(R.string.pause))) {
+                            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+                            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                                @Override
+                                public void btnPositiveClick() {
+                                    if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                        showProgress();
+                                        OrderServed orderServed = new OrderServed();
+                                        orderServed.setCodeQR(jsonTopic.getCodeQR());
+                                        orderServed.setServedNumber(jsonTopic.getServingNumber());
+                                        orderServed.setGoTo(tv_counter_name.getText().toString());
+                                        orderServed.setQueueStatus(QueueStatusEnum.N);
+                                        orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
+                                        purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                                    } else {
+                                        ShowAlertInformation.showNetworkDialog(context);
                                     }
-
-                                    @Override
-                                    public void btnNegativeClick() {
-                                        //Do nothing
-                                    }
-                                });
-                                showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
-                            } else {
-                                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                    showProgress();
-                                    OrderServed orderServed = new OrderServed();
-                                    orderServed.setCodeQR(jsonTopic.getCodeQR());
-                                    orderServed.setServedNumber(jsonTopic.getServingNumber());
-                                    orderServed.setGoTo(tv_counter_name.getText().toString());
-                                    orderServed.setQueueStatus(QueueStatusEnum.N);
-                                    orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
-                                    purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
-                                } else {
-                                    ShowAlertInformation.showNetworkDialog(context);
                                 }
+
+                                @Override
+                                public void btnNegativeClick() {
+                                    //Do nothing
+                                }
+                            });
+                            showDialog.displayDialog("Confirm", "Have you completed serving " + String.valueOf(jsonTopic.getServingNumber()));
+                        } else {
+                            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                                showProgress();
+                                OrderServed orderServed = new OrderServed();
+                                orderServed.setCodeQR(jsonTopic.getCodeQR());
+                                orderServed.setServedNumber(jsonTopic.getServingNumber());
+                                orderServed.setGoTo(tv_counter_name.getText().toString());
+                                orderServed.setQueueStatus(QueueStatusEnum.N);
+                                orderServed.setPurchaseOrderState(PurchaseOrderStateEnum.OP);
+                                purchaseOrderApiCalls.served(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), orderServed);
+                            } else {
+                                ShowAlertInformation.showNetworkDialog(context);
                             }
                         }
                     }

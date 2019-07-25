@@ -65,34 +65,25 @@ public class ViewAllPeopleInQOrderAdapter extends RecyclerView.Adapter {
                 recordHolder.tv_customer_mobile.setText(TextUtils.isEmpty(phoneNo) ? context.getString(R.string.unregister_user) :
                         PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             }
-            recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                        new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
-                }
+            recordHolder.tv_customer_mobile.setOnClickListener(v -> {
+                if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
             recordHolder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
-        recordHolder.tv_order_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(context, OrderDetailActivity.class);
-                in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
-                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
-                in.putExtra(IBConstant.KEY_IS_HISTORY, true);
-                ((Activity) context).startActivity(in);
-            }
+        recordHolder.tv_order_data.setOnClickListener(v -> {
+            Intent in = new Intent(context, OrderDetailActivity.class);
+            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+            in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
+            in.putExtra(IBConstant.KEY_IS_HISTORY, true);
+            ((Activity) context).startActivity(in);
         });
         recordHolder.tv_payment_status.setText(Html.fromHtml("<b>Payment Status: </b>" + jsonPurchaseOrder.getPaymentStatus().getDescription()));
         recordHolder.tv_order_status.setText(Html.fromHtml("<b>Order Status: </b>" + jsonPurchaseOrder.getPresentOrderState().getFriendlyDescription()));
-        recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
-            }
+        recordHolder.tv_customer_mobile.setOnClickListener(v -> {
+            if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), phoneNo);
         });
     }
 

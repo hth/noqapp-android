@@ -36,12 +36,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText(getString(R.string.legal));
         btn_privacy.setOnClickListener(this);
         btn_term_condition.setOnClickListener(this);

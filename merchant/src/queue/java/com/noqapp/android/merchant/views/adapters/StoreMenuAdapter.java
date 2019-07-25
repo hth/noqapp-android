@@ -93,30 +93,22 @@ public class StoreMenuAdapter extends BaseAdapter {
             default:
                 childViewHolder.tv_cat.setBackgroundResource(R.drawable.round_corner_veg);
         }
-        childViewHolder.iv_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowCustomDialog showDialog = new ShowCustomDialog(context);
-                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                    @Override
-                    public void btnPositiveClick() {
-                        new CustomToast().showToast(context, "Deleted from Menu Item List");
-                        menuItemUpdate.menuItemUpdate(jsonStoreProduct, ActionTypeEnum.REMOVE);
-                    }
-                    @Override
-                    public void btnNegativeClick() {
-                        //Do nothing
-                    }
-                });
-                showDialog.displayDialog("Delete Menu Item", "Do you want to delete it from Menu Item List?");
-            }
+        childViewHolder.iv_delete.setOnClickListener(v -> {
+            ShowCustomDialog showDialog = new ShowCustomDialog(context);
+            showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                @Override
+                public void btnPositiveClick() {
+                    new CustomToast().showToast(context, "Deleted from Menu Item List");
+                    menuItemUpdate.menuItemUpdate(jsonStoreProduct, ActionTypeEnum.REMOVE);
+                }
+                @Override
+                public void btnNegativeClick() {
+                    //Do nothing
+                }
+            });
+            showDialog.displayDialog("Delete Menu Item", "Do you want to delete it from Menu Item List?");
         });
-        childViewHolder.iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuItemUpdate.addOrEditProduct(jsonStoreProduct, ActionTypeEnum.EDIT);
-            }
-        });
+        childViewHolder.iv_edit.setOnClickListener(v -> menuItemUpdate.addOrEditProduct(jsonStoreProduct, ActionTypeEnum.EDIT));
 
         if (jsonStoreProduct.isActive()) {
             childViewHolder.rl_menu_child.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));

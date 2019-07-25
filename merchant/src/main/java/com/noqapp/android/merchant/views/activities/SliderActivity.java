@@ -41,12 +41,7 @@ public class SliderActivity extends AppCompatActivity {
         page_position = getIntent().getIntExtra("pos", 0);
         init();
         addBottomDots(page_position);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
 
 
     }

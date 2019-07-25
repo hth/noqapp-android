@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.Toolbar;
 
 import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.utils.NetworkUtil;
@@ -39,25 +36,22 @@ public class LaunchActivity extends BaseLaunchActivity {
         launchActivity = this;
         Log.v("device id check", getDeviceID());
         networkUtil = new NetworkUtil(this);
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        actionbarBack = (ImageView) findViewById(R.id.actionbarBack);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        actionbarBack = findViewById(R.id.actionbarBack);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false); // to hide the default action bar title
-        tv_name = (TextView) findViewById(R.id.tv_name);
-        tv_badge = (TextView) findViewById(R.id.tv_badge);
-        fl_notification = (FrameLayout) findViewById(R.id.fl_notification);
+        tv_name = findViewById(R.id.tv_name);
+        tv_badge = findViewById(R.id.tv_badge);
+        fl_notification = findViewById(R.id.fl_notification);
         fl_notification.setVisibility(View.VISIBLE);
-        fl_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(launchActivity, NotificationActivity.class);
-                startActivity(in);
-            }
+        fl_notification.setOnClickListener(view -> {
+            Intent in = new Intent(launchActivity, NotificationActivity.class);
+            startActivity(in);
         });
         if (new AppUtils().isTablet(this)) {
-            list_fragment = (FrameLayout) findViewById(R.id.frame_layout);
-            list_detail_fragment = (FrameLayout) findViewById(R.id.list_detail_fragment);
+            list_fragment = findViewById(R.id.frame_layout);
+            list_detail_fragment = findViewById(R.id.list_detail_fragment);
         }
         initDrawer();
 
