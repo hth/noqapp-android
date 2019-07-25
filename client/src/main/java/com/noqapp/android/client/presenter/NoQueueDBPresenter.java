@@ -6,7 +6,6 @@ import com.noqapp.android.client.views.interfaces.TokenQueueViewInterface;
 
 import java.util.List;
 
-
 public class NoQueueDBPresenter {
 
     public TokenQueueViewInterface tokenQueueViewInterface;
@@ -20,7 +19,6 @@ public class NoQueueDBPresenter {
             tokenQueueViewInterface.historyQueueSaved();
         }
     }
-
 
     public void saveCurrentTokenQueue(List<JsonTokenAndQueue> tokenAndQueues) {
         /* Delete before inserting as this is always a fresh data on every call. */
