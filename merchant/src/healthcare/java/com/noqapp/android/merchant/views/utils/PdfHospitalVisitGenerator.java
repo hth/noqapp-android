@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.itextpdf.text.BaseColor;
@@ -20,12 +21,16 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +47,8 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         super(mContext);
     }
 
-    public void createPdf(List<JsonHospitalVisitSchedule> immunizationList, JsonQueuedPerson jsonQueuedPerson) {
+    public void createPdf(List<JsonHospitalVisitSchedule> immunizationList,
+                          JsonQueuedPerson jsonQueuedPerson, JsonMedicalRecord jsonMedicalRecord) {
         String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_Vaccination_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);
         if (dest.exists()) {
@@ -62,31 +68,36 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
+
             Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
-            Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
             Chunk titleChunk = new Chunk(jsonQueuedPerson.getCustomerName(), titleFont);
             Paragraph titleParagraph = new Paragraph();
             titleParagraph.add(titleChunk);
-            titleParagraph.add(glue);
-            titleParagraph.add(new Chunk("NoQueue", noqFont));
             document.add(titleParagraph);
-            addVerticalSpace();
 
 
-            // String ageSex = " (" + new AppUtils().calculateAge(jsonQueuedPerson.get.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
+            Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
 
-            Chunk degreeChunk = new Chunk("Male, 52 years ????", normalFont);
+            Chunk degreeChunk = new Chunk(jsonMedicalRecord.getBusinessName(), normalBoldFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
-            degreeParagraph.add(new Chunk(" ", noqFont));
+            degreeParagraph.add(new Chunk("NoQueue", noqFont));
             document.add(degreeParagraph);
             addVerticalSpace();
 
 
+            Paragraph hospital = new Paragraph();
+            hospital.add(new Chunk(jsonMedicalRecord.getAreaAndTown(), normalFont));
+            document.add(hospital);
+
             // LINE SEPARATOR
             LineSeparator lineSeparator = new LineSeparator();
             lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
+
+            document.add(new Chunk(lineSeparator));
+            document.add(addVerticalSpaceBefore(10f));
+
 
             document.add(addVerticalSpaceBefore(20f));
             document.add(new Paragraph(""));

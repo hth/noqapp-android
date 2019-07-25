@@ -59,31 +59,38 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             document.addCreator("NoQueue Technologies");
             Chunk glue = new Chunk(new VerticalPositionMark());
 
-            Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+
+
+
+
+//            Font titleFont = new Font(baseFont, 13.0f, Font.NORMAL, BaseColor.BLACK);
+//            Chunk titleChunk = new Chunk(, titleFont);
+//            Paragraph titleParagraph = new Paragraph();
+//            titleParagraph.add(titleChunk);
+//            document.add(titleParagraph);
+
+
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
-            Chunk titleChunk = new Chunk(jsonQueuedPerson.getName(), titleFont);
-            Paragraph titleParagraph = new Paragraph();
-            titleParagraph.add(titleChunk);
-            titleParagraph.add(glue);
-            titleParagraph.add(new Chunk("NoQueue", noqFont));
-            document.add(titleParagraph);
-            addVerticalSpace();
 
-
-            // String ageSex = " (" + new AppUtils().calculateAge(jsonQueuedPerson.get.getBirthday()) + ", " + jsonProfile.getGender().name() + ")");
-
-            Chunk degreeChunk = new Chunk("Male, 52 years ????", normalFont);
+            Chunk degreeChunk = new Chunk(jsonQueuedPerson.getName(), normalBoldFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
-            degreeParagraph.add(new Chunk(" ", noqFont));
+            degreeParagraph.add(new Chunk("NoQueue", noqFont));
             document.add(degreeParagraph);
             addVerticalSpace();
-
 
             // LINE SEPARATOR
             LineSeparator lineSeparator = new LineSeparator();
             lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
+
+            document.add(new Chunk(lineSeparator));
+            document.add(addVerticalSpaceBefore(10f));
+
+
+//            Paragraph hospital = new Paragraph();
+//            hospital.add(new Chunk(jsonMedicalRecord.getAreaAndTown(), normalFont));
+//            document.add(hospital);
 
             document.add(addVerticalSpaceBefore(20f));
             document.add(new Paragraph(""));

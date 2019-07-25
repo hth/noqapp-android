@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.merchant.R;
@@ -62,13 +63,13 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         tv_toolbar_title.setText("Hospital Visit Schedule");
         String codeQR = getIntent().getStringExtra("qCodeQR");
         JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-
+        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
         PermissionHelper permissionHelper = new PermissionHelper(this);
         btn_print_pdf.setOnClickListener(v -> {
             if (permissionHelper.isStoragePermissionAllowed()) {
                 PdfHospitalVisitGenerator pdfGenerator = new PdfHospitalVisitGenerator(HospitalVisitScheduleActivity.this);
-                pdfGenerator.createPdf(immunizationList, jsonQueuedPerson);
+                pdfGenerator.createPdf(immunizationList, jsonQueuedPerson,jsonMedicalRecord);
             } else {
                 permissionHelper.requestStoragePermission();
             }

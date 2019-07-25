@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPhysical;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
@@ -28,7 +27,6 @@ import com.noqapp.android.merchant.model.ReceiptInfoApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.ShowCustomDialog;
@@ -90,24 +88,23 @@ public class PhysicalActivity extends BaseActivity implements
         scroll_view.setScrollBarFadeDuration(0);
         scroll_view.setScrollbarFadingEnabled(false);
         setProgressMessage("Loading Patient data...");
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText(getString(R.string.screen_physical));
         TextView tv_title = findViewById(R.id.tv_title);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         final String codeQR = getIntent().getStringExtra("qCodeQR");
         TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
         tv_hospital_schedule.setOnClickListener(v -> {
-
+            if (null == jsonQueuedPerson || null == jsonMedicalRecord) {
+                new CustomToast().showToast(PhysicalActivity.this, "Please wait while patient data is loading...");
+            } else {
                 Intent intent = new Intent(PhysicalActivity.this, HospitalVisitScheduleActivity.class);
                 intent.putExtra("qCodeQR", codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
+                intent.putExtra("jsonMedicalRecord", jsonMedicalRecord);
                 startActivity(intent);
                 finish();
+            }
 
         });
 
