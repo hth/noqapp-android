@@ -239,7 +239,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
                 PdfPTable ptable = new PdfPTable(3);
                 ptable.addCell(pdfPCellWithoutBorder("Due Date: " + dateExpected, normalFont));
                 ptable.addCell(pdfPCellWithoutBorder("Given Date: " + dateVisited, normalFont));
-                ptable.addCell(pdfPCellWithoutBorder("Given By: " + "???", normalFont));
+                ptable.addCell(pdfPCellWithoutBorder("Given By: " + jsonHospitalVisitSchedule.getPerformedBy(), normalFont));
                 document.add(ptable);
                 PdfPTable table = new PdfPTable(3);
                 int size = visitingFor.size();
