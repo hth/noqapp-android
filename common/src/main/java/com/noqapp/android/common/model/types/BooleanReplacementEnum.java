@@ -10,7 +10,7 @@ import java.util.List;
 public enum BooleanReplacementEnum {
     S("S", "Skip", "#CD334E"),
     Y("Y", "Yes", "#19769f"),
-    N("N", "No", "#ddd");
+    N("N", "No", "#dddddd");
 
     private final String description;
     private final String name;
@@ -56,6 +56,19 @@ public enum BooleanReplacementEnum {
             }
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public static String getDisplayDescription(BooleanReplacementEnum booleanReplacementEnum) {
+        switch (booleanReplacementEnum) {
+            case S:
+                return "Pending";
+            case Y:
+                return "Completed";
+            case N:
+                return "";
+            default:
+                return "";
         }
     }
 

@@ -94,8 +94,6 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         dismissProgress();
         Log.e("immunization", jsonHospitalVisitScheduleList.toString());
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = jsonHospitalVisitScheduleList.getJsonHospitalVisitSchedules();
-
-
         for (int i = 0; i < jsonHospitalVisitSchedules.size(); i++) {
             if (jsonHospitalVisitSchedules.get(i).getHospitalVisitFor() == HospitalVisitForEnum.IMU) {
                 immunizationList.add(jsonHospitalVisitSchedules.get(i));

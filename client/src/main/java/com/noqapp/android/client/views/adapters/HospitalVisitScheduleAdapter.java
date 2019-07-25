@@ -41,7 +41,7 @@ public class HospitalVisitScheduleAdapter extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) Vholder;
         holder.tv_menu_header.setText(categories.get(position).getHeader());
         HospitalVisitScheduleListAdapter adapter = new HospitalVisitScheduleListAdapter(context,
-                categories.get(position).getVisitingFor(), listener, categories.get(position).getVisitedDate());
+                categories.get(position).getVisitingFor(), listener, categories.get(position));
         holder.fh_list_view.setAdapter(adapter);
         holder.ll_header.setBackgroundColor(Color.WHITE);
         holder.tv_menu_header.setTextColor(Color.BLACK);
