@@ -189,18 +189,15 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
                 int size = visitingFor.size();
                 int remain = 3 - (size % 3);
                 for (Map.Entry<String, BooleanReplacementEnum> entry : visitingFor.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() +
-                            ", Value = " + entry.getValue());
+                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
                     table.addCell(pdfPCellWithBorder1(entry.getKey(), normalFont));
-
                 }
                 for (int j = 0; j < remain; j++) {
                     table.addCell(pdfPCellWithoutBorder("", normalFont));
                 }
                 document.add(table);
                 document.add(addVerticalSpaceBefore(5.0f));
-                String dateVisited = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
-                        jsonHospitalVisitSchedule.getVisitedDate());
+                String dateVisited = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonHospitalVisitSchedule.getVisitedDate());
                 PdfPTable pptable = new PdfPTable(2);
                 pptable.addCell(pdfPCellWithoutBorder("Given Date: " + dateVisited, normalFont));
                 pptable.addCell(pdfPCellWithoutBorder("Given By: " + "???", normalFont));
@@ -233,10 +230,8 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
                 document.add(ppptable);
                 document.add(addVerticalSpaceBefore(5.0f));
                 Map<String, BooleanReplacementEnum> visitingFor = jsonHospitalVisitSchedule.getVisitingFor();
-                String dateExpected = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
-                        jsonHospitalVisitSchedule.getExpectedDate());
-                String dateVisited = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
-                        jsonHospitalVisitSchedule.getVisitedDate());
+                String dateExpected = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonHospitalVisitSchedule.getExpectedDate());
+                String dateVisited = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI, jsonHospitalVisitSchedule.getVisitedDate());
                 PdfPTable ptable = new PdfPTable(3);
                 ptable.addCell(pdfPCellWithoutBorder("Due Date: " + dateExpected, normalFont));
                 ptable.addCell(pdfPCellWithoutBorder("Given Date: " + dateVisited, normalFont));
@@ -246,10 +241,8 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
                 int size = visitingFor.size();
                 int remain = 3 - (size % 3);
                 for (Map.Entry<String, BooleanReplacementEnum> entry : visitingFor.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() +
-                            ", Value = " + entry.getValue());
+                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
                     table.addCell(pdfPCellWithBorder1(entry.getKey(), normalFont));
-
                 }
                 for (int j = 0; j < remain; j++) {
                     table.addCell(pdfPCellWithoutBorder("", normalFont));
