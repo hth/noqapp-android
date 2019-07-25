@@ -32,7 +32,6 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.menu_header_item, parent, false);
         return new ViewHolder(view);
     }

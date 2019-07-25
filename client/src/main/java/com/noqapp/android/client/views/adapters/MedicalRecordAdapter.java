@@ -17,7 +17,6 @@ import com.noqapp.android.common.model.types.medical.PharmacyCategoryEnum;
 import java.util.List;
 
 public class MedicalRecordAdapter extends BaseAdapter {
-
     private Context context;
     private List<JsonMedicalMedicine> medicalRecordList;
 

@@ -25,7 +25,9 @@ public class StoreMenuAdapter extends BaseAdapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
-    public StoreMenuAdapter(Context context, List<StoreCartItem> menuItemsList, StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate, String currencySymbol) {
+    public StoreMenuAdapter(Context context, List<StoreCartItem> menuItemsList,
+                            StoreMenuActivity storeMenuActivity, CartOrderUpdate cartOrderUpdate,
+                            String currencySymbol) {
         this.context = context;
         this.menuItemsList = menuItemsList;
         this.storeMenuActivity = storeMenuActivity;
@@ -70,9 +72,7 @@ public class StoreMenuAdapter extends BaseAdapter {
         childViewHolder.tv_value.setText(String.valueOf(storeCartItem.getChildInput()));
         childViewHolder.tv_price.setText(currencySymbol + " " + AppUtilities.getPriceWithUnits(jsonStoreProduct));
         childViewHolder.tv_discounted_price.setText(
-                currencySymbol
-                        + " "
-                        + storeCartItem.getFinalDiscountedPrice());
+                currencySymbol + " " + storeCartItem.getFinalDiscountedPrice());
         if (jsonStoreProduct.getProductDiscount() > 0) {
             childViewHolder.tv_price.setPaintFlags(childViewHolder.tv_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             childViewHolder.tv_discounted_price.setVisibility(View.VISIBLE);

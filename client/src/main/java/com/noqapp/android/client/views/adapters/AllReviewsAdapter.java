@@ -23,7 +23,6 @@ import java.util.List;
 
 public class AllReviewsAdapter extends RecyclerView.Adapter {
     private final Context context;
-
     private List<JsonReview> dataSet;
 
     public AllReviewsAdapter(List<JsonReview> data, Context context) {
