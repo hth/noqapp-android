@@ -50,7 +50,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             JsonQueuedPerson jsonQueuedPerson,
             JsonMedicalRecord jsonMedicalRecord
     ) {
-        String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_Vaccination_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
+        String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_Immunization_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);
         if (dest.exists()) {
             Log.d("Delete", "File deleted successfully " + dest.delete());
