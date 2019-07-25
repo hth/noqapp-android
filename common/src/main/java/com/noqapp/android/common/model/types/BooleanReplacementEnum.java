@@ -50,7 +50,7 @@ public enum BooleanReplacementEnum {
                 case "Yes":
                     return BooleanReplacementEnum.Y;
                 case "No":
-                    return BooleanReplacementEnum.Y;
+                    return BooleanReplacementEnum.N;
                 default:
                     return null;
             }
