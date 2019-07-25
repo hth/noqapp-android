@@ -149,198 +149,195 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         });
         Button btn_submit = v.findViewById(R.id.btn_submit);
         btn_print_pdf = v.findViewById(R.id.btn_print_pdf);
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProgress();
-                CaseHistory caseHistory = MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory();
-                JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
-                jsonMedicalRecord.setRecordReferenceId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getRecordReferenceId());
-                jsonMedicalRecord.setFormVersion(FormVersionEnum.MFD1);
-                jsonMedicalRecord.setCodeQR(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
-                jsonMedicalRecord.setQueueUserId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getQueueUserId());
-                jsonMedicalRecord.setChiefComplain(caseHistory.getSymptomsObject());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setPastHistory(caseHistory.getPastHistory());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setFamilyHistory(caseHistory.getFamilyHistory());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setKnownAllergies(caseHistory.getKnownAllergies());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setMedicineAllergies(caseHistory.getMedicineAllergies());
-                jsonMedicalRecord.getJsonUserMedicalProfile().setHistoryDirty(caseHistory.isHistoryFilled());
-                jsonMedicalRecord.setClinicalFinding(caseHistory.getClinicalFindings());
-                jsonMedicalRecord.setProvisionalDifferentialDiagnosis(caseHistory.getProvisionalDiagnosis());
-                jsonMedicalRecord.setExamination(caseHistory.getExaminationResults());
-                jsonMedicalRecord.setDiagnosis(caseHistory.getDiagnosis());
-                JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
-                        .setBloodPressure(caseHistory.getBloodPressure())
-                        .setPulse(caseHistory.getPulse())
-                        .setWeight(caseHistory.getWeight())
-                        .setOxygen(caseHistory.getOxygenLevel())
-                        .setTemperature(caseHistory.getTemperature())
-                        .setHeight(caseHistory.getHeight())
-                        .setRespiratory(caseHistory.getRespiratory())
-                        .setPhysicalFilled(caseHistory.isPhysicalFilled());
+        btn_submit.setOnClickListener(v1 -> {
+            showProgress();
+            CaseHistory caseHistory = MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory();
+            JsonMedicalRecord jsonMedicalRecord = new JsonMedicalRecord();
+            jsonMedicalRecord.setRecordReferenceId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getRecordReferenceId());
+            jsonMedicalRecord.setFormVersion(FormVersionEnum.MFD1);
+            jsonMedicalRecord.setCodeQR(MedicalCaseActivity.getMedicalCaseActivity().codeQR);
+            jsonMedicalRecord.setQueueUserId(MedicalCaseActivity.getMedicalCaseActivity().jsonQueuedPerson.getQueueUserId());
+            jsonMedicalRecord.setChiefComplain(caseHistory.getSymptomsObject());
+            jsonMedicalRecord.getJsonUserMedicalProfile().setPastHistory(caseHistory.getPastHistory());
+            jsonMedicalRecord.getJsonUserMedicalProfile().setFamilyHistory(caseHistory.getFamilyHistory());
+            jsonMedicalRecord.getJsonUserMedicalProfile().setKnownAllergies(caseHistory.getKnownAllergies());
+            jsonMedicalRecord.getJsonUserMedicalProfile().setMedicineAllergies(caseHistory.getMedicineAllergies());
+            jsonMedicalRecord.getJsonUserMedicalProfile().setHistoryDirty(caseHistory.isHistoryFilled());
+            jsonMedicalRecord.setClinicalFinding(caseHistory.getClinicalFindings());
+            jsonMedicalRecord.setProvisionalDifferentialDiagnosis(caseHistory.getProvisionalDiagnosis());
+            jsonMedicalRecord.setExamination(caseHistory.getExaminationResults());
+            jsonMedicalRecord.setDiagnosis(caseHistory.getDiagnosis());
+            JsonMedicalPhysical jsonMedicalPhysical = new JsonMedicalPhysical()
+                    .setBloodPressure(caseHistory.getBloodPressure())
+                    .setPulse(caseHistory.getPulse())
+                    .setWeight(caseHistory.getWeight())
+                    .setOxygen(caseHistory.getOxygenLevel())
+                    .setTemperature(caseHistory.getTemperature())
+                    .setHeight(caseHistory.getHeight())
+                    .setRespiratory(caseHistory.getRespiratory())
+                    .setPhysicalFilled(caseHistory.isPhysicalFilled());
 
-                if (caseHistory.getPathologyList().size() > 0) {
-                    ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
-                    for (int i = 0; i < caseHistory.getPathologyList().size(); i++) {
-                        pathologies.add(new JsonMedicalPathology().setName(caseHistory.getPathologyList().get(i)));
-                    }
-                    JsonMedicalPathologyList jsonMedicalPathologyList = new JsonMedicalPathologyList();
-                    jsonMedicalPathologyList.setJsonMedicalPathologies(pathologies);
-                    ArrayList<JsonMedicalPathologyList> listData = new ArrayList<>();
-                    listData.add(jsonMedicalPathologyList);
-                    jsonMedicalRecord.setMedicalPathologiesLists(listData);
+            if (caseHistory.getPathologyList().size() > 0) {
+                ArrayList<JsonMedicalPathology> pathologies = new ArrayList<>();
+                for (int i = 0; i < caseHistory.getPathologyList().size(); i++) {
+                    pathologies.add(new JsonMedicalPathology().setName(caseHistory.getPathologyList().get(i)));
                 }
+                JsonMedicalPathologyList jsonMedicalPathologyList = new JsonMedicalPathologyList();
+                jsonMedicalPathologyList.setJsonMedicalPathologies(pathologies);
+                ArrayList<JsonMedicalPathologyList> listData = new ArrayList<>();
+                listData.add(jsonMedicalPathologyList);
+                jsonMedicalRecord.setMedicalPathologiesLists(listData);
+            }
 
-                ArrayList<JsonMedicalRadiology> mriList = new ArrayList<>();
-                if (caseHistory.getMriList().size() > 0) {
-                    for (int i = 0; i < caseHistory.getMriList().size(); i++) {
-                        mriList.add(new JsonMedicalRadiology().setName(caseHistory.getMriList().get(i)));
-                    }
+            ArrayList<JsonMedicalRadiology> mriList = new ArrayList<>();
+            if (caseHistory.getMriList().size() > 0) {
+                for (int i = 0; i < caseHistory.getMriList().size(); i++) {
+                    mriList.add(new JsonMedicalRadiology().setName(caseHistory.getMriList().get(i)));
                 }
-                ArrayList<JsonMedicalRadiology> sonoList = new ArrayList<>();
-                if (caseHistory.getSonoList().size() > 0) {
-                    for (int i = 0; i < caseHistory.getSonoList().size(); i++) {
-                        sonoList.add(new JsonMedicalRadiology().setName(caseHistory.getSonoList().get(i)));
-                    }
+            }
+            ArrayList<JsonMedicalRadiology> sonoList = new ArrayList<>();
+            if (caseHistory.getSonoList().size() > 0) {
+                for (int i = 0; i < caseHistory.getSonoList().size(); i++) {
+                    sonoList.add(new JsonMedicalRadiology().setName(caseHistory.getSonoList().get(i)));
                 }
-                ArrayList<JsonMedicalRadiology> scanList = new ArrayList<>();
-                if (caseHistory.getScanList().size() > 0) {
-                    for (int i = 0; i < caseHistory.getScanList().size(); i++) {
-                        scanList.add(new JsonMedicalRadiology().setName(caseHistory.getScanList().get(i)));
-                    }
+            }
+            ArrayList<JsonMedicalRadiology> scanList = new ArrayList<>();
+            if (caseHistory.getScanList().size() > 0) {
+                for (int i = 0; i < caseHistory.getScanList().size(); i++) {
+                    scanList.add(new JsonMedicalRadiology().setName(caseHistory.getScanList().get(i)));
                 }
-                ArrayList<JsonMedicalRadiology> xrayList = new ArrayList<>();
-                if (caseHistory.getXrayList().size() > 0) {
-                    for (int i = 0; i < caseHistory.getXrayList().size(); i++) {
-                        xrayList.add(new JsonMedicalRadiology().setName(caseHistory.getXrayList().get(i)));
-                    }
+            }
+            ArrayList<JsonMedicalRadiology> xrayList = new ArrayList<>();
+            if (caseHistory.getXrayList().size() > 0) {
+                for (int i = 0; i < caseHistory.getXrayList().size(); i++) {
+                    xrayList.add(new JsonMedicalRadiology().setName(caseHistory.getXrayList().get(i)));
                 }
+            }
 
-                ArrayList<JsonMedicalRadiology> specList = new ArrayList<>();
-                if (caseHistory.getSpecList().size() > 0) {
-                    for (int i = 0; i < caseHistory.getSpecList().size(); i++) {
-                        specList.add(new JsonMedicalRadiology().setName(caseHistory.getSpecList().get(i)));
-                    }
+            ArrayList<JsonMedicalRadiology> specList = new ArrayList<>();
+            if (caseHistory.getSpecList().size() > 0) {
+                for (int i = 0; i < caseHistory.getSpecList().size(); i++) {
+                    specList.add(new JsonMedicalRadiology().setName(caseHistory.getSpecList().get(i)));
                 }
+            }
 
 
-                List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
-                if (mriList.size() > 0) {
-                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (null != preferredStoreList && null != preferredStoreList.getListMri() && preferredStoreList.getListMri().size() > 0) {
-                        if (acsp_mri.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_mri.getSelectedItem()).getBizStoreId());
-                        } else {
-                            jsonMedicalRadiologyList.setBizStoreId("");
-                        }
-
+            List<JsonMedicalRadiologyList> medicalRadiologyLists = new ArrayList<>();
+            if (mriList.size() > 0) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                if (null != preferredStoreList && null != preferredStoreList.getListMri() && preferredStoreList.getListMri().size() > 0) {
+                    if (acsp_mri.getSelectedItemPosition() != 0) {
+                        jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_mri.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRadiologyList.setBizStoreId("");
                     }
-                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.MRI);
-                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
-                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
-                }
 
-                if (sonoList.size() > 0) {
-                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (null != preferredStoreList && null != preferredStoreList.getListSono() && preferredStoreList.getListSono().size() > 0) {
-                        if (acsp_sono.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_sono.getSelectedItem()).getBizStoreId());
-                        } else {
-                            jsonMedicalRadiologyList.setBizStoreId("");
-                        }
+                } else {
+                    jsonMedicalRadiologyList.setBizStoreId("");
+                }
+                jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.MRI);
+                jsonMedicalRadiologyList.setJsonMedicalRadiologies(mriList);
+                medicalRadiologyLists.add(jsonMedicalRadiologyList);
+            }
+
+            if (sonoList.size() > 0) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                if (null != preferredStoreList && null != preferredStoreList.getListSono() && preferredStoreList.getListSono().size() > 0) {
+                    if (acsp_sono.getSelectedItemPosition() != 0) {
+                        jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_sono.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRadiologyList.setBizStoreId("");
                     }
-                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SONO);
-                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
-                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                } else {
+                    jsonMedicalRadiologyList.setBizStoreId("");
                 }
+                jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SONO);
+                jsonMedicalRadiologyList.setJsonMedicalRadiologies(sonoList);
+                medicalRadiologyLists.add(jsonMedicalRadiologyList);
+            }
 
-                if (scanList.size() > 0) {
-                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (null != preferredStoreList && null != preferredStoreList.getListScan() && preferredStoreList.getListScan().size() > 0) {
-                        if (acsp_scan.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_scan.getSelectedItem()).getBizStoreId());
-                        } else {
-                            jsonMedicalRadiologyList.setBizStoreId("");
-                        }
+            if (scanList.size() > 0) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                if (null != preferredStoreList && null != preferredStoreList.getListScan() && preferredStoreList.getListScan().size() > 0) {
+                    if (acsp_scan.getSelectedItemPosition() != 0) {
+                        jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_scan.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRadiologyList.setBizStoreId("");
                     }
-                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SCAN);
-                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
-                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                } else {
+                    jsonMedicalRadiologyList.setBizStoreId("");
                 }
+                jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SCAN);
+                jsonMedicalRadiologyList.setJsonMedicalRadiologies(scanList);
+                medicalRadiologyLists.add(jsonMedicalRadiologyList);
+            }
 
-                if (xrayList.size() > 0) {
-                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (null != preferredStoreList && null != preferredStoreList.getListXray() && preferredStoreList.getListXray().size() > 0) {
-                        if (acsp_xray.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_xray.getSelectedItem()).getBizStoreId());
-                        } else {
-                            jsonMedicalRadiologyList.setBizStoreId("");
-                        }
+            if (xrayList.size() > 0) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                if (null != preferredStoreList && null != preferredStoreList.getListXray() && preferredStoreList.getListXray().size() > 0) {
+                    if (acsp_xray.getSelectedItemPosition() != 0) {
+                        jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_xray.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRadiologyList.setBizStoreId("");
                     }
-                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.XRAY);
-                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
-                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                } else {
+                    jsonMedicalRadiologyList.setBizStoreId("");
                 }
+                jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.XRAY);
+                jsonMedicalRadiologyList.setJsonMedicalRadiologies(xrayList);
+                medicalRadiologyLists.add(jsonMedicalRadiologyList);
+            }
 
-                if (specList.size() > 0) {
-                    JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
-                    if (null != preferredStoreList && null != preferredStoreList.getListSpec() && preferredStoreList.getListSpec().size() > 0) {
-                        if (acsp_special.getSelectedItemPosition() != 0) {
-                            jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_special.getSelectedItem()).getBizStoreId());
-                        } else {
-                            jsonMedicalRadiologyList.setBizStoreId("");
-                        }
+            if (specList.size() > 0) {
+                JsonMedicalRadiologyList jsonMedicalRadiologyList = new JsonMedicalRadiologyList();
+                if (null != preferredStoreList && null != preferredStoreList.getListSpec() && preferredStoreList.getListSpec().size() > 0) {
+                    if (acsp_special.getSelectedItemPosition() != 0) {
+                        jsonMedicalRadiologyList.setBizStoreId(((JsonPreferredBusiness) acsp_special.getSelectedItem()).getBizStoreId());
                     } else {
                         jsonMedicalRadiologyList.setBizStoreId("");
                     }
-                    jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SPEC);
-                    jsonMedicalRadiologyList.setJsonMedicalRadiologies(specList);
-                    medicalRadiologyLists.add(jsonMedicalRadiologyList);
+                } else {
+                    jsonMedicalRadiologyList.setBizStoreId("");
                 }
-                jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
+                jsonMedicalRadiologyList.setLabCategory(LabCategoryEnum.SPEC);
+                jsonMedicalRadiologyList.setJsonMedicalRadiologies(specList);
+                medicalRadiologyLists.add(jsonMedicalRadiologyList);
+            }
+            jsonMedicalRecord.setMedicalRadiologyLists(medicalRadiologyLists);
 
-                if (null != preferredStoreList && null != preferredStoreList.getListMedicine() && preferredStoreList.getListMedicine().size() > 0) {
-                    if (acsp_pharmacy.getSelectedItemPosition() != 0) {
-                        jsonMedicalRecord.setStoreIdPharmacy(((JsonPreferredBusiness) acsp_pharmacy.getSelectedItem()).getBizStoreId());
-                    } else {
-                        jsonMedicalRecord.setStoreIdPharmacy("");
-                    }
+            if (null != preferredStoreList && null != preferredStoreList.getListMedicine() && preferredStoreList.getListMedicine().size() > 0) {
+                if (acsp_pharmacy.getSelectedItemPosition() != 0) {
+                    jsonMedicalRecord.setStoreIdPharmacy(((JsonPreferredBusiness) acsp_pharmacy.getSelectedItem()).getBizStoreId());
                 } else {
                     jsonMedicalRecord.setStoreIdPharmacy("");
                 }
+            } else {
+                jsonMedicalRecord.setStoreIdPharmacy("");
+            }
 
-                if (null != preferredStoreList && null != preferredStoreList.getListPath() && preferredStoreList.getListPath().size() > 0) {
-                    if (acsp_pathology.getSelectedItemPosition() != 0) {
-                        jsonMedicalRecord.setStoreIdPathology(((JsonPreferredBusiness) acsp_pathology.getSelectedItem()).getBizStoreId());
-                    } else {
-                        jsonMedicalRecord.setStoreIdPathology("");
-                    }
+            if (null != preferredStoreList && null != preferredStoreList.getListPath() && preferredStoreList.getListPath().size() > 0) {
+                if (acsp_pathology.getSelectedItemPosition() != 0) {
+                    jsonMedicalRecord.setStoreIdPathology(((JsonPreferredBusiness) acsp_pathology.getSelectedItem()).getBizStoreId());
                 } else {
                     jsonMedicalRecord.setStoreIdPathology("");
                 }
-
-                jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
-                jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
-                jsonMedicalRecord.setPlanToPatient(caseHistory.getInstructions());
-                if (!TextUtils.isEmpty(followup)) {
-                    jsonMedicalRecord.setFollowUpInDays(followup);
-                } else {
-                    jsonMedicalRecord.setFollowUpInDays(null);
-                }
-                medicalHistoryApiCalls.update(
-                        BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(),
-                        jsonMedicalRecord);
+            } else {
+                jsonMedicalRecord.setStoreIdPathology("");
             }
+
+            jsonMedicalRecord.setMedicalPhysical(jsonMedicalPhysical);
+            jsonMedicalRecord.setMedicalMedicines(adapter.getJsonMedicineListWithEnum());
+            jsonMedicalRecord.setPlanToPatient(caseHistory.getInstructions());
+            if (!TextUtils.isEmpty(followup)) {
+                jsonMedicalRecord.setFollowUpInDays(followup);
+            } else {
+                jsonMedicalRecord.setFollowUpInDays(null);
+            }
+            medicalHistoryApiCalls.update(
+                    BaseLaunchActivity.getDeviceID(),
+                    LaunchActivity.getLaunchActivity().getEmail(),
+                    LaunchActivity.getLaunchActivity().getAuth(),
+                    jsonMedicalRecord);
         });
         return v;
     }
@@ -399,15 +396,12 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
         lv_medicine.setAdapter(adapter);
         btn_print_pdf.setVisibility(View.VISIBLE);
         PermissionHelper permissionHelper = new PermissionHelper(getActivity());
-        btn_print_pdf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (permissionHelper.isStoragePermissionAllowed()) {
-                    PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
-                    pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup));
-                } else {
-                    permissionHelper.requestStoragePermission();
-                }
+        btn_print_pdf.setOnClickListener(v -> {
+            if (permissionHelper.isStoragePermissionAllowed()) {
+                PdfGenerator pdfGenerator = new PdfGenerator(getActivity());
+                pdfGenerator.createPdf(caseHistory, TextUtils.isEmpty(followup) ? 0 : Integer.parseInt(followup));
+            } else {
+                permissionHelper.requestStoragePermission();
             }
         });
 

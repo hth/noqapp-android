@@ -50,32 +50,29 @@ public class MedicineFragment extends BaseFragment implements CustomExpandListAd
         edt_item = v.findViewById(R.id.edt_item);
         final SegmentedControl sc_category = v.findViewById(R.id.sc_category);
         Button btn_add_medicine = v.findViewById(R.id.btn_add_medicine);
-        btn_add_medicine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edt_item.setError(null);
-                if (selectionPos == -1) {
-                    new CustomToast().showToast(getActivity(), "Please select medicine type");
-                } else if (TextUtils.isEmpty(edt_item.getText().toString())) {
-                    edt_item.setError("Medicine name cann't be empty");
+        btn_add_medicine.setOnClickListener(v1 -> {
+            edt_item.setError(null);
+            if (selectionPos == -1) {
+                new CustomToast().showToast(getActivity(), "Please select medicine type");
+            } else if (TextUtils.isEmpty(edt_item.getText().toString())) {
+                edt_item.setError("Medicine name cann't be empty");
+            } else {
+                String category = category_data.get(selectionPos);
+                String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
+                DataObj dataObj = new DataObj(medicineName, category, false);
+                if (selectedList.contains(dataObj)) {
+                    new CustomToast().showToast(getActivity(), "Medicine already added");
                 } else {
-                    String category = category_data.get(selectionPos);
-                    String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
-                    DataObj dataObj = new DataObj(medicineName, category, false);
-                    if (selectedList.contains(dataObj)) {
-                        new CustomToast().showToast(getActivity(), "Medicine already added");
-                    } else {
-                        listDataChild.get(category).add(dataObj);
-                        selectedList.add(dataObj);
-                        listAdapter.notifyDataSetChanged();
-                        sc_category.clearSelection();
-                        selectionPos = -1;
-                        edt_item.setText("");
-                    }
-                    new AppUtils().hideKeyBoard(getActivity());
+                    listDataChild.get(category).add(dataObj);
+                    selectedList.add(dataObj);
+                    listAdapter.notifyDataSetChanged();
+                    sc_category.clearSelection();
+                    selectionPos = -1;
+                    edt_item.setText("");
                 }
-
+                new AppUtils().hideKeyBoard(getActivity());
             }
+
         });
 
         category_data.addAll(PharmacyCategoryEnum.asListOfDescription());

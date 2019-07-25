@@ -43,22 +43,14 @@ public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapt
         actv_examination_results = v.findViewById(R.id.actv_examination_results);
         TextView tv_add_provisional_diagnosis = v.findViewById(R.id.tv_add_provisional_diagnosis);
         rcv_provisional_diagnosis = v.findViewById(R.id.rcv_provisional_diagnosis);
-        tv_add_provisional_diagnosis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Provisional Diagnosis", true);
-            }
-        });
+        tv_add_provisional_diagnosis.setOnClickListener(v1 -> AddItemDialog(getActivity(), "Add Provisional Diagnosis", true));
 
         actv_search_provisional_dia = v.findViewById(R.id.actv_search_provisional_dia);
         actv_search_provisional_dia.setThreshold(1);
         ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
-        iv_clear_actv_dia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actv_search_provisional_dia.setText("");
-                new AppUtils().hideKeyBoard(getActivity());
-            }
+        iv_clear_actv_dia.setOnClickListener(v12 -> {
+            actv_search_provisional_dia.setText("");
+            new AppUtils().hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -101,36 +93,27 @@ public class DiagnosisFragment extends BaseFragment implements AutoCompleteAdapt
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_add.setOnClickListener(v -> {
+            edt_item.setError(null);
+            if (edt_item.getText().toString().equals("")) {
+                edt_item.setError("Empty field not allowed");
+            } else {
+                if (isMedicine) {
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setProvisionalDiagnosisList(temp);
+                    rcv_provisional_diagnosis.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-            @Override
-            public void onClick(View v) {
-                edt_item.setError(null);
-                if (edt_item.getText().toString().equals("")) {
-                    edt_item.setError("Empty field not allowed");
+                    provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
+                    rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getProDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
+                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                 } else {
-                    if (isMedicine) {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setProvisionalDiagnosisList(temp);
-                        rcv_provisional_diagnosis.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                        provisionalDiagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getProvisionalDiagnosisList());
-                        rcv_provisional_diagnosis.setAdapter(provisionalDiagnosisAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getProDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
-                        MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                    } else {
-
-                    }
-                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                    mAlertDialog.dismiss();
                 }
+                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
+                mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();

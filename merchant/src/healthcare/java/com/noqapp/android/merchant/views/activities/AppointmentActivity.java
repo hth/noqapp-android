@@ -18,7 +18,6 @@ import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
-import com.applandeo.materialcalendarview.utils.DateUtils;
 import com.applandeo.materialcalendarview.utils.DrawableUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.noqapp.android.common.beans.JsonResponse;
@@ -67,12 +66,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         setContentView(R.layout.activity_appointment);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText(getString(R.string.menu_appointments));
 
         setProgressMessage("Fetching appointments...");
@@ -172,37 +166,32 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
             });
         }
         FloatingActionButton fab_add_image = findViewById(R.id.fab_add_image);
-        fab_add_image.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
-                in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
-                in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
-                in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
-                startActivityForResult(in, BOOKING_SUCCESS);
-            }
+        fab_add_image.setOnClickListener(v -> {
+            Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
+            in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
+            in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
+            in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+            startActivityForResult(in, BOOKING_SUCCESS);
         });
         FloatingActionButton fab_decrease = findViewById(R.id.fab_decrease);
         FloatingActionButton fab_increase = findViewById(R.id.fab_increase);
-        fab_decrease.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //
-                if (weight > 2 && weight <= 5) {
-                    // --weight;
+        fab_decrease.setOnClickListener(v -> {
+            //
+            if (weight > 2 && weight <= 5) {
+                // --weight;
+                ValueAnimator m1 = ValueAnimator.ofFloat(weight, --weight); //fromWeight, toWeight
+                m1.setDuration(400);
+                m1.setStartDelay(100); //Optional Delay
+                m1.setInterpolator(new LinearInterpolator());
+                m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                        calendarView.requestLayout();
+                    }
 
-
-                    ValueAnimator m1 = ValueAnimator.ofFloat(weight, --weight); //fromWeight, toWeight
-                    m1.setDuration(400);
-                    m1.setStartDelay(100); //Optional Delay
-                    m1.setInterpolator(new LinearInterpolator());
-                    m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                            calendarView.requestLayout();
-                        }
-
-                    });
-                    m1.start();
+                });
+                m1.start();
 
 
 //                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -212,35 +201,33 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 //                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
 //                    lp1.weight = 10-weight;
 //                    ll_right.setLayoutParams(lp1);
-                    fab_increase.show();
-                    if (weight == 2) {
-                        fab_decrease.hide();
-                    }
-//
+                fab_increase.show();
+                if (weight == 2) {
+                    fab_decrease.hide();
                 }
+//
             }
         });
 
-        fab_increase.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //
-                if (weight >= 2 && weight < 5) {
-                    //++weight;
+        fab_increase.setOnClickListener(v -> {
+            //
+            if (weight >= 2 && weight < 5) {
+                //++weight;
 
 
-                    ValueAnimator m1 = ValueAnimator.ofFloat(weight, ++weight); //fromWeight, toWeight
-                    m1.setDuration(400);
-                    m1.setStartDelay(100); //Optional Delay
-                    m1.setInterpolator(new LinearInterpolator());
-                    m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
-                            calendarView.requestLayout();
-                        }
+                ValueAnimator m1 = ValueAnimator.ofFloat(weight, ++weight); //fromWeight, toWeight
+                m1.setDuration(400);
+                m1.setStartDelay(100); //Optional Delay
+                m1.setInterpolator(new LinearInterpolator());
+                m1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        ((LinearLayout.LayoutParams) calendarView.getLayoutParams()).weight = (float) animation.getAnimatedValue();
+                        calendarView.requestLayout();
+                    }
 
-                    });
-                    m1.start();
+                });
+                m1.start();
 //                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
 //                    lp.weight = weight;
 //                    calendarView.setLayoutParams(lp);
@@ -248,12 +235,11 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 //                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
 //                    lp1.weight = 10-weight;
 //                    ll_right.setLayoutParams(lp1);
-                    fab_decrease.show();
-                    if (weight == 5) {
-                        fab_increase.hide();
-                    }
-//
+                fab_decrease.show();
+                if (weight == 5) {
+                    fab_increase.hide();
                 }
+//
             }
         });
         fab_increase.hide();
@@ -318,6 +304,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == BOOKING_SUCCESS) {
@@ -345,24 +332,6 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         }
     }
 
-    private List<Calendar> getDisabledDays() {
-        Calendar firstDisabled = DateUtils.getCalendar();
-        firstDisabled.add(Calendar.DAY_OF_MONTH, 2);
-
-        Calendar secondDisabled = DateUtils.getCalendar();
-        secondDisabled.add(Calendar.DAY_OF_MONTH, 1);
-
-        Calendar thirdDisabled = DateUtils.getCalendar();
-        thirdDisabled.add(Calendar.DAY_OF_MONTH, 18);
-
-        List<Calendar> calendars = new ArrayList<>();
-        calendars.add(firstDisabled);
-        calendars.add(secondDisabled);
-        calendars.add(thirdDisabled);
-        return calendars;
-    }
-
-
     private List<EventDay> parseEventList(JsonScheduleList jsonScheduleList) {
         List<EventDay> events = new ArrayList<>();
         if (null == jsonScheduleList.getJsonSchedules() || jsonScheduleList.getJsonSchedules().size() == 0) {
@@ -384,7 +353,6 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
             return events;
         }
@@ -442,12 +410,10 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
 
     @Override
     public void appointmentAccept(EventDay item) {
-
     }
 
     @Override
     public void appointmentReject(EventDay item) {
-
     }
 
 

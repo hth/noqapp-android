@@ -42,18 +42,8 @@ public class InstructionFragment extends BaseFragment {
         list_view = v.findViewById(R.id.list_view);
         tv_add_instruction = v.findViewById(R.id.tv_add_instruction);
         tv_add_new = v.findViewById(R.id.tv_add_new);
-        tv_add_new.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Medicine", true);
-            }
-        });
-        tv_add_instruction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Instruction", false);
-            }
-        });
+        tv_add_new.setOnClickListener(v1 -> AddItemDialog(getActivity(), "Add Medicine", true));
+        tv_add_instruction.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Instruction", false));
         return v;
     }
 
@@ -97,44 +87,35 @@ public class InstructionFragment extends BaseFragment {
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_add.setOnClickListener(v -> {
+            edt_item.setError(null);
+            if (edt_item.getText().toString().equals("")) {
+                edt_item.setError("Empty field not allowed");
+            } else {
+                if (isMedicine) {
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
+                    recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
 
-            @Override
-            public void onClick(View v) {
-                edt_item.setError(null);
-                if (edt_item.getText().toString().equals("")) {
-                    edt_item.setError("Empty field not allowed");
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
+                    recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
                 } else {
-                    if (isMedicine) {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
-                        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager((temp.size() / 3) + 1, LinearLayoutManager.HORIZONTAL);
-                        recyclerView.setLayoutManager(staggeredGridLayoutManager); // set LayoutManager to RecyclerView
-
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
-                        recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
-                    } else {
-                        ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList();
-                        temp.add(edt_item.getText().toString());
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setInstructionList(temp);
-                        DataObj dataObj = new DataObj();
-                        dataObj.setShortName(edt_item.getText().toString());
-                        dataObj.setSelect(false);
-                        instructionAdapter.addData(dataObj);
-                        list_view.setAdapter(instructionAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getInstructionList().add(edt_item.getText().toString());
-                        MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                    }
-                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                    mAlertDialog.dismiss();
+                    ArrayList<String> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getInstructionList();
+                    temp.add(edt_item.getText().toString());
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setInstructionList(temp);
+                    DataObj dataObj = new DataObj();
+                    dataObj.setShortName(edt_item.getText().toString());
+                    dataObj.setSelect(false);
+                    instructionAdapter.addData(dataObj);
+                    list_view.setAdapter(instructionAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getInstructionList().add(edt_item.getText().toString());
+                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                 }
+                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
+                mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();

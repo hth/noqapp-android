@@ -128,22 +128,19 @@ public class PreferenceHCServiceFragment extends BaseFragment implements
         });
 
         Button btn_add = v.findViewById(R.id.btn_add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AppUtils().hideKeyBoard(getActivity());
-                edt_add.setError(null);
-                if (TextUtils.isEmpty(edt_add.getText().toString())) {
-                    edt_add.setError(getString(R.string.error_field_required));
-                } else {
-                    DataObj dataObj = new DataObj();
-                    dataObj.setShortName(edt_add.getText().toString());
-                    dataObj.setSelect(false);
-                    selectedList.add(dataObj);
-                    selectItemListAdapter.notifyDataSetChanged();
-                    edt_add.setText("");
-                    new CustomToast().showToast(getActivity(), "Test updated Successfully");
-                }
+        btn_add.setOnClickListener(v1 -> {
+            new AppUtils().hideKeyBoard(getActivity());
+            edt_add.setError(null);
+            if (TextUtils.isEmpty(edt_add.getText().toString())) {
+                edt_add.setError(getString(R.string.error_field_required));
+            } else {
+                DataObj dataObj = new DataObj();
+                dataObj.setShortName(edt_add.getText().toString());
+                dataObj.setSelect(false);
+                selectedList.add(dataObj);
+                selectItemListAdapter.notifyDataSetChanged();
+                edt_add.setText("");
+                new CustomToast().showToast(getActivity(), "Test updated Successfully");
             }
         });
         return v;

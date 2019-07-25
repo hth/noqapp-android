@@ -55,29 +55,16 @@ public class LabTestsFragment extends BaseFragment implements AutoCompleteAdapte
         actv_search_path = v.findViewById(R.id.actv_search_path);
         actv_search_path.setThreshold(1);
         ImageView iv_clear_actv_path = v.findViewById(R.id.iv_clear_actv_path);
-        iv_clear_actv_path.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actv_search_path.setText("");
-                new AppUtils().hideKeyBoard(getActivity());
-            }
+        iv_clear_actv_path.setOnClickListener(v1 -> {
+            actv_search_path.setText("");
+            new AppUtils().hideKeyBoard(getActivity());
         });
 
         rcv_pathology = v.findViewById(R.id.rcv_pathology);
         tv_add_new = v.findViewById(R.id.tv_add_new);
         tv_add_pathology = v.findViewById(R.id.tv_add_pathology);
-        tv_add_new.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Radiology");
-            }
-        });
-        tv_add_pathology.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddPathologyItemDialog(getActivity(), "Add Pathology");
-            }
-        });
+        tv_add_new.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Radiology"));
+        tv_add_pathology.setOnClickListener(v13 -> AddPathologyItemDialog(getActivity(), "Add Pathology"));
         return v;
     }
 
@@ -164,33 +151,24 @@ public class LabTestsFragment extends BaseFragment implements AutoCompleteAdapte
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_add.setOnClickListener(v -> {
+            edt_item.setError(null);
+            if (edt_item.getText().toString().equals("")) {
+                edt_item.setError("Empty field not allowed");
+            } else {
+                ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList();
+                temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setPathologyList(temp);
+                rcv_pathology.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+
+                StaggeredGridAdapter customAdapter1 = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
+                rcv_pathology.setAdapter(customAdapter1);
+
+                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
+                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPathologyList().add(new DataObj(edt_item.getText().toString(), false));
+                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
                 mAlertDialog.dismiss();
-            }
-        });
-        btn_add.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                edt_item.setError(null);
-                if (edt_item.getText().toString().equals("")) {
-                    edt_item.setError("Empty field not allowed");
-                } else {
-                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList();
-                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setPathologyList(temp);
-                    rcv_pathology.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity())); 
-
-                    StaggeredGridAdapter customAdapter1 = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getPathologyList());
-                    rcv_pathology.setAdapter(customAdapter1);
-
-                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getPathologyList().add(new DataObj(edt_item.getText().toString(), false));
-                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                    mAlertDialog.dismiss();
-                }
             }
         });
         mAlertDialog.show();
@@ -229,72 +207,63 @@ public class LabTestsFragment extends BaseFragment implements AutoCompleteAdapte
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_add.setOnClickListener(v -> {
+            edt_item.setError(null);
+            if (edt_item.getText().toString().equals("")) {
+                edt_item.setError("Empty field not allowed");
+            } else if (selectionPos == -1) {
+                new CustomToast().showToast(getActivity(), "please select a category");
+            } else {
+                if (selectionPos == 0) {
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSonoList(temp);
+                    rcv_sono.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-            @Override
-            public void onClick(View v) {
-                edt_item.setError(null);
-                if (edt_item.getText().toString().equals("")) {
-                    edt_item.setError("Empty field not allowed");
-                } else if (selectionPos == -1) {
-                    new CustomToast().showToast(getActivity(), "please select a category");
-                } else {
-                    if (selectionPos == 0) {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSonoList(temp);
-                        rcv_sono.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList());
+                    rcv_sono.setAdapter(customAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
+                } else if (selectionPos == 1) {
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMriList(temp);
+                    rcv_mri.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSonoList());
-                        rcv_sono.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSonoList().add(new DataObj(edt_item.getText().toString(), false));
-                    } else if (selectionPos == 1) {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMriList(temp);
-                        rcv_mri.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
+                    rcv_mri.setAdapter(customAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
+                } else if (selectionPos == 2) {
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setScanList(temp);
+                    rcv_scan.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMriList());
-                        rcv_mri.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getMriList().add(new DataObj(edt_item.getText().toString(), false));
-                    } else if (selectionPos == 2) {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setScanList(temp);
-                        rcv_scan.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
+                    rcv_scan.setAdapter(customAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
+                } else if (selectionPos == 3){
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setXrayList(temp);
+                    rcv_xray.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getScanList());
-                        rcv_scan.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getScanList().add(new DataObj(edt_item.getText().toString(), false));
-                    } else if (selectionPos == 3){
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setXrayList(temp);
-                        rcv_xray.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList());
+                    rcv_xray.setAdapter(customAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
+                } else  {
+                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList();
+                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSpecList(temp);
+                    rcv_special.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getXrayList());
-                        rcv_xray.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getXrayList().add(new DataObj(edt_item.getText().toString(), false));
-                    } else  {
-                        ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList();
-                        temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                        MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSpecList(temp);
-                        rcv_special.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-
-                        StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList());
-                        rcv_special.setAdapter(customAdapter);
-                        MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSpecList().add(new DataObj(edt_item.getText().toString(), false));
-                    }
-                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                    new CustomToast().showToast( getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                    mAlertDialog.dismiss();
+                    StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSpecList());
+                    rcv_special.setAdapter(customAdapter);
+                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSpecList().add(new DataObj(edt_item.getText().toString(), false));
                 }
+                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
+                new CustomToast().showToast( getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
+                mAlertDialog.dismiss();
             }
         });
         mAlertDialog.show();

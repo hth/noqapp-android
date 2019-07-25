@@ -55,12 +55,7 @@ public class FollowUpListActivity extends BaseActivity implements QueuePersonLis
         rl_empty = findViewById(R.id.rl_empty);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText(getString(R.string.screen_followup));
         setProgressMessage("Fetching followup data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
