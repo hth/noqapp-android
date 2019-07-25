@@ -1,18 +1,12 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
+import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.HospitalVisitFor;
@@ -34,6 +30,7 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.HospitalVisitScheduleAdapter;
 import com.noqapp.android.merchant.views.adapters.HospitalVisitScheduleListAdapter;
 
+import java.util.Date;
 import java.util.List;
 
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
@@ -67,44 +64,62 @@ public class HospitalVisitScheduleFragment extends BaseFragment
         return view;
     }
 
+    private boolean isExpectedDateInFuture(String dateString) {
+        try {
+            Date date = CommonHelper.SDF_ISO8601_FMT.parse(dateString);
+            int date_diff = new Date().compareTo(date);
+            if (date_diff < 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public void onImmuneItemClick(JsonHospitalVisitSchedule jsonHospitalVisitSchedule, String key, String booleanReplacement) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        builder.setTitle(null);
-        View view = inflater.inflate(R.layout.dialog_update_hvs, null, false);
-        SegmentedControl sc_hvs_status = view.findViewById(R.id.sc_hvs_status);
-        List<String> tempList = BooleanReplacementEnum.asListOfDescription();
-        sc_hvs_status.addSegments(tempList);
-        sc_hvs_status.setSelectedSegment(tempList.indexOf(booleanReplacement));
-        TextView tv_sub_header = view.findViewById(R.id.tv_sub_header);
-        tv_sub_header.setText(key);
-        ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
-        Button btn_update = view.findViewById(R.id.btn_update);
-        builder.setView(view);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        btn_update.setOnClickListener(v -> {
-            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                showProgress();
-                HospitalVisitFor hospitalVisitFor = new HospitalVisitFor();
-                hospitalVisitFor.setHospitalVisitScheduleId(jsonHospitalVisitSchedule.getHospitalVisitScheduleId());
-                hospitalVisitFor.setVisitingFor(key);
-                hospitalVisitFor.setBooleanReplacement(BooleanReplacementEnum.getValue(
-                        tempList.get(sc_hvs_status.getSelectedAbsolutePosition())));
-                hospitalVisitFor.setQid(getArguments().getString("qUserId"));
-                MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
-                medicalHistoryApiCalls.modifyVisitingFor(BaseLaunchActivity.getDeviceID(),
-                        LaunchActivity.getLaunchActivity().getEmail(),
-                        LaunchActivity.getLaunchActivity().getAuth(), hospitalVisitFor);
-                mAlertDialog.dismiss();
-            } else {
-                ShowAlertInformation.showNetworkDialog(getActivity());
-            }
-        });
-        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
-        mAlertDialog.show();
+        if (isExpectedDateInFuture(jsonHospitalVisitSchedule.getExpectedDate())) {
+            new CustomToast().showToast(getActivity(), "Vaccination date is in future. you cannot update now.");
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
+            builder.setTitle(null);
+            View view = inflater.inflate(R.layout.dialog_update_hvs, null, false);
+            SegmentedControl sc_hvs_status = view.findViewById(R.id.sc_hvs_status);
+            List<String> tempList = BooleanReplacementEnum.asListOfDescription();
+            sc_hvs_status.addSegments(tempList);
+            sc_hvs_status.setSelectedSegment(tempList.indexOf(booleanReplacement));
+            TextView tv_sub_header = view.findViewById(R.id.tv_sub_header);
+            tv_sub_header.setText(key);
+            ImageView actionbarBack = view.findViewById(R.id.actionbarBack);
+            Button btn_update = view.findViewById(R.id.btn_update);
+            builder.setView(view);
+            final AlertDialog mAlertDialog = builder.create();
+            mAlertDialog.setCanceledOnTouchOutside(false);
+            btn_update.setOnClickListener(v -> {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    showProgress();
+                    HospitalVisitFor hospitalVisitFor = new HospitalVisitFor();
+                    hospitalVisitFor.setHospitalVisitScheduleId(jsonHospitalVisitSchedule.getHospitalVisitScheduleId());
+                    hospitalVisitFor.setVisitingFor(key);
+                    hospitalVisitFor.setBooleanReplacement(BooleanReplacementEnum.getValue(
+                            tempList.get(sc_hvs_status.getSelectedAbsolutePosition())));
+                    hospitalVisitFor.setQid(getArguments().getString("qUserId"));
+                    MedicalHistoryApiCalls medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
+                    medicalHistoryApiCalls.modifyVisitingFor(BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(), hospitalVisitFor);
+                    mAlertDialog.dismiss();
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
+                }
+            });
+            actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
+            mAlertDialog.show();
+        }
 
     }
 
