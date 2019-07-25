@@ -115,7 +115,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             TextView tv_title = findViewById(R.id.tv_title);
             tv_title.setVisibility(View.GONE);
             LinearLayout ll_booking = findViewById(R.id.ll_booking);
-            btn_book_appointment.setText("Book Walk-ins Appointment");
+            btn_book_appointment.setText("Book Walk-in Appointment");
             ((RelativeLayout.LayoutParams) ll_booking.getLayoutParams()).addRule(RelativeLayout.BELOW, R.id.ll_top);
         }
 

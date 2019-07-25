@@ -68,10 +68,12 @@ public class HospitalVisitScheduleListAdapter extends BaseAdapter {
         }
         BooleanReplacementEnum booleanReplacementEnum = (BooleanReplacementEnum) getItem(position);
         recordHolder.tv_hvs_name.setText(mKeys[position]);
-        String dateValue = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
-                jsonHospitalVisitSchedule.getVisitedDate());
-        recordHolder.tv_hvs_visitedDate.setText(dateValue);
-        recordHolder.tv_hvs_status.setText("Status- "+booleanReplacementEnum.getDescription());
+//        String visitedDate = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
+//                jsonHospitalVisitSchedule.getVisitedDate());
+        String expectedDate = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
+                jsonHospitalVisitSchedule.getExpectedDate());
+        recordHolder.tv_hvs_visitedDate.setText(expectedDate);
+        recordHolder.tv_hvs_status.setText(BooleanReplacementEnum.getDisplayDescription(booleanReplacementEnum));
         recordHolder.card_view.setCardBackgroundColor(Color.parseColor(booleanReplacementEnum.getColor()));
         recordHolder.card_view.setOnClickListener(v -> {
             if (null != listener) {

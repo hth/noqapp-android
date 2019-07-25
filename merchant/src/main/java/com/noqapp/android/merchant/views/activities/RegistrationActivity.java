@@ -63,12 +63,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Register");
 
@@ -83,12 +78,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
         tv_transgender = findViewById(R.id.tv_transgender);
         ll_pwd = findViewById(R.id.ll_pwd);
         btnRegistration = findViewById(R.id.btnRegistration);
-        btnRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                action_Registration();
-            }
-        });
+        btnRegistration.setOnClickListener(view -> action_Registration());
         tv_birthday.setOnClickListener(this);
         tv_male.setOnClickListener(this);
         tv_female.setOnClickListener(this);

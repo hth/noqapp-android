@@ -59,17 +59,14 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        iv_view_followup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    Intent in = new Intent(getActivity(), FollowUpListActivity.class);
-                    in.putExtra("codeQR", jsonTopic.getCodeQR());
-                    in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
-                    ((Activity) context).startActivity(in);
-                } else {
-                    ShowAlertInformation.showNetworkDialog(context);
-                }
+        iv_view_followup.setOnClickListener(view -> {
+            if (LaunchActivity.getLaunchActivity().isOnline()) {
+                Intent in = new Intent(getActivity(), FollowUpListActivity.class);
+                in.putExtra("codeQR", jsonTopic.getCodeQR());
+                in.putExtra("visibility", DataVisibilityEnum.H == jsonTopic.getJsonDataVisibility().getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name()));
+                ((Activity) context).startActivity(in);
+            } else {
+                ShowAlertInformation.showNetworkDialog(context);
             }
         });
         iv_product_list.setVisibility(View.GONE);
@@ -83,19 +80,16 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
                 fl_appointment.setVisibility(View.GONE);
                 iv_appointment.setVisibility(View.GONE);
         }
-        iv_appointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Intent intent = new Intent(getActivity(), AppointmentActivity.class);
-                intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
-                intent.putExtra("displayName",jsonTopic.getDisplayName());
-                intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
-                ((Activity) context).startActivity(intent);
+        iv_appointment.setOnClickListener(v1 -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
             }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            Intent intent = new Intent(getActivity(), AppointmentActivity.class);
+            intent.putExtra(IBConstant.KEY_CODE_QR, jsonTopic.getCodeQR());
+            intent.putExtra("displayName",jsonTopic.getDisplayName());
+            intent.putExtra("bizCategoryId",jsonTopic.getBizCategoryId());
+            ((Activity) context).startActivity(intent);
         });
         return v;
     }
@@ -153,67 +147,59 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
         btn_create_order = view.findViewById(R.id.btn_create_order);
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_token.setText("Search Patient");
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
+        btn_create_token.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            boolean isValid = true;
+            edt_mobile.setError(null);
+            edt_id.setError(null);
+            new AppUtils().hideKeyBoard(getActivity());
+            // get selected radio button from radioGroup
+            int selectedId = rg_user_id.getCheckedRadioButtonId();
+            if (selectedId == R.id.rb_mobile) {
+                if (TextUtils.isEmpty(edt_mobile.getText())) {
+                    edt_mobile.setError(getString(R.string.error_mobile_blank));
+                    isValid = false;
                 }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                boolean isValid = true;
-                edt_mobile.setError(null);
-                edt_id.setError(null);
-                new AppUtils().hideKeyBoard(getActivity());
-                // get selected radio button from radioGroup
-                int selectedId = rg_user_id.getCheckedRadioButtonId();
-                if (selectedId == R.id.rb_mobile) {
-                    if (TextUtils.isEmpty(edt_mobile.getText())) {
-                        edt_mobile.setError(getString(R.string.error_mobile_blank));
-                        isValid = false;
-                    }
-                } else {
-                    if (TextUtils.isEmpty(edt_id.getText())) {
-                        edt_id.setError(getString(R.string.error_customer_id));
-                        isValid = false;
-                    }
+            } else {
+                if (TextUtils.isEmpty(edt_id.getText())) {
+                    edt_id.setError(getString(R.string.error_customer_id));
+                    isValid = false;
                 }
+            }
 
 
-                if (isValid) {
-                    setProgressMessage("Searching patient...");
-                    showProgress();
-                    setProgressCancel(false);
-                    setDispensePresenter();
-                    String phone = "";
+            if (isValid) {
+                setProgressMessage("Searching patient...");
+                showProgress();
+                setProgressCancel(false);
+                setDispensePresenter();
+                String phone = "";
+                cid = "";
+                if (rb_mobile.isChecked()) {
+                    edt_id.setText("");
+                    countryCode = ccp.getSelectedCountryCode();
+                    phone = countryCode + edt_mobile.getText().toString();
                     cid = "";
-                    if (rb_mobile.isChecked()) {
-                        edt_id.setText("");
-                        countryCode = ccp.getSelectedCountryCode();
-                        phone = countryCode + edt_mobile.getText().toString();
-                        cid = "";
-                    } else {
-                        cid = edt_id.getText().toString();
-                        edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
-                    }
-                    businessCustomerApiCalls = new BusinessCustomerApiCalls();
-                    businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
-                    businessCustomerApiCalls.findCustomer(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                    btn_create_token.setClickable(false);
-                    //  mAlertDialog.dismiss();
+                } else {
+                    cid = edt_id.getText().toString();
+                    edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                 }
+                businessCustomerApiCalls = new BusinessCustomerApiCalls();
+                businessCustomerApiCalls.setFindCustomerPresenter(MerchantDetailFragment.this);
+                businessCustomerApiCalls.findCustomer(
+                        BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                btn_create_token.setClickable(false);
+                //  mAlertDialog.dismiss();
             }
         });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
@@ -244,39 +230,36 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             tv_select_patient.setVisibility(View.VISIBLE);
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
-            btn_create_order.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        btn_create_order.setEnabled(false);
-                        setProgressMessage("Creating token...");
-                        showProgress();
-                        setProgressCancel(false);
-                        String phoneNoWithCode = "";
-                        setDispensePresenter();
-                        if (TextUtils.isEmpty(cid)) {
-                            phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
-                        }
-
-                        JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
-                                setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                        jsonBusinessCustomer
-                                .setCodeQR(topicsList.get(currentPosition).getCodeQR())
-                                .setCustomerPhone(phoneNoWithCode)
-                                .setBusinessCustomerId(cid);
-                        manageQueueApiCalls.dispenseTokenWithClientInfo(
-                                BaseLaunchActivity.getDeviceID(),
-                                LaunchActivity.getLaunchActivity().getEmail(),
-                                LaunchActivity.getLaunchActivity().getAuth(),
-                                jsonBusinessCustomer);
-
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(getActivity());
+            btn_create_order.setOnClickListener(v -> {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                        return;
                     }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    btn_create_order.setEnabled(false);
+                    setProgressMessage("Creating token...");
+                    showProgress();
+                    setProgressCancel(false);
+                    String phoneNoWithCode = "";
+                    setDispensePresenter();
+                    if (TextUtils.isEmpty(cid)) {
+                        phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+                    }
+
+                    JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
+                            setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                    jsonBusinessCustomer
+                            .setCodeQR(topicsList.get(currentPosition).getCodeQR())
+                            .setCustomerPhone(phoneNoWithCode)
+                            .setBusinessCustomerId(cid);
+                    manageQueueApiCalls.dispenseTokenWithClientInfo(
+                            BaseLaunchActivity.getDeviceID(),
+                            LaunchActivity.getLaunchActivity().getEmail(),
+                            LaunchActivity.getLaunchActivity().getAuth(),
+                            jsonBusinessCustomer);
+
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
                 }
             });
         }

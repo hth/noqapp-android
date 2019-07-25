@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.noqapp.android.client.R;
+import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 
@@ -21,7 +22,7 @@ public class HospitalVisitScheduleListAdapter extends BaseAdapter {
     private final OnItemClickListener listener;
     private  Map<String, BooleanReplacementEnum> visitingFor;
     private String[] mKeys;
-    private String date;
+    private JsonHospitalVisitSchedule jsonHospitalVisitSchedule;
 
     public interface OnItemClickListener {
         void onImmuneItemClick();
@@ -29,12 +30,12 @@ public class HospitalVisitScheduleListAdapter extends BaseAdapter {
 
 
     public HospitalVisitScheduleListAdapter(Context context, Map<String, BooleanReplacementEnum> visitingFor,
-                                            OnItemClickListener onItemClickListener, String date) {
+                                            OnItemClickListener onItemClickListener, JsonHospitalVisitSchedule jsonHospitalVisitSchedule) {
         this.context = context;
         this.visitingFor = visitingFor;
         this.listener = onItemClickListener;
         mKeys = visitingFor.keySet().toArray(new String[visitingFor.size()]);
-        this.date = date ;
+        this.jsonHospitalVisitSchedule = jsonHospitalVisitSchedule ;
     }
 
     public int getCount() {
@@ -66,10 +67,12 @@ public class HospitalVisitScheduleListAdapter extends BaseAdapter {
         }
         BooleanReplacementEnum booleanReplacementEnum = (BooleanReplacementEnum) getItem(position);
         recordHolder.tv_hvs_name.setText(mKeys[position]);
-        String dateValue = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
-                date);
-        recordHolder.tv_hvs_visitedDate.setText(dateValue);
-        recordHolder.tv_hvs_status.setText("Status- "+booleanReplacementEnum.getDescription());
+//        String visitedDate = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
+//                jsonHospitalVisitSchedule.getVisitedDate());
+        String expectedDate = CommonHelper.formatStringDate(CommonHelper.SDF_DOB_FROM_UI,
+                jsonHospitalVisitSchedule.getExpectedDate());
+        recordHolder.tv_hvs_visitedDate.setText(expectedDate);
+        recordHolder.tv_hvs_status.setText(BooleanReplacementEnum.getDisplayDescription(booleanReplacementEnum));
         recordHolder.card_view.setCardBackgroundColor(Color.parseColor(booleanReplacementEnum.getColor()));
         recordHolder.card_view.setOnClickListener(v -> {
             if (null != listener) {

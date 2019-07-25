@@ -42,12 +42,9 @@ public class QueueReviewCardAdapter extends RecyclerView.Adapter {
             float f = reviews.get(listPosition).getAggregateRatingCount() * 1.0f / reviews.get(listPosition).getJsonReviews().size();
             holder.tv_business_customer_id.setText("Rating " + String.format("%.01f", f));
         }
-        holder.card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.currentItemClick(reviews.get(listPosition));
-                }
+        holder.card_view.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.currentItemClick(reviews.get(listPosition));
             }
         });
     }

@@ -65,6 +65,7 @@ public class AllUsersProfileActivity extends BaseActivity implements ProfileAdap
         }
         Intent in = new Intent(this, HospitalVisitScheduleActivity.class);
         in.putExtra("medicalProfile", medicalProfile);
+        in.putExtra("jsonProfile", jsonProfile);
         startActivity(in);
 
     }

@@ -51,6 +51,9 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
     @JsonProperty("ed")
     private String expectedDate;
 
+    @JsonProperty("pb")
+    private String performedBy;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -105,6 +108,15 @@ public class JsonHospitalVisitSchedule extends AbstractDomain implements Seriali
 
     public JsonHospitalVisitSchedule setExpectedDate(String expectedDate) {
         this.expectedDate = expectedDate;
+        return this;
+    }
+
+    public String getPerformedBy() {
+        return performedBy;
+    }
+
+    public JsonHospitalVisitSchedule setPerformedBy(String performedBy) {
+        this.performedBy = performedBy;
         return this;
     }
 

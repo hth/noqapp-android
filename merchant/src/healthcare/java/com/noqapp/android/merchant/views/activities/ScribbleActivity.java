@@ -60,29 +60,18 @@ public class ScribbleActivity extends BaseActivity  {
         edt_prescription = findViewById(R.id.edt_prescription);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText(getString(R.string.screen_prescription));
         setProgressMessage("Fetching data...");
         Button btn_submit = findViewById(R.id.btn_submit);
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AppUtils().hideKeyBoard(ScribbleActivity.this);
-                takeScreenshot();
-            }
+        btn_submit.setOnClickListener(v -> {
+            new AppUtils().hideKeyBoard(ScribbleActivity.this);
+            takeScreenshot();
         });
         Button btn_clear = findViewById(R.id.btn_clear);
-        btn_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AppUtils().hideKeyBoard(ScribbleActivity.this);
-                edt_prescription.setText("");
-            }
+        btn_clear.setOnClickListener(v -> {
+            new AppUtils().hideKeyBoard(ScribbleActivity.this);
+            edt_prescription.setText("");
         });
         if (!isAppInstalled(packageName)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -96,28 +85,20 @@ public class ScribbleActivity extends BaseActivity  {
             Button btn_no = customDialogView.findViewById(R.id.btn_no);
             TextView tv_title = customDialogView.findViewById(R.id.tvtitle);
             TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
-            btn_no.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mAlertDialog.dismiss();
+            btn_no.setOnClickListener(v -> mAlertDialog.dismiss());
+            btn_yes.setOnClickListener(v -> {
+                Uri uri = Uri.parse("market://details?id=" + packageName);
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
                 }
-            });
-            btn_yes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Uri uri = Uri.parse("market://details?id=" + packageName);
-                    Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                    goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                    try {
-                        startActivity(goToMarket);
-                    } catch (ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
-                    }
-                    mAlertDialog.dismiss();
+                mAlertDialog.dismiss();
 
-                }
             });
             mAlertDialog.show();
             btn_yes.setText("Download");

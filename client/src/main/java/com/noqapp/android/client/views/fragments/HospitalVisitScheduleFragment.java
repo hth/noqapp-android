@@ -14,7 +14,6 @@ import com.noqapp.android.client.R;
 import com.noqapp.android.client.views.adapters.HospitalVisitScheduleAdapter;
 import com.noqapp.android.client.views.adapters.HospitalVisitScheduleListAdapter;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
-import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class HospitalVisitScheduleFragment extends BaseFragment
 
     @Override
     public void onImmuneItemClick() {
-        new CustomToast().showToast(getActivity(), "Do some action");
+       // new CustomToast().showToast(getActivity(), "Do some action");
     }
 
 }

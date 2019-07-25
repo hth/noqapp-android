@@ -116,6 +116,7 @@ public class PatientProfileActivity extends BaseActivity implements
                 Intent intent = new Intent(PatientProfileActivity.this, HospitalVisitScheduleActivity.class);
                 intent.putExtra("qCodeQR", codeQR);
                 intent.putExtra("data", jsonQueuedPerson);
+                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                 startActivity(intent);
             }
         });

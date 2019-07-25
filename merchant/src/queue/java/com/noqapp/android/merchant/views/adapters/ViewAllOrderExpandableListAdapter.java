@@ -33,7 +33,8 @@ public class ViewAllOrderExpandableListAdapter extends BaseExpandableListAdapter
     private boolean visibility;
 
     public ViewAllOrderExpandableListAdapter(Context context, List<Date> listDataHeader,
-                                             Map<Date, List<JsonPurchaseOrderList>> listChildData, boolean visibility ) {
+                                             Map<Date, List<JsonPurchaseOrderList>> listChildData,
+                                             boolean visibility ) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;

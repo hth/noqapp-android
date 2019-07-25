@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -151,13 +152,10 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         tv_toolbar_title.setText("Test List");
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                if (null != updateWholeList) {
-                    updateWholeList.updateWholeList();
-                }
+        actionbarBack.setOnClickListener(v -> {
+            finish();
+            if (null != updateWholeList) {
+                updateWholeList.updateWholeList();
             }
         });
         view_test = findViewById(R.id.view_test);
@@ -166,12 +164,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         rcv_menu_select = findViewById(R.id.rcv_menu_select);
         rcv_menu_select.setLayoutManager(getFlexBoxLayoutManager(this));
         btn_place_order = findViewById(R.id.btn_place_order);
-        btn_place_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCreateTokenDialogWithMobile(HCSMenuActivity.this, codeQR);
-            }
-        });
+        btn_place_order.setOnClickListener(v -> showCreateTokenDialogWithMobile(HCSMenuActivity.this, codeQR));
 
         currencySymbol = BaseLaunchActivity.getCurrencySymbol();
         jsonTopic = (JsonTopic) getIntent().getSerializableExtra("jsonTopic");
@@ -180,12 +173,9 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         actv_search = findViewById(R.id.actv_search);
         actv_search.setThreshold(1);
         ImageView iv_clear_actv = findViewById(R.id.iv_clear_actv);
-        iv_clear_actv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actv_search.setText("");
-                new AppUtils().hideKeyBoard(HCSMenuActivity.this);
-            }
+        iv_clear_actv.setOnClickListener(v -> {
+            actv_search.setText("");
+            new AppUtils().hideKeyBoard(HCSMenuActivity.this);
         });
         if (TextUtils.isEmpty(LaunchActivity.getLaunchActivity().getSuggestionsProductPrefs())) {
             callFileApi();
@@ -561,47 +551,35 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
                 TextView tv_amount = v.findViewById(R.id.tv_amount);
                 tv_title.setText(menuSelectData.get(i).getJsonMasterLab().getProductShortName());
                 tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(i).getPrice()));
-                tv_amount.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        LayoutInflater inflater = LayoutInflater.from(mContext);
-                        builder.setTitle(null);
-                        View prideDialog = inflater.inflate(R.layout.dialog_modify_price, null, false);
-                        final EditText edt_prod_price = prideDialog.findViewById(R.id.edt_prod_price);
-                        builder.setView(prideDialog);
-                        final AlertDialog mAlertDialog = builder.create();
-                        mAlertDialog.setCanceledOnTouchOutside(false);
-                        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        Button btn_update = prideDialog.findViewById(R.id.btn_update);
-                        Button btn_cancel = prideDialog.findViewById(R.id.btn_cancel);
-                        btn_cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mAlertDialog.dismiss();
-                            }
-                        });
-                        btn_update.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                edt_prod_price.setError(null);
-                                if (edt_prod_price.getText().toString().equals("")) {
-                                    edt_prod_price.setError(mContext.getString(R.string.empty_price));
-                                } else {
+                tv_amount.setOnClickListener(v1 -> {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+                    LayoutInflater inflater1 = LayoutInflater.from(mContext);
+                    builder1.setTitle(null);
+                    View prideDialog = inflater1.inflate(R.layout.dialog_modify_price, null, false);
+                    final EditText edt_prod_price = prideDialog.findViewById(R.id.edt_prod_price);
+                    builder1.setView(prideDialog);
+                    final AlertDialog mAlertDialog = builder1.create();
+                    mAlertDialog.setCanceledOnTouchOutside(false);
+                    mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    Button btn_update = prideDialog.findViewById(R.id.btn_update);
+                    Button btn_cancel = prideDialog.findViewById(R.id.btn_cancel);
+                    btn_cancel.setOnClickListener(v11 -> mAlertDialog.dismiss());
+                    btn_update.setOnClickListener(v112 -> {
+                        edt_prod_price.setError(null);
+                        if (edt_prod_price.getText().toString().equals("")) {
+                            edt_prod_price.setError(mContext.getString(R.string.empty_price));
+                        } else {
 //                                    new AppUtils().hideKeyBoard(HCSMenuActivity.this);
 //                                    mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                                    InputMethodManager imm = (InputMethodManager) getSystemService(mContext.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
-                                    menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
-                                    tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(pos).getPrice()));
-                                    tv_cost.setText(currencySymbol + " " + String.valueOf(calculateTotalPrice()));
-                                    mAlertDialog.dismiss();
-                                }
-                            }
-                        });
-                        mAlertDialog.show();
-                    }
+                            InputMethodManager imm = (InputMethodManager) getSystemService(mContext.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(edt_prod_price.getWindowToken(), 0);
+                            menuSelectData.get(pos).setPrice(Double.parseDouble(edt_prod_price.getText().toString()));
+                            tv_amount.setText(currencySymbol + " " + String.valueOf(menuSelectData.get(pos).getPrice()));
+                            tv_cost.setText(currencySymbol + " " + String.valueOf(calculateTotalPrice()));
+                            mAlertDialog.dismiss();
+                        }
+                    });
+                    mAlertDialog.show();
                 });
                 ll_order_list.addView(v);
                 price += 1 * menuSelectData.get(pos).getPrice();
@@ -638,7 +616,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
         btn_create_token = view.findViewById(R.id.btn_create_token);
         btn_create_order = view.findViewById(R.id.btn_create_order);
         btn_create_token.setText("Search Patient");
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
+        btn_create_token.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -686,7 +664,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
             }
         });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
+        actionbarBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAlertDialog.dismiss();
@@ -727,7 +705,7 @@ public class HCSMenuActivity extends BaseActivity implements FilePresenter,
             rl_total.setVisibility(View.VISIBLE);
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
-            btn_create_order.setOnClickListener(new View.OnClickListener() {
+            btn_create_order.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (LaunchActivity.getLaunchActivity().isOnline()) {

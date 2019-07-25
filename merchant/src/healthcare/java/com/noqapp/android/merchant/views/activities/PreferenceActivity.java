@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,7 +71,8 @@ public class PreferenceActivity extends BaseActivity implements
     private ArrayList<JsonMasterLab> masterDataXray = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterDataPath = new ArrayList<>();
     private ArrayList<JsonMasterLab> masterDataSpec = new ArrayList<>();
-    private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment, preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
+    private PreferenceHCServiceFragment preferenceSonoFragment, preferencePathFragment, preferenceMriFragment,
+            preferenceScanFragment, preferenceXrayFragment, preferenceSpecFragment;
     private MedicineFragment medicineFragment;
     public PreferenceObjects preferenceObjects;
 
@@ -92,12 +92,7 @@ public class PreferenceActivity extends BaseActivity implements
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Case History Settings");
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         preferenceActivity = this;
         try {
             preferenceObjects = new Gson().fromJson(LaunchActivity.getLaunchActivity().getSuggestionsPrefs(), PreferenceObjects.class);

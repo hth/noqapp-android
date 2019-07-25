@@ -27,50 +27,51 @@ import java.util.List;
 
 
 public class PreferredStoreFragment extends BaseFragment {
-
-    private RecyclerView rcv_one, rcv_two;
-    private TextView tv_label_one, tv_label_two, tv_sublabel_one, tv_sublabel_two;
     private int pos = -1;
     private PreferredListAdapter preferredListAdapter1 = null;
     private PreferredListAdapter preferredListAdapter2 = null;
+    private int TAB_MRI_CITISCAN = 0;
+    private int TAB_SONO_XRAY = 1;
+    private int TAB_PATH_SPEC = 2;
+    private int TAB_PHYSIO_MEDICINE = 3;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.frag_preferred_store, container, false);
-        rcv_one = v.findViewById(R.id.rcv_one);
-        rcv_two = v.findViewById(R.id.rcv_two);
-        tv_label_one = v.findViewById(R.id.tv_label_one);
-        tv_label_two = v.findViewById(R.id.tv_label_two);
-        tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
-        tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
+        RecyclerView rcv_one = v.findViewById(R.id.rcv_one);
+        RecyclerView rcv_two = v.findViewById(R.id.rcv_two);
+        TextView tv_label_one = v.findViewById(R.id.tv_label_one);
+        TextView tv_label_two = v.findViewById(R.id.tv_label_two);
+        TextView tv_sublabel_one = v.findViewById(R.id.tv_sublabel_one);
+        TextView tv_sublabel_two = v.findViewById(R.id.tv_sublabel_two);
         rcv_one.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rcv_two.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         pos = getArguments().getInt("type");
 
-        if (pos == 0) {
+        if (pos == TAB_MRI_CITISCAN) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.MRI));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SCAN));
             tv_label_one.setText(HealthCareServiceEnum.MRI.getDescription());
             tv_label_two.setText(HealthCareServiceEnum.SCAN.getDescription());
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.MRI.getDescription()));
             tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.SCAN.getDescription()));
-        } else if (pos == 1) {
+        } else if (pos == TAB_SONO_XRAY) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SONO));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.XRAY));
             tv_label_one.setText(HealthCareServiceEnum.SONO.getDescription());
             tv_label_two.setText(HealthCareServiceEnum.XRAY.getDescription());
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.SONO.getDescription()));
             tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.XRAY.getDescription()));
-        } else if (pos == 2) {
+        } else if (pos == TAB_PATH_SPEC) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PATH));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.SPEC));
             tv_label_one.setText(HealthCareServiceEnum.PATH.getDescription());
             tv_label_two.setText(HealthCareServiceEnum.SPEC.getDescription());
             tv_sublabel_one.setText(getMessage(HealthCareServiceEnum.PATH.getDescription()));
             tv_sublabel_two.setText(getMessage(HealthCareServiceEnum.SPEC.getDescription()));
-        } else if (pos == 3) {
+        } else if (pos == TAB_PHYSIO_MEDICINE) {
             preferredListAdapter1 = new PreferredListAdapter(getActivity(), initCheckBoxList(HealthCareServiceEnum.PHYS));
             preferredListAdapter2 = new PreferredListAdapter(getActivity(), initCheckBoxList(null));
             tv_label_one.setText(HealthCareServiceEnum.PHYS.getDescription());
@@ -82,26 +83,6 @@ public class PreferredStoreFragment extends BaseFragment {
         rcv_two.setAdapter(preferredListAdapter2);
         return v;
     }
-
-    private HealthCareServiceEnum getHealthCareEnum(int pos) {
-        switch (pos) {
-            case 0:
-                return HealthCareServiceEnum.MRI;
-            case 1:
-                return HealthCareServiceEnum.SCAN;
-            case 2:
-                return HealthCareServiceEnum.SONO;
-            case 3:
-                return HealthCareServiceEnum.XRAY;
-            case 4:
-                return HealthCareServiceEnum.PATH;
-            case 5:
-                return HealthCareServiceEnum.SPEC;
-            default:
-                return HealthCareServiceEnum.PATH;
-        }
-    }
-
 
     private List<ParentCheckBoxObj> initCheckBoxList(HealthCareServiceEnum healthCareServiceEnum) {
 
@@ -188,7 +169,7 @@ public class PreferredStoreFragment extends BaseFragment {
 
 
     public void saveData() {
-        if (pos == 0) {
+        if (pos == TAB_MRI_CITISCAN) {
             List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (null == PreferredStoreActivity.getPreferredStoreActivity().preferenceObjects.getPreferredStoreInfoHashMap().
@@ -217,7 +198,7 @@ public class PreferredStoreFragment extends BaseFragment {
                 }
             }
 
-        } else if (pos == 1) {
+        } else if (pos == TAB_SONO_XRAY) {
             List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (temp1.get(i).getSelectedPos() > -1) {
@@ -241,7 +222,7 @@ public class PreferredStoreFragment extends BaseFragment {
                 }
             }
 
-        } else if (pos == 2) {
+        } else if (pos == TAB_PATH_SPEC) {
             List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (temp1.get(i).getSelectedPos() > -1) {
@@ -265,7 +246,7 @@ public class PreferredStoreFragment extends BaseFragment {
                 }
             }
 
-        } else if (pos == 3) {
+        } else if (pos == TAB_PHYSIO_MEDICINE) {
             List<ParentCheckBoxObj> temp1 = preferredListAdapter1.getParentCheckBoxObjs();
             for (int i = 0; i < temp1.size(); i++) {
                 if (temp1.get(i).getSelectedPos() > -1) {
@@ -288,7 +269,6 @@ public class PreferredStoreFragment extends BaseFragment {
                             get(temp2.get(i).getJsonTopic().getCodeQR()).setBizStoreIdPharmacy("");
                 }
             }
-
         }
     }
 
@@ -299,83 +279,47 @@ public class PreferredStoreFragment extends BaseFragment {
             return -1;
 
         if (null == hcse) {
-            for (int i = 0; i < temp.size(); i++) {
-                if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
-                    return i;
-                }
-            }
-            return -1;
+            return findItemPos(temp, preferredStoreInfo.getBizStoreIdPharmacy());
         }
         switch (hcse) {
             case SONO: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSono())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdSono());
             }
             case SCAN: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdScan())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdScan());
             }
             case MRI: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdMri())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdMri());
             }
             case PATH: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPath())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdPath());
             }
             case XRAY: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdXray())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdXray());
             }
             case SPEC: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSpecial())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdSpecial());
             }
             case PHYS: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPhysio())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdPhysio());
             }
             default: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp, preferredStoreInfo.getBizStoreIdPharmacy());
             }
         }
     }
 
-    private String getMessage(String str){
-        return  "Select preferred store to receive "+str+" requested for patients";
+    private int findItemPos(List<CheckBoxObj> temp, String bizStoreId) {
+        for (int i = 0; i < temp.size(); i++) {
+            if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(bizStoreId)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private String getMessage(String str) {
+        return "Select preferred store to receive " + str + " requested for patients";
     }
 
     private List<JsonPreferredBusiness> getBusinessStoreList(String codeQR) {

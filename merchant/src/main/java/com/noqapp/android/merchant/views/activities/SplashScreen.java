@@ -83,12 +83,9 @@ public class SplashScreen extends BaseActivity implements DeviceRegisterPresente
             final AlertDialog mAlertDialog = builder.create();
             mAlertDialog.setCanceledOnTouchOutside(false);
             Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-            btn_yes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mAlertDialog.dismiss();
-                    finish();
-                }
+            btn_yes.setOnClickListener(v -> {
+                mAlertDialog.dismiss();
+                finish();
             });
             mAlertDialog.show();
         }

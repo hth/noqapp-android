@@ -64,87 +64,53 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
         ll_license = view.findViewById(R.id.ll_license);
         setProgressMessage("Updating Professional profile...");
         Button btn_update = view.findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateProfessionalInfo();
-            }
-        });
+        btn_update.setOnClickListener(view1 -> updateProfessionalInfo());
         if (null != jsonProfessionalProfilePersonal)
             updateUI(jsonProfessionalProfilePersonal);
 
-        edt_practice_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePickerDialog(edt_practice_start);
+        edt_practice_start.setOnClickListener(v -> openDatePickerDialog(edt_practice_start));
+
+        tv_edu_date.setOnClickListener(v -> openDatePickerDialog(tv_edu_date));
+        iv_edu_add.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(edt_edu_name.getText().toString()) || TextUtils.isEmpty(tv_edu_date.getText().toString()))
+                new CustomToast().showToast(getActivity(), "Both fields are mandatory");
+            else {
+                JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
+                jsonNameDatePair.setName(edt_edu_name.getText().toString());
+                jsonNameDatePair.setMonthYear(tv_edu_date.getText().toString());
+                jsonProfessionalProfilePersonal.getEducation().add(jsonNameDatePair);
+                updateUI(jsonProfessionalProfilePersonal);
+                edt_edu_name.setText("");
+                tv_edu_date.setText("");
+            }
+        });
+        tv_award_date.setOnClickListener(v -> openDatePickerDialog(tv_award_date));
+        iv_award_add.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(edt_award_name.getText().toString()) || TextUtils.isEmpty(tv_award_date.getText().toString()))
+                new CustomToast().showToast(getActivity(), "Both fields are mandatory");
+            else {
+                JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
+                jsonNameDatePair.setName(edt_award_name.getText().toString());
+                jsonNameDatePair.setMonthYear(tv_award_date.getText().toString());
+                jsonProfessionalProfilePersonal.getAwards().add(jsonNameDatePair);
+                updateUI(jsonProfessionalProfilePersonal);
+                edt_award_name.setText("");
+                tv_award_date.setText("");
             }
         });
 
-        tv_edu_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePickerDialog(tv_edu_date);
-            }
-        });
-        iv_edu_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(edt_edu_name.getText().toString()) || TextUtils.isEmpty(tv_edu_date.getText().toString()))
-                    new CustomToast().showToast(getActivity(), "Both fields are mandatory");
-                else {
-                    JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
-                    jsonNameDatePair.setName(edt_edu_name.getText().toString());
-                    jsonNameDatePair.setMonthYear(tv_edu_date.getText().toString());
-                    jsonProfessionalProfilePersonal.getEducation().add(jsonNameDatePair);
-                    updateUI(jsonProfessionalProfilePersonal);
-                    edt_edu_name.setText("");
-                    tv_edu_date.setText("");
-                }
-            }
-        });
-        tv_award_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePickerDialog(tv_award_date);
-            }
-        });
-        iv_award_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(edt_award_name.getText().toString()) || TextUtils.isEmpty(tv_award_date.getText().toString()))
-                    new CustomToast().showToast(getActivity(), "Both fields are mandatory");
-                else {
-                    JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
-                    jsonNameDatePair.setName(edt_award_name.getText().toString());
-                    jsonNameDatePair.setMonthYear(tv_award_date.getText().toString());
-                    jsonProfessionalProfilePersonal.getAwards().add(jsonNameDatePair);
-                    updateUI(jsonProfessionalProfilePersonal);
-                    edt_award_name.setText("");
-                    tv_award_date.setText("");
-                }
-            }
-        });
-
-        tv_license_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePickerDialog(tv_license_date);
-            }
-        });
-        iv_license_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(edt_license_name.getText().toString()) || TextUtils.isEmpty(tv_license_date.getText().toString()))
-                    new CustomToast().showToast(getActivity(), "Both fields are mandatory");
-                else {
-                    JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
-                    jsonNameDatePair.setName(edt_license_name.getText().toString());
-                    jsonNameDatePair.setMonthYear(tv_license_date.getText().toString());
-                    jsonProfessionalProfilePersonal.getLicenses().add(jsonNameDatePair);
-                    updateUI(jsonProfessionalProfilePersonal);
-                    edt_license_name.setText("");
-                    tv_license_date.setText("");
-                }
+        tv_license_date.setOnClickListener(v -> openDatePickerDialog(tv_license_date));
+        iv_license_add.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(edt_license_name.getText().toString()) || TextUtils.isEmpty(tv_license_date.getText().toString()))
+                new CustomToast().showToast(getActivity(), "Both fields are mandatory");
+            else {
+                JsonNameDatePair jsonNameDatePair = new JsonNameDatePair();
+                jsonNameDatePair.setName(edt_license_name.getText().toString());
+                jsonNameDatePair.setMonthYear(tv_license_date.getText().toString());
+                jsonProfessionalProfilePersonal.getLicenses().add(jsonNameDatePair);
+                updateUI(jsonProfessionalProfilePersonal);
+                edt_license_name.setText("");
+                tv_license_date.setText("");
             }
         });
         return view;
@@ -171,25 +137,22 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
             ImageView iv_delete = inflatedLayout.findViewById(R.id.iv_delete);
             tv_name.setText(jsonNameDatePair.getName());
             tv_date.setText(TextUtils.isEmpty(jsonNameDatePair.getMonthYear()) ? "" : jsonNameDatePair.getMonthYear());
-            iv_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                        @Override
-                        public void btnPositiveClick() {
-                            new CustomToast().showToast(getActivity(), "Deleted from Education list");
-                            jsonProfessionalProfilePersonal.getEducation().remove(jsonNameDatePair);
-                            ll_education.removeView(inflatedLayout);
-                        }
+            iv_delete.setOnClickListener(v -> {
+                ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        new CustomToast().showToast(getActivity(), "Deleted from Education list");
+                        jsonProfessionalProfilePersonal.getEducation().remove(jsonNameDatePair);
+                        ll_education.removeView(inflatedLayout);
+                    }
 
-                        @Override
-                        public void btnNegativeClick() {
-                            //Do nothing
-                        }
-                    });
-                    showDialog.displayDialog("Delete Education", "Do you want to delete it from education list?");
-                }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Delete Education", "Do you want to delete it from education list?");
             });
             ll_education.addView(inflatedLayout);
         }
@@ -205,26 +168,22 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
             ImageView iv_delete = inflatedLayout.findViewById(R.id.iv_delete);
             tv_name.setText(jsonNameDatePair.getName());
             tv_date.setText(TextUtils.isEmpty(jsonNameDatePair.getMonthYear()) ? "" : jsonNameDatePair.getMonthYear());
-            iv_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            iv_delete.setOnClickListener(v -> {
+                ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        new CustomToast().showToast(getActivity(), "Deleted from award list");
+                        jsonProfessionalProfilePersonal.getAwards().remove(jsonNameDatePair);
+                        ll_experience.removeView(inflatedLayout);
+                    }
 
-                    ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                        @Override
-                        public void btnPositiveClick() {
-                            new CustomToast().showToast(getActivity(), "Deleted from award list");
-                            jsonProfessionalProfilePersonal.getAwards().remove(jsonNameDatePair);
-                            ll_experience.removeView(inflatedLayout);
-                        }
-
-                        @Override
-                        public void btnNegativeClick() {
-                            //Do nothing
-                        }
-                    });
-                    showDialog.displayDialog("Delete Award", "Do you want to delete it from award list?");
-                }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Delete Award", "Do you want to delete it from award list?");
             });
             ll_experience.addView(inflatedLayout);
         }
@@ -239,25 +198,22 @@ public class UserAdditionalInfoFragment extends BaseFragment implements Merchant
             ImageView iv_delete = inflatedLayout.findViewById(R.id.iv_delete);
             tv_name.setText(jsonNameDatePair.getName());
             tv_date.setText(TextUtils.isEmpty(jsonNameDatePair.getMonthYear()) ? "" : jsonNameDatePair.getMonthYear());
-            iv_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
-                    showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
-                        @Override
-                        public void btnPositiveClick() {
-                            new CustomToast().showToast(getActivity(), "Deleted from license list");
-                            jsonProfessionalProfilePersonal.getLicenses().remove(jsonNameDatePair);
-                            ll_license.removeView(inflatedLayout);
-                        }
+            iv_delete.setOnClickListener(v -> {
+                ShowCustomDialog showDialog = new ShowCustomDialog(getActivity());
+                showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+                    @Override
+                    public void btnPositiveClick() {
+                        new CustomToast().showToast(getActivity(), "Deleted from license list");
+                        jsonProfessionalProfilePersonal.getLicenses().remove(jsonNameDatePair);
+                        ll_license.removeView(inflatedLayout);
+                    }
 
-                        @Override
-                        public void btnNegativeClick() {
-                            //Do nothing
-                        }
-                    });
-                    showDialog.displayDialog("Delete License", "Do you want to delete it from License list?");
-                }
+                    @Override
+                    public void btnNegativeClick() {
+                        //Do nothing
+                    }
+                });
+                showDialog.displayDialog("Delete License", "Do you want to delete it from License list?");
             });
             ll_license.addView(inflatedLayout);
         }

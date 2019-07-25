@@ -77,12 +77,7 @@ public class AppointmentActivityNew extends BaseActivity implements
         tv_appointment_pending = findViewById(R.id.tv_appointment_pending);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText("Appointment List");
         int count = 2;
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -129,8 +124,6 @@ public class AppointmentActivityNew extends BaseActivity implements
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-
-
     }
 
     private void fetchData() {
@@ -169,7 +162,6 @@ public class AppointmentActivityNew extends BaseActivity implements
         } else {
             ShowAlertInformation.showNetworkDialog(this);
         }
-
     }
 
     @Override
@@ -370,6 +362,7 @@ public class AppointmentActivityNew extends BaseActivity implements
         }
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == BOOKING_SUCCESS) {

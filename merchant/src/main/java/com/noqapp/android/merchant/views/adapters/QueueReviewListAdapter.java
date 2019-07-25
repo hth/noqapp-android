@@ -55,12 +55,9 @@ public class QueueReviewListAdapter extends RecyclerView.Adapter {
             e.printStackTrace();
         }
         holder.iv_flag.setVisibility(jsonReview.isReviewShow() ? View.VISIBLE : View.INVISIBLE);
-        holder.iv_flag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.reviewItemListClick(jsonReviewList.getCodeQR(), jsonReview);
-                }
+        holder.iv_flag.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.reviewItemListClick(jsonReviewList.getCodeQR(), jsonReview);
             }
         });
     }

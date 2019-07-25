@@ -19,7 +19,7 @@ import com.noqapp.android.merchant.views.pojos.CheckBoxObj;
 
 import java.util.List;
 
-public class RadioRecyclerAdapter extends RecyclerView.Adapter<RadioRecyclerAdapter.MyViewHolder> {
+public class RadioRecyclerAdapter extends RecyclerView.Adapter {
 
     private int lastCheckedPos = -1;
     private Context context;
@@ -32,7 +32,8 @@ public class RadioRecyclerAdapter extends RecyclerView.Adapter<RadioRecyclerAdap
         void notifyView(int parentPos, int checkedPos);
     }
 
-    public RadioRecyclerAdapter(Context context, List<CheckBoxObj> checkBoxObjList, int parentPos, UpdateGrid updateGrid, int selectPos) {
+    public RadioRecyclerAdapter(Context context, List<CheckBoxObj> checkBoxObjList, int parentPos,
+                                UpdateGrid updateGrid, int selectPos) {
         this.context = context;
         this.checkBoxObjList = checkBoxObjList;
         this.parentPos = parentPos;
@@ -43,13 +44,13 @@ public class RadioRecyclerAdapter extends RecyclerView.Adapter<RadioRecyclerAdap
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_checkbox, parent, false);
         return new MyViewHolder(v);
     }
 
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         JsonPreferredBusiness jpb = checkBoxObjList.get(position).getJsonPreferredBusiness();
         holder.checkBox.setChecked(false);
         String address = AppUtils.getStoreAddress(jpb.getTown(), jpb.getArea());
@@ -79,12 +80,6 @@ public class RadioRecyclerAdapter extends RecyclerView.Adapter<RadioRecyclerAdap
                         } else if (lastCheckedPos > -1 && lastCheckedPos != position) {
                             lastCheckedPos = position;
                         }
-
-//                        if (holder.checkBox.isChecked()) {
-//                            lastCheckedPos = position;
-//                        } else {
-//                            lastCheckedPos = -1;
-//                        }
                         if (null != updateGrid) {
                             updateGrid.notifyView(parentPos, lastCheckedPos);
                         }

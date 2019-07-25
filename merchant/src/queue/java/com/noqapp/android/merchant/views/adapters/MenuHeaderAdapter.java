@@ -52,12 +52,7 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter {
             holder.ll_header.setBackgroundColor(Color.WHITE);
             holder.tv_menu_header.setTextColor(Color.BLACK);
         }
-        holder.tv_menu_header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.menuHeaderClick(listPosition);
-            }
-        });
+        holder.tv_menu_header.setOnClickListener(v -> listener.menuHeaderClick(listPosition));
     }
 
     @Override

@@ -8,9 +8,9 @@ import java.util.List;
  * Date: 2019-07-22 11:07
  */
 public enum BooleanReplacementEnum {
-    S("S", "Skip", "#f56942"),
-    Y("Y", "Yes", "#362926"),
-    N("N", "No", "#63443c");
+    S("S", "Skip", "#CD334E"),
+    Y("Y", "Yes", "#19769f"),
+    N("N", "No", "#aaaaaa");
 
     private final String description;
     private final String name;
@@ -50,12 +50,25 @@ public enum BooleanReplacementEnum {
                 case "Yes":
                     return BooleanReplacementEnum.Y;
                 case "No":
-                    return BooleanReplacementEnum.Y;
+                    return BooleanReplacementEnum.N;
                 default:
                     return null;
             }
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public static String getDisplayDescription(BooleanReplacementEnum booleanReplacementEnum) {
+        switch (booleanReplacementEnum) {
+            case S:
+                return "Pending";
+            case Y:
+                return "Completed";
+            case N:
+                return "";
+            default:
+                return "";
         }
     }
 

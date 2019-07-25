@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,12 +84,7 @@ public class PreferredStoreActivity extends BaseActivity implements
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Preferred Stores");
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
         data.add("MRI & CT Scan");

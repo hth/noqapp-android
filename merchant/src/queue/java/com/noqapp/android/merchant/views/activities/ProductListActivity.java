@@ -74,12 +74,7 @@ public class ProductListActivity extends BaseActivity implements
         tv_name = findViewById(R.id.tv_name);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText(getString(R.string.screen_product_list));
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
@@ -142,12 +137,7 @@ public class ProductListActivity extends BaseActivity implements
             if (jsonStoreCategories.size() > 0) {
                 tv_name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
                 tv_name.setText("Add Product");
-                tv_name.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addOrEditProduct(null, ActionTypeEnum.ADD);
-                    }
-                });
+                tv_name.setOnClickListener(v -> addOrEditProduct(null, ActionTypeEnum.ADD));
             }
             menuAdapter = new MenuHeaderAdapter(jsonStoreCategories, this, this);
             rcv_header.setAdapter(menuAdapter);
@@ -173,9 +163,7 @@ public class ProductListActivity extends BaseActivity implements
 
                 }
             });
-
         }
-
     }
 
     @Override
@@ -217,34 +205,28 @@ public class ProductListActivity extends BaseActivity implements
             tv_offline_title.setVisibility(View.GONE);
         }
 
-        tv_online.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_online.setBackgroundResource(R.drawable.button_drawable_red_square);
-                tv_online.setText("Online");
-                tv_online.setTextColor(Color.WHITE);
-                tv_offline.setTextColor(Color.BLACK);
-                jsonStoreProduct.setActive(true);
-                menuItemUpdate(jsonStoreProduct, ActionTypeEnum.ACTIVE);
-                // mAlertDialog.dismiss();
+        tv_online.setOnClickListener(v -> {
+            tv_offline.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_online.setBackgroundResource(R.drawable.button_drawable_red_square);
+            tv_online.setText("Online");
+            tv_online.setTextColor(Color.WHITE);
+            tv_offline.setTextColor(Color.BLACK);
+            jsonStoreProduct.setActive(true);
+            menuItemUpdate(jsonStoreProduct, ActionTypeEnum.ACTIVE);
+            // mAlertDialog.dismiss();
 
-            }
         });
 
-        tv_offline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv_offline.setBackgroundResource(R.drawable.button_drawable_red_square);
-                tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
-                tv_online.setTextColor(Color.BLACK);
-                tv_offline.setTextColor(Color.WHITE);
-                tv_offline.setText("Offline");
-                jsonStoreProduct.setActive(false);
-                menuItemUpdate(jsonStoreProduct, ActionTypeEnum.INACTIVE);
-                // mAlertDialog.dismiss();
+        tv_offline.setOnClickListener(v -> {
+            tv_offline.setBackgroundResource(R.drawable.button_drawable_red_square);
+            tv_online.setBackgroundResource(R.drawable.square_white_bg_drawable);
+            tv_online.setTextColor(Color.BLACK);
+            tv_offline.setTextColor(Color.WHITE);
+            tv_offline.setText("Offline");
+            jsonStoreProduct.setActive(false);
+            menuItemUpdate(jsonStoreProduct, ActionTypeEnum.INACTIVE);
+            // mAlertDialog.dismiss();
 
-            }
         });
         final Spinner sp_category_type = customDialogView.findViewById(R.id.sp_category_type);
         final Spinner sp_product_type = customDialogView.findViewById(R.id.sp_product_type);
@@ -299,40 +281,31 @@ public class ProductListActivity extends BaseActivity implements
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         Button btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (sp_category_type.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(ProductListActivity.this, "Please select product category");
-                } else if (sp_product_type.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(ProductListActivity.this, "Please select product type");
-                } else if (sp_unit.getSelectedItemPosition() == 0) {
-                    new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
-                } else {
-                    if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount,edt_prod_unit_value,edt_prod_pack_size)) {
-                        jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
-                        jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
-                        jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
-                        jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
-                        jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
-                        jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
-                        jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
-                        jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
-                        jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()));
-                        menuItemUpdate(jsonStoreProduct, actionTypeEnum);
-                        mAlertDialog.dismiss();
-                    }
+        btn_create_token.setOnClickListener(v -> {
+            if (sp_category_type.getSelectedItemPosition() == 0) {
+                new CustomToast().showToast(ProductListActivity.this, "Please select product category");
+            } else if (sp_product_type.getSelectedItemPosition() == 0) {
+                new CustomToast().showToast(ProductListActivity.this, "Please select product type");
+            } else if (sp_unit.getSelectedItemPosition() == 0) {
+                new CustomToast().showToast(ProductListActivity.this, "Please select product unit");
+            } else {
+                if (validate(edt_prod_name, edt_prod_price, edt_prod_description, edt_prod_discount,edt_prod_unit_value,edt_prod_pack_size)) {
+                    jsonStoreProduct.setProductName(edt_prod_name.getText().toString());
+                    jsonStoreProduct.setProductInfo(edt_prod_description.getText().toString());
+                    jsonStoreProduct.setProductPrice((int) (Float.parseFloat(edt_prod_price.getText().toString()) * 100));
+                    jsonStoreProduct.setProductDiscount((int) (Float.parseFloat(edt_prod_discount.getText().toString()) * 100));
+                    jsonStoreProduct.setProductType(ProductTypeEnum.getEnum(sp_product_type.getSelectedItem().toString()));
+                    jsonStoreProduct.setUnitOfMeasurement(UnitOfMeasurementEnum.getEnum(sp_unit.getSelectedItem().toString()));
+                    jsonStoreProduct.setStoreCategoryId(getCategoryID(sp_category_type.getSelectedItem().toString()));
+                    jsonStoreProduct.setPackageSize(Integer.parseInt(edt_prod_pack_size.getText().toString()));
+                    jsonStoreProduct.setUnitValue(Integer.parseInt(edt_prod_unit_value.getText().toString()));
+                    menuItemUpdate(jsonStoreProduct, actionTypeEnum);
+                    mAlertDialog.dismiss();
                 }
             }
         });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 

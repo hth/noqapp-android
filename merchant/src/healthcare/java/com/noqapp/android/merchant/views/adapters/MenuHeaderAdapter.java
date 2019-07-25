@@ -16,7 +16,7 @@ import com.noqapp.android.merchant.R;
 import java.util.List;
 
 
-public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.MyViewHolder> {
+public class MenuHeaderAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
     private List<String> dataSet;
@@ -42,14 +42,15 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.menu_header_item, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int listPosition) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.tv_menu_header.setText(dataSet.get(listPosition));
         if (isResize) {
             holder.ll_header.getLayoutParams().width = 450;
@@ -64,12 +65,7 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter<MenuHeaderAdapter.My
             holder.ll_header.setBackgroundColor(ContextCompat.getColor(context, R.color.white_light));
             holder.tv_menu_header.setTextColor(Color.BLACK);
         }
-        holder.tv_menu_header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.menuHeaderClick(listPosition);
-            }
-        });
+        holder.tv_menu_header.setOnClickListener(v -> listener.menuHeaderClick(listPosition));
     }
 
     @Override

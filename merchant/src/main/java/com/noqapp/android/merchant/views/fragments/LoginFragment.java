@@ -68,25 +68,21 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, userList);
         actv_email.setThreshold(1);//will start working from first character
         actv_email.setAdapter(adapter);
-        btn_login.setOnClickListener(new OnClickListener() {
+        btn_login.setOnClickListener(v -> {
+            new AppUtils().hideKeyBoard(getActivity());
+            if (isValidInput()) {
+             //   btn_login.setBackgroundResource(R.drawable.button_drawable_red);
+             //   btn_login.setTextColor(Color.WHITE);
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    showProgress();
+                    setProgressMessage("Login in progress..");
+                    loginApiCalls.login(email.toLowerCase(), pwd);
 
-            @Override
-            public void onClick(View v) {
-                new AppUtils().hideKeyBoard(getActivity());
-                if (isValidInput()) {
-                 //   btn_login.setBackgroundResource(R.drawable.button_drawable_red);
-                 //   btn_login.setTextColor(Color.WHITE);
-                    if (LaunchActivity.getLaunchActivity().isOnline()) {
-                        showProgress();
-                        setProgressMessage("Login in progress..");
-                        loginApiCalls.login(email.toLowerCase(), pwd);
-
-                        Answers.getInstance().logLogin(new LoginEvent()
-                                .putMethod("Email_Password_Login")
-                                .putSuccess(true));
-                    } else {
-                        ShowAlertInformation.showNetworkDialog(getActivity());
-                    }
+                    Answers.getInstance().logLogin(new LoginEvent()
+                            .putMethod("Email_Password_Login")
+                            .putSuccess(true));
+                } else {
+                    ShowAlertInformation.showNetworkDialog(getActivity());
                 }
             }
         });

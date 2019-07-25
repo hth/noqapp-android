@@ -116,12 +116,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         setContentView(R.layout.activity_book_appointment);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText("Book Appointment");
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
@@ -401,65 +396,57 @@ public class BookAppointmentActivity extends BaseActivity implements
         btn_create_order = customDialogView.findViewById(R.id.btn_create_order);
         btn_create_token = customDialogView.findViewById(R.id.btn_create_token);
         btn_create_token.setText("Search Patient");
-        btn_create_token.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                    return;
+        btn_create_token.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            boolean isValid = true;
+            edt_mobile.setError(null);
+            edt_id.setError(null);
+            new AppUtils().hideKeyBoard(BookAppointmentActivity.this);
+            // get selected radio button from radioGroup
+            int selectedId = rg_user_id.getCheckedRadioButtonId();
+            if (selectedId == R.id.rb_mobile) {
+                if (TextUtils.isEmpty(edt_mobile.getText())) {
+                    edt_mobile.setError(getString(R.string.error_mobile_blank));
+                    isValid = false;
                 }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                boolean isValid = true;
-                edt_mobile.setError(null);
-                edt_id.setError(null);
-                new AppUtils().hideKeyBoard(BookAppointmentActivity.this);
-                // get selected radio button from radioGroup
-                int selectedId = rg_user_id.getCheckedRadioButtonId();
-                if (selectedId == R.id.rb_mobile) {
-                    if (TextUtils.isEmpty(edt_mobile.getText())) {
-                        edt_mobile.setError(getString(R.string.error_mobile_blank));
-                        isValid = false;
-                    }
-                } else {
-                    if (TextUtils.isEmpty(edt_id.getText())) {
-                        edt_id.setError(getString(R.string.error_customer_id));
-                        isValid = false;
-                    }
+            } else {
+                if (TextUtils.isEmpty(edt_id.getText())) {
+                    edt_id.setError(getString(R.string.error_customer_id));
+                    isValid = false;
                 }
+            }
 
-                if (isValid) {
-                    setProgressMessage("Searching patient...");
-                    showProgress();
-                    setProgressCancel(false);
-                    String phone = "";
+            if (isValid) {
+                setProgressMessage("Searching patient...");
+                showProgress();
+                setProgressCancel(false);
+                String phone = "";
+                cid = "";
+                if (rb_mobile.isChecked()) {
+                    edt_id.setText("");
+                    countryCode = ccp.getSelectedCountryCode();
+                    phone = countryCode + edt_mobile.getText().toString();
                     cid = "";
-                    if (rb_mobile.isChecked()) {
-                        edt_id.setText("");
-                        countryCode = ccp.getSelectedCountryCode();
-                        phone = countryCode + edt_mobile.getText().toString();
-                        cid = "";
-                    } else {
-                        cid = edt_id.getText().toString();
-                        edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
-                    }
-                    businessCustomerApiCalls = new BusinessCustomerApiCalls();
-                    businessCustomerApiCalls.setFindCustomerPresenter(BookAppointmentActivity.this);
-                    businessCustomerApiCalls.findCustomer(
-                            BaseLaunchActivity.getDeviceID(),
-                            LaunchActivity.getLaunchActivity().getEmail(),
-                            LaunchActivity.getLaunchActivity().getAuth(),
-                            new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
-                    btn_create_token.setClickable(false);
-                    //  mAlertDialog.dismiss();
+                } else {
+                    cid = edt_id.getText().toString();
+                    edt_mobile.setText("");// set blank so that wrong phone no not pass to login screen
                 }
+                businessCustomerApiCalls = new BusinessCustomerApiCalls();
+                businessCustomerApiCalls.setFindCustomerPresenter(BookAppointmentActivity.this);
+                businessCustomerApiCalls.findCustomer(
+                        BaseLaunchActivity.getDeviceID(),
+                        LaunchActivity.getLaunchActivity().getEmail(),
+                        LaunchActivity.getLaunchActivity().getAuth(),
+                        new JsonBusinessCustomerLookup().setCodeQR(codeQR).setCustomerPhone(phone).setBusinessCustomerId(cid));
+                btn_create_token.setClickable(false);
+                //  mAlertDialog.dismiss();
             }
         });
 
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAlertDialog.dismiss();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
     }
 
@@ -481,58 +468,55 @@ public class BookAppointmentActivity extends BaseActivity implements
             btn_create_order.setText("Book Appointment");
             btn_create_order.setVisibility(View.VISIBLE);
             btn_create_token.setVisibility(View.GONE);
-            btn_create_order.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        int start = AppUtils.removeColon((String) sp_start_time.getSelectedItem());
-                        int end = AppUtils.removeColon((String) sp_end_time.getSelectedItem());
-                        if (start < end) {
-                            if (LaunchActivity.getLaunchActivity().isOnline()) {
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
-                                btn_create_order.setEnabled(false);
-                                setProgressMessage("Booking appointment...");
-                                showProgress();
-                                setProgressCancel(false);
-                                String phoneNoWithCode = "";
-                                if (TextUtils.isEmpty(cid)) {
-                                    phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
-                                }
-
-                                JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
-                                        setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                                jsonBusinessCustomer
-                                        .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
-                                        .setCustomerPhone(phoneNoWithCode)
-                                        .setBusinessCustomerId(cid);
-                                String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
-                                JsonSchedule jsonSchedule = new JsonSchedule()
-                                        .setCodeQR(codeQR)
-                                        .setStartTime(start)
-                                        .setEndTime(end)
-                                        .setChiefComplain(actv_chief_complaints.getText().toString())
-                                        .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate)).
-                                                setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
-                                BookSchedule bookSchedule = new BookSchedule()
-                                        .setBusinessCustomer(jsonBusinessCustomer)
-                                        .setJsonSchedule(jsonSchedule)
-                                        .setBookActionType(ActionTypeEnum.ADD);
-                                scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
-                                        LaunchActivity.getLaunchActivity().getEmail(),
-                                        LaunchActivity.getLaunchActivity().getAuth(),
-                                        bookSchedule);
-                            } else {
-                                ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
+            btn_create_order.setOnClickListener(v -> {
+                try {
+                    int start = AppUtils.removeColon((String) sp_start_time.getSelectedItem());
+                    int end = AppUtils.removeColon((String) sp_end_time.getSelectedItem());
+                    if (start < end) {
+                        if (LaunchActivity.getLaunchActivity().isOnline()) {
+                            if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
+                                return;
                             }
+                            mLastClickTime = SystemClock.elapsedRealtime();
+                            btn_create_order.setEnabled(false);
+                            setProgressMessage("Booking appointment...");
+                            showProgress();
+                            setProgressCancel(false);
+                            String phoneNoWithCode = "";
+                            if (TextUtils.isEmpty(cid)) {
+                                phoneNoWithCode = PhoneFormatterUtil.phoneNumberWithCountryCode(jsonProfile.getPhoneRaw(), jsonProfile.getCountryShortName());
+                            }
+
+                            JsonBusinessCustomer jsonBusinessCustomer = new JsonBusinessCustomer().
+                                    setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                            jsonBusinessCustomer
+                                    .setCodeQR(getIntent().getStringExtra(IBConstant.KEY_CODE_QR))
+                                    .setCustomerPhone(phoneNoWithCode)
+                                    .setBusinessCustomerId(cid);
+                            String[] temp = appointmentSlotAdapter.getDataSet().get(selectedPos).getTimeSlot().split("-");
+                            JsonSchedule jsonSchedule = new JsonSchedule()
+                                    .setCodeQR(codeQR)
+                                    .setStartTime(start)
+                                    .setEndTime(end)
+                                    .setChiefComplain(actv_chief_complaints.getText().toString())
+                                    .setScheduleDate(new AppUtils().getDateWithFormat(selectedDate)).
+                                            setQueueUserId(jsonProfileList.get(sp_patient_list.getSelectedItemPosition()).getQueueUserId());
+                            BookSchedule bookSchedule = new BookSchedule()
+                                    .setBusinessCustomer(jsonBusinessCustomer)
+                                    .setJsonSchedule(jsonSchedule)
+                                    .setBookActionType(ActionTypeEnum.ADD);
+                            scheduleApiCalls.bookSchedule(BaseLaunchActivity.getDeviceID(),
+                                    LaunchActivity.getLaunchActivity().getEmail(),
+                                    LaunchActivity.getLaunchActivity().getAuth(),
+                                    bookSchedule);
                         } else {
-                            new CustomToast().showToast(BookAppointmentActivity.this, "Booking start time to be less than end time");
+                            ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        new CustomToast().showToast(BookAppointmentActivity.this, "Booking start time to be less than end time");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }

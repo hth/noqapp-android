@@ -93,12 +93,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Upload Documents");
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> finish());
         purchaseOrderApiCalls = new PurchaseOrderApiCalls();
         purchaseOrderApiCalls.setImageUploadPresenter(this);
         transactionId = getIntent().getStringExtra("transactionId");
@@ -111,17 +106,15 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         ImageView iv_close = findViewById(R.id.iv_close);
         iv_close.setOnClickListener(this);
         fab_add_image = findViewById(R.id.fab_add_image);
-        fab_add_image.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (null != labFileTemp && null != labFileTemp.getFiles()) {
-                    if (labFileTemp.getFiles().size() < Constants.MAX_IMAGE_UPLOAD_LIMIT) {
-                        selectImage();
-                    } else {
-                        new CustomToast().showToast(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed");
-                    }
-                } else {
+        fab_add_image.setOnClickListener(v -> {
+            if (null != labFileTemp && null != labFileTemp.getFiles()) {
+                if (labFileTemp.getFiles().size() < Constants.MAX_IMAGE_UPLOAD_LIMIT) {
                     selectImage();
+                } else {
+                    new CustomToast().showToast(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed");
                 }
+            } else {
+                selectImage();
             }
         });
 

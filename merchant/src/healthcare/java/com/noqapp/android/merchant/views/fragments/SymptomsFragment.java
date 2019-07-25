@@ -80,12 +80,7 @@ public class SymptomsFragment extends BaseFragment implements StaggeredGridSympt
         tv_remove = v.findViewById(R.id.tv_remove);
         tv_output = v.findViewById(R.id.tv_output);
         sc_duration = v.findViewById(R.id.sc_duration);
-        tv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearOptionSelection();
-            }
-        });
+        tv_close.setOnClickListener(v1 -> clearOptionSelection());
         duration_data = DurationDaysEnum.asListOfDescription();
         sc_duration.addSegments(duration_data);
 
@@ -113,22 +108,14 @@ public class SymptomsFragment extends BaseFragment implements StaggeredGridSympt
         });
         ll_symptom_note = v.findViewById(R.id.ll_symptom_note);
         tv_add_new = v.findViewById(R.id.tv_add_new);
-        tv_add_new.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddItemDialog(getActivity(), "Add Symptoms");
-            }
-        });
+        tv_add_new.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Symptoms"));
 
         actv_search = v.findViewById(R.id.actv_search);
         actv_search.setThreshold(1);
         ImageView iv_clear_actv = v.findViewById(R.id.iv_clear_actv);
-        iv_clear_actv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                actv_search.setText("");
-                new AppUtils().hideKeyBoard(getActivity());
-            }
+        iv_clear_actv.setOnClickListener(v13 -> {
+            actv_search.setText("");
+            new AppUtils().hideKeyBoard(getActivity());
         });
         return v;
     }
@@ -222,33 +209,24 @@ public class SymptomsFragment extends BaseFragment implements StaggeredGridSympt
         mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
         Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
+        btn_add.setOnClickListener(v -> {
+            edt_item.setError(null);
+            if (edt_item.getText().toString().equals("")) {
+                edt_item.setError("Empty field not allowed");
+            } else {
+
+                ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
+                temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
+                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
+
+                rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+                symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
+                rcv_gynac.setAdapter(symptomsAdapter);
+                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                 mAlertDialog.dismiss();
-            }
-        });
-        btn_add.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                edt_item.setError(null);
-                if (edt_item.getText().toString().equals("")) {
-                    edt_item.setError("Empty field not allowed");
-                } else {
-
-                    ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList();
-                    temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                    MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setSymptomsList(temp);
-
-                    rcv_gynac.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-                    symptomsAdapter = new StaggeredGridSymptomAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getSymptomsList(), SymptomsFragment.this, false);
-                    rcv_gynac.setAdapter(symptomsAdapter);
-                    new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                    mAlertDialog.dismiss();
-                    MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSymptomsList().add(new DataObj(edt_item.getText().toString(), false));
-                    MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                }
+                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getSymptomsList().add(new DataObj(edt_item.getText().toString(), false));
+                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
             }
         });
         mAlertDialog.show();
@@ -305,44 +283,38 @@ public class SymptomsFragment extends BaseFragment implements StaggeredGridSympt
             edt_output.setText("");
             no_of_days = "";
         }
-        btn_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AppUtils().hideKeyBoard(getActivity());
-                dataObj.setNoOfDays(no_of_days);
-                if (TextUtils.isEmpty(no_of_days)) {
-                    new CustomToast().showToast(getActivity(), "All fields are mandatory");
-                } else {
-                    dataObj.setAdditionalNotes(edt_output.getText().toString());
-                    if (isEdit) {
-                        selectedSymptomsList.set(pos, dataObj);
-                    } else {
-                        selectedSymptomsList.add(dataObj);
-                    }
-
-                    view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
-
-
-                    rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-                    symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
-                    rcv_symptom_select.setAdapter(symptomSelectedAdapter);
-                    clearOptionSelection();
-                }
-            }
-        });
-        tv_remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AppUtils().hideKeyBoard(getActivity());
+        btn_done.setOnClickListener(v -> {
+            new AppUtils().hideKeyBoard(getActivity());
+            dataObj.setNoOfDays(no_of_days);
+            if (TextUtils.isEmpty(no_of_days)) {
+                new CustomToast().showToast(getActivity(), "All fields are mandatory");
+            } else {
+                dataObj.setAdditionalNotes(edt_output.getText().toString());
                 if (isEdit) {
-                    selectedSymptomsList.remove(pos);
+                    selectedSymptomsList.set(pos, dataObj);
+                } else {
+                    selectedSymptomsList.add(dataObj);
                 }
-                clearOptionSelection();
+
                 view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
+
+
                 rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
                 symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
                 rcv_symptom_select.setAdapter(symptomSelectedAdapter);
+                clearOptionSelection();
             }
+        });
+        tv_remove.setOnClickListener(v -> {
+            new AppUtils().hideKeyBoard(getActivity());
+            if (isEdit) {
+                selectedSymptomsList.remove(pos);
+            }
+            clearOptionSelection();
+            view_med.setVisibility(selectedSymptomsList.size() > 0 ? View.VISIBLE : View.GONE);
+            rcv_symptom_select.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
+            symptomSelectedAdapter = new StaggeredGridSymptomAdapter(getActivity(), selectedSymptomsList, SymptomsFragment.this, true);
+            rcv_symptom_select.setAdapter(symptomSelectedAdapter);
         });
     }
 

@@ -2,16 +2,10 @@ package com.noqapp.android.merchant.views.utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.core.content.FileProvider;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -24,7 +18,6 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -33,9 +26,9 @@ import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.PdfHelper;
 import com.noqapp.android.merchant.views.pojos.Receipt;
 
 import java.io.ByteArrayOutputStream;
@@ -46,17 +39,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class PdfSkeletonGenerator extends PdfHelper {
-    private BaseFont baseFont;
-    private Context mContext;
-    private Font normalFont;
-    private Font normalBoldFont;
-    private Font normalBigFont;
     private String notAvailable = "";
-
     private String pulse = "";
     private String weight = "";
     private String height = "";
@@ -65,23 +51,15 @@ public class PdfSkeletonGenerator extends PdfHelper {
     private String respiration = "";
 
     public PdfSkeletonGenerator(Context mContext) {
-        this.mContext = mContext;
-        try {
-            baseFont = BaseFont.createFont("assets/fonts/opensan.ttf", "UTF-8", BaseFont.EMBEDDED);
-            normalFont = new Font(baseFont, 10.0f, Font.NORMAL, BaseColor.BLACK);
-            normalBoldFont = new Font(baseFont, 10.0f, Font.BOLD, BaseColor.BLACK);
-            normalBigFont = new Font(baseFont, 12.0f, Font.BOLD, BaseColor.BLACK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        super(mContext);
     }
 
     public void createPdf(Receipt receipt, JsonMedicalRecord jsonMedicalRecord) {
         initPhysical(jsonMedicalRecord);
         String fileName = new SimpleDateFormat("'NoQueue_" + receipt.getJsonProfile().getName() + "_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
-        File dest = new File(getAppPath(mContext) + fileName);
+        File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);
         if (dest.exists()) {
-            Log.d("Delete", "File deleted successfully " +  dest.delete());
+            Log.d("Delete", "File deleted successfully " + dest.delete());
         }
 
         try {
@@ -225,32 +203,6 @@ public class PdfSkeletonGenerator extends PdfHelper {
         } catch (ActivityNotFoundException ae) {
             new CustomToast().showToast(mContext, "No application found to open this file.");
         }
-    }
-
-    private static void openFile(Context context, File url) throws ActivityNotFoundException {
-        Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".fileprovider", url);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList) {
-            String packageName = resolveInfo.activityInfo.packageName;
-            context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-
-        intent.setDataAndType(uri, "application/pdf");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(intent);
-    }
-
-    private static String getAppPath(Context context) {
-        File dir = new File(android.os.Environment.getExternalStorageDirectory()
-                + File.separator
-                + context.getResources().getString(R.string.app_name)
-                + File.separator);
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
-        return dir.getPath() + File.separator;
     }
 
     private PdfPTable getPatientData(Receipt receipt) {

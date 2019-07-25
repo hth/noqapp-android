@@ -32,7 +32,6 @@ public class SliderPagerAdapter extends PagerAdapter {
     private ArrayList<String> image_arraylist;
     private boolean isDocument = false;
     private String recordReferenceId;
-    private ProgressBar progress_bar;
 
     public SliderPagerAdapter(Activity activity, ArrayList<String> image_arraylist) {
         this.activity = activity;
@@ -59,16 +58,13 @@ public class SliderPagerAdapter extends PagerAdapter {
                 Picasso.get()
                         .load(R.drawable.view_pdf)
                         .into(im_slider);
-                im_slider.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (image_arraylist.get(position).endsWith(".pdf")) {
-                            Intent in = new Intent(activity, WebViewActivity.class);
-                            in.putExtra("url", BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
-                            in.putExtra("title", "Pdf Document");
-                            in.putExtra("isPdf", true);
-                            activity.startActivity(in);
-                        }
+                im_slider.setOnClickListener(v -> {
+                    if (image_arraylist.get(position).endsWith(".pdf")) {
+                        Intent in = new Intent(activity, WebViewActivity.class);
+                        in.putExtra("url", BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position));
+                        in.putExtra("title", "Pdf Document");
+                        in.putExtra("isPdf", true);
+                        activity.startActivity(in);
                     }
                 });
             } else {
@@ -87,15 +83,14 @@ public class SliderPagerAdapter extends PagerAdapter {
                             }
                         });
             }
-          //  Glide.with(activity.getApplicationContext()).load(BuildConfig.AWSS3 + BuildConfig.MEDICAL_BUCKET + recordReferenceId + "/" + image_arraylist.get(position)).into(im_slider);
         } else {
             view = layoutInflater.inflate(R.layout.layout_slider, container, false);
             ImageView im_slider = view.findViewById(R.id.im_slider);
             String url = image_arraylist.get(position).replace("40x40", "240x120");// added to check the image Quality
             Picasso.get()
                     .load(AppUtils.getImageUrls(BuildConfig.SERVICE_BUCKET, url))
-                   // .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
-                   // .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
+                    // .placeholder(ImageUtils.getThumbPlaceholder(activity)) // optional
+                    // .error(ImageUtils.getThumbErrorPlaceholder(activity))         // optional
                     .into(im_slider);
         }
 

@@ -199,8 +199,6 @@ public class UserProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     private boolean validate() {
-        // btn_update.setBackgroundResource(R.drawable.button_drawable);
-        // btn_update.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorMobile));
         boolean isValid = true;
         edt_name.setError(null);
         edt_email.setError(null);

@@ -4,8 +4,11 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
@@ -13,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
+import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.model.types.medical.HospitalVisitForEnum;
 import com.noqapp.android.common.presenter.HospitalVisitSchedulePresenter;
 import com.noqapp.android.merchant.R;
@@ -20,9 +24,11 @@ import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.HospitalVisitScheduleFragment;
+import com.noqapp.android.merchant.views.utils.PdfHospitalVisitGenerator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +39,10 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private String qUserId = "";
-
+    private List<JsonHospitalVisitSchedule> immunizationList = new ArrayList<>();
+    private List<JsonHospitalVisitSchedule> vaccinationList = new ArrayList<>();
+    private RelativeLayout rl_empty;
+    private LinearLayout ll_data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -43,6 +52,8 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_immunization);
+        rl_empty = findViewById(R.id.rl_empty);
+        ll_data = findViewById(R.id.ll_data);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
@@ -51,7 +62,18 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         tv_toolbar_title.setText("Hospital Visit Schedule");
         String codeQR = getIntent().getStringExtra("qCodeQR");
         JsonQueuedPerson jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
-        qUserId = jsonQueuedPerson.getQueueUserId();
+        JsonMedicalRecord jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
+        Button btn_print_pdf = findViewById(R.id.btn_print_pdf);
+        PermissionHelper permissionHelper = new PermissionHelper(this);
+        btn_print_pdf.setOnClickListener(v -> {
+            if (permissionHelper.isStoragePermissionAllowed()) {
+                PdfHospitalVisitGenerator pdfGenerator = new PdfHospitalVisitGenerator(HospitalVisitScheduleActivity.this);
+                pdfGenerator.createPdf(immunizationList, jsonQueuedPerson,jsonMedicalRecord);
+            } else {
+                permissionHelper.requestStoragePermission();
+            }
+        });
+         qUserId = jsonQueuedPerson.getQueueUserId();
         viewPager = findViewById(R.id.viewpager);
         tabLayout = findViewById(R.id.tabs);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -72,9 +94,6 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
         dismissProgress();
         Log.e("immunization", jsonHospitalVisitScheduleList.toString());
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = jsonHospitalVisitScheduleList.getJsonHospitalVisitSchedules();
-
-        List<JsonHospitalVisitSchedule> immunizationList = new ArrayList<>();
-        List<JsonHospitalVisitSchedule> vaccinationList = new ArrayList<>();
         for (int i = 0; i < jsonHospitalVisitSchedules.size(); i++) {
             if (jsonHospitalVisitSchedules.get(i).getHospitalVisitFor() == HospitalVisitForEnum.IMU) {
                 immunizationList.add(jsonHospitalVisitSchedules.get(i));
@@ -100,6 +119,14 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements
             adapter.addFragment(hvsfImmune, "Immunization");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        if (immunizationList.size() <= 0 && vaccinationList.size() <= 0) {
+            ll_data.setVisibility(View.GONE);
+            rl_empty.setVisibility(View.VISIBLE);
+        } else {
+            ll_data.setVisibility(View.VISIBLE);
+            rl_empty.setVisibility(View.GONE);
+        }
     }
 
     @Override

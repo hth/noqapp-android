@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredGridSymptomAdapter.MyViewHolder> {
+public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter {
 
     private ArrayList<DataObj> dataObjArrayList;
     private Context context;
@@ -45,13 +45,14 @@ public class StaggeredGridSymptomAdapter extends RecyclerView.Adapter<StaggeredG
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowlayout, parent, false);
         return  new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        MyViewHolder holder = (MyViewHolder) viewHolder;
         holder.name.setText(dataObjArrayList.get(position).getShortName());
         if (dataObjArrayList.get(position).isSelect()) {
             holder.name.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_unselect));

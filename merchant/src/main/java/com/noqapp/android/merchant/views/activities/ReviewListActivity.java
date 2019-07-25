@@ -43,12 +43,7 @@ public class ReviewListActivity extends AppCompatActivity {
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText("Reviews");
         ReviewListFragment reviewListFragment = new ReviewListFragment();
         Bundle b = new Bundle();

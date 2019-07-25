@@ -1,5 +1,12 @@
 package com.noqapp.android.common.utils;
 
+import com.noqapp.android.common.beans.store.JsonStoreProduct;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Months;
+import org.joda.time.Years;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-
-import com.noqapp.android.common.beans.store.JsonStoreProduct;
-
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Years;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
@@ -150,9 +150,9 @@ public class CommonHelper {
 
     public static String formatStringDate(SimpleDateFormat simpleDateFormat, String date) {
         String formattedDate = "";
-        if(TextUtils.isEmpty(date)){
+        if (TextUtils.isEmpty(date)) {
             return formattedDate;
-        }else{
+        } else {
             try {
                 formattedDate = simpleDateFormat.format(new SimpleDateFormat(ISO8601_FMT, Locale.getDefault()).parse(date));
             } catch (ParseException e) {
@@ -250,12 +250,12 @@ public class CommonHelper {
         String input = String.format("%4s", str).replace(' ', '0');
         int index = 1;
         String outPut = input.substring(0, index + 1) + ":" + input.substring(index + 1);
-      //  Log.e("Check string----- ", input + "----------- " + outPut);
+        //  Log.e("Check string----- ", input + "----------- " + outPut);
         return outPut;
     }
 
     public static ArrayList<String> getTimeSlots(int slotMinute, String strFromTime, String strToTime, boolean isEqual) {
-        ArrayList<String> timeSlot = new ArrayList<String>();
+        ArrayList<String> timeSlot = new ArrayList<>();
         if (slotMinute == 0) {
             return timeSlot;
         } else {
@@ -299,9 +299,7 @@ public class CommonHelper {
 
     public static int removeColon(String input) {
         try {
-            if (input.contains(":"))
-                return Integer.parseInt(input.replace(":", ""));
-            else return Integer.parseInt(input);
+            return input.contains(":") ? Integer.parseInt(input.replace(":", "")) : Integer.parseInt(input);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -312,8 +310,9 @@ public class CommonHelper {
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++) {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
         return sb.toString();
     }
 }
