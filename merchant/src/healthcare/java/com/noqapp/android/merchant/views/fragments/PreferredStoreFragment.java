@@ -299,79 +299,43 @@ public class PreferredStoreFragment extends BaseFragment {
             return -1;
 
         if (null == hcse) {
-            for (int i = 0; i < temp.size(); i++) {
-                if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
-                    return i;
-                }
-            }
-            return -1;
+            return findItemPos(temp,preferredStoreInfo.getBizStoreIdPharmacy());
         }
         switch (hcse) {
             case SONO: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSono())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdSono());
             }
             case SCAN: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdScan())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdScan());
             }
             case MRI: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdMri())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdMri());
             }
             case PATH: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPath())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdPath());
             }
             case XRAY: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdXray())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdXray());
             }
             case SPEC: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdSpecial())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdSpecial());
             }
             case PHYS: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPhysio())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdPhysio());
             }
             default: {
-                for (int i = 0; i < temp.size(); i++) {
-                    if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(preferredStoreInfo.getBizStoreIdPharmacy())) {
-                        return i;
-                    }
-                }
-                return -1;
+                return findItemPos(temp,preferredStoreInfo.getBizStoreIdPharmacy());
             }
         }
+    }
+
+    private int findItemPos(List<CheckBoxObj> temp, String bizStoreId){
+        for (int i = 0; i < temp.size(); i++) {
+            if (temp.get(i).getJsonPreferredBusiness().getBizStoreId().equals(bizStoreId)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private String getMessage(String str){
