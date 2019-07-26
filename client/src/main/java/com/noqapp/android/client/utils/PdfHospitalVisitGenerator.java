@@ -25,6 +25,7 @@ import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 
 import java.io.File;
@@ -51,7 +52,9 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
 
         try {
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(dest));
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(dest));
+            HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            pdfWriter.setPageEvent(event);
             document.open();
             document.setPageSize(PageSize.A4);
             document.addCreationDate();

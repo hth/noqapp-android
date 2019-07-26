@@ -5,6 +5,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.BooleanReplacementEnum;
 import com.noqapp.android.common.utils.CommonHelper;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
@@ -63,9 +64,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             HeaderFooterPageEvent event = new HeaderFooterPageEvent();
             pdfWriter.setPageEvent(event);
 
-            // Open to write
             document.open();
-            // Document Settings
             document.setPageSize(PageSize.A4);
             document.addCreationDate();
             document.addAuthor("NoQueue Health Merchant");

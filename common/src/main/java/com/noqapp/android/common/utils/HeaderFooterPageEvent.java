@@ -1,4 +1,4 @@
-package com.noqapp.android.merchant.views.utils;
+package com.noqapp.android.common.utils;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;

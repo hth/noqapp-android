@@ -22,6 +22,7 @@ import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.noqapp.android.common.beans.medical.JsonMedicalMedicine;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.category.HealthCareServiceEnum;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.utils.AppUtils;
@@ -59,12 +60,10 @@ public class PdfGenerator extends PdfHelper {
 
         try {
             Document document = new Document();
-
-            // Location to save
-            PdfWriter.getInstance(document, new FileOutputStream(dest));
-            // Open to write
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(dest));
+            HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            pdfWriter.setPageEvent(event);
             document.open();
-            // Document Settings
             document.setPageSize(PageSize.A4);
             document.addCreationDate();
             document.addAuthor("NoQueue Health Merchant");

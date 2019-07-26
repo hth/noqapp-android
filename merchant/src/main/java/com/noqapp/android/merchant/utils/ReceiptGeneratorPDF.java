@@ -24,6 +24,7 @@ import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.pojos.Receipt;
+import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,7 +63,9 @@ public class ReceiptGeneratorPDF extends PdfHelper {
 
         try {
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(dest));
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(dest));
+            HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            pdfWriter.setPageEvent(event);
             document.open();
             document.setPageSize(PageSize.A4);
             document.addCreationDate();
