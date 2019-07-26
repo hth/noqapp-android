@@ -108,20 +108,6 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="style_otp_edt">
-        <item name="android:layout_width">@dimen/edt_height</item>
-        <item name="android:layout_height">@dimen/edt_height</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:maxLength">1</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:minLines">1</item>
-        <item name="android:background">@drawable/square_white_bg_drawable</item>
-        <item name="android:gravity">center</item>
-        <item name="android:inputType">number</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
     <style name="NavigationDrawerStyle">
         <item name="android:textSize">12sp</item><!-- text size in menu-->
         <!--<item name="android:listPreferredItemHeightSmall">40dp</item>&lt;!&ndash; item size in menu&ndash;&gt;-->

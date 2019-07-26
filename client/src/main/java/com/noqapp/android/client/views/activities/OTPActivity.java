@@ -61,14 +61,8 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     protected EditText edt_phoneNo;
     protected Button btn_login;
     protected Button btn_verify_phone;
-   // protected EditText edt_phone_code;
-    protected EditText edt_one;
-    protected EditText edt_two;
-    protected EditText edt_three;
-    protected EditText edt_four;
-    protected EditText edt_five;
-    protected EditText edt_six;
-    protected LinearLayout ll_otp;
+    protected EditText edt_phone_code;
+
     protected TextView tv_detail;
     protected CountryCodePicker ccp;
 
@@ -85,14 +79,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         edt_phoneNo = findViewById(R.id.edt_phone);
         btn_login = findViewById(R.id.btn_login);
         btn_verify_phone = findViewById(R.id.btn_verify_phone);
-        //edt_phone_code = findViewById(R.id.edt_phone_code);
-        edt_one = findViewById(R.id.edt_one);
-        edt_two = findViewById(R.id.edt_two);
-        edt_three = findViewById(R.id.edt_three);
-        edt_four = findViewById(R.id.edt_four);
-        edt_five = findViewById(R.id.edt_five);
-        edt_six = findViewById(R.id.edt_six);
-        ll_otp = findViewById(R.id.ll_otp);
+        edt_phone_code = findViewById(R.id.edt_phone_code);
         tv_detail = findViewById(R.id.tv_detail);
         ccp = findViewById(R.id.ccp);
         ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
@@ -122,7 +109,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         countryCode = ccp.getSelectedCountryCodeWithPlus();
         countryShortName = ccp.getDefaultCountryNameCode().toUpperCase();
        // edt_phone_code.setText(countryCode);
-        addTextWatcher(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -251,12 +237,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         }
     }
 
-    protected void addTextWatcher(EditText... views) {
-        for (EditText v : views) {
-            v.addTextChangedListener(new GenericTextWatcher(v));
-        }
-    }
-
     protected void updateUI(int uiState) {
         updateUI(uiState, mAuth.getCurrentUser(), null);
     }
@@ -274,12 +254,12 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
             case STATE_INITIALIZED:
                 // Initialized state, show only the phone number field and start button
                 enableViews(btn_login, edt_phoneNo);
-                disableViews(btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+                disableViews(btn_verify_phone, edt_phone_code);
                 tv_detail.setText(null);
                 break;
             case STATE_CODE_SENT:
                 // Code sent state, show the verification field, the
-                enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+                enableViews(btn_login, edt_phoneNo, btn_verify_phone, edt_phone_code);
 
                 tv_detail.setText(R.string.status_code_sent);
                 break;
@@ -290,22 +270,17 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
                 break;
             case STATE_VERIFY_SUCCESS:
                 // Verification has succeeded, proceed to firebase sign in
-                enableViews(edt_phoneNo, btn_verify_phone, edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+                enableViews(edt_phoneNo, btn_verify_phone, edt_phone_code);
                 disableViews(btn_login);
                 tv_detail.setText(R.string.status_verification_succeeded);
 
                 // Set the verification text based on the credential
                 if (cred != null) {
                     if (!TextUtils.isEmpty(cred.getSmsCode()) && cred.getSmsCode().length() == 6) {
-                        edt_one.setText(String.valueOf(cred.getSmsCode().charAt(0)));
-                        edt_two.setText(String.valueOf(cred.getSmsCode().charAt(1)));
-                        edt_three.setText(String.valueOf(cred.getSmsCode().charAt(2)));
-                        edt_four.setText(String.valueOf(cred.getSmsCode().charAt(3)));
-                        edt_five.setText(String.valueOf(cred.getSmsCode().charAt(4)));
-                        edt_six.setText(String.valueOf(cred.getSmsCode().charAt(5)));
+                        edt_phone_code.setText(cred.getSmsCode());
                     } else {
-                        setTextBlank(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
-                        disableViews(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
+                        setTextBlank(edt_phone_code);
+                        disableViews(edt_phone_code);
                     }
                 }
                 break;
@@ -326,51 +301,6 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
         }
     }
 
-    public class GenericTextWatcher implements TextWatcher {
-        private View view;
-
-        private GenericTextWatcher(View view) {
-            this.view = view;
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String text = editable.toString();
-            switch (view.getId()) {
-
-                case R.id.edt_one:
-                    if (text.length() == 1)
-                        edt_two.requestFocus();
-                    break;
-                case R.id.edt_two:
-                    if (text.length() == 1)
-                        edt_three.requestFocus();
-                    break;
-                case R.id.edt_three:
-                    if (text.length() == 1)
-                        edt_four.requestFocus();
-                    break;
-                case R.id.edt_four:
-                    if (text.length() == 1)
-                        edt_five.requestFocus();
-                    break;
-                case R.id.edt_five:
-                    if (text.length() == 1)
-                        edt_six.requestFocus();
-                    break;
-                case R.id.edt_six:
-                    break;
-            }
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-        }
-    }
 
     private boolean validateOTP(EditText... views) {
         boolean isValid = true;
@@ -392,14 +322,14 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
     }
 
     private void btnVerifyClick() {
-        setErrorNull(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six);
-        if (!validateOTP(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six)) {
+        setErrorNull(edt_phone_code);
+        if (!validateOTP(edt_phone_code)) {
             return;
         }
         if (mVerificationId != null) {
             showProgress();
             new AppUtilities().hideKeyBoard(this);
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeOTP(edt_one, edt_two, edt_three, edt_four, edt_five, edt_six));
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edt_phone_code.getText().toString());
             signInWithPhoneAuthCredential(credential);
         } else {
             //Toast.makeText(this,"mVerificationId is null: ", Toast.LENGTH_LONG).show();

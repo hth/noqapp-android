@@ -60,38 +60,12 @@
                 android:textSize="@dimen/text_size_fourteen" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_otp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/edt_phone_code"
+            android:hint="Enter 6 digit OTP"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/edt_one"
-                style="@style/style_otp_edt" />
-
-            <EditText
-                android:id="@+id/edt_two"
-                style="@style/style_otp_edt" />
-
-            <EditText
-                android:id="@+id/edt_three"
-                style="@style/style_otp_edt" />
-
-            <EditText
-                android:id="@+id/edt_four"
-                style="@style/style_otp_edt" />
-
-            <EditText
-                android:id="@+id/edt_five"
-                style="@style/style_otp_edt" />
-
-            <EditText
-                android:id="@+id/edt_six"
-                style="@style/style_otp_edt" />
-
-        </LinearLayout>
+            android:inputType="number"
+            style="@style/style_register_edt" />
 
 
         <Button
