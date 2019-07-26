@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,7 +24,11 @@ import com.noqapp.android.client.utils.AppUtilities;
 import com.noqapp.android.client.utils.GeoHashUtils;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ImageUtils;
+import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.activities.AllReviewsActivity;
+import com.noqapp.android.client.views.activities.BookAppointmentActivity;
+import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 import com.squareup.picasso.Picasso;
 
@@ -113,7 +118,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
             } else {
                 Picasso.get().load(ImageUtils.getThumbPlaceholder()).into(holder.iv_main);
             }
-            holder.card_view.setOnClickListener((View v) -> {
+            holder.btn_join.setOnClickListener((View v) -> {
                 listener.onStoreItemClick(dataSet.get(listPosition));
             });
             if (holder.tv_store_rating.getText().toString().equals("0.0")) {
@@ -133,6 +138,31 @@ public class SearchAdapter extends RecyclerView.Adapter {
                     holder.tv_name.setText(bizStoreElastic.getDisplayName());
                     break;
             }
+            if (bizStoreElastic.getBusinessType() != BusinessTypeEnum.DO) {
+                holder.btn_join.setText("View Store");
+            }
+            if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
+//                switch (bizStoreElastic.getAppointmentState()) {
+//                    case O:
+//                        holder.btn_book_appointment.setVisibility(View.GONE);
+//                        break;
+//                    case A:
+//                    case S:
+//                        holder.btn_book_appointment.setVisibility(View.VISIBLE);
+//                        break;
+//                }
+            } else {
+              //  holder.btn_book_appointment.setVisibility(View.GONE);
+            }
+            holder.btn_book_appointment.setOnClickListener((View v) -> {
+                if (UserUtils.isLogin()) {
+                    Intent in = new Intent(context, BookAppointmentActivity.class);
+                    in.putExtra(IBConstant.KEY_DATA_OBJECT, bizStoreElastic);
+                    context.startActivity(in);
+                } else {
+                    new CustomToast().showToast(context, "Please login to book an appointment");
+                }
+            });
         } else {
             ((ProgressViewHolder) viewHolder).progressBar.setIndeterminate(true);
         }
@@ -160,6 +190,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
         private TextView tv_store_special;
         private TextView tv_distance;
         private TextView tv_store_timing;
+        private Button btn_join;
+        private Button btn_book_appointment;
         private ImageView iv_main;
         private CardView card_view;
 
@@ -175,6 +207,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
             this.tv_store_special = itemView.findViewById(R.id.tv_store_special);
             this.tv_distance = itemView.findViewById(R.id.tv_distance);
             this.iv_main = itemView.findViewById(R.id.iv_main);
+            this.btn_join = itemView.findViewById(R.id.btn_join);
+            this.btn_book_appointment = itemView.findViewById(R.id.btn_book_appointment);
             this.tv_store_timing = itemView.findViewById(R.id.tv_store_timing);
             this.card_view = itemView.findViewById(R.id.card_view);
         }

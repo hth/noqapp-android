@@ -161,15 +161,58 @@
             </RelativeLayout>
 
 
-            <TextView
-                android:id="@+id/tv_store_special"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rl_top"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_ten"
-                android:visibility="gone" />
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+
+                <TextView
+                    android:id="@+id/tv_store_special"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/btn_book_appointment"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_ten" />
+
+
+                <Button
+                    android:id="@+id/btn_book_appointment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/tv_join"
+                    android:background="@drawable/btn_bg_enable"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Book"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_join"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/btn_bg_enable"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Walk-in"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_twelve"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
