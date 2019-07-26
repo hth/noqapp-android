@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -16,6 +15,7 @@ import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.customviews.MeterView;
+import com.noqapp.android.merchant.views.utils.CompoundCheckChangedListener;
 import com.noqapp.android.merchant.views.utils.DescreteProgressChangeListner;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -71,77 +71,13 @@ public class PrimaryCheckupFragment extends BaseFragment implements MeterView.Me
         final Button ll_rr_disable = v.findViewById(R.id.ll_rr_disable);
         final Button ll_height_disable = v.findViewById(R.id.ll_height_disable);
 
-        sc_enable_rr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_rr_disable.setVisibility(View.GONE);
-                } else {
-                    ll_rr_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        sc_enable_height.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_height_disable.setVisibility(View.GONE);
-                } else {
-                    ll_height_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        sc_enable_pulse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_pulse_disable.setVisibility(View.GONE);
-                } else {
-                    ll_pulse_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        sc_enable_temp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_temp_disable.setVisibility(View.GONE);
-                } else {
-                    ll_temp_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        sc_enable_oxygen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_oxygen_disable.setVisibility(View.GONE);
-                } else {
-                    ll_oxygen_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        sc_enable_weight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_weight_disable.setVisibility(View.GONE);
-                } else {
-                    ll_weight_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        sc_enable_bp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean bChecked) {
-                if (bChecked) {
-                    ll_bp_disable.setVisibility(View.GONE);
-                } else {
-                    ll_bp_disable.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        sc_enable_rr.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_rr_disable));
+        sc_enable_height.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_height_disable));
+        sc_enable_pulse.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_pulse_disable));
+        sc_enable_temp.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_temp_disable));
+        sc_enable_oxygen.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_oxygen_disable));
+        sc_enable_weight.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_weight_disable));
+        sc_enable_bp.setOnCheckedChangeListener(new CompoundCheckChangedListener(ll_bp_disable));
 
         mv_pulse.setMeterViewValueChanged(this);
         mv_temperature2.setMeterViewValueChanged(this);
