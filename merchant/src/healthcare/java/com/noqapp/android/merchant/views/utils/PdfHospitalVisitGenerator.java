@@ -1,5 +1,26 @@
 package com.noqapp.android.merchant.views.utils;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -10,30 +31,13 @@ import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.LineSeparator;
-import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-
 import org.apache.commons.lang3.StringUtils;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.util.Log;
-
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +63,6 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
 
         try {
             Document document = new Document();
-            // Location to save
             PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(dest));
             HeaderFooterPageEvent event = new HeaderFooterPageEvent();
             pdfWriter.setPageEvent(event);
@@ -120,7 +123,7 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         Font zapfdingbats1 = new Font(Font.FontFamily.ZAPFDINGBATS, 14);
         Chunk chunk1 = new Chunk("q", zapfdingbats1);
         p1.add(chunk1);
-        p1.add(" " +"✓"+ label);
+        p1.add(" " + "✓" + label);
         pdfPCell.addElement(p1);
         pdfPCell.setBorder(Rectangle.NO_BORDER);
         return pdfPCell;
@@ -165,7 +168,8 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
 
                 for (Map.Entry<String, BooleanReplacementEnum> entry : visitingFor.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    table.addCell(pdfPCellWithBorder1(entry.getKey(), normalFont));
+                    boolean isChecked = entry.getValue() == BooleanReplacementEnum.Y;
+                    table.addCell(addCheckBox(entry.getKey(),isChecked));
                 }
 
                 for (int j = 0; j < remain; j++) {
@@ -180,6 +184,43 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private PdfPCell addCheckBox(String text, boolean isChecked) {
+        PdfPCell pdfPCell = null;
+            try {
+                PdfPTable headerTable = new PdfPTable(2);
+                headerTable.setWidths(new int[]{1, 8});
+                headerTable.setWidthPercentage(100f);
+
+                PdfPCell imageCell = new PdfPCell();
+                String fileName = isChecked? "checked.png":"unchecked.png";
+                InputStream ims = mContext.getAssets().open(fileName);
+                Bitmap bmp = BitmapFactory.decodeStream(ims);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                Image image = Image.getInstance(stream.toByteArray());
+                image.scaleToFit(10, 10);
+                imageCell.addElement(image);
+                imageCell.setPaddingTop(7);
+                imageCell.setBorder(Rectangle.NO_BORDER);
+                headerTable.addCell(imageCell);
+
+                PdfPCell textCell = new PdfPCell();
+                Paragraph addText = new Paragraph(text, normalFont);
+                textCell.addElement(addText);
+                textCell.setBorder(Rectangle.NO_BORDER);
+                textCell.setPaddingLeft(5);
+                headerTable.addCell(textCell);
+
+
+                pdfPCell = new PdfPCell(headerTable);
+                pdfPCell.setBorder(Rectangle.NO_BORDER);
+                pdfPCell.setPadding(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return pdfPCell;
     }
 }
 
