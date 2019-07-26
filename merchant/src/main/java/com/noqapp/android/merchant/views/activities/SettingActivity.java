@@ -441,6 +441,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 updatePaymentSettings();
             }
         });
+        setSelectAllOnFocus(edt_deduction_amount, edt_fees,edt_follow_up_in_days,
+                edt_discounted_followup_price, edt_limited_followup_days,edt_appointment_accepting_week,
+                edt_appointment_duration,edt_token_no);
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
@@ -450,6 +453,12 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         }
     }
 
+
+    private void setSelectAllOnFocus(EditText... views) {
+        for (EditText v : views) {
+            v.setSelectAllOnFocus(true);
+        }
+    }
 
     private boolean validateAppointmentSetting() {
         boolean isValid = true;

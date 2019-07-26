@@ -88,4 +88,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         if (null != eej)
             new ErrorResponseHandler().processError(this, eej);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissProgress();
+    }
 }

@@ -67,7 +67,6 @@ public class BaseActivity extends AppCompatActivity implements ResponseErrorPres
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!isFinishing())
-            dismissProgress();
+        dismissProgress();
     }
 }
