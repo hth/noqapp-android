@@ -142,17 +142,17 @@ public class SearchAdapter extends RecyclerView.Adapter {
                 holder.btn_join.setText("View Store");
             }
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
-//                switch (bizStoreElastic.getAppointmentState()) {
-//                    case O:
-//                        holder.btn_book_appointment.setVisibility(View.GONE);
-//                        break;
-//                    case A:
-//                    case S:
-//                        holder.btn_book_appointment.setVisibility(View.VISIBLE);
-//                        break;
-//                }
+                switch (bizStoreElastic.getAppointmentState()) {
+                    case O:
+                        holder.btn_book_appointment.setVisibility(View.GONE);
+                        break;
+                    case A:
+                    case S:
+                        holder.btn_book_appointment.setVisibility(View.VISIBLE);
+                        break;
+                }
             } else {
-              //  holder.btn_book_appointment.setVisibility(View.GONE);
+                holder.btn_book_appointment.setVisibility(View.GONE);
             }
             holder.btn_book_appointment.setOnClickListener((View v) -> {
                 if (UserUtils.isLogin()) {
