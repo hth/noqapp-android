@@ -92,8 +92,8 @@ public class PdfHospitalVisitGenerator extends PdfHelper {
             document.add(new Chunk(lineSeparator));
             document.add(addVerticalSpaceBefore(10f));
 
-            document.add(addVerticalSpaceBefore(20f));
-            document.add(new Paragraph(""));
+//            document.add(addVerticalSpaceBefore(20f));
+//            document.add(new Paragraph(""));
 
             document.add(addVerticalSpaceAfter(5f));
             addTable(jsonQueuedPerson.getCustomerName(), document, immunizationList);
