@@ -257,9 +257,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                     frame.setVisibility(View.GONE);
                     tv_slot_count.setVisibility(View.VISIBLE);
                     if (0 == totalAvailableCount) {
-                        tv_slot_count.setText("No slots available");
+                        tv_slot_count.setText("No more walk-in appointment available");
                     } else {
-                        tv_slot_count.setText("" + totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + "slots Available");
+                        tv_slot_count.setText(totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + " walk-in appointments available");
                     }
                 }
             }
