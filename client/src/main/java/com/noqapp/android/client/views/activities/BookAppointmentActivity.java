@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -60,7 +61,8 @@ public class BookAppointmentActivity extends BaseActivity implements
     private int totalAvailableCount = 0;
     private boolean isAppointmentBooking = false;
     private FrameLayout frame;
-    private TextView tv_slot_count;
+    private TextView tv_slot_count,tv_slot_count_empty;
+    private Button btn_book_appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +109,11 @@ public class BookAppointmentActivity extends BaseActivity implements
         TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
         tv_slot_count = findViewById(R.id.tv_slot_count);
+        tv_slot_count_empty = findViewById(R.id.tv_slot_count_empty);
         frame = findViewById(R.id.frame);
         tv_doctor_name.setText(bizStoreElastic.getDisplayName());
         tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
-        Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
+        btn_book_appointment = findViewById(R.id.btn_book_appointment);
         if (isAppointmentBooking) {
             // do nothing
         } else {
@@ -177,8 +180,8 @@ public class BookAppointmentActivity extends BaseActivity implements
                         }
                     }
                 } else {
-                    if (null == firstAvailableAppointment) {
-                        new CustomToast().showToast(BookAppointmentActivity.this, "Please select appointment date & time");
+                    if (null == firstAvailableAppointment || totalAvailableCount ==0) {
+                        new CustomToast().showToast(BookAppointmentActivity.this, "No slot available");
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             setProgressMessage("Booking appointment...");
@@ -258,8 +261,15 @@ public class BookAppointmentActivity extends BaseActivity implements
                     tv_slot_count.setVisibility(View.VISIBLE);
                     if (0 == totalAvailableCount) {
                         tv_slot_count.setText("No more walk-in appointment available");
+                        tv_slot_count_empty.setVisibility(View.VISIBLE);
+                        tv_slot_count.setVisibility(View.GONE);
+                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this,R.drawable.btn_bg_inactive));
+                        btn_book_appointment.setTextColor(ContextCompat.getColor(this,R.color.btn_color));
                     } else {
                         tv_slot_count.setText(totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + " walk-in appointments available");
+                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this,R.drawable.btn_bg_enable));
+                        btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
+                        tv_slot_count_empty.setVisibility(View.GONE);
                     }
                 }
             }
@@ -310,6 +320,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         firstAvailableAppointment = null;
         totalAvailableCount = 0;
         tv_slot_count.setVisibility(View.GONE);
+        tv_slot_count_empty.setVisibility(View.GONE);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
