@@ -57,9 +57,10 @@ public class BookAppointmentActivity extends BaseActivity implements
     private int selectedPos = -1;
     private AppointmentApiCalls appointmentApiCalls;
     private AppointmentSlot firstAvailableAppointment = null;
-
+    private int totalAvailableCount = 0;
     private boolean isAppointmentBooking = false;
     private FrameLayout frame;
+    private TextView tv_slot_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .build();
         TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
+        tv_slot_count = findViewById(R.id.tv_slot_count);
         frame = findViewById(R.id.frame);
         tv_doctor_name.setText(bizStoreElastic.getDisplayName());
         tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
@@ -236,6 +238,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
                 }
+                if (!filledTimes.contains(timeSlot.get(i))) {
+                    ++totalAvailableCount;
+                }
 
             }
             appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
@@ -250,6 +255,12 @@ public class BookAppointmentActivity extends BaseActivity implements
                     // do nothing
                 } else {
                     frame.setVisibility(View.GONE);
+                    tv_slot_count.setVisibility(View.VISIBLE);
+                    if (0 == totalAvailableCount) {
+                        tv_slot_count.setText("No slots available");
+                    } else {
+                        tv_slot_count.setText("" + totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + "slots Available");
+                    }
                 }
             }
         }
@@ -297,6 +308,8 @@ public class BookAppointmentActivity extends BaseActivity implements
 
     private void fetchAppointments(String day) {
         firstAvailableAppointment = null;
+        totalAvailableCount = 0;
+        tv_slot_count.setVisibility(View.GONE);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
