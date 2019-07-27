@@ -181,7 +181,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                     }
                 } else {
                     if (null == firstAvailableAppointment || totalAvailableCount ==0) {
-                        new CustomToast().showToast(BookAppointmentActivity.this, "No slot available");
+                        new CustomToast().showToast(BookAppointmentActivity.this, "No walk-in appointment available");
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
                             setProgressMessage("Booking appointment...");
