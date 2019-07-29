@@ -97,7 +97,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         startDate.setTime(dt);
         startDate.add(Calendar.DAY_OF_MONTH, 1); // start date of appointment
 
-
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
