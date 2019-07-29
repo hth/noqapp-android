@@ -126,6 +126,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected DrawerLayout mDrawerLayout;
     protected ExpandableListView mDrawerList;
     protected ActionBarDrawerToggle mDrawerToggle;
+    protected boolean isInventoryApp = false;
 
     public void enableDisableDrawer(boolean isEnable) {
         mDrawerLayout.setDrawerLockMode(isEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -192,20 +193,24 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (isLoggedIn()) {
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                if (new AppUtils().isTablet(getApplicationContext())) {
-                    LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
-                    LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
-                    list_fragment.setLayoutParams(lp1);
-                    list_detail_fragment.setLayoutParams(lp2);
-                    merchantListFragment = new MerchantListFragment();
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
-                    //  fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                } else {
-                    merchantListFragment = new MerchantListFragment();
-                    replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
-                    // setUserName();
+                if(isInventoryApp){
+                    replaceFragmentWithoutBackStack(R.id.frame_layout, getInventoryHome());
+                }else {
+                    if (new AppUtils().isTablet(getApplicationContext())) {
+                        LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
+                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
+                        list_fragment.setLayoutParams(lp1);
+                        list_detail_fragment.setLayoutParams(lp2);
+                        merchantListFragment = new MerchantListFragment();
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.frame_layout, merchantListFragment);
+                        //  fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    } else {
+                        merchantListFragment = new MerchantListFragment();
+                        replaceFragmentWithoutBackStack(R.id.frame_layout, merchantListFragment);
+                        // setUserName();
+                    }
                 }
             } else {
                 if (new AppUtils().isTablet(getApplicationContext())) {
@@ -231,6 +236,10 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
             replaceFragmentWithoutBackStack(R.id.frame_layout, new LoginFragment());
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
+    }
+
+    public Fragment getInventoryHome() {
+        return null;
     }
 
     private void menuClick(int drawable) {
