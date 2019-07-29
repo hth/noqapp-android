@@ -53,7 +53,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class MerchantListFragment extends BaseFragment implements TopicPresenter, FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
+public class MerchantListFragment extends BaseFragment implements TopicPresenter,
+        FragmentCommunicator, AdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static int selected_pos = 0;
     private MerchantDetailFragment merchantDetailFragment;

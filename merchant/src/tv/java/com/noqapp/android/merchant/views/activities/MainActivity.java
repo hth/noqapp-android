@@ -348,19 +348,20 @@ public class MainActivity
                 }
                 final Handler handler = new Handler();
                 final Runnable Update = () -> {
-                    if (currentPage == topicAndQueueTVList.size()) {
+                    try {
+                        if (currentPage >= topicAndQueueTVList.size()) {
+                            currentPage = 0;
+                            // size check for greater also
+                        }
+                        detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
+                        final FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
+                        ft1.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
+                        ft1.commitAllowingStateLoss();
+                        currentPage++;
+                    }catch (IndexOutOfBoundsException e){
+                        e.printStackTrace();
                         currentPage = 0;
                     }
-                    detailFragment = DetailFragment.newInstance(topicAndQueueTVList.get(currentPage));
-                    final FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
-                    ft1.replace(R.id.frame_layout, detailFragment, "NewFragmentTag");
-                    ft1.commitAllowingStateLoss();
-                    //Toast.makeText(MainActivity.this, "Screen changed", Toast.LENGTH_LONG).show();
-//                        if (CastRemoteDisplayLocalService.getInstance() != null) {
-//                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setAdvertisementList(jsonVigyaapanTV, topicAndQueueTVList.size());
-//                            ((PresentationService) CastRemoteDisplayLocalService.getInstance()).setTopicAndQueueTV(topicAndQueueTVList, currentPage);
-//                        }
-                    currentPage++;
                 };
 
                 if (timer != null) {

@@ -61,8 +61,10 @@ public class BookAppointmentActivity extends BaseActivity implements
     private int totalAvailableCount = 0;
     private boolean isAppointmentBooking = false;
     private FrameLayout frame;
-    private TextView tv_slot_count,tv_slot_count_empty;
+    private TextView tv_slot_count, tv_slot_count_empty;
     private Button btn_book_appointment;
+    private LinearLayout ll_sector;
+    private View view_available, view_full;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         startDate.setTime(dt);
         startDate.add(Calendar.DAY_OF_MONTH, 1); // start date of appointment
 
-
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
@@ -108,6 +109,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                 .build();
         TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
+        ll_sector = findViewById(R.id.ll_sector);
+        view_available = findViewById(R.id.view_available);
+        view_full = findViewById(R.id.view_full);
         tv_slot_count = findViewById(R.id.tv_slot_count);
         tv_slot_count_empty = findViewById(R.id.tv_slot_count_empty);
         frame = findViewById(R.id.frame);
@@ -180,7 +184,7 @@ public class BookAppointmentActivity extends BaseActivity implements
                         }
                     }
                 } else {
-                    if (null == firstAvailableAppointment || totalAvailableCount ==0) {
+                    if (null == firstAvailableAppointment || totalAvailableCount == 0) {
                         new CustomToast().showToast(BookAppointmentActivity.this, "No walk-in appointment available");
                     } else {
                         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -258,16 +262,26 @@ public class BookAppointmentActivity extends BaseActivity implements
                     // do nothing
                 } else {
                     frame.setVisibility(View.GONE);
-                    tv_slot_count.setVisibility(View.VISIBLE);
+                    // tv_slot_count.setVisibility(View.VISIBLE);
+                    // ll_sector.setVisibility(View.GONE);
                     if (0 == totalAvailableCount) {
                         tv_slot_count.setText("No more walk-in appointment available");
                         tv_slot_count_empty.setVisibility(View.VISIBLE);
                         tv_slot_count.setVisibility(View.GONE);
-                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this,R.drawable.btn_bg_inactive));
-                        btn_book_appointment.setTextColor(ContextCompat.getColor(this,R.color.btn_color));
+                        ll_sector.setVisibility(View.GONE);
+                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
+                        btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
                     } else {
+                        ll_sector.setVisibility(View.VISIBLE);
+                        tv_slot_count.setVisibility(View.GONE);
                         tv_slot_count.setText(totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + " walk-in appointments available");
-                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this,R.drawable.btn_bg_enable));
+                        float f = totalAvailableCount * 100 / appointmentSlotAdapter.getDataSet().size();
+                        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(0, 100, f / 100);
+                        view_available.setLayoutParams(param);
+                        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(0, 100, (100 - f) / 100);
+                        view_full.setLayoutParams(param1);
+
+                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
                         btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
                         tv_slot_count_empty.setVisibility(View.GONE);
                     }
@@ -321,6 +335,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         totalAvailableCount = 0;
         tv_slot_count.setVisibility(View.GONE);
         tv_slot_count_empty.setVisibility(View.GONE);
+        ll_sector.setVisibility(View.GONE);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();

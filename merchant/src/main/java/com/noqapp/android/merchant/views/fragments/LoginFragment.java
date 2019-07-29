@@ -162,7 +162,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     LaunchActivity.getLaunchActivity().setSuggestionsPrefs(map);
                 }
             }
-            if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR || jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+            if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.Q_SUPERVISOR ||
+                    jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if ((getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.healthcare") &&
                         jsonMerchant.getJsonProfile().getBusinessType() == BusinessTypeEnum.DO) ||
                         (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant") &&
@@ -195,7 +196,26 @@ public class LoginFragment extends BaseFragment implements LoginPresenter, Merch
                     LaunchActivity.getLaunchActivity().clearLoginData(false);
                     LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
                 }
-            } else {
+            } else if (jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.A_SUPERVISOR){
+                if (getActivity().getPackageName().equalsIgnoreCase("com.noqapp.android.merchant.inventory")){
+                    LaunchActivity.getLaunchActivity().enableDisableDrawer(true);
+                    LaunchActivity.getLaunchActivity().setAccessGrant(true);
+                    LaunchActivity.getLaunchActivity().setUserProfile(jsonMerchant.getJsonProfile());
+                    LaunchActivity.getLaunchActivity().setUserProfessionalProfile(jsonMerchant.getJsonProfessionalProfile());
+                    LaunchActivity.getLaunchActivity().updateMenuList(jsonMerchant.getJsonProfile().getUserLevel() == UserLevelEnum.S_MANAGER);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, LaunchActivity.getLaunchActivity().getInventoryHome());
+
+                }else {
+                    // unauthorised to see the screen
+                    LaunchActivity.getLaunchActivity().setAccessGrant(false);
+                    AccessDeniedFragment adf = new AccessDeniedFragment();
+                    Bundle b = new Bundle();
+                    b.putString("errorMsg", "You are login in the wrong app please login in the correct app");
+                    adf.setArguments(b);
+                    LaunchActivity.getLaunchActivity().clearLoginData(false);
+                    LaunchActivity.getLaunchActivity().replaceFragmentWithoutBackStack(R.id.frame_layout, adf);
+                }
+            }else {
                 // unauthorised to see the screen
                 LaunchActivity.getLaunchActivity().setAccessGrant(false);
                 AccessDeniedFragment adf = new AccessDeniedFragment();

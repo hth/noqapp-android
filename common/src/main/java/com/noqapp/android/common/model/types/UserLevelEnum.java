@@ -7,6 +7,7 @@ package com.noqapp.android.common.model.types;
 public enum UserLevelEnum {
     CLIENT("Client", 10),
     Q_SUPERVISOR("Queue Supervisor", 22),
+    A_SUPERVISOR("Asset Supervisor", 23),
     S_MANAGER("Store Manager", 24),
     M_ADMIN("Merchant Admin", 29),
     TECHNICIAN("Tech", 40),
