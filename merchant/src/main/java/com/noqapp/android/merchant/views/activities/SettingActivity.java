@@ -262,12 +262,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     /* Write your logic here that will be executed when user taps next button */
                     if (!edt_token_no.getText().toString().equals("")) {
-                        if (LaunchActivity.getLaunchActivity().isOnline()) {
-                            showProgress();
-                            updateQueueSettings();
-                        } else {
-                            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-                        }
+                        callUpdate("");
                     } else {
                         new CustomToast().showToast(SettingActivity.this, "Empty field is not allowed. For Un-Limited Tokens set value to '0'");
                     }
@@ -332,7 +327,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 } else if (isEndTimeBeforeStartTime(tv_token_not_available, tv_store_close)) {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Alert", "'Stop issuing token after' should be before 'Queue close time'.");
                 } else {
-                    callUpdate();
+                    callUpdate(getString(R.string.setting_token_q_timing));
                 }
             } else {
                 ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
@@ -345,15 +340,15 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 new CustomToast().showToast(SettingActivity.this, "Until Date should be after From Date");
             } else {
                 if (isSpecificSettingEditAllowed()) {
-                    callUpdate();
+                    callUpdate(getString(R.string.setting_scheduling));
                 } else {
                     ShowAlertInformation.showThemeDialog(SettingActivity.this, "Permission denied", "You don't have permission to change this settings");
                 }
             }
         });
 
-        btn_update_delay.setOnClickListener(view -> callUpdate());
-        btn_update_permanent_setting.setOnClickListener(view -> callUpdate());
+        btn_update_delay.setOnClickListener(view -> callUpdate(getString(R.string.setting_today)));
+        btn_update_permanent_setting.setOnClickListener(view -> callUpdate(getString(R.string.setting_permanent)));
 
         if ((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)) {
             view_prevent_click.setVisibility(View.VISIBLE);
@@ -441,9 +436,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 updatePaymentSettings();
             }
         });
-        setSelectAllOnFocus(edt_deduction_amount, edt_fees,edt_follow_up_in_days,
-                edt_discounted_followup_price, edt_limited_followup_days,edt_appointment_accepting_week,
-                edt_appointment_duration,edt_token_no);
+        setSelectAllOnFocus(edt_deduction_amount, edt_fees, edt_follow_up_in_days,
+                edt_discounted_followup_price, edt_limited_followup_days, edt_appointment_accepting_week,
+                edt_appointment_duration, edt_token_no);
 
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             showProgress();
@@ -675,141 +670,176 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
             break;
             default:
-                if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    showProgress();
-                    updateQueueSettings();
-                } else {
-                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-                }
+               callUpdate("");
         }
     }
 
-    private void updateQueueSettings() {
-        setProgressMessage("Updating Queue Settings...");
-        StoreSetting storeSetting = new StoreSetting();
-        storeSetting.setCodeQR(codeQR);
-        storeSetting.setDayClosed(sc_day_closed.getSelectedAbsolutePosition() == 0 ? true : false);
-        storeSetting.setPreventJoining(sc_prevent_join.getSelectedAbsolutePosition() == 0 ? true : false);
-        storeSetting.setTempDayClosed(sc_today_closed.getSelectedAbsolutePosition() == 0 ? true : false);
-        storeSetting.setStoreActionType(sc_store_offline.getSelectedAbsolutePosition() == 0 ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
-        storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
-        if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
-            storeSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
-        }
+    private void updateQueueSettings(String alertMsg) {
+        ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+            @Override
+            public void btnPositiveClick() {
+                showProgress();
+                setProgressMessage("Updating Queue Settings...");
+                StoreSetting storeSetting = new StoreSetting();
+                storeSetting.setCodeQR(codeQR);
+                storeSetting.setDayClosed(sc_day_closed.getSelectedAbsolutePosition() == 0 ? true : false);
+                storeSetting.setPreventJoining(sc_prevent_join.getSelectedAbsolutePosition() == 0 ? true : false);
+                storeSetting.setTempDayClosed(sc_today_closed.getSelectedAbsolutePosition() == 0 ? true : false);
+                storeSetting.setStoreActionType(sc_store_offline.getSelectedAbsolutePosition() == 0 ? ActionTypeEnum.INACTIVE : ActionTypeEnum.ACTIVE);
+                storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
+                if (StringUtils.isNotBlank(tv_token_available.getText().toString())) {
+                    storeSetting.setTokenAvailableFrom(Integer.parseInt(tv_token_available.getText().toString().replace(":", "")));
+                }
 
-        if (StringUtils.isNotBlank(tv_store_start.getText().toString())) {
-            storeSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
-        }
+                if (StringUtils.isNotBlank(tv_store_start.getText().toString())) {
+                    storeSetting.setStartHour(Integer.parseInt(tv_store_start.getText().toString().replace(":", "")));
+                }
 
-        if (StringUtils.isNotBlank(tv_token_not_available.getText().toString())) {
-            storeSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
-        }
+                if (StringUtils.isNotBlank(tv_token_not_available.getText().toString())) {
+                    storeSetting.setTokenNotAvailableFrom(Integer.parseInt(tv_token_not_available.getText().toString().replace(":", "")));
+                }
 
-        if (StringUtils.isNotBlank(tv_store_close.getText().toString())) {
-            storeSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
-        }
+                if (StringUtils.isNotBlank(tv_store_close.getText().toString())) {
+                    storeSetting.setEndHour(Integer.parseInt(tv_store_close.getText().toString().replace(":", "")));
+                }
 
-        if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
-            storeSetting.setFromDay(tv_scheduling_from.getText().toString());
-        }
+                if (StringUtils.isNotBlank(tv_scheduling_from.getText().toString())) {
+                    storeSetting.setFromDay(tv_scheduling_from.getText().toString());
+                }
 
-        if (StringUtils.isNotBlank(tv_scheduling_ending.getText().toString())) {
-            storeSetting.setUntilDay(tv_scheduling_ending.getText().toString());
-        }
+                if (StringUtils.isNotBlank(tv_scheduling_ending.getText().toString())) {
+                    storeSetting.setUntilDay(tv_scheduling_ending.getText().toString());
+                }
 
-        if (StringUtils.isBlank(edt_token_no.getText().toString())) {
-            storeSetting.setAvailableTokenCount(0);
-        } else {
-            storeSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
-        }
+                if (StringUtils.isBlank(edt_token_no.getText().toString())) {
+                    storeSetting.setAvailableTokenCount(0);
+                } else {
+                    storeSetting.setAvailableTokenCount(Integer.parseInt(edt_token_no.getText().toString()));
+                }
 
-        if (arrivalTextChange) {
-            DateTime start = DateTime.now().withTimeAtStartOfDay();
-            DateTime delay = DateTime.now().withTimeAtStartOfDay();
+                if (arrivalTextChange) {
+                    DateTime start = DateTime.now().withTimeAtStartOfDay();
+                    DateTime delay = DateTime.now().withTimeAtStartOfDay();
 
-            int delayHour = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[0]);
-            int delayMinutes = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[1]);
-            int startHour = Integer.valueOf(tv_store_start.getText().toString().split(":")[0]);
-            int startMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
+                    int delayHour = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[0]);
+                    int delayMinutes = Integer.valueOf(tv_delay_in_minute.getText().toString().split(":")[1]);
+                    int startHour = Integer.valueOf(tv_store_start.getText().toString().split(":")[0]);
+                    int startMinutes = Integer.valueOf(tv_store_start.getText().toString().split(":")[1]);
 
-            Duration duration = new Duration(delay.plusHours(startHour).plusMinutes(startMinutes), start.plusHours(delayHour).plusMinutes(delayMinutes));
-            storeSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
-        } else {
-            storeSetting.setDelayedInMinutes(0);
-        }
-        storeSettingApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
+                    Duration duration = new Duration(delay.plusHours(startHour).plusMinutes(startMinutes), start.plusHours(delayHour).plusMinutes(delayMinutes));
+                    storeSetting.setDelayedInMinutes((int) duration.getStandardMinutes());
+                } else {
+                    storeSetting.setDelayedInMinutes(0);
+                }
+                storeSettingApiCalls.modify(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
+            }
+
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
+        });
+        showDialog.displayDialog(getString(R.string.setting_title), TextUtils.isEmpty(alertMsg) ? getString(R.string.setting_msg) : alertMsg);
+
     }
 
 
     private void updatePaymentSettings() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            setProgressMessage("Updating payment settings...");
-            showProgress();
-            StoreSetting storeSetting = SerializationUtils.clone(this.storeSettingTemp);
-            if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
-                storeSetting.setCancellationPrice(0);
-            } else {
-                storeSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
-            }
-            if (TextUtils.isEmpty(edt_fees.getText().toString())) {
-                storeSetting.setProductPrice(0);
-            } else {
-                storeSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
+        ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+            @Override
+            public void btnPositiveClick() {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    setProgressMessage("Updating payment settings...");
+                    showProgress();
+                    StoreSetting storeSetting = SerializationUtils.clone(SettingActivity.this.storeSettingTemp);
+                    if (TextUtils.isEmpty(edt_deduction_amount.getText().toString())) {
+                        storeSetting.setCancellationPrice(0);
+                    } else {
+                        storeSetting.setCancellationPrice(Integer.parseInt(edt_deduction_amount.getText().toString()) * 100);
+                    }
+                    if (TextUtils.isEmpty(edt_fees.getText().toString())) {
+                        storeSetting.setProductPrice(0);
+                    } else {
+                        storeSetting.setProductPrice(Integer.parseInt(edt_fees.getText().toString()) * 100);
+                    }
+
+                    if (TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
+                        storeSetting.setFreeFollowupDays(0);
+                    } else {
+                        storeSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
+                    }
+                    if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
+                        storeSetting.setDiscountedFollowupDays(0);
+                    } else {
+                        storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
+                    }
+                    if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
+                        storeSetting.setDiscountedFollowupProductPrice(0);
+                    } else {
+                        storeSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
+                    }
+                    storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
+                    storeSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+                }
             }
 
-            if (TextUtils.isEmpty(edt_follow_up_in_days.getText().toString())) {
-                storeSetting.setFreeFollowupDays(0);
-            } else {
-                storeSetting.setFreeFollowupDays(Integer.parseInt(edt_follow_up_in_days.getText().toString()));
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
             }
-            if (TextUtils.isEmpty(edt_limited_followup_days.getText().toString())) {
-                storeSetting.setDiscountedFollowupDays(0);
-            } else {
-                storeSetting.setDiscountedFollowupDays(Integer.parseInt(edt_limited_followup_days.getText().toString()));
-            }
-            if (TextUtils.isEmpty(edt_discounted_followup_price.getText().toString())) {
-                storeSetting.setDiscountedFollowupProductPrice(0);
-            } else {
-                storeSetting.setDiscountedFollowupProductPrice(Integer.parseInt(edt_discounted_followup_price.getText().toString()) * 100);
-            }
-            storeSetting.setEnabledPayment(cb_enable_payment.isChecked());
-            storeSettingApiCalls.serviceCost(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
-        } else {
-            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-        }
+        });
+        showDialog.displayDialog(getString(R.string.setting_title), getString(R.string.setting_payment));
+
     }
 
     private void updateAppointmentSettings() {
-        if (LaunchActivity.getLaunchActivity().isOnline()) {
-            setProgressMessage("Updating appointment settings...");
-            showProgress();
-            StoreSetting storeSetting = SerializationUtils.clone(this.storeSettingTemp);
-            if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
-                storeSetting.setAppointmentDuration(0);
-            } else {
-                storeSetting.setAppointmentDuration(Integer.parseInt(edt_appointment_duration.getText().toString()));
-            }
-            if (TextUtils.isEmpty(edt_appointment_accepting_week.getText().toString())) {
-                storeSetting.setAppointmentOpenHowFar(0);
-            } else {
-                storeSetting.setAppointmentOpenHowFar(Integer.parseInt(edt_appointment_accepting_week.getText().toString()));
-            }
-            switch (sc_enable_appointment.getSelectedAbsolutePosition()) {
-                case 0:
-                    storeSetting.setAppointmentState( AppointmentStateEnum.O);
-                    break;
-                case 1:
-                    storeSetting.setAppointmentState( AppointmentStateEnum.A);
-                    break;
-                case 2:
-                    storeSetting.setAppointmentState( AppointmentStateEnum.S);
-                    break;
+
+        ShowCustomDialog showDialog = new ShowCustomDialog(SettingActivity.this);
+        showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
+            @Override
+            public void btnPositiveClick() {
+                if (LaunchActivity.getLaunchActivity().isOnline()) {
+                    setProgressMessage("Updating appointment settings...");
+                    showProgress();
+                    StoreSetting storeSetting = SerializationUtils.clone(SettingActivity.this.storeSettingTemp);
+                    if (TextUtils.isEmpty(edt_appointment_duration.getText().toString())) {
+                        storeSetting.setAppointmentDuration(0);
+                    } else {
+                        storeSetting.setAppointmentDuration(Integer.parseInt(edt_appointment_duration.getText().toString()));
+                    }
+                    if (TextUtils.isEmpty(edt_appointment_accepting_week.getText().toString())) {
+                        storeSetting.setAppointmentOpenHowFar(0);
+                    } else {
+                        storeSetting.setAppointmentOpenHowFar(Integer.parseInt(edt_appointment_accepting_week.getText().toString()));
+                    }
+                    switch (sc_enable_appointment.getSelectedAbsolutePosition()) {
+                        case 0:
+                            storeSetting.setAppointmentState(AppointmentStateEnum.O);
+                            break;
+                        case 1:
+                            storeSetting.setAppointmentState(AppointmentStateEnum.A);
+                            break;
+                        case 2:
+                            storeSetting.setAppointmentState(AppointmentStateEnum.S);
+                            break;
+                    }
+
+                    storeSettingApiCalls.appointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
+                } else {
+                    ShowAlertInformation.showNetworkDialog(SettingActivity.this);
+                }
             }
 
-            storeSettingApiCalls.appointment(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), storeSetting);
-        } else {
-            ShowAlertInformation.showNetworkDialog(SettingActivity.this);
-        }
+            @Override
+            public void btnNegativeClick() {
+                //Do nothing
+            }
+        });
+        showDialog.displayDialog(getString(R.string.setting_title), getString(R.string.setting_appointment));
     }
 
     private class TextViewClick implements View.OnClickListener {
@@ -877,10 +907,9 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         }
     }
 
-    private void callUpdate() {
+    private void callUpdate(String alertMsg) {
         if (LaunchActivity.getLaunchActivity().isOnline()) {
-            showProgress();
-            updateQueueSettings();
+            updateQueueSettings(alertMsg);
         } else {
             ShowAlertInformation.showNetworkDialog(SettingActivity.this);
         }
