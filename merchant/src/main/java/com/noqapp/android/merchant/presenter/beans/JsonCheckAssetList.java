@@ -1,11 +1,14 @@
 package com.noqapp.android.merchant.presenter.beans;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.noqapp.android.common.beans.AbstractDomain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.beans.ErrorEncounteredJson;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,9 +30,12 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonCheckAssetList extends AbstractDomain {
+public class JsonCheckAssetList extends AbstractDomain implements Serializable {
 
     private List<JsonCheckAsset> jsonCheckAssets = new LinkedList<>();
+
+    @JsonProperty("error")
+    private ErrorEncounteredJson error;
 
     public List<JsonCheckAsset> getJsonCheckAssets() {
         return jsonCheckAssets;
@@ -43,5 +49,22 @@ public class JsonCheckAssetList extends AbstractDomain {
     public JsonCheckAssetList addJsonCheckAsset(JsonCheckAsset jsonCheckAsset) {
         this.jsonCheckAssets.add(jsonCheckAsset);
         return this;
+    }
+
+    public ErrorEncounteredJson getError() {
+        return error;
+    }
+
+    public void setError(ErrorEncounteredJson error) {
+        this.error = error;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonCheckAssetList{");
+        sb.append("jsonCheckAssets=").append(jsonCheckAssets);
+        sb.append(", error=").append(error);
+        sb.append('}');
+        return sb.toString();
     }
 }

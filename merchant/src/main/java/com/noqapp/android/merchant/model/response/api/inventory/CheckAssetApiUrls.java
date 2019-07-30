@@ -1,8 +1,6 @@
 package com.noqapp.android.merchant.model.response.api.inventory;
 
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomer;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAssetList;
-import com.noqapp.android.merchant.presenter.beans.JsonQueuePersonList;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.CheckAsset;
 
 import retrofit2.Call;

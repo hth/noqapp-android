@@ -11,15 +11,17 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
+import com.noqapp.android.merchant.presenter.beans.JsonCheckAssetList;
 
 import java.util.List;
 
 public class FloorAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final OnItemClickListener listener;
-    private List<String> dataSet;
+    private List<JsonCheckAsset> dataSet;
 
-    public FloorAdapter(List<String> data, Context context, OnItemClickListener listener) {
+    public FloorAdapter(List<JsonCheckAsset> data, Context context, OnItemClickListener listener) {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
@@ -37,7 +39,7 @@ public class FloorAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
         MyViewHolder holder = (MyViewHolder) Vholder;
         //Picasso.get().load(item.getImageUrl()).into(holder.iv_bg);
-        holder.tv_title.setText(dataSet.get(listPosition));
+        holder.tv_title.setText(dataSet.get(listPosition).getFloor());
         holder.card_view.setOnClickListener((View v) -> {
             if (null != listener)
                 listener.onFloorItemClick(dataSet.get(listPosition));
@@ -50,7 +52,7 @@ public class FloorAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemClickListener {
-        void onFloorItemClick(String item);
+        void onFloorItemClick(JsonCheckAsset item);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
