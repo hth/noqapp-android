@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -247,29 +245,16 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
                 if (b) {
                     edt_token_no.setVisibility(View.INVISIBLE);
                     tv_limited_label.setText(getString(R.string.unlimited_token));
+                    edt_token_no.setText("");
                     new AppUtils().hideKeyBoard(SettingActivity.this);
                 } else {
                     edt_token_no.setVisibility(View.VISIBLE);
-                    // edt_token_no.setText("1");
+                    edt_token_no.setText("");
                     tv_limited_label.setText(getString(R.string.limited_token));
                 }
             }
         });
         edt_token_no = findViewById(R.id.edt_token_no);
-        edt_token_no.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    /* Write your logic here that will be executed when user taps next button */
-                    if (!edt_token_no.getText().toString().equals("")) {
-                        callUpdate("");
-                    } else {
-                        new CustomToast().showToast(SettingActivity.this, "Empty field is not allowed. For Un-Limited Tokens set value to '0'");
-                    }
-                }
-                return false;
-            }
-        });
         tv_token_available = findViewById(R.id.tv_token_available);
         tv_store_start = findViewById(R.id.tv_store_start);
         tv_token_not_available = findViewById(R.id.tv_token_not_available);
@@ -348,7 +333,17 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
         });
 
         btn_update_delay.setOnClickListener(view -> callUpdate(getString(R.string.setting_today)));
-        btn_update_permanent_setting.setOnClickListener(view -> callUpdate(getString(R.string.setting_permanent)));
+        btn_update_permanent_setting.setOnClickListener(v -> {
+            if (cb_limit.isChecked()) {
+                callUpdate(getString(R.string.setting_permanent));
+            } else {
+                if (edt_token_no.getText().toString().equals("")) {
+                    new CustomToast().showToast(SettingActivity.this, "Empty field is not allowed. For Un-Limited Tokens set value to '0'");
+                } else {
+                    callUpdate(getString(R.string.setting_permanent));
+                }
+            }
+        });
 
         if ((LaunchActivity.getLaunchActivity().getUserLevel() != UserLevelEnum.S_MANAGER)) {
             view_prevent_click.setVisibility(View.VISIBLE);
@@ -559,6 +554,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             if (storeSetting.getAvailableTokenCount() <= 0) {
                 cb_limit.setChecked(true);
                 tv_limited_label.setText(getString(R.string.unlimited_token));
+                edt_token_no.setText("");
                 edt_token_no.setVisibility(View.INVISIBLE);
             } else {
                 cb_limit.setChecked(false);
@@ -670,7 +666,7 @@ public class SettingActivity extends BaseActivity implements StoreSettingPresent
             }
             break;
             default:
-               callUpdate("");
+                callUpdate("");
         }
     }
 
