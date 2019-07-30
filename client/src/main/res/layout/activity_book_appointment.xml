@@ -63,105 +63,6 @@
                 android:textStyle="normal" />
 
 
-            <TextView
-                android:id="@+id/tv_slot_count"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="20dp"
-                android:text="Available Slots"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/ll_sector"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:weightSum="1">
-
-
-                    <View
-                        android:id="@+id/view_available"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight=".3"
-                        android:background="#c23def" />
-
-                    <View
-                        android:id="@+id/view_full"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight=".7"
-                        android:background="#aa99ee" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp">
-
-                    <View
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="#c23def"
-                        android:padding="5dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:padding="5dp"
-                        android:text="Available"
-                        android:textColor="#333333" />
-
-                    <View
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="#aa99ee"
-                        android:padding="5dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:padding="5dp"
-                        android:text="Booked"
-                        android:textColor="#333333" />
-
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_slot_count_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#fff"
-                android:gravity="center"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="35dp"
-                android:paddingBottom="35dp"
-                android:text="No walk-in appointment available"
-                android:textColor="#d41717"
-                android:textSize="@dimen/text_size_eighteen"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
         </LinearLayout>
 
 
@@ -179,6 +80,118 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/ll_slots"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_slot_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Available Slots count"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/ll_sector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:weightSum="1">
+
+                        <View
+                            android:id="@+id/view_full"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight=".7"
+                            android:background="@color/booked_slot" />
+
+                        <View
+                            android:id="@+id/view_available"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight=".3"
+                            android:background="@color/available_slot" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp">
+
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@color/booked_slot"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:padding="5dp"
+                            android:text="Booked"
+                            android:textColor="#333333" />
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@color/available_slot"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:padding="5dp"
+                            android:text="Available"
+                            android:textColor="#333333" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_slot_count_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff"
+                    android:gravity="center"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="35dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="35dp"
+                    android:text="No more walk-in appointment available"
+                    android:textColor="#d41717"
+                    android:textSize="@dimen/text_size_eighteen"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_empty_slots"

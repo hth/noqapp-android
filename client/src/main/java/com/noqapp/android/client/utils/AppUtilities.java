@@ -491,6 +491,14 @@ public class AppUtilities extends CommonHelper {
         }
     }
 
+    public boolean checkStoreClosedWithAppointmentTime( StoreHourElastic storeHourElastic){
+        if ((storeHourElastic.getAppointmentStartHour() == 0 && storeHourElastic.getAppointmentEndHour() == 0)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public static void shareTheApp(Context context) {
         Drawable drawable = ContextCompat.getDrawable(context, R.mipmap.launcher);
         if (drawable instanceof BitmapDrawable) {
