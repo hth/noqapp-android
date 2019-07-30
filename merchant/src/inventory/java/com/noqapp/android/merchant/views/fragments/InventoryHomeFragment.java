@@ -42,8 +42,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching info...");
             showProgress();
-            checkAssetApiCalls.bizName(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                    UserUtils.getAuth(), new CheckAsset());
+            checkAssetApiCalls.bizName(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), new CheckAsset());
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
@@ -88,8 +87,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
-            checkAssetApiCalls.floors(UserUtils.getDeviceId(), UserUtils.getEmail(),
-                    UserUtils.getAuth(), checkAsset);
+            checkAssetApiCalls.floors(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), checkAsset);
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }

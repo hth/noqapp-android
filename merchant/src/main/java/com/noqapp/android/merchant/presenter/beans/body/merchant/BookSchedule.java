@@ -29,7 +29,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BookSchedule  implements Serializable {
+public class BookSchedule implements Serializable {
 
     @JsonProperty("sc")
     private JsonSchedule jsonSchedule;
