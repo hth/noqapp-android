@@ -32,6 +32,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonCheckAssetList extends AbstractDomain implements Serializable {
 
+    @JsonProperty("cas")
     private List<JsonCheckAsset> jsonCheckAssets = new LinkedList<>();
 
     @JsonProperty("error")
