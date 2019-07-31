@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.CheckAssetPresenter;
 import com.noqapp.android.merchant.model.CheckAssetApiCalls;
@@ -19,12 +20,17 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 public class InventoryInRoomFragment extends BaseFragment implements CheckAssetPresenter {
 
     private String bizNameId = "";
+    private String room = "";
+    private String floor = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container, args);
         View view = inflater.inflate(R.layout.frag_inventory_in_rooms, container, false);
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
         bizNameId = getArguments().getString("bizNameId", "");
+        room = getArguments().getString("room", "");
+        floor = getArguments().getString("floor", "");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
@@ -33,8 +39,8 @@ public class InventoryInRoomFragment extends BaseFragment implements CheckAssetP
             CheckAsset checkAsset = new CheckAsset();
             checkAsset.setAssetName(jsonCheckAsset.getAssetName());
             checkAsset.setBizNameId(bizNameId);
-            checkAsset.setRoomNumber(jsonCheckAsset.getRoomNumber());
-            checkAsset.setFloor(jsonCheckAsset.getFloor());
+            checkAsset.setRoomNumber(room);
+            checkAsset.setFloor(floor);
             checkAssetApiCalls.assetsInRoom(UserUtils.getDeviceId(), UserUtils.getEmail(),
                     UserUtils.getAuth(), checkAsset);
         } else {
@@ -56,5 +62,6 @@ public class InventoryInRoomFragment extends BaseFragment implements CheckAssetP
     public void jsonCheckAssetListResponse(JsonCheckAssetList jsonCheckAssetList) {
         dismissProgress();
         Log.e("data", jsonCheckAssetList.toString());
+        new CustomToast().showToast(getActivity(), jsonCheckAssetList.toString());
     }
 }

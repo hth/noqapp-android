@@ -27,6 +27,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
     private RecyclerView rv_floors;
     private CheckAssetApiCalls checkAssetApiCalls;
     private String bizNameId = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container, args);
@@ -45,16 +46,6 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         } else {
             ShowAlertInformation.showNetworkDialog(getActivity());
         }
-//        ArrayList<String> floorList = new ArrayList<>();
-//        floorList.add("Ground Floor");
-//        floorList.add("1st Floor");
-//        floorList.add("2nd Floor");
-//        floorList.add("3rd Floor");
-//        floorList.add("4th Floor");
-//        floorList.add("5th Floor");
-//        floorList.add("6th Floor");
-//        FloorAdapter floorAdapter = new FloorAdapter(floorList, getActivity(), this);
-      //  rv_floors.setAdapter(floorAdapter);
         return view;
     }
 
@@ -71,14 +62,16 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
     public void onFloorItemClick(JsonCheckAsset item) {
         RoomsOnFloorListFragment roflf = new RoomsOnFloorListFragment();
         Bundle b = new Bundle();
-        b.putSerializable("data",item);
-        b.putString("bizNameId",bizNameId);
+        b.putSerializable("data", item);
+        b.putString("floor", item.getFloor());
+        b.putString("bizNameId", bizNameId);
         roflf.setArguments(b);
         LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, roflf, "roomsOnFloorList");
     }
 
     @Override
     public void bizNameResponse(CheckAsset checkAsset) {
+        bizNameId = checkAsset.getBizNameId();
         dismissProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
@@ -92,7 +85,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
     @Override
     public void jsonCheckAssetListResponse(JsonCheckAssetList jsonCheckAssetList) {
         dismissProgress();
-        if(null != jsonCheckAssetList.getJsonCheckAssets()) {
+        if (null != jsonCheckAssetList.getJsonCheckAssets()) {
             FloorAdapter floorAdapter = new FloorAdapter(jsonCheckAssetList.getJsonCheckAssets(), getActivity(), this);
             rv_floors.setAdapter(floorAdapter);
         }

@@ -22,13 +22,13 @@ import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.adapters.RoomsOnFloorAdapter;
 
-import java.util.ArrayList;
-
 
 public class RoomsOnFloorListFragment extends BaseFragment implements
         RoomsOnFloorAdapter.OnItemClickListener, CheckAssetPresenter {
     private RecyclerView rv_floors;
     private String bizNameId = "";
+    private String floor = "";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -41,17 +41,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
         rv_floors.setItemAnimator(new DefaultItemAnimator());
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
         bizNameId = getArguments().getString("bizNameId", "");
-        ArrayList<String> floorList = new ArrayList<>();
-        floorList.add("Room No 1");
-        floorList.add("Room No 2");
-        floorList.add("Room No 3");
-        floorList.add("Room No 4");
-        floorList.add("Room No 5");
-        floorList.add("Room No 6");
-        floorList.add("Room No 7");
-        floorList.add("Room No 8");
-
-
+        floor = getArguments().getString("floor", "");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
@@ -74,8 +64,10 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
     public void onRoomsOnFloorItemClick(JsonCheckAsset item) {
         InventoryInRoomFragment inventoryInRoomFragment = new InventoryInRoomFragment();
         Bundle b = new Bundle();
-        b.putString("bizNameId",bizNameId);
-        b.putSerializable("data",item);
+        b.putString("bizNameId", bizNameId);
+        b.putString("room", item.getRoomNumber());
+        b.putString("floor", floor);
+        b.putSerializable("data", item);
         inventoryInRoomFragment.setArguments(b);
         LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, inventoryInRoomFragment, "inventoryInRoomFragment");
     }
@@ -91,7 +83,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
     @Override
     public void jsonCheckAssetListResponse(JsonCheckAssetList jsonCheckAssetList) {
         dismissProgress();
-        if(null != jsonCheckAssetList.getJsonCheckAssets()) {
+        if (null != jsonCheckAssetList.getJsonCheckAssets()) {
             RoomsOnFloorAdapter floorAdapter = new RoomsOnFloorAdapter(jsonCheckAssetList.getJsonCheckAssets(), getActivity(), this);
             rv_floors.setAdapter(floorAdapter);
         }

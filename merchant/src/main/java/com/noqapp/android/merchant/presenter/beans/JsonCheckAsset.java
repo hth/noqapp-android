@@ -76,4 +76,15 @@ public class JsonCheckAsset extends AbstractDomain implements Serializable {
         this.assetName = assetName;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("JsonCheckAsset{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", floor='").append(floor).append('\'');
+        sb.append(", roomNumber='").append(roomNumber).append('\'');
+        sb.append(", assetName='").append(assetName).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
