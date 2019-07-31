@@ -17,6 +17,7 @@ import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonNameDatePair;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.CommonHelper;
@@ -156,6 +157,22 @@ public class AppUtils extends CommonHelper {
             DrawableCompat.setTint(drawable, color);
         } else {
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
+    }
+
+    public boolean checkStoreClosedWithTime( JsonHour jsonHour){
+        if ((jsonHour.getStartHour() == 0 && jsonHour.getEndHour() == 0)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public boolean checkStoreClosedWithAppointmentTime( JsonHour jsonHour){
+        if ((jsonHour.getAppointmentStartHour() == 0 && jsonHour.getAppointmentEndHour() == 0)) {
+            return true;
+        }else {
+            return false;
         }
     }
 }

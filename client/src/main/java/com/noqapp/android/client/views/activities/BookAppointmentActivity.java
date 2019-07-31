@@ -225,7 +225,7 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
-        List<AppointmentSlot> listData = new ArrayList<>();
+
         if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)
         ||new AppUtilities().checkStoreClosedWithAppointmentTime(storeHourElastic)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
@@ -233,6 +233,7 @@ public class BookAppointmentActivity extends BaseActivity implements
         } else {
             tv_empty_slots.setVisibility(View.GONE);
             enableDisableBtn(true);
+            List<AppointmentSlot> listData = new ArrayList<>();
             String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
             String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
             ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
@@ -345,6 +346,8 @@ public class BookAppointmentActivity extends BaseActivity implements
         tv_slot_count.setVisibility(View.GONE);
         tv_slot_count_empty.setVisibility(View.GONE);
         ll_sector.setVisibility(View.GONE);
+        appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<AppointmentSlot>(), this, this);
+        rv_available_date.setAdapter(appointmentSlotAdapter);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();
