@@ -57,6 +57,7 @@ import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.APIConstant;
 import com.noqapp.android.merchant.model.DeviceApiCalls;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
+import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
 import com.noqapp.android.merchant.presenter.beans.JsonToken;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.Constants;
@@ -79,6 +80,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public abstract class BaseLaunchActivity extends AppCompatActivity implements AppBlacklistPresenter,
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -104,6 +106,7 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
     protected final String KEY_LAST_UPDATE = "last_update";
     protected final String KEY_SUGGESTION_PREF = "suggestionsPrefs";
     protected final String KEY_SUGGESTION_PRODUCT_PREF = "suggestionsProductsPrefs";
+    protected final String KEY_INVENTORY_PREF = "inventoryPrefs";
     protected final String KEY_COUNTER_NAME_LIST = "counterNames";
     protected final String KEY_USER_PROFILE = "userProfile";
     protected final String KEY_USER_PROFESSIONAL_PROFILE = "userProfessionalProfile";
@@ -193,9 +196,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         if (isLoggedIn()) {
             if (isAccessGrant()) {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                if(isInventoryApp){
+                if (isInventoryApp) {
                     replaceFragmentWithoutBackStack(R.id.frame_layout, getInventoryHome());
-                }else {
+                } else {
                     if (new AppUtils().isTablet(getApplicationContext())) {
                         LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.3f);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
@@ -400,10 +403,22 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         return sharedpreferences.getString(KEY_SUGGESTION_PRODUCT_PREF, null);
     }
 
-
     public void setSuggestionsPrefs(PreferenceObjects testCaseObjects) {
         String strInput = new Gson().toJson(testCaseObjects);
         sharedpreferences.edit().putString(KEY_SUGGESTION_PREF, strInput).apply();
+    }
+
+    public Map<String, List<JsonCheckAsset>> getInventoryPrefs() {
+        String storedHashMapString = sharedpreferences.getString(KEY_INVENTORY_PREF, null);
+        java.lang.reflect.Type type = new TypeToken<Map<String, List<JsonCheckAsset>>>() {
+        }.getType();
+        Map<String, List<JsonCheckAsset>> tempList = new Gson().fromJson(storedHashMapString, type);
+        return null != tempList ? tempList : new HashMap<>();
+    }
+
+    public void setInventoryPrefs(Map<String, List<JsonCheckAsset>> dataList) {
+        String strInput = new Gson().toJson(dataList);
+        sharedpreferences.edit().putString(KEY_INVENTORY_PREF, strInput).apply();
     }
 
     public void setSuggestionsProductsPrefs(PreferenceObjects testCaseObjects) {

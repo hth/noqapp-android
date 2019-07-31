@@ -41,6 +41,8 @@ public class JsonCheckAsset extends AbstractDomain implements Serializable {
     @JsonProperty("an")
     private String assetName;
 
+    private boolean status;
+
     public String getId() {
         return id;
     }
@@ -77,6 +79,14 @@ public class JsonCheckAsset extends AbstractDomain implements Serializable {
         return this;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("JsonCheckAsset{");
@@ -84,6 +94,7 @@ public class JsonCheckAsset extends AbstractDomain implements Serializable {
         sb.append(", floor='").append(floor).append('\'');
         sb.append(", roomNumber='").append(roomNumber).append('\'');
         sb.append(", assetName='").append(assetName).append('\'');
+        sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
     }

@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.noqapp.android.common.customviews.CustomToast;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.interfaces.CheckAssetPresenter;
 import com.noqapp.android.merchant.model.CheckAssetApiCalls;
@@ -16,17 +19,28 @@ import com.noqapp.android.merchant.presenter.beans.body.merchant.CheckAsset;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.adapters.InventoryAdapter;
 
-public class InventoryInRoomFragment extends BaseFragment implements CheckAssetPresenter {
+import java.util.List;
+
+public class InventoryInRoomFragment extends BaseFragment implements
+        CheckAssetPresenter, InventoryAdapter.OnItemClickListener {
 
     private String bizNameId = "";
     private String room = "";
     private String floor = "";
+    private RecyclerView rv_inventory_items;
+    private List<JsonCheckAsset> jsonCheckAssets;
+    private InventoryAdapter inventoryAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container, args);
         View view = inflater.inflate(R.layout.frag_inventory_in_rooms, container, false);
+        rv_inventory_items = view.findViewById(R.id.rv_inventory_items);
+        rv_inventory_items.setHasFixedSize(true);
+        rv_inventory_items.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rv_inventory_items.setItemAnimator(new DefaultItemAnimator());
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
         bizNameId = getArguments().getString("bizNameId", "");
         room = getArguments().getString("room", "");
@@ -62,6 +76,28 @@ public class InventoryInRoomFragment extends BaseFragment implements CheckAssetP
     public void jsonCheckAssetListResponse(JsonCheckAssetList jsonCheckAssetList) {
         dismissProgress();
         Log.e("data", jsonCheckAssetList.toString());
-        new CustomToast().showToast(getActivity(), jsonCheckAssetList.toString());
+        if (null != jsonCheckAssetList.getJsonCheckAssets()) {
+            jsonCheckAssets = jsonCheckAssetList.getJsonCheckAssets();
+            List<JsonCheckAsset> temp = InventoryHomeFragment.prefList.get("Floor No- " + floor + "  >>  " + "Room No- " + room);
+            if (temp != null) {
+                jsonCheckAssets = temp;
+            } else {
+                // No such key do nothing
+            }
+            inventoryAdapter = new InventoryAdapter(jsonCheckAssetList.getJsonCheckAssets(), getActivity(), this);
+            rv_inventory_items.setAdapter(inventoryAdapter);
+        }
+    }
+
+    @Override
+    public void onInventoryItemClick(JsonCheckAsset item) {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != inventoryAdapter)
+            InventoryHomeFragment.tempList.put("Floor No- " + floor + "  >>  " + "Room No- " + room, inventoryAdapter.getDataSet());
     }
 }

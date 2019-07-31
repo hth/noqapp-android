@@ -34,7 +34,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.frag_inventory_home, container, false);
+        View view = inflater.inflate(R.layout.frag_rooms, container, false);
         rv_floors = view.findViewById(R.id.rv_floors);
         rv_floors.setHasFixedSize(true);
         rv_floors.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -84,8 +84,8 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
     public void jsonCheckAssetListResponse(JsonCheckAssetList jsonCheckAssetList) {
         dismissProgress();
         if (null != jsonCheckAssetList.getJsonCheckAssets()) {
-            RoomsOnFloorAdapter floorAdapter = new RoomsOnFloorAdapter(jsonCheckAssetList.getJsonCheckAssets(), getActivity(), this);
-            rv_floors.setAdapter(floorAdapter);
+            RoomsOnFloorAdapter roomsOnFloorAdapter = new RoomsOnFloorAdapter(jsonCheckAssetList.getJsonCheckAssets(), getActivity(), this);
+            rv_floors.setAdapter(roomsOnFloorAdapter);
         }
     }
 }

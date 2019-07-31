@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a0fed4">
+    android:background="#efefef"
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_floors"
+    <LinearLayout
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_above="@+id/btn_print"
+        android:layout_alignParentTop="true"
+        android:background="#efefef"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_floors"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_print"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:background="@drawable/bg_gradient_round"
+        android:gravity="center"
+        android:paddingLeft="90dp"
+        android:paddingRight="90dp"
+        android:textAllCaps="false"
+        android:textColor="@color/btn_txt_color"
+        android:textSize="@dimen/text_size_fourteen"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:text="Print Inventory PDF" />
+</RelativeLayout>
