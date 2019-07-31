@@ -28,7 +28,7 @@ import java.io.Serializable;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckAsset extends AbstractDomain implements Serializable {
+public class CheckAsset implements Serializable {
 
     @JsonProperty("bn")
     private String bizNameId;
@@ -41,6 +41,9 @@ public class CheckAsset extends AbstractDomain implements Serializable {
 
     @JsonProperty("an")
     private String assetName;
+
+    @JsonProperty("n")
+    private String businessName;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
@@ -78,6 +81,15 @@ public class CheckAsset extends AbstractDomain implements Serializable {
 
     public CheckAsset setAssetName(String assetName) {
         this.assetName = assetName;
+        return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public CheckAsset setBusinessName(String businessName) {
+        this.businessName = businessName;
         return this;
     }
 
