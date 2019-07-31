@@ -18,12 +18,13 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
 public class InventoryInRoomFragment extends BaseFragment implements CheckAssetPresenter {
 
-
+    private String bizNameId = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container, args);
         View view = inflater.inflate(R.layout.frag_inventory_in_rooms, container, false);
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
+        bizNameId = getArguments().getString("bizNameId", "");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
@@ -31,7 +32,7 @@ public class InventoryInRoomFragment extends BaseFragment implements CheckAssetP
             checkAssetApiCalls.setCheckAssetPresenter(this);
             CheckAsset checkAsset = new CheckAsset();
             checkAsset.setAssetName(jsonCheckAsset.getAssetName());
-            checkAsset.setBizNameId(jsonCheckAsset.getId());
+            checkAsset.setBizNameId(bizNameId);
             checkAsset.setRoomNumber(jsonCheckAsset.getRoomNumber());
             checkAsset.setFloor(jsonCheckAsset.getFloor());
             checkAssetApiCalls.assetsInRoom(UserUtils.getDeviceId(), UserUtils.getEmail(),

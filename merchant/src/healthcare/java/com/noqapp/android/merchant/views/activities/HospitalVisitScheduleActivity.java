@@ -1,5 +1,19 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitSchedule;
 import com.noqapp.android.common.beans.medical.JsonHospitalVisitScheduleList;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
@@ -14,20 +28,6 @@ import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
 import com.noqapp.android.merchant.views.fragments.HospitalVisitScheduleFragment;
 import com.noqapp.android.merchant.views.utils.PdfHospitalVisitGenerator;
-
-import com.google.android.material.tabs.TabLayout;
-
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.viewpager.widget.ViewPager;
 
 import java.io.Serializable;
 import java.util.ArrayList;

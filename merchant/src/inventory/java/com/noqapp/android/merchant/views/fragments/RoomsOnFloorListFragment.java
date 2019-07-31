@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +28,7 @@ import java.util.ArrayList;
 public class RoomsOnFloorListFragment extends BaseFragment implements
         RoomsOnFloorAdapter.OnItemClickListener, CheckAssetPresenter {
     private RecyclerView rv_floors;
+    private String bizNameId = "";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -41,6 +40,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
         rv_floors.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         rv_floors.setItemAnimator(new DefaultItemAnimator());
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
+        bizNameId = getArguments().getString("bizNameId", "");
         ArrayList<String> floorList = new ArrayList<>();
         floorList.add("Room No 1");
         floorList.add("Room No 2");
@@ -59,7 +59,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
             checkAssetApiCalls.setCheckAssetPresenter(this);
             CheckAsset checkAsset = new CheckAsset();
             checkAsset.setAssetName(jsonCheckAsset.getAssetName());
-            checkAsset.setBizNameId(jsonCheckAsset.getId());
+            checkAsset.setBizNameId(bizNameId);
             checkAsset.setRoomNumber(jsonCheckAsset.getRoomNumber());
             checkAsset.setFloor(jsonCheckAsset.getFloor());
             checkAssetApiCalls.rooms(UserUtils.getDeviceId(), UserUtils.getEmail(),
@@ -74,13 +74,10 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
     public void onRoomsOnFloorItemClick(JsonCheckAsset item) {
         InventoryInRoomFragment inventoryInRoomFragment = new InventoryInRoomFragment();
         Bundle b = new Bundle();
+        b.putString("bizNameId",bizNameId);
         b.putSerializable("data",item);
         inventoryInRoomFragment.setArguments(b);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, inventoryInRoomFragment, "inventoryInRoomFragment");
-        fragmentTransaction.addToBackStack("inventoryInRoomFragment");
-        fragmentTransaction.commit();
+        LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, inventoryInRoomFragment, "inventoryInRoomFragment");
     }
 
     @Override

@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +26,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         FloorAdapter.OnItemClickListener {
     private RecyclerView rv_floors;
     private CheckAssetApiCalls checkAssetApiCalls;
+    private String bizNameId = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container, args);
@@ -73,12 +72,9 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
         RoomsOnFloorListFragment roflf = new RoomsOnFloorListFragment();
         Bundle b = new Bundle();
         b.putSerializable("data",item);
+        b.putString("bizNameId",bizNameId);
         roflf.setArguments(b);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, roflf, "roomsOnFloorList");
-        fragmentTransaction.addToBackStack("roomsOnFloorList");
-        fragmentTransaction.commit();
+        LaunchActivity.getLaunchActivity().replaceFragmentWithBackStack(R.id.frame_layout, roflf, "roomsOnFloorList");
     }
 
     @Override
