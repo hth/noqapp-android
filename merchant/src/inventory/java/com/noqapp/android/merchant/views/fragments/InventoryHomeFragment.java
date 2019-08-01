@@ -36,6 +36,8 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
     private RecyclerView rv_floors;
     private CheckAssetApiCalls checkAssetApiCalls;
     private String bizNameId = "";
+    private String businessName = "";
+    private String businessAddress= "";
     public static Map<String, List<JsonCheckAsset>> tempList = new HashMap<>();
     public static Map<String, List<JsonCheckAsset>> prefList = new HashMap<>();
     private Button btn_print;
@@ -52,7 +54,7 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
             if(tempList.size()>0) {
                 if (permissionHelper.isStoragePermissionAllowed()) {
                     PdfInventoryGenerator pdfGenerator = new PdfInventoryGenerator(getActivity());
-                    pdfGenerator.createPdf(tempList);
+                    pdfGenerator.createPdf(businessName,businessAddress,tempList);
                 } else {
                     permissionHelper.requestStoragePermission();
                 }
@@ -100,6 +102,8 @@ public class InventoryHomeFragment extends BaseFragment implements BizNamePresen
     @Override
     public void bizNameResponse(CheckAsset checkAsset) {
         bizNameId = checkAsset.getBizNameId();
+        businessName = checkAsset.getBusinessName();
+        businessAddress = checkAsset.getAreaAndTown();
         dismissProgress();
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");

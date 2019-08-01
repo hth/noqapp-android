@@ -2,8 +2,6 @@ package com.noqapp.android.merchant.views.utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.itextpdf.text.BaseColor;
@@ -12,10 +10,8 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -26,12 +22,11 @@ import com.noqapp.android.common.utils.HeaderFooterPageEvent;
 import com.noqapp.android.common.utils.PdfHelper;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
+import com.noqapp.android.merchant.views.activities.LaunchActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,15 +35,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PdfInventoryGenerator extends PdfHelper {
-    private String hospitalName = "SSD Hospital floor";
-    private String hospitalAddress = "Kopairkhairane, Navi Mumbai";
 
     public PdfInventoryGenerator(Context mContext) {
         super(mContext);
     }
 
-    public void createPdf(Map<String, List<JsonCheckAsset>> dataList) {
-        String fileName = new SimpleDateFormat("'NoQueue_" + hospitalName + "_Immunization_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
+    public void createPdf(String businessName, String businessAddress, Map<String, List<JsonCheckAsset>> dataList) {
+        String fileName = new SimpleDateFormat("'NoQueue_" + businessName + "_Immunization_'yyyyMMdd'.pdf'", Locale.getDefault()).format(new Date());
         File dest = new File(getAppPath(mContext.getResources().getString(R.string.app_name)) + fileName);
         if (dest.exists()) {
             Log.d("Delete", "File deleted successfully " + dest.delete());
@@ -69,7 +62,7 @@ public class PdfInventoryGenerator extends PdfHelper {
 
             Font noqFont = new Font(baseFont, 23.0f, Font.BOLD, BaseColor.BLACK);
 
-            Chunk degreeChunk = new Chunk(hospitalName, noqFont);
+            Chunk degreeChunk = new Chunk(businessName, noqFont);
             Paragraph degreeParagraph = new Paragraph();
             degreeParagraph.add(degreeChunk);
             degreeParagraph.add(glue);
@@ -78,7 +71,7 @@ public class PdfInventoryGenerator extends PdfHelper {
             addVerticalSpace();
 
             Paragraph hospital = new Paragraph();
-            hospital.add(new Chunk(hospitalAddress, normalFont));
+            hospital.add(new Chunk(businessAddress, normalFont));
             document.add(hospital);
 
             // LINE SEPARATOR
@@ -99,7 +92,7 @@ public class PdfInventoryGenerator extends PdfHelper {
             String formattedDate = df.format(c);
             Paragraph p_sign = new Paragraph();
             p_sign.add(new Chunk("Created By: ", normalBigFont));
-            p_sign.add(new Chunk(hospitalName, normalFont));
+            p_sign.add(new Chunk(LaunchActivity.getLaunchActivity().getUserName(), normalFont));
             p_sign.add("            ");
             p_sign.add("                                                                   ");
             p_sign.add(new Chunk("Date: ", normalBigFont));
@@ -136,7 +129,6 @@ public class PdfInventoryGenerator extends PdfHelper {
                 pdfPCell.setBorderColor(BaseColor.LIGHT_GRAY);
                 table_header.addCell(pdfPCell);
                 document.add(table_header);
-               // document.add(addVerticalSpaceBefore(5.0f));
                 PdfPTable table = new PdfPTable(2);
                 for (int j = 0; j < checkAssetList.size(); j++) {
                     table.addCell(pdfPCellWithBorder(checkAssetList.get(j).getAssetName(), normalFont));

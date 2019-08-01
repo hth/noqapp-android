@@ -80,11 +80,18 @@ public class InventoryInRoomFragment extends BaseFragment implements
             jsonCheckAssets = jsonCheckAssetList.getJsonCheckAssets();
             List<JsonCheckAsset> temp = InventoryHomeFragment.prefList.get("Floor No- " + floor + "  >>  " + "Room No- " + room);
             if (temp != null) {
-                jsonCheckAssets = temp;
+                for (JsonCheckAsset d : temp) {
+                    for (int i = 0; i < jsonCheckAssets.size(); i++) {
+                        if (jsonCheckAssets.get(i).getAssetName().equals(d.getAssetName())) {
+                            jsonCheckAssets.get(i).setStatus(d.isStatus());
+                            break;
+                        }
+                    }
+                }
             } else {
                 // No such key do nothing
             }
-            inventoryAdapter = new InventoryAdapter(jsonCheckAssetList.getJsonCheckAssets(), getActivity(), this);
+            inventoryAdapter = new InventoryAdapter(jsonCheckAssets, getActivity(), this);
             rv_inventory_items.setAdapter(inventoryAdapter);
         }
     }
