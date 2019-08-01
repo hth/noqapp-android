@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Available Slots count"
+                    android:text="Available Walk-in Appointment count"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="normal"
