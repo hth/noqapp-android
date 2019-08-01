@@ -19,7 +19,10 @@ class AppUpdateActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.act_app_update)
         val btn_download = findViewById<Button>(R.id.btn_download)
-        btn_download.setOnClickListener { CommonHelper.openPlayStore(this@AppUpdateActivity) }
+        btn_download.setOnClickListener {
+            CommonHelper.openPlayStore(this@AppUpdateActivity)
+            finish()
+        }
     }
 
     override fun onBackPressed() {
