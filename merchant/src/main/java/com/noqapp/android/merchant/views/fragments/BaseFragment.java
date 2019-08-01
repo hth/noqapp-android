@@ -61,5 +61,17 @@ public class BaseFragment extends Fragment implements ResponseErrorPresenter {
         dismissProgress();
         AppUtils.authenticationProcessing();
     }
+
+    @Override
+    public void onDestroy() {
+        dismissProgress();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        dismissProgress();
+        super.onDetach();
+    }
 }
 
