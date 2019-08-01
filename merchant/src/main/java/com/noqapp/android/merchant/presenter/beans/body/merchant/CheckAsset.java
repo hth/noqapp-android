@@ -45,6 +45,9 @@ public class CheckAsset implements Serializable {
     @JsonProperty("n")
     private String businessName;
 
+    @JsonProperty("at")
+    private String areaAndTown;
+
     @JsonProperty("error")
     private ErrorEncounteredJson error;
 
@@ -90,6 +93,15 @@ public class CheckAsset implements Serializable {
 
     public CheckAsset setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
+    }
+
+    public String getAreaAndTown() {
+        return areaAndTown;
+    }
+
+    public CheckAsset setAreaAndTown(String areaAndTown) {
+        this.areaAndTown = areaAndTown;
         return this;
     }
 
