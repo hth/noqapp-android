@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.noqapp.android.common.utils.FontsOverride;
 
@@ -17,8 +18,9 @@ import java.util.Locale;
  * Created by chandra on 5/20/17.
  */
 public class MyApplication extends Application {
-    private static final String LOG_TAG = "Application";
-
+    public static SharedPreferences preferences;
+    public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
+    public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
     public MyApplication() {
         super();
         // TODO Auto-generated constructor stub
@@ -36,6 +38,7 @@ public class MyApplication extends Application {
         FontsOverride.overrideFont(this, "SERIF", "fonts/roboto_regular.ttf");
         FontsOverride.overrideFont(this, "SANS_SERIF", "fonts/roboto_regular.ttf");
         setLocale(this);
+        preferences = getSharedPreferences( getPackageName() + "_preferences", MODE_PRIVATE);
     }
 
     private Locale getLocaleFromPref() {
@@ -65,5 +68,22 @@ public class MyApplication extends Application {
 
     private SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    }
+
+    public static boolean isNotificationSoundEnable() {
+        Log.e("Sound enable",String.valueOf(preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true)));
+        return preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true);
+    }
+
+    public static void setNotificationSoundEnable(boolean check) {
+        preferences.edit().putBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, check).apply();
+    }
+
+    public static boolean isNotificationReceiveEnable() {
+        return preferences.getBoolean(PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE, true);
+    }
+
+    public static void setNotificationReceiveEnable(boolean check) {
+        preferences.edit().putBoolean(PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE, check).apply();
     }
 }

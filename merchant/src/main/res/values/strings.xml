@@ -123,6 +123,7 @@
     <string name="error_dob_blank">Please enter date of birth</string>
     <string name="create_case">Case \nHistory</string>
 
+    <string name="notification_setting">Notification</string>
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
     <string name="hindi">Hindi</string>

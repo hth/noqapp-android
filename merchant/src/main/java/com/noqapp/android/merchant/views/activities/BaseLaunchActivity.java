@@ -277,6 +277,11 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
                 startActivity(in);
                 break;
             }
+            case R.drawable.ic_notification: {
+                Intent in = new Intent(launchActivity, NotificationSettings.class);
+                startActivity(in);
+                break;
+            }
             case R.drawable.ic_reviews:
                 if (merchantListFragment.getTopics() != null && merchantListFragment.getTopics().size() > 0) {
                     Intent in1 = new Intent(launchActivity, ReviewListActivity.class);
@@ -314,6 +319,9 @@ public abstract class BaseLaunchActivity extends AppCompatActivity implements Ap
         settingList.add(new MenuDrawer(getString(R.string.legal), false, false, R.drawable.legal));
         settingList.add(new MenuDrawer("Rate the app", false, false, R.drawable.ic_star));
         settingList.add(new MenuDrawer(getString(R.string.language_setting), false, false, R.drawable.language));
+        if (isLoggedIn()) {
+            settingList.add(new MenuDrawer(getString(R.string.notification_setting), false, false, R.drawable.ic_notification));
+        }
         menuDrawerItems.add(new MenuDrawer("Settings", true, true, R.drawable.settings_square, settingList));
         menuDrawerItems.add(new MenuDrawer("Logout", true, false, R.drawable.logout));
         if (showChart) {
