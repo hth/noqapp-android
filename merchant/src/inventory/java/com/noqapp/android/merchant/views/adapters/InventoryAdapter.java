@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.noqapp.android.common.model.types.InventoryStateEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.presenter.beans.JsonCheckAsset;
 
@@ -25,7 +26,7 @@ public class InventoryAdapter extends RecyclerView.Adapter {
     private List<JsonCheckAsset> dataSet;
     private String YES = "Yes";
     private String NO = "No";
-    private List<String> yes_no_list = new ArrayList<>();
+    private List<String> state_list = new ArrayList<>();
 
     public List<JsonCheckAsset> getDataSet() {
         return dataSet;
@@ -35,15 +36,13 @@ public class InventoryAdapter extends RecyclerView.Adapter {
         this.dataSet = data;
         this.context = context;
         this.listener = listener;
-        yes_no_list.clear();
-        yes_no_list.add(YES);
-        yes_no_list.add(NO);
+        state_list.clear();
+        state_list = InventoryStateEnum.asListOfDescription();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rcv_item_inventory, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_item_inventory, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -51,12 +50,23 @@ public class InventoryAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder Vholder, final int listPosition) {
         MyViewHolder holder = (MyViewHolder) Vholder;
         holder.tv_title.setText(dataSet.get(listPosition).getAssetName());
-        holder.sc_status.addSegments(yes_no_list);
-        holder.sc_status.setSelectedSegment(dataSet.get(listPosition).isStatus() ? 0 : 1);
+        holder.sc_status.removeAllSegments();
+        holder.sc_status.addSegments(state_list);
+        switch (dataSet.get(listPosition).getInventoryStateEnum()){
+            case WK:
+                holder.sc_status.setSelectedSegment(0);
+                break;
+            case NW:
+                holder.sc_status.setSelectedSegment(1);
+                break;
+            case NC:
+                holder.sc_status.setSelectedSegment(2);
+                break;
+        }
         holder.sc_status.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override
             public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                dataSet.get(listPosition).setStatus(holder.sc_status.getSelectedAbsolutePosition() == 0);
+                dataSet.get(listPosition).setInventoryStateEnum(InventoryStateEnum.getNameByDescription(state_list.get(holder.sc_status.getSelectedAbsolutePosition())));
             }
         });
     }
@@ -83,6 +93,13 @@ public class InventoryAdapter extends RecyclerView.Adapter {
             this.card_view = itemView.findViewById(R.id.card_view);
 
         }
+    }
+
+    public void selectUnselectAllData(boolean isChecked){
+        for (JsonCheckAsset jsonCheckAsset: dataSet) {
+            jsonCheckAsset.setInventoryStateEnum(isChecked?InventoryStateEnum.WK:InventoryStateEnum.NW);
+        }
+        notifyDataSetChanged();
     }
 
 

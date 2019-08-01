@@ -132,7 +132,7 @@ public class PdfInventoryGenerator extends PdfHelper {
                 PdfPTable table = new PdfPTable(2);
                 for (int j = 0; j < checkAssetList.size(); j++) {
                     table.addCell(pdfPCellWithBorder(checkAssetList.get(j).getAssetName(), normalFont));
-                    table.addCell(pdfPCellWithBorder(checkAssetList.get(j).isStatus()?"OK":"Not OK", normalFont));
+                    table.addCell(pdfPCellWithBorder(checkAssetList.get(j).getInventoryStateEnum().getDescription(), normalFont));
                 }
                 document.add(table);
                 document.add(addVerticalSpaceBefore(5.0f));

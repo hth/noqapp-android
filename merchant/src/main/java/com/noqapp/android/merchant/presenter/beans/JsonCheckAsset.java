@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.noqapp.android.common.model.types.InventoryStateEnum;
 
 import java.io.Serializable;
 
@@ -41,7 +42,7 @@ public class JsonCheckAsset extends AbstractDomain implements Serializable {
     @JsonProperty("an")
     private String assetName;
 
-    private boolean status;
+    private InventoryStateEnum inventoryStateEnum = InventoryStateEnum.NC;
 
     public String getId() {
         return id;
@@ -79,23 +80,22 @@ public class JsonCheckAsset extends AbstractDomain implements Serializable {
         return this;
     }
 
-    public boolean isStatus() {
-        return status;
+    public InventoryStateEnum getInventoryStateEnum() {
+        return inventoryStateEnum;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setInventoryStateEnum(InventoryStateEnum inventoryStateEnum) {
+        this.inventoryStateEnum = inventoryStateEnum;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("JsonCheckAsset{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", floor='").append(floor).append('\'');
-        sb.append(", roomNumber='").append(roomNumber).append('\'');
-        sb.append(", assetName='").append(assetName).append('\'');
-        sb.append(", status=").append(status);
-        sb.append('}');
-        return sb.toString();
+        return "JsonCheckAsset{" +
+                "id='" + id + '\'' +
+                ", floor='" + floor + '\'' +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", assetName='" + assetName + '\'' +
+                ", inventoryStateEnum=" + inventoryStateEnum +
+                '}';
     }
 }

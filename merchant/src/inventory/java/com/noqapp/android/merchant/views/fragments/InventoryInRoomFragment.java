@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,26 +27,37 @@ import java.util.List;
 
 public class InventoryInRoomFragment extends BaseFragment implements
         CheckAssetPresenter, InventoryAdapter.OnItemClickListener {
-
-    private String bizNameId = "";
     private String room = "";
     private String floor = "";
     private RecyclerView rv_inventory_items;
-    private List<JsonCheckAsset> jsonCheckAssets;
     private InventoryAdapter inventoryAdapter;
+    private LinearLayout ll_bottom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container, args);
         View view = inflater.inflate(R.layout.frag_inventory_in_rooms, container, false);
         rv_inventory_items = view.findViewById(R.id.rv_inventory_items);
+        ll_bottom = view.findViewById(R.id.ll_bottom);
         rv_inventory_items.setHasFixedSize(true);
         rv_inventory_items.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rv_inventory_items.setItemAnimator(new DefaultItemAnimator());
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
-        bizNameId = getArguments().getString("bizNameId", "");
+        String bizNameId = getArguments().getString("bizNameId", "");
         room = getArguments().getString("room", "");
         floor = getArguments().getString("floor", "");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(floor+" : "+room);
+        Button btn_check_all = view.findViewById(R.id.btn_check_all);
+        btn_check_all.setOnClickListener(v -> {
+            if (null != inventoryAdapter)
+                inventoryAdapter.selectUnselectAllData(true);
+
+        });
+        Button btn_uncheck_all = view.findViewById(R.id.btn_uncheck_all);
+        btn_uncheck_all.setOnClickListener(v -> {
+            if (null != inventoryAdapter)
+                inventoryAdapter.selectUnselectAllData(false);
+        });
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
@@ -67,7 +80,7 @@ public class InventoryInRoomFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Inventory in room");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(floor+" : "+room);
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
@@ -77,13 +90,13 @@ public class InventoryInRoomFragment extends BaseFragment implements
         dismissProgress();
         Log.e("data", jsonCheckAssetList.toString());
         if (null != jsonCheckAssetList.getJsonCheckAssets()) {
-            jsonCheckAssets = jsonCheckAssetList.getJsonCheckAssets();
+            List<JsonCheckAsset> jsonCheckAssets = jsonCheckAssetList.getJsonCheckAssets();
             List<JsonCheckAsset> temp = InventoryHomeFragment.prefList.get("Floor No- " + floor + "  >>  " + "Room No- " + room);
-            if (temp != null) {
+            if (temp != null && temp.size() > 0 && jsonCheckAssets.size() > 0) {
                 for (JsonCheckAsset d : temp) {
                     for (int i = 0; i < jsonCheckAssets.size(); i++) {
                         if (jsonCheckAssets.get(i).getAssetName().equals(d.getAssetName())) {
-                            jsonCheckAssets.get(i).setStatus(d.isStatus());
+                            jsonCheckAssets.get(i).setInventoryStateEnum(d.getInventoryStateEnum());
                             break;
                         }
                     }
@@ -91,6 +104,7 @@ public class InventoryInRoomFragment extends BaseFragment implements
             } else {
                 // No such key do nothing
             }
+            ll_bottom.setVisibility(jsonCheckAssets.size() > 0 ? View.VISIBLE : View.INVISIBLE);
             inventoryAdapter = new InventoryAdapter(jsonCheckAssets, getActivity(), this);
             rv_inventory_items.setAdapter(inventoryAdapter);
         }

@@ -42,6 +42,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
         JsonCheckAsset jsonCheckAsset = (JsonCheckAsset) getArguments().getSerializable("data");
         bizNameId = getArguments().getString("bizNameId", "");
         floor = getArguments().getString("floor", "");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(floor);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("fetching info...");
             showProgress();
@@ -75,7 +76,7 @@ public class RoomsOnFloorListFragment extends BaseFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        LaunchActivity.getLaunchActivity().setActionBarTitle("Rooms on floor");
+        LaunchActivity.getLaunchActivity().setActionBarTitle(floor);
         LaunchActivity.getLaunchActivity().toolbar.setVisibility(View.VISIBLE);
         LaunchActivity.getLaunchActivity().enableDisableBack(false);
     }
