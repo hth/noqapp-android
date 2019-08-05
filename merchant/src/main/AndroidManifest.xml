@@ -143,6 +143,10 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".views.activities.DrawActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".views.activities.SliderActivity"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />

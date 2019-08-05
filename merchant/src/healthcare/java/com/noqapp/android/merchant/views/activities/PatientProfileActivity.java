@@ -120,6 +120,19 @@ public class PatientProfileActivity extends BaseActivity implements
                 startActivity(intent);
             }
         });
+        TextView tv_draw = findViewById(R.id.tv_draw);
+        tv_draw.setVisibility(AppUtils.isRelease()?View.GONE:View.VISIBLE);
+        tv_draw.setOnClickListener(v -> {
+            if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
+            }else {
+                Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
+                intent.putExtra("qCodeQR", codeQR);
+                intent.putExtra("data", jsonQueuedPerson);
+                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                startActivity(intent);
+            }
+        });
 
         Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
