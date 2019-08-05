@@ -151,14 +151,11 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
             Button btn_no = customDialogView.findViewById(R.id.btn_no);
             btn_no.setOnClickListener(v1 -> mAlertDialog.dismiss());
             btn_yes.setOnClickListener(v12 -> mAlertDialog.dismiss());
-            try {
-                mAlertDialog.show();
-            } catch (Exception e) {
-                // WindowManager$BadTokenException will be caught and the app would not display
-                // the 'Force Close' message
-            }
+            mAlertDialog.show();
+
         }
     }
+
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -167,6 +164,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
