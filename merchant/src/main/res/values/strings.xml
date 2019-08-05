@@ -248,11 +248,11 @@
     <string name="activity_discount">Discounts</string>
 
     <string name="setting_title">Caution</string>
-    <string name="setting_today">This settings is for today only. This changes are temporary.It will be effective for today only and will reflect immediately. </string>
-    <string name="setting_scheduling">This scheduling settings change is permanent. Store will be closed during given period.It will reflect immediately. </string>
-    <string name="setting_token_q_timing">This token and queue settings is permanent for every day of the week.  It will reflect immediately. </string>
-    <string name="setting_appointment">This appointment settings change will be permanent. It will reflect immediately. </string>
-    <string name="setting_payment">This payment settings change will be permanent. It will reflect immediately. </string>
-    <string name="setting_permanent">This settings change is permanent. It will reflect immediately. </string>
-    <string name="setting_msg">This settings change will be permanent. It will reflect immediately.</string>
+    <string name="setting_today">Changes made here is temporary and last until end of today. These changes will reflect immediately.</string>
+    <string name="setting_token_q_timing">Token timing and Queue Timing is permanent for this day of the week. These changes will reflect immediately.</string>
+    <string name="setting_permanent">Changes made here is permanent. These changes will reflect immediately.</string>
+    <string name="setting_scheduling">Changes made here is permanent. Store will be closed during set period. These changes will reflect immediately.</string>
+    <string name="setting_appointment">Changes made here is permanent. Appointment changes will reflect immediately.</string>
+    <string name="setting_payment">Changes made here is permanent. Payment changes will reflect immediately.</string>
+    <string name="setting_msg">Changes made here is permanent. These changes will reflect immediately.</string>
 </resources>
