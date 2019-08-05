@@ -30,6 +30,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
@@ -126,11 +127,16 @@ public class PatientProfileActivity extends BaseActivity implements
             if(null == jsonProfile || null == jsonMedicalRecordTemp){
                 new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
             }else {
-                Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
-                intent.putExtra("data", jsonQueuedPerson);
-                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                startActivity(intent);
+                PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                } else {
+                    permissionHelper.requestStoragePermission();
+                }
             }
         });
 

@@ -3,6 +3,7 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,10 +28,17 @@ import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ColorPaletteAdapter;
 import com.noqapp.android.merchant.views.customviews.DrawingView;
 
+import java.io.File;
 import java.io.OutputStream;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class DrawActivity extends BaseActivity implements View.OnClickListener,
         ColorPaletteAdapter.OnColorSelectedListener, ImageUploadPresenter {
@@ -113,20 +121,19 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
 
                     OutputStream imageFileOS = getContentResolver().openOutputStream(imageFileUri);
                     alteredBitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS);
-//                    String type = getMimeType(imageFileUri);
-//                    File file = new File(imageFileUri.toString());
-//                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-//                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonMedicalRecord.getRecordReferenceId());
-//                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-
-                    new CustomToast().showToast(this, "Saved!");
+                    String type = getMimeType(imageFileUri);
+                    String path = getRealPathFromURI(imageFileUri);
+                    File file = new File(path);
+                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonMedicalRecord.getRecordReferenceId());
+                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+                    showProgress();
+                    setProgressMessage("Uploading document");
                 } catch (Exception e) {
                     Log.v("EXCEPTION", e.getMessage());
                 }
             }
         } else if (v == btn_select_color) {
-            // new ColorPickerDialog(DrawActivity.this, DrawActivity.this, Color.RED).show();
-
             AlertDialog.Builder builder = new AlertDialog.Builder(DrawActivity.this);
             LayoutInflater inflater = LayoutInflater.from(DrawActivity.this);
             builder.setTitle(null);
@@ -152,7 +159,14 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
             }
         }
     }
-
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
@@ -180,12 +194,24 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void imageUploadResponse(JsonResponse jsonResponse) {
-
+        dismissProgress();
+        Log.v("Image upload", "" + jsonResponse);
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            new CustomToast().showToast(this, "Document upload successfully! Change will be reflect after 5 min");
+        } else {
+            new CustomToast().showToast(this, "Failed to update document");
+        }
     }
 
     @Override
     public void imageRemoveResponse(JsonResponse jsonResponse) {
-
+        dismissProgress();
+        Log.v("Image removed", "" + jsonResponse.getResponse());
+        if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            new CustomToast().showToast(this, "Document removed successfully!");
+        } else {
+            new CustomToast().showToast(this, "Failed to remove document");
+        }
     }
 
     @Override
