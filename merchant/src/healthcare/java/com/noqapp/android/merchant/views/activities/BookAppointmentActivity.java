@@ -97,7 +97,6 @@ public class BookAppointmentActivity extends BaseActivity implements
     private int appointmentDuration;
     private int appointmentOpenHowFar;
     private int count = 3;
-    // private int no_of_date = 5;
     private boolean isEdit = false;
     private JsonSchedule jsonScheduleTemp;
 
@@ -106,11 +105,9 @@ public class BookAppointmentActivity extends BaseActivity implements
         if (new AppUtils().isTablet(getApplicationContext())) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             count = 6;
-            //no_of_date = 7;
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             count = 3;
-            //no_of_date = 5;
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
@@ -118,6 +115,10 @@ public class BookAppointmentActivity extends BaseActivity implements
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(v -> finish());
         tv_toolbar_title.setText("Book Appointment");
+        tv_empty_slots = findViewById(R.id.tv_empty_slots);
+        rv_available_date = findViewById(R.id.rv_available_date);
+        rv_available_date.setLayoutManager(new GridLayoutManager(this, count));
+        rv_available_date.setItemAnimator(new DefaultItemAnimator());
         scheduleApiCalls = new ScheduleApiCalls();
         scheduleApiCalls.setAppointmentPresenter(this);
         JsonScheduleList jsonScheduleList = (JsonScheduleList) getIntent().getExtras().getSerializable("jsonScheduleList");
@@ -125,19 +126,16 @@ public class BookAppointmentActivity extends BaseActivity implements
         appointmentOpenHowFar = jsonScheduleList.getAppointmentOpenHowFar();
         codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         jsonHours = jsonScheduleList.getJsonHours();
-
         isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {
             jsonScheduleTemp = (JsonSchedule) getIntent().getExtras().getSerializable("jsonSchedule");
         }
-
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.DAY_OF_MONTH, appointmentOpenHowFar * 7); // end date of appointment
         Calendar startDate = Calendar.getInstance();
         Date dt = new Date();
         startDate.setTime(dt);
         startDate.add(Calendar.DAY_OF_MONTH, 1); // start date of appointment
-
 
         HorizontalCalendar horizontalCalendarView = new HorizontalCalendar.Builder(this, R.id.horizontalCalendarView)
                 .range(startDate, endDate)
@@ -153,7 +151,6 @@ public class BookAppointmentActivity extends BaseActivity implements
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
 //        tv_doctor_name.setText(bizStoreElastic.getDisplayName());
 //        tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
-//
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
@@ -162,11 +159,6 @@ public class BookAppointmentActivity extends BaseActivity implements
             }
         });
         horizontalCalendarView.refresh();
-        tv_empty_slots = findViewById(R.id.tv_empty_slots);
-        rv_available_date = findViewById(R.id.rv_available_date);
-        rv_available_date.setLayoutManager(new GridLayoutManager(this, count));
-        rv_available_date.setItemAnimator(new DefaultItemAnimator());
-
         Button btn_book_appointment = findViewById(R.id.btn_book_appointment);
         btn_book_appointment.setOnClickListener(v -> {
             if (selectedPos == -1) {
@@ -200,16 +192,13 @@ public class BookAppointmentActivity extends BaseActivity implements
                     } else {
                         ShowAlertInformation.showNetworkDialog(BookAppointmentActivity.this);
                     }
-
                 } else {
                     searchPatientWithMobileNoORCustomerId();
                 }
-
             }
         });
         selectedDate = startDate;
         fetchAppointments(new AppUtils().getTomorrowDateWithFormat());
-
     }
 
     @Override
@@ -233,23 +222,29 @@ public class BookAppointmentActivity extends BaseActivity implements
         return null;
     }
 
-    private void setAppointmentSlots(JsonHour storeHourElastic, ArrayList<String> filledTimes) {
-        List<AppointmentSlot> listData = new ArrayList<>();
-        String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
-        String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
-        ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
-        times.clear();
-        for (int i = 0; i < timeSlot.size() - 1; i++) {
-            listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
-            times.add(timeSlot.get(i));
-        }
-        appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
-        rv_available_date.setAdapter(appointmentSlotAdapter);
-        appointmentSlotAdapter.notifyDataSetChanged();
-        if (listData.size() == 0) {
+    private void setAppointmentSlots(JsonHour jsonHour, ArrayList<String> filledTimes) {
+        if (new AppUtils().checkStoreClosedWithTime(jsonHour)
+                || new AppUtils().checkStoreClosedWithAppointmentTime(jsonHour)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
         } else {
             tv_empty_slots.setVisibility(View.GONE);
+            List<AppointmentSlot> listData = new ArrayList<>();
+            String from = Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentStartHour());
+            String to = Formatter.convertMilitaryTo24HourFormat(jsonHour.getAppointmentEndHour());
+            ArrayList<String> timeSlot = AppUtils.getTimeSlots(appointmentDuration, from, to, true);
+            for (int i = 0; i < timeSlot.size() - 1; i++) {
+                listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).
+                        setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i+1))));
+                times.add(timeSlot.get(i));
+            }
+            appointmentSlotAdapter = new AppointmentSlotAdapter(listData, this, this);
+            rv_available_date.setAdapter(appointmentSlotAdapter);
+            appointmentSlotAdapter.notifyDataSetChanged();
+            if (listData.size() == 0) {
+                tv_empty_slots.setVisibility(View.VISIBLE);
+            } else {
+                tv_empty_slots.setVisibility(View.GONE);
+            }
         }
         selectedPos = -1;
     }
@@ -258,11 +253,11 @@ public class BookAppointmentActivity extends BaseActivity implements
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
         ArrayList<String> filledTimes = new ArrayList<>();
-        times.clear();
         if (null != jsonScheduleList.getJsonSchedules() && jsonScheduleList.getJsonSchedules().size() > 0) {
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
-                filledTimes.addAll(AppUtils.getTimeSlots(appointmentDuration, AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), false));
+                filledTimes.addAll(AppUtils.getTimeSlots(appointmentDuration,
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
+                        AppUtils.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), true));
             }
         }
         int dayOfWeek = AppUtils.getDayOfWeek(selectedDate);
@@ -314,7 +309,10 @@ public class BookAppointmentActivity extends BaseActivity implements
         }
     }
 
-       private void fetchAppointments(String day) {
+    private void fetchAppointments(String day) {
+        times.clear();
+        appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<AppointmentSlot>(), this, this);
+        rv_available_date.setAdapter(appointmentSlotAdapter);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             setProgressCancel(false);

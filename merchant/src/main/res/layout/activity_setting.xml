@@ -199,7 +199,6 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight=".8"
-                                    android:padding="5dp"
                                     android:text="@string/text_delay"
                                     android:textColor="@color/color_total_val"
                                     android:textSize="@dimen/text_size_fourteen" />
@@ -343,7 +342,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:padding="5dp"
                             android:text="@string/setting_q_timing"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/text_size_sixteen"

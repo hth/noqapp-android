@@ -55,4 +55,11 @@
 
     <color name="toast_background">@color/color_indigo_toast</color>
     <color name="download_circle_bg">#f4511e</color>
+
+    <color name="booked_slot">#f6734a</color>
+    <color name="available_slot">#fab9a5</color>
+
+
+
+
 </resources>

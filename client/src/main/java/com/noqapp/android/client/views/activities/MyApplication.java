@@ -18,7 +18,6 @@ import java.util.Locale;
  */
 
 public class MyApplication extends MultiDexApplication {
-    private static final String LOG_TAG = "Application";
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";

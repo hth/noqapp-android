@@ -583,6 +583,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
             if (MobileSystemErrorCodeEnum.valueOf(eej.getSystemError()) == MobileSystemErrorCodeEnum.MOBILE_UPGRADE) {
                 Intent in = new Intent(launchActivity, AppUpdateActivity.class);
                 startActivity(in);
+                finish();
             } else {
                 new ErrorResponseHandler().processError(this, eej);
             }

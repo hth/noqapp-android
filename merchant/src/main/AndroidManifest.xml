@@ -155,6 +155,10 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".views.activities.NotificationSettings"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".views.activities.WebViewActivity"
             android:exported="false"
             android:theme="@style/BaseTheme"

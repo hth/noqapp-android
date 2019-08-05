@@ -123,6 +123,7 @@
     <string name="error_dob_blank">Please enter date of birth</string>
     <string name="create_case">Case \nHistory</string>
 
+    <string name="notification_setting">Notification</string>
     <string name="language_setting">Change Language</string>
     <string name="lang_dialog_title">Change Language</string>
     <string name="hindi">Hindi</string>
@@ -214,7 +215,7 @@
     <string name="permanent_setting">Permanent Settings</string>
     <string name="text_fees">Fee/Service Charge</string>
     <string name="enable_payment">Enable Payment Service</string>
-    <string name="enable_appointment">Enable Appointment/Slot Service</string>
+    <string name="enable_appointment">Enable Appointment/Walk-in Appointment Service</string>
     <string name="screen_all_review">Reviews</string>
 
 
@@ -246,4 +247,12 @@
     <string name="appointment_accepting_week">Accept appointment till next</string>
     <string name="activity_discount">Discounts</string>
 
+    <string name="setting_title">Caution</string>
+    <string name="setting_today">Changes made here is temporary and last until end of today. These changes will reflect immediately.</string>
+    <string name="setting_token_q_timing">Token timing and Queue Timing is permanent for this day of the week. These changes will reflect immediately.</string>
+    <string name="setting_permanent">Changes made here is permanent. These changes will reflect immediately.</string>
+    <string name="setting_scheduling">Changes made here is permanent. Store will be closed during set period. These changes will reflect immediately.</string>
+    <string name="setting_appointment">Changes made here is permanent. Appointment changes will reflect immediately.</string>
+    <string name="setting_payment">Changes made here is permanent. Payment changes will reflect immediately.</string>
+    <string name="setting_msg">Changes made here is permanent. These changes will reflect immediately.</string>
 </resources>

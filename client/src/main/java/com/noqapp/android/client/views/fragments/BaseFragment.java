@@ -62,4 +62,16 @@ public abstract class BaseFragment extends Fragment implements ResponseErrorPres
         dismissProgress();
         new ErrorResponseHandler().processFailureResponseCode(getActivity(), errorCode);
     }
+
+    @Override
+    public void onDestroy() {
+        dismissProgress();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        dismissProgress();
+        super.onDetach();
+    }
 }

@@ -37,6 +37,7 @@ import com.noqapp.android.merchant.model.database.DatabaseHelper;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
+import com.noqapp.android.merchant.views.activities.MyApplication;
 
 import org.json.JSONObject;
 
@@ -159,10 +160,18 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                     // object = null;
             }
 
-            if (!isAppIsInBackground(getApplicationContext())) {
+            if (isAppIsInBackground(getApplicationContext())) {
+                // app is in background, show the notification in notification tray
+                if (null == LaunchActivity.dbHandler) {
+                    LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
+                }
+                if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
+                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
+                }
+                sendNotification(title, body, remoteMessage);
+            } else {
                 // app is in foreground, broadcast the push message
                 // add notification to DB
-
                 if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
                     NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
                 }
@@ -175,15 +184,6 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 pushNotification.putExtra(Constants.Firebase_Type, remoteMessage.getData().get(Constants.Firebase_Type));
                 pushNotification.putExtra("object", (Serializable) object);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-            } else {
-                // app is in background, show the notification in notification tray
-                if (null == LaunchActivity.dbHandler) {
-                    LaunchActivity.dbHandler = DatabaseHelper.getsInstance(getApplicationContext());
-                }
-                if (remoteMessage.getData().get(Constants.Firebase_Type).equalsIgnoreCase(FirebaseMessageTypeEnum.P.getName())) {
-                    NotificationDB.insertNotification(NotificationDB.KEY_NOTIFY, remoteMessage.getData().get(Constants.CodeQR), body, title);
-                }
-                sendNotification(title, body, remoteMessage);
             }
         }
 
@@ -213,7 +213,8 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
         String channelId = "channel-01";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelName = "Channel Name";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            int importance = MyApplication.isNotificationSoundEnable() ?
+                    NotificationManager.IMPORTANCE_HIGH:NotificationManager.IMPORTANCE_LOW;
             NotificationChannel mChannel = new NotificationChannel(
                     channelId, channelName, importance);
             notificationManager.createNotificationChannel(mChannel);
@@ -226,8 +227,12 @@ public class NoQueueMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setLights(Color.parseColor("#ffb400"), 50, 10)
-                .setSound(defaultSoundUri);
+                .setLights(Color.parseColor("#ffb400"), 50, 10);
+        if (MyApplication.isNotificationSoundEnable()) {
+            mBuilder.setSound(defaultSoundUri);
+        }else{
+            mBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+        }
         // PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), Constants.requestCodeNotification, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
         stackBuilder.addNextIntent(notificationIntent);

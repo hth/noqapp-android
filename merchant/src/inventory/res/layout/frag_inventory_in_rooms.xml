@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a0fed4">
+    android:background="#efefef"
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <TextView
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_inventory_items"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
-        android:textSize="60sp"
-        android:gravity="center"
-        android:text="Inventory List display"/>
+        android:layout_above="@+id/ll_bottom"
+        android:layout_alignParentTop="true"
+        android:scrollbars="vertical" />
 
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/btn_check_all"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_height"
+            android:layout_margin="10dp"
+            android:layout_weight=".5"
+            android:background="@drawable/bg_gradient_round"
+            android:gravity="center"
+            android:text="Select All"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_sixteen" />
+
+        <Button
+            android:id="@+id/btn_uncheck_all"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/btn_height"
+            android:layout_margin="10dp"
+            android:layout_weight=".5"
+            android:background="@drawable/bg_gradient_round"
+            android:gravity="center"
+            android:text="UnSelect All"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_sixteen" />
+
+    </LinearLayout>
+
+</RelativeLayout>

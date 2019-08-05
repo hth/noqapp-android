@@ -7,9 +7,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -60,10 +58,9 @@ public class BookAppointmentActivity extends BaseActivity implements
     private AppointmentSlot firstAvailableAppointment = null;
     private int totalAvailableCount = 0;
     private boolean isAppointmentBooking = false;
-    private FrameLayout frame;
     private TextView tv_slot_count, tv_slot_count_empty;
     private Button btn_book_appointment;
-    private LinearLayout ll_sector;
+    private LinearLayout ll_sector,ll_slots;
     private View view_available, view_full;
 
     @Override
@@ -110,22 +107,31 @@ public class BookAppointmentActivity extends BaseActivity implements
         TextView tv_doctor_category = findViewById(R.id.tv_doctor_category);
         TextView tv_doctor_name = findViewById(R.id.tv_doctor_name);
         ll_sector = findViewById(R.id.ll_sector);
+        ll_slots = findViewById(R.id.ll_slots);
         view_available = findViewById(R.id.view_available);
         view_full = findViewById(R.id.view_full);
         tv_slot_count = findViewById(R.id.tv_slot_count);
         tv_slot_count_empty = findViewById(R.id.tv_slot_count_empty);
-        frame = findViewById(R.id.frame);
         tv_doctor_name.setText(bizStoreElastic.getDisplayName());
         tv_doctor_category.setText(MedicalDepartmentEnum.valueOf(bizStoreElastic.getBizCategoryId()).getDescription());
+        TextView tv_title = findViewById(R.id.tv_title);
         btn_book_appointment = findViewById(R.id.btn_book_appointment);
+        tv_empty_slots = findViewById(R.id.tv_empty_slots);
+        String styledText = "<big><b><font color='#d41717'>Closed on this day</font></b></big><br/><small><b><font color='#d41717'>Not accepting appointment</font></b></small>";
+        tv_empty_slots.setText(Html.fromHtml(styledText));
+        rv_available_date = findViewById(R.id.rv_available_date);
+        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
+        rv_available_date.setItemAnimator(new DefaultItemAnimator());
+        sp_name_list = findViewById(R.id.sp_name_list);
         if (isAppointmentBooking) {
-            // do nothing
+            tv_title.setText("Available times");
+            ll_slots.setVisibility(View.GONE);
+            rv_available_date.setVisibility(View.VISIBLE);
         } else {
-            TextView tv_title = findViewById(R.id.tv_title);
-            tv_title.setVisibility(View.GONE);
-            LinearLayout ll_booking = findViewById(R.id.ll_booking);
+            tv_title.setText("Available slots");
+            ll_slots.setVisibility(View.VISIBLE);
+            rv_available_date.setVisibility(View.GONE);
             btn_book_appointment.setText("Book Walk-in Appointment");
-            ((RelativeLayout.LayoutParams) ll_booking.getLayoutParams()).addRule(RelativeLayout.BELOW, R.id.ll_top);
         }
 
         horizontalCalendarView.setCalendarListener(new HorizontalCalendarListener() {
@@ -134,21 +140,9 @@ public class BookAppointmentActivity extends BaseActivity implements
                 selectedDate = date;
                 fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
             }
-//            @Override
-//            public boolean onDateLongClicked(Calendar date, int position) {
-//                selectedDate = date;
-//                fetchAppointments(new AppUtilities().getDateWithFormat(selectedDate));
-//                return true;
-//            }
         });
         horizontalCalendarView.refresh();
-        tv_empty_slots = findViewById(R.id.tv_empty_slots);
-        String styledText = "<big><b><font color='#d41717'>Closed on this day</font></b></big><br/><small><b><font color='#d41717'>Not accepting appointment</font></b></small>";
-        tv_empty_slots.setText(Html.fromHtml(styledText));
-        rv_available_date = findViewById(R.id.rv_available_date);
-        rv_available_date.setLayoutManager(new GridLayoutManager(this, 3));
-        rv_available_date.setItemAnimator(new DefaultItemAnimator());
-        sp_name_list = findViewById(R.id.sp_name_list);
+
 
         List<JsonProfile> profileList = NoQueueBaseActivity.getUserProfile().getDependents();
         profileList.add(0, NoQueueBaseActivity.getUserProfile());
@@ -231,16 +225,21 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
     private void setAppointmentSlots(StoreHourElastic storeHourElastic, ArrayList<String> filledTimes) {
-        List<AppointmentSlot> listData = new ArrayList<>();
-        if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)) {
+
+        if (new AppUtilities().checkStoreClosedWithTime(storeHourElastic)
+        ||new AppUtilities().checkStoreClosedWithAppointmentTime(storeHourElastic)) {
             tv_empty_slots.setVisibility(View.VISIBLE);
+            enableDisableBtn(false);
         } else {
             tv_empty_slots.setVisibility(View.GONE);
+            enableDisableBtn(true);
+            List<AppointmentSlot> listData = new ArrayList<>();
             String from = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentStartHour());
             String to = Formatter.convertMilitaryTo24HourFormat(storeHourElastic.getAppointmentEndHour());
             ArrayList<String> timeSlot = AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(), from, to, true);
             for (int i = 0; i < timeSlot.size() - 1; i++) {
-                listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).setBooked(filledTimes.contains(timeSlot.get(i))));
+                listData.add(new AppointmentSlot().setTimeSlot(timeSlot.get(i) + " - " + timeSlot.get(i + 1)).
+                        setBooked(filledTimes.contains(timeSlot.get(i)) && filledTimes.contains(timeSlot.get(i+1))));
 
                 if (!filledTimes.contains(timeSlot.get(i)) && null == firstAvailableAppointment) {
                     firstAvailableAppointment = listData.get(i);
@@ -261,28 +260,28 @@ public class BookAppointmentActivity extends BaseActivity implements
                 if (isAppointmentBooking) {
                     // do nothing
                 } else {
-                    frame.setVisibility(View.GONE);
-                    // tv_slot_count.setVisibility(View.VISIBLE);
-                    // ll_sector.setVisibility(View.GONE);
+
                     if (0 == totalAvailableCount) {
                         tv_slot_count.setText("No more walk-in appointment available");
                         tv_slot_count_empty.setVisibility(View.VISIBLE);
                         tv_slot_count.setVisibility(View.GONE);
                         ll_sector.setVisibility(View.GONE);
-                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
-                        btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
+                       // btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
+                       // btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
+                        enableDisableBtn(false);
                     } else {
                         ll_sector.setVisibility(View.VISIBLE);
-                        tv_slot_count.setVisibility(View.GONE);
+                        tv_slot_count.setVisibility(View.VISIBLE);
                         tv_slot_count.setText(totalAvailableCount + " out of " + appointmentSlotAdapter.getDataSet().size() + " walk-in appointments available");
                         float f = totalAvailableCount * 100 / appointmentSlotAdapter.getDataSet().size();
-                        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(0, 100, f / 100);
+                        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(0, 80, f / 100);
                         view_available.setLayoutParams(param);
-                        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(0, 100, (100 - f) / 100);
+                        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(0, 80, (100 - f) / 100);
                         view_full.setLayoutParams(param1);
 
-                        btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
-                        btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
+                       // btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
+                      //  btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
+                        enableDisableBtn(true);
                         tv_slot_count_empty.setVisibility(View.GONE);
                     }
                 }
@@ -291,6 +290,17 @@ public class BookAppointmentActivity extends BaseActivity implements
     }
 
 
+    private void enableDisableBtn(boolean isEnable){
+        btn_book_appointment.setEnabled(isEnable);
+        if(isEnable){
+            btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_enable));
+            btn_book_appointment.setTextColor(Color.parseColor("#ffffff"));
+        }else{
+            btn_book_appointment.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg_inactive));
+            btn_book_appointment.setTextColor(ContextCompat.getColor(this, R.color.btn_color));
+        }
+
+    }
     @Override
     public void appointmentResponse(JsonScheduleList jsonScheduleList) {
         Log.e("appointments", jsonScheduleList.toString());
@@ -299,7 +309,7 @@ public class BookAppointmentActivity extends BaseActivity implements
             for (int i = 0; i < jsonScheduleList.getJsonSchedules().size(); i++) {
                 filledTimes.addAll(AppUtilities.getTimeSlots(bizStoreElastic.getAppointmentDuration(),
                         AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getStartTime()),
-                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), false));
+                        AppUtilities.getTimeFourDigitWithColon(jsonScheduleList.getJsonSchedules().get(i).getEndTime()), true));
             }
         }
         int dayOfWeek = AppUtilities.getDayOfWeek(selectedDate);
@@ -336,6 +346,8 @@ public class BookAppointmentActivity extends BaseActivity implements
         tv_slot_count.setVisibility(View.GONE);
         tv_slot_count_empty.setVisibility(View.GONE);
         ll_sector.setVisibility(View.GONE);
+        appointmentSlotAdapter = new AppointmentSlotAdapter(new ArrayList<AppointmentSlot>(), this, this);
+        rv_available_date.setAdapter(appointmentSlotAdapter);
         if (LaunchActivity.getLaunchActivity().isOnline()) {
             setProgressMessage("Fetching appointments...");
             showProgress();

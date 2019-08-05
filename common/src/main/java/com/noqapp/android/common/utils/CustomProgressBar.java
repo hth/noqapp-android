@@ -3,6 +3,7 @@ package com.noqapp.android.common.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ public class CustomProgressBar {
 
     public void dismissProgress() {
         try {
-            if (null != dialog && dialog.isShowing() && !((Activity) context).isFinishing())
+            if (null != dialog && dialog.isShowing())
                 dialog.dismiss();
         } catch (final IllegalArgumentException e) {
             // Do nothing.
@@ -46,11 +47,13 @@ public class CustomProgressBar {
     public void showProgress() {
         try {
             if (null != dialog)
-                if (!((Activity) context).isFinishing()) {
+                if (((Activity) context).isFinishing()) {
+                    //dismiss dialog
+                    dialog.dismiss();
+                    Log.e("YAY", "dismiss called");
+                } else {
                     //show dialog
                     dialog.show();
-                } else {
-                    //Log the failure
                 }
         } catch (final IllegalArgumentException e) {
             // Do nothing.
