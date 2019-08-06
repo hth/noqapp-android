@@ -140,6 +140,25 @@ public class PatientProfileActivity extends BaseActivity implements
             }
         });
 
+        TextView tv_dental = findViewById(R.id.tv_dental);
+        tv_dental.setVisibility(AppUtils.isRelease()?View.GONE:View.VISIBLE);
+        tv_dental.setOnClickListener(v -> {
+            if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
+            }else {
+                PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    Intent intent = new Intent(PatientProfileActivity.this, DentalActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                } else {
+                    permissionHelper.requestStoragePermission();
+                }
+            }
+        });
+
         Picasso.get().load(R.drawable.profile_avatar).into(iv_profile);
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         if (LaunchActivity.getLaunchActivity().isOnline()) {

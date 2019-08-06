@@ -3,7 +3,6 @@ package com.noqapp.android.merchant.views.customviews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -40,6 +39,11 @@ public class DrawingView extends AppCompatImageView implements View.OnTouchListe
         paint.setStrokeWidth(5);
         canvas.drawBitmap(bmp, new Matrix(), paint);
         setImageBitmap(alteredBitmap);
+    }
+
+    public void setPointerColor(int pointerColor) {
+        if (null != paint)
+            paint.setColor(pointerColor);
     }
 
     @Override

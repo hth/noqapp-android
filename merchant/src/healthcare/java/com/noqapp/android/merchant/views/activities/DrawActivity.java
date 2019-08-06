@@ -188,6 +188,9 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onColorSelected(int color) {
         pointerColor = color;
+        if(null != drawingView){
+            drawingView.setPointerColor(pointerColor);
+        }
     }
 
     @Override
@@ -214,6 +217,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void imageUploadError() {
-
+        dismissProgress();
     }
 }

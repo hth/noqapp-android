@@ -36,17 +36,18 @@
                 android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/iv_icon"
                 android:gravity="center_vertical"
-                android:text=""
-                android:textColor="@color/white"
+                android:text="Select pointer color"
+                android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
         <GridView
             android:id="@+id/grid_view_color"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_title"
+            android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:numColumns="4" />
 

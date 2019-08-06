@@ -43,8 +43,9 @@ public class ColorPaletteAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.colorPanelView.setBackgroundColor(colors[position]);
-        holder.imageView.setImageResource(selectedPosition == position ? R.drawable.color_checked : 0);
         holder.imageView.setColorFilter(null);
+        holder.imageView.setImageResource(selectedPosition == position ? R.drawable.color_checked : 0);
+        // holder.imageView.setColorFilter(null);
         holder.colorPanelView.setOnClickListener(v -> {
             if (selectedPosition != position) {
                 selectedPosition = position;
