@@ -10,18 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <com.noqapp.android.merchant.views.customviews.DrawingView
-            android:id="@+id/drawingView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/ll_btns"
-            android:layout_alignParentTop="true"
-            android:layout_margin="10dp"
-            android:background="#80333333"
-            android:visibility="gone"
-            />
-
         <LinearLayout
             android:id="@+id/drawingViewLinear"
             android:layout_width="match_parent"

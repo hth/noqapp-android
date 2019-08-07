@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,12 +32,10 @@ import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ColorPaletteAdapter;
 import com.noqapp.android.merchant.views.customviews.DrawViewUndoRedo;
-import com.noqapp.android.merchant.views.customviews.DrawingView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,10 +45,9 @@ import okhttp3.RequestBody;
 
 public class DrawActivity extends BaseActivity implements View.OnClickListener,
         ColorPaletteAdapter.OnColorSelectedListener, ImageUploadPresenter {
-    private DrawingView drawingView;
     private Button btn_select_picture, btn_save_picture, btn_select_color, btn_undo, btn_redo;
     private Bitmap alteredBitmap;
-    private int pointerColor = Color.GREEN;
+    private int pointerColor = 0xFFF44336;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     public JsonQueuedPerson jsonQueuedPerson;
     public JsonMedicalRecord jsonMedicalRecord;
@@ -89,7 +85,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
-        drawingView = findViewById(R.id.drawingView);
         btn_select_picture = findViewById(R.id.btn_select_picture);
         btn_save_picture = findViewById(R.id.btn_save_picture);
         btn_select_color = findViewById(R.id.btn_select_color);
@@ -125,25 +120,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         } else if (v == btn_save_picture) {
             if (alteredBitmap != null) {
                 try {
-//                    ContentValues contentValues = new ContentValues(3);
-//                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "Draw On Me");
-//                    Uri imageFileUri = getContentResolver().insert(
-//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-//
-//                    OutputStream imageFileOS = getContentResolver().openOutputStream(imageFileUri);
-//                    alteredBitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS);
-//                    String type = getMimeType(imageFileUri);
-//                    String path = getRealPathFromURI(imageFileUri);
-//                    File file = new File(path);
-//                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-//                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonMedicalRecord.getRecordReferenceId());
-//                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-//                    showProgress();
-//                    setProgressMessage("Uploading document");
-
-
-
-
                     drawViewUndoRedo.setDrawingCacheEnabled(true);
                     drawViewUndoRedo.buildDrawingCache(true);
                     Bitmap b = Bitmap.createBitmap(drawViewUndoRedo.getDrawingCache());
@@ -154,7 +130,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                     File folder = new File(Environment.getExternalStorageDirectory() +
                             File.separator + "NoQueue");
                     if (!folder.exists()) {
-                         folder.mkdirs();
+                        folder.mkdirs();
                     }
                     String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
                     File myPath = new File(extr, fileName);
@@ -202,11 +178,11 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
             mAlertDialog.show();
 
         } else if (v == btn_redo) {
-            if(null != drawViewUndoRedo){
+            if (null != drawViewUndoRedo) {
                 drawViewUndoRedo.onClickRedo();
             }
         } else if (v == btn_undo) {
-            if(null != drawViewUndoRedo){
+            if (null != drawViewUndoRedo) {
                 drawViewUndoRedo.onClickUndo();
             }
         }
@@ -233,7 +209,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                         imageFileUri), null, bmpFactoryOptions);
                 alteredBitmap = Bitmap.createBitmap(bmp.getWidth(),
                         bmp.getHeight(), bmp.getConfig());
-                drawingView.setNewImage(alteredBitmap, bmp, pointerColor);
 
                 LinearLayout linearLayout2 = findViewById(R.id.drawingViewLinear);
                 drawViewUndoRedo = new DrawViewUndoRedo(this, bmp, pointerColor);
@@ -248,8 +223,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onColorSelected(int color) {
         pointerColor = color;
-        if (null != drawingView) {
-            drawingView.setPointerColor(pointerColor);
+        if (null != drawViewUndoRedo) {
             drawViewUndoRedo.setPointerColor(pointerColor);
         }
     }
