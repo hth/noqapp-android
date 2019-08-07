@@ -1,7 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +17,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -31,10 +32,15 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ColorPaletteAdapter;
+import com.noqapp.android.merchant.views.customviews.DrawViewUndoRedo;
 import com.noqapp.android.merchant.views.customviews.DrawingView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -43,12 +49,13 @@ import okhttp3.RequestBody;
 public class DrawActivity extends BaseActivity implements View.OnClickListener,
         ColorPaletteAdapter.OnColorSelectedListener, ImageUploadPresenter {
     private DrawingView drawingView;
-    private Button btn_select_picture, btn_save_picture, btn_select_color;
+    private Button btn_select_picture, btn_save_picture, btn_select_color, btn_undo, btn_redo;
     private Bitmap alteredBitmap;
     private int pointerColor = Color.GREEN;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
     public JsonQueuedPerson jsonQueuedPerson;
     public JsonMedicalRecord jsonMedicalRecord;
+    private DrawViewUndoRedo drawViewUndoRedo;
     public final int[] MATERIAL_COLORS = {
             0xFFF44336, // RED 500
             0xFFE91E63, // PINK 500
@@ -86,9 +93,13 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         btn_select_picture = findViewById(R.id.btn_select_picture);
         btn_save_picture = findViewById(R.id.btn_save_picture);
         btn_select_color = findViewById(R.id.btn_select_color);
+        btn_undo = findViewById(R.id.btn_undo);
+        btn_redo = findViewById(R.id.btn_redo);
         btn_save_picture.setOnClickListener(this);
         btn_select_picture.setOnClickListener(this);
         btn_select_color.setOnClickListener(this);
+        btn_undo.setOnClickListener(this);
+        btn_redo.setOnClickListener(this);
     }
 
     public String getMimeType(Uri uri) {
@@ -114,21 +125,53 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         } else if (v == btn_save_picture) {
             if (alteredBitmap != null) {
                 try {
-                    ContentValues contentValues = new ContentValues(3);
-                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "Draw On Me");
-                    Uri imageFileUri = getContentResolver().insert(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+//                    ContentValues contentValues = new ContentValues(3);
+//                    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "Draw On Me");
+//                    Uri imageFileUri = getContentResolver().insert(
+//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+//
+//                    OutputStream imageFileOS = getContentResolver().openOutputStream(imageFileUri);
+//                    alteredBitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS);
+//                    String type = getMimeType(imageFileUri);
+//                    String path = getRealPathFromURI(imageFileUri);
+//                    File file = new File(path);
+//                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+//                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonMedicalRecord.getRecordReferenceId());
+//                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+//                    showProgress();
+//                    setProgressMessage("Uploading document");
 
-                    OutputStream imageFileOS = getContentResolver().openOutputStream(imageFileUri);
-                    alteredBitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageFileOS);
-                    String type = getMimeType(imageFileUri);
-                    String path = getRealPathFromURI(imageFileUri);
-                    File file = new File(path);
-                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+
+
+
+                    drawViewUndoRedo.setDrawingCacheEnabled(true);
+                    drawViewUndoRedo.buildDrawingCache(true);
+                    Bitmap b = Bitmap.createBitmap(drawViewUndoRedo.getDrawingCache());
+                    drawViewUndoRedo.setDrawingCacheEnabled(false);
+
+                    //Save bitmap
+                    String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
+                    String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
+                    File myPath = new File(extr, fileName);
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(myPath);
+                        b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                        MediaStore.Images.Media.insertImage(getContentResolver(), b, "Screen", "screen");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    String type = getMimeType(Uri.fromFile(myPath));
+                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", myPath.getName(), RequestBody.create(MediaType.parse(type), myPath));
                     RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonMedicalRecord.getRecordReferenceId());
                     medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
                     showProgress();
                     setProgressMessage("Uploading document");
+
                 } catch (Exception e) {
                     Log.v("EXCEPTION", e.getMessage());
                 }
@@ -153,6 +196,14 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
             btn_yes.setOnClickListener(v12 -> mAlertDialog.dismiss());
             mAlertDialog.show();
 
+        } else if (v == btn_redo) {
+            if(null != drawViewUndoRedo){
+                drawViewUndoRedo.onClickRedo();
+            }
+        } else if (v == btn_undo) {
+            if(null != drawViewUndoRedo){
+                drawViewUndoRedo.onClickUndo();
+            }
         }
     }
 
@@ -178,6 +229,10 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                 alteredBitmap = Bitmap.createBitmap(bmp.getWidth(),
                         bmp.getHeight(), bmp.getConfig());
                 drawingView.setNewImage(alteredBitmap, bmp, pointerColor);
+
+                LinearLayout linearLayout2 = findViewById(R.id.drawingViewLinear);
+                drawViewUndoRedo = new DrawViewUndoRedo(this, bmp, pointerColor);
+                linearLayout2.addView(drawViewUndoRedo);
             } catch (Exception e) {
                 Log.v("ERROR", e.toString());
             }
@@ -188,8 +243,9 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onColorSelected(int color) {
         pointerColor = color;
-        if(null != drawingView){
+        if (null != drawingView) {
             drawingView.setPointerColor(pointerColor);
+            drawViewUndoRedo.setPointerColor(pointerColor);
         }
     }
 
