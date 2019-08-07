@@ -1,8 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -13,7 +11,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -21,15 +18,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.ImageUploadPresenter;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
-import com.noqapp.android.merchant.utils.Constants;
-import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.ColorPaletteAdapter;
 import com.noqapp.android.merchant.views.customviews.DrawViewUndoRedo;
 
@@ -39,19 +32,15 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
 public class DrawActivity extends BaseActivity implements View.OnClickListener,
-        ColorPaletteAdapter.OnColorSelectedListener, ImageUploadPresenter {
+        ColorPaletteAdapter.OnColorSelectedListener {
     private Button btn_select_picture, btn_save_picture, btn_select_color, btn_undo, btn_redo;
     private Bitmap alteredBitmap;
     private int pointerColor = 0xFFF44336;
-    private MedicalHistoryApiCalls medicalHistoryApiCalls;
     public JsonQueuedPerson jsonQueuedPerson;
     public JsonMedicalRecord jsonMedicalRecord;
     private DrawViewUndoRedo drawViewUndoRedo;
+    private LinearLayout drawingViewLinear;
     public final int[] MATERIAL_COLORS = {
             0xFFF44336, // RED 500
             0xFFE91E63, // PINK 500
@@ -82,7 +71,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText("Select and draw");
-        medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         btn_select_picture = findViewById(R.id.btn_select_picture);
@@ -95,20 +83,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         btn_select_color.setOnClickListener(this);
         btn_undo.setOnClickListener(this);
         btn_redo.setOnClickListener(this);
-    }
-
-    public String getMimeType(Uri uri) {
-        String mimeType = null;
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-            ContentResolver cr = this.getContentResolver();
-            mimeType = cr.getType(uri);
-        } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
-                    .toString());
-            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                    fileExtension.toLowerCase());
-        }
-        return mimeType;
+        drawingViewLinear = findViewById(R.id.drawingViewLinear);
     }
 
 
@@ -146,13 +121,12 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    String type = getMimeType(Uri.fromFile(myPath));
-                    MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", myPath.getName(), RequestBody.create(MediaType.parse(type), myPath));
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), jsonMedicalRecord.getRecordReferenceId());
-                    medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-                    showProgress();
-                    setProgressMessage("Uploading document");
-
+                    if (myPath.exists()) {
+                        MedicalFilesDB.insertMedicalFile(jsonMedicalRecord.getRecordReferenceId(), myPath.getAbsolutePath());
+                        new CustomToast().showToast(this, "File saved to SD Card.It will upload with case history");
+                        drawingViewLinear.removeAllViews();
+                        drawViewUndoRedo = null;
+                    }
                 } catch (Exception e) {
                     Log.v("EXCEPTION", e.getMessage());
                 }
@@ -188,14 +162,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -210,9 +176,10 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                 alteredBitmap = Bitmap.createBitmap(bmp.getWidth(),
                         bmp.getHeight(), bmp.getConfig());
 
-                LinearLayout linearLayout2 = findViewById(R.id.drawingViewLinear);
+
                 drawViewUndoRedo = new DrawViewUndoRedo(this, bmp, pointerColor);
-                linearLayout2.addView(drawViewUndoRedo);
+                drawingViewLinear.removeAllViews();
+                drawingViewLinear.addView(drawViewUndoRedo);
             } catch (Exception e) {
                 Log.v("ERROR", e.toString());
             }
@@ -228,30 +195,4 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    @Override
-    public void imageUploadResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-        Log.v("Image upload", "" + jsonResponse);
-        if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(this, "Document upload successfully! Change will be reflect after 5 min");
-        } else {
-            new CustomToast().showToast(this, "Failed to update document");
-        }
-    }
-
-    @Override
-    public void imageRemoveResponse(JsonResponse jsonResponse) {
-        dismissProgress();
-        Log.v("Image removed", "" + jsonResponse.getResponse());
-        if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            new CustomToast().showToast(this, "Document removed successfully!");
-        } else {
-            new CustomToast().showToast(this, "Failed to remove document");
-        }
-    }
-
-    @Override
-    public void imageUploadError() {
-        dismissProgress();
-    }
 }

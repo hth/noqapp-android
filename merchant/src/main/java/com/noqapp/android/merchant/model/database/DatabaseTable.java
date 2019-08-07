@@ -32,8 +32,21 @@ public class DatabaseTable {
         public static final String PRODUCT_UNIT_VALUE = "productUnitValue";
         public static final String PRODUCT_UNIT_MESAURE = "productUnitMeasure";
 
-
         private PreferredStore() {
+        }
+    }
+
+    public static class MedicalFiles {
+        public static final String TABLE_NAME = "MEDICALFILES";
+        public static final String RECORD_REFERENCE_ID = "recordReferenceId";
+        public static final String FILE_LOCATION = "fileLocation";
+        public static final String FILE_CREATED_DATE = "fileCreatedDate";
+        public static final String UPLOAD_STATUS = "uploadStatus";
+        public static final String UPLOAD_ATTEMPT_COUNT = "uploadAttemptCount";
+        public static final String FORM_SUBMISSION_STATUS = "formSubmissionStatus";
+
+
+        private MedicalFiles() {
         }
     }
 }

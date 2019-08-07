@@ -239,22 +239,14 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
 
         recordHolder.tv_join_timing.setText(Formatter.getTime(jsonQueuedPerson.getCreated()));
         if (DataVisibilityEnum.H == jsonDataVisibility.getDataVisibilities().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-            recordHolder.tv_customer_mobile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
-                        new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
-                }
+            recordHolder.tv_customer_mobile.setOnClickListener(v -> {
+                if (!recordHolder.tv_customer_mobile.getText().equals(context.getString(R.string.unregister_user)))
+                    new AppUtils().makeCall(LaunchActivity.getLaunchActivity(), PhoneFormatterUtil.formatNumber(LaunchActivity.getLaunchActivity().getUserProfile().getCountryShortName(), phoneNo));
             });
         } else {
             recordHolder.tv_customer_mobile.setText(new AppUtils().hidePhoneNumberWithX(phoneNo));
         }
-        recordHolder.tv_status_msg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                peopleInQAdapterClick.peopleInQClick(position);
-            }
-        });
+        recordHolder.tv_status_msg.setOnClickListener(v -> peopleInQAdapterClick.peopleInQClick(position));
         // check parameter to show client is new or has previously visited
         recordHolder.iv_new.setVisibility(jsonQueuedPerson.isClientVisitedThisStore() ? View.INVISIBLE : View.VISIBLE);
 
@@ -350,41 +342,18 @@ public abstract class BasePeopleInQAdapter extends RecyclerView.Adapter implemen
         } else {
             recordHolder.tv_payment_stat.setVisibility(View.GONE);
         }
-        recordHolder.tv_payment_stat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
-                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,false);
-                } else {
-                    new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
-                    peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,true);
-                }
+        recordHolder.tv_payment_stat.setOnClickListener(v -> {
+            if (PaymentPermissionEnum.A == jsonPaymentPermission.getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,false);
+            } else {
+                new CustomToast().showToast(context, context.getString(R.string.payment_not_allowed));
+                peopleInQAdapterClick.viewOrderClick(context, jsonQueuedPerson,true);
             }
         });
-        recordHolder.tv_create_case.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createCaseHistory(context, jsonQueuedPerson, bizCategoryId);
-            }
-        });
-        recordHolder.tv_change_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changePatient(context, jsonQueuedPerson);
-            }
-        });
-        recordHolder.tv_upload_document.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadDocument(context, jsonQueuedPerson);
-            }
-        });
-        recordHolder.tv_business_customer_id.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editBusinessCustomerId(context, jsonQueuedPerson);
-            }
-        });
+        recordHolder.tv_create_case.setOnClickListener(v -> createCaseHistory(context, jsonQueuedPerson, bizCategoryId));
+        recordHolder.tv_change_name.setOnClickListener(v -> changePatient(context, jsonQueuedPerson));
+        recordHolder.tv_upload_document.setOnClickListener(v -> uploadDocument(context, jsonQueuedPerson));
+        recordHolder.tv_business_customer_id.setOnClickListener(v -> editBusinessCustomerId(context, jsonQueuedPerson));
         try {
             if (LaunchActivity.getLaunchActivity().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 if (glowPosition > 0 && glowPosition - 1 == position && jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.Q || jsonQueuedPerson.getQueueUserState() == QueueUserStateEnum.S && queueStatusEnum == QueueStatusEnum.N) {

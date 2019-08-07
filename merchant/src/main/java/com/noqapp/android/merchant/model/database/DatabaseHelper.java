@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "noqueuemerchant.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static DatabaseHelper dbInstance;
     private final String TAG = DatabaseHelper.class.getSimpleName();
     private SQLiteDatabase db = null;
@@ -58,11 +58,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private static final Patch[] PATCHES = new Patch[]{
-            new Patch(1,2,"1.2.21"){
+            new Patch(1, 2, "1.2.21") {
                 public void apply(SQLiteDatabase db) {
                     CreateTable.createTablePreferredStore(db);
                 }
-            }
+            }, new Patch(2, 3, "1.2.3") {
+        public void apply(SQLiteDatabase db) {
+            CreateTable.createTableMedicalFiles(db);
+        }
+    }
     };
 
 }

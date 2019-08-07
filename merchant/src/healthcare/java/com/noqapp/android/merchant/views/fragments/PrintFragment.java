@@ -29,9 +29,11 @@ import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
+import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.PermissionHelper;
+import com.noqapp.android.merchant.views.FileUploadOperation;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -39,6 +41,7 @@ import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
+import com.noqapp.android.merchant.views.pojos.MedicalFile;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
@@ -651,6 +654,10 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
+            List<MedicalFile> medicalFileList = MedicalFilesDB.getMedicalFileList();
+            if (medicalFileList.size() > 0) {
+                new FileUploadOperation(LaunchActivity.getLaunchActivity(), medicalFileList).execute();
+            }
             new CustomToast().showToast(getActivity(), "Medical History updated successfully");
             getActivity().finish();
         } else {

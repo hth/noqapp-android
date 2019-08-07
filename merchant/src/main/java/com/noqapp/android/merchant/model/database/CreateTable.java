@@ -5,6 +5,7 @@ import android.util.Log;
 
 import static com.noqapp.android.merchant.model.database.DatabaseTable.Notification;
 import static com.noqapp.android.merchant.model.database.DatabaseTable.PreferredStore;
+import static com.noqapp.android.merchant.model.database.DatabaseTable.MedicalFiles;
 
 /**
  * User: hitender
@@ -47,8 +48,21 @@ public class CreateTable {
                 ");");
     }
 
+    static void createTableMedicalFiles(SQLiteDatabase db) {
+        Log.d(TAG, "executing createTableMedicalFiles");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + MedicalFiles.TABLE_NAME + "("
+                + MedicalFiles.RECORD_REFERENCE_ID + " TEXT, "
+                + MedicalFiles.FILE_LOCATION + " TEXT, "
+                + MedicalFiles.FILE_CREATED_DATE + " TEXT, "
+                + MedicalFiles.UPLOAD_STATUS + " TEXT, "
+                + MedicalFiles.UPLOAD_ATTEMPT_COUNT + " TEXT, "
+                + MedicalFiles.FORM_SUBMISSION_STATUS + " TEXT "+
+                ");");
+    }
+
     static void createAllTable(SQLiteDatabase db) {
         createTableNotification(db);
         createTablePreferredStore(db);
+        createTableMedicalFiles(db);
     }
 }
