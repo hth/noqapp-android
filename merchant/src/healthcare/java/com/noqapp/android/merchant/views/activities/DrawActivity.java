@@ -151,6 +151,11 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
 
                     //Save bitmap
                     String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
+                    File folder = new File(Environment.getExternalStorageDirectory() +
+                            File.separator + "NoQueue");
+                    if (!folder.exists()) {
+                         folder.mkdirs();
+                    }
                     String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
                     File myPath = new File(extr, fileName);
                     FileOutputStream fos = null;

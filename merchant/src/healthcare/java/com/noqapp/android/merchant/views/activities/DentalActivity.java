@@ -162,6 +162,11 @@ public class DentalActivity extends BaseActivity implements View.OnClickListener
         u.setDrawingCacheEnabled(false);
 
         //Save bitmap
+        File folder = new File(Environment.getExternalStorageDirectory() +
+                File.separator + "NoQueue");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
         String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
         String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
         File myPath = new File(extr, fileName);

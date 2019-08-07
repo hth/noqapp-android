@@ -135,7 +135,7 @@
     </style>
 
     <style name="style_dental">
-        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_width">@dimen/dental_width</item>
         <item name="android:layout_height">60dp</item>
         <item name="android:padding">5dp</item>
         <item name="android:layout_margin">10dp</item>
