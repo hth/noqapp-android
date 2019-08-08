@@ -1,37 +1,38 @@
 package com.noqapp.android.merchant.views.activities;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
+import com.noqapp.android.merchant.views.adapters.ToothAdapter;
+import com.noqapp.android.merchant.views.pojos.ToothInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class DentalActivity extends BaseActivity implements View.OnClickListener {
+public class DentalActivity extends BaseActivity {
     public JsonQueuedPerson jsonQueuedPerson;
     public JsonMedicalRecord jsonMedicalRecord;
-    public final int[] DENTAl_DRAWABLES = new int[32];
-    public final ImageView[] imageViews = new ImageView[32];
     private LinearLayout ll_canvas;
     private Button btn_save_upload;
 
@@ -46,50 +47,28 @@ public class DentalActivity extends BaseActivity implements View.OnClickListener
         ll_canvas = findViewById(R.id.ll_canvas);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
-        for (int i = 0; i < imageViews.length; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("iv_" + (i + 1)), "id", this.getPackageName());
-            imageViews[i] = findViewById(id);
-            DENTAl_DRAWABLES[i] = R.drawable.tooth;
-            imageViews[i].setBackgroundResource(DENTAl_DRAWABLES[i]);
-            imageViews[i].setOnClickListener(this);
+        RecyclerView rcv_tooth = findViewById(R.id.rcv_tooth);
+        rcv_tooth.setLayoutManager(new GridLayoutManager(this, 16));
+        rcv_tooth.setItemAnimator(new DefaultItemAnimator());
+
+        int imageFilePathTop = R.drawable.tooth_o_2_1;
+        List<Integer> drawables = getFrontAllViews();
+        List<ToothInfo> toothInfos = new ArrayList<>();
+        for (int i = 0; i < 32; i++) {
+            ToothInfo toothInfo = new ToothInfo();
+            toothInfo.setToothNumber(i + 1);
+            toothInfo.setToothFrontView(drawables.get(i));
+            toothInfo.setToothTopView(imageFilePathTop);
+            toothInfo.setFrontViewDrawables(getFrontOptionViews());
+            toothInfo.setTopViewDrawables(getTopOptionViews());
+            toothInfos.add(toothInfo);
         }
+        ToothAdapter toothAdapter = new ToothAdapter(toothInfos, this);
+        rcv_tooth.setAdapter(toothAdapter);
         btn_save_upload = findViewById(R.id.btn_save_upload);
         btn_save_upload.setOnClickListener(v -> {
             getCaptureAndUploadBitmap();
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DentalActivity.this);
-        LayoutInflater inflater = LayoutInflater.from(DentalActivity.this);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.dialog_tooth_issue, null, false);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        ImageView[] imageViewsDialog = new ImageView[8];
-        int[] DENTAl_DRAWABLES_DIALOG = new int[8];
-        for (int i = 0; i < imageViewsDialog.length; i++) {
-            int id = this.getResources().getIdentifier(String.valueOf("iv_dialog_" + (i + 1)), "id", this.getPackageName());
-            imageViewsDialog[i] = customDialogView.findViewById(id);
-            DENTAl_DRAWABLES_DIALOG[i] = R.drawable.tooth_decay;
-            imageViewsDialog[i].setBackgroundResource(DENTAl_DRAWABLES_DIALOG[i]);
-            imageViewsDialog[i].setOnClickListener(v13 -> {
-                mAlertDialog.dismiss();
-                v.setBackgroundResource(R.drawable.tooth_decay);
-            });
-        }
-
-        mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.setCancelable(false);
-        Button btn_yes = customDialogView.findViewById(R.id.btn_yes);
-        Button btn_no = customDialogView.findViewById(R.id.btn_no);
-        btn_no.setOnClickListener(v1 -> mAlertDialog.dismiss());
-        btn_yes.setOnClickListener(v12 -> mAlertDialog.dismiss());
-        mAlertDialog.show();
-
     }
 
     private void getCaptureAndUploadBitmap() {
@@ -131,5 +110,32 @@ public class DentalActivity extends BaseActivity implements View.OnClickListener
             MedicalFilesDB.insertMedicalFile(jsonMedicalRecord.getRecordReferenceId(), myPath.getAbsolutePath());
             new CustomToast().showToast(this, "File saved to SD Card.It will upload with case history");
         }
+    }
+
+
+    private List<Integer> getTopOptionViews() {
+        List<Integer> drawables = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            int id = this.getResources().getIdentifier(String.valueOf("tooth_o_2_" + (i + 1)), "drawable", this.getPackageName());
+            drawables.add(id);
+        }
+        return drawables;
+    }
+
+    private List<Integer> getFrontOptionViews() {
+        List<Integer> drawables = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            int id = this.getResources().getIdentifier(String.valueOf("tooth_o_1_" + (i + 1)), "drawable", this.getPackageName());
+            drawables.add(id);
+        }
+        return drawables;
+    }
+    private List<Integer> getFrontAllViews() {
+        List<Integer> drawables = new ArrayList<>();
+        for (int i = 0; i < 32; i++) {
+            int id = this.getResources().getIdentifier(String.valueOf("tooth_1_" + (i + 1)), "drawable", this.getPackageName());
+            drawables.add(id);
+        }
+        return drawables;
     }
 }
