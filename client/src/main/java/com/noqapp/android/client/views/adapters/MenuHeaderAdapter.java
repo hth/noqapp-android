@@ -29,7 +29,7 @@ public class MenuHeaderAdapter extends RecyclerView.Adapter {
         this.listener = listener;
     }
 
-    public MenuHeaderAdapter setSelected_pos(int selected_pos) {
+    public MenuHeaderAdapter setSelectedPosition(int selected_pos) {
         this.selected_pos = selected_pos;
         return this;
     }
