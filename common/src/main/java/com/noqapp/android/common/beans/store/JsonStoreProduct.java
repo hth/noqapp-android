@@ -46,6 +46,9 @@ public class JsonStoreProduct implements Serializable {
     @JsonProperty("i")
     private String productInfo;
 
+    @JsonProperty("im")
+    private String productImage;
+
     @JsonProperty("ci")
     private String storeCategoryId;
 
@@ -110,6 +113,15 @@ public class JsonStoreProduct implements Serializable {
 
     public JsonStoreProduct setProductInfo(String productInfo) {
         this.productInfo = productInfo;
+        return this;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public JsonStoreProduct setProductImage(String productImage) {
+        this.productImage = productImage;
         return this;
     }
 
