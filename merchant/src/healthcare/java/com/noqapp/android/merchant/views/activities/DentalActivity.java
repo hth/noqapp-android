@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,8 +32,6 @@ import java.util.List;
 public class DentalActivity extends BaseActivity {
     public JsonQueuedPerson jsonQueuedPerson;
     public JsonMedicalRecord jsonMedicalRecord;
-    private LinearLayout ll_canvas;
-    private Button btn_save_upload;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,6 @@ public class DentalActivity extends BaseActivity {
         actionbarBack = findViewById(R.id.actionbarBack);
         actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText("Dental Chart");
-        ll_canvas = findViewById(R.id.ll_canvas);
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
         RecyclerView rcv_tooth = findViewById(R.id.rcv_tooth);
@@ -65,50 +61,61 @@ public class DentalActivity extends BaseActivity {
         }
         ToothAdapter toothAdapter = new ToothAdapter(toothInfos, this);
         rcv_tooth.setAdapter(toothAdapter);
-        btn_save_upload = findViewById(R.id.btn_save_upload);
+        Button btn_save_upload = findViewById(R.id.btn_save_upload);
         btn_save_upload.setOnClickListener(v -> {
             getCaptureAndUploadBitmap();
         });
     }
 
     private void getCaptureAndUploadBitmap() {
-        View u = findViewById(R.id.scroll);
-        u.setDrawingCacheEnabled(true);
-        ScrollView z = (ScrollView) findViewById(R.id.scroll);
-        int x = z.getChildAt(0).getTop();
-        int y = z.getChildAt(0).getLeft();
-        int totalHeight = z.getChildAt(0).getHeight();
-        int totalWidth = z.getChildAt(0).getWidth();
-        u.layout(0, 0, totalWidth, totalHeight);
-        u.buildDrawingCache(true);
-        Bitmap b = Bitmap.createBitmap(u.getDrawingCache());
-        u.setDrawingCacheEnabled(false);
-
-        //Save bitmap
-        File folder = new File(Environment.getExternalStorageDirectory() +
-                File.separator + "NoQueue");
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
-        String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
-        File myPath = new File(extr, fileName);
-        FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(myPath);
-            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-            MediaStore.Images.Media.insertImage(getContentResolver(), b, "Screen", "screen");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            View u = findViewById(R.id.scroll);
+            u.setDrawingCacheEnabled(true);
+            ScrollView z = findViewById(R.id.scroll);
+            z.setBackgroundColor(getResources().getColor(R.color.white));
+            int x = z.getChildAt(0).getTop();
+            int y = z.getChildAt(0).getLeft();
+            int totalHeight = z.getChildAt(0).getHeight();
+            int totalWidth = z.getChildAt(0).getWidth();
+            u.layout(0, 0, totalWidth, totalHeight);
+            u.buildDrawingCache(true);
+            Bitmap bitmap = Bitmap.createBitmap(u.getDrawingCache());
+            u.setDrawingCacheEnabled(false);
+
+            //Save bitmap
+            File folder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "NoQueue");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
+            String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
+            File myPath = new File(extr, fileName);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(myPath);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.close();
+                MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Screen", "screen");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (null != fos)
+                    fos.flush();
+                if (null != bitmap) {
+                    bitmap.recycle();
+                    bitmap = null;
+                }
+            }
+            u.layout(x, y, totalWidth, totalHeight);
+            if (myPath.exists()) {
+                MedicalFilesDB.insertMedicalFile(jsonMedicalRecord.getRecordReferenceId(), myPath.getAbsolutePath());
+                new CustomToast().showToast(this, "File saved to SD Card.It will upload with case history");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        u.layout(x, y, totalWidth, totalHeight);
-        if (myPath.exists()) {
-            MedicalFilesDB.insertMedicalFile(jsonMedicalRecord.getRecordReferenceId(), myPath.getAbsolutePath());
-            new CustomToast().showToast(this, "File saved to SD Card.It will upload with case history");
         }
     }
 
@@ -130,6 +137,7 @@ public class DentalActivity extends BaseActivity {
         }
         return drawables;
     }
+
     private List<Integer> getFrontAllViews() {
         List<Integer> drawables = new ArrayList<>();
         for (int i = 0; i < 32; i++) {

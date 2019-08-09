@@ -16,20 +16,12 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/btn_save_upload"
             android:layout_alignParentTop="true">
-
-            <LinearLayout
-                android:id="@+id/ll_canvas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_tooth"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:overScrollMode="never" />
 
-            </LinearLayout>
         </ScrollView>
 
         <Button
