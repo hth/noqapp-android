@@ -654,10 +654,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     public void medicalRecordResponse(JsonResponse jsonResponse) {
         dismissProgress();
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
-            List<MedicalFile> medicalFileList = MedicalFilesDB.getMedicalFileList();
-            if (medicalFileList.size() > 0) {
-                new FileUploadOperation(LaunchActivity.getLaunchActivity(), medicalFileList).execute();
-            }
+            LaunchActivity.getLaunchActivity().uploadMedicalFiles();
             new CustomToast().showToast(getActivity(), "Medical History updated successfully");
             getActivity().finish();
         } else {

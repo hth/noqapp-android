@@ -17,7 +17,6 @@ import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.pojos.MedicalFile;
 
 import java.io.File;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -25,30 +24,26 @@ import okhttp3.RequestBody;
 
 public class FileUploadOperation extends AsyncTask<String, Void, String> implements ImageUploadPresenter {
     private Context context;
-    private List<MedicalFile> medicalFiles;
+    private MedicalFile medicalFile;
     private MedicalHistoryApiCalls medicalHistoryApiCalls;
-    private int i = 0;
 
-    public FileUploadOperation(Context context, List<MedicalFile> medicalFiles) {
+
+    public FileUploadOperation(Context context, MedicalFile medicalFile) {
         this.context = context;
-        this.medicalFiles = medicalFiles;
+        this.medicalFile = medicalFile;
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
     }
 
     @Override
     protected String doInBackground(String... params) {
-        for (i = 0; i < medicalFiles.size(); i++) {
-            try {
-                File file = new File(medicalFiles.get(i).getFileLocation());
-                String type = getMimeType(Uri.fromFile(file));
-                MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
-                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), medicalFiles.get(i).getRecordReferenceId());
-                medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (isCancelled())
-                break;
+        try {
+            File file = new File(medicalFile.getFileLocation());
+            String type = getMimeType(Uri.fromFile(file));
+            MultipartBody.Part profileImageFile = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse(type), file));
+            RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), medicalFile.getRecordReferenceId());
+            medicalHistoryApiCalls.appendImage(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), profileImageFile, requestBody);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "Executed";
     }
@@ -67,32 +62,33 @@ public class FileUploadOperation extends AsyncTask<String, Void, String> impleme
     public void imageUploadResponse(JsonResponse jsonResponse) {
         if (Constants.SUCCESS == jsonResponse.getResponse()) {
             if (null != LaunchActivity.getLaunchActivity()) {
-               // MedicalFilesDB.deleteMedicalFile(medicalFiles.get(i).getRecordReferenceId());
+                MedicalFilesDB.deleteMedicalFile(medicalFile.getRecordReferenceId());
             }
         } else {
             //update the table
+            MedicalFilesDB.updateMedicalFile(medicalFile);
         }
 
     }
 
     @Override
     public void imageRemoveResponse(JsonResponse jsonResponse) {
-
+        // do nothing
     }
 
     @Override
     public void imageUploadError() {
-
+        MedicalFilesDB.updateMedicalFile(medicalFile);
     }
 
     @Override
     public void responseErrorPresenter(ErrorEncounteredJson eej) {
-
+        MedicalFilesDB.updateMedicalFile(medicalFile);
     }
 
     @Override
     public void responseErrorPresenter(int errorCode) {
-
+        MedicalFilesDB.updateMedicalFile(medicalFile);
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.noqapp.android.common.pojos.DisplayNotification;
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.views.pojos.MedicalFile;
@@ -48,7 +47,7 @@ public class MedicalFilesDB {
     }
 
     public static List<MedicalFile> getMedicalFileList() {
-        String query = "SELECT *  FROM " + DatabaseTable.MedicalFiles.TABLE_NAME ;
+        String query = "SELECT *  FROM " + DatabaseTable.MedicalFiles.TABLE_NAME;
         List<MedicalFile> medicalFiles = new ArrayList<>();
         Cursor cursor = dbHandler.getWritableDb().rawQuery(query, null);
         if (cursor != null) {
@@ -74,12 +73,26 @@ public class MedicalFilesDB {
 
     public static void deleteMedicalFile(String recordReferenceId) {
         try {
-            int out = dbHandler.getWritableDb().delete(DatabaseTable.PreferredStore.TABLE_NAME,
+            int out = dbHandler.getWritableDb().delete(DatabaseTable.MedicalFiles.TABLE_NAME,
                     DatabaseTable.MedicalFiles.RECORD_REFERENCE_ID + "=?",
                     new String[]{recordReferenceId});
-            Log.v("medical file deleted:", "" + out);
+            Log.v("medical record deleted:", "" + out);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public static void updateMedicalFile(MedicalFile medicalFile) {
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseTable.MedicalFiles.UPLOAD_STATUS, "S");
+        cv.put(DatabaseTable.MedicalFiles.UPLOAD_ATTEMPT_COUNT, String.valueOf(Integer.valueOf(medicalFile.getUploadAttemptCount()) + 1));
+        try {
+            long successCount = dbHandler.getWritableDb().
+                    update(DatabaseTable.MedicalFiles.TABLE_NAME, cv, DatabaseTable.MedicalFiles.RECORD_REFERENCE_ID + "=" + medicalFile.getRecordReferenceId(), null);
+            Log.d(TAG, "Data updated notification " + String.valueOf(successCount));
+        } catch (SQLException e) {
+            Log.e(TAG, "Error update notification reason=" + e.getLocalizedMessage(), e);
+        }
+    }
+
 }
