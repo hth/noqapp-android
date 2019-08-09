@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DentalActivity extends BaseActivity {
     public JsonQueuedPerson jsonQueuedPerson;
@@ -89,7 +90,9 @@ public class DentalActivity extends BaseActivity {
                 folder.mkdirs();
             }
             String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
-            String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
+          //  String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
+            String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_'yyyyMMddhhmm'.jpg'", Locale.getDefault()).format(new Date());
+
             File myPath = new File(extr, fileName);
             FileOutputStream fos = null;
             try {

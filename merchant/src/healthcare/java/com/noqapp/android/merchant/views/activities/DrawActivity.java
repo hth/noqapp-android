@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,10 +34,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DrawActivity extends BaseActivity implements View.OnClickListener,
         ColorPaletteAdapter.OnColorSelectedListener {
-    private Button btn_select_picture, btn_save_picture, btn_select_color, btn_undo, btn_redo;
+    private Button btn_select_picture, btn_save_picture;
+    private ImageView btn_select_color, btn_undo, btn_redo;
     private Bitmap alteredBitmap;
     private int pointerColor = 0xFFF44336;
     public JsonQueuedPerson jsonQueuedPerson;
@@ -114,7 +117,9 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener,
                     if (!folder.exists()) {
                         folder.mkdirs();
                     }
-                    String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
+                  //  String fileName = new SimpleDateFormat("yyyyMMddhhmm'_draw_report.jpg'").format(new Date());
+                    String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_'yyyyMMddhhmm'.jpg'", Locale.getDefault()).format(new Date());
+
                     File myPath = new File(extr, fileName);
                     FileOutputStream fos = null;
                     try {
