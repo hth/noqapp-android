@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/drawingViewLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_btns"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:background="#80333333"
+            android:orientation="vertical"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/btn_select_picture"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_weight=".35"
+                    android:background="@drawable/bg_gradient_round"
+                    android:text="Select Image"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+
+                <Button
+                    android:id="@+id/btn_save_picture"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight=".3"
+                    android:background="@drawable/bg_gradient_round"
+                    android:text="Save Image"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_fourteen" />
+
+                <ImageView
+                    android:id="@+id/btn_select_color"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_weight=".1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/paint" />
+
+                <ImageView
+                    android:id="@+id/btn_undo"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_weight=".1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/undo"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/btn_redo"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_weight=".1"
+                    android:background="@drawable/redo" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

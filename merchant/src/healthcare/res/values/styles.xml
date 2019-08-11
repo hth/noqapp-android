@@ -128,14 +128,18 @@
     <style name="SCBSwitch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">#46bdbf</item>
-
         <!-- inactive thumb color -->
-        <item name="colorSwitchThumbNormal">#f2f2f2
-        </item>
-
+        <item name="colorSwitchThumbNormal">#f2f2f2</item>
         <!-- inactive track color (30% transparency) -->
-        <item name="android:colorForeground">#80221f1f
-        </item>
+        <item name="android:colorForeground">#80221f1f</item>
+    </style>
+
+    <style name="style_dental">
+        <item name="android:layout_width">@dimen/dental_width</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">@android:color/darker_gray</item>
     </style>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.noqapp.android.merchant.views.activities
 
-
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -23,7 +22,6 @@ import com.noqapp.android.merchant.utils.AppUtils
 import com.noqapp.android.merchant.utils.IBConstant
 import com.noqapp.android.merchant.utils.UserUtils
 import com.noqapp.android.merchant.views.adapters.CouponAdapter
-
 
 class CouponActivity : BaseActivity(), CouponAdapter.OnItemClickListener, CouponPresenter {
 

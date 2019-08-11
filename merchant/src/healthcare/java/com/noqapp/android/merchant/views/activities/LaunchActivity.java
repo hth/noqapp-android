@@ -15,10 +15,13 @@ import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.database.DatabaseHelper;
+import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.model.database.utils.NotificationDB;
 import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
+import com.noqapp.android.merchant.views.FileUploadOperation;
+import com.noqapp.android.merchant.views.pojos.MedicalFile;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -130,5 +133,15 @@ public class LaunchActivity extends BaseLaunchActivity implements LoginActivity.
     @Override
     public void userRegistered(JsonProfile jsonProfile) {
         new CustomToast().showToast(this, "User added successfully with this number");
+    }
+
+    public void uploadMedicalFiles() {
+        List<MedicalFile> medicalFileList = MedicalFilesDB.getMedicalFileList();
+        if (medicalFileList.size() > 0) {
+            Log.e("Medical files count",""+medicalFileList.size());
+            for (int i = 0; i < medicalFileList.size(); i++) {
+                new FileUploadOperation(this, medicalFileList.get(i)).execute();
+            }
+        }
     }
 }

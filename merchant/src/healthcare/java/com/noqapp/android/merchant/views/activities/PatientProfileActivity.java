@@ -30,6 +30,7 @@ import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.presenter.beans.body.merchant.FindMedicalProfile;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.ErrorResponseHandler;
+import com.noqapp.android.merchant.utils.PermissionHelper;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.adapters.MedicalHistoryAdapter;
@@ -118,6 +119,43 @@ public class PatientProfileActivity extends BaseActivity implements
                 intent.putExtra("data", jsonQueuedPerson);
                 intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
                 startActivity(intent);
+            }
+        });
+        TextView tv_draw = findViewById(R.id.tv_draw);
+        tv_draw.setVisibility(AppUtils.isRelease()?View.GONE:View.VISIBLE);
+        tv_draw.setOnClickListener(v -> {
+            if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
+            }else {
+                PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    Intent intent = new Intent(PatientProfileActivity.this, DrawActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                } else {
+                    permissionHelper.requestStoragePermission();
+                }
+            }
+        });
+
+        TextView tv_dental = findViewById(R.id.tv_dental);
+        tv_dental.setVisibility(AppUtils.isRelease()?View.GONE:View.VISIBLE);
+        tv_dental.setOnClickListener(v -> {
+            if(null == jsonProfile || null == jsonMedicalRecordTemp){
+                new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
+            }else {
+                PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
+                if (permissionHelper.isStoragePermissionAllowed()) {
+                    Intent intent = new Intent(PatientProfileActivity.this, DentalActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                } else {
+                    permissionHelper.requestStoragePermission();
+                }
             }
         });
 

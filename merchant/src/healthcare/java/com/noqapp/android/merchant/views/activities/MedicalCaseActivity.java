@@ -68,34 +68,25 @@ public class MedicalCaseActivity extends BaseActivity implements
     private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
     public boolean isGynae = false;
-
     public boolean isGynae() {
         return isGynae;
     }
-
     public PreferenceObjects getPreferenceObjects() {
         return preferenceObjects;
     }
-
     private PreferenceObjects preferenceObjects;
     private LoadTabs loadTabs;
-
     public JsonMedicalRecord getJsonMedicalRecord() {
         return jsonMedicalRecord;
     }
-
     public JsonMedicalRecord jsonMedicalRecord;
-
     public CaseHistory getCaseHistory() {
         return caseHistory;
     }
-
     private CaseHistory caseHistory;
-
     public static MedicalCaseActivity getMedicalCaseActivity() {
         return medicalCaseActivity;
     }
-
     private static MedicalCaseActivity medicalCaseActivity;
     public FormDataObj formDataObj;
     public JsonQueuedPerson jsonQueuedPerson;
