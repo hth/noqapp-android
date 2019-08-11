@@ -37,8 +37,7 @@ public class MedicalFilesDB {
         String dateString = dateFormat.format(new Date());
         cv.put(DatabaseTable.MedicalFiles.FILE_CREATED_DATE, dateString);
         try {
-            long successCount = dbHandler.getWritableDb().insertWithOnConflict(
-                    DatabaseTable.MedicalFiles.TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+            long successCount = dbHandler.getWritableDb().insertWithOnConflict(DatabaseTable.MedicalFiles.TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
             Log.d(TAG, "Data insert medicalFiles " + String.valueOf(successCount));
             Log.d(TAG, fileLocation);
         } catch (SQLException e) {

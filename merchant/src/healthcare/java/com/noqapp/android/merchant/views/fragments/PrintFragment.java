@@ -1,20 +1,5 @@
 package com.noqapp.android.merchant.views.fragments;
 
-
-import android.os.Bundle;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSpinner;
-
 import com.noqapp.android.common.beans.JsonResponse;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathology;
 import com.noqapp.android.common.beans.medical.JsonMedicalPathologyList;
@@ -29,11 +14,9 @@ import com.noqapp.android.common.model.types.medical.FormVersionEnum;
 import com.noqapp.android.common.model.types.medical.LabCategoryEnum;
 import com.noqapp.android.merchant.R;
 import com.noqapp.android.merchant.model.MedicalHistoryApiCalls;
-import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.presenter.beans.JsonPreferredBusiness;
 import com.noqapp.android.merchant.utils.Constants;
 import com.noqapp.android.merchant.utils.PermissionHelper;
-import com.noqapp.android.merchant.views.FileUploadOperation;
 import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
@@ -41,17 +24,28 @@ import com.noqapp.android.merchant.views.adapters.CustomSpinnerAdapter;
 import com.noqapp.android.merchant.views.adapters.MedicalRecordAdapter;
 import com.noqapp.android.merchant.views.interfaces.MedicalRecordPresenter;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
-import com.noqapp.android.merchant.views.pojos.MedicalFile;
 import com.noqapp.android.merchant.views.pojos.PreferredStoreInfo;
 import com.noqapp.android.merchant.views.utils.PdfGenerator;
 import com.noqapp.android.merchant.views.utils.PreferredStoreList;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
 import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl;
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrintFragment extends BaseFragment implements MedicalRecordPresenter {
     private TextView tv_patient_name, tv_address, tv_symptoms, tv_diagnosis, tv_instruction, tv_pathology, tv_clinical_findings, tv_examination, tv_provisional_diagnosis;
@@ -65,8 +59,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     private ArrayList<String> follow_up_data = new ArrayList<>();
     private String followup;
     private LinearLayout ll_sono, ll_scan, ll_mri, ll_xray, ll_spec, ll_path;
-    private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono,
-            acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
+    private AppCompatSpinner acsp_mri, acsp_scan, acsp_sono, acsp_xray, acsp_special, acsp_pathology, acsp_pharmacy;
     private PreferredStoreList preferredStoreList;
 
     @Nullable
@@ -468,10 +461,10 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
     }
 
     private int getSelectionPos(List<JsonPreferredBusiness> temp, HealthCareServiceEnum hcse, String storeId) {
-
         if (null == storeId) {
             return 0;
         }
+
         if (null == hcse) {
             for (int i = 0; i < temp.size(); i++) {
                 if (temp.get(i).getBizStoreId().equals(storeId)) {
@@ -480,6 +473,7 @@ public class PrintFragment extends BaseFragment implements MedicalRecordPresente
             }
             return 0;
         }
+
         switch (hcse) {
             case SONO: {
                 for (int i = 0; i < temp.size(); i++) {
