@@ -11,6 +11,7 @@ import com.crashlytics.android.answers.Answers;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.model.types.UserLevelEnum;
+import com.noqapp.android.common.pojos.MedicalFile;
 import com.noqapp.android.common.pojos.MenuDrawer;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
@@ -21,7 +22,6 @@ import com.noqapp.android.merchant.network.NoQueueMessagingService;
 import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.utils.UserUtils;
 import com.noqapp.android.merchant.views.FileUploadOperation;
-import com.noqapp.android.merchant.views.pojos.MedicalFile;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
