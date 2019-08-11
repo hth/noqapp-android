@@ -140,6 +140,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:742452513487:android:787d323b10a29876",
+        "android_client_info": {
+          "package_name": "com.noqapp.android.merchant.inventory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClTVFDeoyMqFdyqr27sjEMF59X5h_gtuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742452513487-k76d5rmg39dq9uoptti054qqa1rbnftu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "742452513487-udjgbe2m1olanksoh43cb8bi0q807u4v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.noqapp.ios.client"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:742452513487:android:bee1430f4c8eea08",
         "android_client_info": {
           "package_name": "com.noqapp.android.merchant.tv"
