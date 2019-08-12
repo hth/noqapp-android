@@ -1,4 +1,4 @@
-package com.noqapp.android.common.pojos;
+package com.noqapp.android.merchant.views.pojos;
 
 public class MedicalFile {
     private String recordReferenceId;

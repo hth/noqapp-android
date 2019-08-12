@@ -8,9 +8,9 @@ import java.io.Serializable;
 /**
  * Created by hitender on 1/2/18.
  */
-
 public enum BusinessTypeEnum implements Serializable {
     RS("RS", "Restaurant", O),
+    FT("FT", "Food Truck", O),
     BA("BA", "Bar", O),
     ST("ST", "Store", O),
     SM("SM", "Shopping Mall", Q),

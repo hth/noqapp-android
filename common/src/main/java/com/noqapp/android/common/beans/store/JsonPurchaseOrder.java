@@ -81,6 +81,10 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
     @JsonProperty("ci")
     private String couponId;
 
+    //TODO on discounted purchase do not allow coupons to be added
+    @JsonProperty("dp")
+    private boolean discountedPurchase;
+
     @JsonProperty("dn")
     private String displayName;
 
@@ -256,6 +260,15 @@ public class JsonPurchaseOrder extends AbstractDomain implements Serializable {
 
     public JsonPurchaseOrder setCouponId(String couponId) {
         this.couponId = couponId;
+        return this;
+    }
+
+    public boolean isDiscountedPurchase() {
+        return discountedPurchase;
+    }
+
+    public JsonPurchaseOrder setDiscountedPurchase(boolean discountedPurchase) {
+        this.discountedPurchase = discountedPurchase;
         return this;
     }
 

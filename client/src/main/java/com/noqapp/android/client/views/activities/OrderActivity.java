@@ -1,24 +1,13 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
-import androidx.appcompat.widget.AppCompatRadioButton;
-
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientProfileApiCall;
@@ -46,7 +35,6 @@ import com.noqapp.android.common.beans.payment.cashfree.JsonCashfreeNotification
 import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.BusinessTypeEnum;
 import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.model.types.order.PaymentStatusEnum;
@@ -54,20 +42,31 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CashFreeNotifyPresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
+
 import org.apache.commons.lang3.StringUtils;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 public class OrderActivity extends BaseActivity implements PurchaseOrderPresenter, ProfilePresenter,
         ResponsePresenter, CFClientInterface, CashFreeNotifyPresenter {
@@ -305,16 +304,19 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                         float lat_d = (float) GeoHashUtils.decodeLatitude(jsonUserAddress.getGeoHash());
                         float long_d = (float) GeoHashUtils.decodeLongitude(jsonUserAddress.getGeoHash());
                         float distance = (float) AppUtilities.calculateDistance(lat_s, long_s, lat_d, long_d);
-                        if (BusinessTypeEnum.RS == jsonPurchaseOrder.getBusinessType()) {
-                            if (distance > getIntent().getExtras().getInt("deliveryRange")) {
-                                tv_address.setError("Please change the address. This address is very far from the store");
-                                isValid = false;
-                            }
-                        } else {
-                            if (distance > 150) { // Set for washing car stores
-                                tv_address.setError("Please change the address. This address is very far from the store");
-                                isValid = false;
-                            }
+                        switch (jsonPurchaseOrder.getBusinessType()) {
+                            case RS:
+                            case FT:
+                                if (distance > getIntent().getExtras().getInt("deliveryRange")) {
+                                    tv_address.setError("Please change the address. This address is very far from the store");
+                                    isValid = false;
+                                }
+                                break;
+                            default:
+                                if (distance > 150) { // Set for washing car stores
+                                    tv_address.setError("Please change the address. This address is very far from the store");
+                                    isValid = false;
+                                }
                         }
                     }
                 }

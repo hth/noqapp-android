@@ -6,9 +6,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.noqapp.android.common.pojos.MedicalFile;
 import com.noqapp.android.merchant.model.database.DatabaseTable;
 import com.noqapp.android.merchant.utils.Constants;
+import com.noqapp.android.merchant.views.pojos.MedicalFile;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
