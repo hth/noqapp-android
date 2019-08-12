@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
@@ -18,7 +21,7 @@ import java.util.List;
 public class FragmentDummyMenu extends Fragment {
     private View view;
     private List<StoreCartItem> childData;
-    private ListView listView;
+    private RecyclerView listView;
     private MenuOrderAdapter.CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
     private StoreMenuActivity storeMenuActivity;
@@ -47,6 +50,8 @@ public class FragmentDummyMenu extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_dummy, container, false);
         listView = view.findViewById(R.id.listView);
+        listView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        listView.setItemAnimator(new DefaultItemAnimator());
         MenuOrderAdapter menuAdapter = new MenuOrderAdapter(getActivity(), childData,storeMenuActivity, cartOrderUpdate,currencySymbol);
         listView.setAdapter(menuAdapter);
         return view;

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -81,6 +80,7 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
     public static UpdateWholeList updateWholeList;
     private long lastPress;
     private Toast backPressToast;
+    private ArrayList<String> ordersList= new ArrayList<>();
 
     public interface UpdateWholeList {
         void updateWholeList();
@@ -102,7 +102,6 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
                 updateWholeList.updateWholeList();
             }
         });
-        ExpandableListView expandableListView = findViewById(R.id.expandableListView);
         rcv_header = findViewById(R.id.rcv_header);
         tv_place_order = findViewById(R.id.tv_place_order);
         codeQR = getIntent().getStringExtra("codeQR");
@@ -216,6 +215,20 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
         }
     }
 
+    @Override
+    public void updateCartOrder(String item) {
+        if(!ordersList.contains(item)){
+            ordersList.add(item);
+        }
+        if (ordersList.size() > 0) {
+            tv_place_order.setVisibility(View.VISIBLE);
+            tv_place_order.setText("Your cart amount is filled " );
+        } else {
+            tv_place_order.setVisibility(View.GONE);
+            tv_place_order.setText("");
+        }
+    }
+
     public HashMap<String, StoreCartItem> getOrders() {
         return orders;
     }
@@ -237,6 +250,7 @@ public class StoreMenuActivity extends BaseActivity implements StoreProductPrese
     }
 
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
+        new CustomToast().showToast(mContext,ordersList.toString());
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         builder.setTitle(null);
