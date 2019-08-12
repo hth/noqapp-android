@@ -302,7 +302,7 @@ public class AppUtilities extends CommonHelper {
         try {
             String sb = Constants.PLACES_API_BASE + Constants.TYPE_AUTOCOMPLETE + Constants.OUT_JSON +
                     "?key=" + Constants.GOOGLE_PLACE_API_KEY +
-                    "&components=country:" + Constants.COUNTRY_CODE +
+                    "&components=country:" + LaunchActivity.COUNTRY_CODE +
                     "&types=(regions)" +
                     "&input=" + URLEncoder.encode(input, "utf8");
             URL url = new URL(sb);
@@ -566,4 +566,6 @@ public class AppUtilities extends CommonHelper {
         int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
         return groupPosition;
     }
+
+
 }

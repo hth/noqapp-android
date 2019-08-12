@@ -93,7 +93,7 @@ public class NoQueueBaseActivity extends AppCompatActivity {
     }
 
     public static String getCountryShortName() {
-        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, "US");
+        return sharedPreferences.getString(NoQueueBaseActivity.PREKEY_COUNTRY_SHORT_NAME, Constants.DEFAULT_COUNTRY_CODE);
     }
 
     public static boolean isReviewShown() {

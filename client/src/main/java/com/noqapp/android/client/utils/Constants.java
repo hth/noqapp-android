@@ -37,7 +37,7 @@ public class Constants extends BaseConstants{
     static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     static final String OUT_JSON = "/json";
-    static final String COUNTRY_CODE = "IN";
+    public static final String DEFAULT_COUNTRY_CODE = "IN";
     static final String GOOGLE_PLACE_API_KEY = "AIzaSyA9eHl3SHvjXmHFq9q5yPjRy0uqBd5awSc";
     private static final String TAG = Constants.class.getName();
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
