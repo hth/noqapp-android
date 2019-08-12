@@ -21,11 +21,15 @@
             android:paddingBottom="1dp"
             android:layout_marginBottom="5dp"/>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pager"
+        <ExpandableListView
+            android:id="@+id/expandableListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/rcv_header" />
+            android:layout_below="@+id/rcv_header"
+            android:childDivider="@android:color/transparent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:groupIndicator="@null" />
 
     </RelativeLayout>
 

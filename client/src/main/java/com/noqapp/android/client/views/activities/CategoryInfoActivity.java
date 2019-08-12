@@ -5,11 +5,11 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,8 +36,7 @@ import com.noqapp.android.client.utils.NetworkUtils;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
-import com.noqapp.android.client.views.adapters.CategoryListAdapter;
-import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
+import com.noqapp.android.client.views.adapters.LevelUpQueueAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -58,7 +57,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
  * Created by chandra on 5/7/17.
  */
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
-        RecyclerViewGridAdapter.OnItemClickListener, CategoryListAdapter.OnItemClickListener {
+         LevelUpQueueAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -87,11 +86,11 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private BizStoreElastic bizStoreElastic;
     private float rating = 0;
     private int reviewCount = 0;
-    private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
     private View view_loader;
-    private RecyclerView rcv_accreditation, rcv_single_queue;
+    private RecyclerView rcv_accreditation;
     private LinearLayout ll_top_header;
+    private ExpandableListView expandableListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,11 +110,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         rcv_amenities = findViewById(R.id.rcv_amenities);
         rcv_facility = findViewById(R.id.rcv_facility);
         rcv_accreditation = findViewById(R.id.rcv_accreditation);
-        rcv_single_queue = findViewById(R.id.rcv_single_queue);
         ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
+        expandableListView = findViewById(R.id.expandableListView);
         initActionsViews(false);
-        listener = this;
         tv_mobile.setOnClickListener((View v) -> {
             AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
@@ -263,16 +261,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     startActivity(intent);
                 });
             }
-            Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-            boolean isFuture = false; // for future
-            if (isFuture) {
-                RecyclerViewGridAdapter recyclerView_Adapter
-                        = new RecyclerViewGridAdapter(this,
-                        getCategoryThatArePopulated(),
-                        queueMap, listener);
-                rv_categories.setAdapter(recyclerView_Adapter);
-            }
-
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                     btn_join_queues.setText("Find Doctor");
@@ -362,31 +350,9 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         return new ArrayList<>(categoryMap.values());
     }
 
-    @Override
-    public void onCategoryItemClick( JsonCategory jsonCategory) {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-        switch (bizStoreElastic.getBusinessType()) {
-            case BK:
-                Intent in = new Intent(this, BeforeJoinActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
-                in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                startActivity(in);
-                break;
-            default:
-                Intent intent = new Intent(this, CategoryListActivity.class);
-                intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
-                intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
-                intent.putExtra("title", title);
-                startActivity(intent);
-        }
-
-    }
-
     private void joinClick() {
         if (null != getCategoryThatArePopulated() && null != cacheQueue.getIfPresent("queue")) {
-            Intent in = new Intent(this, CategoryPagerActivity.class);
+            Intent in = new Intent(this, QueueListActivity.class);
             in.putExtra("list", (Serializable) getCategoryThatArePopulated());
             in.putExtra("hashmap", (Serializable) cacheQueue.getIfPresent("queue"));
             in.putExtra("title", title);
@@ -395,7 +361,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     }
 
     private void checkForSingleEntry() {
-        rcv_single_queue.setVisibility(View.GONE);
+        expandableListView.setVisibility(View.GONE);
         ll_top_header.setVisibility(View.VISIBLE);
 
         if ((null != getCategoryThatArePopulated() && getCategoryThatArePopulated().size() == 1) &&
@@ -404,12 +370,10 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             Map.Entry<String, ArrayList<BizStoreElastic>> entry = cacheQueue.getIfPresent("queue").entrySet().iterator().next();
             ArrayList<BizStoreElastic> bizStoreElastics = entry.getValue();
             if (bizStoreElastics.size() == 1) {
-                CategoryListAdapter categoryListAdapter = new CategoryListAdapter(bizStoreElastics, this, this, true);
-                rcv_single_queue.setHasFixedSize(true);
-                rcv_single_queue.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-                rcv_single_queue.setItemAnimator(new DefaultItemAnimator());
-                rcv_single_queue.setAdapter(categoryListAdapter);
-                rcv_single_queue.setVisibility(View.VISIBLE);
+                expandableListView.setVisibility(View.VISIBLE);
+                LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, getCategoryThatArePopulated(),
+                        cacheQueue.getIfPresent("queue"), this,true);
+                expandableListView.setAdapter(expandableListAdapter);
                 btn_join_queues.setVisibility(View.GONE);
                 ll_top_header.setVisibility(View.GONE);
             } else {

@@ -138,10 +138,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".views.activities.CategoryListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme" />
-        <activity
             android:name=".views.activities.BeforeJoinActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
@@ -215,7 +211,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
-            android:name=".views.activities.CategoryPagerActivity"
+            android:name=".views.activities.QueueListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme" />
         <activity
