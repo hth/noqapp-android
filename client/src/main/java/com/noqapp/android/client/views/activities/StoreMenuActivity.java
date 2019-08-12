@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
@@ -79,33 +80,22 @@ public class StoreMenuActivity extends BaseActivity implements
 
         menuHeaderAdapter = new MenuHeaderAdapter(headerList, this, this);
         rcv_header.setAdapter(menuHeaderAdapter);
+        expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                int position = new AppUtilities().getFirstVisibleGroup(expandableListView);
+                rcv_header.smoothScrollToPosition(position);
+                menuHeaderAdapter.setSelectedPosition(position);
+                menuHeaderAdapter.notifyDataSetChanged();
+            }
 
-//        rcv_menu.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                switch (newState) {
-//                    case RecyclerView.SCROLL_STATE_IDLE:
-//                        System.out.println("The RecyclerView is not scrolling");
-//                        int k = menuLayoutManger.findFirstVisibleItemPosition();
-//                        for (int i = 0; i < headerPosition.size(); i++) {
-//                            if (k <= headerPosition.get(i)) {
-//                                menuHeaderAdapter.setSelectedPosition(k);
-//                                menuHeaderAdapter.notifyDataSetChanged();
-//                            }
-//                        }
-//                        break;
-//                    case RecyclerView.SCROLL_STATE_DRAGGING:
-//                        System.out.println("Scrolling now");
-//                        break;
-//                    case RecyclerView.SCROLL_STATE_SETTLING:
-//                        System.out.println("Scroll Settling");
-//                        break;
-//
-//                }
-//            }
-//        });
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+            }
+        });
 
         tv_place_order.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
@@ -159,6 +149,7 @@ public class StoreMenuActivity extends BaseActivity implements
         });
 
     }
+
 
     @Override
     public void menuHeaderClick(int pos) {

@@ -2,6 +2,7 @@ package com.noqapp.android.client.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -45,17 +46,31 @@ public class QueueListActivity extends BaseActivity implements
 
         }
         final RecyclerView rcv_header = findViewById(R.id.rcv_header);
-        expandableListView = findViewById(R.id.expandableListView);
-        LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, categoryMap, queueMap, this);
-        expandableListView.setAdapter(expandableListAdapter);
-
         rcv_header.setHasFixedSize(true);
         rcv_header.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcv_header.setItemAnimator(new DefaultItemAnimator());
-
         categoryHeaderAdapter = new CategoryHeaderAdapter(this, categoryMap, this);
         rcv_header.setAdapter(categoryHeaderAdapter);
 
+        expandableListView = findViewById(R.id.expandableListView);
+        LevelUpQueueAdapter expandableListAdapter = new LevelUpQueueAdapter(this, categoryMap, queueMap, this);
+        expandableListView.setAdapter(expandableListAdapter);
+        expandableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                int position = new AppUtilities().getFirstVisibleGroup(expandableListView);
+                rcv_header.smoothScrollToPosition(position);
+                categoryHeaderAdapter.setSelectedPosition(position);
+                categoryHeaderAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+            }
+        });
     }
 
     @Override
@@ -88,5 +103,4 @@ public class QueueListActivity extends BaseActivity implements
                 startActivity(in);
         }
     }
-
 }

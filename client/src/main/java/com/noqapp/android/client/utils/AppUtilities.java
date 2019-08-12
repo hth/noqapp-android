@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 
 import androidx.annotation.ColorInt;
@@ -557,5 +558,12 @@ public class AppUtilities extends CommonHelper {
 
         int rnd = new Random().nextInt(colors.length);
         return Color.parseColor(colors[rnd]);
+    }
+
+    public int getFirstVisibleGroup(ExpandableListView expandableListView) {
+        int firstVis = expandableListView.getFirstVisiblePosition();
+        long packedPosition = expandableListView.getExpandableListPosition(firstVis);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
+        return groupPosition;
     }
 }
