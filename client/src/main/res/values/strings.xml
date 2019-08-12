@@ -351,4 +351,6 @@
     <string name="offers">Coupons</string>
     <string name="screen_qconfirm">Confirm Queue</string>
     <string name="notification_setting">Notification</string>
+
+    <string name="discount_error">Discount already applied. more than one discount not applicable</string>
 </resources>

@@ -1,13 +1,25 @@
 package com.noqapp.android.client.views.activities;
 
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
-import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
+import com.gocashfree.cashfreesdk.CFClientInterface;
+import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.noqapp.android.client.BuildConfig;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.model.ClientCouponApiCalls;
@@ -43,35 +55,21 @@ import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum;
 import com.noqapp.android.common.presenter.CouponApplyRemovePresenter;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-import com.gocashfree.cashfreesdk.CFClientInterface;
-import com.gocashfree.cashfreesdk.CFPaymentService;
 import com.squareup.picasso.Picasso;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import androidx.cardview.widget.CardView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_APP_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_EMAIL;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_NAME;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_CUSTOMER_PHONE;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_AMOUNT;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_ID;
+import static com.gocashfree.cashfreesdk.CFPaymentService.PARAM_ORDER_NOTE;
 
 /**
  * Created by chandra on 5/7/17.
@@ -138,9 +136,13 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         frame_coupon = findViewById(R.id.frame_coupon);
         frame_coupon.setVisibility(View.GONE);
         rl_apply_coupon.setOnClickListener((View v) -> {
-            Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
-            in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
-            startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            if (null != jsonToken && null != jsonToken.getJsonPurchaseOrder() && jsonToken.getJsonPurchaseOrder().isDiscountedPurchase()) {
+                new CustomToast().showToast(JoinActivity.this, getString(R.string.discount_error));
+            } else {
+                Intent in = new Intent(JoinActivity.this, CouponsActivity.class);
+                in.putExtra(IBConstant.KEY_CODE_QR, codeQR);
+                startActivityForResult(in, Constants.ACTIVITTY_RESULT_BACK);
+            }
         });
         TextView tv_remove_coupon = findViewById(R.id.tv_remove_coupon);
         tv_remove_coupon.setOnClickListener((View v) -> {
@@ -386,9 +388,7 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
         jsonTokenAndQueue.setServingNumber(token.getServingNumber());
         jsonTokenAndQueue.setToken(token.getToken());
         jsonTokenAndQueue.setQueueUserId(queueUserId);
-
         dismissProgress();
-
         if (UserUtils.isLogin()) {
             if (isEnabledPayment) {
                 // do nothing
