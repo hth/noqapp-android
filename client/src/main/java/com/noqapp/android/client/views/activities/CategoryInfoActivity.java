@@ -37,7 +37,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.adapters.AccreditionAdapter;
 import com.noqapp.android.client.views.adapters.CategoryListAdapter;
-import com.noqapp.android.client.views.adapters.RecyclerViewGridAdapter;
 import com.noqapp.android.client.views.adapters.StaggeredGridAdapter;
 import com.noqapp.android.client.views.adapters.ThumbnailGalleryAdapter;
 import com.noqapp.android.common.model.types.BusinessTypeEnum;
@@ -58,7 +57,7 @@ import static com.google.common.cache.CacheBuilder.newBuilder;
  * Created by chandra on 5/7/17.
  */
 public class CategoryInfoActivity extends BaseActivity implements QueuePresenter,
-        RecyclerViewGridAdapter.OnItemClickListener, CategoryListAdapter.OnItemClickListener {
+        CategoryListAdapter.OnItemClickListener {
 
     //Set cache parameters
     private final Cache<String, Map<String, JsonCategory>> cacheCategory = newBuilder()
@@ -87,7 +86,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
     private BizStoreElastic bizStoreElastic;
     private float rating = 0;
     private int reviewCount = 0;
-    private RecyclerViewGridAdapter.OnItemClickListener listener;
     private String title = "";
     private View view_loader;
     private RecyclerView rcv_accreditation, rcv_single_queue;
@@ -115,7 +113,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         ll_top_header = findViewById(R.id.ll_top_header);
         view_loader = findViewById(R.id.view_loader);
         initActionsViews(false);
-        listener = this;
         tv_mobile.setOnClickListener((View v) -> {
             AppUtilities.makeCall(LaunchActivity.getLaunchActivity(), tv_mobile.getText().toString());
         });
@@ -263,16 +260,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     startActivity(intent);
                 });
             }
-            Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-            boolean isFuture = false; // for future
-            if (isFuture) {
-                RecyclerViewGridAdapter recyclerView_Adapter
-                        = new RecyclerViewGridAdapter(this,
-                        getCategoryThatArePopulated(),
-                        queueMap, listener);
-                rv_categories.setAdapter(recyclerView_Adapter);
-            }
-
             switch (bizStoreElastic.getBusinessType()) {
                 case DO:
                     btn_join_queues.setText("Find Doctor");
@@ -360,28 +347,6 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
         Set<String> queueKey = queueMap.keySet();
         categoryKey.retainAll(queueKey);
         return new ArrayList<>(categoryMap.values());
-    }
-
-    @Override
-    public void onCategoryItemClick( JsonCategory jsonCategory) {
-        Map<String, JsonCategory> categoryMap = cacheCategory.getIfPresent(CATEGORY);
-        Map<String, ArrayList<BizStoreElastic>> queueMap = cacheQueue.getIfPresent(QUEUE);
-        switch (bizStoreElastic.getBusinessType()) {
-            case BK:
-                Intent in = new Intent(this, BeforeJoinActivity.class);
-                in.putExtra(IBConstant.KEY_CODE_QR, queueMap.get(jsonCategory.getBizCategoryId()).get(0).getCodeQR());
-                in.putExtra(IBConstant.KEY_FROM_LIST, false);
-                in.putExtra(IBConstant.KEY_IS_CATEGORY, false);
-                startActivity(in);
-                break;
-            default:
-                Intent intent = new Intent(this, CategoryListActivity.class);
-                intent.putExtra("categoryName", categoryMap.get(jsonCategory.getBizCategoryId()).getCategoryName());
-                intent.putExtra("list", (Serializable) queueMap.get(jsonCategory.getBizCategoryId()));
-                intent.putExtra("title", title);
-                startActivity(intent);
-        }
-
     }
 
     private void joinClick() {
