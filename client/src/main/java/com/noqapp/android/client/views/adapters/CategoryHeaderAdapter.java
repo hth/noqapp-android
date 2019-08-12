@@ -58,7 +58,7 @@ public class CategoryHeaderAdapter extends RecyclerView.Adapter {
         return categories.size();
     }
 
-    public CategoryHeaderAdapter setSelected_pos(int selected_pos) {
+    public CategoryHeaderAdapter setSelectedPosition(int selected_pos) {
         this.selected_pos = selected_pos;
         return this;
     }

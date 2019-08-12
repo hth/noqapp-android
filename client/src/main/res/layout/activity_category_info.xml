@@ -140,9 +140,9 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="@dimen/btn_standard_height"
                                         android:layout_alignParentRight="true"
-                                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                                        android:clickable="true"
                                         android:background="@drawable/btn_bg_enable"
+                                        android:clickable="true"
+                                        android:foreground="?attr/selectableItemBackgroundBorderless"
                                         android:paddingLeft="20dp"
                                         android:paddingRight="20dp"
                                         android:textAllCaps="true"
@@ -151,10 +151,14 @@
                                 </RelativeLayout>
                             </LinearLayout>
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rcv_single_queue"
+                            <ExpandableListView
+                                android:id="@+id/expandableListView"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="220dp"
+                                android:childDivider="@android:color/transparent"
+                                android:divider="@android:color/darker_gray"
+                                android:dividerHeight="0.5dp"
+                                android:groupIndicator="@null" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
