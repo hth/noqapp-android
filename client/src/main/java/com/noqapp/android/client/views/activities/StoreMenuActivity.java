@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,11 +34,9 @@ public class StoreMenuActivity extends BaseActivity implements
     private RecyclerView rcv_header;
     private JsonQueue jsonQueue;
     private MenuHeaderAdapter menuHeaderAdapter;
-    private HashMap<String, StoreCartItem> orders = new HashMap<>();
     private String currencySymbol;
     private List<Integer> headerPosition = new ArrayList<>();
-    private RecyclerView rcv_menu;
-    private LinearLayoutManager menuLayoutManger;
+    private ExpandableListView expandableListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +45,17 @@ public class StoreMenuActivity extends BaseActivity implements
         initActionsViews(true);
         tv_toolbar_title.setText("Menu");
         rcv_header = findViewById(R.id.rcv_header);
-        rcv_menu = findViewById(R.id.rcv_menu);
         tv_place_order = findViewById(R.id.tv_place_order);
+        expandableListView = findViewById(R.id.expandableListView);
         jsonQueue = (JsonQueue) getIntent().getSerializableExtra("jsonQueue");
         currencySymbol = AppUtilities.getCurrencySymbol(jsonQueue.getCountryShortName());
         List<JsonStoreCategory> headerList = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
         HashMap<String, List<StoreCartItem>> expandableListDetail = (HashMap<String, List<StoreCartItem>>) getIntent().getExtras().getSerializable("listDataChild");
+
+        List<JsonStoreCategory> expandableListTitle = (ArrayList<JsonStoreCategory>) getIntent().getExtras().getSerializable("jsonStoreCategories");
+        StoreProductMenuAdapter expandableListAdapter = new StoreProductMenuAdapter(this, expandableListTitle, expandableListDetail, this, currencySymbol);
+        expandableListView.setAdapter(expandableListAdapter);
+
 
         ArrayList<Integer> removeEmptyData = new ArrayList<>();
         ArrayList<StoreCartItem> childData = new ArrayList<>();
@@ -78,46 +81,36 @@ public class StoreMenuActivity extends BaseActivity implements
         rcv_header.setAdapter(menuHeaderAdapter);
 
 
-        rcv_menu.setHasFixedSize(true);
-        menuLayoutManger = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        rcv_menu.setLayoutManager(menuLayoutManger);
-        rcv_menu.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+//        rcv_menu.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                switch (newState) {
+//                    case RecyclerView.SCROLL_STATE_IDLE:
+//                        System.out.println("The RecyclerView is not scrolling");
+//                        int k = menuLayoutManger.findFirstVisibleItemPosition();
+//                        for (int i = 0; i < headerPosition.size(); i++) {
+//                            if (k <= headerPosition.get(i)) {
+//                                menuHeaderAdapter.setSelectedPosition(k);
+//                                menuHeaderAdapter.notifyDataSetChanged();
+//                            }
+//                        }
+//                        break;
+//                    case RecyclerView.SCROLL_STATE_DRAGGING:
+//                        System.out.println("Scrolling now");
+//                        break;
+//                    case RecyclerView.SCROLL_STATE_SETTLING:
+//                        System.out.println("Scroll Settling");
+//                        break;
+//
+//                }
+//            }
+//        });
 
-        StoreProductMenuAdapter storeProductMenuAdapter = new StoreProductMenuAdapter(childData, this, this, currencySymbol);
-        rcv_menu.setAdapter(storeProductMenuAdapter);
-
-        rcv_menu.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        System.out.println("The RecyclerView is not scrolling");
-                        int k = menuLayoutManger.findFirstVisibleItemPosition();
-                        for (int i = 0; i < headerPosition.size(); i++) {
-                            if (k <= headerPosition.get(i)) {
-                                menuHeaderAdapter.setSelectedPosition(k);
-                                menuHeaderAdapter.notifyDataSetChanged();
-                            }
-                        }
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        System.out.println("Scrolling now");
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        System.out.println("Scroll Settling");
-                        break;
-
-                }
-            }
-        });
-
-        orders.clear();
         tv_place_order.setOnClickListener((View v) -> {
             if (UserUtils.isLogin()) {
                 if (LaunchActivity.getLaunchActivity().isOnline()) {
-                    HashMap<String, StoreCartItem> getOrder = getOrders();
-
+                    HashMap<String, StoreCartItem> getOrder = expandableListAdapter.getOrders();
                     List<JsonPurchaseOrderProduct> ll = new ArrayList<>();
                     int price = 0;
                     for (StoreCartItem value : getOrder.values()) {
@@ -169,7 +162,7 @@ public class StoreMenuActivity extends BaseActivity implements
 
     @Override
     public void menuHeaderClick(int pos) {
-        rcv_menu.smoothScrollToPosition(headerPosition.get(pos));
+        expandableListView.setSelectedGroup(pos);
         menuHeaderAdapter.setSelectedPosition(pos);
         menuHeaderAdapter.notifyDataSetChanged();
     }
@@ -184,9 +177,4 @@ public class StoreMenuActivity extends BaseActivity implements
             tv_place_order.setText("");
         }
     }
-
-    public HashMap<String, StoreCartItem> getOrders() {
-        return orders;
-    }
-
 }
