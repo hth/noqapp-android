@@ -14,32 +14,11 @@
             android:layout_toLeftOf="@+id/ll_mid">
 
         <TextView
-                android:id="@+id/tv_cat"
-                android:layout_width="7dp"
-                android:layout_height="7dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/colorPrimary"/>
-
-        <TextView
-                android:id="@+id/tv_child_title"
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tv_cat"
                 android:text=""
                 android:textSize="@dimen/text_size_fourteen"/>
-
-        <TextView
-                android:id="@+id/tv_child_title_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tv_cat"
-                android:layout_below="@+id/tv_child_title"
-                android:text=""
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textSize="@dimen/text_size_ten"/>
 
 
     </RelativeLayout>

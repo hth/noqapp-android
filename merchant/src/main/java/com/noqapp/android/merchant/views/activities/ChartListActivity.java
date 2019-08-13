@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.merchant.R;
@@ -23,7 +21,6 @@ import com.noqapp.android.merchant.views.fragments.ChartListFragment;
 
 
 public class ChartListActivity extends BaseActivity {
-
 
     public static ChartListActivity getChartListActivity() {
         return chartListActivity;
@@ -47,10 +44,10 @@ public class ChartListActivity extends BaseActivity {
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(v -> onBackPressed());
         tv_toolbar_title.setText("Statistics");
-        ChartListFragment merchantChartListFragment = new ChartListFragment();
+        ChartListFragment chartListFragment = new ChartListFragment();
         Bundle b = new Bundle();
         b.putSerializable("jsonTopic", getIntent().getExtras().getSerializable("jsonTopic"));
-        merchantChartListFragment.setArguments(b);
+        chartListFragment.setArguments(b);
 
         if (new AppUtils().isTablet(getApplicationContext())) {
             FrameLayout list_fragment = findViewById(R.id.frame_layout);
@@ -60,24 +57,12 @@ public class ChartListActivity extends BaseActivity {
             list_fragment.setLayoutParams(lp1);
             list_detail_fragment.setLayoutParams(lp2);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, merchantChartListFragment);
+            fragmentTransaction.replace(R.id.frame_layout, chartListFragment);
             fragmentTransaction.commit();
         } else {
-            replaceFragmentWithoutBackStack(R.id.frame_layout, merchantChartListFragment);
+            replaceFragmentWithoutBackStack(R.id.frame_layout, chartListFragment);
         }
 
     }
 
-
-    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(container, fragment).commit();
-    }
-
-    public void replaceFragmentWithBackStack(int container, Fragment fragment, String tag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
-    }
 }
