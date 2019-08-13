@@ -74,6 +74,7 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
             if (number <= 0) {
                 storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+                setMenuItemsList(storeMenuActivity.getCartList());
             } else {
                 storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
                         .get(position));
@@ -90,6 +91,7 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
             if (number <= 0) {
                 storeMenuActivity.getOrders().remove(jsonStoreProduct.getProductId());
                 cartOrderUpdate.updateCartOrderInfo(showCartAmount());
+                setMenuItemsList(storeMenuActivity.getCartList());
             } else {
                 storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
                         .get(position));

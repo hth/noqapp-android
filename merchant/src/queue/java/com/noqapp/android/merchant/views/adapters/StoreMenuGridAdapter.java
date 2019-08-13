@@ -42,8 +42,9 @@ public class StoreMenuGridAdapter extends RecyclerView.Adapter {
         final JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
         recordHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
         recordHolder.tv_child_title.setOnClickListener(v -> {
-            storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), menuItemsList
-                    .get(position));
+            StoreCartItem sci = menuItemsList.get(position);
+            sci.setChildInput(1);
+            storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), sci);
             cartOrderUpdate.cartStatusChanged();
         });
     }

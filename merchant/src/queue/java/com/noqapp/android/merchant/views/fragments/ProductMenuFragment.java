@@ -1,60 +1,30 @@
 package com.noqapp.android.merchant.views.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
-import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderList;
-import com.noqapp.android.common.beans.store.JsonPurchaseOrderProduct;
 import com.noqapp.android.common.beans.store.JsonStoreCategory;
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.model.types.order.DeliveryModeEnum;
-import com.noqapp.android.common.model.types.order.PaymentModeEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
-import com.noqapp.android.merchant.model.BusinessCustomerApiCalls;
-import com.noqapp.android.merchant.presenter.beans.JsonBusinessCustomerLookup;
 import com.noqapp.android.merchant.presenter.beans.store.JsonStore;
-import com.noqapp.android.merchant.utils.AppUtils;
-import com.noqapp.android.merchant.utils.ErrorResponseHandler;
 import com.noqapp.android.merchant.utils.ShowAlertInformation;
 import com.noqapp.android.merchant.utils.UserUtils;
-import com.noqapp.android.merchant.views.activities.BaseLaunchActivity;
 import com.noqapp.android.merchant.views.activities.LaunchActivity;
-import com.noqapp.android.merchant.views.activities.LoginActivity;
-import com.noqapp.android.merchant.views.activities.RegistrationActivity;
 import com.noqapp.android.merchant.views.activities.StoreMenuActivity;
-import com.noqapp.android.merchant.views.adapters.JsonProfileAdapter;
 import com.noqapp.android.merchant.views.adapters.MenuHeaderAdapter;
 import com.noqapp.android.merchant.views.adapters.StoreMenuGridAdapter;
 import com.noqapp.android.merchant.views.adapters.TabViewPagerAdapter;
-import com.noqapp.android.merchant.views.interfaces.FindCustomerPresenter;
-import com.noqapp.android.merchant.views.interfaces.PurchaseOrderPresenter;
 import com.noqapp.android.merchant.views.interfaces.StoreProductPresenter;
-import com.noqapp.android.merchant.views.model.PurchaseOrderApiCalls;
 import com.noqapp.android.merchant.views.model.StoreProductApiCalls;
 
 import java.util.ArrayList;
@@ -156,9 +126,7 @@ public class ProductMenuFragment extends BaseFragment implements StoreProductPre
                 jsonStoreCategories.remove((int) removeEmptyData.get(j));
             }
             rcv_header.setHasFixedSize(true);
-            LinearLayoutManager horizontalLayoutManagaer
-                    = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-            rcv_header.setLayoutManager(horizontalLayoutManagaer);
+            rcv_header.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             rcv_header.setItemAnimator(new DefaultItemAnimator());
 
             menuAdapter = new MenuHeaderAdapter(jsonStoreCategories, getActivity(), this);
@@ -196,6 +164,7 @@ public class ProductMenuFragment extends BaseFragment implements StoreProductPre
 
     @Override
     public void cartStatusChanged() {
+        new CustomToast().showToast(getActivity(),"Item added to cart",true);
         if (isTablet) {
             // update side order list
             if (null != productMenuProcess)
@@ -203,8 +172,10 @@ public class ProductMenuFragment extends BaseFragment implements StoreProductPre
         } else {
             if (StoreMenuActivity.storeMenuActivity.getOrders().size() > 0) {
                 btn_view_order.setVisibility(View.VISIBLE);
+                btn_view_order.setText("View Order ("+StoreMenuActivity.storeMenuActivity.getOrders().size()+")");
             } else {
                 btn_view_order.setVisibility(View.GONE);
+                btn_view_order.setText("");
             }
         }
     }
