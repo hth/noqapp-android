@@ -5,6 +5,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.presenter.ResponseErrorPresenter;
@@ -68,5 +71,17 @@ public class BaseActivity extends AppCompatActivity implements ResponseErrorPres
     protected void onDestroy() {
         super.onDestroy();
         dismissProgress();
+    }
+
+    public void replaceFragmentWithoutBackStack(int container, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(container, fragment).commit();
+    }
+
+    public void replaceFragmentWithBackStack(int container, Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(container, fragment, tag).addToBackStack(tag).commit();
     }
 }
