@@ -1,6 +1,6 @@
 package com.noqapp.android.merchant.views.adapters;
 
-import android.content.Context;
+
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,7 +31,7 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
     private CartOrderUpdate cartOrderUpdate;
     private String currencySymbol;
 
-    public StoreMenuOrderAdapter( List<StoreCartItem> menuItemsList,
+    public StoreMenuOrderAdapter(List<StoreCartItem> menuItemsList,
                                  StoreMenuActivity storeMenuActivity, CartOrderUpdate
                                          cartOrderUpdate, String currencySymbol) {
         this.menuItemsList = menuItemsList;
