@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/tv_place_order"
             android:layout_below="@+id/rcv_header"
-            android:childDivider="@android:color/transparent"
+            android:childDivider="@android:color/darker_gray"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="0.5dp"
             android:groupIndicator="@null" />

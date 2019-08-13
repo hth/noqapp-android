@@ -13,8 +13,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,6 +133,7 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
     private HomeFragment homeFragment;
     private DrawerLayout drawer;
     private List<MenuDrawer> menuDrawerItems = new ArrayList<>();
+    public static String COUNTRY_CODE = Constants.DEFAULT_COUNTRY_CODE;
 
     public static LaunchActivity getLaunchActivity() {
         return launchActivity;
@@ -148,6 +152,8 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
         ImageView iv_notification = findViewById(R.id.iv_notification);
         FrameLayout fl_notification = findViewById(R.id.fl_notification);
         launchActivity = this;
+        COUNTRY_CODE = getCountryCode();
+        Log.e("Country Code: ", COUNTRY_CODE);
         //NoQueueBaseActivity.saveMailAuth("","");
         if (null != getIntent().getExtras()) {
             if (!TextUtils.isEmpty(getIntent().getStringExtra("fcmToken"))) {
@@ -1179,6 +1185,63 @@ public class LaunchActivity extends NoQueueBaseActivity implements OnClickListen
                     new CustomToast().showToast(launchActivity, "UnSupported Notification reached: " + payload);
                 }
             }
+        }
+    }
+
+    public static String getCountryCode() {
+        if (UserUtils.isLogin()) {
+            return getCountryShortName();
+        } else {
+            try {
+                final TelephonyManager tm = (TelephonyManager) launchActivity.getSystemService(Context.TELEPHONY_SERVICE);
+                final String simCountry = tm.getSimCountryIso();
+                if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
+                    return simCountry.toLowerCase(Locale.getDefault());
+                } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+                    String networkCountry = tm.getNetworkCountryIso();
+                    if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
+                        return networkCountry.toLowerCase(Locale.getDefault());
+                    } else {
+                        return getCountry(launchActivity);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return getCountry(launchActivity);
+        }
+    }
+
+    public static String getCountry(Context context) {
+        try {
+            LocationManager locationManager = (LocationManager) launchActivity.getSystemService(Context.LOCATION_SERVICE);
+            if (locationManager != null) {
+                Location location = locationManager
+                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location == null) {
+                    location = locationManager
+                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                Geocoder gcd = new Geocoder(context, Locale.getDefault());
+                List<Address> addresses;
+                try {
+                    addresses = gcd.getFromLocation(location.getLatitude(),
+                            location.getLongitude(), 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        return addresses.get(0).getCountryName();
+                    } else {
+                        return Constants.DEFAULT_COUNTRY_CODE;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return Constants.DEFAULT_COUNTRY_CODE;
+                }
+
+            } else {
+                return Constants.DEFAULT_COUNTRY_CODE;
+            }
+        } catch (SecurityException e) {
+            return Constants.DEFAULT_COUNTRY_CODE;
         }
     }
 }

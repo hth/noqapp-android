@@ -108,7 +108,7 @@ public class LevelUpQueueAdapter extends BaseExpandableListAdapter {
                 childViewHolder.card_view = convertView.findViewById(R.id.card_view);
                 convertView.setTag(R.layout.rcv_item_category1, childViewHolder);
             } else {
-                childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.list_item_menu_child);
+                childViewHolder = (ChildViewHolder) convertView.getTag(R.layout.rcv_item_category1);
             }
 
             childViewHolder.tv_name.setText(bizStoreElastic.getDisplayName());
