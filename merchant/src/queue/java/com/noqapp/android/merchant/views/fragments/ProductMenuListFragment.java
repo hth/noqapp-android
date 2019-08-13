@@ -87,6 +87,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         businessCustomerApiCalls = new BusinessCustomerApiCalls();
         businessCustomerApiCalls.setFindCustomerPresenter(this);
         purchaseOrderApiCalls.setPurchaseOrderPresenter(this);
+        updateCartOrderInfo(storeMenuOrderAdapter.showCartAmount());
         codeQR = getArguments().getString("codeQR");
         btn_place_order.setOnClickListener(v -> showCreateTokenDialogWithMobile(getActivity(), codeQR));
         return view;

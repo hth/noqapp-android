@@ -102,7 +102,7 @@ public class StoreMenuOrderAdapter extends RecyclerView.Adapter {
     }
 
 
-    private int showCartAmount() {
+    public int showCartAmount() {
         int price = 0;
         for (StoreCartItem value : storeMenuActivity.getOrders().values()) {
             price += value.getChildInput() * value.getFinalDiscountedPrice();
