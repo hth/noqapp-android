@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.noqapp.android.common.beans.store.JsonStoreProduct;
@@ -41,7 +42,7 @@ public class StoreMenuGridAdapter extends RecyclerView.Adapter {
         final StoreCartItem storeCartItem = menuItemsList.get(position);
         final JsonStoreProduct jsonStoreProduct = storeCartItem.getJsonStoreProduct();
         recordHolder.tv_child_title.setText(jsonStoreProduct.getProductName());
-        recordHolder.tv_child_title.setOnClickListener(v -> {
+        recordHolder.cardview.setOnClickListener(v -> {
             StoreCartItem sci = menuItemsList.get(position);
             sci.setChildInput(1);
             storeMenuActivity.getOrders().put(jsonStoreProduct.getProductId(), sci);
@@ -61,11 +62,13 @@ public class StoreMenuGridAdapter extends RecyclerView.Adapter {
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_child_title;
+        private TextView tv_child_title;
+        private CardView cardview;
 
         private MyViewHolder(View itemView) {
             super(itemView);
             this.tv_child_title = itemView.findViewById(R.id.tv_child_title);
+            this.cardview = itemView.findViewById(R.id.cardview);
         }
     }
 }
