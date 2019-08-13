@@ -1,5 +1,6 @@
 package com.noqapp.android.merchant.views.activities;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +11,15 @@ import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.noqapp.android.common.beans.store.JsonPurchaseOrder;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.BusinessTypeEnum;
+import com.noqapp.android.common.model.types.PaymentPermissionEnum;
 import com.noqapp.android.common.pojos.StoreCartItem;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.presenter.beans.JsonTopic;
 import com.noqapp.android.merchant.utils.AppUtils;
+import com.noqapp.android.merchant.utils.IBConstant;
 import com.noqapp.android.merchant.views.fragments.ProductMenuFragment;
 import com.noqapp.android.merchant.views.fragments.ProductMenuListFragment;
 
@@ -30,14 +36,18 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
     private ProductMenuListFragment productMenuListFragment;
     private ProductMenuFragment productMenuFragment;
     private boolean isTablet = false;
+    public JsonTopic jsonTopic;
 
     public interface UpdateWholeList {
         void updateWholeList();
     }
+
     public HashMap<String, StoreCartItem> getOrders() {
         return orders;
     }
+
     private String codeQR;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (new AppUtils().isTablet(getApplicationContext())) {
@@ -54,12 +64,13 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         storeMenuActivity = this;
         tv_toolbar_title.setText("Menu");
+        jsonTopic = (JsonTopic) getIntent().getSerializableExtra("jsonTopic");
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         fl_notification.setVisibility(View.INVISIBLE);
         actionbarBack.setOnClickListener(v -> {
             updateList();
         });
-        codeQR = getIntent().getStringExtra("codeQR");
+        codeQR = jsonTopic.getCodeQR();
         Bundle b = new Bundle();
         b.putString("codeQR", codeQR);
         b.putBoolean("isTablet", isTablet);
@@ -69,10 +80,10 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         productMenuListFragment = new ProductMenuListFragment(getCartList(), storeMenuActivity);
         productMenuListFragment.setArguments(b);
         if (new AppUtils().isTablet(getApplicationContext())) {
-            replaceFragmentWithoutBackStack(R.id.fl_product_menu, productMenuFragment);
-            replaceFragmentWithoutBackStack(R.id.fl_product_list, productMenuListFragment);
+            replaceFragmentWithBackStack(R.id.fl_product_menu, productMenuFragment, "ProductMenu");
+            replaceFragmentWithBackStack(R.id.fl_product_list, productMenuListFragment, "ProductList");
         } else {
-            replaceFragmentWithoutBackStack(R.id.fl_product_menu, productMenuFragment);
+            replaceFragmentWithBackStack(R.id.fl_product_menu, productMenuFragment, "ProductList");
         }
     }
 
@@ -105,10 +116,25 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         }
     }
 
+    public void updateAndCallPayment(JsonPurchaseOrder jsonPurchaseOrder) {
+        try {
+            Intent in = new Intent(this, OrderDetailActivity.class);
+            in.putExtra("jsonPurchaseOrder", jsonPurchaseOrder);
+            if (PaymentPermissionEnum.A == jsonTopic.getJsonPaymentPermission().getPaymentPermissions().get(LaunchActivity.getLaunchActivity().getUserLevel().name())) {
+                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, false);
+            } else {
+                in.putExtra(IBConstant.KEY_IS_PAYMENT_NOT_ALLOWED, true);
+            }
+            in.putExtra(IBConstant.KEY_IS_PAYMENT_PARTIAL_ALLOWED, jsonTopic.getBusinessType() == BusinessTypeEnum.HS);
+            startActivity(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void updateOrderList() {
-        new CustomToast().showToast(this, "called from tab");
-        if(null != productMenuListFragment){
+        if (null != productMenuListFragment) {
             productMenuListFragment.updateCartOrderViaMenu();
         }
     }
