@@ -122,7 +122,7 @@ public class StoreMenuActivity extends BaseActivity implements ProductMenuFragme
         replaceFragmentWithBackStack(R.id.fl_product_menu, productMenuListFragment, "ProductList");
     }
 
-    private ArrayList<StoreCartItem> getCartList() {
+    public ArrayList<StoreCartItem> getCartList() {
         ArrayList<StoreCartItem> list = new ArrayList<>();
         for (Map.Entry<String, StoreCartItem> entry : orders.entrySet()) {
             list.add(entry.getValue());

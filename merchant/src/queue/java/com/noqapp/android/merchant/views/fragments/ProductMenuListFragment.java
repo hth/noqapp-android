@@ -109,8 +109,8 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         }
     }
 
-    public void updateCartOrderViaMenu(){
-
+    public void updateCartOrderViaMenu() {
+        storeMenuOrderAdapter.setMenuItemsList(StoreMenuActivity.storeMenuActivity.getCartList());
     }
 
     private void showCreateTokenDialogWithMobile(final Context mContext, final String codeQR) {
