@@ -304,5 +304,6 @@
     <string name="request_email_otp">Request Email OTP</string>
     <string name="verify_email">Verify Email</string>
     <string name="screen_qconfirm">Confirm Queue</string>
+    <string name="discount_error">Discount has already been applied</string>
 
 </resources>

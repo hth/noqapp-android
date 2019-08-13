@@ -352,5 +352,5 @@
     <string name="screen_qconfirm">Confirm Queue</string>
     <string name="notification_setting">Notification</string>
 
-    <string name="discount_error">Discount already applied. more than one discount not applicable</string>
+    <string name="discount_error">Discount has already been applied</string>
 </resources>
