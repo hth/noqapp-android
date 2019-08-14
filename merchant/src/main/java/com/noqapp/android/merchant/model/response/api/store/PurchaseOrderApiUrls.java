@@ -144,7 +144,7 @@ public interface PurchaseOrderApiUrls {
      * {@link com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum#SEVERE
      */
     @POST("api/m/s/purchaseOrder/purchase.json")
-    Call<JsonPurchaseOrderList> purchase(
+    Call<JsonPurchaseOrder> purchase(
             @Header("X-R-DID")
             String did,
 
@@ -162,7 +162,7 @@ public interface PurchaseOrderApiUrls {
     );
 
     @POST("api/m/s/purchaseOrder/medical/purchase.json")
-    Call<JsonPurchaseOrderList> medicalPurchase(
+    Call<JsonPurchaseOrder> medicalPurchase(
             @Header("X-R-DID")
             String did,
 

@@ -78,7 +78,7 @@ public class PurchaseOrderApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Get order list", String.valueOf(response.body()));
-                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                        purchaseOrderPresenter.purchaseOrderListResponse(response.body());
                     } else {
                         Log.e(TAG, "Found error while Get order list");
                         purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
@@ -107,7 +107,7 @@ public class PurchaseOrderApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("Get history order list", String.valueOf(response.body()));
-                        purchaseOrderPresenter.purchaseOrderResponse(response.body());
+                        purchaseOrderPresenter.purchaseOrderListResponse(response.body());
                     } else {
                         Log.e(TAG, "Found error while Get history order list");
                         purchaseOrderPresenter.responseErrorPresenter(response.body().getError());
@@ -247,9 +247,9 @@ public class PurchaseOrderApiCalls {
 
 
     public void purchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrderList>() {
+        purchaseOrderService.purchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
-            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("purchase", String.valueOf(response.body()));
@@ -268,7 +268,7 @@ public class PurchaseOrderApiCalls {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("purchase fail", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.responseErrorPresenter(null);
             }
@@ -276,9 +276,9 @@ public class PurchaseOrderApiCalls {
     }
 
     public void medicalPurchase(String did, String mail, String auth, JsonPurchaseOrder jsonPurchaseOrder) {
-        purchaseOrderService.medicalPurchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrderList>() {
+        purchaseOrderService.medicalPurchase(did, Constants.DEVICE_TYPE, mail, auth, jsonPurchaseOrder).enqueue(new Callback<JsonPurchaseOrder>() {
             @Override
-            public void onResponse(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Response<JsonPurchaseOrderList> response) {
+            public void onResponse(@NonNull Call<JsonPurchaseOrder> call, @NonNull Response<JsonPurchaseOrder> response) {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d("purchase", String.valueOf(response.body()));
@@ -297,7 +297,7 @@ public class PurchaseOrderApiCalls {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonPurchaseOrderList> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonPurchaseOrder> call, @NonNull Throwable t) {
                 Log.e("purchase fail", t.getLocalizedMessage(), t);
                 purchaseOrderPresenter.responseErrorPresenter(null);
             }
