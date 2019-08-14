@@ -803,6 +803,14 @@ public class JoinActivity extends BaseActivity implements TokenPresenter, Respon
                     ShowAlertInformation.showNetworkDialog(JoinActivity.this);
                 }
             }
+        }else if (requestCode == Constants.requestCodeAfterJoinQActivity) {
+            if (resultCode == RESULT_OK) {
+                boolean toclose = data.getExtras().getBoolean(Constants.ACTIVITY_TO_CLOSE, false);
+                if (toclose) {
+                    returnResultBack();
+                    finish();
+                }
+            }
         }
     }
 }
