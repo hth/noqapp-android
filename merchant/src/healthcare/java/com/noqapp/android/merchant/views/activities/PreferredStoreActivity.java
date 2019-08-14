@@ -3,8 +3,6 @@ package com.noqapp.android.merchant.views.activities;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -52,6 +50,7 @@ public class PreferredStoreActivity extends BaseActivity implements
     public static PreferredStoreActivity getPreferredStoreActivity() {
         return preferredStoreActivity;
     }
+
     private static PreferredStoreActivity preferredStoreActivity;
     private List<JsonPreferredBusinessList> jsonPreferredBusinessLists;
 
@@ -81,10 +80,8 @@ public class PreferredStoreActivity extends BaseActivity implements
         }
         setProgressMessage("Fetching stores...");
         setContentView(R.layout.activity_preferred_business);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         tv_toolbar_title.setText("Preferred Stores");
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
         viewPager = findViewById(R.id.pager);
         rcv_header = findViewById(R.id.rcv_header);
         data.add("MRI & CT Scan");

@@ -10,10 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.R;
@@ -50,12 +47,8 @@ public class FollowUpListActivity extends BaseActivity implements QueuePersonLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         listview = findViewById(R.id.exp_list_view);
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         rl_empty = findViewById(R.id.rl_empty);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> finish());
+        initActionsViews(true);
         tv_toolbar_title.setText(getString(R.string.screen_followup));
         setProgressMessage("Fetching followup data...");
         if (LaunchActivity.getLaunchActivity().isOnline()) {
@@ -75,7 +68,7 @@ public class FollowUpListActivity extends BaseActivity implements QueuePersonLis
             Log.e("data size", "" + jsonQueuePersonList.getQueuedPeople().size());
             createData(jsonQueuePersonList.getQueuedPeople());
             List<Date> expandableListTitle = new ArrayList<Date>(expandableListDetail.keySet());
-            FollowupListAdapter adapter = new FollowupListAdapter(FollowUpListActivity.this, expandableListTitle, expandableListDetail,getIntent().getBooleanExtra("visibility",false));
+            FollowupListAdapter adapter = new FollowupListAdapter(FollowUpListActivity.this, expandableListTitle, expandableListDetail, getIntent().getBooleanExtra("visibility", false));
             listview.setAdapter(adapter);
 //            for(int i=0; i < adapter.getGroupCount(); i++)
 //                listview.expandGroup(i);

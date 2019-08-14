@@ -8,11 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
@@ -64,9 +62,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
+        initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.menu_appointments));
 
         setProgressMessage("Fetching appointments...");
@@ -170,7 +166,7 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
             Intent in = new Intent(AppointmentActivity.this, BookAppointmentActivity.class);
             in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
             in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
-            in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+            in.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
             startActivityForResult(in, BOOKING_SUCCESS);
         });
         FloatingActionButton fab_decrease = findViewById(R.id.fab_decrease);
@@ -251,9 +247,9 @@ public class AppointmentActivity extends BaseActivity implements AppointmentPres
                 Intent in = new Intent(AppointmentActivity.this, AppointmentActivityNew.class);
                 in.putExtra("selectedDate", ((JsonSchedule) adapter.getEventDayList().get(position).getEventObject()).getScheduleDate());
                 in.putExtra(IBConstant.KEY_CODE_QR, codeRQ);
-                in.putExtra("appointmentDuration",jsonScheduleList.getAppointmentDuration());
-                in.putExtra("displayName",getIntent().getStringExtra("displayName"));
-                in.putExtra("bizCategoryId",getIntent().getStringExtra("bizCategoryId"));
+                in.putExtra("appointmentDuration", jsonScheduleList.getAppointmentDuration());
+                in.putExtra("displayName", getIntent().getStringExtra("displayName"));
+                in.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
                 in.putExtra("jsonScheduleList", (Serializable) jsonScheduleList);
                 startActivity(in);
             }

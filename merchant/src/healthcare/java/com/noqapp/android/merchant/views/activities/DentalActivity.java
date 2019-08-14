@@ -7,7 +7,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -38,9 +37,7 @@ public class DentalActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dental);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
+        initActionsViews(true);
         tv_toolbar_title.setText("Dental Chart");
         jsonQueuedPerson = (JsonQueuedPerson) getIntent().getSerializableExtra("data");
         jsonMedicalRecord = (JsonMedicalRecord) getIntent().getSerializableExtra("jsonMedicalRecord");
@@ -90,7 +87,7 @@ public class DentalActivity extends BaseActivity {
                 folder.mkdirs();
             }
             String extr = Environment.getExternalStorageDirectory().toString() + File.separator + "NoQueue";
-          //  String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
+            //  String fileName = new SimpleDateFormat("yyyyMMddhhmm'_report.jpg'").format(new Date());
             String fileName = new SimpleDateFormat("'NoQueue_" + jsonQueuedPerson.getCustomerName() + "_'yyyyMMddhhmm'.jpg'", Locale.getDefault()).format(new Date());
 
             File myPath = new File(extr, fileName);

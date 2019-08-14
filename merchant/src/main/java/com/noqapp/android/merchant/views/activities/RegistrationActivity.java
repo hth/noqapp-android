@@ -1,10 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-/**
- * Created by chandra on 5/7/17.
- */
-
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -62,9 +56,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> finish());
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(false);
         tv_toolbar_title.setText("Register");
 
         edt_phoneNo = findViewById(R.id.edt_phone);
@@ -181,7 +173,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     private boolean validate() {
         //btnRegistration.setBackgroundResource(R.drawable.button_drawable);
-       // btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
+        // btnRegistration.setTextColor(ContextCompat.getColor(this, R.color.colorMobile));
         boolean isValid = true;
         edt_Name.setError(null);
         edt_Mail.setError(null);

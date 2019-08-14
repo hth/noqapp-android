@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -43,7 +42,7 @@ import java.io.OutputStream;
 import java.util.Date;
 
 
-public class ScribbleActivity extends BaseActivity  {
+public class ScribbleActivity extends BaseActivity {
 
     private EditText edt_prescription;
     private final String packageName = "com.google.android.apps.handwriting.ime";
@@ -58,9 +57,7 @@ public class ScribbleActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scribble);
         edt_prescription = findViewById(R.id.edt_prescription);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
+        initActionsViews(false);
         tv_toolbar_title.setText(getString(R.string.screen_prescription));
         setProgressMessage("Fetching data...");
         Button btn_submit = findViewById(R.id.btn_submit);

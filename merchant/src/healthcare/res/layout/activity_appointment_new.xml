@@ -5,7 +5,7 @@
     android:background="#99ffffff"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout_home" />
 
     <LinearLayout
         android:id="@+id/layout"

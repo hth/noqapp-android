@@ -1,10 +1,6 @@
 package com.noqapp.android.merchant.views.activities
 
 import android.os.Bundle
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import com.noqapp.android.common.beans.JsonProfile
 import com.noqapp.android.common.beans.JsonUserPreference
@@ -20,11 +16,7 @@ class NotificationSettings : BaseActivity(), MerchantPreferencePresenter {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
-        val fl_notification = findViewById<FrameLayout>(R.id.fl_notification)
-        val tv_toolbar_title = findViewById<TextView>(R.id.tv_toolbar_title)
-        val actionbarBack = findViewById<ImageView>(R.id.actionbarBack)
-        fl_notification.visibility = View.INVISIBLE
-        actionbarBack.setOnClickListener { v -> finish() }
+        initActionsViews(false)
         tv_toolbar_title.text = "Notification Settings"
         val clientPreferenceApiCalls = MerchantPreferenceApiCalls()
         clientPreferenceApiCalls.setMerchantPreferencePresenter(this@NotificationSettings)

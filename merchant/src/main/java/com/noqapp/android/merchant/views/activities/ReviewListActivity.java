@@ -3,13 +3,9 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,13 +15,10 @@ import com.noqapp.android.merchant.utils.AppUtils;
 import com.noqapp.android.merchant.views.fragments.ReviewListFragment;
 
 
-public class ReviewListActivity extends AppCompatActivity {
-
-
+public class ReviewListActivity extends BaseActivity {
     public static ReviewListActivity getReviewListActivity() {
         return reviewListActivity;
     }
-
     private static ReviewListActivity reviewListActivity;
 
     @Override
@@ -38,12 +31,7 @@ public class ReviewListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         reviewListActivity = this;
-
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
+        initActionsViews(false);
         tv_toolbar_title.setText("Reviews");
         ReviewListFragment reviewListFragment = new ReviewListFragment();
         Bundle b = new Bundle();

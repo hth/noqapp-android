@@ -7,11 +7,8 @@ package com.noqapp.android.merchant.views.activities;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -25,6 +22,7 @@ public class ChartListActivity extends BaseActivity {
     public static ChartListActivity getChartListActivity() {
         return chartListActivity;
     }
+
     private static ChartListActivity chartListActivity;
 
     @Override
@@ -37,12 +35,7 @@ public class ChartListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         chartListActivity = this;
-
-        FrameLayout fl_notification = findViewById(R.id.fl_notification);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        fl_notification.setVisibility(View.INVISIBLE);
-        actionbarBack.setOnClickListener(v -> onBackPressed());
+        initActionsViews(false);
         tv_toolbar_title.setText("Statistics");
         ChartListFragment chartListFragment = new ChartListFragment();
         Bundle b = new Bundle();

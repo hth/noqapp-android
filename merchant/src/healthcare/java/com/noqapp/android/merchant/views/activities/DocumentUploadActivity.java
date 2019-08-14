@@ -21,7 +21,6 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -92,10 +91,8 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         initProgress();
         setContentView(R.layout.activity_upload_image);
-        TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        initActionsViews(true);
         tv_toolbar_title.setText("Upload Documents");
-        ImageView actionbarBack = findViewById(R.id.actionbarBack);
-        actionbarBack.setOnClickListener(v -> finish());
         medicalHistoryApiCalls = new MedicalHistoryApiCalls(this);
         recordReferenceId = getIntent().getStringExtra("recordReferenceId");
         String codeQR = getIntent().getStringExtra("qCodeQR");
@@ -111,7 +108,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                 if (jsonMedicalRecordTemp.getImages().size() < Constants.MAX_IMAGE_UPLOAD_LIMIT) {
                     selectImage();
                 } else {
-                   new CustomToast().showToast(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed");
+                    new CustomToast().showToast(DocumentUploadActivity.this, "Maximum " + Constants.MAX_IMAGE_UPLOAD_LIMIT + " image allowed");
                 }
             } else {
                 selectImage();
@@ -189,7 +186,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
             jsonMedicalRecordTemp.getImages().add(jsonResponse.getData());
             jsonMedicalRecordResponse(jsonMedicalRecordTemp);
         } else {
-           new CustomToast().showToast(this, "Failed to update document");
+            new CustomToast().showToast(this, "Failed to update document");
         }
 
     }
@@ -239,6 +236,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         progressDialogImage.setContentView(R.layout.progress_lay);
 
     }
+
     private void deleteImage(final String imageName) {
         ShowCustomDialog showDialog = new ShowCustomDialog(this);
         showDialog.setDialogClickListener(new ShowCustomDialog.DialogClickListener() {
@@ -263,6 +261,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
                         LaunchActivity.getLaunchActivity().getAuth(), jsonMedicalRecord);
 
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing
@@ -401,7 +400,7 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
             dismissProgress();
-            Log.e("pdf file upload failed",e.getMessage());
+            Log.e("pdf file upload failed", e.getMessage());
         }
     }
 
@@ -459,13 +458,13 @@ public class DocumentUploadActivity extends BaseActivity implements View.OnClick
     @Override
     public void imageEnlargeClick(String imageUrl) {
         if (!TextUtils.isEmpty(imageUrl)) {
-            if(imageUrl.endsWith(".pdf")){
+            if (imageUrl.endsWith(".pdf")) {
                 Intent in = new Intent(DocumentUploadActivity.this, WebViewActivity.class);
                 in.putExtra("url", imageUrl);
-                in.putExtra("title","Pdf Document");
-                in.putExtra("isPdf",true);
+                in.putExtra("title", "Pdf Document");
+                in.putExtra("isPdf", true);
                 startActivity(in);
-            }else {
+            } else {
                 progressDialogImage.show();
                 progressDialogImage.setContentView(R.layout.progress_lay);
                 Picasso.get()
