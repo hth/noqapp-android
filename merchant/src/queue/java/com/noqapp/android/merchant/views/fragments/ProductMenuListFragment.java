@@ -69,6 +69,7 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
     private BusinessCustomerApiCalls businessCustomerApiCalls;
     private String codeQR = "";
     private StoreMenuOrderAdapter storeMenuOrderAdapter;
+    private AlertDialog mAlertDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,7 +134,8 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         final RadioButton rb_mobile = view.findViewById(R.id.rb_mobile);
         final RadioButton rb_customer_id = view.findViewById(R.id.rb_customer_id);
         builder.setView(view);
-        final AlertDialog mAlertDialog = builder.create();
+        mAlertDialog = null;
+        mAlertDialog = builder.create();
         mAlertDialog.setCanceledOnTouchOutside(false);
         rg_user_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -252,6 +254,8 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
                     jsonPurchaseOrder.setCustomerPhone(jsonProfile.getPhoneRaw());
                     jsonPurchaseOrder.setAdditionalNote("");
                     purchaseOrderApiCalls.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
+                    if(null != mAlertDialog && mAlertDialog.isShowing())
+                        mAlertDialog.dismiss();
                 } else {
                     ShowAlertInformation.showNetworkDialog(getActivity());
                 }
@@ -264,6 +268,12 @@ public class ProductMenuListFragment extends BaseFragment implements StoreMenuOr
         dismissProgress();
         if (null != jsonPurchaseOrderList) {
             Log.v("order data:", jsonPurchaseOrderList.toString());
+            // Navigate to order detail screen
+            try {
+                StoreMenuActivity.storeMenuActivity.updateAndCallPayment(jsonPurchaseOrderList.getPurchaseOrders().get(0));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             StoreMenuActivity.updateList();
         }
     }

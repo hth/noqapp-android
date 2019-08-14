@@ -95,7 +95,7 @@ public class MerchantDetailFragment extends BaseMerchantDetailFragment implement
             } else {
                 StoreMenuActivity.updateWholeList = this;
                 Intent intent = new Intent(getActivity(), StoreMenuActivity.class);
-                intent.putExtra("codeQR", jsonTopic.getCodeQR());
+                intent.putExtra("jsonTopic", jsonTopic);
                 ((Activity) context).startActivity(intent);
             }
         } else {
