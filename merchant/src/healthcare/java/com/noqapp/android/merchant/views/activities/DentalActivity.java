@@ -1,17 +1,5 @@
 package com.noqapp.android.merchant.views.activities;
 
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ScrollView;
-
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.merchant.R;
@@ -19,6 +7,17 @@ import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.presenter.beans.JsonQueuedPerson;
 import com.noqapp.android.merchant.views.adapters.ToothAdapter;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ScrollView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -81,8 +80,7 @@ public class DentalActivity extends BaseActivity {
             u.setDrawingCacheEnabled(false);
 
             //Save bitmap
-            File folder = new File(Environment.getExternalStorageDirectory() +
-                    File.separator + "NoQueue");
+            File folder = new File(Environment.getExternalStorageDirectory() + File.separator + "NoQueue");
             if (!folder.exists()) {
                 folder.mkdirs();
             }
@@ -112,7 +110,7 @@ public class DentalActivity extends BaseActivity {
             u.layout(x, y, totalWidth, totalHeight);
             if (myPath.exists()) {
                 MedicalFilesDB.insertMedicalFile(jsonMedicalRecord.getRecordReferenceId(), myPath.getAbsolutePath());
-                new CustomToast().showToast(this, "File saved to SD Card.It will upload with case history");
+                new CustomToast().showToast(this, "Saved image. This image will be available in case history.");
             }
         } catch (Exception e) {
             e.printStackTrace();
