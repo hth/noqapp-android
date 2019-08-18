@@ -75,6 +75,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-gks7t1iuk39t0iprin1o5455h58tfamb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant",
+            "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
+          }
+        },
+        {
           "client_id": "742452513487-guh2cqojat305s2de74vjp8m7idvh98f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -126,6 +134,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "742452513487-du9vd1lnpl7053a1al9mieo4p66783n5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.healthcare",
+            "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
+          }
+        },
         {
           "client_id": "742452513487-fag2dfqbha5k9gcjs2absueeu2gjssmh.apps.googleusercontent.com",
           "client_type": 1,
@@ -179,6 +195,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "742452513487-l6grvvjf4qpo8v2jpopglcnmrit7b8it.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.inventory",
+            "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
+          }
+        },
+        {
           "client_id": "742452513487-0vht89bki520rrob8kvqapjk9vl3g54m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -230,6 +254,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "742452513487-9lfvoueomme6gkgv6g7993toskb2dfap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noqapp.android.merchant.tv",
+            "certificate_hash": "ed89f8d83ecabad282c2df1f8bc2e48faa1a6f52"
+          }
+        },
         {
           "client_id": "742452513487-s64lmssfb6uibqt0qn2g5j8p55caggq2.apps.googleusercontent.com",
           "client_type": 1,
