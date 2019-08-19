@@ -19,6 +19,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecord;
 import com.noqapp.android.common.beans.medical.JsonMedicalRecordList;
 import com.noqapp.android.common.customviews.CustomToast;
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.R;
@@ -99,14 +100,22 @@ public class PatientProfileActivity extends BaseActivity implements
             if(null == jsonProfile || null == jsonMedicalRecordTemp){
                 new CustomToast().showToast(PatientProfileActivity.this,"Please wait while patient data is loading...");
             }else {
-                Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
-                intent.putExtra("qCodeQR", codeQR);
-                intent.putExtra("data", jsonQueuedPerson);
-                intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
-                intent.putExtra("jsonProfile", jsonProfile);
-                intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
-                startActivity(intent);
-                finish();
+                if(MedicalDepartmentEnum.valueOf(getIntent().getStringExtra("bizCategoryId")) == MedicalDepartmentEnum.NEU){
+                    Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(PatientProfileActivity.this, MedicalCaseActivity.class);
+                    intent.putExtra("qCodeQR", codeQR);
+                    intent.putExtra("data", jsonQueuedPerson);
+                    intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
+                    intent.putExtra("jsonProfile", jsonProfile);
+                    intent.putExtra("bizCategoryId", getIntent().getStringExtra("bizCategoryId"));
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
         TextView tv_hospital_schedule = findViewById(R.id.tv_hospital_schedule);
@@ -148,7 +157,7 @@ public class PatientProfileActivity extends BaseActivity implements
             }else {
                 PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
                 if (permissionHelper.isStoragePermissionAllowed()) {
-                    Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
+                    Intent intent = new Intent(PatientProfileActivity.this, DentalActivity.class);
                     intent.putExtra("qCodeQR", codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
