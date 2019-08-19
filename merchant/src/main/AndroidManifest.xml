@@ -147,6 +147,10 @@
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".views.activities.NeuroActivity"
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
             android:name=".views.activities.DentalActivity"
             android:theme="@style/BaseTheme"
             android:screenOrientation="landscape"

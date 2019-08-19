@@ -148,7 +148,7 @@ public class PatientProfileActivity extends BaseActivity implements
             }else {
                 PermissionHelper permissionHelper = new PermissionHelper(PatientProfileActivity.this);
                 if (permissionHelper.isStoragePermissionAllowed()) {
-                    Intent intent = new Intent(PatientProfileActivity.this, DentalActivity.class);
+                    Intent intent = new Intent(PatientProfileActivity.this, NeuroActivity.class);
                     intent.putExtra("qCodeQR", codeQR);
                     intent.putExtra("data", jsonQueuedPerson);
                     intent.putExtra("jsonMedicalRecord", jsonMedicalRecordTemp);
