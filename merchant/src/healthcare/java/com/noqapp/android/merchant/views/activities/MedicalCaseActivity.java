@@ -92,7 +92,7 @@ public class MedicalCaseActivity extends BaseActivity implements
     public JsonQueuedPerson jsonQueuedPerson;
     public String codeQR;
     public List<JsonPreferredBusiness> jsonPreferredBusiness;
-    private String bizCategoryId;
+    public String bizCategoryId;
     private ProgressBar pb_case;
 
     @Override
