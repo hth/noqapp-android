@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DentalDiagnosisFragment extends BaseFragment {
+public class DentalProDiagnosisFragment extends BaseFragment {
     private View view;
 
     @Nullable

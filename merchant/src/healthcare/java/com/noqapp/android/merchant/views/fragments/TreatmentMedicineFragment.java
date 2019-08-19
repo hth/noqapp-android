@@ -39,11 +39,11 @@ import segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedCon
 import segmented_control.widget.custom.android.com.segmentedcontrol.item_row_column.SegmentViewHolder;
 import segmented_control.widget.custom.android.com.segmentedcontrol.listeners.OnSegmentSelectedListener;
 
-public class TreatmentFragment extends BaseFragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick, AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
+public class TreatmentMedicineFragment extends BaseFragment implements StaggeredGridMedicineAdapter.StaggeredMedicineClick,
+        AutoCompleteAdapterNew.SearchClick, AutoCompleteAdapterNew.SearchByPos {
 
-    private RecyclerView recyclerView, recyclerView_one, rcv_medicine;
-    private TextView tv_add_medicine, tv_add_diagnosis, tv_close, tv_remove, tv_medicine_name;
-    private StaggeredGridAdapter diagnosisAdapter;
+    private RecyclerView recyclerView, rcv_medicine;
+    private TextView tv_add_medicine,  tv_close, tv_remove, tv_medicine_name;
     private StaggeredGridMedicineAdapter medicineAdapter, medicineSelectedAdapter;
     private ScrollView ll_medicine;
     private SegmentedControl sc_duration, sc_medicine_timing, sc_frequency;
@@ -54,17 +54,15 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
     private ArrayList<DataObj> selectedMedicineList = new ArrayList<>();
     private DataObj dataObj;
     private int selectionPos = -1;
-    private AutoCompleteTextView actv_search_medicine,actv_search_dia;
+    private AutoCompleteTextView actv_search_medicine;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.frag_treatment, container, false);
+        View v = inflater.inflate(R.layout.frag_treatment_medicine, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
-        recyclerView_one = v.findViewById(R.id.recyclerViewOne);
         rcv_medicine = v.findViewById(R.id.rcv_medicine);
-        tv_add_diagnosis = v.findViewById(R.id.tv_add_diagnosis);
         view_med = v.findViewById(R.id.view_med);
         tv_add_medicine = v.findViewById(R.id.tv_add_medicine);
         tv_close = v.findViewById(R.id.tv_close);
@@ -76,7 +74,6 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
         sc_frequency = v.findViewById(R.id.sc_frequency);
         btn_done = v.findViewById(R.id.btn_done);
         tv_add_medicine.setOnClickListener(v1 -> AddMedicineDialog(getActivity(), "Add Medicine"));
-        tv_add_diagnosis.setOnClickListener(v12 -> AddItemDialog(getActivity(), "Add Diagnosis"));
         tv_close.setOnClickListener(v13 -> clearOptionSelection());
         duration_data = DurationDaysEnum.asListOfDescription();
         sc_duration.addSegments(duration_data);
@@ -123,17 +120,9 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
 
         actv_search_medicine = v.findViewById(R.id.actv_search_medicine);
         actv_search_medicine.setThreshold(1);
-        actv_search_dia = v.findViewById(R.id.actv_search_dia);
-        actv_search_dia.setThreshold(1);
-
         ImageView iv_clear_actv_medicine = v.findViewById(R.id.iv_clear_actv_medicine);
         iv_clear_actv_medicine.setOnClickListener(v14 -> {
             actv_search_medicine.setText("");
-            new AppUtils().hideKeyBoard(getActivity());
-        });
-        ImageView iv_clear_actv_dia = v.findViewById(R.id.iv_clear_actv_dia);
-        iv_clear_actv_dia.setOnClickListener(v15 -> {
-            actv_search_dia.setText("");
             new AppUtils().hideKeyBoard(getActivity());
         });
         return v;
@@ -158,22 +147,11 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
         medicineAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this, false);
         recyclerView.setAdapter(medicineAdapter);
 
-        recyclerView_one.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-        diagnosisAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
-        recyclerView_one.setAdapter(diagnosisAdapter);
 
         rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
         medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
         rcv_medicine.setAdapter(medicineSelectedAdapter);
 
-        try {
-            if (null != MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis()) {
-                String[] temp = MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getDiagnosis().split(",");
-                diagnosisAdapter.updateSelection(temp);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         selectedMedicineList = medicineSelectedAdapter.updateMedicineSelectList(MedicalCaseActivity.getMedicalCaseActivity().getJsonMedicalRecord().getMedicalMedicines(),
                 MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList());
         medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
@@ -181,10 +159,8 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
         clearOptionSelection();
         view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
 
-        AutoCompleteAdapterNew adapter = new AutoCompleteAdapterNew(getActivity(), android.R.layout.simple_dropdown_item_1line, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this,null);
+        AutoCompleteAdapterNew adapter = new AutoCompleteAdapterNew(getActivity(), android.R.layout.simple_dropdown_item_1line, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this, null);
         actv_search_medicine.setAdapter(adapter);
-        AutoCompleteAdapterNew adapterSearchDia = new AutoCompleteAdapterNew(getActivity(), R.layout.layout_autocomplete, MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList(), null,this);
-        actv_search_dia.setAdapter(adapterSearchDia);
     }
 
     private void AddItemDialog(final Context mContext, String title) {
@@ -207,15 +183,9 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
             if (edt_item.getText().toString().equals("")) {
                 edt_item.setError("Empty field not allowed");
             } else {
-                ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList();
-                temp.add(new DataObj(edt_item.getText().toString(), false).setNewlyAdded(true));
-                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setDiagnosisList(temp);
-                recyclerView_one.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-                StaggeredGridAdapter customAdapter = new StaggeredGridAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getDiagnosisList());
-                recyclerView_one.setAdapter(customAdapter);
                 MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getDiagnosisList().add(new DataObj(edt_item.getText().toString(), false));
                 MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                new CustomToast().showToast(  getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
+                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
                 mAlertDialog.dismiss();
             }
         });
@@ -259,7 +229,7 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
             if (edt_item.getText().toString().equals("")) {
                 edt_item.setError("Empty field not allowed");
             } else if (selectionPos == -1) {
-               new CustomToast().showToast(getActivity(), "please select a category");
+                new CustomToast().showToast(getActivity(), "please select a category");
             } else {
                 String category = category_data.get(selectionPos);
                 String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
@@ -268,7 +238,7 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
                 MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
                 recyclerView.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
 
-                StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), TreatmentFragment.this, false);
+                StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this, false);
                 recyclerView.setAdapter(customAdapter);
 
                 new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
@@ -282,7 +252,6 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
 
     public void saveData() {
         MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setJsonMedicineList(medicineSelectedAdapter.getSelectedDataListObject());
-        MedicalCaseActivity.getMedicalCaseActivity().getCaseHistory().setDiagnosis(diagnosisAdapter.getSelectedData());
     }
 
     @Override
@@ -323,7 +292,7 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
                 view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
 
                 rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-                medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, TreatmentFragment.this, true);
+                medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
                 rcv_medicine.setAdapter(medicineSelectedAdapter);
             }
         });
@@ -334,7 +303,7 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
             clearOptionSelection();
             view_med.setVisibility(selectedMedicineList.size() > 0 ? View.VISIBLE : View.GONE);
             rcv_medicine.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-            medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, TreatmentFragment.this, true);
+            medicineSelectedAdapter = new StaggeredGridMedicineAdapter(getActivity(), selectedMedicineList, this, true);
             rcv_medicine.setAdapter(medicineSelectedAdapter);
         });
     }
@@ -357,9 +326,5 @@ public class TreatmentFragment extends BaseFragment implements StaggeredGridMedi
     @Override
     public void searchByPos(DataObj dataObj) {
         new AppUtils().hideKeyBoard(getActivity());
-        actv_search_dia.setText("");
-        diagnosisAdapter.selectItem(dataObj);
-        diagnosisAdapter.notifyDataSetChanged();
-
     }
 }
