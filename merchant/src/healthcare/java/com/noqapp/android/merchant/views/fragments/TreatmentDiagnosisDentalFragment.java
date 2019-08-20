@@ -69,7 +69,6 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         ll_medicine = v.findViewById(R.id.ll_medicine);
         sc_dental_option = v.findViewById(R.id.sc_dental_option);
         btn_done = v.findViewById(R.id.btn_done);
-        tv_add_medicine.setOnClickListener(v1 -> AddMedicineDialog(getActivity(), "Add Medicine"));
         tv_close.setOnClickListener(v13 -> clearOptionSelection());
         dental_option_data = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
         sc_dental_option.addSegments(dental_option_data);
@@ -123,61 +122,6 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
 
         AutoCompleteAdapterNew adapter = new AutoCompleteAdapterNew(getActivity(), android.R.layout.simple_dropdown_item_1line, MedicalDataStatic.Dental.getDentalDiagnosisList(), this, null);
         actv_search_medicine.setAdapter(adapter);
-    }
-
-
-    private void AddMedicineDialog(final Context mContext, String title) {
-        selectionPos = -1;
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        builder.setTitle(null);
-        View customDialogView = inflater.inflate(R.layout.add_item_with_category, null, false);
-        final EditText edt_item = customDialogView.findViewById(R.id.edt_item);
-        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
-        SegmentedControl sc_category = customDialogView.findViewById(R.id.sc_category);
-        final List<String> category_data = new ArrayList<>();
-        category_data.addAll(PharmacyCategoryEnum.asListOfDescription());
-        sc_category.addSegments(category_data);
-        sc_category.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(SegmentViewHolder segmentViewHolder, boolean isSelected, boolean isReselected) {
-                if (isSelected) {
-                    selectionPos = segmentViewHolder.getAbsolutePosition();
-                }
-            }
-        });
-        tvtitle.setText(title);
-        builder.setView(customDialogView);
-        final AlertDialog mAlertDialog = builder.create();
-        mAlertDialog.setCanceledOnTouchOutside(false);
-        mAlertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Button btn_cancel = customDialogView.findViewById(R.id.btn_cancel);
-        Button btn_add = customDialogView.findViewById(R.id.btn_add);
-        btn_cancel.setOnClickListener(v -> mAlertDialog.dismiss());
-        btn_add.setOnClickListener(v -> {
-            edt_item.setError(null);
-            if (edt_item.getText().toString().equals("")) {
-                edt_item.setError("Empty field not allowed");
-            } else if (selectionPos == -1) {
-                new CustomToast().showToast(getActivity(), "please select a category");
-            } else {
-                String category = category_data.get(selectionPos);
-                String medicineName = category.substring(0, 3) + " " + edt_item.getText().toString();
-                ArrayList<DataObj> temp = MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList();
-                temp.add(new DataObj(medicineName, category, false).setNewlyAdded(true));
-                MedicalCaseActivity.getMedicalCaseActivity().formDataObj.setMedicineList(temp);
-                recyclerView.setLayoutManager(MedicalCaseActivity.getMedicalCaseActivity().getFlexBoxLayoutManager(getActivity()));
-
-                StaggeredGridMedicineAdapter customAdapter = new StaggeredGridMedicineAdapter(getActivity(), MedicalCaseActivity.getMedicalCaseActivity().formDataObj.getMedicineList(), this, false);
-                recyclerView.setAdapter(customAdapter);
-
-                new CustomToast().showToast(getActivity(), "'" + edt_item.getText().toString() + "' added successfully to list");
-                MedicalCaseActivity.getMedicalCaseActivity().getPreferenceObjects().getMedicineList().add(new DataObj(medicineName, category, false));
-                MedicalCaseActivity.getMedicalCaseActivity().updateSuggestions();
-                mAlertDialog.dismiss();
-            }
-        });
-        mAlertDialog.show();
     }
 
     public void saveData() {
