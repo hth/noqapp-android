@@ -10,11 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.noqapp.android.common.model.types.category.MedicalDepartmentEnum;
 import com.noqapp.android.merchant.R;
+import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 
 public class TreatmentTabFragment extends BaseFragment {
     private TreatmentDiagnosisFragment treatmentDiagnosisFragment;
     private TreatmentMedicineFragment treatmentMedicineFragment;
+    private TreatmentDiagnosisDentalFragment treatmentDiagnosisDentalFragment;
 
     @Nullable
     @Override
@@ -25,11 +28,16 @@ public class TreatmentTabFragment extends BaseFragment {
         try {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            treatmentDiagnosisFragment = new TreatmentDiagnosisFragment();
             treatmentMedicineFragment = new TreatmentMedicineFragment();
-            transaction.replace(R.id.fl_treatment_diagnosis, treatmentDiagnosisFragment).commit();
             transaction.replace(R.id.fl_treatment_medicine, treatmentMedicineFragment).commit();
-        }catch (Exception e){
+            if (MedicalDepartmentEnum.valueOf(MedicalCaseActivity.getMedicalCaseActivity().bizCategoryId) == MedicalDepartmentEnum.DNT) {
+                treatmentDiagnosisDentalFragment = new TreatmentDiagnosisDentalFragment();
+                transaction.replace(R.id.fl_treatment_diagnosis, treatmentDiagnosisDentalFragment).commit();
+            } else {
+                treatmentDiagnosisFragment = new TreatmentDiagnosisFragment();
+                transaction.replace(R.id.fl_treatment_diagnosis, treatmentDiagnosisFragment).commit();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return v;
@@ -37,7 +45,10 @@ public class TreatmentTabFragment extends BaseFragment {
 
 
     public void saveData() {
-        treatmentDiagnosisFragment.saveData();
+        if (null != treatmentDiagnosisFragment)
+            treatmentDiagnosisFragment.saveData();
+        if (null != treatmentDiagnosisDentalFragment)
+            treatmentDiagnosisDentalFragment.saveData();
         treatmentMedicineFragment.saveData();
     }
 

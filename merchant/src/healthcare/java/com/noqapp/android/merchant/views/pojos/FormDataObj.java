@@ -119,4 +119,10 @@ public class FormDataObj {
         this.specList = specList;
         return this;
     }
+
+    public FormDataObj setObstreticsList(ArrayList<DataObj> obstreticsList) {
+        this.obstreticsList = obstreticsList;
+        return this;
+    }
+
 }
