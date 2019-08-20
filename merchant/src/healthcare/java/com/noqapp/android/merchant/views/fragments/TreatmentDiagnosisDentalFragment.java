@@ -71,7 +71,7 @@ public class TreatmentDiagnosisDentalFragment extends BaseFragment implements St
         btn_done = v.findViewById(R.id.btn_done);
         tv_add_medicine.setOnClickListener(v1 -> AddMedicineDialog(getActivity(), "Add Medicine"));
         tv_close.setOnClickListener(v13 -> clearOptionSelection());
-        dental_option_data = MedicalDataStatic.Dental.getSymptomsAsStringList();
+        dental_option_data = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getSymptoms());
         sc_dental_option.addSegments(dental_option_data);
         sc_dental_option.addOnSegmentSelectListener(new OnSegmentSelectedListener() {
             @Override

@@ -21,6 +21,7 @@ import com.noqapp.android.merchant.model.database.utils.MedicalFilesDB;
 import com.noqapp.android.merchant.views.activities.MedicalCaseActivity;
 import com.noqapp.android.merchant.views.adapters.ToothAdapter;
 import com.noqapp.android.merchant.views.pojos.ToothInfo;
+import com.noqapp.android.merchant.views.utils.MedicalDataStatic;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,9 +47,10 @@ public class DentalProDiagnosisFragment extends BaseFragment {
         int imageFilePathTop = R.drawable.tooth_o_2_1;
         List<Integer> drawables = getFrontAllViews();
         List<ToothInfo> toothInfos = new ArrayList<>();
+        List<String> toothNumbers = MedicalDataStatic.convertDataObjListAsStringList(MedicalDataStatic.Dental.getDentalDiagnosisList());
         for (int i = 0; i < 32; i++) {
             ToothInfo toothInfo = new ToothInfo();
-            toothInfo.setToothNumber(i + 1);
+            toothInfo.setToothNumber(Integer.parseInt(toothNumbers.get(i)));
             toothInfo.setToothFrontView(drawables.get(i));
             toothInfo.setToothTopView(imageFilePathTop);
             toothInfo.setFrontViewDrawables(getFrontOptionViews());
