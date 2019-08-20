@@ -41,7 +41,7 @@ import com.noqapp.android.merchant.views.fragments.InstructionFragment;
 import com.noqapp.android.merchant.views.fragments.LabTestsFragment;
 import com.noqapp.android.merchant.views.fragments.PrimaryCheckupFragment;
 import com.noqapp.android.merchant.views.fragments.PrintFragment;
-import com.noqapp.android.merchant.views.fragments.SymptomsFragment;
+import com.noqapp.android.merchant.views.fragments.SymptomsTabFragment;
 import com.noqapp.android.merchant.views.fragments.TreatmentTabFragment;
 import com.noqapp.android.merchant.views.pojos.CaseHistory;
 import com.noqapp.android.merchant.views.pojos.FormDataObj;
@@ -61,32 +61,41 @@ public class MedicalCaseActivity extends BaseActivity implements
     private MenuHeaderAdapter menuAdapter;
     private ArrayList<String> data = new ArrayList<>();
     private PrimaryCheckupFragment primaryCheckupFragment;
-    public SymptomsFragment symptomsFragment;
+    public SymptomsTabFragment symptomsTabFragment;
     private LabTestsFragment labTestsFragment;
     private TreatmentTabFragment treatmentTabFragment;
     private ExaminationTabFragment examinationTabFragment;
     private InstructionFragment instructionFragment;
     private PrintFragment printFragment;
     public boolean isGynae = false;
+
     public boolean isGynae() {
         return isGynae;
     }
+
     public PreferenceObjects getPreferenceObjects() {
         return preferenceObjects;
     }
+
     private PreferenceObjects preferenceObjects;
     private LoadTabs loadTabs;
+
     public JsonMedicalRecord getJsonMedicalRecord() {
         return jsonMedicalRecord;
     }
+
     public JsonMedicalRecord jsonMedicalRecord;
+
     public CaseHistory getCaseHistory() {
         return caseHistory;
     }
+
     private CaseHistory caseHistory;
+
     public static MedicalCaseActivity getMedicalCaseActivity() {
         return medicalCaseActivity;
     }
+
     private static MedicalCaseActivity medicalCaseActivity;
     public FormDataObj formDataObj;
     public JsonQueuedPerson jsonQueuedPerson;
@@ -156,7 +165,7 @@ public class MedicalCaseActivity extends BaseActivity implements
                 rcv_header.smoothScrollToPosition(position);
                 menuAdapter.setSelected_pos(position);
                 menuAdapter.notifyDataSetChanged();
-                if(position == 6)
+                if (position == 6)
                     printFragment.updateUI();
             }
 
@@ -185,7 +194,7 @@ public class MedicalCaseActivity extends BaseActivity implements
     public void preferredBusinessResponse(JsonPreferredBusinessBucket jsonPreferredBusinessBucket) {
         if (null != jsonPreferredBusinessBucket && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists() != null && jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().size() > 0) {
             for (int i = 0; i < jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().size(); i++) {
-                if(jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(i).getCodeQR().equals(codeQR)){
+                if (jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(i).getCodeQR().equals(codeQR)) {
                     this.jsonPreferredBusiness = jsonPreferredBusinessBucket.getJsonPreferredBusinessLists().get(i).getPreferredBusinesses();
                     return;
                 }
@@ -250,7 +259,7 @@ public class MedicalCaseActivity extends BaseActivity implements
 
     private void saveAllData() {
         primaryCheckupFragment.saveData();
-        symptomsFragment.saveData();
+        symptomsTabFragment.saveData();
         examinationTabFragment.saveData();
         labTestsFragment.saveData();
         treatmentTabFragment.saveData();
@@ -431,7 +440,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         bppf.putString("qCodeQR", codeQR);
         bppf.putString("refrenceID", jsonQueuedPerson.getRecordReferenceId());
         primaryCheckupFragment.setArguments(bppf);
-        symptomsFragment = new SymptomsFragment();
+        symptomsTabFragment = new SymptomsTabFragment();
         examinationTabFragment = new ExaminationTabFragment();
         labTestsFragment = new LabTestsFragment();
         treatmentTabFragment = new TreatmentTabFragment();
@@ -439,7 +448,7 @@ public class MedicalCaseActivity extends BaseActivity implements
         printFragment = new PrintFragment();
         TabViewPagerAdapter adapter = new TabViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(primaryCheckupFragment, "FRAG" + 0);
-        adapter.addFragment(symptomsFragment, "FRAG" + 1);
+        adapter.addFragment(symptomsTabFragment, "FRAG" + 1);
         adapter.addFragment(examinationTabFragment, "FRAG" + 2);
         adapter.addFragment(labTestsFragment, "FRAG" + 3);
         adapter.addFragment(treatmentTabFragment, "FRAG" + 4);
