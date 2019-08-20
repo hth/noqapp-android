@@ -46,4 +46,55 @@
     <string name="dependent_list">Dependent List</string>
     <string name="medical_history_alert">You don\'t have any medical history.</string>
 
+
+    <string-array name="array_yes_no">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="array_labour_pain">
+        <item>Yes</item>
+        <item>No</item>
+        <item>Induced</item>
+    </string-array>
+
+    <string-array name="array_presentation">
+        <item>Breech</item>
+        <item>Vertex</item>
+    </string-array>
+
+    <string-array name="array_term">
+        <item>Pre Term</item>
+        <item>Full Term</item>
+        <item>Post Term</item>
+    </string-array>
+
+    <string-array name="array_birth_cry">
+        <item>Immediate</item>
+        <item>Delayed</item>
+        <item>Did not cry</item>
+    </string-array>
+
+    <string-array name="array_mode_delivery">
+        <item>Normal</item>
+        <item>C -section</item>
+        <item>Vacum</item>
+        <item>Forceps</item>
+        <item>Others</item>
+    </string-array>
+
+
+    <string-array name="array_neonatal">
+        <item>Meningitis</item>
+        <item>Jaundice</item>
+        <item>Hypoglycemia</item>
+        <item>Hydrocephalus</item>
+        <item>Respiratory Distress</item>
+        <item>Fever</item>
+        <item>Infection/Sepsis</item>
+        <item>Pneumonia</item>
+        <item>Seizures</item>
+        <item>Dehydration</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>
